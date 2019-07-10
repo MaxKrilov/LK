@@ -1,0 +1,11 @@
+version: '2'
+services:
+    web:
+        image: ${IMAGE_ADDRESS}
+        container_name: ${COMPOSE_PROJECT_NAME}
+        network_mode: "bridge"
+        environment:
+            SERVICE_NAME: ${COMPOSE_PROJECT_NAME}
+            STAGE: ${STAGE}
+        volumes:
+            - ${CONTENT_FILES_DIR}:${CONTAINER_FILES_DIR}:ro

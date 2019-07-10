@@ -1,0 +1,4 @@
+FROM ${WEBSERVER_IMAGE}
+
+ADD ./ /srv/www/
+ADD ./build_env/nginx_container/default.conf /etc/nginx/conf.d/default.conf

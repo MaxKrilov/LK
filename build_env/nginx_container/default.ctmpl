@@ -1,0 +1,21 @@
+server {
+    listen {{ env "CONTAINER_PORT" }};
+
+    root   /srv/www/dist/;
+    add_header X-Backend-Server $hostname;
+    add_header X-Project {{ env "PROJECT_NAME" }};
+
+    index index.html;
+
+    location /files/ {
+         alias /static/files/;
+    }
+
+    location / {
+        try_files $uri $uri/ /index.html;
+        {{if env "CI_BUILD_TAG"}}
+            expires 14d;
+            add_header Cache-Control s-maxage=3600;
+        {{end}}
+    }
+}

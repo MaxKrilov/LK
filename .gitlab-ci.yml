@@ -1,0 +1,127 @@
+before_script:
+#
+# System
+#
+    - export BUILD_DIR='/var/www/builds'
+    - export BUILD_HOST='t2.ertelecom.ru'
+    - export DHUB_ADDRESS="dhub.ertelecom.ru"
+    - export LOG_DIR='/var/log/services/nginx'
+#
+# USER
+#
+    - export PROJECT_NAME=`basename ${CI_PROJECT_DIR}|sed s/\\\./-/`
+    - export PROJECT_GROUP=`echo ${CI_PROJECT_DIR} | awk -F'/' '{print $(NF-1)}' | tr 'A-Z' 'a-z' | tr '_' '-'`
+    - export COMPOSE_PROJECT_NAME=$(echo ${PROJECT_GROUP}${PROJECT_NAME}${CI_BUILD_REF_NAME}|sed -e 's/[^A-Z,a-z,0-9]//g')
+    - export FQDN=${CI_BUILD_REF_NAME}.${PROJECT_NAME}.${PROJECT_GROUP}.${BUILD_HOST}
+    - export PROJECT_DIR_SUFFIX=${PROJECT_GROUP}/${PROJECT_NAME}/${CI_BUILD_REF_NAME}
+    - export PROJECT_DIR=${BUILD_DIR}/${PROJECT_DIR_SUFFIX}
+    - export CONTAINER_PORT=40037
+    - export IMAGE_ADDRESS="${DHUB_ADDRESS}/${PROJECT_GROUP}/${PROJECT_NAME}:${CI_COMMIT_REF_NAME}"
+    - export ADD_GROUP="groupadd -g $(id -g) group"
+    - export ADD_USER="useradd -u $(id -u) -g $(id -g) -d /app user"
+    - export INSTALL_DEPS="su user -c \"npm install --quiet\""
+    - export BUILD="su user -c \"npm run build\""
+    - export CONTENT_FILES_DIR=/var/shared/b2bweb/lk-admin/master/files
+    - export CONTAINER_FILES_DIR=/static/files
+
+stages:
+    - build_dev_image     # Сборка образа для dev
+    - deploy_dev_image    # Развёртывание образа для dev
+    - build_prod_image    # Сборка образа для prod
+    - save_dhub           # Размещение в магазине приложений
+    - deploy_prod         # Развёртывание в продакшне
+
+Build Dev Image:
+    stage: build_dev_image
+    script:
+        - mkdir -p config
+        - consul-template -once -template "build_env/nginx_container/default.ctmpl:build_env/nginx_container/default.conf"
+        - export WEBSERVER_IMAGE="nginx:1.14.0"
+        - docker run --rm -v $PWD:/app -w /app node:carbon bash -c "$ADD_GROUP && $ADD_USER && $INSTALL_DEPS && $BUILD"
+        - envsubst < build_env/docker-compose/Dockerfile.tmpl > Dockerfile
+        - docker build --tag ${IMAGE_ADDRESS} .
+    tags:
+        - build.hq
+    except:
+        - tags
+
+Deploy dev:
+    stage: deploy_dev_image
+    script:
+        - mkdir -p config
+        - export STAGE=development
+        - envsubst < build_env/docker-compose/docker-compose.tmpl > config/docker-compose.yml
+
+        - cd config
+        - docker-compose up -d
+
+        - cd ..
+        - envsubst < build_env/consul-template.tmpl > config/consul-template.conf
+
+        - mkdir -p --verbose ${PROJECT_DIR}/config
+        - mkdir -p ${LOG_DIR}/${PROJECT_DIR_SUFFIX}/
+
+        - consul-template -once -config config/consul-template.conf
+    except:
+        - tags
+    tags:
+        - build.hq
+
+Build Production Image:
+    stage: build_prod_image
+    script:
+        - mkdir -p config
+
+        - consul-template -once -template "build_env/nginx_container/default.ctmpl:build_env/nginx_container/default.conf"
+
+        - export WEBSERVER_IMAGE="nginx:1.14.0"
+
+        - docker run --rm -v $PWD:/app -w /app node:carbon bash -c "$ADD_GROUP && $ADD_USER && $INSTALL_DEPS && $BUILD"
+
+        - envsubst < build_env/docker-compose/Dockerfile.tmpl > Dockerfile
+
+        - docker build --tag ${IMAGE_ADDRESS} .
+    only:
+        - /^\d+\.\d+\.\d+$/
+    tags:
+        - build.hq
+
+Save dhub:
+    stage: save_dhub
+    dependencies:
+        - Build Production Image
+    script:
+        - docker push ${IMAGE_ADDRESS}
+    tags:
+        - build.hq
+    only:
+        - /^\d+\.\d+\.\d+$/
+
+Production:
+    environment: production
+    stage: deploy_prod
+    when: manual
+      # зависимость от stage создания образа, статус stage-a должен быть success
+    dependencies:
+        - Save dhub
+    script:
+        # Название сервиса в manager
+        - export FULL_PROJECT_NAME=$(echo ${PROJECT_GROUP}_${PROJECT_NAME}|sed -e 's/[^A-Z,a-z,0-9,_]//g')
+        # Определяем команды создания сервиса и обновления
+        - export cmdCreate="docker service create --name ${FULL_PROJECT_NAME}
+            --replicas 1
+            --network network_webcluster
+            -p ${CONTAINER_PORT}:${CONTAINER_PORT}
+            --mount type=bind,source=/srv/shared/lk-admin.lkb2b.domru.ru/files,destination=${CONTAINER_FILES_DIR}
+            ${IMAGE_ADDRESS}"
+        - export cmdUpdate="docker service update
+            --image ${IMAGE_ADDRESS} ${FULL_PROJECT_NAME}"
+        # Проверка есть такой сервис или нет
+        - export strAction=`docker service ps ${FULL_PROJECT_NAME} > /dev/null 2> /dev/null|| echo Create`
+        - env | sort
+        # Действия по сервису
+        - if [ "x${strAction}" == "xCreate" ]; then ${cmdCreate}; else ${cmdUpdate}; fi
+    only:
+        - /^\d+\.\d+\.\d+$/
+    tags:
+        - manager1.site1

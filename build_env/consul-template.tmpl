@@ -1,0 +1,7 @@
+template {
+  source = "build_env/nginx/site.ctmpl"
+  destination = "${PROJECT_DIR}/config/site.cfg"
+  command = "sudo nginx -t && sudo systemctl reload nginx"
+  perms = 0644
+  backup = false
+}

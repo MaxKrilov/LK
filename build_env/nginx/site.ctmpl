@@ -1,0 +1,33 @@
+upstream {{ env "FQDN" }} {
+    {{$project_name := env "COMPOSE_PROJECT_NAME" }}
+    {{range service $project_name}}server {{.Address}}:{{ env "CONTAINER_PORT" }};
+    {{else}}server 127.0.0.1:65535; # force a 502{{end}}
+}
+
+server {
+    listen 80;
+    server_name {{ env "FQDN" }};
+
+    location / {
+        proxy_pass http://{{ env "FQDN" }};
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header Host $host;
+    }
+}
+
+server {
+    listen 443;
+    server_name {{ env "FQDN" }};
+
+    ssl on;
+    ssl_certificate /etc/nginx/ssl/server.crt;
+    ssl_certificate_key /etc/nginx/ssl/server.key;
+
+    location / {
+        proxy_pass http://{{ env "FQDN" }};
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header Host $host;
+    }
+}
