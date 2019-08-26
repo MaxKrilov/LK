@@ -1,0 +1,44 @@
+.er-menu {
+  display: block;
+  vertical-align: middle;
+  &--inline {
+    display: inline-block;
+  }
+  &__activator {
+    align-items: center;
+    cursor: pointer;
+    display: flex;
+    * {
+      cursor: pointer;
+    }
+  }
+  &__content {
+    position: absolute;
+    display: inline-block;
+    max-width: 80%;
+    //overflow-x: auto;
+    //overflow-y: auto;
+    //contain: content;
+    will-change: transform;
+    &--active {
+      pointer-events: none;
+    }
+    &--fixed {
+      position: fixed;
+    }
+  }
+  &-transition {
+    &-leave-active,
+    &-leave-to {
+      pointer-events: none;
+    }
+    &-enter,
+    &-leave-to {
+      opacity: 0;
+    }
+    &-enter-active,
+    &-leave-active {
+      transition: all 300ms map_get($transition, fast-in-fast-out);
+    }
+  }
+}

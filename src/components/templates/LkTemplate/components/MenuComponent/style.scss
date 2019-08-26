@@ -1,0 +1,296 @@
+.menu-component {
+  &__left {
+    width: 100%;
+    max-width: 320px;
+    min-height: 100vh;
+    z-index: map_get($z-index, 'left-menu');
+  }
+  &__top {
+    width: 100%;
+    height: 56px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: map_get($shades, 'white');
+    box-shadow: 0 4px 8px rgba(map_get($shades, 'black'), 0.08);
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+    z-index: map_get($z-index, 'top-menu');
+    @include media-query((
+            height: (md: 64px, lg: 72px, xl: 96px),
+            box-shadow: (xl: none),
+            padding: (
+                    sm: 0 24px,
+                    xl: 0 32px 0 316px
+            )
+    ));
+    &__burger {
+      cursor: pointer;
+      color: rgba(map_get($shades, 'black'), 0.5);
+      margin: {
+        right: 37px
+      };
+      @include media-query((
+              display: (xl: none),
+              margin-right: (sm: 32px, md: 45px, lg: 59px)
+      ))
+    }
+    &__logo {
+      @include media-query((
+        display: (xl: none)
+      ));
+      img {
+        width: 64px;
+      }
+    }
+    &__link {
+      &--desktop {
+        align-items: center;
+        margin: { right: 54px };
+        display: none;
+        @include media-query((
+          display: (xl: flex)
+        ));
+        .icon {
+          color: rgba(map_get($shades, 'black'), 0.2);
+        }
+        .info {
+          > * {
+            display: block;
+          }
+          span {
+            margin: { bottom: 2px };
+          }
+          a {
+            font-size: 18px;
+            line-height: 18px;
+          }
+        }
+      }
+    }
+    &__balance {
+      a {
+        position: relative;
+        font-size: 18px;
+        margin: { bottom: 5px };
+        &::after {
+          content: '₽';
+          position: absolute;
+          font: 16px/22px $fedra-light;
+          letter-spacing: -0.5px;
+          color: rgba(map_get($shades, 'black'), 0.2);
+          margin: { left: 2px };
+        }
+      }
+      .info {
+        margin: { top: 3px };
+      }
+      .autopay {
+        text-decoration: underline;
+      }
+      &.autopay {
+        .icon {
+          color: map_get($green, 'base');
+        }
+      }
+    }
+    &__manager {
+      .info {
+        width: 100%;
+        max-width: 155px;
+        a {
+          display: inline;
+          font-size: 16px;
+          line-height: 22px;
+        }
+      }
+    }
+    &__dropdown {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      background: linear-gradient(to top right, map_get($gray, '19'), map_get($shades, 'white'));
+      padding: 1px;
+      border-radius: 12px;
+      &__content {
+        background: map_get($shades, 'white');
+        border-radius: inherit;
+        padding: 32px 0 16px;
+        overflow: auto;
+        max-height: 437px;
+        .caption,
+        .organization,
+        .caption-choise,
+        .agreement {
+          margin: {
+            left: 26px;
+          };
+        }
+        .organization {
+          width: 100%;
+          max-width: 230px;
+          font: 16px/22px $fedra-book;
+          letter-spacing: -0.5px;
+          color: rgba(map_get($shades, 'black'), 0.8);
+        }
+        .caption-choise {
+          font: 18px/22px $fedra-book;
+          color: rgba(map_get($shades, 'black'), 0.5);
+        }
+        .agreement {
+          font: 18px/22px $fedra-book;
+          letter-spacing: -1px;
+          color: rgba(map_get($shades, 'black'), 0.5);
+        }
+        .personal-account {
+          padding: { left: 42px };
+          height: 54px;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          border-left: 6px solid map_get($shades, 'transparent');
+          transition: $primary-transition;
+          cursor: pointer;
+          > * {
+            margin: { left: 0 };
+          }
+          .value {
+            font: 20px/25px $fedra-book;
+            letter-spacing: -1px;
+            position: relative;
+            i {
+              position: absolute;
+              left: -24px;
+              margin: { top: 3px };
+              color: map_get($green, 'base');
+              svg {
+                width: 16px;
+              }
+            }
+          }
+          &:hover {
+            background: map_get($gray, '2');
+            border-left-color: map_get($yellow, 'base');
+          }
+          &.active {
+
+          }
+        }
+        .profile,
+        .support {
+          border-top: 1px solid map_get($gray, '20');
+          display: flex;
+          align-items: center;
+          padding: {
+            top: 12px;
+            left: 18px;
+          };
+          i {
+            color: rgba(map_get($shades, 'black'), 0.2);
+          }
+          a {
+            font: 14px/17px $fedra-demi;
+            color: rgba(map_get($shades, 'black'), 0.5);
+            text-decoration: none;
+          }
+        }
+      }
+      &.manager {
+        .caption,
+        .value {
+          margin: {
+            left: 21px;
+            right: 21px;
+          };
+        }
+        .value {
+          font: 16px/20px $fedra-book;
+          letter-spacing: -1px;
+          color: rgba(map_get($shades, 'black'), 0.8);
+          a {
+            text-decoration: none;
+            color: inherit;
+          }
+        }
+      }
+    }
+    &__badge,
+    &__exit,
+    &__profile--mobile {
+      color: rgba(map_get($shades, 'black'), 0.5);
+      cursor: pointer;
+      @include media-query((
+        color: (xl: rgba(map_get($shades, 'black'), 0.2))
+      ))
+    }
+    &__badge {
+      position: relative;
+      &::after {
+        content: attr(data-count);
+        display: none;
+        width: 16px;
+        height: 16px;
+        background: map_get($yellow, 'base');
+        border-radius: 50%;
+        font: 8px $fedra-med;
+        text-align: center;
+        line-height: 16px;
+        color: map_get($shades, 'black');
+        position: absolute;
+        top: -8px;
+        right: -8px;
+        @include media-query((
+                display: (sm: block),
+                width: (md: 24px),
+                height: (md: 24px),
+                font-size: (md: 11px),
+                line-height: (md: 24px),
+                top: (md: -12px),
+                right: (md: -12px)
+        ))
+      }
+      &::before {
+        content: '';
+        display: block;
+        width: 8px;
+        height: 8px;
+        background: map_get($yellow, 'base');
+        border-radius: 50%;
+        position: absolute;
+        left: -4px;
+        top: -4px;
+        @include media-query((
+          display: (sm: none)
+        ))
+      }
+    }
+    &__chat {
+      display: none;
+      @include media-query((
+        display: (sm: block)
+      ))
+    }
+    &__notification {
+      margin: { left: auto };
+      @include media-query((
+        margin-left: (sm: 42px, md: 38px, lg: 47px, xl: 26px)
+      ))
+    }
+    &__exit {
+      display: none;
+      @include media-query((
+        display: (xl: block)
+      ))
+    }
+    &__profile--mobile {
+      margin: {
+        left: 19px
+      };
+      @include media-query((
+              display: (xl: none),
+              margin-left: (sm: 42px, md: 34px, lg: 47px)
+      ));
+    }
+  }
+}

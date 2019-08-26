@@ -1,0 +1,81 @@
+$yellow: (
+        'base':       #FFDD00,
+        'darken-1':   #E2C404,
+        'lighten-1':  #FFE014,
+        'lighten-2':  #FFE95C,
+        'lighten-3':  #FFF6BE,
+        'other-1':    #FFDF10,
+        'other-2':    #F1BC00,
+        'other-3':    #FFFCE6,
+);
+
+$red: (
+        'base':       #E31E24,
+        'darken-1':   #B3002B,
+        'lighten-1':  #F5272D,
+        'lighten-2':  #FF4E53,
+        'lighten-3':  #FF8A8A,
+        'other-1':    #FA2A30,
+);
+
+$blue: (
+        'base':       #6688C9,
+        'darken-1':   #1D45A1,
+        'lighten-1':  #7296DA,
+        'lighten-2':  #8EB0EF,
+        'lighten-3':  #B0CBFF,
+        'other-1':    #7496D9,
+);
+
+$green: (
+        'base':       #69BE28,
+        'darken-1':   #31812E,
+        'lighten-1':  #6CC628,
+        'lighten-2':  #73D02C,
+        'lighten-3':  #8DE549,
+        'other-1':    #6FC42E,
+        'other-2':    #55A815,
+        'other-3':    #56A718
+);
+
+$gray: (
+        '1': #FAFAFA,
+        '2': #F8F8F8,
+        '3': #F3F3F3,
+        '4': #E2E2E2,
+        '5': #C7C7C7,
+        '6': #A7A7A7,
+        '7': #777777,
+        '8': #222222,
+        '9': #FBFBFB,
+        '10': #E0E0E0,
+        '11': #E9E9E9,
+        '12': #F6F6F6,
+        '13': #EBEBEB,
+        '14': #AFAFAF,
+        '15': #EDEDED,
+        '16': #F4F4F4,
+        '17': #CBCBCB,
+        '18': #E3E3E3,
+        '19': #C6C6C6,
+        '20': #D1D1D1,
+        '21': #AEAEAE,
+        '22': #C8C8C8,
+        '23': #EEEEEE,
+        '24': #C4C4C4
+);
+
+$shades: (
+        'black':        #000000,
+        'white':        #FFFFFF,
+        'transparent':  transparent
+);
+
+$colors: (
+        'yellow':   $yellow,
+        'red':      $red,
+        'blue':     $blue,
+        'green':    $green,
+        'gray':     $gray,
+        'shades':   $shades
+);

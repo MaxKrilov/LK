@@ -1,0 +1,142 @@
+.er-text-field,
+.er-textarea {
+  > .er-input__control {
+    > .er-input__slot {
+      min-height: 40px;
+      border: 1px solid rgba(map_get($shades, 'black'), 0.2);
+      border-radius: 12px;
+      padding: 0 13px;
+      transition: $primary-transition;
+      cursor: text;
+      background: map_get($shades, 'transition');
+      > .er-input__prepend-inner,
+      > .er-input__append-inner {
+        color: rgba(0, 0, 0, 0.2);
+        transition: $primary-transition;
+      }
+      @include media-query((
+              min-height: (md: 48px)
+      ));
+      &:hover {
+        border-color: map_get($shades, 'black');
+        background: map_get($shades, 'white');
+        > .er-input__prepend-inner,
+        > .er-input__append-inner {
+          color: map_get($yellow, 'base');
+        }
+      }
+    }
+    > .er-messages {
+      text-align: right;
+      color: map_get($red, 'base');
+    }
+  }
+  &__slot {
+    display: flex;
+    flex: 1 1 auto;
+    position: relative;
+    input,
+    label,
+    textarea {
+      font: 14px/17px $fedra-book;
+      letter-spacing: -1px;
+    }
+    input,
+    textarea {
+      width: 100%;
+      height: 100%;
+      border: none;
+      outline: none;
+      color: rgba(map_get($shades, 'black'), 0.8);
+      background: map_get($shades, 'transparent');
+    }
+    label {
+      position: absolute;
+      color: rgba(map_get($shades, 'black'), 0.5);
+      pointer-events: none;
+      transition: $primary-transition;
+      transform-origin: left;
+      height: 20px;
+      &.er-text-field,
+      &.er-textarea {
+        &--active {
+          transform: scale(0.75) translateY(-45px);
+        }
+      }
+    }
+  }
+  &__success-icon {
+    position: absolute;
+    right: 0;
+    top: -35px;
+    svg {
+      width: 16px;
+      color: map_get($green, 'base');
+    }
+  }
+  &--focus {
+    > .er-input__control {
+      > .er-input__slot {
+        &,
+        &:hover {
+          border-color: map_get($yellow, 'base');
+          background: map_get($shades, 'white');
+        }
+        > .er-input__prepend-inner,
+        > .er-input__append-inner {
+          color: map_get($yellow, 'base');
+        }
+      }
+    }
+  }
+  &--disabled {
+    > .er-input__control {
+      > .er-input__slot {
+        &,
+        &:hover {
+          border-color: rgba(map_get($shades, 'black'), 0.2);
+          cursor: not-allowed;
+          > .er-input__prepend-inner,
+          > .er-input__append-inner {
+            &,
+            &:hover {
+              color: rgba(map_get($shades, 'black'), 0.2);
+            }
+          }
+          > .er-text-field__slot {
+            > input {
+              cursor: not-allowed;
+              background: map_get($shades, 'transparent');
+            }
+          }
+        }
+      }
+    }
+  }
+  &--error {
+    > .er-input__control {
+      > .er-input__slot {
+        &,
+        &:hover {
+          border-color: map_get($red, 'base');
+        }
+        > .er-text-field__slot {
+          > label {
+            color: map_get($red, 'base');
+            animation: shake 600ms map_get($transition, swing);
+          }
+        }
+      }
+    }
+  }
+  &--success {
+    > .er-input__control {
+      > .er-input__slot {
+        &,
+        &:hover {
+          border-color: map_get($green, 'base');
+        }
+      }
+    }
+  }
+}

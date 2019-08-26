@@ -1,0 +1,141 @@
+h1 {
+  font: 26px/32px $fedra-light;
+  letter-spacing: -1px;
+  color: rgba(map_get($shades, 'black'), 0.8);
+  @include media-query((
+          font-size:      (md: 30px, lg: 32px),
+          line-height:    (md: 37px, lg: 40px),
+          letter-spacing: (md: -2px)
+  ));
+}
+
+h2 {
+  font: 22px/28px $fedra-demi;
+  letter-spacing: -1px;
+  color: rgba(map_get($shades, 'black'), 0.8);
+  @include media-query((
+          font-size:    (md: 24px, lg: 26px, xl: 28px),
+          line-height:  (md: 38px, lg: 32px, xl: 38px)
+  ));
+}
+
+h3 {
+  font: 17px/23px $fedra-demi;
+  letter-spacing: -0.5px;
+  color: rgba(map_get($shades, 'black'), 0.8);
+  @include media-query((
+          font-size:      (md: 20px, xl: 24px),
+          line-height:    (md: 25px, xl: 30px),
+          letter-spacing: (md: -1px)
+  ));
+}
+
+h4 {
+  font: 15px/20px $fedra-book;
+  letter-spacing: -0.35px;
+  color: rgba(map_get($shades, 'black'), 0.8);
+  @include media-query((
+          font-size:      (md: 18px),
+          line-height:    (md: 22px),
+          letter-spacing: (md: -1px)
+  ));
+}
+
+a.link {
+  text-decoration: none;
+  font-family: $fedra-demi;
+  color: map_get($blue, 'base');
+  transition: $primary-transition;
+  border-bottom: 1px solid map_get($blue, 'base');
+  &:hover {
+    border-bottom-color: map_get($shades, 'transparent');
+  }
+  &:active {
+    color: map_get($yellow, 'base');
+    border-bottom-color: map_get($yellow, 'base');
+  }
+  &--solid {
+    &--black-yellow {
+      text-decoration: none;
+      font-family: $fedra-book;
+      color: rgba(map_get($shades, 'black'), 0.8);
+      transition: $primary-transition;
+      border-bottom: 1px solid rgba(map_get($shades, 'black'), 0.8);
+      &:hover {
+        color: map_get($shades, 'black');
+        border-bottom-color: map_get($yellow, 'base');
+      }
+      &:active {
+        color: map_get($yellow, 'base');
+        border-bottom-color: map_get($yellow, 'base');
+      }
+    }
+    &--black {
+      text-decoration: none;
+      font-family: $fedra-book;
+      color: rgba(map_get($shades, 'black'), 0.5);
+      transition: $primary-transition;
+      border-bottom: 1px solid rgba(map_get($shades, 'black'), 0.5);
+      &:hover {
+        color: map_get($shades, 'black');
+        border-bottom-color: map_get($shades, 'black');
+      }
+      &:active {
+        color: map_get($yellow, 'base');
+        border-bottom-color: map_get($yellow, 'base');
+      }
+    }
+    &--yellow {
+      text-decoration: none;
+      font-family: $fedra-book;
+      color: rgba(map_get($shades, 'black'), 0.5);
+      transition: $primary-transition;
+      border-bottom: 1px solid rgba(map_get($yellow, 'base'), 0.5);
+      &:hover {
+        color: map_get($shades, 'black');
+        border-bottom-color: map_get($yellow, 'base');
+      }
+      &:active {
+        color: map_get($yellow, 'base');
+        border-bottom-color: map_get($yellow, 'base');
+      }
+    }
+  }
+  &--dashed {
+    &--yellow {
+      text-decoration: none;
+      font-family: $fedra-book;
+      color: rgba(map_get($shades, 'black'), 0.5);
+      transition: $primary-transition;
+      border-bottom: 1px dashed rgba(map_get($yellow, 'base'), 0.5);
+      &:hover {
+        color: map_get($shades, 'black');
+        border-bottom-color: map_get($yellow, 'base');
+      }
+      &:active {
+        color: map_get($yellow, 'base');
+        border-bottom-color: map_get($yellow, 'base');
+      }
+    }
+    &--black {
+      text-decoration: none;
+      font-family: $fedra-book;
+      color: rgba(map_get($shades, 'black'), 0.5);
+      transition: $primary-transition;
+      border-bottom: 1px dashed rgba(map_get($shades, 'black'), 0.5);
+      &:hover {
+        color: map_get($shades, 'black');
+        border-bottom-color: map_get($shades, 'black');
+      }
+      &:active {
+        color: map_get($yellow, 'base');
+        border-bottom-color: map_get($yellow, 'base');
+      }
+    }
+  }
+}
+
+.caption {
+  font: 12px/15px $fedra-demi;
+  color: rgba(map_get($shades, 'black'), 0.3);
+}

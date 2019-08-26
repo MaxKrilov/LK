@@ -1,0 +1,16 @@
+@mixin include-font ($name, $path, $weight: normal, $style: normal) {
+  @font-face {
+    font-family: $name;
+    src: url($path + ".ttf");
+    src: url($path + ".eot?") format("eot"),
+    url($path + ".woff2") format("woff2"),
+    url($path + ".woff") format("woff");
+    font-weight: $weight;
+    font-style: $style;
+  }
+}
+
+@include include-font("Fedra Book", "../fonts/FedraSansAltPro-BookTF/FedraSansAltPro-BookTF");
+@include include-font("Fedra Book Demi", "../fonts/FedraSansAltPro-DemiTF/FedraSansAltPro-DemiTF");
+@include include-font("Fedra Book Light", "../fonts/FedraSansAltPro-LightTF/FedraSansAltPro-LightTF");
+@include include-font("Fedra Book Med", "../fonts/FedraSansAltPro-MedLF/FedraSansAltPro-MedLF");

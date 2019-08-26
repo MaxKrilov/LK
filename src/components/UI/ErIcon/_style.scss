@@ -1,0 +1,12 @@
+.er-icon {
+  display: inline-block;
+  font-size: 0;
+  line-height: 0;
+  vertical-align: middle;
+  svg {
+    width: 24px;
+    @include media-query((
+            width: (md: 32px)
+    ))
+  }
+}
