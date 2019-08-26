@@ -1,0 +1,37 @@
+@import "settings/colors";
+@import "settings/breakpoint";
+
+$fedra-book:  "Fedra Book";
+$fedra-demi:  "Fedra Book Demi";
+$fedra-light: "Fedra Book Light";
+$fedra-med:   "Fedra Book Med";
+
+$transition: (
+        fast-out-slow-in:   cubic-bezier(0.4, 0.0, 0.2,   1),
+        linear-out-slow-in: cubic-bezier(0.0, 0.0, 0.2,   1),
+        fast-out-linear-in: cubic-bezier(0.4, 0.0, 1,     1),
+        ease-in-out:        cubic-bezier(0.4, 0.0, 0.6,   1),
+        fast-in-fast-out:   cubic-bezier(.25, 0.8, 0.25,  1),
+        swing:              cubic-bezier(.25, 0.8, 0.5,   1)
+);
+
+$primary-transition:    300ms map_get($transition, swing);
+$secondary-transition:  200ms map_get($transition, ease-in-out);
+
+$ripple-animation-transition-in: transform .25s map_get($transition, fast-out-slow-in), opacity .1s map_get($transition, fast-out-slow-in);
+$ripple-animation-transition-out: opacity .3s map_get($transition, fast-out-slow-in);
+
+// Progress Circular
+$progress-circular-rotate-animation:            progress-circular-rotate 1.4s linear infinite;
+$progress-circular-rotate-dash:                 progress-circular-dash 1.4s ease-in-out infinite;
+$process-circular-indeterminate-svg-transition: all .2s ease-in-out;
+$progress-circular-underlay-stroke:             rgba(map_get($shades, 'black'), 0.1);
+$progress-circular-overlay-transition:          all .6s ease-in-out;
+
+$min-indentation: 4;
+$max-indentation: 64;
+
+$z-index: (
+        'top-menu': 5,
+        'left-menu': 6
+)

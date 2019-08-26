@@ -1,0 +1,84 @@
+$i: $min-indentation;
+
+@while $i <= $max-indentation {
+  .m {
+    &t-#{$i} {
+      margin: { top: #{$i}px !important; };
+    }
+    &r-#{$i} {
+      margin: { right: #{$i}px !important; };
+    }
+    &b-#{$i} {
+      margin: { bottom: #{$i}px !important; };
+    }
+    &l-#{$i} {
+      margin: { left: #{$i}px !important; };
+    }
+    &x-#{$i} {
+      margin: {
+        left: #{$i}px !important;
+        right: #{$i}px !important;
+      };
+    }
+    &y-#{$i} {
+      margin: {
+        top: #{$i}px !important;
+        right: #{$i}px !important;
+      };
+    }
+  }
+  .p {
+    &t-#{$i} {
+      padding: { top: #{$i}px !important; };
+    }
+    &r-#{$i} {
+      padding: { right: #{$i}px !important; };
+    }
+    &b-#{$i} {
+      padding: { bottom: #{$i}px !important; };
+    }
+    &l-#{$i} {
+      padding: { left: #{$i}px !important; };
+    }
+    &x-#{$i} {
+      padding: {
+        left: #{$i}px !important;
+        right: #{$i}px !important;
+      };
+    }
+    &y-#{$i} {
+      padding: {
+        top: #{$i}px !important;
+        right: #{$i}px !important;
+      };
+    }
+  }
+  $i: $i + 4;
+}
+
+.m {
+  &t-auto {
+    margin: { top: auto !important; };
+  }
+  &r-auto {
+    margin: { right: auto !important; };
+  }
+  &b-auto {
+    margin: { bottom: auto !important; };
+  }
+  &l-auto {
+    margin: { left: auto !important; };
+  }
+  &x-auto {
+    margin: {
+      left: auto !important;
+      right: auto !important;
+    };
+  }
+  &y-auto {
+    margin: {
+      top: auto !important;
+      right: auto !important;
+    };
+  }
+}

@@ -1,0 +1,15 @@
+@each $base-color-name, $sub-colors in $colors {
+  @each $sub-color-name, $color in $sub-colors {
+    .color--#{$base-color-name}-#{$sub-color-name} {
+      color: $color !important;
+    }
+  }
+}
+
+@each $base-color-name, $sub-colors in $colors {
+  @each $sub-color-name, $color in $sub-colors {
+    .background-color--#{$base-color-name}-#{$sub-color-name} {
+      background: $color !important;
+    }
+  }
+}

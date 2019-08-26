@@ -1,0 +1,66 @@
+@mixin transition-default () {
+  &-enter-active,
+  &-leave-active {
+    transition: $primary-transition;
+  }
+  &-move {
+    transition: transform 600ms;
+  }
+}
+
+.scale-transition {
+  @include transition-default();
+
+  &-enter,
+  &-leave,
+  &-leave-to {
+    opacity: 0;
+    transform: scale(0);
+  }
+}
+
+.slide-y-transition {
+  @include transition-default();
+
+  &-enter,
+  &-leave-to {
+    opacity: 0;
+    transform: translateY(-15px);
+  }
+}
+
+.slide-y-reverse-transition {
+  @include transition-default();
+
+  &-enter,
+  &-leave-to {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+}
+
+.slide-x-transition {
+  @include transition-default();
+
+  &-enter,
+  &-leave-to {
+    opacity: 0;
+    transform: translateX(-15px);
+  }
+}
+
+.slide-x-reverse-transition {
+  @include transition-default();
+
+  &-enter,
+  &-leave-to {
+    opacity: 0;
+    transform: translateX(15px);
+  }
+}
+
+.dialog-bottom-transition {
+  &-enter, &-leave-to {
+    transform: translateY(100%);
+  }
+}

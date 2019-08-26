@@ -1,0 +1,9 @@
+@mixin media-query ($properties, $breakpoints: $grid-breakpoint) {
+  @each $property, $values in $properties {
+    @each $breakpoint, $value in $values {
+      @media screen and (min-width: map_get($breakpoints, $breakpoint)) {
+        #{$property}: $value;
+      }
+    }
+  }
+}

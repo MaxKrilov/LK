@@ -1,0 +1,79 @@
+.er-tooltip {
+  &__content {
+    position: absolute;
+    display: inline-block;
+    padding: 5px 16px;
+    text-transform: initial;
+    width: auto;
+    opacity: 1;
+    pointer-events: none;
+    background-color: map_get($shades, 'white');
+    border-radius: 4px;
+    box-shadow: 0 0 16px rgba(map_get($shades, 'black'), 0.2);
+    font: 14px/19px $fedra-demi;
+    color: rgba(map_get($shades, 'black'), 0.8);
+    &[class*="-active"] {
+      transition-timing-function: map_get($transition, 'linear-out-slow-in');
+    }
+    &[class*="enter-active"] {
+      transition-duration: 150ms;
+    }
+    &[class*="leave-active"] {
+      transition-duration: 75ms;
+    }
+    &::before {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 0;
+    }
+    &--left {
+      &::before {
+        top: 50%;
+        right: -7px;
+        transform: translateY(-50%);
+        border: {
+          top: 3.5px solid map_get($shades, 'transparent');
+          left: 7px solid map_get($shades, 'white');
+          bottom: 3.5px solid map_get($shades, 'transparent');
+        };
+      }
+    }
+    &--right {
+      &::before {
+        top: 50%;
+        left: -7px;
+        transform: translateY(-50%);
+        border: {
+          top: 3.5px solid map_get($shades, 'transparent');
+          right: 7px solid map_get($shades, 'white');
+          bottom: 3.5px solid map_get($shades, 'transparent');
+        };
+      }
+    }
+    &--top {
+      &::before {
+        bottom: -7px;
+        left: 50%;
+        transform: translateX(-50%);
+        border: {
+          top: 7px solid map_get($shades, 'white');
+          left: 3.5px solid map_get($shades, 'transparent');
+          right: 3.5px solid map_get($shades, 'transparent');
+        };
+      }
+    }
+    &--bottom {
+      &::before {
+        top: -7px;
+        left: 50%;
+        transform: translateX(-50%);
+        border: {
+          bottom: 7px solid map_get($shades, 'white');
+          left: 3.5px solid map_get($shades, 'transparent');
+          right: 3.5px solid map_get($shades, 'transparent');
+        };
+      }
+    }
+  }
+}

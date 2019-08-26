@@ -1,0 +1,27 @@
+.er-overlay {
+  position: fixed;
+  top: 0; right: 0; bottom: 0; left: 0;
+  pointer-events: none;
+  transition: 300ms map_get($transition, swing);
+  z-index: 5;
+  &--absolute {
+    position: absolute;
+  }
+  &::before {
+    content: '';
+    background: map_get($gray, '3');
+    position: absolute;
+    top: 0; right: 0; bottom: 0; left: 0;
+    opacity: 0;
+    transition: inherit;
+    transition-delay: 150ms;
+    -webkit-backdrop-filter: blur(50px);
+  }
+  &--active {
+    pointer-events: auto;
+    touch-action: none;
+    &::before {
+      opacity: 0.9;
+    }
+  }
+}

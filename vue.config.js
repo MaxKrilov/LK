@@ -14,9 +14,9 @@ module.exports = {
       .tap(options => {
         return {
           plugins: [
-            {collapseGroups: true},
-            {removeUselessStrokeAndFill: {removeNone: true}},
-            {convertColors: {currentColor: true}}
+            { collapseGroups: true },
+            { removeUselessStrokeAndFill: { removeNone: true } },
+            { convertColors: { currentColor: true } }
           ]
         }
       })

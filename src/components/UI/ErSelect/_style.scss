@@ -1,0 +1,122 @@
+.er-select {
+  &__list {
+    background: linear-gradient(to top right, map_get($gray, '19'), map_get($shades, 'white'));
+    padding: 1px;
+    border-radius: 8px;
+    &__items {
+      background: map_get($shades, 'white');
+      border-radius: inherit;
+    }
+    &__item {
+      min-height: 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 12px 0 8px;
+      font: 16px/20px $fedra-book;
+      letter-spacing: -1px;
+      color: rgba(map_get($shades, 'black'), 0.5);
+      cursor: pointer;
+      border-left: 4px solid map_get($shades, 'transparent');
+      transition: $primary-transition;
+      span {
+        border-bottom: 1px solid rgba(map_get($shades, 'black'), 0.8);
+        font-family: $fedra-med;
+        letter-spacing: 0;
+        color: rgba(map_get($shades, 'black'), 0.8);
+      }
+      svg {
+        display: none;
+        color: map_get($green, 'base');
+        width: 16px;
+      }
+      &:hover {
+        background-color: map_get($gray, '2');
+        color: rgba(map_get($shades, 'black'), 0.8);
+        border-left-color: map_get($yellow, 'base');
+      }
+      &.active {
+        color: map_get($shades, 'black');
+        svg {
+          display: block;
+        }
+      }
+    }
+    &--mobile {
+      background-color: map_get($gray, '9');
+      &__header {
+        height: 48px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 16px;
+        background-color: map_get($shades, 'white');
+        margin-bottom: 16px;
+      }
+      &__title {
+        font: 15px/26px $fedra-book;
+        letter-spacing: -1px;
+        color: rgba(map_get($shades, 'black'), 0.8);
+      }
+      &__close {
+        color: rgba(map_get($shades, 'black'), 0.5);
+        cursor: pointer;
+        svg {
+          width: 16px;
+        }
+      }
+      &__search {
+        padding: 0 16px;
+        margin-bottom: 8px;
+      }
+      &__items {
+        height: calc(100vh - 120px);
+        overflow: auto;
+      }
+      &__item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 32px;
+        padding: 0 8px 0 22px;
+        font: 15px/19px $fedra-book;
+        letter-spacing: -1px;
+        color: rgba(map_get($shades, 'black'), 0.8);
+        span {
+          border-bottom: 1px solid rgba(map_get($shades, 'black'), 0.8);
+          font-family: $fedra-med;
+          letter-spacing: 0;
+        }
+        svg {
+          display: none;
+          width: 16px;
+          color: map_get($green, 'base');
+        }
+        &:not(.not-found) {
+          &.active,
+          &:active {
+            color: map_get($shades, 'black');
+          }
+          &.active svg {
+            display: block;
+          }
+          &:active {
+            background-color: map_get($yellow, 'base');
+          }
+        }
+      }
+    }
+  }
+  .er-input__append-inner {
+    color: rgba(map_get($shades, 'black'), 0.5);
+    svg {
+      width: 16px;
+      transition: $primary-transition;
+    }
+  }
+  .er-text-field--focus {
+    .er-input__append-inner {
+      transform: rotate(180deg);
+    }
+  }
+}

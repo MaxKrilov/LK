@@ -1,0 +1,261 @@
+%switch-year-month {
+  display: flex;
+  align-items: center;
+  .prev,
+  .next {
+    color: map_get($gray, '21');
+    cursor: pointer;
+    transition: $primary-transition;
+    svg {
+      width: 16px;
+    }
+    &:hover {
+      color: map_get($shades, 'black');
+    }
+  }
+  .prev {
+    svg { transform: rotate(90deg) }
+  }
+  .next {
+    svg { transform: rotate(-90deg) }
+  }
+  .value {
+    font: 15px/20px $fedra-book;
+    letter-spacing: -0.35px;
+    color: rgba(map_get($shades, 'black'), 0.8);
+    margin: 0 12px;
+    pointer-events: none;
+    text-align: center;
+  }
+}
+
+.er-date-picker {
+  width: 100%;
+  max-width: 320px;
+  &__wrapper {
+    display: flex;
+    flex-direction: column;
+    background-color: map_get($shades, 'white');
+    @include media-query((
+      box-shadow: (
+              md: (-8px 8px 16px rgba(map_get($shades, 'black'), 0.04), 0 8px 24px rgba(map_get($shades, 'black'), 0.06)))
+    ))
+  }
+  &__head {
+    width: 100%;
+    height: 96px;
+    background-color: map_get($gray, '3');
+    padding: 24px 16px 16px;
+    position: relative;
+    overflow: hidden;
+    &::after {
+      content: '';
+      display: block;
+      width: 96px;
+      height: 96px;
+      position: absolute;
+      top: 0;
+      right: -13px;
+      background: linear-gradient(270deg, map_get($gray, '3') 21.25%, rgba(map_get($gray, '23'), 0) 100%);
+      pointer-events: none;
+    }
+    &__slider {
+      display: flex;
+      overflow-x: auto;
+      margin-bottom: 9px;
+      &::-webkit-scrollbar {
+        width: 0;
+        height: 0;
+      }
+      &::-webkit-scrollbar-button {
+        width: 0;
+        height: 0;
+      }
+    }
+    &__slider-item {
+      font: 13px/18px $fedra-book;
+      letter-spacing: 0.25px;
+      color: rgba(map_get($shades, 'black'), 0.8);
+      white-space: nowrap;
+      cursor: pointer;
+      padding-right: 36px;
+      a {
+        border-bottom: 1px dashed rgba(map_get($shades, 'black'), 0.8);
+      }
+    }
+    &__title,
+    &__date {
+      display: flex;
+    }
+    &__title {
+      font: 26px/32px $fedra-demi;
+      letter-spacing: -1px;
+      color: rgba(map_get($shades, 'black'), 0.3);
+    }
+    &__date {
+      align-items: flex-end;
+      .day {
+        color: rgba(map_get($shades, 'black'), 0.8);
+      }
+      .year {
+        margin-left: 5px;
+        font-size: 10px;
+        line-height: 26px;
+        letter-spacing: 0.5px;
+        color: rgba(map_get($shades, 'black'), 0.5);
+      }
+    }
+  }
+  &__body {
+    width: 100%;
+    background-color: map_get($shades, 'white');
+  }
+  &__footer {
+    margin-top: auto;
+    margin-bottom: 24px;
+    display: flex;
+    padding: 0 16px;
+    button {
+      &:first-child {
+        width: 64px;
+        margin-right: 32px;
+      }
+    }
+  }
+  &__calendar {
+    width: 100%;
+    max-width: 320px;
+    padding: 24px 16px 40px;
+    background-color: map_get($shades, 'white');
+    margin: 0 auto;
+    &__head {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+    &__month,
+    &__year {
+      @extend %switch-year-month;
+    }
+    &__month {
+      .value {
+        min-width: 66px;
+      }
+    }
+    &__days-of-week {
+      display: flex;
+      justify-content: space-between;
+    }
+    &__day-of-week,
+    &__day {
+      width: 100%;
+      max-width: (100% / 7);
+      flex-basis: (100% / 7);
+      text-align: center;
+    }
+    &__day-of-week {
+      font: 10px/12px $fedra-demi;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: map_get($shades, '22');
+      &.weekend {
+        color: map_get($yellow, 'other-2');
+      }
+    }
+    &__days {
+      display: flex;
+      flex-wrap: wrap;
+    }
+    &__day {
+      line-height: 38.28px;
+      cursor: pointer;
+      .content {
+        height: 38.28px;
+        vertical-align: middle;
+        font: 15px/38.28px $fedra-book;
+        text-align: center;
+        letter-spacing: -0.35px;
+        color: rgba(map_get($shades, 'black'), 0.8);
+        transition: $primary-transition;
+        border-radius: 50%;
+        border: 2px solid map_get($shades, 'transparent');
+        &:hover:not(.disabled) {
+          background-color: map_get($shades, 'white');
+          border-color: map_get($yellow, 'base');
+        }
+        &.selected {
+          background-color: map_get($yellow, 'base');
+        }
+        &.disabled {
+          color: rgba(map_get($shades, 'black'), 0.2);
+          cursor: not-allowed;
+        }
+      }
+      &.range {
+        background-color: map_get($yellow, 'other-3');
+        &:first-child {
+          border-radius: 50% 0 0 50%;
+        }
+      }
+      &:nth-child(7n + 1),
+      &.first-day {
+        border-radius: 50% 0 0 50%;
+      }
+      &:nth-child(7n),
+      &.last-day {
+        border-radius: 0 50% 50% 0;
+      }
+      &.first-day:nth-child(7n),
+      &.last-day:nth-child(7n + 1) {
+        border-radius: 50%;
+      }
+    }
+  }
+  &__report {
+    width: 100%;
+    max-width: 320px;
+    padding: 24px 16px 40px;
+    background-color: map_get($shades, 'white');
+    &__year {
+      @extend %switch-year-month;
+      margin-bottom: 20px;
+    }
+    &__caption {
+      margin-bottom: 10px;
+    }
+    &__period-group {
+      &__row {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 24px;
+      }
+    }
+    &__period {
+      text-align: center;
+      width: 100%;
+      height: 36px;
+      border-radius: 56px;
+      background-color: map_get($gray, '2');
+      transition: $primary-transition;
+      font: 17px/36px $fedra-demi;
+      letter-spacing: -0.5px;
+      color: rgba(map_get($shades, 'black'), 0.5);
+      cursor: pointer;
+      border: 2px solid map_get($shades, 'transparent');
+      &:not(:last-child) {
+        margin-right: 21px;
+      }
+      &:hover:not([disabled]) {
+        background-color: map_get($shades, 'white');
+        border-color: map_get($yellow, 'base');
+        color: map_get($shades, 'black');
+      }
+      &[disabled] {
+        cursor: not-allowed;
+        color: rgba(map_get($shades, 'black'), 0.2);
+      }
+    }
+  }
+}

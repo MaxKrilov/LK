@@ -1,0 +1,14 @@
+.er-messages {
+  flex: 1 1 auto;
+  font: 12px $fedra-demi;
+  min-height: 12px;
+  min-width: 1px;
+  position: relative;
+  &__message {
+    line-height: normal;
+    word-break: break-all;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    hyphens: auto;
+  }
+}
