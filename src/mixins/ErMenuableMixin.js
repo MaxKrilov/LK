@@ -1,6 +1,6 @@
 import Positionable from './ErPositionableMixin'
 import Stackable from './ErStackableMixin'
-import { eachObject, getFirstElement, getStyle, isEmpty, isUndefined, setStyle } from '../functions/helper'
+import { getFirstElement, getStyle, isEmpty, isUndefined, setStyle } from '../functions/helper'
 
 const dimensions = {
   activator: {

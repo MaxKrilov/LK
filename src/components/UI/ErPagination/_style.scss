@@ -1,0 +1,68 @@
+.er-pagination {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  list-style-type: none;
+  margin: 0;
+  &__navigation,
+  &__item {
+    border: none;
+    outline: none;
+    background-color: map_get($shades, 'transparent');
+  }
+  &__navigation {
+    color: rgba(map_get($shades, 'black'), 0.5);
+    transition: $primary-transition;
+    cursor: pointer;
+    &:hover {
+      color: rgba(map_get($shades, 'black'), 0.8);
+    }
+    &--disabled {
+      &,
+      &:hover {
+        color: rgba(map_get($shades, 'black'), 0.2);
+        cursor: not-allowed;
+      }
+    }
+    &--previous {
+      margin-right: 18px;
+    }
+    &--next {
+      margin-left: 18px;
+    }
+    svg {
+      width: 16px;
+    }
+  }
+  &__item {
+    width: 32px;
+    height: 32px;
+    font: 14px/32px $fedra-demi;
+    color: rgba(map_get($shades, 'black'), 0.5);
+    transition: $primary-transition;
+    cursor: pointer;
+    text-align: center;
+    border-radius: 50%;
+    margin: 0 2px;
+    span {
+      border-bottom: 1px dashed rgba(map_get($shades, 'black'), 0.5);
+      transition: inherit;
+    }
+    &:hover {
+      color: rgba(map_get($shades, 'black'), 0.8);
+      span {
+        border-bottom-color: rgba(map_get($shades, 'black'), 0.8);
+      }
+    }
+    &--active {
+      background-color: map_get($yellow, 'base');
+      color: map_get($shades, 'black');
+      span {
+        border-bottom-color: map_get($shades, 'transparent');
+      }
+      &:hover span {
+        border-bottom-color: map_get($shades, 'transparent');
+      }
+    }
+  }
+}
