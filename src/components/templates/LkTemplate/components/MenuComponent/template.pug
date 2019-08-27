@@ -1,8 +1,38 @@
 div(:class="`${pre}`")
-  div(:class="`${pre}__left`")
-
+  er-overlay(v-model="openLeftMenu", :z-index="6")
+  div(:class="[`${pre}__left`, { 'open': openLeftMenu || isDesktop }]")
+    div(:class="`${pre}__left__head`")
+      div(:class="`${pre}__left__head__close`", @click="toggleLeftMenu")
+        er-icon(name="close")
+      div(:class="[`${pre}__left__head__all-menu`, { visible: openSubMenuBackground }]", @click="closeSubMenuNBackground")
+        er-icon(name="corner_down")
+        | Всё меню
+      div(:class="`${pre}__left__head__logo`")
+        img(src="@/assets/images/logo.png")
+    div(:class="[`${pre}__left__body`, { 'open-sub-menu': isOpenSubMenu }]")
+      div(:class="[`${pre}__left__body__background-sub-menu`, { open: openSubMenuBackground }]")
+      div(
+        v-for="(menuItem, index) in menu",
+        :class="`${pre}__left__body-item`",
+        @click="openSubMenu(menuItem)",
+        :key="index"
+      )
+        div(:class="[`${pre}__left__body-item__icon`, { active: menuItem.isOpen }]")
+          er-icon(:name="menuItem.icon")
+        div(:class="`${pre}__left__body-item__name`")
+          | {{ menuItem.name }}
+        div(:class="`${pre}__left__body-item__toggle`")
+          er-icon(name="corner_down")
+        div(:class="[`${pre}__left__body-item__sub-items`, { open: menuItem.isOpen }]")
+          a(:class="[`${pre}__left__body-item__sub-item`, 'main']") {{ menuItem.name }}
+          a(
+            v-for="(subItem, subIndex) in menuItem.subitem",
+            :class="`${pre}__left__body-item__sub-item`",
+            :key="subIndex"
+          )
+            | {{ subItem.name }}
   div(:class="`${pre}__top`")
-    div(:class="`${pre}__top__burger`")
+    div(:class="`${pre}__top__burger`", @click="toggleLeftMenu")
       er-icon(name="burger")
     div(:class="`${pre}__top__logo`")
       a(href="#")

@@ -20,16 +20,16 @@ body {
 }
 
 // Запрещаем поворот
-@media screen and (orientation: landscape) and (max-device-width: map_get($grid-breakpoint, lg)) {
-  html {
-    transform: rotate(-90deg);
-    transform-origin: left top;
-    height: 100vw;
-    position: absolute;
-    top: 100%;
-    left: 0;
-  }
-}
+//@media screen and (orientation: landscape) and (max-device-width: map_get($grid-breakpoint, lg)) {
+//  html {
+//    transform: rotate(-90deg);
+//    transform-origin: left top;
+//    height: 100vw;
+//    position: absolute;
+//    top: 100%;
+//    left: 0;
+//  }
+//}
 
 body {
   font-family: $fedra-book;
