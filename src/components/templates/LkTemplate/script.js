@@ -7,8 +7,5 @@ export default {
   },
   data: () => ({
     pre: 'lk-template'
-  }),
-  mounted () {
-    console.log(this._.defaults({ 'a': 1 }, { 'a': 3, 'b': 2 }))
-  }
+  })
 }
