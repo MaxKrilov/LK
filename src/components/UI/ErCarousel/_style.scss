@@ -1,0 +1,243 @@
+.er-carousel {
+  position: relative;
+  user-select: none;
+  &--slideable {
+    touch-action: none;
+  }
+  &--up,
+  &--down {
+    > .er-carousel__indicators {
+      bottom: auto;
+      flex-direction: column;
+      left: auto;
+      right: 0;
+      top: 50%;
+      transform: translate(0, -50%);
+      > .er-carousel__indicator {
+        &::before {
+          height: 100%;
+          width: 0.125rem;
+        }
+      }
+    }
+    > .er-carousel__indicators--disc {
+      > .er-carousel__indicator {
+        height: 0.75rem;
+        width: 1.5rem;
+        &::before {
+          height: 0.5rem;
+          width: 0.5rem;
+        }
+      }
+    }
+  }
+  &--right {
+    > .er-carousel__indicators {
+      flex-direction: row-reverse;
+    }
+  }
+  &--down {
+    > .er-carousel__indicators {
+      flex-direction: column-reverse;
+    }
+  }
+  &--controls {
+    &:hover {
+      > .er-carousel__control {
+        opacity: 0.5;
+        transform: translateX(0);
+        z-index: 1;
+        &:focus,
+        &:hover {
+          opacity: 1;
+        }
+      }
+    }
+    > .er-carousel__control {
+      opacity: 0;
+      z-index: -1;
+    }
+    > .er-carousel__control--prev {
+      transform: translateX(-50%);
+    }
+    > .er-carousel__control--next {
+      transform: translateX(50%);
+    }
+  }
+  &--indicators {
+    &:hover {
+      > .er-carousel__indicators {
+        opacity: 1;
+        z-index: 1;
+      }
+    }
+    > .er-carousel__indicators {
+      opacity: 0;
+      transition: opacity 150ms;
+      z-index: -1;
+    }
+  }
+  &__list {
+    margin: 0;
+    overflow: hidden;
+    padding: 0;
+    position: relative;
+    width: 100%;
+  }
+  &__item {
+    display: none;
+    margin: 0;
+    &--active,
+    &--top,
+    &--right,
+    &--bottom,
+    &--left {
+      display: block;
+      transition: transform 600ms ease-in-out;
+      width: 100%;
+    }
+    &--top,
+    &--right,
+    &--bottom,
+    &--left {
+      left: 0;
+      position: absolute;
+      top: 0;
+    }
+    &--top {
+      transform: translateY(-100%);
+      &.er-carousel__item--to-bottom {
+        transform: translateY(0);
+      }
+    }
+    &--right {
+      transform: translateX(100%);
+      &.er-carousel__item--to-left {
+        transform: translateX(0);
+      }
+    }
+    &--bottom {
+      transform: translateY(100%);
+      &.er-carousel__item--to-top {
+        transform: translateY(0);
+      }
+    }
+    &--left {
+      transform: translateX(-100%);
+      &.er-carousel__item--to-right {
+        transform: translateX(0);
+      }
+    }
+    &--active {
+      transform: translate(0, 0);
+      z-index: 1;
+      &.er-carousel__item--to-top {
+        transform: translateY(-100%);
+      }
+      &.er-carousel__item--to-right {
+        transform: translateX(100%);
+      }
+      &.er-carousel__item--to-bottom {
+        transform: translateY(100%);
+      }
+      &.er-carousel__item--to-left {
+        transform: translateX(-100%);
+      }
+    }
+  }
+  &__indicators {
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    left: 50%;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    transform: translateX(-50%);
+    z-index: 1;
+    &--disc {
+      > .er-carousel__indicator {
+        width: 0.75rem;
+        &::before {
+          border-radius: 50%;
+          height: 0.5rem;
+          width: 0.5rem;
+        }
+      }
+    }
+  }
+  &__indicator {
+    cursor: pointer;
+    height: 1.5rem;
+    margin: 0.125rem;
+    opacity: 0.5;
+    position: relative;
+    transition: opacity 0.15s;
+    width: 1.5rem;
+    &::before {
+      background-color: map_get($shades, 'white');
+      content: "";
+      display: block;
+      height: 0.125rem;
+      left: 50%;
+      position: absolute;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: 100%;
+    }
+    &--active {
+      opacity: 1;
+    }
+  }
+  &__control {
+    background-color: rgba(map_get($shades, 'black'), 0.5);
+    border: 0;
+    border-radius: 50%;
+    color: map_get($shades, 'white');
+    cursor: pointer;
+    height: 2rem;
+    margin-top: -1rem;
+    opacity: 0.5;
+    padding: 0.5rem;
+    position: absolute;
+    top: 50%;
+    transition: all 0.15s;
+    width: 2rem;
+    &:focus,
+    &:hover {
+      opacity: 1;
+    }
+    &:focus {
+      outline: none;
+    }
+    &::before {
+      border: 0.0625rem solid map_get($shades, 'transparent');
+      border-radius: 0.125rem;
+      content: "";
+      display: block;
+      height: 0.5rem;
+      left: 50%;
+      position: absolute;
+      top: 50%;
+      transform: translate(-50%, -50%) rotate(45deg);
+      width: 0.5rem;
+    }
+    &--prev {
+      left: 1rem;
+      &::before {
+        border-bottom-color: map_get($shades, 'white');
+        border-left-color: map_get($shades, 'white');
+        margin-left: 0.125rem;
+      }
+    }
+    &--next {
+      right: 1rem;
+      &::before {
+        border-right-color: map_get($shades, 'white');
+        border-top-color: map_get($shades, 'white');
+        margin-left: -0.125rem;
+      }
+    }
+  }
+}
