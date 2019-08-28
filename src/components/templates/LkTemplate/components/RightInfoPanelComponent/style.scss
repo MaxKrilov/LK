@@ -1,0 +1,148 @@
+.right-info-panel-component {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  max-width: 288px;
+  z-index: map_get($z-index, 'left-menu');
+  background-color: map_get($shades, 'white');
+  transform: translateX(288px);
+  transition: $primary-transition;
+  overflow-y: auto;
+
+  &.open {
+    transform: translateX(0);
+  }
+
+  &__exit {
+    width: 100%;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    padding: 0 32px;
+    @include media-query((
+            height: (md: 64px, lg: 72px, xl: 96px),
+    ));
+    .profile {
+      color: rgba(map_get($shades, 'black'), 0.2);
+      margin-right: 7px;
+    }
+    a {
+      font-size: 13px;
+    }
+    .close {
+      margin-left: auto;
+      color: rgba(map_get($shades, 'black'), 0.5);
+      svg {
+        width: 16px;
+      }
+    }
+  }
+  .organisation {
+    font: 13px/18px $fedra-book;
+    letter-spacing: 0.25px;
+    color: rgba(map_get($shades, 'black'), 0.8);
+    margin-bottom: 14px;
+  }
+  .personal-account {
+    a {
+      font-size: 18px;
+      letter-spacing: -1px;
+    }
+  }
+  &__personal-account-detail {
+    width: 100%;
+    background: map_get($gray, '3');
+    .border-top {
+      width: 100%;
+      height: 16px;
+      background: linear-gradient(180deg, rgba(map_get($gray, '25'), 0.2) 0%, map_get($gray, '3') 100%);
+      margin-bottom: 5px;
+    }
+    .content {
+      h4 {
+        font: 13px/18px $fedra-book;
+        letter-spacing: 0.25px;
+      }
+      .agreement-number {
+        font: 15px/20px $fedra-book;
+        letter-spacing: -0.35px;
+        color: rgba(map_get($shades, 'black'), 0.5);
+      }
+      .personal-account-item {
+        height: 51px;
+        padding-top: 7px;
+        border-left: 4px solid map_get($shades, 'transparent');
+        .caption {
+          margin-left: 50px;
+        }
+        .value {
+          margin-left: 26px;
+          font: 15px/20px $fedra-book;
+          letter-spacing: -0.35px;
+          color: rgba(map_get($shades, 'black'), 0.8);
+          i {
+            opacity: 0;
+          }
+          svg {
+            width: 16px;
+            color: map_get($green, 'base');
+          }
+        }
+        &.active {
+          background-color: map_get($shades, 'white');
+          border-left-color: map_get($yellow, 'base');
+          i {
+            opacity: 1;
+          }
+        }
+      }
+      .profile {
+        width: 100%;
+        height: 51px;
+        border-top: 1px solid map_get($gray, '20');
+        i {
+          color: rgba(map_get($shades, 'black'), 0.2);
+        }
+        a {
+          font: 13px/18px $fedra-book;
+          letter-spacing: 0.25px;
+          color: rgba(map_get($shades, 'black'), 0.5);
+          text-decoration: none;
+        }
+      }
+    }
+  }
+  .balance {
+    a {
+      font-size: 15px;
+      line-height: 20px;
+      position: relative;
+      &::after {
+        position: absolute;
+        margin-left: 4px;
+      }
+    }
+    .autopay {
+      margin-left: auto;
+      color: map_get($green, 'base');
+      font: 10px/12px $fedra-demi;
+      letter-spacing: 0.5px;
+      svg {
+        width: 12px;
+      }
+      span {
+        margin-left: 5px;
+        text-decoration: underline;
+      }
+    }
+  }
+  .personal-manager {
+    display: block;
+    font: 15px/15px $fedra-book;
+    letter-spacing: -0.35px;
+    color: rgba(map_get($shades, 'black'), 0.8);
+    text-decoration: none;
+  }
+}

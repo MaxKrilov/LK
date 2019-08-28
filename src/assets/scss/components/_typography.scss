@@ -139,3 +139,10 @@ a.link {
   font: 12px/15px $fedra-demi;
   color: rgba(map_get($shades, 'black'), 0.3);
 }
+
+.rub {
+  &::after {
+    content: '₽';
+    font-family: $fedra-demi;
+  }
+}
