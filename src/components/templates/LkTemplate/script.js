@@ -7,5 +7,10 @@ export default {
   },
   data: () => ({
     pre: 'lk-template'
-  })
+  }),
+  methods: {
+    swipe (direction) {
+      alert(direction)
+    }
+  }
 }
