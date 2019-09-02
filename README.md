@@ -1,13 +1,15 @@
-Icon | Name
---- | ---
-![](babel.config.js) | babel.config.js
-![](build_env) | build_env
-![](dist) | dist
-![](node_modules) | node_modules
-![](package.json) | package.json
-![](package-lock.json) | package-lock.json
-![](public) | public
-![](README.md) | README.md
-![](src) | src
-![](static) | static
-![](vue.config.js) | vue.config.js
+![](static/logo.png)
+# Личный кабинет Дом.ru Бизнес
+
+### Версия
+2.1.1 beta
+
+### Инициализация проекта
+```bash
+$ npm i
+```
+
+### Запуск на локальном компьютере
+```bash
+$ npm run dev
+```
