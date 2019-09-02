@@ -18,8 +18,11 @@ div(:class="`${pre}`")
         @click="openSubMenu(menuItem)",
         :key="index"
       )
-        div(:class="[`${pre}__left__body-item__icon`, { active: menuItem.isOpen }]")
-          er-icon(:name="menuItem.icon")
+        er-tooltip(right)
+          template(v-slot:activator="{ on }")
+            div(:class="[`${pre}__left__body-item__icon`, { active: menuItem.isOpen }]", v-on="on")
+              er-icon(:name="menuItem.icon")
+          span {{ menuItem.name }}
         div(:class="`${pre}__left__body-item__name`")
           | {{ menuItem.name }}
         div(:class="`${pre}__left__body-item__toggle`")
@@ -113,4 +116,5 @@ div(:class="`${pre}`")
       er-icon(name="exit")
     div(:class="`${pre}__top__profile--mobile`", @click="toggleRightPanel")
       er-icon(name="profile")
+    div(:class="`${pre}__top__loader`")
   right-info-panel-component(v-model="isOpenRightPanel")

@@ -1,0 +1,14 @@
+.fonts {
+  &--book {
+    font-family: $fedra-book !important;
+  }
+  &--demi {
+    font-family: $fedra-demi !important;
+  }
+  &--light {
+    font-family: $fedra-light !important;
+  }
+  &--med {
+    font-family: $fedra-med !important;
+  }
+}
