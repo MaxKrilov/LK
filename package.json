@@ -33,6 +33,7 @@
     "eslint": "^5.16.0",
     "eslint-plugin-vue": "^5.0.0",
     "node-sass": "^4.9.0",
+    "postcss-pxtorem": "^4.0.1",
     "pug": "^2.0.4",
     "pug-plain-loader": "^1.0.0",
     "sass-loader": "^7.1.0",
@@ -60,7 +61,8 @@
       "autoprefixer": {},
       "css-mqpacker": {
         "sort": true
-      }
+      },
+      "postcss-pxtorem": {}
     }
   },
   "browserslist": [

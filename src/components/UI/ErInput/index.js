@@ -36,7 +36,7 @@ export default {
       return this.$createElement('div', {
         staticClass: `${this.m_pre}__${ref}`,
         on: {
-          click (e) {
+          click: e => {
             e.preventDefault()
             e.stopPropagation()
             this.$emit(`click:${ref}`, e)

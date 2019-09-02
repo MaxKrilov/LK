@@ -122,6 +122,10 @@
         @include media-query((
                 line-height: (xl: 56px)
         ));
+        i,
+        svg {
+          pointer-events: none;
+        }
         i {
           vertical-align: middle;
         }
@@ -476,6 +480,20 @@
               display: (xl: none),
               margin-left: (sm: 42px, md: 34px, lg: 47px)
       ));
+    }
+    &__loader {
+      height: 4px;
+      background-color: map_get($yellow, 'base');
+      position: absolute;
+      bottom: -4px;
+      transition: $primary-transition;
+      margin-left: -16px;
+      @include media-query((
+              margin-left: (
+                      sm: -24px,
+                      xl: -45px
+              )
+      ))
     }
   }
 }
