@@ -1,0 +1,63 @@
+.contract-document-component {
+  width: 100%;
+  max-width: 320px;
+  border-radius: 12px;
+  background: linear-gradient(to top right, map_get($gray, '26') 28.65%, map_get($shades, 'white') 90.63%);
+  box-shadow: -2px 2px 2px rgba(map_get($shades, 'black'), 0.03), 0 2px 12px rgba(map_get($shades, 'black'), 0.04);
+  padding: 1px;
+  &__content {
+    width: 100%;
+    height: 100%;
+    background-color: map_get($gray, '9');
+    border-radius: inherit;
+  }
+  &__head {
+    // todo Переделать после того, как будет готов адаптив
+    width: 100%;
+    height: 111px;
+    background-color: map_get($gray, '4');
+    border-radius: inherit;
+    position: relative;
+    &__triangle {
+      background-color: map_get($gray, '3');
+      box-shadow: 0 2px 2px rgba(map_get($shades, 'black'), 0.3);
+      &,
+      &::before,
+      &::after {
+        position: absolute;
+        width: 48px;
+        height: 48px;
+        top: -1px;
+        right: 0;
+        border-radius: 0 0 0 12px;
+      }
+      &::before,
+      &::after {
+        content: '';
+        z-index: 1;
+      }
+      &::before {
+        background: linear-gradient(55.62deg, map_get($shades, 'white') 26.5%, map_get($gray, '28') 61%);
+      }
+      &::after {
+        background: linear-gradient(45deg, map_get($shades, 'transparent') 50%, map_get($gray, '3') 50%);
+      }
+    }
+    &__shadow {
+      //position: absolute;
+      //width: 48px;
+      //height: 48px;
+      ////transform-origin: left top;
+      ////transform: rotate(4deg);
+      //top: 2px;
+      //left: 1px;
+      //border-radius: 12px;
+      //background: linear-gradient(222deg, map_get($shades, 'black') 45.41%, map_get($shades, 'transparent') 99.12%);
+      //opacity: 0.3;
+      ////filter: blur(5px);
+      ////background-color: rgba(map_get($shades, 'black'), 0.32);
+      ////filter: blur(2px);
+      //transition: $primary-transition;
+    }
+  }
+}

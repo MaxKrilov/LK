@@ -6,6 +6,8 @@ import LkTemplate from './components/templates/LkTemplate/index'
 // Страницы сервисной части
 // Главная страница
 import IndexPage from './components/pages/cabinet/IndexPage/index'
+// Страница документы
+import DocumentPage from './components/pages/cabinet/DocumentPage/index'
 
 Vue.use(Router)
 
@@ -24,6 +26,10 @@ export default new Router({
         {
           path: '/',
           component: IndexPage
+        },
+        {
+          path: 'documents',
+          component: DocumentPage
         }
       ]
     }
