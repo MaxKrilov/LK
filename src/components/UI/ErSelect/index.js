@@ -44,8 +44,8 @@ export default {
       return this.items.filter(item => {
         return this.isOnInput
           ? typeof item === 'string'
-            ? item.match(new RegExp(this.internalValue, 'ig'))
-            : item[this.label].match(new RegExp(this.internalValue, 'ig'))
+            ? item.matchAll(new RegExp(this.internalValue, 'ig'))
+            : item[this.label].matchAll(new RegExp(this.internalValue, 'ig'))
           : true
       })
     },
@@ -235,6 +235,7 @@ export default {
         }
         this.isSelected = false
         this.isOnInput = false
+        this.$emit('blur')
       }, 100)
     }
   },

@@ -4,7 +4,7 @@ before_script:
 #
     - export BUILD_DIR='/var/www/builds'
     - export BUILD_HOST='t2.ertelecom.ru'
-    - export DHUB_ADDRESS="dhub.ertelecom.ru"
+    - export DHUB_ADDRESS="harbor.ertelecom.ru"
     - export LOG_DIR='/var/log/services/nginx'
 #
 # USER
@@ -109,12 +109,14 @@ Production:
         - export FULL_PROJECT_NAME=$(echo ${PROJECT_GROUP}_${PROJECT_NAME}|sed -e 's/[^A-Z,a-z,0-9,_]//g')
         # Определяем команды создания сервиса и обновления
         - export cmdCreate="docker service create --name ${FULL_PROJECT_NAME}
+            --with-registry-auth
             --replicas 1
             --network network_webcluster
             -p ${CONTAINER_PORT}:${CONTAINER_PORT}
             --mount type=bind,source=/srv/shared/lk-admin.lkb2b.domru.ru/files,destination=${CONTAINER_FILES_DIR}
             ${IMAGE_ADDRESS}"
         - export cmdUpdate="docker service update
+            --with-registry-auth
             --image ${IMAGE_ADDRESS} ${FULL_PROJECT_NAME}"
         # Проверка есть такой сервис или нет
         - export strAction=`docker service ps ${FULL_PROJECT_NAME} > /dev/null 2> /dev/null|| echo Create`
