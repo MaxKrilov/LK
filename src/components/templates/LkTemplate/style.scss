@@ -1,4 +1,6 @@
 .lk-template {
+  background: map_get($gray, '3');
+  min-height: 100vh;
   &__content {
     width: 100%;
     max-width: 1208px;

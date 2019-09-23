@@ -1,0 +1,21 @@
+.er-file-input {
+  input {
+    display: none;
+  }
+  label,
+  &__filename {
+    display: inline-block;
+    position: relative;
+    cursor: pointer;
+    font: 20px/26px $fedra-book;
+    letter-spacing: -1px;
+    color: rgba(map_get($shades, 'black'), 0.8);
+    border-bottom: 1px dashed map_get($yellow, 'base');
+  }
+  &__cancel {
+    position: absolute;
+    top: -2px;
+    right: -42px;
+    color: rgba(map_get($shades, 'black'), 0.2);
+  }
+}

@@ -77,11 +77,12 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        height: 32px;
+        min-height: 32px;
         padding: 0 8px 0 22px;
         font: 15px/19px $fedra-book;
         letter-spacing: -1px;
         color: rgba(map_get($shades, 'black'), 0.8);
+        margin-bottom: 4px;
         span {
           border-bottom: 1px solid rgba(map_get($shades, 'black'), 0.8);
           font-family: $fedra-med;

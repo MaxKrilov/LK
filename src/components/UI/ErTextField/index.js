@@ -8,7 +8,8 @@ export default {
   data: () => ({
     pre: 'er-text-field',
     hasFocus: false,
-    isSuccess: false
+    isSuccess: false,
+    dadataValue: ''
   }),
   props: {
     label: String,
@@ -29,7 +30,8 @@ export default {
     },
     autocomplete: String,
     isShowSuccess: Boolean,
-    readonly: Boolean
+    readonly: Boolean,
+    tabIndex: [String, Number]
   },
   computed: {
     classes () {
@@ -101,7 +103,8 @@ export default {
           disabled: this.disabled,
           id: this.id,
           autocomplete: this.autocomplete,
-          readonly: this.readonly
+          readonly: this.readonly,
+          tabIndex: this.tabIndex
         },
         domProps: {
           value: this.value

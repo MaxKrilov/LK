@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import router from './router'
+import store from './store'
 import App from './App'
 import { eachArray, eachObject } from './functions/helper'
 import { API } from './functions/api'
@@ -37,5 +38,6 @@ Vue.use(Vuebar)
 
 new Vue({
   router,
+  store,
   render: h => h(App)
 }).$mount('#app')

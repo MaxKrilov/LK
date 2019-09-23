@@ -1,0 +1,26 @@
+.er-select {
+  &__list {
+    &__item {
+      span {
+        border-bottom: none !important;
+        font-family: inherit !important;
+        letter-spacing: -1px !important;
+        b {
+          border-bottom: 1px solid rgba(map_get($shades, 'black'), 0.8);
+        }
+      }
+    }
+    &--mobile {
+      &__item {
+        span {
+          border-bottom: none !important;
+          font-family: inherit !important;
+          letter-spacing: -1px !important;
+          b {
+            border-bottom: 1px solid rgba(map_get($shades, 'black'), 0.8);
+          }
+        }
+      }
+    }
+  }
+}

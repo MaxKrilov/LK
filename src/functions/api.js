@@ -2,6 +2,8 @@ import axios from 'axios'
 import { TYPE_OBJECT, TYPE_ARRAY, TYPE_JSON } from '../constants/type_request'
 import { isCombat, wrapHttps, eachObject, eachArray } from './helper'
 import { BACKEND_COMBAT, BACKEND_TESTING } from '../constants/url'
+import store from '../store'
+import { API_DADATA } from '../store/actions/api'
 
 /**
  * Класс для работы с API
@@ -113,11 +115,14 @@ export function API () {
     if (~[TYPE_ARRAY, TYPE_OBJECT].indexOf(_type)) {
       config.headers = { 'content-type': 'application/x-www-form-urlencoded' }
     }
+    const __transformDataForObject = _transformDataForObject.bind(this)
+    const __transformDataForArray = _transformDataForArray.bind(this)
+    const __transformDataForJson = _transformDataForJson.bind(this)
     const data = _type === TYPE_OBJECT
-      ? _transformDataForObject().bind(this)
+      ? __transformDataForObject()
       : _type === TYPE_ARRAY
-        ? _transformDataForArray().bind(this)
-        : _transformDataForJson().bind(this)
+        ? __transformDataForArray()
+        : __transformDataForJson()
     config = Object.assign(config, {
       method: _method,
       data,
@@ -142,4 +147,26 @@ export function API () {
     _method = 'POST'
     _data = null
   }
+}
+
+/**
+ * API метод для обращения к API Dadata
+ * @param options
+ */
+export function apiDadata (options) {
+  return new Promise(resolve => {
+    const type = options.type || 'address'
+    const xhr = new XMLHttpRequest()
+    xhr.open('POST', 'https://suggestions.dadata.ru/suggestions/api/4_1/rs/suggest/' + type)
+    xhr.setRequestHeader('Accept', 'application/json')
+    xhr.setRequestHeader('Authorization', `Token ${store.state.api[API_DADATA]}`)
+    xhr.setRequestHeader('Content-Type', 'application/json')
+    xhr.send(JSON.stringify(options))
+    xhr.onreadystatechange = () => {
+      if (!xhr || xhr.readyState !== 4) return
+      if (xhr.status === 200) {
+        resolve(JSON.parse(xhr.response))
+      }
+    }
+  })
 }

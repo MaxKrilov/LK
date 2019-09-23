@@ -9,6 +9,12 @@ import IndexPage from './components/pages/cabinet/IndexPage/index'
 // Страница документы
 import DocumentPage from './components/pages/cabinet/DocumentPage/index'
 
+// Цифровые продукты (от DMP)
+import DigitalProductsIndexPage from './components/pages/digital-products/IndexPage/index'
+
+// Создание клиента (для DMP)
+import DMPFormPage from './components/pages/dmp-form/index'
+
 Vue.use(Router)
 
 export default new Router({
@@ -30,8 +36,16 @@ export default new Router({
         {
           path: 'documents',
           component: DocumentPage
+        },
+        {
+          path: '/digital-products',
+          component: DigitalProductsIndexPage
         }
       ]
+    },
+    {
+      path: '/create-client',
+      component: DMPFormPage
     }
   ]
 })

@@ -1,0 +1,32 @@
+.dmp-form-page {
+  &__input-inn {
+    width: 100%;
+    max-width: 320px;
+  }
+  &__description-inn {
+    width: 100%;
+    max-width: 512px;
+    font: 16px/21px $fedra-book;
+    letter-spacing: -0.5px;
+    color: rgba(map_get($shades, 'black'), 0.5);
+    a {
+      color: inherit;
+    }
+  }
+  &__submit-inn {
+    width: 100%;
+    max-width: 256px;
+  }
+  &__check-text {
+    font: 16px/21px $fedra-book;
+    letter-spacing: -0.5px;
+    color: rgba(map_get($shades, 'black'), 0.8);
+  }
+  .container {
+    max-width: 1440px;
+    margin-left: 0;
+    .flex {
+      margin-bottom: 18px;
+    }
+  }
+}
