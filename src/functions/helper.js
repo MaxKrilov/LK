@@ -55,7 +55,7 @@ export function isTesting () {
  * @return {number|boolean}
  */
 export function isCombat () {
-  return ~isLocalhost() && !isTesting()
+  return !isLocalhost() && !isTesting()
 }
 
 export function isDeveloper () {
@@ -338,3 +338,58 @@ export const daysOfWeek = [
 export function getMonthByNumber (number) {
   return months[number]
 }
+
+export function validateINN (inn) {
+  if (inn.length !== 10 && inn.length !== 12) {
+    return false
+  }
+  if (inn.length === 10) {
+    const sum = [2, 4, 10, 3, 5, 9, 4, 6, 8].reduce((sum, item, index) => sum + item * inn[index], 0)
+    const residue = sum % 11
+    return residue === +inn[9]
+  }
+  const firstSumm = [7, 2, 4, 10, 3, 5, 9, 4, 6, 8].reduce((sum, item, index) => sum + item * inn[index], 0)
+  const secondSumm = [3, 7, 2, 4, 10, 3, 5, 9, 4, 6, 8].reduce((sum, item, index) => sum + item * inn[index], 0)
+  const firstResidue = firstSumm % 11
+  const secondResidue = secondSumm % 11
+  return firstResidue === +inn[10] && secondResidue === +inn[11]
+}
+
+export function getAllUrlParams (url) {
+  let queryString = url
+    ? url.split('?')[1]
+    : window.location.search.slice(1)
+  const obj = {}
+  if (queryString) {
+    queryString = getFirstElement(queryString.split('#'))
+    const arr = queryString.split('&')
+    eachArray(arr, item => {
+      const subArr = item.split('=')
+      let paramNum
+      let paramName = getFirstElement(subArr).replace(/\[\d*\]/, v => {
+        paramNum = v.slice(1, -1)
+        return ''
+      })
+      let paramValue = typeof subArr[1] === 'undefined'
+        ? true
+        : subArr[1]
+      // paramName = paramName.toLowerCase()
+      // paramValue = paramValue.toLowerCase()
+      if (obj[paramName]) {
+        if (typeof obj[paramName] === 'string') {
+          obj[paramName] = [obj[paramName]]
+        }
+        if (typeof paramNum === 'undefined') {
+          obj[paramName].push(paramValue)
+        } else {
+          obj[paramName][paramNum] = paramValue
+        }
+      } else {
+        obj[paramName] = paramValue
+      }
+    })
+  }
+  return obj
+}
+
+export const ucfirst = str => str.charAt(0).toUpperCase() + str.substr(1, str.length - 1)

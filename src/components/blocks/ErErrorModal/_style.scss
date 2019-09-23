@@ -1,0 +1,18 @@
+.er-error-modal {
+  &__content {
+    width: 100%;
+    h1 {
+      width: 100%;
+      max-width: 245px;
+    }
+    p {
+      font: 16px/22px $fedra-light;
+      letter-spacing: -1px;
+      color: rgba(map_get($shades, 'black'), 0.7);
+    }
+    img {
+      width: 100%;
+      max-width: 544px;
+    }
+  }
+}

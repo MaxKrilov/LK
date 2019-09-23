@@ -1,0 +1,178 @@
+div.px-32.py-64(:class="`${pre}`")
+  h1.mb-64.fonts--demi
+    | Карточка клиента
+  er-slide-up-down(:active="isInputInn")
+    er-form(@submit="submitInn", ref="inn_form")
+      div.mb-40.d--flex(:class="`${pre}__input-inn`")
+        er-text-field(
+          label="Введите ИНН",
+          v-model="modelINN",
+          autocomplete="off",
+          mask="999999999999",
+          :rules="validateInn"
+        )
+          template(slot="append-outer")
+            er-hint.pt-8.ml-16
+              | Текст подсказки
+      div.mb-44(:class="`${pre}__description-inn`")
+        | Если вы не помните свой ИНН, вы можете узнать его на <a href="https://www.nalog.ru" target="_blank">сайте ФНС</a> или другом ресурсе для самозанятых
+      div(:class="`${pre}__submit-inn`")
+        er-button(type="submit")
+          | Заполнить
+  er-slide-up-down(:active="!isInputInn")
+    er-container(full)
+      er-row.mb-36(align-items-end)
+        er-flex(xs6)
+          h2.mb-8
+            | Данные организации
+          p(:class="`${pre}__check-text`")
+            | Проверьте, пожалуйста, Ваши данные
+        er-flex(xs6)
+          h2
+            | Лицо, имеющее право подписи
+      er-form(ref="form", @submit="submitFormCreate")
+        er-row
+          er-flex(xs6)
+            er-text-field(
+              label="Юридическое название",
+              v-model="modelData.nameCompany",
+              :rules="[rules.isRequired]",
+              tabIndex="1",
+              key="nameCompany"
+            )
+          er-flex(xs6)
+            er-text-field(
+              label="Должность",
+              v-model="modelData.post",
+              :rules="[rules.isRequired]",
+              tabIndex="7",
+              key="post"
+              )
+        er-row
+          er-flex(xs6)
+            er-text-field(
+              label="Юридический адрес",
+              v-model="modelData.addressCompany",
+              :rules="[rules.isRequired]",
+              tabIndex="2",
+              key="addressCompany"
+              )
+          er-flex(xs6)
+            er-text-field(
+              label="Должность в род. падеже",
+              v-model="modelData.gPost",
+              :rules="[rules.isRequired]",
+              tabIndex="8",
+              key="gPost"
+              )
+        er-row
+          template(v-if="isEntity")
+            er-flex(xs6)
+              er-text-field(
+                label="КПП",
+                v-model="modelData.registrationReasonCode",
+                :rules="[rules.isRequired]",
+                tabIndex="3",
+                key="registrationReasonCode",
+                mask="999999999"
+                )
+          template(v-else)
+            er-flex(xs2)
+              er-text-field(
+                label="Паспорт",
+                mask="9999-999999",
+                v-model="modelData.passport",
+                :rules="[rules.isRequired]",
+                tabIndex="3",
+                key="passport"
+                )
+            er-flex(xs2)
+              er-text-field(
+                label="Дата выдачи",
+                mask="99.99.9999",
+                v-model="modelData.dateOfPassport",
+                :rules="[rules.isRequired]",
+                tabIndex="4",
+                key="dateOfPassport"
+                )
+            er-flex(xs2)
+              er-text-field(
+                label="Код подразделения",
+                mask="999-999",
+                v-model="modelData.departmentCode",
+                :rules="[rules.isRequired]",
+                tabIndex="5",
+                @blur="onBlurDepartmentCode",
+                key="departmentCode"
+                )
+          er-flex(xs3)
+            er-text-field(
+              label="Фамилия",
+              v-model="modelData.surname",
+              :rules="[rules.isRequired]",
+              tabIndex="9",
+              key="surname",
+              @blur="onBlurFIO"
+              )
+          er-flex(xs3)
+            er-text-field(
+              label="Фамилия в род. падеже (автоматически)",
+              v-model="modelData.gSurname",
+              :rules="[rules.isRequired]",
+              tabIndex="10",
+              key="gSurname",
+              readonly
+              )
+        er-row
+          template(v-if="!isEntity")
+            er-flex(xs6)
+              er-text-field(
+                label="Кем выдан",
+                v-model="modelData.passportIssuedBy",
+                :rules="[rules.isRequired]",
+                tabIndex="6",
+                key="passportIssuedBy"
+                )
+          er-flex(xs3, :offset-xs6="isEntity")
+            er-text-field(
+              label="Имя",
+              v-model="modelData.name",
+              :rules="[rules.isRequired]",
+              tabIndex="11",
+              key="name",
+              @blur="onBlurFIO"
+              )
+          er-flex(xs3)
+            er-text-field(
+              label="Имя в род. падеже (автоматически)",
+              v-model="modelData.gName",
+              :rules="[rules.isRequired]",
+              tabIndex="12",
+              key="gName",
+              readonly
+              )
+        er-row
+          er-flex(xs3, offset-xs6)
+            er-text-field(
+              label="Отчество",
+              v-model="modelData.patronymic",
+              :rules="[rules.isRequired]",
+              tabIndex="13",
+              key="patronymic",
+              @blur="onBlurFIO"
+              )
+          er-flex(xs3)
+            er-text-field(
+              label="Отчество в род. падеже (автоматически)",
+              v-model="modelData.gPatronymic",
+              :rules="[rules.isRequired]",
+              tabIndex="14",
+              key="gPatronymic",
+              readonly
+              )
+        er-row
+          er-flex(xs6, offset-xs6)
+            er-file-input(
+              label="Документ, удостоверяющий право подписи"
+            )
+  er-error-modal

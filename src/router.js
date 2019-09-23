@@ -7,6 +7,12 @@ import LkTemplate from './components/templates/LkTemplate/index'
 // Главная страница
 import IndexPage from './components/pages/cabinet/IndexPage/index'
 
+// Цифровые продукты (от DMP)
+import DigitalProductsIndexPage from './components/pages/digital-products/IndexPage/index'
+
+// Создание клиента (для DMP)
+import DMPFormPage from './components/pages/dmp-form/index'
+
 Vue.use(Router)
 
 export default new Router({
@@ -24,8 +30,16 @@ export default new Router({
         {
           path: '/',
           component: IndexPage
+        },
+        {
+          path: '/digital-products',
+          component: DigitalProductsIndexPage
         }
       ]
+    },
+    {
+      path: '/create-client',
+      component: DMPFormPage
     }
   ]
 })

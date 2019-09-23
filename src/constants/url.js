@@ -1,4 +1,4 @@
-export const BACKEND_TESTING = 'lk-backend.b2bweb.t2.ertelecom.ru'
+export const BACKEND_TESTING = '.lk-backend.b2bweb.t2.ertelecom.ru'
 export const BACKEND_COMBAT = 'api-lkb2b.domru.ru'
 export const FRONTEND_LOCALHOST = 'localhost:8080'
 export const FRONTEND_TESTING = 'frontend2.b2bweb.t2.ertelecom.ru'
