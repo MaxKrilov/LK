@@ -49,6 +49,9 @@ Deploy dev:
     stage: deploy_dev_image
     script:
         - mkdir -p config
+        - mkdir -p ${CONTENT_FILES_DIR}
+        - chmod 777 ${CONTENT_FILES_DIR}
+        
         - export STAGE=development
         - envsubst < build_env/docker-compose/docker-compose.tmpl > config/docker-compose.yml
 
