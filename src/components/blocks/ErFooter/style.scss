@@ -1,0 +1,163 @@
+
+$padding: $min-indentation; // mean 4px
+$padding-8: $min-indentation * 2px;
+$padding-16: $min-indentation * 4px;
+$padding-24: $min-indentation * 6px;
+$padding-32: $min-indentation * 8px;
+
+$standart-padding-x-10: 160px;
+$er-footer-bg-color: map_get($named_colors, 'footer-bg');
+
+.er-footer {
+  background-color: $er-footer-bg-color;
+  padding: $padding * 4px;
+  color: map_get($shades, 'white');
+  margin-top: $standart-padding-x-10;
+
+  &__content {
+    @include common-content;
+
+    padding-top: $padding-16;
+
+    @include max-breakpoint('md') {
+      padding-top: 0;
+    }
+  }
+
+  &__title {
+    color: map_get($shades, 'white');
+    line-height: 24px;
+    font-size: 18px;
+    display: block;
+    margin-bottom: $padding-24;
+    opacity: .8;
+
+    @include max-breakpoint('md') {
+      margin-bottom: $padding-16;
+    }
+
+    &--link {
+      color: map_get($shades, 'white');
+    }
+  }
+}
+
+.er-footer-column {
+  flex-direction: column;
+  flex-grow: 1;
+  display: flex;
+  align-content: stretch;
+  padding: {
+    left: 0;
+    right: 0;
+  }
+
+  @include max-breakpoint('md') {
+    margin-bottom: $padding * 8px;
+  }
+
+  @include max-breakpoint('sm') {
+    margin-bottom: $padding * 4px;
+  }
+}
+
+.er-contacts-phone {
+  $phone-icon-width: 24px;
+  $phone-icon-margin: $padding * 2px;
+  margin-bottom: $padding * 4px;
+
+  &__icon {
+    opacity: .5;
+    margin-right: $phone-icon-margin;
+
+    svg {
+      width: $phone-icon-width !important;
+      height: $phone-icon-width;
+    }
+  }
+
+  &__title {
+    font-size: 10px;
+    opacity: .5;
+  }
+
+  &__number {
+    font-size: 22px;
+    opacity: .8;
+    white-space: nowrap;
+    line-height: 28px;
+    padding-top: .1rem;
+    text-decoration: none;
+    color: map_get($shades, 'white');
+  }
+}
+
+.er-contacts-address {
+  margin-top: $padding-24;
+
+  &__title {
+    color: map_get($shades, 'white');
+    font-size: 10px;
+    opacity: .5;
+    margin-bottom: $padding * 2px;
+  }
+
+  &__address {
+    color: map_get($shades, 'white');
+    text-decoration: none;
+    opacity: .8;
+  }
+}
+
+.er-social {
+  margin-bottom: $padding * 5px;
+
+  &__title {
+    color: map_get($gray, '4');
+    margin-bottom: $padding * 2px;
+  }
+
+  &__list {
+    color: map_get($gray, '4');
+  }
+
+  &__item {
+    cursor: pointer;
+    color: map_get($shades, 'white');
+    width: 24px;
+    height: 24px;
+    display: inline-block;
+    position: relative;
+    transition: all .2s ease;
+
+    & + .er-social__item {
+      margin-left: $padding * 5px;
+    }
+
+    &:not(:hover) {
+      opacity: .5;
+
+      g {
+        filter: none;
+      }
+    }
+
+    .er-glow-icon {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+    }
+  }
+}
+
+.er-copyright {
+  margin-top: $padding-16;
+  font-size: 11px;
+  /* or 145% */
+  line-height: 1.4rem;
+
+  letter-spacing: 0.35px;
+  color: map_get($shades, 'white');
+  opacity: 0.3;
+}

@@ -39,7 +39,8 @@ export default {
       h('svg', {
         attrs: {
           viewBox: this.icon.default.viewBox,
-          width: this.width
+          width: this.width,
+          height: this.height
         }
       }, [
         h('use', {

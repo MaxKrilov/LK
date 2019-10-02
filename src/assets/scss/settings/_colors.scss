@@ -67,6 +67,7 @@ $gray: (
         '26': #CFCFCF,
         '27': #F2F2F2,
         '28': #ECECEC,
+        '29': #8A8A8A,
 );
 
 $shades: (
@@ -82,4 +83,11 @@ $colors: (
         'green':    $green,
         'gray':     $gray,
         'shades':   $shades
+);
+
+
+// Color aliases
+$named-colors: (
+  'footer-bg': map_get($gray, '7'),
+  'footer-menu-border': map_get($gray, '29')
 );

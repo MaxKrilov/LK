@@ -1,0 +1,12 @@
+
+@mixin common-content {
+  // миксин основного контента с общими отступами
+  width: 100%;
+  max-width: 1208px;
+
+  @include media-query((
+    padding: (
+      xl: 0 0 0 316px
+    )
+  ))
+}
