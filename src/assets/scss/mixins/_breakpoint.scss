@@ -7,3 +7,36 @@
     }
   }
 }
+
+@mixin min-breakpoint($breakpoint) {
+  /*
+    $breakpoint is 'xs', 'sm', 'lg' or etc
+
+    Usage:
+    .my-class {
+      @include min-breakpoint('sm') {
+        // some styles for 'sm' media query
+      }
+    }
+  */
+  @media screen and (min-width: map_get($grid-breakpoint, $breakpoint)) {
+    @content;
+  }
+}
+
+
+@mixin max-breakpoint($breakpoint) {
+  /*
+    $breakpoint is 'xs', 'sm', 'lg' or etc
+
+    Usage:
+    .my-class {
+      @include max-breakpoint('sm') {
+        // some styles for max-width: 'sm' media query
+      }
+    }
+  */
+  @media screen and (max-width: map_get($grid-breakpoint, $breakpoint)) {
+    @content;
+  }
+}

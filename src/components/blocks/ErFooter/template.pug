@@ -1,0 +1,51 @@
+footer.er-footer
+  .er-footer__content
+    er-container.flex-xs-column
+      er-row
+        er-container.flex.lg6
+          er-row
+            er-flex.er-footer-column.er-footer-column--border(lg6, md6, sm6, xs12)
+              er-footer-menu(title="Услуги", :items="serviceMenu")
+            er-flex.er-footer-column.er-footer-column--border(lg6, md6, sm6, xs12)
+              er-footer-menu(title="Сервис", :items="serviceMenuSecond")
+        er-container.flex.lg6
+          er-row
+            .er-footer-column.flex.lg6.md6.xs12
+              a(:href='NEWS_LINK').er-footer__title.er-footer__title--link
+                | Новости компании
+              include soc.pug
+            .er-footer-column.flex.lg6.md6.xs12
+              .er-contacts
+                .er-contacts-phone
+                  .d--flex.flex-row.align-items-end
+                    er-icon(
+                      name="manager"
+                      width="24"
+                    ).er-contacts-phone__icon
+                    div.just-wrapper
+                      .er-contacts-phone__title
+                        | Отдел продаж
+                      a(:href="'tel:' + MANAGER_PHONE_NUMBER.number").er-contacts-phone__number
+                        | {{ MANAGER_PHONE_NUMBER.title }}
+                .er-contacts-phone
+                  .d--flex.flex-row.align-items-end
+                    div.just-wrapper
+                      er-icon(
+                        name="lifebuoy"
+                        width="24"
+                      ).er-contacts-phone__icon
+                    div.just-wrapper
+                      .er-contacts-phone__title
+                        | Обслуживание
+                      a(:href="'tel:' + SERVICE_PHONE_NUMBER.number").er-contacts-phone__number
+                        | {{ SERVICE_PHONE_NUMBER.title }}
+                .er-contacts-address
+                  .er-contacts-address__title
+                    | Фактический адрес:
+                  a(
+                    :href="ACTUAL_ADDRESS.url"
+                    target="_blank"
+                  ).er-contacts-address__address
+                    | {{ ACTUAL_ADDRESS.text }}
+              .er-copyright
+                | © АО «ЭР-Телеком Холдинг» 2011–2017

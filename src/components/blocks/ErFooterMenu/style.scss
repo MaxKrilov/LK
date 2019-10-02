@@ -1,0 +1,73 @@
+$footer-menu-border-color: map_get($named_colors, 'footer-menu-border');
+
+.er-footer-menu {
+  flex-grow: 1;
+
+  .er-icon {
+    opacity: .5;
+  }
+
+  &__expander {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    text-align: right;
+
+    @include min-breakpoint('lg') {
+      display: none;
+    }
+  }
+
+  &__title {
+    color: map_get($shades, 'white');
+    line-height: 24px;
+    font-size: 18px;
+    display: block;
+    position: relative;
+  }
+
+  &__list {
+    transition: all .2s ease;
+    max-height: 1000px;
+    overflow: hidden;
+    margin-top: 16px;
+
+    &.is-force-expanded {
+      max-height: 1000px;
+    }
+
+    .expander {
+      @include min-breakpoint('lg') {
+        height: inherit !important;
+      }
+    }
+
+    @include max-breakpoint('md') {
+      margin-top: 8px;
+    }
+  }
+
+  &__item {
+    color: map_get($shades, 'white');
+    text-decoration: none;
+    font-size: 14px;
+    display: block;
+    margin-bottom: 12px;
+    text-decoration: none;
+    opacity: .5;
+    cursor: pointer;
+    transition: opacity .1s ease-in-out;
+
+    &:focus,
+    &:hover {
+      opacity: 1;
+      text-decoration: underline;
+    }
+  }
+
+  @include max-breakpoint('md') {
+    border-bottom: 1px solid $footer-menu-border-color;
+  }
+}

@@ -1,9 +1,11 @@
 import MenuComponent from './components/MenuComponent/index'
+import ErFooter from '@/components/blocks/ErFooter'
 
 export default {
   name: 'lk-template',
   components: {
-    MenuComponent
+    MenuComponent,
+    ErFooter
   },
   data: () => ({
     pre: 'lk-template'
