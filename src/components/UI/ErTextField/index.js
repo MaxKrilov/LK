@@ -20,6 +20,8 @@ export default {
     value: {
       type: null
     },
+    isShowLabelRequired: Boolean,
+    labelChanged: String,
     disabled: Boolean,
     mask: String,
     id: {
@@ -40,7 +42,9 @@ export default {
         [`${this.pre}--focus`]: this.hasFocus,
         [`${this.pre}--disabled`]: this.disabled,
         [`${this.pre}--error`]: this.hasErrors,
-        [`${this.pre}--success`]: this.isShowSuccess && this.isSuccess
+        [`${this.pre}--success`]: this.isShowSuccess && this.isSuccess,
+        [`${this.pre}--required`]: this.isShowLabelRequired,
+        [`${this.pre}--changed`]: this.labelChanged
       }
     },
     labelClasses () {
@@ -61,7 +65,8 @@ export default {
       }, [
         this.generateInput(),
         this.generateLabel(),
-        this.isShowSuccess && this.isSuccess && this.generateSuccessIcon()
+        this.isShowSuccess && this.isSuccess && this.generateSuccessIcon(),
+        this.labelChanged && this.generateLabelChanged()
       ])
     },
     generateSuccessIcon () {
@@ -69,6 +74,25 @@ export default {
         staticClass: `${this.pre}__success-icon`
       }, [
         this.$createElement('er-icon', { props: { name: 'ok' } })
+      ])
+    },
+    generateLabelChangedText () {
+      return this.$createElement('span', {
+        staticClass: `${this.pre}__changed-text`
+      }, [this.labelChanged])
+    },
+    generateLabelChangedIcon () {
+      return this.$createElement('er-icon', {
+        props: { name: 'ok' },
+        staticClass: `${this.pre}__changed-icon`
+      })
+    },
+    generateLabelChanged () {
+      return this.$createElement('div', {
+        staticClass: `${this.pre}__changed`
+      }, [
+        this.generateLabelChangedIcon(),
+        this.generateLabelChangedText()
       ])
     },
     generatePrependInner () {
