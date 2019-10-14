@@ -74,6 +74,22 @@
       color: map_get($green, 'base');
     }
   }
+  &__changed {
+    position: absolute;
+    right: 0;
+    top: -35px;
+    &-icon {
+      svg {
+        width: 16px;
+        color: map_get($green, 'base');
+      }
+    }
+    &-text {
+      padding-left: 2px;
+      color: map_get($green, 'base');
+      font-size: 12px
+    }
+  }
   &--focus {
     > .er-input__control {
       > .er-input__slot {
@@ -137,6 +153,29 @@
           border-color: map_get($green, 'base');
         }
       }
+    }
+  }
+  &--changed {
+    > .er-input__control {
+      > .er-input__slot {
+        &,
+        &:hover {
+          border-color: map_get($green, 'base');
+        }
+      }
+    }
+  }
+  &--required {
+    position: relative;
+    &:before {
+      background-color: map_get($yellow, 'base');
+      border-radius: 50%;
+      content: '';
+      height: 8px;
+      width: 8px;
+      position: absolute;
+      top: -16px;
+      left: 0px;
     }
   }
 }

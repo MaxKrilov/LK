@@ -37,7 +37,13 @@ export default {
     value: {
       type: null
     },
-    isSelectFirst: Boolean
+    isSelectFirst: Boolean,
+    isShowLabelRequired: Boolean,
+    labelChanged: String,
+    rules: {
+      type: Array,
+      default: () => ([])
+    }
   },
   computed: {
     getFilteredItems () {
@@ -152,7 +158,10 @@ export default {
           label: this.placeholder,
           appendInnerIcon: 'corner_down',
           autocomplete: 'off',
-          readonly: this.readonly
+          readonly: this.readonly,
+          labelChanged: this.labelChanged,
+          isShowLabelRequired: this.isShowLabelRequired,
+          rules: this.rules
         },
         on: this.__getEventsForActivator(props.on),
         ref: 'activator'

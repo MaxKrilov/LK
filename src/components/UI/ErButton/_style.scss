@@ -68,9 +68,8 @@
   &--disabled {
     &,
     &:hover {
-      background: map_get($gray, '11');
       box-shadow: none;
-      color: map_get($gray, '7');
+      opacity: .4;
       cursor: not-allowed;
     }
   }
