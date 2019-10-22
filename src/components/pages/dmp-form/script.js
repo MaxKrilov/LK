@@ -51,7 +51,6 @@ export default {
       }
       this.$api
         .setData({ inn: this.modelINN })
-        .setBranch('web-15417-3')
         .query('/customer/account/get-organization-info')
         .then(response => {
           this.isEntity = this.modelINN.length === 10
