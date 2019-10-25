@@ -38,7 +38,7 @@ export default new Router({
           component: DocumentPage
         },
         {
-          path: '/digital-products',
+          path: 'digital-products',
           component: DigitalProductsIndexPage
         }
       ]
