@@ -5,6 +5,7 @@
     width: 100%;
     max-width: 1208px;
     padding: 89px 16px 0;
+    overflow: hidden;
     @include media-query((
             padding: (
                     sm: 100px 24px 0,

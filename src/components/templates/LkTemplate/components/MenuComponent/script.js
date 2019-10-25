@@ -1,6 +1,8 @@
-import { eachArray, getScreenWidth } from '@/functions/helper'
+import { eachArray } from '@/functions/helper'
 import { BREAKPOINT_XL } from '@/constants/breakpoint'
 import RightInfoPanelComponent from '../RightInfoPanelComponent/index.vue'
+import { mapGetters } from 'vuex'
+import { SCREEN_WIDTH } from '@/store/actions/variables'
 
 export default {
   name: 'menu-component',
@@ -11,7 +13,6 @@ export default {
     pre: 'menu-component',
     openLeftMenu: false,
     openSubMenuBackground: false,
-    isDesktop: false,
     isOpenRightPanel: false,
     menu: [
       {
@@ -39,6 +40,12 @@ export default {
   computed: {
     isOpenSubMenu () {
       return !!this.menu.filter(item => item.isOpen).length
+    },
+    ...mapGetters([
+      SCREEN_WIDTH
+    ]),
+    isDesktop () {
+      return this[SCREEN_WIDTH] >= BREAKPOINT_XL
     }
   },
   methods: {
@@ -62,9 +69,7 @@ export default {
     }
   },
   mounted () {
-    this.isDesktop = getScreenWidth() >= BREAKPOINT_XL
     if (this.isDesktop) {
-      // this.openLeftMenu = true
       this.openSubMenuBackground = true
       this.menu[0].isOpen = true
     }
