@@ -4,6 +4,7 @@
   &__content {
     width: 100%;
     max-width: 1208px;
+    //max-width: 1440px;
     padding: 89px 16px 0;
     overflow: hidden;
     @include media-query((

@@ -1,0 +1,46 @@
+er-row(no-gutters)
+  div(:class="`${pre}`")
+    div(:class="`${pre}__content`")
+      div(:class="`${pre}__icon`")
+        er-icon(:name="item.icon")
+      div.mb-8.d--flex.align-items-center(:class="`${pre}__data`")
+        div(:class="`${pre}__data__dm`")
+          | {{ item.date }}
+        div(:class="`${pre}__data__yy`")
+          | {{ item.year }}
+      div(:class="`${pre}__time`")
+        | {{ item.time }}
+      div(:class="`${pre}__${wrapper}`")
+        div(:class="`${pre}__info`")
+          div.mt-28.ml-28(:class="`${pre}__title`")
+            | {{ item.title }}
+            div(
+              v-if="item.link"
+              :class="`${pre}__toggle--desktop`",
+              @click="active_internet"
+            )
+              er-icon(:name= "arr_direct")
+              a {{ item.descr }}
+            div(
+              v-else
+              :class="`${pre}__message`",
+            )
+              | {{ item.descr }}
+          div.mt-28.mr-16(:class="`${pre}__price`")
+            div.mr-16(:class="`${pre}__price__group`")
+            div.mb-8.d--flex.align-items-center
+              div(:class="`${pre}__price__value`")
+                | {{ item.value }}&nbsp;
+              div.caption.rub.mt-8(:class="`${pre}__price__unit`")
+
+        //div(:class="`${pre}__toggle--mobile`", @click="tmpActive_internet = !tmpActive_internet")
+        //  er-icon(name="corner_down")
+
+  er-slide-up-down(
+    :class="`${pre}__list`"
+    :active="tmpActive_internet"
+  )
+    ListComponent(index=0)
+    ListComponent(index=1)
+    ListComponent(index=1)
+

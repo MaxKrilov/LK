@@ -1,0 +1,130 @@
+.list-component {
+  &__toggle {
+    &--desktop {
+      display: none;
+      align-items: center;
+      cursor: pointer;
+      @include media-query((
+        display: (sm: flex),
+        margin-top: (md: 7px)
+      ));
+      svg {
+        color: rgba(map_get($shades, 'black'), 0.2);
+        width: 16px !important;
+      }
+      a {
+        font: 10px/12px $fedra-demi;
+        letter-spacing: 0.5px;
+        color: rgba(map_get($shades, 'black'), 0.5);
+        text-decoration: none;
+        border-bottom: 1px dashed rgba(map_get($shades, 'black'), 0.5);
+        cursor: pointer;
+        @include media-query((
+          font-size: (lg: 13px),
+          line-height: (lg: 16px),
+          margin-left: (sm: 4px, lg: 8px)
+        ))
+      }
+    }
+    /*
+    &--mobile {
+      color: rgba(map_get($shades, 'black'), 0.5);
+      @include media-query((
+        display: (sm: none)
+      ));
+      svg {
+        width: 16px !important;
+      }
+    }
+    */
+  }
+  &__price {
+    @include media-query((
+      margin-left: (sm: auto)
+    ));
+    &__caption {
+      white-space: nowrap;
+    }
+    &__group {
+      display: flex;
+      align-items: flex-end;
+      @include media-query((
+        flex-direction: (sm: column)
+      ))
+    }
+    &__value {
+      font: 26px/24px $fedra-demi;
+      color: map_get($red, 'base');
+      margin-right: 5px;
+      @include media-query((
+        font-size: (lg: 30px, xl: 32px),
+        line-height: (lg: 35px, xl: 36px),
+        letter-spacing: (lg: -1.5px)
+      ))
+    }
+    &__unit {
+      font: 16px/21px $fedra-demi !important;
+      color: rgba(map_get($shades, 'black'), 0.5);
+      @include media-query((
+        font-size: (lg: 13px),
+        line-height: (lg: 16px)
+      ))
+    }
+  }
+  &__value {
+    font: 18px/23px  $fedra-book;
+    color: rgba(map_get($shades, 'black'), 0.8);
+    letter-spacing: -1px;
+  }
+  &__item {
+    background: #f8f8f8;
+    margin-top: 2px;
+  }
+  &__title-row {
+    align-items: center;
+    background: map_get($shades, 'F8F8F8');
+    padding: 16px 28px;
+    border-left: 4px solid #F8F8F8;
+  }
+  &__title-row-active {
+    align-items: center;
+    background: map_get($shades, 'white');
+    padding: 16px 28px;
+    border-left: 4px solid #FD0;
+  }
+  &__geo {
+    color: rgba(map_get($shades, 'black'), 0.2);
+  }
+  &__geo-active {
+    color: #FFDD00;
+  }
+  &__icon {
+    color: rgba(map_get($shades, 'black'), 0.2);
+    margin-right: 9px;
+  }
+  &__title {
+    font: 16px/21px $fedra-demi !important;
+    letter-spacing: -0.5px;
+    color: rgba(map_get($shades, 'black'), 0.6);
+    &__value {
+      font: 18px $fedra-demi !important;
+      color: rgba(map_get($shades, 'black'), 0.8);
+      margin-right: 5px;
+      @include media-query((
+        font-size: (lg: 30px, xl: 32px),
+        line-height: (lg: 35px, xl: 36px),
+        letter-spacing: (lg: -1.5px)
+      ))
+    }
+    @include media-query((
+      font-size: (md: 18px),
+      line-height: (md: 22px),
+      letter-spacing: (md: -1px)
+    ))
+  }
+  /*
+  @include media-query((
+    height: (sm: 96px, md: 108px, lg: 96px, xl: 98px)
+  ));
+  */
+}

@@ -1,0 +1,226 @@
+.pay-page {
+  &__container-main {
+    width: 100%;
+    min-width: 320px;
+    max-width: 1440px;
+    margin-left: -16px;
+    @include media-query((
+      /*
+      width: (lg: 72vw),
+      margin-bottom: (lg: 14px),
+      display: (lg: block),
+      padding-right: (lg: 16px !important)
+      */
+      margin-left: (sm: -16px, lg: 2px, xl: 0, xxl: 16px)
+    ));
+  }
+  &__container {
+    padding-left: 0 !important;
+    //min-width: 320px;
+    background: #9dffe2;
+    padding: 0 !important;
+  }
+  &__container-operation {
+    width: 100%;
+    //padding-left: -15px !important;
+    //min-width: 320px;
+    @include media-query((
+
+      width: (lg: 72vw),
+      margin-bottom: (lg: 14px),
+      display: (lg: block),
+      padding-right: (lg: 16px !important)
+    ));
+  }
+  &__back-main {
+    display: none;
+    &__text {
+      text-decoration: none;
+    }
+    @include media-query((
+      margin-top: (lg: -81px),
+      margin-bottom: (lg: 14px),
+      display: (lg: block),
+      padding-right: (lg: 16px !important)
+    ));
+  }
+  &__back-main-xs {
+    display: block;
+    //padding-right: 16px !important;
+    &__text {
+      text-decoration: none;
+    }
+    @include media-query((
+      display: (lg: none),
+    ));
+  }
+  &__icon-height svg {
+    height: 16px;
+    margin-left: -7px;
+  }
+  &__icon-span {
+    display: inline-block;
+    vertical-align: top;
+    width: 50px;
+    font-size: 14px;
+    line-height: 18px;
+  }
+  &__icon-pos {
+    position: absolute;
+    left: 22px;
+    top: 60px;
+  }
+  &__card-height {
+    height: 149px;
+    @include media-query((
+      height: (lg: 192px),
+    ));
+
+  }
+  &__card-hover {
+    /*
+    color: map_get($yellow, 'other-6');
+    */
+    &__card-shadow:hover {
+      border-radius: 12px;
+      background: radial-gradient(map_get($yellow, 'other-4') 55.5%, map_get($yellow, 'base') 100%);
+      box-shadow: -4px 4px 32px map_get($yellow, 'other-5') !important;
+    }
+    &__icon svg {
+      display: none !important;
+      height: 200px !important;
+      position: absolute;
+      top: 10px;
+      width: 200px !important;
+      left: 25px;
+      color: #FFEE80;
+    }
+    svg {
+      display: none !important;
+      height: 200px !important;
+      position: absolute;
+      bottom: -76px;
+      width: 200px !important;
+      left: 25px;
+      color: #FFEE80;
+    }
+  }
+  &__card-title {
+    font: 18px $fedra-book;
+    color: map_get($shades, 'black');
+    width: 105%;
+  }
+  &__card-row {
+    margin: 0 8px !important;
+    @include media-query((
+      margin-left: (lg: 0 !important),
+      margin-right: (lg: 0 !important),
+      padding-right: (lg: 64px !important)
+
+    ));
+
+  }
+  &__card-scale {
+    padding: 0 8px !important;
+    @include media-query((
+      padding-left: (lg: 0 !important),
+      padding-right: (lg: 16px !important)
+
+  ));
+    //margin-right: 8px !important;
+  }
+  /*
+  &__card-scale-right {
+    margin-right: 8px;
+  }
+  */
+  &__welcome-title {
+    margin-bottom: 22px;
+    @include media-query((
+      margin-bottom: (sm: 24px, lg: 29px, xl: 42px)
+    ))
+  }
+  &__balance-score {
+    font: 14px $fedra-demi;
+    color: map_get($shades, 'black');
+    opacity: 0.5;
+    &__subtitle {
+      font: 12px $fedra-demi;
+      color: map_get($red, 'base');
+      opacity: 1;
+    }
+    &__currency {
+      font: 16px $fedra-book;
+      opacity: 0.5;
+    }
+    &__line {
+      border-bottom: 2px solid #FFDD00;
+    }
+  }
+  &__fast-links {
+    @include media-query((
+      padding-right: (lg: 16px !important)
+    ));
+    a:hover {
+      background: #FFDD00;
+      box-shadow: none;
+      .pay-page {
+        &__card-hover svg {
+          display: block !important;
+        }
+        &__card-hover__icon svg {
+          display: block !important;
+        }
+        &__icon-span {
+          color: map_get($shades, 'white') !important;
+        }
+        &__icon-height svg {
+          color: map_get($shades, 'white') !important;
+        }
+      }
+    }
+    a {
+      display: flex;
+      flex-direction: column;
+      padding: 17px;
+      text-decoration: none;
+      height: 128px;
+      position: relative;
+      overflow: hidden;
+      @include media-query((
+        padding: (sm: 24px),
+        height: (md: 144px, lg: 168px, xl: 192px)
+      ));
+    }
+  }
+  &__service {
+    &__title {
+      margin-bottom: 50px;
+      @include media-query((
+        margin-bottom: (lg: 67px)
+      ))
+    }
+    &__data {
+      position: absolute;
+      font: 16px $fedra-demi;
+      margin-bottom: 24px;
+      &__dm {
+        opacity: 0.5;
+      }
+      &__yy {
+        opacity: 0.2;
+      }
+    }
+  }
+  &__operation {
+    width: 100%;
+    &__submit-inn {
+      width: 100%;
+      max-width: 156px;
+      button {
+        color: map_get($shades, 'black');
+      }
+    }
+  }
+}
+

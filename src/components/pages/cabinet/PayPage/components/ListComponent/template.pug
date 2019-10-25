@@ -1,0 +1,26 @@
+div(:class="`${pre}`")
+  div(:class="`${pre}__item`")
+    div.d--flex(:class="`${pre}__${title}`")
+      div(:class="`${pre}__icon`")
+        er-icon(
+          :class="`${pre}__${geo}`"
+          name="geolocation"
+        )
+      div(:class="`${pre}__title`")
+        | {{ item.city }}<br>
+        | {{ item.street }}
+      div(:class="`${pre}__price`")
+        div.mb-4.d--flex.align-items-end
+          div(:class="`${pre}__value`")
+            | {{ item.value }}&nbsp;
+          div.caption.rub.mt-8(:class="`${pre}__price__unit`")
+          a.ml-16(
+            :class="`${pre}__toggle--desktop`",
+            @click="subwork_internet"
+          )
+            er-icon(:name= "subarr_direct")
+
+    er-slide-up-down(:active="subtmpActive")
+      DetailComponent
+
+

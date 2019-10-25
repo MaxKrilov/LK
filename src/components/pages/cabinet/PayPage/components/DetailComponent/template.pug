@@ -1,0 +1,14 @@
+div(:class="`${pre}__item`")
+  div.d--flex(
+    :class="`${pre}__subtitle-row`"
+    v-for= "item in items"
+    :key="item.name"
+  )
+    div(:class="`${pre}__title`")
+      | {{ item.name }}
+    div(:class="`${pre}__price`")
+      div.mb-4.d--flex.align-items-end
+        div(:class="`${pre}__title__value`")
+          | {{ item.value }}&nbsp;
+        div.caption.rub.mt-8(:class="`${pre}__title__unit`")
+

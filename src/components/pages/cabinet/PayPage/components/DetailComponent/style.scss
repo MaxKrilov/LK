@@ -1,0 +1,48 @@
+.detail-component {
+  &__price {
+    @include media-query((
+      margin-left: (sm: auto)
+    ));
+  }
+  &__item {
+    background: #f8f8f8;
+    padding-top: 23px;
+    padding-bottom: 27px;
+    box-shadow: 4px 24px 3px -24px #979797;
+  }
+  &__title {
+    font: 16px/21px $fedra-demi !important;
+    letter-spacing: -0.5px;
+    color: rgba(map_get($shades, 'black'), 0.6);
+    &__value {
+      font: 18px/23px $fedra-book !important;
+      letter-spacing: -1px;
+      color: rgba(map_get($shades, 'black'), 0.5);
+      margin-right: 4px;
+      @include media-query((
+        font-size: (lg: 30px, xl: 32px),
+        line-height: (lg: 35px, xl: 36px),
+        letter-spacing: (lg: -1.5px)
+      ))
+    }
+    &__unit {
+      font: 18px/23px $fedra-light !important;
+      color: rgba(map_get($shades, 'black'), 0.5);
+      margin-right: 32px;
+      @include media-query((
+        font-size: (lg: 13px),
+        line-height: (lg: 16px)
+      ))
+    }
+    @include media-query((
+      font-size: (md: 18px),
+      line-height: (md: 22px),
+      letter-spacing: (md: -1px)
+    ))
+  }
+  &__subtitle-row {
+    align-items: center;
+    padding: 0px 28px 0px 70px;
+    height: 35px;
+  }
+}

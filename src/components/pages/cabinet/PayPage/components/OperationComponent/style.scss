@@ -1,0 +1,183 @@
+.operation-component {
+  width: 100%;
+  height: 129px;
+  background: linear-gradient(to top right, map_get($gray, '26') 28.65%, map_get($shades, 'white') 90.63%);
+  padding: 1px;
+  border-radius: 12px;
+  overflow: hidden;
+  margin-top: 4px;
+  box-shadow: 0 2px 12px rgba(map_get($shades, 'black'), 0.1), 0 2px 2px rgba(map_get($shades, 'black'), 0.05);
+  position: relative;
+  z-index: 1;
+  @include media-query((
+    height: (sm: 96px, md: 108px, lg: 96px, xl: 98px)
+  ));
+  &__content {
+    width: 100%;
+    height: 100%;
+    background-color: map_get($shades, 'white');
+    border-radius: inherit;
+    border-right: 4px solid map_get($shades, 'transparent');
+    display: flex;
+  }
+  &__data {
+    position: absolute;
+    left: 19px;
+    top: 31px;
+    font: 18px $fedra-demi;
+    &__dm {
+    }
+    &__yy {
+      opacity: 0.3;
+    }
+  }
+  &__time {
+    position: absolute;
+    left: 19px;
+    top: 59px;
+    font: 14px $fedra-demi;
+    opacity: 0.3;
+  }
+  &__icon {
+    background: #E2E2E2;
+    width: 133px !important;
+    margin: 1px 0 0 0;
+    svg {
+      width: 64px !important;
+      position: absolute;
+      left: 38px;
+      top: -6px;
+      color: map_get($gray, '3');
+      @include media-query((
+        width: (
+          sm: 80px !important,
+          lg: 106px !important
+        )
+      ))
+    }
+  }
+  &__wrapper {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    border-left: 4px solid map_get($red, 'base');
+    z-index: 0;
+    background: map_get($shades, 'white');
+    margin-top: 1px;
+    @include media-query((
+      flex-direction: (sm: row)
+    ))
+  }
+  &__wrapper-pay {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    border-left: 4px solid map_get($green, 'base');
+    z-index: 0;
+    background: map_get($shades, 'white');
+    margin-top: 1px;
+    @include media-query((
+      flex-direction: (sm: row)
+    ))
+  }
+  &__info {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    @include media-query((
+      flex-direction: (sm: row)
+    ))
+  }
+  &__title {
+    font: 15px/20px $fedra-book;
+    letter-spacing: -0.35px;
+    color: rgba(map_get($shades, 'black'), 0.8);
+    margin-bottom: 6px;
+    @include media-query((
+      margin-right: (sm: 18px),
+      font-size: (lg: 18px),
+      line-height: (lg: 23px),
+      letter-spacing: (lg: -1px)
+    ))
+  }
+  &__message  {
+    font: 14px/19px $fedra-demi;
+    color: rgba(map_get($shades, 'black'), 0.3);
+  }
+  &__toggle {
+    &--desktop {
+      display: none;
+      align-items: center;
+      cursor: pointer;
+      @include media-query((
+        display: (sm: flex),
+        margin-top: (md: 7px)
+      ));
+      svg {
+        color: rgba(map_get($shades, 'black'), 0.5);
+        width: 16px !important;
+      }
+      a {
+        font: 10px/12px $fedra-demi;
+        letter-spacing: 0.5px;
+        color: rgba(map_get($shades, 'black'), 0.5);
+        text-decoration: none;
+        border-bottom: 1px dashed rgba(map_get($shades, 'black'), 0.5);
+        cursor: pointer;
+        @include media-query((
+          font-size: (lg: 13px),
+          line-height: (lg: 16px),
+          margin-left: (sm: 4px, lg: 8px)
+        ))
+      }
+    }
+    &--mobile {
+      color: rgba(map_get($shades, 'black'), 0.5);
+      @include media-query((
+        display: (sm: none)
+      ));
+      svg {
+        width: 16px !important;
+      }
+    }
+  }
+  &__price {
+    @include media-query((
+      margin-left: (sm: auto)
+    ));
+    &__group {
+      display: flex;
+      align-items: flex-end;
+      @include media-query((
+        flex-direction: (sm: column)
+      ))
+    }
+    &__value {
+      font: 26px/24px $fedra-demi;
+      color: map_get($red, 'base');
+      margin-right: 5px;
+      @include media-query((
+        font-size: (lg: 30px, xl: 32px),
+        line-height: (lg: 35px, xl: 36px),
+        letter-spacing: (lg: -1.5px)
+      ))
+    }
+    &__unit {
+      font: 16px/21px $fedra-demi !important;
+      color: rgba(map_get($shades, 'black'), 0.5);
+      @include media-query((
+        font-size: (lg: 13px),
+        line-height: (lg: 16px)
+      ))
+    }
+  }
+  &__list {
+    background-color: map_get($gray, '1');
+    border-radius: 0 0 12px 12px;
+    left: 116px;
+    position: relative;
+    top: -5px;
+    width: 87%;
+    //padding-bottom: 16px;
+  }
+}
