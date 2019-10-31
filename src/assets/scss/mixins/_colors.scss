@@ -1,0 +1,11 @@
+@mixin color($color, $alpha) {
+  color: rgba($color, $alpha);
+}
+
+@mixin color-black($alpha) {
+  color: rgba(map_get($shades, 'black'), $alpha);
+}
+
+@mixin color-white($alpha) {
+  color: rgba(map_get($shades, 'white'), $alpha);
+}

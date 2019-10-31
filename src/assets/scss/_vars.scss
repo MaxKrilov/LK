@@ -31,6 +31,17 @@ $progress-circular-overlay-transition:          all .6s ease-in-out;
 $min-indentation: 4;
 $max-indentation: 64;
 
+$padding-x1: $min-indentation * 1px;
+$padding-x2: $min-indentation * 2px;
+$padding-x3: $min-indentation * 3px;
+$padding-x4: $min-indentation * 4px;
+$padding-x6: $min-indentation * 6px;
+$padding-x7: $min-indentation * 7px;
+$padding-x8: $min-indentation * 8px;
+$padding-x12: $min-indentation * 12px;
+
+$padding-x16: $max-indentation * 1px;
+
 $z-index: (
         'top-menu': 5,
         'left-menu': 7
