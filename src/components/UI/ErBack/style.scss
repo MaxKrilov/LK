@@ -1,0 +1,65 @@
+.er-back {
+  .er-icon {
+    &.arrow {
+      @include color-black(.3);
+      margin-right: $padding-x1;
+
+      svg {
+        width: 12px;
+      }
+    }
+
+    &.corner {
+      transform: rotate(90deg);
+      color: map_get($yellow, 'base');
+      margin-right: $padding-x2;
+      margin-top: $padding-x1;
+
+      svg {
+        width: 20px;
+        margin: auto 0;
+      }
+    }
+  }
+
+  &__button {
+    cursor: pointer;
+    display: inline-flex;
+    transition: opacity .1s ease-in-out;
+    line-height: 16px;
+    letter-spacing: 0;
+
+    font-family: 12px $fedra-demi;
+
+    &:hover {
+      opacity: .5;
+    }
+
+    @include min-breakpoint('xl') {
+      margin-bottom: $padding-x3;
+    }
+  }
+
+  &__title {
+    @include color-black(.3);
+    display: none;
+
+    @include min-breakpoint('lg') {
+      display: block;
+    }
+  }
+
+  .lg-hide {
+    @include min-breakpoint('xl') {
+      display: none;
+    }
+  }
+
+  .lg-show {
+    display: none;
+
+    @include min-breakpoint('xl') {
+      display: block;
+    }
+  }
+}

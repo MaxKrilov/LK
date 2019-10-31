@@ -1,0 +1,13 @@
+.page-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  @include min-breakpoint('xl') {
+    display: block;
+  }
+  .title {
+    @include min-breakpoint('xl') {
+      pointer-events: none;
+    }
+  }
+}

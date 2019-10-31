@@ -13,3 +13,16 @@
     }
   }
 }
+
+
+.text-color-black03 {
+  @include color-black(.3);
+}
+
+.text-color-black05 {
+  @include color-black(.5);
+}
+
+.text-color-black08 {
+  @include color-black(.8);
+}
