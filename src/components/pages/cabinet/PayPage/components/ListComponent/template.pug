@@ -1,4 +1,4 @@
-div(:class="`${pre}`")
+div.mb-24(:class="`${pre}`")
   div(:class="`${pre}__item`")
     div.d--flex(:class="`${pre}__${title}`")
       div(:class="`${pre}__icon`")
@@ -7,20 +7,22 @@ div(:class="`${pre}`")
           name="geolocation"
         )
       div(:class="`${pre}__title`")
-        | {{ item.city }}<br>
+        | {{ item.city }}
         | {{ item.street }}
       div(:class="`${pre}__price`")
         div.mb-4.d--flex.align-items-end
           div(:class="`${pre}__value`")
             | {{ item.value }}&nbsp;
-          div.caption.rub.mt-8(:class="`${pre}__price__unit`")
-          a.ml-16(
+          div.rub(:class="`${pre}__price__unit`")
+          a(
             :class="`${pre}__toggle--desktop`",
             @click="subwork_internet"
           )
             er-icon(:name= "subarr_direct")
 
     er-slide-up-down(:active="subtmpActive")
+      div(:class="`${pre}__top`")
       DetailComponent
+      div(:class="`${pre}__top`")
 
 

@@ -140,6 +140,18 @@ a.link {
   color: rgba(map_get($shades, 'black'), 0.3);
 }
 
+.caption2 {
+  font: 10px/12px $fedra-demi;
+  color: rgba(map_get($shades, 'black'), 0.5);
+  letter-spacing: 0.5px;
+}
+
+.body {
+  font: 13px/18px $fedra-demi;
+  color: rgba(map_get($shades, 'black'), 0.8);
+  letter-spacing: 0.25px;
+}
+
 .rub {
   &::after {
     content: '₽';

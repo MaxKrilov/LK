@@ -6,9 +6,9 @@ div(:class="`${pre}__item`")
   )
     div(:class="`${pre}__title`")
       | {{ item.name }}
-    div(:class="`${pre}__price`")
-      div.mb-4.d--flex.align-items-end
+    div.align-items-start(:class="`${pre}__price`")
+      div(:class="`${pre}__pos`")
         div(:class="`${pre}__title__value`")
           | {{ item.value }}&nbsp;
-        div.caption.rub.mt-8(:class="`${pre}__title__unit`")
+        div.rub(:class="`${pre}__title__unit`")
 
