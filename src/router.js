@@ -39,8 +39,8 @@ export default new Router({
           path: 'documents',
           component: DocumentPage
         },
-                {
-          path: '/pay',
+        {
+          path: 'pay',
           component: PayPage
         },
         {
