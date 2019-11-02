@@ -15,6 +15,7 @@
         md: map_get($breakpoint-max-width, md),
         lg: map_get($breakpoint-max-width, lg),
         xl: map_get($breakpoint-max-width, xl),
+        xxl: map_get($breakpoint-max-width, xxl),
       )
     ));
   }

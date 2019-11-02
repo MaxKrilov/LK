@@ -8,6 +8,8 @@ import LkTemplate from './components/templates/LkTemplate/index'
 import IndexPage from './components/pages/cabinet/IndexPage/index'
 // Страница документы
 import DocumentPage from './components/pages/cabinet/DocumentPage/index'
+// Страница платежи
+import PayPage from './components/pages/cabinet/PayPage/index'
 
 // Цифровые продукты (от DMP)
 import DigitalProductsIndexPage from './components/pages/digital-products/IndexPage/index'
@@ -38,7 +40,11 @@ export default new Router({
           component: DocumentPage
         },
         {
-          path: '/digital-products',
+          path: 'pay',
+          component: PayPage
+        },
+        {
+          path: 'digital-products',
           component: DigitalProductsIndexPage
         }
       ]

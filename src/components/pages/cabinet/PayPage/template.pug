@@ -1,0 +1,174 @@
+div(:class="`${pre}`")
+  div(:class="`${pre}__container-main`")
+    div.caption(:class="`${pre}__back-main`")
+      div.ml-auto
+        er-icon(name="arrow_l" :class="`${pre}__icon-height`")
+        a.caption(href="#" :class="`${pre}__back-main__text`") Назад на главную
+
+    div.mb-8.d--flex.align-items-start(:class="`${pre}__back-arr`")
+      div(:class="`${pre}__back-main-xs`")
+        er-icon(name="left")
+      h1.fonts--demi(:class="`${pre}__welcome-title`")
+        | Платежи и начисления
+
+    er-container(full style="padding-left: 0")
+      er-row.justify-content.between(no-gutters :class="`${pre}__info__bottom`")
+        er-flex(
+          xs11 offset-xs1
+          sm5 offset-sm1
+          md4
+          xl3
+          :class="`${pre}__info__block1`"
+        )
+          div.caption2.mb-8(:class="`${pre}__balance-score`")
+            | На вашем счете:
+          div.mb-8.d--flex.align-items-center
+            div.caption
+              er-icon(name="wallet_auto")
+            h2.mr-8.ml-8 155 054,02
+            div.rub.mt-4(:class="`${pre}__balance-score__currency`")
+          div.caption2.mb-4(:class="`${pre}__balance-score__subtitle`")
+            | На вашем счете недостаточно средств для списания
+
+            div(:class="`${pre}__balance-score__dop`")
+              div.mt-16.d--flex.align-items-center
+                div.caption2
+                  | Следующее списание:
+                div.caption
+                  div.body.mr-8.ml-8 01.02.17
+
+        er-flex(
+          xs11 offset-xs1
+          sm5 offset-sm1
+          md8
+          xl9
+          :class="`${pre}__info__block2`"
+        )
+          er-row(no-gutters)
+            er-flex(
+              xs12
+              md5 offset-md1
+              lg4 offset-lg1
+              xl4
+              xxl4 offset-xxl1
+              :class="`${pre}__info__block2-1`"
+            )
+              div.mb-8(:class="`${pre}__balance-score`")
+                | Сумма к оплате:
+              div.mb-24.d--flex.align-items-center
+                div.caption
+                  er-icon(name="rouble")
+                h2.mr-8.ml-8(:class="`${pre}__balance-score__line`") 56 946,92
+                div.rub.mt-4(:class="`${pre}__balance-score__currency`")
+
+            er-flex(
+              xs12
+              md4 offset-md1
+              lg3 offset-lg2
+              xl3 offset-xl1
+              xxl3 offset-xxl2
+              :class="`${pre}__balance-score`"
+            )
+              er-row(no-gutters)
+                er-flex(sm8 md12)
+                  div.mb-8(:class="`${pre}__info__block3`")
+                    | Дата списания:
+                er-flex(sm4 md12)
+                  div.mb-8.d--flex.align-items-center
+                    div.caption(:class="`${pre}__balance-score__calendar`")
+                      er-icon(name="calendar")
+                    h2(:class="`${pre}__balance-score__data`").mr-8 01.02.17
+
+      er-row(no-gutters)
+        er-flex(xs12 :class="`${pre}__fast-links`")
+          er-row(no-gutters :class="`${pre}__card-row`")
+            er-flex.mb-16(xs6 lg3 :class="`${pre}__card-scale-left`")
+              er-card(:class="`${pre}__card-hover__card-shadow`")
+                div(:class="`${pre}__card-height`")
+                  router-link(to="/pay" :class="`${pre}__card-shadow`")
+                    h4(:class="`${pre}__card-title`")
+                      | Оплата картой
+                      div.new
+                        div.caption.mb-4
+                          div.ml-auto.color--green-base(:class="`${pre}__icon-pos`")
+                            er-icon(name="ok" :class="`${pre}__icon-height`")
+                            span.caption.color--green-base(
+                              :class="`${pre}__icon-span`"
+                            ) Автоплатеж подключен
+                            er-icon(name="pay_card" :class="`${pre}__card-hover__icon`")
+                    div.d--flex.align-items-end.mt-auto
+                      div.ml-auto
+                        er-icon.color--yellow-base(name="pay_card")
+            er-flex.mb-16(xs6 lg3 :class="`${pre}__card-scale-right`")
+              er-card(:class="`${pre}__card-hover__card-shadow`")
+                div(:class="`${pre}__card-height`")
+                  router-link(to="/")
+                    h4(:class="`${pre}__card-title`")
+                      | Счет на<br> оплату
+                    div.d--flex.align-items-end.mt-auto
+                      div.ml-auto
+                        er-icon.color--yellow-base(name="score")
+                        er-icon(name="pay_card" :class="`${pre}__card-hover`")
+
+            er-flex.mb-16(xs6 lg3 :class="`${pre}__card-scale-left`")
+              er-card(:class="`${pre}__card-hover__card-shadow`")
+                div(:class="`${pre}__card-height`")
+                  router-link(to="/")
+                    h4(:class="`${pre}__card-title`")
+                      | Обещанный платёж
+                    div.d--flex.align-items-end.mt-auto
+                      template(v-if="true")
+                        div.ml-auto
+                          er-icon.color--yellow-base(name="trast_pay")
+                          er-icon(name="pay_card" :class="`${pre}__card-hover`")
+
+            er-flex.mb-16(xs6 lg3 :class="`${pre}__card-scale-right`")
+              er-card(:class="`${pre}__card-hover__card-shadow`")
+                div(:class="`${pre}__card-height`")
+                  router-link(to="/")
+                    h4(:class="`${pre}__card-title`")
+                      | Заявление об ошибке в платеже
+                    div.d--flex.align-items-end.mt-auto
+                      div.ml-auto
+                        er-icon.color--yellow-base(name="doc_edit")
+                        er-icon(name="pay_card" :class="`${pre}__card-hover`")
+
+            er-flex(xs12)
+              h2.mt-24(:class="`${pre}__service__title`")
+                | Последние операции
+                div.mt-20.d--flex.align-items-center(:class="`${pre}__service__data`")
+                  div.body.mr-8(:class="`${pre}__service__data__dm`")
+                    | Январь
+                  div.body(:class="`${pre}__service__data__yy`")
+                    | '17
+
+    er-container.mb-24(full :class="`${pre}__container-operation`")
+      er-row(no-gutters)
+        er-flex.mb-16.pr-8(xs12)
+          OperationComponent(index=0)
+          OperationComponent(index=1)
+          OperationComponent(index=2)
+          OperationComponent(index=3)
+          OperationComponent(index=4)
+
+      er-row.justify-content-between(
+        no-gutters
+        :class="`${pre}__button-group`"
+      )
+        er-flex(
+          sm6
+          md5
+          lg3
+          :class="`${pre}__button-group__history`"
+        )
+          er-button(type="submit", flat=true)
+              | История платежей
+        er-flex(
+          sm6
+          md5
+          lg3
+          :class="`${pre}__button-group__load`"
+        )
+          er-icon(name="download" :class="`${pre}__download-icon`")
+          er-button.align-items-center(type="submit")
+            | Скачать PDF

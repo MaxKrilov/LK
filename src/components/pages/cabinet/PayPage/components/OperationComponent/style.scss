@@ -1,0 +1,322 @@
+.operation-component {
+  width: 100%;
+  height: 80px;
+  background: linear-gradient(to top right, map_get($gray, '26') 28.65%, map_get($shades, 'white') 90.63%);
+  padding: 1px;
+  overflow: hidden;
+  margin-top: 4px;
+  box-shadow: 0 2px 12px rgba(map_get($shades, 'black'), 0.1), 0 2px 2px rgba(map_get($shades, 'black'), 0.05);
+  position: relative;
+  z-index: 1;
+  @include media-query((
+    border-radius: (
+      md: 0,
+      lg: 12px
+    ),
+    height: (
+      sm: 80px,
+      md: 96px,
+      lg: 96px,
+      xl: 98px)
+  ));
+  &__content {
+    width: 100%;
+    height: 100%;
+    background-color: map_get($shades, 'white');
+    border-radius: inherit;
+    border-right: 4px solid map_get($shades, 'transparent');
+    display: flex;
+  }
+  &__data {
+    position: absolute;
+    left: 27px;
+    top: 15px;
+    @include media-query((
+      top: (
+        md: 27px,
+        lg: 29px
+      ),
+      left: (
+        md: 24px
+      )
+    ));
+    &__yy {
+      display: none;
+      @include media-query((
+        opacity: (md: 0.3),
+        display: (
+          sm: none,
+          md: block,
+        ),
+      ))
+    }
+    &__yy-mob {
+      display: block;
+      position: relative;
+      top: 16px;
+      left: -42px;
+      opacity: 1 !important;
+      letter-spacing: 0.35px;
+      @include media-query((
+        display: (
+          sm: block,
+          md: none,
+        ),
+      ))
+    }
+  }
+  &__time {
+    $ff: $fedra-book;
+    position: absolute;
+    left: 27px;
+    top: 49px;
+    font: 13px/18px $ff;
+    color: rgba(map_get($shades, 'black'), 0.5);
+    @include media-query((
+      font: (
+        lg: 13px/16px $ff
+      ),
+      top: (
+        md: 51px,
+        lg: 60px
+      )
+    ))
+  }
+  &__icon {
+    background: map_get($gray, '4');
+    width: 133px !important;
+    margin: 1px 0 0 0;
+    svg {
+      width: 64px !important;
+      position: absolute;
+      left: 41px;
+      top: 11px;
+      color: map_get($gray, '3');
+      @include media-query((
+        top: (
+          sm: 10px,
+          md: 5px,
+          lg: 2px,
+          xl: 0
+        ),
+        left: (
+          sm: 58px,
+          md: 46px,
+          lg: 54px,
+          xl: 46px,
+          xxl: 50px
+        ),
+        width: (
+          md: 90px !important,
+          xl: 96px !important
+        )
+      ));
+    }
+    &__gray {
+      background:  map_get($gray, '4');
+    }
+    &__yellow {
+      background: map_get($yellow, 'base');
+    }
+    @include media-query((
+      flex-direction: (sm: row)
+    ))
+  }
+  &__icon__yellow svg {
+      color: map_get($yellow, 'other-7');
+  }
+  &__wrapper {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    z-index: 0;
+    background: map_get($shades, 'white');
+    margin-top: 1px;
+    &__red {
+      border-left: 4px solid map_get($red, 'base');
+    }
+    &__green {
+      border-left: 4px solid map_get($green, 'base');
+    }
+    @include media-query((
+      flex-direction: (sm: row)
+    ))
+  }
+  &__wrapper-pay {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    border-left: 4px solid map_get($green, 'base');
+    z-index: 0;
+    background: map_get($shades, 'white');
+    margin-top: 1px;
+    @include media-query((
+      flex-direction: (sm: row)
+    ))
+  }
+  &__info {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    @include media-query((
+      flex-direction: (sm: row)
+    ))
+  }
+  &__title {
+    margin-top: 15px;
+    margin-left: 18px;
+    @include media-query((
+      margin-left: (
+        sm: 18px,
+        md: 28px,
+        lg: 28px,
+        xl: 28px
+      ),
+      margin-top: (
+        sm: 18px,
+        md: 27px,
+        lg: 29px
+      ),
+    ))
+  }
+  &__message  {
+    font: 14px/19px $fedra-demi;
+    color: rgba(map_get($shades, 'black'), 0.3);
+    display: none;
+  }
+  &__toggle {
+    &--desktop {
+      display: none;
+      align-items: center;
+      cursor: pointer;
+      @include media-query((
+        font-size: (
+          md: 13px !important
+        ),
+        display: (
+          sm: flex
+        ),
+        margin-top: (
+          sm: 9px,
+          md: 7px,
+          lg: 3px
+        )
+      ));
+      svg {
+        color: rgba(map_get($shades, 'black'), 0.5);
+        width: 16px !important;
+      }
+      a {
+        font: 10px/12px $fedra-demi;
+        letter-spacing: 0.5px;
+        color: rgba(map_get($shades, 'black'), 0.5);
+        text-decoration: none;
+        border-bottom: 1px dashed rgba(map_get($shades, 'black'), 0.5);
+        cursor: pointer;
+        @include media-query((
+          font-size: (
+            md: 13px,
+            lg: 13px
+          ),
+          line-height: (
+            md: 16px,
+            lg: 16px
+          ),
+          margin-left: (sm: 4px, lg: 8px)
+        ))
+      }
+    }
+    &--mobile {
+      color: rgba(map_get($shades, 'black'), 0.5);
+      position: relative;
+      display: block;
+      cursor: pointer;
+      top: -50px;
+      left: 201px;
+      @include media-query((
+        top: (sm: -72px),
+        left: (sm: 129px),
+        display: (sm: block)
+      ));
+      svg {
+        width: 16px !important;
+      }
+    }
+  }
+  &__price {
+    margin-right: 20px;
+    @include media-query((
+      border-radius: (
+        md: 0
+      ),
+      margin-right: (
+        md: 2px,
+        lg: 16px,
+        xl: 4px
+      )
+    ));
+    &__value {
+      margin-top: 0;
+      @include media-query((
+      margin-left: (sm: auto),
+      margin-top: (
+        sm: 28px
+      ),
+    ));
+      margin-left: 18px;
+      &__red {
+        color: map_get($red, 'base');
+      }
+      &__green {
+        color: map_get($green, 'base');
+      }
+    }
+    &__unit {
+      position: relative;
+      top: -1px;
+      opacity: 0.3;
+      font-size: 13px !important;
+      @include media-query((
+        top: (
+          sm: 13px
+        ),
+        font-size: (
+          md: 14px !important,
+          lg: 16px !important,
+        ),
+      ))
+    }
+  }
+  &__list {
+    background-color: map_get($gray, '2');
+    border-radius: 0 0 12px 12px;
+    left: 0;
+    position: relative;
+    top: -5px;
+    width: 362px;
+    @include media-query((
+      width: (
+        sm: 100%,
+        md: 100%,
+        lg: 87%,
+        xl: 742px,
+        xxl: 957px
+      ),
+      left: (
+        md: 0px,
+        lg: 116px,
+        xxl: 118px
+      ),
+      box-shadow: (lg: -4px 4px 4px rgba(0, 0, 0, 0.05)),
+      border: (lg: 1px solid  map_get($gray, '4')),
+      border-top: (lg: none),
+      border-right: (lg: none),
+      border-top-left-radius: (lg: 0 !important),
+      border-top-right-radius: (lg: 0 !important),
+      border-radius: (lg: 12px),
+    ));
+  }
+  &__bottom {
+    height: 10px;
+  }
+}
