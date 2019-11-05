@@ -1,0 +1,13 @@
+.er-right-modal(
+  :class="{'er-right-modal--active': active}"
+)
+  er-overlay(
+    v-if="overlay"
+    :value="active"
+    :z-index="8"
+  )
+  .er-right-modal__content(
+    @transitionend="onTransitionEnd()"
+    ref="content"
+  )
+    slot
