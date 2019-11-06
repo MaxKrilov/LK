@@ -1,4 +1,6 @@
 import ListComponent from '../ListComponent/index.vue'
+import { mapGetters } from 'vuex'
+import { SCREEN_WIDTH } from '@/store/actions/variables'
 
 export default {
   name: 'operation-component',
@@ -19,9 +21,11 @@ export default {
     color: 'red',
     iconBg: 'gray',
     tmpActive_internet: false,
-    arr_direct: 'corner_down'
+    arr_direct: 'corner_down',
+    screenWidth: 0
   }),
   computed: {
+    ...mapGetters([SCREEN_WIDTH]),
     item () {
       return this.items[this.index]
     }
@@ -34,6 +38,22 @@ export default {
       } else {
         this.iconBg = 'yellow'
         this.arr_direct = 'corner_up'
+      }
+
+      if (this[SCREEN_WIDTH] >= 960) {
+        let marg = (this[SCREEN_WIDTH] > 2047) ? marg = '123px' :
+          (this[SCREEN_WIDTH] > 1901) ? marg = '122px' :
+            (this[SCREEN_WIDTH] > 1778) ? marg = '121px' :
+              (this[SCREEN_WIDTH] > 1673) ? marg = '120px' :
+                (this[SCREEN_WIDTH] > 1583) ? marg = '119px' :
+                  (this[SCREEN_WIDTH] > 1366) ? marg = '118px' :
+                    (this[SCREEN_WIDTH] > 1297) ? marg = '117px' :
+                      (this[SCREEN_WIDTH] > 1199) ? marg = '116px' :
+                        (this[SCREEN_WIDTH] > 1161) ? marg = '119px' :
+                          (this[SCREEN_WIDTH] > 1082) ? marg = '118px' :
+                            (this[SCREEN_WIDTH] > 1013) ? marg = '117px' :
+        marg = '116px';
+        document.querySelector('.operation-component__list').style.marginLeft = marg
       }
 
       this.tmpActive_internet = !this.tmpActive_internet

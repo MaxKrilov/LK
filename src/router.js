@@ -40,7 +40,7 @@ export default new Router({
           component: DocumentPage
         },
         {
-          path: 'pay',
+          path: '/pay',
           component: PayPage
         },
         {

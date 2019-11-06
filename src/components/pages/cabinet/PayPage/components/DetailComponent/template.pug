@@ -1,13 +1,15 @@
+// Detail Component
+
 div(:class="`${pre}__item`")
-  div.d--flex(
+  div.d--flex.justify-content-between(
     :class="`${pre}__subtitle-row`"
     v-for= "item in items"
     :key="item.name"
   )
     div(:class="`${pre}__title`")
       | {{ item.name }}
-    div.align-items-start(:class="`${pre}__price`")
-      div(:class="`${pre}__pos`")
+    div.align-items-start
+      div.d--flex
         div(:class="`${pre}__title__value`")
           | {{ item.value }}&nbsp;
         div.rub(:class="`${pre}__title__unit`")

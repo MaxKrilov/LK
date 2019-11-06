@@ -1,22 +1,15 @@
 .pay-page {
-  max-width: 1440px;
   width: 100%;
   &__container-main {
-    width: 100%;
     min-width: 320px;
-    max-width: 1440px;
     margin-left: -16px;
-    margin-top: -6px;
     @include media-query((
-      width: (
-        sm: 480px,
-        md: 640px,
-        lg: 960px,
-      ),
       margin-top: (
-        sm: -13px,
-        md: -26px,
-        lg: -23px,
+        xs: -45px,
+        sm: -54px,
+        md: -46px,
+        lg: -40px,
+        xl: -42px,
       ),
       margin-left: (
         sm: -24px,
@@ -28,25 +21,34 @@
   }
   &__container {
     padding: 0 !important;
+    @include media-query((
+      max-width: (
+        xs: 480px !important,
+        sm: 640px !important,
+        md: 960px !important,
+        lg: 1200px !important,
+      )
+    ));
+
   }
   &__container-operation {
     padding: 0 !important;
     position: relative;
     left: -12px;
-    width: 352px !important;
+    width: 108% !important;
     @include media-query((
       left: (
-        md: -26px,
-        lg: -32px,
-        xl: -45px,
+        sm: 0,
+        md: -24px,
+        lg: 0px,
+        xl: 0px,
         xxl: 0px
       ),
       width: (
-        sm: 521px !important,
-        md: 652px !important,
-        lg: 912px !important,
-        xl: 866px !important,
-        xxl: 1083px !important
+        sm: 108% !important,
+        lg: 100% !important,
+        xl: 100% !important,
+        xxl: 112% !important
       ),
     ));
   }
@@ -62,10 +64,11 @@
     &__block2 {
       @include media-query((
         margin-left: (
-          sm: 26px !important,
+          sm: 40px !important,
           md: -20px !important,
-          lg: -10px !important,
-          xl: -28px !important
+          lg: 0px !important,
+          xl: -18px !important,
+          xxl: 0px !important
         ),
       ));
     }
@@ -87,12 +90,26 @@
     }
     &__bottom {
       @include media-query((
+        margin-top: (
+          xs: -7px,
+          sm: -7px,
+          md: 12px,
+          lg: -2px,
+          xl: 11px,
+          xxl: 15px,
+        ),
         margin-bottom: (
           sm: 22px !important,
           md: 32px !important,
           lg: 43px !important,
           xl: 23px !important,
         ),
+        max-width: (
+          md: 640px !important,
+          lg: 800px !important,
+          xl: 860px !important,
+          xxl: 953px !important,
+        )
       ));
     }
   }
@@ -258,53 +275,59 @@
       ),
       font-size: (
         md: 18px,
-        xxl: 20px,
+        xxl: 20px
       ),
       letter-spacing: (
-        md: -1px,
+        md: -1px
       )
     ));
   }
   &__card-row {
-    margin: 0 8px !important;
     @include media-query((
-      margin: (
-        sm: 0 12px !important,
+      margin-left: (
+        xs: 5.6vw !important,
+        sm: 4.4vw !important,
         md: 0 !important,
-        lg: 0 !important,
-        xl: 0 !important,
       ),
       padding-right: (
-        md: 48px !important,
-        lg: 44px !important,
-        xl: 180px !important,
-        xxl: 97px !important
+        md: 0
       )
-    ));
+  ));
   }
-  &__card-scale-left {
-    padding: 0 8px !important;
+  &__card-scale {
+    flex-basis: auto !important;
+    padding: 0 !important;
     @include media-query((
-      padding: (
-        sm: 0 8px 0 12px !important,
-        md: 0 8px 0 0 !important,
-        lg: 0 24px 0 0 !important,
-        xl: 0 16px 0 0 !important,
-        xxl: 0 32px 0 0 !important
+      width: (
+        xs: 42vw !important,
+        sm: 43vw !important,
+        md: 44vw !important,
+        lg: 22vw !important,
+        xl: 16vw !important,
+        xxl: 208px !important,
+      ),
+      max-width: (
+        md: 293px !important,
+        lg: 210px !important,
+        xl: 190px !important,
       )
     ));
-  }
-  &__card-scale-right {
-    padding: 0 8px !important;
-    @include media-query((
-      padding: (
-        sm: 0 12px 0 8px !important,
-        md: 0 0 0 8px !important,
-        lg: 0 24px 0 0 !important,
-        xl: 0 16px 0 0 !important,
-        xxl: 0 32px 0 0 !important
-      )
-    ));
+    &__left {
+      margin-right: 24px;
+      @include media-query((
+        margin-right: (
+          xs: 16px,
+          sm: 16px
+        )
+      ));
+    }
+    &__right-top {
+      @include media-query((
+        margin-right: (
+          md: 16px,
+        )
+      ));
+    }
   }
   &__welcome-title {
     width: 256px;
@@ -340,6 +363,13 @@
       ),
       letter-spacing: (md: 1)
     ));
+    &__block {
+      @include media-query((
+        margin-left: (
+          xxl: 87px !important
+        )
+      ));
+    }
     &__data {
       color: rgba(map_get($shades, 'black'), 0.8);
       @include media-query((
@@ -401,6 +431,7 @@
       ))
     }
     &__line {
+      cursor: pointer;
       border-bottom: 2px solid map_get($yellow, 'base');
     }
   }
@@ -443,19 +474,36 @@
   }
   &__service {
     &__title {
-      margin-bottom: 50px;
-      margin-left: 5px;
       @include media-query((
-        margin-left: (
-         sm: 10px,
+        margin: (
+          xs: 20px 0 51px -17px,
+          sm: 23px 0 65px -15px,
+          md: 36px 0 47px -15px,
+          lg: 43px 0 65px -15px,
+          xl: 26px 0 65px -15px,
+          xxl: 41px 0 60px -15px,
         ),
-        margin-bottom: (lg: 67px)
       ))
     }
     &__data {
       position: absolute;
-      font: 16px $fedra-demi;
-      margin-bottom: 24px;
+      font: 13px/18px $fedra-book;
+      letter-spacing: 0.25px;
+      color: map_get($shades, 'black');
+      @include media-query((
+        font-size: (lg: 16px),
+        line-height: (lg: 21px),
+        letter-spacing: (lg: -0.5px)
+      ));
+      @include media-query((
+        margin-top: (
+          xs: 16px,
+          sm: 23px,
+          md: 10px,
+          lg: 21px,
+          xl: 17px,
+        ),
+      ));
       &__dm {
         opacity: 0.5;
       }

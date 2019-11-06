@@ -23,7 +23,7 @@ export default {
     }
   },
   methods: {
-    subwork_internet (e) {
+    subwork_internet () {
       if (this.subtmpActive === true) {
         this.title = 'title-row'
         this.geo = 'geo'
@@ -33,6 +33,7 @@ export default {
         this.geo = 'geo-active'
         this.subarr_direct = 'corner_up'
       }
+
       this.subtmpActive = !this.subtmpActive
     }
   }

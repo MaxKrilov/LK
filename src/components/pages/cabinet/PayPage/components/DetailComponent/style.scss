@@ -1,29 +1,8 @@
 .detail-component {
-  &__price {
-    margin-left: 86px;
-    margin-top: -30px;
-    @include media-query((
-      margin-left: (sm: auto)
-    ));
-  }
-  &__pos {
-    display: flex;
-    position: relative;
-    left: -12px;
-    @include media-query((
-      left: (
-        sm: -22px,
-        md: -17px,
-        lg: -14px,
-        xl: 37px,
-      ),
-    ))
-  }
   &__item {
     background: map_get($gray, '2');
     padding-top: 20px;
     padding-bottom: 2px;
-    box-shadow: 4px 24px 3px -24px rgba(map_get($gray, '30'), 0.7);
     @include media-query((
       padding-top: (
         md: 18px,
@@ -34,10 +13,14 @@
     ))
   }
   &__title {
+    padding-right: 34px;
     font: 13px/18px $fedra-book !important;
     letter-spacing: 0.25px !important;
     color: rgba(map_get($shades, 'black'), 0.8);
     @include media-query((
+      padding-right: (
+        sm: 45px
+      ),
       font-size: (
         md: 14px !important,
         lg: 14px !important,
@@ -49,9 +32,6 @@
         xl: 21px !important
       ),
       letter-spacing: (md: -1px),
-      margin-top: (
-        sm: -30px
-      ),
     ));
     &__value {
       font: 15px/20px $fedra-book;
@@ -91,15 +71,15 @@
   &__subtitle-row {
     align-items: center;
     margin-top: 0;
-    margin-bottom: 26px;
-    padding: 0 12px 0 30px;
+    margin-bottom: 10px;
+    padding: 0 26px 0px 30px;
     height: 35px;
     @include media-query((
       padding: (
-        sm: 0 18px 0 60px,
-        md: 0 18px 0 75px,
-        lg: 0px 28px 0px 70px,
-        xl: 0px 76px 0px 76px
+        sm: 0 42px 0 30px,
+        md: 0 33px 0 64px,
+        lg: 0px 41px 0px 72px,
+        xl: 0px 38px 0px 76px
       ),
       margin-bottom: (
         sm: 2px

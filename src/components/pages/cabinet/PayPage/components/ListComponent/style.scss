@@ -59,9 +59,7 @@
     margin-left: auto;
     @include media-query((
       margin-left: (
-        sm: auto,
-        xl: 96px,
-        xxl: 308px
+        xs: auto,
       )
     ));
     &__unit {
@@ -107,10 +105,14 @@
     }
   }
   &__item {
+    cursor: pointer;
     background: map_get($gray, '2');
-    border-radius: 12px;
+    border-radius: 0;
     margin-bottom: -20px;
     @include media-query((
+      border-radius: (
+        lg: 12px,
+      ),
       margin-bottom: (
         sm: -32px
       ),
@@ -121,6 +123,7 @@
     ));
   }
   &__title-row {
+    position: relative;
     align-items: center;
     border-radius: 12px;
     padding: 16px 28px 16px 29px;
@@ -134,13 +137,8 @@
         md: 16px 38px 16px 18px,
         lg: 16px 46px 16px 25px,
         xl: 16px 43px 16px 29px,
-
       ),
-      margin-left: (
-        sm: 11px,
-        md: 0,
-        xl: 0px,
-      ),
+      margin-left: (sm: 0),
       height: (
         sm: 57px,
         md: 64px,
@@ -150,6 +148,7 @@
     ));
   }
   &__title-row-active {
+    position: relative;
     align-items: center;
     background: map_get($shades, 'white');
     padding: 16px 28px 16px 29px;
@@ -164,11 +163,7 @@
         lg: 16px 46px 16px 25px,
         xl: 16px 43px 16px 29px,
       ),
-      margin-left: (
-          sm: 11px,
-          md: 0,
-          xl: 0px
-        ),
+      margin-left: (sm: 0),
       height: (
         sm: 56px,
         md: 64px,
@@ -203,7 +198,7 @@
     font: 13px/18px $fedra-book;
     letter-spacing: 0.25px;
     color: rgba(map_get($shades, 'black'), 0.8);
-    width: 120px;
+    padding-right: 34px;
     @include media-query((
       font-size: (
         sm: 13px,
@@ -219,11 +214,6 @@
         sm: 0.25px,
         md: 0,
         xl: -0.5px,
-      ),
-      width: (
-        sm: 270px,
-        lg: 350px,
-        xl: 450px,
       ),
       margin-top: (
         md: 5px !important,
@@ -245,5 +235,22 @@
   }
   &__top {
     height: 10px;
+  }
+  &__delimiter {
+    position: relative;
+    margin-left: 30px;
+    margin-right: 33px;
+    height: 10px;
+    &__bottl {
+      border-bottom: 1px solid rgba(map_get($gray, '30'), 0.4);
+      @include media-query((
+        height: (sm: 30px)
+      ))
+    }
+    &__bott {
+      @include media-query((
+        height: (sm: 30px)
+      ))
+    }
   }
 }

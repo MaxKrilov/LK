@@ -31,7 +31,7 @@ h3 {
 }
 
 h4 {
-  font: 15px/20px $fedra-book;
+  font: 15px/20px $fedra-demi;
   letter-spacing: -0.35px;
   color: rgba(map_get($shades, 'black'), 0.8);
   @include media-query((

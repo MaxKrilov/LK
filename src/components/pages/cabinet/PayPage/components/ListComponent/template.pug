@@ -1,5 +1,7 @@
-div.mb-24(:class="`${pre}`")
-  div(:class="`${pre}__item`")
+// List Component
+
+div.mb-32(:class="`${pre}`")
+  div(:class="`${pre}__item`", @click="subwork_internet")
     div.d--flex(:class="`${pre}__${title}`")
       div(:class="`${pre}__icon`")
         er-icon(
@@ -14,15 +16,14 @@ div.mb-24(:class="`${pre}`")
           div(:class="`${pre}__value`")
             | {{ item.value }}&nbsp;
           div.rub(:class="`${pre}__price__unit`")
-          a(
-            :class="`${pre}__toggle--desktop`",
-            @click="subwork_internet"
-          )
+          a(:class="`${pre}__toggle--desktop`")
             er-icon(:name= "subarr_direct")
 
     er-slide-up-down(:active="subtmpActive")
       div(:class="`${pre}__top`")
       DetailComponent
-      div(:class="`${pre}__top`")
+      div(:class="`${pre}__delimiter ${pre}__delimiter__bottl`" v-if="index==='0'")
+      div(:class="`${pre}__delimiter ${pre}__delimiter__bott`" v-else)
+
 
 
