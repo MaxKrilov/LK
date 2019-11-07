@@ -1,6 +1,9 @@
 .lk-template {
   background: map_get($gray, '3');
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+
   &__content {
     width: 100%;
     max-width: 1208px;
@@ -14,5 +17,11 @@
                     xl: 146px 32px 0 316px
             )
     ))
+  }
+
+  .space-before-footer {
+    // Спец блок для отступа от контента до футера
+    // т.к. у футера уже есть margin-top: auto
+    padding-top: $padding-x32;
   }
 }

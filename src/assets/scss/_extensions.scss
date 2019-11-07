@@ -1,0 +1,133 @@
+%h1 {
+  font: 26px/32px $fedra-light;
+  letter-spacing: -1px;
+  color: rgba(map_get($shades, 'black'), 0.8);
+  @include media-query((
+    font-size:      (md: 30px, lg: 32px),
+    line-height:    (md: 37px, lg: 40px),
+    letter-spacing: (md: -2px)
+  ));
+}
+
+%h2 {
+  font: 22px/28px $fedra-demi;
+  letter-spacing: -1px;
+  color: rgba(map_get($shades, 'black'), 0.8);
+  @include media-query((
+    font-size:    (md: 24px, lg: 26px, xl: 28px),
+    line-height:  (md: 38px, lg: 32px, xl: 38px)
+  ));
+}
+
+%h3 {
+  font: 17px/23px $fedra-demi;
+  letter-spacing: -0.5px;
+  color: rgba(map_get($shades, 'black'), 0.8);
+  @include media-query((
+    font-size:      (md: 20px, xl: 24px),
+    line-height:    (md: 25px, xl: 30px),
+    letter-spacing: (md: -1px)
+  ));
+}
+
+%h4 {
+  font: 15px/20px $fedra-book;
+  letter-spacing: -0.35px;
+  color: rgba(map_get($shades, 'black'), 0.8);
+  @include media-query((
+    font-size:      (md: 18px),
+    line-height:    (md: 22px),
+    letter-spacing: (md: -1px)
+  ));
+}
+
+%caption1 {
+  font: 11px/16px $fedra-demi;
+  letter-spacing: 0.35px;
+  @include color-black(.5);
+
+  @include min-breakpoint('md') {
+    font-size: 13px;
+  }
+
+  @include min-breakpoint('xl') {
+    font-size: 14px;
+    line-height: 19px;
+  }
+}
+
+%caption2 {
+  font-size: 10px;
+  line-height: 12px;
+  letter-spacing: 0.5px;
+  @include color-black(.3);
+
+  @include min-breakpoint('md') {
+    font-size: 12px;
+    line-height: 16px;
+  }
+}
+
+%button-font {
+  font: 13px/16px $fedra-demi;
+  letter-spacing: 0.35px;
+
+  @include min-breakpoint('md') {
+    font-size: 14px;
+    line-height: 17px;
+  }
+
+  @include min-breakpoint('xl') {
+    font-size: 16px;
+    line-height: 20px;
+    letter-spacing: -0.5px;
+  }
+}
+
+%body-color {
+  @include color-black(.8);
+}
+
+%body-font {
+  font: 13px/18px $fedra-book;
+  letter-spacing: 0.25px;
+
+  @include min-breakpoint('md') {
+    font-size: 14px;
+    line-height: 19px;
+    letter-spacing: normal;
+  }
+
+  @include min-breakpoint('xl') {
+    font-size: 16px;
+    line-height: 21px;
+    letter-spacing: -0.5px;
+  }
+}
+
+%link-font {
+  @extend %body-font;
+  text-decoration: none;
+}
+
+%link {
+  @extend %link-font;
+  cursor: pointer;
+
+  text-decoration: none;
+  display: inline-block;
+  border-bottom: 1px solid;
+}
+
+
+%menu-head-font {
+  // в типографике макета 'menu head'
+  font: 18px/22px $fedra-demi;
+  letter-spacing: -0.5px;
+}
+
+%menu-item-font {
+  // в типографике макета 'menu'
+  font-size: 14px;
+  line-height: 120%;
+}

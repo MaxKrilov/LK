@@ -91,3 +91,9 @@ $named-colors: (
   'footer-bg': map_get($gray, '7'),
   'footer-menu-border': map_get($gray, '29')
 );
+
+$soc-icon-color: (
+  'fb': #5d93fd,
+  'vk': #2fa6ff,
+  'instagram': #e86dfd
+);

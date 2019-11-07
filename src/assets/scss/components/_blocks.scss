@@ -1,0 +1,164 @@
+@mixin content-padding($padding-direction: '') {
+  $padding: 'padding';
+
+  @if $padding-direction != '' {
+    $padding: 'padding-#{$padding-direction}';
+  }
+
+  #{$padding}: $padding-x4;
+
+
+  @include min-breakpoint('xxl') {
+    $p-size: $padding-x16;
+
+    @if #{$padding} == 'left' {
+      $p-size: $padding-x8;
+    } @else if #{$padding} == 'right' {
+      $p-size: $padding-x8;
+    }
+
+    #{$padding}: $p-size;
+  }
+
+  @include min-breakpoint('sm') {
+    #{$padding}: $padding-x6;
+  }
+
+  @include min-breakpoint('md') {
+    #{$padding}: $padding-x6;
+  }
+
+  @include min-breakpoint('lg') {
+    #{$padding}: $padding-x8;
+  }
+
+  @include min-breakpoint('xl') {
+    #{$padding}: $padding-x6;
+  }
+}
+
+.main-content {
+  /*
+    выравнивает основной контент относительно бокового меню
+    не должен иметь padding - за это отвечают вложенные блоки
+    например .main-content--padding
+
+    Пример:
+      div.main-content.main-content--padding
+    Или
+      div.main-content
+        div.main-content--padding
+
+    Для отступа от верхнего меню используется модификатор .main-content--top-menu-fix
+    Пример:
+      div.main-content.main-content--top-menu-fix
+  */
+  max-width: map_get($main-content-width, 'default');
+
+  margin: {
+    left: auto;
+    right: auto;
+  }
+
+  @include min-breakpoint('xl') {
+    margin-left: $left-menu-width;
+  }
+
+  @include max-breakpoint('xl') {
+    max-width: 100vw;
+  }
+
+  @include media-min-width( ($left-menu-width * 2) + $content-max-width ) {
+    margin: {
+      left: auto;
+      right: auto;
+    }
+  }
+
+  &--left-padding {
+    @include content-padding('left');
+  }
+
+  &--right-padding {
+    @include content-padding('right');
+  }
+
+  &--top-padding {
+    @include content-padding('top');
+  }
+
+  &--padding {
+    @include content-padding(); // all paddings
+  }
+
+  &--x-padding,
+  &--h-padding  // Horisontal padding
+  {
+    @include content-padding('left');
+    @include content-padding('right');
+  }
+
+  &--y-padding,
+  &--v-padding  // Vertical padding
+  {
+    @include content-padding('top');
+    @include content-padding('bottom');
+  }
+
+  &--top-menu-fix {
+    @include min-breakpoint('xs') {
+      margin-top: map_get($menu-top-height, 'default');
+    }
+
+    @include min-breakpoint('md') {
+      margin-top: map_get($menu-top-height, 'md');
+    }
+
+    @include min-breakpoint('lg') {
+      margin-top: map_get($menu-top-height, 'lg');
+    }
+
+    @include min-breakpoint('xl') {
+      margin-top: map_get($menu-top-height, 'xl');
+    }
+  }
+}
+
+.wide-content {
+  width: 100%;
+}
+
+.columns {
+  display: flex;
+  flex-direction: row;
+
+  .column {
+    flex-grow: 1;
+
+    &--left,
+    &--right {
+      flex-grow: 0;
+    }
+
+    &--left { // .column--left сохраняет место для отображения бокового меню
+      @include min-breakpoint('xl') {
+        width: $left-menu-width;
+        min-width: $left-menu-width;
+        flex-basis: $left-menu-width;
+      }
+
+      @include media-min-width( ($left-menu-width * 2) + $content-max-width ) {
+        max-width: calc( calc(100vw - #{$content-max-width}) / 2);
+        width: calc( calc(100vw - #{$content-max-width}) / 2);
+        flex-basis: calc( calc(100vw - #{$content-max-width}) / 2);
+      }
+    }
+
+    &--right {
+      @include media-max-width( ($left-menu-width * 2) + $content-max-width ) {
+        max-width: calc(100vw - #{$content-max-width} - #{$left-menu-width});
+        width: calc(100vw - #{$content-max-width} - #{$left-menu-width});
+      }
+    }
+  }
+}

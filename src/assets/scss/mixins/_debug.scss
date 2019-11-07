@@ -1,0 +1,27 @@
+@mixin debug-border($color: '') {
+  outline: 1px dashed #{$color};
+}
+
+.debug-border {
+  /*
+    Show debug border
+
+    Usage:
+      in SCSS:
+
+      .my-block {
+        @extend .debug-border;
+      }
+
+      in HTML:
+
+      <div class="my-block debug-border--red">
+        Some text
+      </div>
+  */
+  @include debug-border();
+
+  &--red {
+    @include debug-border(crimson);
+  }
+}
