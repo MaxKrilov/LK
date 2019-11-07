@@ -1,15 +1,16 @@
 <template>
-<svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <g filter="url(#filter_glow_vk)">
+
+<svg width="56" height="56" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <g filter="url(#filter_vk)">
     <path fill-rule="evenodd" clip-rule="evenodd"
-      d="M32 14H16C14.8954 14 14 14.8954 14 16V32C14 33.1046 14.8954 34 16 34H32C33.1046 34 34 33.1046 34 32V16C34 14.8954 33.1046 14 32 14ZM16 12C13.7909 12 12 13.7909 12 16V32C12 34.2091 13.7909 36 16 36H32C34.2091 36 36 34.2091 36 32V16C36 13.7909 34.2091 12 32 12H16Z"
+      d="M36 18H20C18.8954 18 18 18.8954 18 20V36C18 37.1046 18.8954 38 20 38H36C37.1046 38 38 37.1046 38 36V20C38 18.8954 37.1046 18 36 18ZM20 16C17.7909 16 16 17.7909 16 20V36C16 38.2091 17.7909 40 20 40H36C38.2091 40 40 38.2091 40 36V20C40 17.7909 38.2091 16 36 16H20Z"
       fill="white" />
     <path fill-rule="evenodd" clip-rule="evenodd"
-      d="M22 20H24.5C25.3284 20 26 20.6716 26 21.5C26 22.3284 25.3284 23 24.5 23H22V20ZM20 23V18H24.5C26.433 18 28 19.567 28 21.5C28 22.2566 27.7599 22.9571 27.3519 23.5295C28.3416 24.1478 29 25.247 29 26.5C29 28.433 27.433 30 25.5 30H20V25V23ZM22 25V28H25.5C26.3284 28 27 27.3284 27 26.5C27 25.6716 26.3284 25 25.5 25H24.5H22Z"
+      d="M26 24H28.5C29.3284 24 30 24.6716 30 25.5C30 26.3284 29.3284 27 28.5 27H26V24ZM24 27V22H28.5C30.433 22 32 23.567 32 25.5C32 26.2566 31.7599 26.9571 31.3519 27.5295C32.3416 28.1478 33 29.247 33 30.5C33 32.433 31.433 34 29.5 34H24V29V27ZM26 29V32H29.5C30.3284 32 31 31.3284 31 30.5C31 29.6716 30.3284 29 29.5 29H28.5H26Z"
       fill="white" />
   </g>
   <defs>
-    <filter id="filter_glow_vk" x="-4" y="-4" width="56" height="56" filterUnits="userSpaceOnUse"
+    <filter id="filter_vk" x="0" y="0" width="56" height="56" filterUnits="userSpaceOnUse"
       color-interpolation-filters="sRGB">
       <feFlood flood-opacity="0" result="BackgroundImageFix" />
       <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" />
