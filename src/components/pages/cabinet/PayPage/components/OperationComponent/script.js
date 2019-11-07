@@ -28,18 +28,11 @@ export default {
     ...mapGetters([SCREEN_WIDTH]),
     item () {
       return this.items[this.index]
-    }
+    },
   },
-  methods: {
-    active_internet (e) {
-      if (this.tmpActive_internet === true) {
-        this.iconBg = 'gray'
-        this.arr_direct = 'corner_down'
-      } else {
-        this.iconBg = 'yellow'
-        this.arr_direct = 'corner_up'
-      }
 
+  watch: {
+    SCREEN_WIDTH () {
       if (this[SCREEN_WIDTH] >= 960) {
         let marg = (this[SCREEN_WIDTH] > 2047) ? marg = '123px' :
           (this[SCREEN_WIDTH] > 1901) ? marg = '122px' :
@@ -52,9 +45,25 @@ export default {
                         (this[SCREEN_WIDTH] > 1161) ? marg = '119px' :
                           (this[SCREEN_WIDTH] > 1082) ? marg = '118px' :
                             (this[SCREEN_WIDTH] > 1013) ? marg = '117px' :
-        marg = '116px';
-        document.querySelector('.operation-component__list').style.marginLeft = marg
+                              marg = '116px';
+      } else {
+        marg = '0';
       }
+      document.querySelector('.operation-component__list').style.marginLeft = marg
+    }
+  },
+
+  methods: {
+    active_internet (e) {
+      if (this.tmpActive_internet === true) {
+        this.iconBg = 'gray'
+        this.arr_direct = 'corner_down'
+      } else {
+        this.iconBg = 'yellow'
+        this.arr_direct = 'corner_up'
+      }
+
+
 
       this.tmpActive_internet = !this.tmpActive_internet
     }
