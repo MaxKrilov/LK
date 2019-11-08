@@ -54,6 +54,7 @@
       div.main-content.main-content--top-menu-fix
   */
   max-width: map_get($main-content-width, 'default');
+  width: calc(100vw - #{$left-menu-width});
 
   margin: {
     left: auto;
@@ -66,6 +67,7 @@
 
   @include max-breakpoint('xl') {
     max-width: 100vw;
+    width: 100%;
   }
 
   @include media-min-width( ($left-menu-width * 2) + $content-max-width ) {
