@@ -28,26 +28,27 @@ export default {
     ...mapGetters([SCREEN_WIDTH]),
     item () {
       return this.items[this.index]
-    },
+    }
   },
 
   watch: {
     SCREEN_WIDTH () {
+      let marg
       if (this[SCREEN_WIDTH] >= 960) {
-        let marg = (this[SCREEN_WIDTH] > 2047) ? marg = '123px' :
-          (this[SCREEN_WIDTH] > 1901) ? marg = '122px' :
-            (this[SCREEN_WIDTH] > 1778) ? marg = '121px' :
-              (this[SCREEN_WIDTH] > 1673) ? marg = '120px' :
-                (this[SCREEN_WIDTH] > 1583) ? marg = '119px' :
-                  (this[SCREEN_WIDTH] > 1366) ? marg = '118px' :
-                    (this[SCREEN_WIDTH] > 1297) ? marg = '117px' :
-                      (this[SCREEN_WIDTH] > 1199) ? marg = '116px' :
-                        (this[SCREEN_WIDTH] > 1161) ? marg = '119px' :
-                          (this[SCREEN_WIDTH] > 1082) ? marg = '118px' :
-                            (this[SCREEN_WIDTH] > 1013) ? marg = '117px' :
-                              marg = '116px';
+        marg = (this[SCREEN_WIDTH] > 2047) ? marg = '123px'
+          : (this[SCREEN_WIDTH] > 1901) ? marg = '122px'
+            : (this[SCREEN_WIDTH] > 1778) ? marg = '121px'
+              : (this[SCREEN_WIDTH] > 1673) ? marg = '120px'
+                : (this[SCREEN_WIDTH] > 1583) ? marg = '119px'
+                  : (this[SCREEN_WIDTH] > 1366) ? marg = '118px'
+                    : (this[SCREEN_WIDTH] > 1297) ? marg = '117px'
+                      : (this[SCREEN_WIDTH] > 1199) ? marg = '116px'
+                        : (this[SCREEN_WIDTH] > 1161) ? marg = '119px'
+                          : (this[SCREEN_WIDTH] > 1082) ? marg = '118px'
+                            : (this[SCREEN_WIDTH] > 1013) ? marg = '117px'
+                              : marg = '116px'
       } else {
-        marg = '0';
+        marg = '0'
       }
       document.querySelector('.operation-component__list').style.marginLeft = marg
     }
@@ -62,8 +63,6 @@ export default {
         this.iconBg = 'yellow'
         this.arr_direct = 'corner_up'
       }
-
-
 
       this.tmpActive_internet = !this.tmpActive_internet
     }

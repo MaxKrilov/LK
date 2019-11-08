@@ -209,11 +209,11 @@
     }
     &__icon svg {
       display: none !important;
-      height: 200px !important;
+      height: 80px !important;
       position: absolute;
-      top: -30px;
+      //top: -30px;
       width: 200px !important;
-      left: 10px;
+      //left: 10px;
       color: map_get($yellow, 'other-6');
       @include media-query((
         top: (
@@ -234,12 +234,13 @@
     }
     svg {
       display: none !important;
-      height: 200px !important;
+      height: 100px !important;
       position: absolute;
       bottom: -76px;
       width: 200px !important;
       left: 30px;
       color: map_get($yellow, 'other-6');
+      transition: 2s ease;
       @include media-query((
         bottom: (
           sm: -80px !important,
@@ -257,6 +258,8 @@
     }
   }
   &__card-title {
+    position: relative;
+    z-index: 2;
     font-family: $fedra-book;
     font-size: 15px;
     width: 100px;
@@ -441,10 +444,34 @@
       box-shadow: none;
       .pay-page {
         &__card-hover svg {
+          position: relative;
           display: block !important;
+          animation: move 150ms linear;
+          animation-fill-mode: forwards;
+          @keyframes move {
+            0% { transform: none; }
+            100% {
+              transform: scale(2,2.5);
+              margin-left: -42px;
+              top: -20px;
+            }
+          }
+          z-index: 1;
         }
         &__card-hover__icon svg {
+          position: relative;
+          margin-top: -16px;
+          margin-left: -62px;
           display: block !important;
+          animation: move-icon 150ms linear;
+          animation-fill-mode: forwards;
+          @keyframes move-icon {
+            0% { transform: none; }
+            100% {
+              transform: scale(2.7,3.3);
+            }
+          }
+          z-index: 1;
         }
         &__icon-span {
           color: map_get($shades, 'white') !important;
