@@ -37,6 +37,8 @@
   }
 }
 
+$browser-scrollbar-width: 48px;
+
 .main-content {
   /*
     выравнивает основной контент относительно бокового меню
@@ -54,7 +56,7 @@
       div.main-content.main-content--top-menu-fix
   */
   max-width: map_get($main-content-width, 'default');
-  width: calc(100vw - #{$left-menu-width});
+  width: calc(100vw - #{$left-menu-width + $browser-scrollbar-width});
 
   margin: {
     left: auto;
