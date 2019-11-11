@@ -1,7 +1,7 @@
 export default {
-  name: 'detail-component',
+  name: 'detail-pay',
   data: () => ({
-    pre: 'detail-component',
+    pre: 'detail-pay',
     items: [
       { name: 'Абонентская плата за тариф «Бизнес Драйв 8»', value: '-2000' },
       { name: 'Увеличение скорости до 16 Мбитс/с', value: '-2000' },

@@ -1,15 +1,15 @@
-import ListComponent from '../ListComponent/index.vue'
+import ListAddress from '../ListAddress/index.vue'
 import { mapGetters } from 'vuex'
 import { SCREEN_WIDTH } from '@/store/actions/variables'
 
 export default {
-  name: 'operation-component',
+  name: 'operations',
   components: {
-    ListComponent
+    ListAddress
   },
   props: ['index'],
   data: () => ({
-    pre: 'operation-component',
+    pre: 'operations',
     items: [
       { icon: 'internet', date: '01.01.', year: '19', time: '00:01', title: 'Интернет', link: true, descr: 'Подключено 2 офиса', value: '-10 000' },
       { icon: 'watch', date: '01.01.', year: '19', time: '00:01', title: 'Видеонаблюдение', link: true, descr: 'Подключено 3 объекта', value: '-10 000' },
@@ -50,7 +50,7 @@ export default {
       } else {
         marg = '0'
       }
-      document.querySelector('.operation-component__list').style.marginLeft = marg
+      document.querySelector('.operations__list').style.marginLeft = marg
     }
   },
 

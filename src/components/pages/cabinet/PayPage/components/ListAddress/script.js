@@ -1,13 +1,13 @@
-import DetailComponent from '../DetailComponent/index.vue'
+import DetailPay from '../DetailPay/index.vue'
 
 export default {
-  name: 'list-component',
+  name: 'list-address',
   components: {
-    DetailComponent
+    DetailPay
   },
   props: ['index'],
   data: () => ({
-    pre: 'list-component',
+    pre: 'list-address',
     items: [
       { city: 'Москва,', street: 'пр-т Мира, д.40', value: '-6000' },
       { city: 'Москва,', street: 'улица Большая Бронная, дом 29', value: '-4000' }

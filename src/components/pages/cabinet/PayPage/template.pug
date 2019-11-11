@@ -14,145 +14,31 @@ div(:class="`${pre}`")
         | Платежи и начисления
 
     er-container(:class="`${pre}__container`")
-      er-row.justify-content.between(no-gutters :class="`${pre}__info__bottom`")
-        er-flex(
-          xs11 offset-xs1
-          sm5 offset-sm1
-          md4
-          lg4
-          xl3
-          :class="`${pre}__info__block1`"
-        )
-          div.caption2.mb-8(:class="`${pre}__balance-score`")
-            | На вашем счете:
-          div.mb-8.d--flex.align-items-center
-            div.caption
-              er-icon(name="wallet_auto")
-            h2.mr-8.ml-8 155 054,02
-            div.rub.mt-4(:class="`${pre}__balance-score__currency`")
-          div.caption2.mb-4(:class="`${pre}__balance-score__subtitle`")
-            | На счете недостаточно средств для списания
+      InfoScore
+      ButtonPay
+      er-flex(xs12)
+        h2(:class="`${pre}__service__title`")
+          | Последние операции
 
-            div(:class="`${pre}__balance-score__dop`")
-              div.mt-16.d--flex.align-items-center
-                div.caption2
-                  | Следующее списание:
-                div.caption
-                  div.body.mr-8.ml-8 01.02.17
-
-        er-flex(
-          xs11 offset-xs1
-          sm5 offset-sm1
-          lg8
-          md8
-          xl9
-          :class="`${pre}__info__block2`"
-        )
-          er-row(no-gutters)
-            er-flex(
-              xs12
-              md5 offset-md1
-              lg4 offset-lg1
-              xl4 offset-xl2
-              xxl4 offset-xxl1
-              :class="`${pre}__info__block2-1`"
-            )
-              div.mb-8(:class="`${pre}__balance-score`")
-                | Сумма к оплате:
-              div.mb-24.d--flex.align-items-center
-                div.caption
-                  er-icon(name="rouble")
-                h2.mr-8.ml-8(:class="`${pre}__balance-score__line`") 56 946,92
-                div.rub.mt-4(:class="`${pre}__balance-score__currency`")
-
-            er-flex(
-              xs12
-              md4 offset-md1
-              lg3 offset-lg2
-              xl3 offset-xl2
-              xxl3 offset-xxl2
-              :class="`${pre}__balance-score ${pre}__balance-score__block`"
-            )
-              er-row(no-gutters)
-                div.mb-8(:class="`${pre}__info__block3`")
-                  | Дата списания:
-                div.mb-8.d--flex.align-items-center
-                  div.caption(:class="`${pre}__balance-score__calendar`")
-                    er-icon(name="calendar")
-                  h2.ml-12(:class="`${pre}__balance-score__data`") 01.02.17
-
-      er-row(no-gutters)
-        er-flex(xs12 :class="`${pre}__fast-links`")
-          er-row.justify-content.between(:class="`${pre}__card-row`")
-            er-flex.mb-16(xs6 lg3 :class="`${pre}__card-scale ${pre}__card-scale__left`")
-              er-card(:class="`${pre}__card-hover__card-shadow`")
-                div(:class="`${pre}__card-height`")
-                  router-link(to="/pay" :class="`${pre}__card-shadow`")
-                    h4(:class="`${pre}__card-title`")
-                      | Оплата картой
-                      div.new
-                        div.caption.mb-4
-                          div.ml-auto.color--green-base(:class="`${pre}__icon-pos`")
-                            er-icon(name="ok" :class="`${pre}__icon-height`")
-                            span.caption.color--green-base(
-                              :class="`${pre}__icon-span`"
-                            ) Автоплатеж подключен
-                            er-icon(name="pay_card" :class="`${pre}__card-hover__icon`")
-                    div.d--flex.align-items-end.mt-auto
-                      div.ml-auto
-                        er-icon.color--yellow-base(name="pay_card")
-            er-flex.mb-16(xs6 lg3 :class="`${pre}__card-scale ${pre}__card-scale__right-top`")
-              er-card(:class="`${pre}__card-hover__card-shadow`")
-                div(:class="`${pre}__card-height`")
-                  router-link(to="/")
-                    h4(:class="`${pre}__card-title`")
-                      | Счет на<br> оплату
-                    div.d--flex.align-items-end.mt-auto
-                      div.ml-auto
-                        er-icon.color--yellow-base(name="score")
-                        er-icon(name="score" :class="`${pre}__card-hover`")
-
-            er-flex.mb-16(xs6 lg3 :class="`${pre}__card-scale ${pre}__card-scale__left`")
-              er-card(:class="`${pre}__card-hover__card-shadow`")
-                div(:class="`${pre}__card-height`")
-                  router-link(to="/")
-                    h4(:class="`${pre}__card-title`")
-                      | Обещанный платёж
-                    div.d--flex.align-items-end.mt-auto
-                      template(v-if="true")
-                        div.ml-auto
-                          er-icon.color--yellow-base(name="trast_pay")
-                          er-icon(name="trast_pay" :class="`${pre}__card-hover`")
-
-            er-flex.mb-16(xs6 lg3 :class="`${pre}__card-scale`")
-              er-card(:class="`${pre}__card-hover__card-shadow`")
-                div(:class="`${pre}__card-height`")
-                  router-link(to="/")
-                    h4(:class="`${pre}__card-title`")
-                      | Заявление об ошибке в платеже
-                    div.d--flex.align-items-end.mt-auto
-                      div.ml-auto
-                        er-icon.color--yellow-base(name="doc_edit")
-                        er-icon(name="doc_edit" :class="`${pre}__card-hover`")
+          ActionMonth(month="Январь")
+          ActionMonth(month="Февраль")
 
 
-            er-flex(xs12)
-              h2(:class="`${pre}__service__title`")
-                | Последние операции
-                div.d--flex.align-items-center(:class="`${pre}__service__data`")
-                  div.mr-8(:class="`${pre}__service__data__dm`")
-                    | Январь
-                  div(:class="`${pre}__service__data__yy`")
-                    | '17
+          //div.d--flex.align-items-center(:class="`${pre}__service__data`")
+          //  div.mr-8(:class="`${pre}__service__data__dm`")
+          //    | Январь
+          //  div(:class="`${pre}__service__data__yy`")
+          //    | '17
 
     er-container.mb-24(full :class="`${pre}__container-operation`")
-      er-row(no-gutters)
-        er-flex.mb-16(xs12)
-          OperationComponent(index=0)
-          OperationComponent(index=1)
-          OperationComponent(index=2)
-          OperationComponent(index=3)
-          OperationComponent(index=4)
+      //er-row(no-gutters)
+      //  er-flex.mb-16(xs12)
+      //    Operations(index=0)
+      //    Operations(index=1)
+      //    Operations(index=2)
+      //    Operations(index=3)
+      //    Operations(index=4)
+
       er-row.justify-content-between(
         no-gutters
         :class="`${pre}__button-group`"

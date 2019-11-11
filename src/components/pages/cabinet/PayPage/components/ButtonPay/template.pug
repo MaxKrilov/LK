@@ -1,0 +1,55 @@
+// Detail Component(:class="`${pre}__icon-pos`")
+
+er-row(no-gutters)
+  er-flex(xs12 :class="`${pre}__fast-links`")
+    er-row.justify-content.between(:class="`${pre}__card-row`")
+      er-flex.mb-16(xs6 lg3 :class="`${pre}__card-scale ${pre}__card-scale__left`")
+        er-card(:class="`${pre}__card-shadow`")
+          div(:class="`${pre}__card-height`")
+            router-link(to="/pay" :class="`${pre}__card-shadow`")
+              h4(:class="`${pre}__card-title`")
+                | Оплата картой
+                div.new
+                  div.caption.mb-4
+                    div.mt-16.ml-auto.color--green-base
+                      er-icon(name="ok" :class="`${pre}__icon-height`")
+                      span.caption.color--green-base(
+                      :class="`${pre}__icon-span`"
+                      ) Автоплатеж подключен
+              div.d--flex.align-items-end.mt-auto
+                div.ml-auto
+                  er-icon.color--yellow-base(name="pay_card" :class="`${pre}__card-icon`")
+      er-flex.mb-16(xs6 lg3 :class="`${pre}__card-scale ${pre}__card-scale__right-top`")
+        er-card(:class="`${pre}__card-shadow`")
+          div(:class="`${pre}__card-height`")
+            router-link(to="/")
+              h4(:class="`${pre}__card-title`")
+                | Счет на оплату
+              div.d--flex.align-items-end.mt-auto
+                div.ml-auto
+                  er-icon.color--yellow-base(name="score" :class="`${pre}__card-icon`")
+
+      er-flex.mb-16(xs6 lg3 :class="`${pre}__card-scale ${pre}__card-scale__left`")
+        er-card(:class="`${pre}__card-shadow`")
+          div(:class="`${pre}__card-height`")
+            router-link(to="/")
+              h4(:class="`${pre}__card-title`")
+                | Обещанный платёж
+              div.d--flex.align-items-end.mt-auto
+                template(v-if="true")
+                  div.ml-auto
+                    er-icon.color--yellow-base(name="trast_pay" :class="`${pre}__card-icon`")
+
+      er-flex.mb-16(xs6 lg3 :class="`${pre}__card-scale`")
+        er-card(:class="`${pre}__card-shadow`")
+          div(:class="`${pre}__card-height`")
+            router-link(to="/")
+              h4(:class="`${pre}__card-title`")
+                | Заявление об ошибке в платеже
+              div.d--flex.align-items-end.mt-auto
+                div.ml-auto
+                  er-icon.color--yellow-base(name="doc_edit" :class="`${pre}__card-icon`")
+
+
+
+
