@@ -35,11 +35,6 @@
       ),
     ));
   }
-  &__card-shadow:hover {
-    border-radius: 12px;
-    background: map_get($yellow, 'other-8');
-    box-shadow: -4px 5px 32px map_get($yellow, 'other-5') !important;
-  }
   &__card-title {
     position: relative;
     z-index: 2;
@@ -80,23 +75,6 @@
       )
     ));
   }
-  &__card-icon {
-    position: relative;
-    left: 0;
-    top: 0;
-    animation: movein 1500ms linear;
-    animation-fill-mode: forwards;
-    @keyframes movein {
-      0% {
-        transform: none;
-      }
-      100% {
-        transform: scale(1, 1);
-        //left: 0px;
-        //top: 0px;
-      }
-    }
-  }
   &__card-scale {
     flex-basis: auto !important;
     padding: 0 !important;
@@ -132,6 +110,11 @@
       ));
     }
   }
+  &__card-shadow:hover {
+    border-radius: 12px;
+    background: map_get($yellow, 'other-8');
+    box-shadow: -4px 5px 32px map_get($yellow, 'other-5') !important;
+  }
   &__fast-links {
     a {
       display: flex;
@@ -152,26 +135,24 @@
       .button-pay {
         &__card-icon {
           position: relative;
-          //color: #FFEE80 !important;
-
-          animation: moveout 150ms linear;
-          animation-fill-mode: forwards;
-
-          /*
-          -webkit-animation: moveout .5s;
-          animation: moveout .5s;
-          -webkit-animation-fill-mode: forwards;
-          animation-fill-mode: forwards;
-          */
-
-          @keyframes moveout {
-            0% {
-              transform: scale(8.8,12.4);
-            }
-            100% {
-              transform: scale(1, 1);
-            }
-          }
+          transition: 0.15s transform;
+          transform: scale(1, 1);
+          @include media-query((
+            left: (
+              xs: 11px,
+              sm: 20px,
+              md: 3px,
+              lg: -3px,
+              xl: 0,
+              xxl: 1px
+            ),
+            top: (
+              xs: 10px,
+              md: 2px,
+              lg: 1px,
+              xl: -2px
+            ),
+          ));
         }
       }
     }
@@ -181,14 +162,29 @@
         &__card-icon {
           position: relative;
           color: #FFEE80 !important;
-          animation: movel 150ms linear;
-          animation-fill-mode: forwards;
-          @keyframes movel {
-            0% { transform: none; }
-            100% {
-              transform: scale(6.2,9);
-            }
-          }
+          @include media-query((
+            left: (
+              xs: 58px,
+              sm: 49px,
+              md: 21px,
+              lg: 11px,
+              xl: 6px,
+              xxl: 51px,
+            ),
+            top: (
+              xs: 26px,
+              sm: 20px,
+              md: 30px,
+              lg: 26px,
+              xxl: 30px
+            ),
+            transform: (
+              xs: scale(8,8),
+              md: scale(6,7),
+              lg: scale(6,6.3),
+              xxl: scale(8,8),
+            )
+          ));
         }
         &__icon-span {
           color: map_get($shades, 'white') !important;

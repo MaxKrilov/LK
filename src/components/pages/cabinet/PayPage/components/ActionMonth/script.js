@@ -7,7 +7,6 @@ export default {
   },
   props: ['month'],
   data: () => ({
-    pre: 'action-month',
-
-  }),
+    pre: 'action-month'
+  })
 }

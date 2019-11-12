@@ -19,8 +19,7 @@ er-row(no-gutters)
           h4(:class="`${pre}__title`")
             | {{ item.title }}
             div(
-
-            v-if="item.link"
+              v-if="item.link"
               :class="`${pre}__toggle--desktop`"
             )
               er-icon(:name= "arr_direct")
@@ -51,6 +50,7 @@ er-row(no-gutters)
 
 
               //a {{ item.descr }}
+
             div(
               v-else
               :class="`${pre}__message`",
