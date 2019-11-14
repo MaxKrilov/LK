@@ -13,8 +13,8 @@ export default {
   data: () => ({
     model: 1
   }),
-  methods: {
-  },
+  methods: {},
+  created () {},
   mounted () {
     this.$store.commit(SCREEN_WIDTH, getScreenWidth())
     window.addEventListener('resize', () => {

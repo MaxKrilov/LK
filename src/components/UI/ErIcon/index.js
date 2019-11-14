@@ -22,11 +22,36 @@ export default {
     /**
      * Высота иконки
      */
-    height: [String, Number]
+    height: [String, Number],
+    /**
+     * Тень
+     * Задаётся в следующем формате
+     * {
+     *   shadowColor - цвет тени
+     *   shadowOffset: { x, y } - смещение тени
+     *   shadowRadius - радиус размытия
+     * }
+     */
+    shadow: {
+      type: Object,
+      default: () => ({})
+    }
   },
   watch: {
     name (val) {
       this.icon = require(`@/assets/icons/${val}.svg`)
+    }
+  },
+  computed: {
+    getStyleShadow () {
+      if (
+        Object.keys(this.shadow).length === 0 ||
+        (!this.shadow.shadowColor || !this.shadow.shadowOffset?.x || !this.shadow.shadowOffset?.y || !this.shadow.shadowRadius)
+      ) {
+        return null
+      }
+      return `
+      drop-shadow(${this.shadow.shadowOffset.x} ${this.shadow.shadowOffset.y} ${this.shadow.shadowRadius} ${this.shadow.shadowColor})`
     }
   },
   created () {
@@ -40,6 +65,7 @@ export default {
         attrs: {
           viewBox: this.icon.default.viewBox,
           width: this.width,
+          style: `filter: ${this.getStyleShadow}`,
           height: this.height
         }
       }, [

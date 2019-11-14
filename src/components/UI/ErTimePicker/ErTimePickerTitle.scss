@@ -1,0 +1,23 @@
+$time-picker-title-btn-height: 96px;
+$time-picker-title-btn-font-size: 48px;
+
+.er-time-picker-title {
+  display: flex;
+  line-height: 1;
+  justify-content: flex-end;
+  background-color: map_get($gray, '4');
+  padding: 0 16px;
+  &__time {
+    .er-picker__title__btn,
+    span {
+      display: inline-flex;
+      align-items: center;
+      height: $time-picker-title-btn-height;
+      font: $time-picker-title-btn-font-size $fedra-demi;
+      color: rgba(map_get($shades, 'black'), 0.5);
+    }
+    .er-picker__title__btn--active {
+      color: rgba(map_get($shades, 'black'), 0.8);
+    }
+  }
+}

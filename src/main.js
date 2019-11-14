@@ -11,6 +11,9 @@ import Vuebar from 'vuebar'
 // Подключение стилей
 import './assets/scss/main.scss'
 
+// Подключение полифиллов
+import './functions/polyfill'
+
 Vue.prototype.$api = new API()
 
 // Регистрация UI компонентов
@@ -35,6 +38,8 @@ Vue.prototype.$moment.locale('ru')
 
 // Кастомный скроллбар
 Vue.use(Vuebar)
+
+// На старых браузерах - редирект с предложением обновить
 
 new Vue({
   router,

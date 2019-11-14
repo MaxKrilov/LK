@@ -19,4 +19,13 @@
     transition: $primary-transition;
     width: 100%;
   }
+  &__required-label {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: map_get($yellow, 'base');
+    position: absolute;
+    left: 0;
+    top: -21px;
+  }
 }

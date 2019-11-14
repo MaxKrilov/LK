@@ -34,7 +34,8 @@ export default {
     format: {
       type: String,
       default: 'DD.MM.YYY'
-    }
+    },
+    isShowRequiredLabel: Boolean
   },
   computed: {
     valueForTextInput () {
@@ -69,7 +70,8 @@ export default {
           appendInnerIcon: 'calendar',
           autocomplete: 'off',
           readonly: true,
-          value: this.valueForTextInput
+          value: this.valueForTextInput,
+          isShowRequiredLabel: this.isShowRequiredLabel
         },
         on: props.on,
         ref: 'input'

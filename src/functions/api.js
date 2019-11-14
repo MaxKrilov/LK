@@ -149,6 +149,10 @@ export function API () {
   }
 }
 
+export function apiParallel (arrayAPI) {
+  return Promise.all(arrayAPI)
+}
+
 /**
  * API метод для обращения к API Dadata
  * @param options
