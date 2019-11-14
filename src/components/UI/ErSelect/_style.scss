@@ -62,7 +62,7 @@
         color: rgba(map_get($shades, 'black'), 0.5);
         cursor: pointer;
         svg {
-          width: 16px;
+          width: 16px !important;
         }
       }
       &__search {

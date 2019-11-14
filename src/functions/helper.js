@@ -393,3 +393,7 @@ export function getAllUrlParams (url) {
 }
 
 export const ucfirst = str => str.charAt(0).toUpperCase() + str.substr(1, str.length - 1)
+
+export const kebabCase = str => (str || '').replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase()
+
+export const createRange = length => Array.from({ length }, (v, k) => k)

@@ -270,7 +270,7 @@ export default {
       if (!this.hasWindow) {
         return 0
       }
-      return window.pageYOffset || document.documentElement.scrollLeft
+      return window.pageXOffset || document.documentElement.scrollLeft
     },
     getOffsetTop () {
       if (!this.hasWindow) {

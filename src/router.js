@@ -8,12 +8,20 @@ import LkTemplate from './components/templates/LkTemplate/index'
 import IndexPage from './components/pages/cabinet/IndexPage/index'
 // Страница документы
 import DocumentPage from './components/pages/cabinet/DocumentPage/index'
+// Поддержка
+// Шаблон поддержки
+import SupportTemplate from './components/templates/SupportTemplate'
+// Главная поддержки
+import SupportIndexPage from './components/pages/cabinet/SupportPages/IndexPage/index'
 
 // Цифровые продукты (от DMP)
 import DigitalProductsIndexPage from './components/pages/digital-products/IndexPage/index'
 
 // Создание клиента (для DMP)
 import DMPFormPage from './components/pages/dmp-form/index'
+
+// Страницы с ошибками
+import OldBrowserPage from './components/pages/errors/old-browsers'
 
 Vue.use(Router)
 
@@ -40,12 +48,26 @@ export default new Router({
         {
           path: 'digital-products',
           component: DigitalProductsIndexPage
+        },
+        {
+          path: 'support',
+          component: SupportTemplate,
+          children: [
+            {
+              path: '/',
+              component: SupportIndexPage
+            }
+          ]
         }
       ]
     },
     {
       path: '/create-client',
       component: DMPFormPage
+    },
+    {
+      path: '/old-browser',
+      component: OldBrowserPage
     }
   ]
 })

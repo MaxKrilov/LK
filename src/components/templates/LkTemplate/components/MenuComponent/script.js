@@ -1,8 +1,8 @@
 import { eachArray } from '@/functions/helper'
+import { mapGetters } from 'vuex'
 import { BREAKPOINT_XL } from '@/constants/breakpoint'
 import RightInfoPanelComponent from '../RightInfoPanelComponent/index.vue'
-import { mapGetters } from 'vuex'
-import { SCREEN_WIDTH } from '@/store/actions/variables'
+import { SCREEN_WIDTH } from '../../../../../store/actions/variables'
 
 export default {
   name: 'menu-component',
@@ -20,30 +20,28 @@ export default {
         icon: 'home',
         isOpen: false,
         subitem: [
-          { name: 'Профиль' },
-          { name: 'Платежи' },
-          { name: 'Документы' }
-        ]
-      },
-      {
-        name: 'Интернет',
-        icon: 'internet',
-        isOpen: false,
-        subitem: [
-          { name: 'Статистика' },
-          { name: 'Контент-фильтрация' },
-          { name: 'Скорость' }
+          { name: 'Поддержка' }
         ]
       }
+      // {
+      //   name: 'Интернет',
+      //   icon: 'internet',
+      //   isOpen: false,
+      //   subitem: [
+      //     { name: 'Статистика' },
+      //     { name: 'Контент-фильтрация' },
+      //     { name: 'Скорость' }
+      //   ]
+      // }
     ]
   }),
   computed: {
-    isOpenSubMenu () {
-      return !!this.menu.filter(item => item.isOpen).length
-    },
     ...mapGetters([
       SCREEN_WIDTH
     ]),
+    isOpenSubMenu () {
+      return !!this.menu.filter(item => item.isOpen).length
+    },
     isDesktop () {
       return this[SCREEN_WIDTH] >= BREAKPOINT_XL
     }

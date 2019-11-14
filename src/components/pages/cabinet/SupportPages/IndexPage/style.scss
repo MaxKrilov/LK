@@ -1,0 +1,206 @@
+.support-page {
+  width: 100%;
+  overflow-x: hidden;
+  .b-request {
+    $b-request: &;
+    width: calc(100% + 64px);
+    margin: 0 -32px;
+    padding: 1px;
+    background: linear-gradient(to top, map_get($gray, '26') 28.65%, map_get($shades, 'white') 90.63%);
+    box-shadow: 0 2px 12px rgba(map_get($shades, 'black'), 0.1),
+                0 2px 2px rgba(map_get($shades, 'black'), 0.05);
+    border-radius: 12px;
+    @include min-breakpoint('lg') {
+      width: 100%;
+      margin: 0;
+    }
+    &__content {
+      width: 100%;
+      height: 100%;
+      border-radius: inherit;
+      background-color: map_get($gray, '9');
+      //padding: 0 (16px - 1px); // -1px для избежания белой полоски по бокам
+    }
+    &__head {
+      padding: 24px 32px;
+      h2,
+      .filter--mobile {
+        margin-bottom: 16px;
+        @include min-breakpoint('sm') {
+          margin-bottom: 0;
+        }
+      }
+      .filter {
+        &--mobile {
+          text-align: right;
+          font: 11px/16px $fedra-demi;
+          letter-spacing: 0.35px;
+          @include color-black(0.5);
+          text-decoration: underline;
+          text-decoration-style: dashed;
+          user-select: none;
+          cursor: pointer;
+          @include min-breakpoint('lg') {
+            display: none;
+          }
+        }
+        &--desktop {
+          display: none;
+          text-align: right;
+          @include min-breakpoint('lg') {
+            display: block;
+          }
+          a {
+            display: inline-block;
+            position: relative;
+            font: 13px/16px $fedra-demi;
+            @include color-black(0.5);
+            text-decoration: underline;
+            text-decoration-style: dashed;
+            transition: $primary-transition;
+            cursor: pointer;
+            &::before {
+              content: attr(data-count);
+              display: block;
+              width: 24px;
+              height: 24px;
+              border-radius: 50%;
+              position: absolute;
+              left: -33px;
+              top: -4px;
+              background-color: map_get($gray, '4');
+              font: 12px/24px $fedra-demi;
+              text-align: center;
+              transition: inherit;
+            }
+            &:hover {
+              @include color-black(0.8);
+            }
+            &.active {
+              @include color-black(1);
+              text-decoration-color: map_get($yellow, 'base');
+              &::before {
+                background-color: map_get($yellow, 'base');
+              }
+            }
+          }
+        }
+      }
+      .er-select {
+        .er-messages,
+        .er-dialog__container {
+          display: none !important; // Используется для фильтрации
+        }
+      }
+    }
+    &__thead {
+      width: 100%;
+      height: 32px;
+      background-color: map_get($gray, '4');
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+    }
+    &__thead-item {
+      a {
+        cursor: pointer;
+        user-select: none;
+      }
+      .title {
+        display: inline-block;
+        font: 10px/12px $fedra-demi;
+        letter-spacing: 0.5px;
+        @include color-black(0.5);
+        margin-right: 4px;
+        transition: $primary-transition;
+      }
+      .icon {
+        display: inline-block;
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        text-align: center;
+        line-height: 24px;
+        transition: $primary-transition;
+        @include color-black(0.5);
+        i {
+          vertical-align: middle;
+        }
+        svg {
+          width: 16px;
+          transition: $primary-transition;
+        }
+      }
+      a:hover,
+      &.sort {
+        .title,
+        .icon {
+          @include color-black(0.8)
+        }
+      }
+      &.sort {
+        .icon {
+          background-color: map_get($yellow, 'base');
+        }
+        &.desc {
+          svg {
+            transform: rotate(180deg);
+          }
+        }
+      }
+      &.request,
+      &.address,
+      &.status,
+      &.date {
+        width: 100%;
+      }
+      &.request {
+        display: none;
+        @include min-breakpoint('md') {
+          max-width: 25%;
+          flex-basis: 25%;
+          display: block;
+        }
+        @include min-breakpoint('lg') {
+          max-width: 20%;
+          flex-basis: 20%;
+        }
+      }
+      &.address {
+        max-width: 50%;
+        flex-basis: 50%;
+        //@include min-breakpoint('md') {
+        //  max-width: 50%;
+        //  flex-basis: 50%;
+        //}
+        @include min-breakpoint('lg') {
+          max-width: 40%;
+          flex-basis: 40%;
+        }
+      }
+      &.status {
+        max-width: 50%;
+        flex-basis: 50%;
+        text-align: right;
+        @include min-breakpoint('md') {
+          text-align: left;
+          max-width: 25%;
+          flex-basis: 25%;
+        }
+        @include min-breakpoint('lg') {
+          text-align: left;
+          max-width: 20%;
+          flex-basis: 20%;
+        }
+      }
+      &.date {
+        display: none;
+        @include min-breakpoint('lg') {
+          display: block;
+          max-width: 20%;
+          flex-basis: 20%;
+        }
+      }
+    }
+  }
+}

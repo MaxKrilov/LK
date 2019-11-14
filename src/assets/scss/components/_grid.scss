@@ -63,6 +63,11 @@
           };
         }
       }
+      @for $i from 1 through $grid-columns {
+        &.order-#{$breakpoint}#{$i} {
+          order: $i;
+        }
+      }
     }
   }
 }

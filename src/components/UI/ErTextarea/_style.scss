@@ -2,6 +2,13 @@
   &.er-input {
     height: 100%;
   }
+  > .er-input__control > .er-input__slot {
+    min-height: 40px;
+    height: 100% !important;
+    @include media-query((
+      min-height: (lg: 48px)
+    ));
+  }
   .er-input {
     &__control,
     &__slot {
@@ -12,7 +19,18 @@
     height: 100%;
     padding: 16px 0;
   }
+  &__wrapper {
+    height: 100%;
+    overflow: hidden;
+  }
   textarea {
     resize: none;
+    min-height: 40px;
+    height: auto;
+    overflow: hidden;
+    padding-left: 6px;
+    @include media-query((
+      min-height: (lg: 48px)
+    ))
   }
 }
