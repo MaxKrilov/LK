@@ -1,11 +1,13 @@
-import Vue from 'vue'
+import Vue, { DirectiveFunction, DirectiveOptions } from 'vue'
 import router from './router'
 import store from './store'
+// @ts-ignore
 import App from './App'
 import { eachArray, eachObject } from './functions/helper'
 import { API } from './functions/api'
 import Directives from './directives'
 import moment from 'moment'
+// @ts-ignore
 import Vuebar from 'vuebar'
 
 // Подключение стилей
@@ -18,14 +20,14 @@ Vue.prototype.$api = new API()
 
 // Регистрация UI компонентов
 const requireComponent = require.context('./components/UI', true, /Er[A-Z]\w+\/index\.(vue|js)$/)
-eachArray(requireComponent.keys(), fileName => {
+eachArray(requireComponent.keys(), (fileName: string) => {
   const componentConfig = requireComponent(fileName)
   const componentName = fileName.replace(/^\.\/(.*)\/index\.\w+$/, '$1')
   Vue.component(componentName, componentConfig.default || componentConfig)
 })
 
 // Регистрация директив
-eachObject(Directives, (config, directiveName) => {
+eachObject(Directives, (config: DirectiveOptions | DirectiveFunction, directiveName: string) => {
   Vue.directive(directiveName, config)
 })
 

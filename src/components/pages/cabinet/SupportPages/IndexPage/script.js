@@ -1,6 +1,6 @@
 import { Vue, Component } from 'vue-property-decorator'
 import CardInstructionsComponent from '../blocks/CardInstructionsComponent'
-import SlideUpDownWithTitleComponent from '../blocks/SlideUpDownWithTitleComponent'
+import SlideUpDownWithTitleComponent from '../blocks/SlideUpDownWithTitleComponent/index'
 import RequestItemComponent from '../blocks/RequestItemComponent/index'
 
 const TYPE_FILTER_REQUEST_ALL = 'all'
