@@ -8,8 +8,12 @@ import LkTemplate from './components/templates/LkTemplate/index'
 import IndexPage from './components/pages/cabinet/IndexPage/index'
 // Страница документы
 import DocumentPage from './components/pages/cabinet/DocumentPage/index'
+
 // Страница платежи
 import PayPage from './components/pages/cabinet/PayPage/index'
+
+// Страница история платежей
+import HistoryPay from './components/pages/cabinet/PayPage/HistoryPay/index'
 
 // Цифровые продукты (от DMP)
 import DigitalProductsIndexPage from './components/pages/digital-products/IndexPage/index'
@@ -40,8 +44,12 @@ export default new Router({
           component: DocumentPage
         },
         {
-          path: '/pay',
+          path: 'pay',
           component: PayPage
+        },
+        {
+          path: '/history-pay',
+          component: HistoryPay
         },
         {
           path: 'digital-products',

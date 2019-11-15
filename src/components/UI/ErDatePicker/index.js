@@ -14,11 +14,11 @@ export default {
     isMobile: false,
     tag: 'er-menu', // todo change on er-menu
     isOpenDialog: false,
-    typeOfCalendar: 'calendar',
+    typeOfCalendar: 'report',
     /**
      * @param {Date}
      */
-    internalValue: null
+    internalValue: '01.01.2019' //null
   }),
   props: {
     value: null,
@@ -33,7 +33,7 @@ export default {
     },
     format: {
       type: String,
-      default: 'DD.MM.YYY'
+      default: 'DD.MM.YY'
     }
   },
   computed: {
@@ -78,33 +78,35 @@ export default {
     generateTextSlider () {
       return this.$createElement('div', {
         staticClass: `${this.pre}__head__slider`
-      }, [
-        this.$createElement('div',
-          { staticClass: `${this.pre}__head__slider-item` },
-          [
-            this.$createElement('a', {
-              attrs: {
-                'data-type': 'calendar'
-              },
-              on: {
-                click: this.onChangeTypeCalendar
-              }
-            }, 'Произвольный период')
-          ]
-        ),
-        this._.isArray(this.internalValue) && this.$createElement('div',
-          { staticClass: `${this.pre}__head__slider-item` },
-          [
-            this.$createElement('a', {
-              attrs: {
-                'data-type': 'report'
-              },
-              on: {
-                click: this.onChangeTypeCalendar
-              }
-            }, 'Отчетный период')
-          ]
-        )
+      },
+        [
+          // this._.isArray(this.internalValue) && this.$createElement('div',
+          this.$createElement('div',
+            { staticClass: `${this.pre}__head__slider-item` },
+            [
+              this.$createElement('a', {
+                attrs: {
+                  'data-type': 'report'
+                },
+                on: {
+                  click: this.onChangeTypeCalendar
+                }
+              }, 'Отчетный период')
+            ]
+          ),
+          this.$createElement('div',
+            { staticClass: `${this.pre}__head__slider-item` },
+            [
+              this.$createElement('a', {
+                attrs: {
+                  'data-type': 'calendar'
+                },
+                on: {
+                  click: this.onChangeTypeCalendar
+                }
+              }, 'Произвольный период')
+            ]
+          )
       ])
     },
     generateDate (date) {
@@ -136,14 +138,16 @@ export default {
     },
     generateHeadTitleForReport () {
       let number, period, year
+/*
       if (this._.head(this.internalValue).getFullYear() !== this._.last(this.internalValue).getFullYear()) {
         return this.generateHeadTitleForCalendar()
       }
-      year = this._.head(this.internalValue).getFullYear()
-      const dayBegin = this._.head(this.internalValue).getDate()
-      const dayEnd = this._.last(this.internalValue).getDate()
-      const monthBegin = this._.head(this.internalValue).getMonth()
-      const monthEnd = this._.last(this.internalValue).getMonth()
+*/
+      year = '2019'; //this._.head(this.internalValue).getFullYear()
+      const dayBegin = '15'; //this._.head(this.internalValue).getDate()
+      const dayEnd = ''; '20'; //this._.last(this.internalValue).getDate()
+      const monthBegin = '01'; //this._.head(this.internalValue).getMonth()
+      const monthEnd = '03'; //this._.last(this.internalValue).getMonth()
       if (dayBegin !== 1) {
         return this.generateHeadTitleForCalendar()
       }

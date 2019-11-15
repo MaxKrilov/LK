@@ -1,0 +1,59 @@
+// Filters Pay
+
+div(:class="`${pre}__container`")
+  //ErContractFilter
+  er-row.justify-content.between(no-gutters :class="`${pre}__row`")
+    er-flex.pr-28(xs2)
+      er-select(
+        :placeholder="label",
+        :items="items1",
+        @input="val"
+        :class="`${pre}__items1`"
+      )
+    er-flex.pr-28(xs3 @click="vistitle" v-if="service" )
+      div.caption2(:class="`${pre}__items2-title ${pre}__items2-title__${vis}`")
+        | Услуга
+      er-select(
+        :placeholder="label2",
+        :items="items21",
+        @input="val1"
+      )
+    er-flex.pr-28(xs3 @click="vistitle" v-else)
+      div.caption2(:class="`${pre}__items2-title ${pre}__items2-title__${vis}`")
+        | Город
+      er-select(
+      :placeholder="label21",
+      :items="items22",
+      @input="val21"
+      )
+    er-flex.pr-28(xs3)
+      er-filter-group(title="Период")
+        er-date-picker(
+          format="DD.MM.YY",
+          @input="dat",
+          v-model="valu"
+
+        )
+
+    er-flex(xs3 @click="vistitle4")
+      div.caption2(:class="`${pre}__items4-title ${pre}__items4-title__${vis4}`")
+        | Тип операции
+      er-select(
+        :placeholder="label4",
+        :items="items4",
+        @input="val4",
+      )
+
+
+
+
+    //er-flex.pr-28(xs3)
+    //  div.caption2
+    //    | Тип операции
+    //  er-select(
+    //    placeholder="Списание",
+    //  )
+
+    er-flex.d--flex.align-items-center(xs1)
+      er-filter-close(@click="isFiltersVisible=false")
+
