@@ -1,74 +1,85 @@
-import ErContractFilter from '../ErContractFilter'
-import ErFilterGroup from '../ErFilterGroup'
 import ErFilterClose from '../ErFilterClose'
 
 export default {
   name: 'filters-pay',
   data: () => ({
     pre: 'filters-pay',
-    items1: ['По услуге', 'По адресу'],
-    items21: [
+    typeFind: ['По услуге', 'По адресу'],
+    services: [
       'Все услуги',
       'Интернет',
       'Видеонаблюдение',
       'Wi-Fi для бизнеса',
       'Антивирусы'
     ],
-    items22: ['Абакан', 'Москва', 'Санкт-Петербург'],
-    items4: ['Списание', 'Начисление'],
-/*
-    itt: [
-      new Date("2017-01-26"),
-      new Date("2018-01-15")
-    ],
-*/
-    label: 'По услуге',
-    label2: 'Все услуги',
-    label21: 'Абакан',
-    label4: 'Списание',
-    vis: 'visblock',
-    vis4: 'visblock',
+    cities: ['Все города','Абакан', 'Москва', 'Санкт-Петербург'],
+    typePay: ['Все платежи', 'Списание', 'Начисление'],
+    typeFindLabel: 'По услуге',
+    servicesLabel: 'Все услуги',
+    cityLabel: 'Все города',
+    typePayLabel: 'Все платежи',
+    visService: 'visBlock',
+    visTypePay: 'visBlock',
     service: true,
-    valu: "2017-01-26"
+    period: ['2019-01-01', '2019-03-31'],
+    isFiltersVisible: true,
+    isCloseService: true,
+    isCloseTypePay: true,
+    date: '1-й квартал',
+    year: "'19",
+    topTypePay: "initial"
   }),
   components: {
-    ErContractFilter,
-    ErFilterGroup,
     ErFilterClose
   },
   methods: {
-    val (item) {
-      this.label = item
-      this.service =  item === "По услуге" ? true : false
+    closeService () {
+      this.isCloseService = false
     },
-    val1 (item2) {
-      this.label2 = item2
-      this.vis = 'visblock'
+    closeTypePay () {
+      this.isCloseTypePay = false
     },
-    val21 (item2) {
-      this.label21 = item2
-      this.vis = 'visblock'
+    typeFindValue (item) {
+      this.typeFindLabel = item
+      this.service = item === 'По услуге'
+      this.isCloseService = true
     },
-    val4 (item4) {
-      this.label4 = item4
-      this.vis4 = 'visblock4'
+    servicesValue (item) {
+      this.servicesLabel = item
+      this.visService = 'visBlock'
+      this.isCloseService = true
     },
-    vistitle () {
-      this.vis = 'visnone'
+    citiesValue (item) {
+      this.cityLabel = item
+      this.visService = 'visBlock'
+      this.isCloseService = true
     },
-    vistitle4 () {
-      this.vis4 = 'visnone4'
+    visTitleService () {
+      this.visService = 'visNone'
     },
+    typePayValue (item) {
+      this.typePayLabel = item
+      this.visTypePay = 'visBlock'
+      this.topTypePay = 'active'
+      this.isCloseTypePay = true
+    },
+    visTitleTypePay () {
+      this.visTypePay = 'visNone'
+      this.topTypePay = 'initial'
+    },
+/*
     dat (date) {
-      console.log('date ->', date)
-      let dayOfMonth = date.getDate();
-      let month = date.getMonth() + 1;
-      let year = '2019';
-      let dd = `${year}-${month}-${dayOfMonth}`
-      // console.log(dd)
-      // dd=this.itt
-      this.valu = dd
+      let dayOfMonth = date.getDate()
+      let month = date.getMonth() + 1
+      let year = '2019'
+      this.period = `${year}-${month}-${dayOfMonth}`
     },
-
+*/
+    dateName (payload) {
+      this.date = payload
+    },
+    yearName (payload) {
+      this.year = "'" + payload
+    }
   }
 }

@@ -12,7 +12,7 @@ export default {
   }),
   methods: {
     paypage () {
-      this.$router.push('/lk/pay');
+      this.$router.push('/lk/pay')
     }
   }
 

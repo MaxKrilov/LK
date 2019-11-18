@@ -1,7 +1,9 @@
 .filters-pay {
   &__container {
     position: relative;
-    padding: 40px 0;
+    padding: 16px 13px 24px 0;
+    width: 77.5vw;
+    //padding-right: 13px;
     background: #ffffff;
     @include media-query((
       left: (
@@ -17,176 +19,93 @@
         lg: 1200px !important,
       )
     ));
+  }
+  &__typeFind {
+    margin-top: 23px;
+    padding-right: 7px;
+  }
+  &__services {
+    margin-left: 23px;
+    padding-right: 7px;
+    &__title {
+      font: 12px/16px $fedra-demi !important;
+      opacity: 0.3;
+      margin-bottom: 7px;
+      &__visBlock {
+        visibility: visible;
+      }
+      &__visNone {
+        visibility: hidden;
+      }
+    }
+  }
+  &__period {
+    margin-left: 30px;
+    padding-right: 7px;
+    &__title {
+      font: 12px/16px $fedra-demi !important;
+      opacity: 0.3;
+      margin-bottom: 7px;
+    }
+  }
+  &__typePay {
+    margin-left: 30px;
+    &__title {
+      font: 12px/16px $fedra-demi !important;
+      color: map_get($shades, 'black') !important;
+      opacity: 0.3;
+      margin-bottom: 7px;
+      &__visBlock {
+        visibility: visible;
+      }
+      &__visNone {
+        visibility: hidden;
+      }
+    }
+  }
+  &__close-filter {
+    max-width: 5% !important;
+    top: 35px;
+    margin-left: 16px;
+  }
+  &__close svg {
+    cursor: pointer;
+    width: 16px !important;
+    opacity: 0.3;
+    margin-left: 4px;
+    padding-left: 0 !important;
+  }
+  &__infoFilter {
+    display: inline-block;
+    font: 18px/23px $fedra-demi !important;
+    letter-spacing: -1px;
+    opacity: 0.8;
+    height: 26px;
+    border-bottom: 1px map_get($shades, 'black') dashed;
+    &__date {
+      opacity: 0.8;
+    }
+    &__year {
+      opacity: 0.5;
+      margin-left: 4px;
+    }
+  }
+}
+.er-text-field__slot  {
+  & label {
+    font: 16px/21px $fedra-book !important;
+    color: rgba(map_get($shades, 'black'), 0.8) !important;
+    letter-spacing: -0.5px;
+    bottom: 0;
+    top: 0;
+    cursor: pointer;
+  }
+  & input {
+    font: 16px/21px $fedra-book !important;
+    color: map_get($shades, 'black') !important;
+    letter-spacing: -0.5px;
+    bottom: 0;
+    cursor: pointer;
 
   }
-  &__items2-title {
-    &__visblock {
-      display: block;
-    }
-    &__visnone {
-      display: none;
-    }
-  }
-  &__items4-title {
-    &__visblock4 {
-      display: block;
-    }
-    &__visnone4 {
-      display: none;
-    }
-  }
-  /*
-  &__info {
-    &__block1 {
-      @include media-query((
-        margin-left: (
-          sm: 25px !important,
-          md: 0 !important
-        ),
-      ));
-    }
-    &__block2 {
-      @include media-query((
-        margin-left: (
-          sm: 40px !important,
-          md: -20px !important,
-          lg: 0px !important,
-          xl: -18px !important,
-          xxl: 0px !important
-        ),
-      ));
-    }
-    &__block3 {
-      @include media-query((
-        margin-top: (
-          sm: -13px !important,
-          md: 0px !important,
-        ),
-      ));
-    }
-    &__block2-1 {
-      @include media-query((
-        padding-left: (
-          xl: 18px !important,
-          xxl: 23px !important
-        ),
-      ));
-    }
-    &__bottom {
-      @include media-query((
-        margin-top: (
-          xs: -7px,
-          sm: -7px,
-          md: 12px,
-          lg: -2px,
-          xl: 11px,
-          xxl: 15px,
-        ),
-        margin-bottom: (
-          sm: 22px !important,
-          md: 32px !important,
-          lg: 43px !important,
-          xl: 23px !important,
-        ),
-        max-width: (
-          md: 640px !important,
-          lg: 800px !important,
-          xl: 860px !important,
-          xxl: 953px !important,
-        )
-      ));
-    }
-  }
-  &__balance-score {
-    display: none;
-    font: 10px $fedra-demi !important;
-    line-height: 12px;
-    letter-spacing: 0.5px;
-    color: rgba(map_get($shades, 'black'), 0.5);
-    @include media-query((
-      display: (sm: block),
-      font-size: (
-        md: 12px !important,
-        lg: 13px !important,
-        xl: 14px !important
-      ),
-      line-height: (
-        md: 16px !important,
-        xl: 19px !important
-      ),
-      letter-spacing: (md: 1)
-    ));
-    &__block {
-      @include media-query((
-        margin-left: (
-          xxl: 87px !important
-        )
-      ));
-    }
-    &__data {
-      color: rgba(map_get($shades, 'black'), 0.8);
-      @include media-query((
-        font-size: (
-          sm: 13px !important,
-          md: 24px !important,
-          lg: 26px !important,
-          xl: 28px !important,
-          xxl: 30px !important
-        ),
-        line-height: (
-          sm: 18px !important,
-          md: 30px !important,
-          lg: 32px !important,
-          xl: 38px !important
-        ),
-        letter-spacing: (
-          sm: 0.25px,
-          md: -1px
-        ),
-        margin-top: (
-          sm: -17px !important,
-          md: 0 !important,
-        ),
-        margin-left: (
-          sm: -40px !important,
-          md: 8px !important,
-        )
-      ));
-    }
-    &__calendar {
-      display: none;
-      @include media-query((
-        display: (md: block)
-      ));
-    }
-    &__dop {
-      display: block;
-      @include media-query((
-        display: (sm: none)
-      ));
-    }
-    &__subtitle {
-      font: 12px/16px $fedra-demi;
-      color: map_get($red, 'base') !important;
-      opacity: 1;
-      @include media-query((
-        font-size: (md: 12px !important),
-        line-height: (md: 16px !important),
-      ));
-    }
-    &__currency {
-      font: 14px $fedra-book;
-      opacity: 0.5;
-      @include media-query((
-        font-size: (
-          xl: 16px !important,
-        ),
-      ))
-    }
-    &__line {
-      cursor: pointer;
-      border-bottom: 2px solid map_get($yellow, 'base');
-    }
-  }
-  */
 }
