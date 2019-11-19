@@ -56,6 +56,12 @@ export default {
             url: '/lk/speed'
           }
         ]
+      },
+      {
+        name: 'Облачная телефония',
+        icon: 'cloud_telephone',
+        isOpen: false,
+        subitem: [{ name: 'Портал ОАТС', url: '/lk/oats' }]
       }
       // {
       //   name: 'Интернет',

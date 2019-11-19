@@ -1,0 +1,216 @@
+.promo-component {
+  &__title {
+    align-items: center;
+    @include media-query(
+      (
+        display: (
+          sm: flex
+        ),
+        justify-content: (
+          sm: space-between
+        ),
+        align-items: (
+          sm: baseline
+        )
+      )
+    );
+    h2 {
+      white-space: nowrap;
+      padding-bottom: $padding-x2;
+    }
+  }
+  &__banner {
+    width: 448px;
+    padding: $padding-x6 0;
+    @include media-query(
+      (
+        width: (
+          sm: 430px,
+          md: 592px,
+          lg: 896px,
+          xl: 860px
+        ),
+        padding: (
+          md: $padding-x8 0
+        )
+      )
+    );
+  }
+  &__download-offer-text {
+    border-bottom: 1px dashed;
+    br {
+      display: none;
+      @include media-query(
+        (
+          display: (
+            sm: block
+          )
+        )
+      );
+    }
+  }
+  &__download-offer-wrapper {
+    color: rgba(map_get($shades, "black"), 0.5);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: flex-end;
+    @include media-query(
+      (
+        align-items: (
+          sm: baseline
+        )
+      )
+    );
+    &:hover {
+      color: rgba(map_get($shades, "black"), 0.8);
+      .icon {
+        color: rgba(map_get($shades, "black"), 0.5);
+      }
+    }
+    &:active {
+      color: map_get($yellow, "base");
+      .icon {
+        color: map_get($yellow, "base");
+      }
+    }
+    .icon {
+      padding-right: $padding-x2;
+      color: rgba(map_get($shades, "black"), 0.2);
+      svg {
+        width: 16px;
+      }
+    }
+  }
+  &__feature {
+    margin-bottom: $padding-x10;
+    @include media-query(
+      (
+        display: (
+          md: flex
+        ),
+        flex-wrap: (
+          md: wrap
+        )
+      )
+    );
+  }
+  &__feature-item {
+    margin-top: $padding-x6;
+    &:nth-child(odd) {
+      @include media-query(
+      (
+        padding-right: (
+          md: 25px,
+          lg: 0px
+        )
+      ));
+    }
+    &:nth-child(even) {
+      @include media-query(
+      (
+        padding-left: (
+          md: 25px
+        )
+      ));
+    }
+    &:nth-child(3n+2) {
+      @include media-query(
+      (
+        padding-left: (
+          lg: 25px,
+          xl: 20px
+        ),
+        padding-right: (
+          lg: 25px,
+          xl: 20px
+        )
+      ));
+    }
+    &:nth-child(3n+1) {
+      @include media-query(
+      (
+        padding-left: (
+          lg: 0,
+        ),
+        padding-right: (
+          lg: 25px,
+          xl: 20px
+        )
+      ));
+    }
+    &:nth-child(3n+3) {
+      @include media-query(
+      (
+        padding-left: (
+          lg: 25px,
+        ),
+        padding-right: (
+          lg: 0,
+        )
+      ));
+    }
+    @include media-query(
+      (
+        width: (
+          md: 50%,
+          lg: 33%
+        )
+      )
+    );
+    .icon {
+      svg {
+        width: 40px;
+        color: map_get($yellow, "base");
+      }
+    }
+  }
+  &__feature-name {
+    margin: $padding-x2 0;
+    @include media-query(
+      (
+        margin: (
+          md: $padding-x4 0
+        )
+      )
+    );
+    color: rgba(map_get($shades, "black"), 0.8);
+  }
+  &__feature-description {
+    font: 13px/18px $fedra-book;
+    @include media-query(
+      (
+        font: (
+          md: 14px/19px $fedra-book,
+          xl: 16px/21px $fedra-book
+        )
+      )
+    );
+    color: rgba(map_get($shades, "black"), 0.8);
+  }
+  &__buttons {
+    text-align: center;
+    @include media-query(
+      (
+        display: (
+          sm: flex
+        )
+      )
+    );
+    .er-button {
+      margin-bottom: $padding-x2;
+      @include media-query(
+        (
+          width: (
+            md: 288px,
+            lg: 206px,
+            xl: 276px
+          )
+        )
+      );
+
+    }
+    .er-button:not(:last-child) {
+      margin-right: 16px;
+    }
+  }
+}
