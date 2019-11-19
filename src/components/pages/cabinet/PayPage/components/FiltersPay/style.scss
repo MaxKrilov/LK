@@ -3,7 +3,6 @@
     position: relative;
     padding: 16px 13px 24px 0;
     width: 77.5vw;
-    //padding-right: 13px;
     background: #ffffff;
     @include media-query((
       left: (
@@ -90,6 +89,27 @@
       margin-left: 4px;
     }
   }
+  &__months-filter {
+    background: #E9E9E9 !important;
+    margin-top: 16px;
+    margin-left: -45px;
+    padding: 2px 40px !important;
+    width: 77.5vw;
+    &__span {
+      padding: 0 1px !important;
+    }
+    &__span button {
+      width: 82px;
+      height: 36px;
+    }
+    &__active {
+      background: map_get($shades, 'white') !important;
+    }
+    &__none {
+      background: map_get($gray, '11') !important;
+      box-shadow: none !important;
+    }
+  }
 }
 .er-text-field__slot  {
   & label {
@@ -108,4 +128,7 @@
     cursor: pointer;
 
   }
+}
+button:active{
+  background:olive;
 }

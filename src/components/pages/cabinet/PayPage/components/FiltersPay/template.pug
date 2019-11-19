@@ -8,9 +8,11 @@ div
       er-icon.caption(name="filter_1")
     div.mr-40.no-gutters
       div(:class="`${pre}__infoFilter`")
-        span(:class="`${pre}__infoFilter__date`")
+        span(:class="`${pre}__infoFilter__date`" v-if="!isFiltersMonthVisible")
+          | {{ datePeriod }}
+        span(:class="`${pre}__infoFilter__date`" v-if="isFiltersMonthVisible")
           | {{ date }}
-        span(:class="`${pre}__infoFilter__year`")
+        span(:class="`${pre}__infoFilter__year`" v-if="isFiltersMonthVisible")
           | {{ year }}
     div.mr-40.justify-content.between.no-gutters(v-if="isCloseService")
       div(:class="`${pre}__infoFilter`")
@@ -57,9 +59,9 @@ div
           format="DD.MM.YY",
           v-model="period",
           @datename="dateName($event)",
-          @yearname="yearName($event)"
+          @yearname="yearName($event)",
+          @input="inp($event)"
         )
-
       er-flex(xs2 :class="`${pre}__typePay`" @click="visTitleTypePay")
         div(:class="`${pre}__typePay__title ${pre}__typePay__title__${visTypePay}`")
           | Тип операции
@@ -68,7 +70,45 @@ div
           :items="typePay",
           @input="typePayValue"
         )
-
       er-flex(xs1 :class="`${pre}__close-filter`")
         er-filter-close(@click="isFiltersVisible=false")
+
+    //er-row.no-gutters.justify-content.center.align-items.center(v-if="isFiltersVisible")
+  div.d--flex.justify-content.center(
+    v-if="isFiltersMonthVisible"
+    :class="`${pre}__months-filter`"
+  )
+    //span(
+    //  v-for="month in months"
+    //  :class="`${pre}__months-filter__span ${pre}__months-filter__${active}`"
+    //)
+    //  er-button(type="submit", flat=true, @click="" )
+    //    | {{ month }}
+    //:style="[properties, minHeight]" ${pre}__months-filter__${active}
+    span(
+    v-for="month in typePeriod"
+    :class="`${pre}__months-filter__span`"
+    )
+      er-button(type="button", flat=true,
+      :class="`${pre}__months-filter__${month.active}`"
+      @click="selectMonth($event)"
+      )
+        | {{ month.month }}
+
+
+
+
+    //er-flex(xs1)
+    //  er-button(type="submit", flat=true, @click="history")
+    //    | Февраль
+    //er-flex(xs1)
+    //  er-button(type="submit", flat=true, @click="history")
+    //    | март
+    //er-flex(xs1)
+    //  er-button(type="submit", flat=true, @click="history")
+    //    | апрель
+
+
+
+
 

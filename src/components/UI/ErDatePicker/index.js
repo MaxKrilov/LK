@@ -216,6 +216,7 @@ export default {
             },
             on: {
               input: (e) => {
+                console.log(e)
                 this.$emit('datename', e[2])
                 this.$emit('yearname', e[3])
                 this.result = `${e[2]}  20${e[3]}`
