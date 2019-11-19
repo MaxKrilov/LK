@@ -85,6 +85,9 @@ export default {
         disabled: this.disabled || this.loading,
         type: this.type
       },
+      props: {
+        to: this.to
+      },
       directives: [{
         name: 'ripple',
         value: { class: 'color--shades-white' }

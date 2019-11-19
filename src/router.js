@@ -23,6 +23,7 @@ import DigitalProductsIndexPage from './components/pages/digital-products/IndexP
 // Создание клиента (для DMP)
 import DMPFormPage from './components/pages/dmp-form/index'
 
+import OATSPage from './components/pages/oats/index'
 // Страницы с ошибками
 import OldBrowserPage from './components/pages/errors/old-browsers'
 
@@ -62,6 +63,10 @@ export default new Router({
         {
           path: 'digital-products',
           component: DigitalProductsIndexPage
+        },
+        {
+          path: 'oats',
+          component: OATSPage
         },
         {
           path: 'support',
