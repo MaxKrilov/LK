@@ -9,6 +9,7 @@ export default {
     pre: 'er-textarea'
   }),
   props: {
+    rows: Number,
     autoHeight: Boolean
   },
   watch: {
@@ -51,6 +52,7 @@ export default {
       }, [
         this.$createElement('textarea', {
           attrs: {
+            rows: this.rows,
             disabled: this.disabled,
             id: this.id,
             autocomplete: this.autocomplete,

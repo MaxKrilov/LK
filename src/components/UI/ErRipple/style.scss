@@ -1,0 +1,46 @@
+$pre: '.er-ripple-s';
+
+
+#{$pre} {
+  $width: 140%;
+  $transition-time: 0.2s;
+
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  position: absolute;
+
+  display: inline-block;
+  height: 100%;
+  padding: 0;
+
+  background: transparent;
+  overflow: hidden;
+  box-sizing: border-box;
+  z-index: 1; // просто назначаем z-index это решает баг, при котором не видно анимации
+
+  &__background {
+    border-radius: 100%;
+    position: absolute;
+    display: block;
+    content: "";
+    z-index: 0;
+    width: 0;
+    height: 0;
+
+    background: map_get($shades, 'transparent');
+    transform-origin: center center;
+    transform: translate(-50%, -50%);
+    transition: width $transition-time ease-in-out,
+      padding-top $transition-time ease-in-out;
+  }
+
+  &--active {
+    #{$pre}__background {
+      width: #{$width * 2.25};
+      padding-top: #{$width * 2.25};
+    }
+  }
+}

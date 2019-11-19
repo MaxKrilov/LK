@@ -1,0 +1,151 @@
+.er-contract-filter {
+  &__list {
+    padding-top: $padding-x6;
+    padding-bottom: $padding-x4;
+
+    @include min-breakpoint('md') {
+      padding-top: $padding-x4;
+      background-color: map_get($shades, 'white');
+    }
+  }
+
+  &__active-filter {
+    display: inline-block;
+    cursor: pointer;
+    border-bottom: 1px dashed;
+  }
+
+  &__wrap {
+    @include min-breakpoint('md') {
+      background-color: map_get($shades, 'white');
+    }
+  }
+
+  &__list-items {
+    display: flex;
+    align-items: center;
+    flex-grow: 1;
+    justify-content: flex-start;
+
+    @include min-breakpoint('md') {
+    }
+  }
+
+  &__item {
+    display: flex;
+    align-items: center;
+
+    &:not(:first-child) {
+      margin-left: $padding-x6;
+
+      @include min-breakpoint('lg') {
+        margin-left: $padding-x12;
+      }
+    }
+
+    & > label {
+      @extend %body-font;
+
+      height: 20px;
+      margin-left: $padding-x2;
+
+      cursor: pointer;
+      display: inline-block;
+      border-bottom: 1px dashed;
+      @include color-black(.8);
+      transition: all $primary-transition;
+
+      &:hover {
+        @include color-black(1);
+      }
+    }
+
+    .er-toggle {
+      transform: scale(.8);
+
+      @include min-breakpoint('md') {
+        transform: scale(1);
+      }
+    }
+  }
+
+  .er-filter-group {
+    @include min-breakpoint('lg') {
+      &:first-child {
+        min-width: 240px;
+        justify-content: space-between;
+      }
+    }
+  }
+
+  .er-filter-group {
+    &:not(.er-contract-filter--doc-type) {
+      margin-top: $padding-x4;
+
+      @include min-breakpoint('md') {
+        margin-top: 0;
+      }
+    }
+
+  }
+
+  &--doc-type {
+    .er-filter-group__body {
+      display: flex;
+      align-items: center;
+    }
+
+    .er-filter-group__title {
+      display: none;
+
+      @include min-breakpoint('md') {
+        display: inherit;
+      }
+    }
+
+    .er-contract-filter__item {
+      align-items: center;
+
+      @include min-breakpoint('md') {
+        height: $padding-x16;
+      }
+    }
+  }
+
+  // reset component height
+  .er-date-picker,
+  .er-select,
+  .er-toggle {
+    .er-dialog__container {
+      display: block !important;
+    }
+
+    .er-messages {
+      display: none;
+    }
+  }
+
+  .er-dialog__container {
+    display: none;
+
+    @include min-breakpoint('md') {
+      display: inherit;
+    }
+  }
+
+  .er-filter-close {
+    display: none;
+
+    @include min-breakpoint('md') {
+      display: inherit;
+    }
+  }
+
+  .er-date-picker {
+    max-width: 100%;
+
+    @include min-breakpoint('sm') {
+      max-width: initial;
+    }
+  }
+}

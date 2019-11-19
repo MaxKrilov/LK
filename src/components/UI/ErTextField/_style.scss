@@ -38,8 +38,7 @@
     input,
     label,
     textarea {
-      font: 14px/17px $fedra-book;
-      letter-spacing: -1px;
+      @extend %body-font;
     }
     input,
     textarea {

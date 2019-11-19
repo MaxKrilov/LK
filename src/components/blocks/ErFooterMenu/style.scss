@@ -6,6 +6,7 @@ $footer-menu-border-color: map_get($named_colors, 'footer-menu-border');
 
   .er-icon {
     opacity: .5;
+    transition: all $primary-transition;
   }
 
   &__expander {
@@ -64,6 +65,12 @@ $footer-menu-border-color: map_get($named_colors, 'footer-menu-border');
     &:hover {
       @include color-white(1);
       text-decoration: underline;
+    }
+  }
+
+  &--opened {
+    .er-icon {
+      transform: rotate(180deg);
     }
   }
 

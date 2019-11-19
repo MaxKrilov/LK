@@ -8,7 +8,7 @@
     left: 0;
     top: 0;
     overflow: hidden;
-    z-index: 0;
+    z-index: $ripple-z-index;
     pointer-events: none;
     contain: strict;
   }

@@ -1,0 +1,76 @@
+$pre: '.er-document';
+
+#{$pre}--button {
+  cursor: pointer;
+  background-color: map_get($shades, 'white');
+  position: relative;
+  user-select: none;
+  -webkit-tap-highlight-color: map_get($shades, 'transparent');
+
+  &::before { // градиентный фон
+    content: '';
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    opacity: 0;
+
+    transition: opacity $primary-transition;
+    background-image: radial-gradient(
+      50% 50% at 50% 22.25%,
+      map_get($yellow, 'base') 0%,
+      map_get($yellow, 'other-4') 100%
+    );
+  }
+
+  &:hover {
+    &::before {
+      opacity: 1;
+    }
+
+    #{$pre}__footer {
+      .er-icon {
+        @include color-white(.4);
+        transform: scale(3);
+      }
+    }
+  }
+
+  #{$pre}__header {
+    background-color: map_get($shades, 'transparent');
+
+    padding-top: $padding-x4;
+
+    @include min-breakpoint('md') {
+      padding-top: $padding-x6;
+    }
+
+    @include min-breakpoint('xl') {
+      padding-top: $padding-x8;
+    }
+  }
+
+  #{$pre}__title {
+    @extend %h3;
+    margin-left: $padding-x2;
+    @include color-black(.8);
+    user-select: none;
+  }
+
+  #{$pre}__footer {
+    padding-bottom: $padding-x6;
+    color: map_get($yellow, 'base');
+    background-color: map_get($shades, 'transparent');
+
+    .er-icon {
+      transition: all $primary-transition;
+      transform-origin: right bottom;
+    }
+  }
+
+  .er-ripple__animation {
+    background: map_get($yellow, 'base');
+  }
+}

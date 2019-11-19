@@ -43,13 +43,25 @@
   }
   &--green {
     background: map_get($green, 'base');
-    color: map_get($shades, 'white');
+    color: map_get($shades, 'black');
+    opacity: .5;
+
     &:hover {
-      background: map_get($green, 'other-1');
+      background: map_get($gray, 'other-1');
     }
     &:active {
       background: map_get($green, 'base');
       box-shadow: inset 0 4px 4px map_get($green, 'other-2');
+    }
+  }
+  &--gray {
+    background: map_get($gray, '9');
+    color: map_get($shades, 'black');
+
+    &:hover {
+    }
+    &:active {
+      box-shadow: inset 0 4px 4px map_get($gray, '9');
     }
   }
   &--flat {

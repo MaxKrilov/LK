@@ -1,3 +1,5 @@
+import ClickOutsideMixin from '@/mixins/ClickOutsideMixin'
+
 export default {
   name: 'er-slide-up-down',
   props: {
@@ -11,6 +13,7 @@ export default {
       default: 'div'
     }
   },
+  mixins: [ClickOutsideMixin],
 
   data: () => ({
     style: {},
@@ -48,6 +51,18 @@ export default {
   },
 
   methods: {
+    onOpenEnd () {
+      this.$emit('open-end')
+      this.bindClickOutside()
+    },
+    onCloseEnd () {
+      this.$emit('close-end')
+      this.unbindClickOutside()
+    },
+    onClickOutside () {
+      this.$emit('click-outside')
+    },
+
     layout () {
       if (this.active) {
         this.$emit('open-start')
@@ -87,13 +102,13 @@ export default {
     onTransitionEnd () {
       if (this.active) {
         this.style = {}
-        this.$emit('open-end')
+        this.onOpenEnd()
       } else {
         this.style = {
           height: '0',
           overflow: 'hidden'
         }
-        this.$emit('close-end')
+        this.onCloseEnd()
       }
     }
   }

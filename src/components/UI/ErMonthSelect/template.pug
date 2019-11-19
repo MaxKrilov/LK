@@ -1,0 +1,10 @@
+.er-month-select
+  .main-content
+    .er-month-select__list.main-content--h-padding
+      .er-month-select__item(
+        v-for="(month,index) in selectedMonths",
+        :class="{'er-month-select__item--selected': index == currentMonth}"
+        @click="onClickMonth(index)"
+        :key="month"
+      )
+        | {{ month }}

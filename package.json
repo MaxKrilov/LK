@@ -49,6 +49,7 @@
     "svgo-loader": "^2.2.1",
     "typescript": "~3.7.2",
     "vue-cli-plugin-svg-sprite": "^1.0.0",
+    "vue-svg-inline-loader": "^1.3.0",
     "vue-template-compiler": "^2.6.10"
   },
   "eslintConfig": {

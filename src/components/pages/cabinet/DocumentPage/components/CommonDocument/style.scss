@@ -1,0 +1,435 @@
+$document-corner-width: 50px;
+$document-radius: 12px;
+
+$header-transition: .1s ease-in-out;
+
+$big-doc-height: (
+  xs: 128px,
+  sm: 144px,
+  md: 336px,
+  xl: 416px
+);
+
+$big-doc-header-height: (
+  md: 95px,
+  xl: 111px,
+);
+
+$small-doc-height: (
+  xs: 128px,
+  sm: 144px,
+  md: 216px,
+  xl: 273px
+);
+
+$document-max-width: 320px;
+
+// Colors
+$lk-template-background-color: map_get($gray, '3');
+$green-doc-header-color: map_get($document-colors, 'green-header');
+$white-doc-header-color: map_get($shades, 'white');
+$gray-doc-header-color: map_get($document-colors, 'gray-header');
+$yellow-doc-header-color: map_get($document-colors, 'yellow-header');
+$blue-doc-header-color: map_get($document-colors, 'blue-header');
+
+$gray-text-color: map_get($gray, '30');
+
+
+$pre: '.er-document';
+
+@mixin document-header-color($name, $bg-color, $fg-color) {
+  &--#{$name} {
+    .er-document__header {
+      @include min-breakpoint('md') {
+        color: $fg-color;
+        background-color: $bg-color;
+      }
+    }
+
+    #{$pre}__title,
+    #{$pre}__link {
+      color: $fg-color;
+    }
+  }
+}
+
+#{$pre} {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  position: relative;
+
+  background-color: map_get($shades, 'white');
+  box-shadow: -3px 3px 4px -3px rgba(map_get($shades, 'black'), 0.41);
+  border-radius: $document-radius;
+
+  width: 100%;
+
+  overflow: hidden;
+  margin-bottom: $padding-x2;
+
+  @include min-breakpoint('md') {
+    margin-bottom: $padding-x4;
+    border-top-right-radius: 0;
+  }
+
+  @include min-breakpoint('lg') {
+    margin-bottom: $padding-x6;
+  }
+
+  @include min-breakpoint('xl') {
+    margin-bottom: $padding-x4;
+  }
+
+  @include document-header-color('white', $white-doc-header-color, map_get($shades, 'black'));
+  @include document-header-color('yellow', $yellow-doc-header-color, map_get($shades, 'black'));
+  @include document-header-color('blue', $blue-doc-header-color, map_get($shades, 'white'));
+  @include document-header-color('gray', $gray-doc-header-color, map_get($shades, 'black'));
+  @include document-header-color('green', $green-doc-header-color, map_get($shades, 'white'));
+
+  &--no-ripple {
+    .er-ripple-s,
+    .er-ripple__container {
+      display: none;
+    }
+  }
+
+  .er-ripple-s__background {
+    background: map_get($green, 'base');
+  }
+
+  &--big-doc {
+    height: map_get($big-doc-height, xs);
+
+    @include min-breakpoint('sm') {
+      height: map_get($big-doc-height, sm);
+    }
+
+    @include min-breakpoint('md') {
+      height: map_get($big-doc-height, md);
+    }
+
+    @include min-breakpoint('xl') {
+      height: map_get($big-doc-height, xl);
+    }
+
+    #{$pre}__header {
+      @include min-breakpoint('md') {
+        height: map_get($big-doc-header-height, md);
+        min-height: map_get($big-doc-header-height, md);
+      }
+
+      @include min-breakpoint('xl') {
+        height: map_get($big-doc-header-height, xl);
+        min-height: map_get($big-doc-header-height, xl);
+      }
+    }
+  }
+
+  &--small-doc {
+    height: map_get($small-doc-height, xs);
+
+    @include min-breakpoint('sm') {
+      height: map_get($small-doc-height, sm);
+    }
+
+    @include min-breakpoint('md') {
+      height: map_get($small-doc-height, md);
+    }
+
+    @include min-breakpoint('xl') {
+      height: map_get($small-doc-height, xl);
+    }
+  }
+
+  &--selected {
+    #{$pre}__title {
+      color: map_get($shades, 'white');
+    }
+  }
+
+  &__header {
+    position: relative;
+    transition: background-color $header-transition;
+    padding: {
+      top: $padding-x4;
+      left: $padding-x4;
+      right: $padding-x4;
+    }
+    display: flex;
+    background-color: map_get($shades, 'transparent');
+
+    @include min-breakpoint('md') {
+      padding: {
+        left: $padding-x6;
+        right: $document-corner-width + $padding-x1;
+      }
+    }
+
+    @include min-breakpoint('lg') {
+      padding: {
+        left: $padding-x6;
+        right: $document-corner-width + $padding-x1;
+      }
+    }
+
+    @include min-breakpoint('md') {
+      padding-top: 0;
+    }
+
+    @include max-breakpoint('sm') {
+      #{$pre}__link {
+        display: none;
+      }
+    }
+  }
+
+  &__title-wrap {
+    z-index: $ripple-z-index + 1;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    justify-content: center;
+  }
+
+  &__title {
+    @extend %h4;
+  }
+
+  &__subtitle {
+    @extend %caption1-font;
+    display: none;
+    transition: opacity $primary-transition;
+
+    @include min-breakpoint('lg') {
+      margin-top: $padding-x2;
+    }
+
+    @include min-breakpoint('md') {
+      margin-top: $padding-x2;
+      display: inherit;
+    }
+  }
+
+  a#{$pre}__subtitle {
+    &:hover {
+      @include color-black(1);
+    }
+  }
+
+  &__link {
+    @include color-black(.7);
+    margin-top: $padding-x2;
+    display: inline-block;
+  }
+
+  &__corner {
+    position: absolute;
+    top: 0;
+    right: 0;
+    outline: none;
+    z-index: $ripple-z-index + 1;
+    display: none;
+
+    .corner-background {
+      fill: $lk-template-background-color;
+    }
+
+    @include min-breakpoint('md') {
+      display: inherit;
+    }
+  }
+
+  &__text {
+    .caption1 {
+      opacity: .8;
+    }
+
+    a {
+      font-size: 14px;
+      margin-left: .2rem; // пробел
+    }
+  }
+
+  &__body {
+    min-height: 120px;
+    background-color: map_get($shades, 'transparent');
+
+    padding: {
+      top: $padding-x2;
+      left: $padding-x4;
+      right: $padding-x4;
+      bottom: 0;
+    }
+    flex-grow: 0;
+    min-height: inherit;
+
+    // er-ripple-s issue
+    position: relative;
+    z-index: 1;
+
+    @include min-breakpoint('md') {
+      flex-grow: 1;
+      padding: {
+        top: $padding-x6;
+        left: $padding-x6;
+        right: $padding-x6;
+      }
+    }
+
+    @include min-breakpoint('lg') {
+      padding: {
+        top: $padding-x6;
+        left: $padding-x6;
+        right: $padding-x6;
+      }
+    }
+  }
+
+  &__footer {
+    margin-top: auto;
+    background-color: map_get($shades, 'transparent');
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    flex-grow: 0;
+
+    padding: {
+      top: 0;
+      left: $padding-x4;
+      right: $padding-x4;
+      bottom: $padding-x4;
+    }
+
+    .er-button {
+      height: 40px;
+
+      &--gray {
+        .er-button__content {
+          color: map_get($shades, 'black');
+          opacity: .5;
+        }
+      }
+
+      &:not(:first-child) {
+        margin-top: $padding-x4;
+      }
+
+      &__icon {
+        opacity: .5;
+
+        &:first-child {
+          position: absolute;
+          left: $padding-x2;
+          margin-right: 0;
+        }
+      }
+
+      @include min-breakpoint('xl') {
+        height: 48px;
+      }
+    }
+
+    @include min-breakpoint('md') {
+      flex-grow: 1;
+      padding: {
+        left: $padding-x6;
+        right: $padding-x6;
+        bottom: $padding-x6;
+      }
+    }
+
+    @include min-breakpoint('lg') {
+      padding: {
+        left: $padding-x6;
+        right: $padding-x6;
+        bottom: $padding-x6;
+      }
+    }
+  }
+
+  &__signed-text {
+    @extend %h4;
+    @include color-white(1);
+    text-align: right;
+
+    .ok-icon {
+      margin-right: $padding-x2;
+
+      svg {
+        width: $padding-x4;
+      }
+
+      @include min-breakpoint('md') {
+        display: none;
+      }
+    }
+
+    .circle-ok-icon {
+      display: none;
+      margin-right: $padding-x4;
+
+      @include min-breakpoint('md') {
+        display: inline-block;
+
+        > svg {
+          width: 39px;
+        }
+      }
+
+      @include min-breakpoint('xl') {
+        > svg {
+          width: 45px;
+        }
+      }
+    }
+
+    @include min-breakpoint('md') {
+      text-align: left;
+      @include color(map_get($green, 'base'), 1);
+    }
+  }
+
+  .er-attach {
+    text-align: left;
+
+    @include min-breakpoint('md') {
+      text-align: center;
+
+      .er-icon {
+        display: none;
+      }
+    }
+  }
+}
+
+
+.document-number {
+  display: flex;
+  flex-direction: row;
+
+  &__number {
+    @extend %h3;
+    @include color-black(1);
+  }
+
+  &__sign {
+    @extend %h3;
+    padding-right: $padding-x2;
+    @include color-black(.5);
+    display: none;
+
+    @include min-breakpoint('md') {
+      display: inherit;
+    }
+  }
+}
+
+.document-date {
+  @include color-black(.5);
+
+  .document-number + & {
+    margin-top: $padding-x2;
+  }
+}

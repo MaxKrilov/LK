@@ -1,0 +1,49 @@
+.er-document-actions(
+  :class="{'er-document-actions--inactive': !active}"
+)
+  .er-document-actions__cover
+
+  .main-content.main-content--h-padding
+    er-slide-up-down(
+      :active="count > 0"
+      :duration="150"
+    )
+      .er-document-actions__count-wrap(@click="toggleButtons()")
+        .er-document-actions__count
+          er-icon(name="circle_ok")
+          span(v-if="count==1").er-document-actions__count-text
+            | Выбран {{ count }} документ
+          span(v-else-if="count>1 && count<5").er-document-actions__count-text
+            | Выбрано {{ count }} документа
+          span(v-else).er-document-actions__count-text
+            | Выбрано {{ count }} документов
+
+        er-icon(
+          name="corner_down"
+          width="16"
+          height="16"
+          :class="{'opened': isShowButtons}"
+        ).er-document-actions__show-buttons
+
+    er-slide-up-down(
+      :active="isShowButtons"
+      :duration="showButtonsDuration"
+    )
+      er-container.full.container--no-padding.er-document-actions__list
+        er-row.flex-grow-1
+          er-flex.lg3.md4.sm6
+            er-button
+              | Скачать
+          er-flex.lg3.md4.sm6.r-offset-md4.r-offset-lg0
+            er-button(:color="'gray'")
+              | Заказать дубликат
+          er-flex.lg3.md4.sm6
+            er-button(:color="'gray'")
+              | Отправить e-mail
+          er-flex.flex-grow-1.lg3.md8.email-select
+            er-select(
+              :items="emails"
+              :isSelectFirst="true"
+              value="selectedEmail"
+              v-model="selectedEmail"
+            )

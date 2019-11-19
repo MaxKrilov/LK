@@ -1,2 +1,81 @@
 div(:class="`${pre}`")
-  contract-document-component
+  .main-content.main-content--top-menu-fix.main-content--h-padding.main-content--top-padding
+    er-page-header(
+      linkText="Назад к документам"
+      title="Документы"
+      backlink="/lk"
+    )
+
+  .main-content.main-content--h-padding
+    h2.document-page__title Контрактные документы
+
+  .wide-content
+    er-contract-filter
+
+  .document-page__list.main-content.main-content--h-padding
+    er-container.full.container--no-padding.document
+      er-row
+        er-flex.lg4.md6.sm6.xs12.d--flex(
+          v-for="document in contractDocuments"
+          :key="document.number"
+        )
+          blank-document(
+            v-if="document.type==DOCUMENT_TYPES['BLANK']"
+            :document="document"
+          )
+          user-list-document(
+            v-if="document.type==DOCUMENT_TYPES['USERS']"
+            :document="document"
+          )
+          contract-document(
+            v-if="document.type==DOCUMENT_TYPES['CONTRACT']"
+            :document="document"
+          )
+
+  .main-content.main-content--h-padding
+    h2.document-page__title Отчётные документы
+
+  .wide-content
+    er-report-filter
+
+  .wide-content
+    er-month-select(
+      :from="0"
+      :count="3"
+      :selected="1"
+      @change="onChangeMonth"
+    )
+
+  .document-page__list.main-content.main-content--h-padding
+    er-container.full.container--no-padding.document
+      er-row(v-if="reportDocuments.length")
+        er-flex.lg4.md6.sm6.xs12.d--flex(
+          v-for="report in reportDocuments"
+          :key="report.number"
+        )
+          report-document(
+            :document="report"
+            @select="onReportSelect"
+            @unselect="onReportUnselect"
+          )
+        er-flex.lg4.md6.sm6.d--flex
+          button-document(
+            caption="Заказать другой документ"
+            @click="onOrderDocumentClick()"
+          )
+
+      er-row(v-else)
+        er-flex.document-page__empty-list
+          er-icon(name="no")
+          .empty-list-message.text-color-black08
+            | За указанный период
+            br
+            | документов не
+            br
+            | найдено
+
+  er-document-actions(
+    :active="hasSelectedReports"
+    :emails="emails"
+    :count="reportSelectedCount"
+  )

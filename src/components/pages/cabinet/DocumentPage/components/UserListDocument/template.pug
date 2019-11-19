@@ -1,0 +1,48 @@
+common-document(
+  :class="{'er-document--signed': document.signed}"
+).er-document--userlist.er-document--big-doc
+  template(v-slot:header)
+    .er-document__title(v-if="document.signed") Список пользователей
+    div(v-else)
+      .er-document__title Список пользователей
+      .er-document__title--upload(@click="") Загрузить список пользователей
+
+    .question-button(
+      @click="onClickQuestion()"
+    )
+      er-icon(
+        name="question"
+      ).er-icon--question
+
+    component(
+      :is="currentDialog"
+      :active="openDialog"
+      @close="onCloseQuestion()"
+    )
+
+    .er-document__subtitle(v-if="document.signed")
+      .er-document__update-label
+        | Обновить с
+      .er-document__update-period
+        .date {{ $moment(document.updatePeriodFrom).format("DD.MM") }}-{{ $moment(document.updatePeriodTo).format("DD.MM") }}
+          span.date__year .{{ $moment(document.updatePeriodTo).format("YYYY") }}
+
+  template(v-slot:body)
+    .just-wrap(v-if="document.signed")
+      .er-document__text.d-sm--none
+        span.caption1 Вы обязаны обновлять каждый квартал список пользователей во исполнение требований
+        a(href="#").link Правил оказания услуг связи по передаче данных
+
+    .er-document__text(v-else)
+      span.caption1 Вы обязаны предоставить список пользователей во исполнение требований
+      a(href="#").link Правил оказания услуг связи по передаче данных
+
+  template(v-slot:footer)
+    .signed(v-if="document.signed")
+      er-attach(:url="document.file")
+      er-button(:color="'blue'") Обновить
+    .not-signed(v-else)
+      .er-document__download-template
+        a(href="#download-user-list-template").link.link--dashed--black
+          | Скачать шаблон
+      er-button(:color="'blue'") Загрузить

@@ -1,0 +1,22 @@
+@mixin breakpoint-order($breakpoint, $index) {
+  @include min-breakpoint($breakpoint) {
+    order: $index;
+  }
+}
+
+@mixin order-class($breakpoint, $index) {
+  /*
+  Создаёт класс для смены order на разных разрешениях
+
+  Пример:
+
+  @include order-class(md, 2);
+
+  Создаст класс .order-md2
+  который выставит значение order: 2 на разрешении больше 'md'
+
+  */
+  .order-#{$breakpoint}#{$index} {
+    @include breakpoint-order($breakpoint, $index)
+  }
+}

@@ -1,0 +1,175 @@
+$action-buttons-z-index: 1;
+$action-cover-z-index: $action-buttons-z-index + 1;
+
+.er-document-actions {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: map_get($shades, 'white');
+  z-index: 10;
+  overflow: auto;
+
+  box-shadow:
+    0px 0px 16px rgba(map_get($shades, 'black'), 0.04),
+    0px 0px 24px rgba(map_get($shades, 'black'), 0.06);
+
+  &--inactive {
+    opacity: .4;
+    position: relative;
+    background-color: map_get($shades, 'transparent');
+    box-shadow: none;
+
+    .er-document-actions__cover {
+      display: block;
+    }
+  }
+
+  &__count-wrap {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__count {
+    color: map_get($green, 'base');
+
+    &-text {
+      @extend %caption1-font;
+      border-bottom: 1px dashed;
+
+      @include min-breakpoint('md') {
+        border-bottom: none;
+      }
+    }
+
+    margin-top: $padding-x4;
+    margin-bottom: $padding-x4;
+
+    @include min-breakpoint('lg') {
+      margin-bottom: $padding-x6;
+    }
+
+    .er-icon {
+      margin-right: $padding-x3;
+    }
+  }
+
+  &__show-buttons {
+    @include color-black(.2);
+    transform: rotate(180deg);
+    transition: transform $primary-transition;
+
+    svg {
+      width: 16px;
+    }
+
+    &.opened {
+      transform: rotate(0);
+      @include color-black(.5);
+    }
+
+    @include min-breakpoint('md') {
+      &.er-icon {
+        display: none;
+      }
+    }
+  }
+
+  &__cover {
+    // блокирующий слой поверх кнопок
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: $action-cover-z-index;
+  }
+
+  &__list {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    z-index: $action-buttons-z-index;
+
+    .flex {
+      margin-bottom: $grid-gutter-width / 2;
+    }
+
+    & > * + *  {
+      margin-left: $padding-x8;
+    }
+  }
+
+  .er-input__slot {
+    position: relative;
+
+    // открывать выпадающее меню при клике на иконку "вниз"
+    .er-input__append-inner {
+      position: absolute;
+      right: 13px;
+      pointer-events: none;
+    }
+
+    .er-text-field__slot {
+      // Прячем лейбл - в макете его нет
+      label.er-text-field--active {
+        opacity: 0;
+      }
+    }
+  }
+
+  .email-select {
+    display: none;
+    @include min-breakpoint('md') {
+      display: initial;
+    }
+  }
+
+  @include min-breakpoint('md') {
+    position: relative;
+    background-color: map_get($shades, 'transparent');
+    z-index: initial;
+  }
+
+  @include min-breakpoint('md') {
+    padding-top: $padding-x6;
+
+    box-shadow: none;
+  }
+
+  .container {
+    .row {
+      margin-left: -$padding-x2;
+      margin-right: -$padding-x2;
+
+      @include min-breakpoint('lg') {
+        margin-left: -$padding-x3;
+        margin-right: -$padding-x3;
+      }
+
+      @include min-breakpoint('xl') {
+        margin-left: -$padding-x2;
+        margin-right: -$padding-x2;
+      }
+    }
+
+    .flex {
+      padding-left: $padding-x2;
+      padding-right: $padding-x2;
+
+      @include min-breakpoint('lg') {
+        padding-left: $padding-x3;
+        padding-right: $padding-x3;
+      }
+
+
+      @include min-breakpoint('xl') {
+        padding-left: $padding-x2;
+        padding-right: $padding-x2;
+      }
+    }
+  }
+}

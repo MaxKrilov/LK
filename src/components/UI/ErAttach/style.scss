@@ -1,0 +1,42 @@
+.er-attach {
+  display: inline-flex;
+  cursor: pointer;
+  user-select: none;
+
+  &:hover {
+    .er-attach__filename {
+      @include color-black(.8);
+    }
+
+    .er-icon {
+      @include color-black(.5);
+    }
+  }
+
+  &__filename {
+    margin-left: $padding-x1;
+    display: inline-block;
+    transition: all $primary-transition;
+
+    @extend %body-font;
+
+    &:hover {
+      @include color-black(.8);
+      border-color: rgba(map_get($shades, 'black'), .8);
+    }
+
+    &.link:active {
+      border-color: rgba(map_get($shades, 'black'), .5);
+    }
+  }
+
+  .er-icon {
+    @include color-black(.2);
+    font-size: 13px;
+    transition: all $primary-transition;
+
+    svg {
+      width: 18px;
+    }
+  }
+}

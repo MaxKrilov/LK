@@ -1,18 +1,20 @@
 $grid-breakpoint: (
-        xs: 0,
-        sm: 480px,
-        md: 640px,
-        lg: 960px,
-        xl: 1200px
+  xs: 0,
+  sm: 480px,
+  md: 640px,
+  lg: 960px,
+  xl: 1200px,
+  xxl: 1440px
 );
 
 $max-width-ratio: 0.9375;
 
 $breakpoint-max-width: (
-        sm: map_get($grid-breakpoint, sm) * $max-width-ratio,
-        md: map_get($grid-breakpoint, md) * $max-width-ratio,
-        lg: map_get($grid-breakpoint, lg) * $max-width-ratio,
-        xl: map_get($grid-breakpoint, xl) * $max-width-ratio,
+  sm: map_get($grid-breakpoint, sm) * $max-width-ratio,
+  md: map_get($grid-breakpoint, md) * $max-width-ratio,
+  lg: map_get($grid-breakpoint, lg) * $max-width-ratio,
+  xl: map_get($grid-breakpoint, xl) * $max-width-ratio,
+  xxl: map_get($grid-breakpoint, xxl) * $max-width-ratio,
 );
 
 $grid-columns: 12;

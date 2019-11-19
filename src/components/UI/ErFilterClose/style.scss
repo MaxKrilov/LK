@@ -1,0 +1,13 @@
+.er-filter-close {
+  margin-left: auto;
+  color: map_get($shades, 'black');
+  opacity: .5;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  cursor: pointer;
+
+  &:hover {
+    color: map-get($yellow, 'base');
+  }
+}

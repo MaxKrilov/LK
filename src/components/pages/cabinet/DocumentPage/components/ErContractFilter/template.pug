@@ -1,0 +1,39 @@
+er-filter-container(
+  :active="isFiltersVisible"
+  @click-outside="onCloseFilters()"
+).er-contract-filter
+  div(
+    slot="selected-filters"
+  ).er-contract-filter__current
+    span.er-filter-container__active-filter(
+      @click="onShowFilters()"
+    ) Все
+
+  div(slot="title")
+    | Контрактные документы
+
+  .er-contract-filter__wrap
+    .er-contract-filter__list.main-content.main-content--h-padding
+      er-container.full.container--no-padding
+        er-row
+          er-flex.xs12.sm8.r-offset-sm4.r-offset-md0.md6.lg4
+            er-filter-group(title="Тип документа").er-contract-filter--doc-type
+              .er-contract-filter__list-items
+                .er-contract-filter__item(v-for="(title, idx) in filterTypes")
+                  er-toggle(
+                    type="radio"
+                    view="radio-check"
+                    name="contract-filter-type"
+                    :value="idx"
+                    :id="'id-filter-type-' + idx"
+                    :modelValue="contractFilterType"
+                  )
+                  label(:for="'id-filter-type-' + idx").er-toggle__custom-label
+                    | {{ title }}
+
+          er-flex.xs12.sm6.r-offset-sm6.r-offset-md0.md5.lg4
+            er-filter-group(title="Период")
+              er-date-picker
+
+          er-flex.md1.lg4.d--flex.align-items-center
+            er-filter-close(@click="isFiltersVisible=false")
