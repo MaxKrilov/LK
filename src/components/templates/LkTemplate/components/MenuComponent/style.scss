@@ -1,14 +1,18 @@
+
 .menu-component {
+  position: fixed;
+  z-index: map_get($z-index, 'left-menu');
+
   &__left {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
-    max-width: 271px;
+    max-width: $left-menu-width;
     min-height: 100vh;
     z-index: map_get($z-index, 'left-menu');
     transition: $primary-transition;
-    transform: translateX(-271px);
+    transform: translateX(-$left-menu-width);
     @include media-query((
       box-shadow: (xl: 4px 4px 10px rgba(map_get($shades, 'black'), 0.1))
     ));

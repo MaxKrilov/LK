@@ -20,7 +20,41 @@ export default {
         icon: 'home',
         isOpen: false,
         subitem: [
-          { name: 'Поддержка' }
+          {
+            name: 'Профиль',
+            url: '/lk/profile'
+          },
+          {
+            name: 'Платежи',
+            url: '/lk/payments'
+          },
+          {
+            name: 'Документы',
+            url: '/lk/documents'
+          },
+          {
+            name: 'Поддержка',
+            url: '/lk/support'
+          }
+        ]
+      },
+      {
+        name: 'Интернет',
+        icon: 'internet',
+        isOpen: false,
+        subitem: [
+          {
+            name: 'Статистика',
+            url: '/lk/statistic'
+          },
+          {
+            name: 'Контент-фильтрация',
+            url: '/lk/filter'
+          },
+          {
+            name: 'Скорость',
+            url: '/lk/speed'
+          }
         ]
       }
       // {

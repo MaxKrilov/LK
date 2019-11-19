@@ -1,0 +1,26 @@
+common-document(
+  :ripple-active="selected"
+  :ripple="true"
+  :class="{'er-document--selected': selected}"
+).er-document--report.er-document--small-doc
+  div(slot="header").d--flex.flex-row.align-items-center
+    .er-document__toggle
+      er-toggle(
+        type="checkbox"
+        view="radio-check"
+        v-model="selected"
+        @input="onSelect"
+      )
+    h3.er-document__title-sm Счёт-фактура
+    h3.er-document__title {{ document.number }}
+
+  div(slot="body")
+    h3.er-document__content-sm {{ document.number }}
+    h3.er-document__content Счёт-фактура
+
+    .document-date.caption2
+      | от {{ $moment(document.date).format("DD.MM.YY") }}
+
+  template(v-slot:footer)
+    er-button.not-show-sm Подробнее
+    er-button(:color="'flat'").no-shadow.show-only-sm Открыть

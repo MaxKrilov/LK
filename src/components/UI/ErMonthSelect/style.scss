@@ -1,0 +1,50 @@
+$corner-radius: 8px;
+$month-filter-bg-color: map_get($gray, '11');
+$month-button-height: 36px;
+$month-button-width: 89px;
+
+.er-month-select {
+  margin-top: $padding-x4;
+  background-color: $month-filter-bg-color;
+
+  &__list {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+
+    padding: {
+      top: $padding-x1;
+      bottom: $padding-x1;
+    }
+  }
+
+  &__item {
+    @extend %caption1-font;
+    @include color-black(.4);
+
+    height: $month-button-height;
+    line-height: $month-button-height;
+    width: $month-button-width;
+    text-align: center;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: $corner-radius;
+    text-transform: capitalize;
+    transition: all $primary-transition;
+    cursor: pointer;
+
+    &:hover {
+      @include color-black(.8);
+    }
+
+    &:not(:first-child) {
+      margin-left: $padding-x1;
+    }
+
+    &--selected {
+      @include color-black(.8);
+      background-color: map_get($shades, 'white');
+    }
+  }
+}

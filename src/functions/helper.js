@@ -1,5 +1,6 @@
 import { FRONTEND_TESTING } from '../constants/url'
 import { COMBAT_DOMAIN, LOCALHOST_DOMAIN, TESTING_DOMAIN } from '../constants/domain'
+import { BREAKPOINT_XL, BREAKPOINT_MD } from '@/constants/breakpoint'
 import { Cookie } from './storage'
 /**
  * Функция, перебирающая элементы объекта
@@ -253,6 +254,10 @@ export function getScreenWidth () {
   return window.screen.width
 }
 
+export function getWindowWidth () {
+  return window.innerWidth
+}
+
 export function getZIndex (el) {
   if (!el || el.nodeType !== Node.ELEMENT_NODE) {
     return 0
@@ -285,7 +290,11 @@ export function escapeHTML (str) {
 }
 
 export function isMobile () {
-  return getScreenWidth() < 640
+  return getScreenWidth() < BREAKPOINT_MD
+}
+
+export function isDesktop () {
+  return getWindowWidth() >= BREAKPOINT_XL
 }
 
 function renderImage (url, scale = 0.3) {

@@ -1,0 +1,298 @@
+$form-width-limit: 592px;
+
+
+$pre: '.er-document-order';
+
+
+#{$pre} {
+
+  &__close {
+    cursor: pointer;
+  }
+
+  &__header {
+    height: $padding-x12;
+    background: map_get($shades, 'white');
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: {
+      left: $padding-x4;
+      right: $padding-x4;
+    }
+
+    .er-icon--close {
+      svg {
+        width: $padding-x3;
+      }
+
+      @include color-black(.5);
+    }
+  }
+
+  &__title {
+    @extend %h3;
+  }
+
+  &__body {
+    background-color: map_get($gray, '3');
+    overflow: auto; // margin issue
+
+    @include min-breakpoint('md') {
+      overflow: initial;
+    }
+
+    .flex {
+      padding: {
+        left: 8px;
+        right: 8px;
+      }
+    }
+  }
+
+  &--success {
+    overflow: initial;
+
+    .er-icon {
+      &.er-icon--circle_ok {
+        color: map_get($green, 'base');
+
+        svg {
+          width: 64px;
+
+          @include min-breakpoint('xl') {
+            width: 128px;
+          }
+
+          @include min-breakpoint('lg') {
+            width: 96px;
+          }
+
+          @include min-breakpoint('md') {
+            width: 80px;
+          }
+        }
+      }
+    }
+
+    #{$pre}__success-message {
+      display: flex;
+      flex-direction: column;
+
+      @include min-breakpoint('md') {
+        flex-direction: row;
+      }
+    }
+
+    #{$pre}__success_text {
+      @include min-breakpoint('md') {
+        margin-left: $padding-x4;
+      }
+    }
+
+    #{$pre}__title {
+      @extend %h3;
+      margin-top: $padding-x4;
+    }
+
+    #{$pre}__email {
+      margin-top: $padding-x2;
+    }
+
+    #{$pre}__wrap {
+      height: 80vh;
+      border-radius: 12px;
+    }
+
+    #{$pre}__body {
+      background-color: map_get($shades, 'white');
+      padding: $padding-x4;
+
+      display: flex;
+      flex-direction: column;
+
+      @include min-breakpoint('md') {
+        background-color: transparent;
+      }
+    }
+
+    .er-button--back {
+      display: none;
+      width: 200px;
+      margin-top: $padding-x8;
+
+      @include min-breakpoint('xl') {
+        display: initial;
+      }
+    }
+  }
+
+  &--mobile {
+    #{$pre}__form {
+      padding: $padding-x4;
+    }
+
+    .er-dialog__container {
+      display: block !important;
+    }
+
+    #{$pre}__body {
+      flex-grow: 1;
+    }
+
+    .er-textarea__slot {
+      padding-top: 10px;
+      padding-bottom: 10px;
+    }
+
+    .er-input__slot {
+      margin-bottom: 0;
+    }
+  }
+
+  &__form {
+    .row {
+      margin-left: -$padding-x2;
+      margin-right: -$padding-x2;
+    }
+
+    p {
+      @extend %body-font;
+    }
+  }
+
+  .width-limiter {
+    max-width: 100%;
+
+    @include min-breakpoint('lg') {
+      max-width: $form-width-limit;
+      margin-right: auto;
+    }
+  }
+
+  p + p {
+    margin-top: $padding-x6;
+  }
+
+  .form-input {
+    margin-top: $padding-x8;
+
+    &:nth-child(1) { // required-fields
+      order: 7;
+
+      @include min-breakpoint('md') {
+        order: 1;
+      }
+    }
+  }
+
+  .container > .row > .er-time-range--padding {
+    @include min-breakpoint('lg') {
+      padding-left: $padding-x8;
+    }
+  }
+
+  &__wrap {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+
+    @include min-breakpoint('md') {
+      height: inherit;
+    }
+  }
+
+
+  /* fix inputs */
+  .er-text-field > .er-input__control > .er-input__slot,
+  .er-textarea > .er-input__control > .er-input__slot {
+    @include min-breakpoint('md') {
+      min-height: 40px;
+    }
+  }
+}
+
+.required-fields {
+  padding-top: $padding-x2;
+
+  &__dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    background-color: map_get($yellow, 'base');
+    border-radius: 8px;
+  }
+
+  &__label {
+    @extend %caption2;
+    margin-bottom: $padding-x8;
+
+    @include color-black(.5);
+  }
+}
+
+
+$text-input-height: 48px;
+
+.er-time-range {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  align-items: stretch;
+
+  &__label {
+    @extend %caption1;
+    display: block;
+    position: absolute;
+    font-size: 12px;
+    top: -#{$padding-x4};
+  }
+
+  &__inputs {
+    display: flex;
+    font-size: 14px;
+    line-height: 19px;
+
+    @include min-breakpoint('md') {
+      height: $text-input-height;
+    }
+  }
+
+  &__dash {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: {
+      left: $padding-x2;
+      right: $padding-x2;
+    }
+  }
+
+  .er-input {
+    input {
+      text-align: center;
+    }
+  }
+}
+
+.er-input__control {
+  .er-messages {
+    min-height: 0;
+  }
+}
+
+@include order-class('md', 1);
+@include order-class('md', 2);
+@include order-class('md', 3);
+@include order-class('md', 4);
+@include order-class('md', 5);
+@include order-class('md', 6);
+
+@include order-class('sm', 1);
+@include order-class('sm', 2);
+@include order-class('sm', 3);
+@include order-class('sm', 4);
+@include order-class('sm', 5);
+@include order-class('sm', 6);

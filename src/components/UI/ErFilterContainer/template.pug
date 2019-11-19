@@ -1,0 +1,37 @@
+.er-filter-container(
+  :class="{'er-filter-container--active': active }"
+)
+  .main-content.main-content--h-padding
+    .er-filter-container__label Фильтровать
+
+  .er-filter-container__selected.main-content.main-content--h-padding
+    er-icon(name="filter_1").er-filter-container__filter-icon
+    slot(name="selected-filters")
+
+  .er-filter-container__body
+    component(
+      :is="getFilterComponent()"
+      v-bind="getFilterProps()"
+      @click-outside="onClickOutsideFilter()"
+    )
+      .er-filter-container__filter-content
+        .er-filter-container__title(
+          @click="$emit('click-outside')"
+        )
+          er-icon(name="corner_up")
+          slot(name="title")
+
+        .er-filter-container__filters
+          slot
+
+        .er-filter-container__action-buttons
+          slot(name="buttons")
+            .main-content--h-padding
+              er-container.full.container--no-padding
+                er-row
+                  er-flex.xs12.sm6
+                    er-button(:color="'yellow'")
+                      | Фильтровать
+                  er-flex.xs12.sm6
+                    er-button(:color="'gray'")
+                      | Сбросить фильтр

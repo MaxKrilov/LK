@@ -10,12 +10,12 @@
     padding: 89px 16px 0;
     overflow: hidden;
     @include media-query((
-            padding: (
-                    sm: 100px 24px 0,
-                    md: 115px 24px 0,
-                    lg: 120px 32px 0,
-                    xl: 146px 32px 0 316px
-            )
+      padding: (
+        sm: 100px 24px 0,
+        md: 115px 24px 0,
+        lg: 120px 32px 0,
+        xl: 146px 32px 0 316px
+      )
     ))
   }
 

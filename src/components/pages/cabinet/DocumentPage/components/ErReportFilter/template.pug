@@ -1,0 +1,39 @@
+er-filter-container(
+  :active="isFiltersVisible"
+  @click-outside="onCloseFilters()"
+).er-report-filter
+  div(
+    slot="selected-filters"
+  ).er-report-filter__current
+    span.er-filter-container__active-filter(
+      @click="onShowFilters()"
+    ) Все
+
+  div(slot="title")
+    | Отчётные документы
+
+  .er-report-filter__wrap
+    .er-report-filter__list.main-content.main-content--h-padding
+      er-container.full.container--no-padding
+        er-row.ordered-items
+          er-flex.xs12.sm6.lg3
+            er-filter-group(title="Период").er-report-filter__period
+              er-date-picker(
+                v-model="selectedPeriod"
+                :value="selectedPeriod"
+              )
+          er-flex.xs12.sm6.md5.lg3
+            er-filter-group(title="Тип документа")
+              er-select(
+                :items="['Счёт-фактура', 'Другой']"
+                placeholder="Тип документа"
+                v-model="selectedDocumentType"
+              )
+          er-flex.sm12.md11.lg5
+            er-filter-group(title="Поиск").filter-search
+              er-text-field(
+                label="Поиск"
+                appendInnerIcon="lens"
+              )
+          er-flex.md1.lg1.d--flex
+            er-filter-close(@click="isFiltersVisible=false")

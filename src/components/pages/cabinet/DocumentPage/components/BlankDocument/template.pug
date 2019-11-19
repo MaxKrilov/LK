@@ -1,0 +1,23 @@
+common-document(:color="'gray'").er-document--big-doc.er-document--blank
+  template(v-slot:header)
+    h3.er-document__title Бланк заказа
+    a.er-document__link.er-document__subtitle(:href="document.file") Текст документа
+
+  template(v-slot:body)
+    .document-number
+      h4.document-number__sign №
+      h3.document-number__number {{ document.number }}
+
+    .document-date.caption2
+      | от {{ $moment(document.date).format("DD.MM.YY") }}
+
+  template(v-slot:footer)
+    er-button(
+      :color="'blue'"
+      pre-icon="doc_edit"
+    )
+      | Подписать
+    er-button(
+      :color="'gray'"
+    )
+      | Отказаться

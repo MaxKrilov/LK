@@ -1,14 +1,32 @@
+@mixin display($block-type) {
+  &--#{$block-type} {
+    display: $block-type;
+  }
+}
+
+@mixin display-important($block-type) {
+  &--#{$block-type} {
+    display: $block-type !important;
+  }
+}
+
 .d {
-  &--block {
-    display: block !important;
-  }
-  &--inline-block {
-    display: inline-block !important;
-  }
-  &--inline {
-    display: inline !important;
-  }
-  &--flex {
-    display: flex !important;
+  @include display-important(none);
+  @include display-important(block);
+  @include display-important(inline-block);
+  @include display-important(flex);
+  @include display-important(inline-flex);
+}
+
+
+@each $bp in map-keys($grid-breakpoint) {
+  .d-#{$bp} {
+    @include max-breakpoint($bp) {
+      @include display(none);
+      @include display(block);
+      @include display(inline-block);
+      @include display(flex);
+      @include display(inline-flex);
+    }
   }
 }

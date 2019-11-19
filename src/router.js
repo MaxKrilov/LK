@@ -8,6 +8,9 @@ import LkTemplate from './components/templates/LkTemplate/index'
 import IndexPage from './components/pages/cabinet/IndexPage/index'
 // Страница документы
 import DocumentPage from './components/pages/cabinet/DocumentPage/index'
+import OrderDocumentPage from './components/pages/cabinet/OrderDocumentPage'
+import DocumentDuplicatePage from './components/pages/cabinet/DocumentDuplicatePage/index'
+
 // Поддержка
 // Шаблон поддержки
 import SupportTemplate from './components/templates/SupportTemplate'
@@ -42,8 +45,19 @@ export default new Router({
           component: IndexPage
         },
         {
-          path: 'documents',
+          name: 'documents',
+          path: 'documents/',
           component: DocumentPage
+        },
+        {
+          name: 'documents.order',
+          path: 'documents/order',
+          component: OrderDocumentPage
+        },
+        {
+          name: 'documents.duplicates',
+          path: 'documents/duplicates',
+          component: DocumentDuplicatePage
         },
         {
           path: 'digital-products',

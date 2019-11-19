@@ -7,12 +7,12 @@ export default {
   }),
   props: {
     /**
-     * Цвет кнопки. Доступные значения - yellow, blue, green.
+     * Цвет кнопки. Доступные значения - yellow, blue, green, gray.
      */
     color: {
       type: String,
       default: 'yellow',
-      validator: value => ['yellow', 'blue', 'green'].includes(value)
+      validator: value => ['yellow', 'blue', 'green', 'gray'].includes(value)
     },
     /**
      * Отключение кнопки

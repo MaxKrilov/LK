@@ -248,6 +248,10 @@ $er-footer-bg-color: map_get($named_colors, 'footer-bg');
     margin-bottom: 0;
   }
 
+  @include max-breakpoint('sm') {
+    margin-bottom: 0;
+  }
+
   &__title {
     @extend %menu-item-font;
     @include color-white(.5);
@@ -290,6 +294,14 @@ $er-footer-bg-color: map_get($named_colors, 'footer-bg');
       box-shadow:
         inset 0 0 12px 0 map_get($soc-icon-color, 'instagram'),
         0 0 24px 0 map_get($soc-icon-color, 'instagram');
+
+      g {
+        filter: none;
+      }
+    }
+
+    &:hover {
+      box-shadow: inset 0 0 12px 0 #e86dfd, 0 0 24px 0 #e86dfd;
 
       g {
         filter: none;

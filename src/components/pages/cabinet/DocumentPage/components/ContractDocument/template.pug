@@ -1,0 +1,35 @@
+common-document(
+  :class="{'er-document--signed': document.signed}"
+).er-document--contract.er-document--big-doc
+  template(v-slot:header)
+    .er-document__title Договор
+    a(:href="document.file").er-document__link.er-document__subtitle
+      | Текст документа
+
+    er-icon(name="doc")
+
+  template(v-slot:body)
+    .document-number
+      .document-number__sign №
+      .document-number__number {{ document.number }}
+
+    .document-date.caption2
+      | от {{ $moment(document.date).format("DD.MM.YY") }}
+
+  template(v-slot:footer)
+    div(v-if="document.signed")
+      .er-document__signed-text
+        er-icon(name="circle_ok").circle-ok-icon
+        er-icon(name="ok").ok-icon
+        | Подписан
+
+    .buttons(v-else)
+      er-button(
+        :color="'blue'"
+        pre-icon="doc_edit"
+      ).er-button--accept
+        | Подписать
+      er-button(
+        :color="'gray'"
+      ).er-button--decline
+        | Отказаться

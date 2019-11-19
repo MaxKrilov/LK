@@ -1,11 +1,12 @@
 .er-back {
   .er-icon {
     &.arrow {
-      @include color-black(.3);
-      margin-right: $padding-x1;
+      @include color-black(.2);
+      margin-right: $padding-x2;
+      transition: color .15s ease-in-out;
 
       svg {
-        width: 12px;
+        width: 16px;
       }
     }
 
@@ -25,24 +26,38 @@
   &__button {
     cursor: pointer;
     display: inline-flex;
-    transition: opacity .1s ease-in-out;
-    line-height: 16px;
-    letter-spacing: 0;
-
-    font-family: 12px $fedra-demi;
 
     &:hover {
-      opacity: .5;
+      .er-back__title {
+        @include color-black(.8);
+      }
+
+      .arrow {
+        color: map_get($yellow, 'base');
+      }
+    }
+
+    &:active {
+      .er-back__title {
+        color: map_get($yellow, 'base');
+      }
+
+      .arrow {
+        color: map_get($yellow, 'base');
+      }
     }
 
     @include min-breakpoint('xl') {
-      margin-bottom: $padding-x3;
+      margin-bottom: $padding-x4;
     }
   }
 
   &__title {
+    @extend %caption2;
     @include color-black(.3);
+    transition: color .15s ease-in-out;
     display: none;
+    user-select: none;
 
     @include min-breakpoint('lg') {
       display: block;

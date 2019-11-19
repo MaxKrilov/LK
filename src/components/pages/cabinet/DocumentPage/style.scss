@@ -1,3 +1,136 @@
-.document-page {
+$document-padding: 16px;
 
+.document-page {
+  max-width: 100vw;
+
+  .link--dashed {
+    border: {
+      color: initial;
+      width: 0;
+      bottom-width: 1px;
+      style: dashed;
+    }
+  }
+
+  .er-page-title {
+    margin-bottom: 0;
+  }
+
+  &__title {
+    margin-top: $padding-x8;
+
+    @include min-breakpoint('md') {
+      margin-top: $padding-x12;
+    }
+
+    @include min-breakpoint('sm') {
+      margin-top: $padding-x6;
+    }
+  }
+
+  &__list {
+    margin-top: $padding-x4;
+
+    .page-title + &__list {
+      margin-top: 64px;
+      margin-bottom: $padding-x8;
+
+      @include min-breakpoint('lg') {
+        margin-bottom: $padding-x4;
+      }
+    }
+
+    .container {
+      .row {
+        margin-left: -$padding-x2;
+        margin-right: -$padding-x2;
+
+        @include min-breakpoint('lg') {
+          margin-left: -$padding-x3;
+          margin-right: -$padding-x3;
+        }
+
+        @include min-breakpoint('xl') {
+          margin-left: -$padding-x2;
+          margin-right: -$padding-x2;
+        }
+      }
+
+      .flex {
+        padding-left: $padding-x2;
+        padding-right: $padding-x2;
+
+        @include min-breakpoint('lg') {
+          padding-left: $padding-x3;
+          padding-right: $padding-x3;
+        }
+
+
+        @include min-breakpoint('xl') {
+          padding-left: $padding-x2;
+          padding-right: $padding-x2;
+        }
+      }
+    }
+  }
+
+  .page-title {
+    margin-top: $padding-x6;
+
+    @include min-breakpoint('md') {
+      margin-top: $padding-x8;
+    }
+
+    @include min-breakpoint('lg') {
+      margin-top: $padding-x4;
+    }
+
+    @include min-breakpoint('xl') {
+      margin-top: $padding-x2;
+    }
+  }
+
+  &__empty-list {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: $padding-x6;
+    margin-top: $padding-x2;
+
+    .empty-list-message {
+      @extend %h4;
+    }
+
+    .er-icon {
+      @include color-black(.1);
+      margin-right: $padding-x4;
+
+      $svg-inc: 1.23px;
+
+      svg {
+        width: 65 * $svg-inc;
+
+        @include min-breakpoint('lg') {
+          width: 78 * $svg-inc;
+        }
+
+        @include min-breakpoint('lg') {
+          width: 104 * $svg-inc;
+        }
+      }
+
+    }
+
+  }
+}
+
+.page-title {
+  display: flex;
+  flex-direction: row;
+
+  align-items: center;
+
+  @include min-breakpoint('xl') {
+    display: block;
+  }
 }

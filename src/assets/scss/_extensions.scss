@@ -1,12 +1,35 @@
-%h1 {
-  font: 26px/32px $fedra-light;
+%h1-font {
+  font: 26px/32px $fedra-demi;
   letter-spacing: -1px;
+
+  @include min-breakpoint('md') {
+    font-size: 30px;
+    line-height: 37px;
+    letter-spacing: -2px;
+  }
+
+  @include min-breakpoint('lg') {
+    font-size: 32px;
+    line-height: 40px;
+    letter-spacing: -1px;
+  }
+
+  @include min-breakpoint('xxl') {
+    font-size: 36px;
+    line-height: 45px;
+    letter-spacing: -2px;
+  }
+}
+
+%h1 {
+  @extend %h1-font;
   color: rgba(map_get($shades, 'black'), 0.8);
-  @include media-query((
-    font-size:      (md: 30px, lg: 32px),
-    line-height:    (md: 37px, lg: 40px),
-    letter-spacing: (md: -2px)
-  ));
+}
+
+%h1-light {
+  @extend %h1-font;
+  font-family: $fedra-demi;
+  color: rgba(map_get($shades, 'black'), 0.8);
 }
 
 %h2 {
@@ -31,7 +54,7 @@
 }
 
 %h4 {
-  font: 15px/20px $fedra-book;
+  font: 15px/20px $fedra-demi;
   letter-spacing: -0.35px;
   color: rgba(map_get($shades, 'black'), 0.8);
   @include media-query((
@@ -41,10 +64,9 @@
   ));
 }
 
-%caption1 {
+%caption1-font {
   font: 11px/16px $fedra-demi;
   letter-spacing: 0.35px;
-  @include color-black(.5);
 
   @include min-breakpoint('md') {
     font-size: 13px;
@@ -56,16 +78,24 @@
   }
 }
 
-%caption2 {
-  font-size: 10px;
-  line-height: 12px;
+%caption1 {
+  @extend %caption1-font;
+  @include color-black(.5);
+}
+
+%caption2-font {
+  font: 10px/12px $fedra-demi;
   letter-spacing: 0.5px;
-  @include color-black(.3);
 
   @include min-breakpoint('md') {
     font-size: 12px;
     line-height: 16px;
   }
+}
+
+%caption2 {
+  @extend %caption2-font;
+  @include color-black(.3);
 }
 
 %button-font {
@@ -110,12 +140,20 @@
   text-decoration: none;
 }
 
+%link-color {
+  color: map_get($blue, 'base');
+
+  &:hover {
+    color: map_get($blue, 'link-hover');
+  }
+}
+
 %link {
   @extend %link-font;
   cursor: pointer;
 
   text-decoration: none;
-  display: inline-block;
+  display: inline;
   border-bottom: 1px solid;
 }
 

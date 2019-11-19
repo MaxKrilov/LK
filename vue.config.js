@@ -8,6 +8,12 @@ module.exports = {
   },
   chainWebpack: config => {
     config.module
+      .rule('vue')
+      .use('vue-svg-inline-loader')
+      .loader('vue-svg-inline-loader')
+      .options({})
+
+    config.module
       .rule('svg-sprite')
       .use('svgo-loader')
       .loader('svgo-loader')

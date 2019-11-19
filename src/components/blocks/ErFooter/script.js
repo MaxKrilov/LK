@@ -1,10 +1,8 @@
 import ErFooterMenu from '@/components/blocks/ErFooterMenu'
-import ErGlowIcon from '@/components/blocks/ErGlowIcon'
 
 export default {
   components: {
-    ErFooterMenu,
-    ErGlowIcon
+    ErFooterMenu
   },
   data: () => {
     return {
