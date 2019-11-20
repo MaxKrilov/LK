@@ -29,16 +29,7 @@ export default {
       return SHOW_BUTTONS_DURATION
     },
     isShowButtons () {
-      if (this.isMaxBreakpoint('md')) {
-        if (!this.active) {
-          return true
-        } else if (this.active && this.showButtons) {
-          return true
-        }
-        return false
-      } else {
-        return true
-      }
+      return !this.isMaxBreakpoint('md') || !this.active || this.showButtons
     }
   },
   methods: {
