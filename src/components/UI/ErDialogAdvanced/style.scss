@@ -11,9 +11,6 @@ $color-action: rgba(map_get($shades, 'black'), .5);
   padding: 16px;
 }
 
-.er-dialog {
-  margin: 16px;
-}
 
 #{$pre} {
   &__modal {
