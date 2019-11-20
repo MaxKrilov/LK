@@ -48,7 +48,26 @@ $padding-x32: $max-indentation * 2px;
 $z-index: (
         'top-menu': 5,
         'left-menu': 7,
-        'right-modal': 100
+        'right-modal': 100,
+        'search-field': 1,
+        'top-overlay': 6
+);
+
+// Fonts
+$text: (
+  'xs': (normal 12px/1.2rem $fedra-book, 'Roboto', 'Helvetica', sans-serif),
+  'small': (normal 14px/18px $fedra-book, 'Roboto', 'Helvetica', sans-serif),
+  'medium': (normal 16px/20px $fedra-book, 'Roboto', 'Helvetica', sans-serif),
+  'large': (normal 18px/23px $fedra-book, 'Roboto', 'Helvetica', sans-serif),
+  'xl': (normal 20px/25px $fedra-book, 'Roboto', 'Helvetica', sans-serif)
+);
+
+$title: (
+  'xs': (normal 15px/20px $fedra-demi, 'Roboto', 'Helvetica', sans-serif),
+  'small': (normal 18px/22px $fedra-demi, 'Roboto', 'Helvetica', sans-serif),
+  'medium': (normal 24px/30px $fedra-demi, 'Roboto', 'Helvetica', sans-serif),
+  'large': (normal 28px/1.8rem $fedra-demi, 'Roboto', 'Helvetica', sans-serif),
+  'xl': (normal 36px/45px $fedra-demi, 'Roboto', 'Helvetica', sans-serif),
 );
 
 $left-menu-width: 271px;

@@ -4,6 +4,7 @@ import { isCombat, wrapHttps, eachObject, eachArray } from './helper'
 import { BACKEND_COMBAT, BACKEND_TESTING } from '../constants/url'
 import store from '../store'
 import { API_DADATA } from '../store/actions/api'
+import 'url-search-params-polyfill'
 
 /**
  * Класс для работы с API
@@ -14,6 +15,8 @@ export function API () {
   let _type = TYPE_OBJECT
   let _method = 'POST'
   let _data = null
+  let _withCredentials = false
+
   function _getUrl (query, branch) {
     query = query || '/'
     branch = branch || 'master'
@@ -103,6 +106,14 @@ export function API () {
     return this
   }
   /**
+   * Устанавливаем разрещение на создание
+   * кросс-доменных Access-Control запросов
+   */
+  this.setWithCredentials = function () {
+    _withCredentials = true
+    return this
+  }
+  /**
    * Выполняет запрос
    * @param {string} query
    * @return {Promise<any>}
@@ -126,7 +137,8 @@ export function API () {
     config = Object.assign(config, {
       method: _method,
       data,
-      url: _getUrl(query, _branch)
+      url: _getUrl(query, _branch),
+      withCredentials: _withCredentials
     })
     return new Promise((resolve, reject) => {
       axios(config)
@@ -146,6 +158,7 @@ export function API () {
     _type = TYPE_OBJECT
     _method = 'POST'
     _data = null
+    _withCredentials = false
   }
 }
 

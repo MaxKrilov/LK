@@ -1,0 +1,174 @@
+.edit-profile-page {
+  &__edit-form {
+    padding: 0;
+    @include media-query((
+      padding: (
+        sm: 0,
+        lg: 0 25px,
+        xl: 0 25px),
+    ));
+  }
+  &__title {
+    @include media-query((
+      font: (xs: map_get($title, 'large'), md: map_get($title, 'xl'))
+    ))
+  }
+  &__welcome-title {
+    display: flex;
+    align-items: center;
+    @include media-query((
+      flex-direction: (xs: row, md: column),
+      align-items: (xs: center, md: flex-start),
+      margin: (xs: 4px 0 56px)
+    ));
+    &__back-link {
+      cursor: pointer;
+      display: inline-block;
+      text-decoration: none;
+      @include media-query((
+        margin-bottom: (xs: 0, md: 8px)
+      ));
+      &__icon {
+        display: inline-block;
+        &.desktop {
+          @include media-query((
+            display: (xs: none, md: inline-block)
+          ));
+          svg {
+            width: 16px;
+          }
+        }
+        &.mobile {
+          @include media-query((
+            display: (xs: inline-block, md: none)
+          ));
+          padding-right: 8px;
+          svg {
+            transform: rotate(-90deg);
+            color: map_get($yellow, 'base');
+            width: 18px;
+          }
+        }
+      }
+      &__label {
+        margin-left: 11px;
+        font: map_get($text, 'xs');
+        font-family: $fedra-demi;
+        @include media-query((
+          display: (xs: none, md: inline-block)
+        ));
+      }
+      &:hover {
+        color: rgba(map_get($shades, 'black'), 0.8);
+        * > svg {
+          color: map_get($yellow, 'base');
+        }
+      }
+      &:active {
+        color: map_get($yellow, 'base');
+      }
+    }
+  }
+
+  &__wrapper {
+    border-radius: 12px;
+    overflow-x: hidden;
+    padding: 0;
+    @include media-query((
+      padding: (md: 0 24px, lg: 0, xl: 0),
+      background-color: (
+        md: map_get($gray, '9'),
+        lg: map_get($gray, '9'),
+        xl: map_get($gray, '9')),
+      box-shadow: (
+        md: 0 2px 12px rgba(map_get($shades, 'black'), 0.1),
+        lg: 0 2px 12px rgba(map_get($shades, 'black'), 0.1),
+        xl: 0 2px 12px rgba(map_get($shades, 'black'), 0.1)
+      ),
+    ));
+  }
+
+  .account-form {
+    &-btn-save {
+      @include media-query((
+        margin: (
+          sm: 8px 0 8px 0 !important,
+          md: 0 !important,
+          lg: 0 8px 0 0 !important,
+          xl: 0 8px 0 0 !important,
+        ),
+        padding-right: (
+          md: 16px !important,
+        ),
+      ));
+    }
+    &__separator {
+      display: none
+    }
+  }
+
+  .access-section {
+    margin-top: 40px !important;
+    @include media-query((
+      margin-top: (
+        lg: 28px !important,
+        xl: 28px !important,
+      ),
+    ));
+    &__side-menu__list {
+      @include media-query((
+        padding-right: (
+          lg: 40px !important,
+          xl: 40px !important,
+        ),
+      ));
+    }
+    & > .row {
+      @include media-query((
+        padding-left: (
+          xs: 0 !important,
+        ),
+        margin-bottom: (
+          xs: 12 !important,
+        ),
+      ));
+    }
+    &__separator {
+      left: -10px;
+      @include media-query((
+        left: (
+          sm: -10px,
+          md: -10px,
+          lg: 0,
+          xl: 0
+        )
+      ));
+    }
+    &__side-menu__list__item__active-line {
+      &::before {
+        @include media-query((
+          left: (
+            xs: 0,
+            lg: -32px,
+            xl: -32px
+          ),
+          top: (
+            xs: 21px,
+            sm: 21px,
+            md: 21px,
+            lg: -10px,
+            xl: -10px)
+        ));
+      }
+    }
+  }
+
+  .flex {
+    padding-right: 0;
+    padding-left: 0;
+  }
+  .row {
+    margin-right: 0;
+    margin-left: 0;
+  }
+}

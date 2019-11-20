@@ -1,0 +1,205 @@
+div(:class="`${pre}`")
+  er-flex(xs12 :class="`${pre}__fields-container`")
+    er-row
+      er-flex(
+        xs12
+        sm6
+        md6
+        lg4
+        :class="`${pre}__fields-container__group-new-account`")
+        div(v-if="isLG || isMD && !isSM")
+          h3(
+            v-if="!isChanged && isAdding"
+            :class="`${pre}__fields-container__group-title`") Новая учетная запись
+          h3(
+            v-else-if="isChanged || !isAdding"
+            :class="`${pre}__fields-container__group-title`") Сотрудник
+        div(v-if="isXS || isSM")
+          h3(
+            :class="`${pre}__fields-container__group-title`") Сотрудник
+        div
+          er-text-field(
+            :class="`${pre}__fields-container__group-field`"
+            label="Фамилия"
+            :isShowLabelRequired="isAdding"
+            v-model="value.lastName"
+            isShowSuccess
+            :rules="fullNameRule")
+        div
+          er-text-field(
+            :class="`${pre}__fields-container__group-field`"
+            name="inputFirstName"
+            label="Имя"
+            :isShowLabelRequired="isAdding"
+            v-model="value.firstName"
+            isShowSuccess
+            :rules="fullNameRule")
+        div
+          er-text-field(
+            :class="`${pre}__fields-container__group-field`"
+            name="inputMiddleName"
+            label="Отчество"
+            :isShowLabelRequired="isAdding"
+            v-model="value.middleName"
+            isShowSuccess
+            :rules="fullNameRule")
+        div(
+          v-if="isMD && !isXS && isAdding"
+          :class="`${pre}__btn-similar`")
+          er-row
+            er-flex(xs1)
+              er-toggle(view="radio-check" v-model="isSimilarAccount")
+            er-flex(
+              :class="`${pre}__btn-similar-text--dashed ${isSimilarAccount ? `${pre}__btn-similar--active` : ''}`"
+              xs11)
+              span(@click="handleToggle")
+                  | Создать контакт с аналогичными данными
+        div(v-if="isMD && !isSM")
+          h3(:class="`${pre}__fields-container__group-title`")
+            | Роль учетной записи
+          er-select(
+            :class="`${pre}__fields-container__group-field`"
+            placeholder="Добавьте роль"
+            v-model="value.role"
+            track-id="code"
+            :isShowLabelRequired="isAdding"
+            :items="value.roles"
+            readonly
+            :disabled="isLPR"
+            :rules="roleRule")
+      er-flex(
+        v-if="isLG"
+        xs12
+        sm8
+        md6
+        lg8
+        :class="`${pre}__fields-container__group`")
+        er-row()
+          er-flex(
+            xs12
+            sm6
+            md12
+            lg6
+            :class="`${pre}__fields-container__group-login`")
+            div
+              h3(:class="`${pre}__fields-container__group-title`")
+                | Учетная&nbsp;запись&nbsp;(логин)
+              er-text-field(
+                :class="`${pre}__fields-container__group-field`"
+                name="inputPhoneNumber"
+                label="Введите номер телефона"
+                mask="phone"
+                v-model="value.phoneNumber"
+                :isShowLabelRequired="isAdding"
+                isShowSuccess
+                ref="phone"
+                :disabled="!isLPR && !isAdding"
+                :rules="phoneRule")
+            div
+              er-text-field(
+                :class="`${pre}__fields-container__group-field`"
+                name="inputEmail"
+                label="Введите электронную почту"
+                type="email"
+                v-model="value.email"
+                :isShowLabelRequired="isAdding"
+                isShowSuccess
+                ref="email"
+                :disabled="!isLPR && !isAdding"
+                :rules="emailRule")
+          er-flex(
+            xs12
+            sm6
+            md12
+            lg6
+            :class="`${pre}__fields-container__group-role`")
+            div
+              h3(:class="`${pre}__fields-container__group-title`")
+                | Роль учетной записи
+              er-select(
+                :class="`${pre}__fields-container__group-field`"
+                placeholder="Добавьте роль"
+                v-model="value.role"
+                track-id="code"
+                :isShowLabelRequired="isAdding"
+                :items="value.roles"
+                readonly
+                :disabled="isLPR"
+                :rules="roleRule")
+        div(v-if="isAdding")
+          p(:class="`${pre}__fields-container__group__text-info`")
+            | Пароль для учетной записи формируется автоматически после добавления телефона
+            | и электронной почты. Сотруднику будет отправлено уведомление о создании учетной записи.
+      er-flex(
+        v-if="isMD || isSM || isXS"
+        xs12
+        sm6
+        md6
+        lg8
+        :class="`${pre}__fields-container__group`")
+        div
+          h3(:class="`${pre}__fields-container__group-title`")
+            | Учетная запись (логин)
+          er-text-field(
+            :class="`${pre}__fields-container__group-field`"
+            name="inputPhoneNumber"
+            label="Введите номер телефона"
+            mask="phone"
+            v-model="value.phoneNumber"
+            :isShowLabelRequired="isAdding"
+            isShowSuccess
+            ref="phone"
+            :disabled="!isLPR && !isAdding"
+            :rules="phoneRule")
+        div
+          er-text-field(
+            :class="`${pre}__fields-container__group-field`"
+            name="inputEmail"
+            label="Введите электронную почту"
+            type="email"
+            v-model="value.email"
+            :isShowLabelRequired="isAdding"
+            isShowSuccess
+            ref="email"
+            :disabled="!isLPR && !isAdding"
+            :rules="emailRule")
+        div(v-if="isMD && isAdding")
+          p(:class="`${pre}__fields-container__group__text-info`")
+            | Пароль для учетной записи формируется автоматически после добавления телефона
+            | и электронной почты. Сотруднику будет отправлено уведомление о создании учетной записи.
+        div(
+          v-if="isXS && isAdding"
+          :class="`${pre}__btn-similar`")
+          er-row
+            er-flex(xs1)
+              er-toggle(view="radio-check" v-model="isSimilarAccount")
+            er-flex(
+              :class="`${pre}__btn-similar-text--dashed ${isSimilarAccount ? `${pre}__btn-similar--active` : ''}`"
+              xs11)
+              span(@click="handleToggle")
+                  | Создать контакт с аналогичными данными
+      er-flex(
+        v-if="isSM || isXS"
+        xs12
+        sm12)
+        div
+          h3(:class="`${pre}__fields-container__group-title`")
+            | Роль учетной записи
+          er-select(
+            :class="`${pre}__fields-container__group-field`"
+            placeholder="Добавьте роль"
+            v-model="value.role"
+            track-id="code"
+            :isShowLabelRequired="isAdding"
+            :items="value.roles"
+            readonly
+            :disabled="isLPR"
+            :rules="roleRule")
+    div(
+      v-if="isLG && isAdding"
+      @click="handleToggle")
+      div(:class="`${pre}__btn-similar`")
+        er-toggle(view="radio-check" v-model="isSimilarAccount")
+        a(:class="`${pre}__btn-similar-text--dashed ${isSimilarAccount ? `${pre}__btn-similar--active` : ''}`")
+          span
+            | Создать контакт с аналогичными данными

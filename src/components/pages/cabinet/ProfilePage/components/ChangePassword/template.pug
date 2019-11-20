@@ -1,0 +1,58 @@
+er-dialog(:class="`${pre}`" :maxWidth="calculatedModalSize" :value="stateModalVisibility" @update:returnValue="close()")
+  er-card(:class="`${pre}__card`")
+    div(:class="`${pre}__inner`")
+      h1(:class="`${pre}__title`") Смена пароля
+      p(v-if="!!serverError").text-sm.err.mb-16 {{serverError}}
+      p(v-else).text-sm.mb-16 В целях вашей безопасности рекомендуем менять пароль один раз в месяц. Пароль должен состоять из комбинации букв, цифр, cпецсимволов и быть не менее 8 и не более 16 символов.
+      er-row(:class="`${pre}__checks`")
+        er-flex(xs12, sm4, :class="[`${pre}__check`, checkEmptyFields ? '' : isLettersOk ? 'ok' : 'err']" )
+          span.text-xl
+            | A-z
+            er-icon(v-if="!!this.passwordNew" :class="`${pre}__icon`" :name="checkEmptyFields ? '' : isLettersOk ? 'ok' : 'close'")
+          span.text-xs Латинские символы с верхним и нижним регистром
+        er-flex(xs12, sm4, :class="[`${pre}__check`, checkEmptyFields ? '' : isNumbersOk ? 'ok' : 'err']" )
+          span.text-xl
+            | 0-9
+            er-icon(v-if="!!this.passwordNew" :class="`${pre}__icon`" :name="checkEmptyFields ? '' : isNumbersOk ? 'ok' : 'close'")
+          span.text-xs Цифра или несколько цифр
+        er-flex(xs12, sm4, :class="[`${pre}__check`, checkEmptyFields ? '' : isSymbolsOk ? 'ok' : 'err']" )
+          span.text-xl
+            | _ ] [ - . ! #
+            er-icon(v-if="isSymbolsOk" :class="`${pre}__icon`" :name="checkEmptyFields ? '' : isSymbolsOk ? 'ok' : 'close'")
+          span.text-xs Возможные спецсимволы
+      er-form(:class="`${pre}__form`" @submit.prevent="submit")
+        er-text-field(
+          key="newpass"
+          :class="[`${pre}__field_new`, checkEmptyFields ? '' : isConfirmCorrect ? 'ok' : 'err']"
+          ref="newpass"
+          :type="isShowPassword ? 'text' : 'password'"
+          name="inputPasswordNew"
+          label="Новый пароль"
+          v-model="passwordNew"
+          isShowSuccess
+          :rules="ruleFunc(passwordNewRule)"
+          :appendInnerIcon="isShowPassword ? 'eye_open' : 'eye_close'"
+          @click:append-inner="isShowPassword = !isShowPassword"
+          )
+        er-text-field(
+          key="confirmpass"
+          :class="[`${pre}__field_conf`, checkEmptyFields ? '' : isConfirmCorrect ? 'ok' : 'err']"
+          ref="confirm"
+          :type="isShowConfirm ? 'text' : 'password'"
+          name="inputPasswordConfirm"
+          label="Подтвердите пароль"
+          v-model="passwordConfirm"
+          isShowSuccess
+          :rules="ruleFunc(passwordConfirmRule)"
+          :appendInnerIcon="isShowConfirm ? 'eye_open' : 'eye_close'"
+          @click:append-inner="isShowConfirm = !isShowConfirm"
+          :disabled="!isPasswordCorrect").mt-16
+        er-row(:class="`${pre}__buttons`")
+          er-flex(:class="`${pre}__button_wrap`" xs12, sm6)
+            er-button(
+              type="submit"
+              color="yellow"
+              :class="`${pre}__button`"
+              :disabled="!isPasswordCorrect || !isConfirmCorrect") Сменить
+          er-flex(:class="`${pre}__button_wrap`" xs12, sm6)
+            er-button(:class="`${pre}__button`" @click="close" flat) Отмена

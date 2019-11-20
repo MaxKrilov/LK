@@ -1,10 +1,16 @@
 <template lang="pug">
   div.app(data-app="true")
     div.app__content
-      router-view
+      template(v-if="isFetching")
+        | Проверяем авторизацию
+      template(v-else-if="!hasAccess")
+        | Доступ закрыт
+      template(v-else)
+        router-view
 </template>
 
 <script>
+import { mapGetters, mapState } from 'vuex'
 import { SCREEN_WIDTH } from './store/actions/variables'
 import { getScreenWidth } from './functions/helper'
 
@@ -13,8 +19,11 @@ export default {
   data: () => ({
     model: 1
   }),
-  methods: {},
-  created () {},
+  async created () {
+    if (!this.refreshedToken.isFetching && !this.serverErrorMessage) {
+      this.$store.dispatch('auth/checkAuth', { api: this.$api })
+    }
+  },
   mounted () {
     this.$store.commit(SCREEN_WIDTH, getScreenWidth())
     window.addEventListener('resize', () => {
@@ -23,6 +32,11 @@ export default {
     window.addEventListener('orientationchange', () => {
       this.$store.commit(SCREEN_WIDTH, getScreenWidth())
     })
+  },
+  methods: {},
+  computed: {
+    ...mapGetters('auth', ['user', 'hasAccess']),
+    ...mapState('auth', ['error', 'isFetching', 'isFetched', 'refreshedToken'])
   }
 }
 </script>

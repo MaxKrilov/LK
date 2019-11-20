@@ -5,6 +5,7 @@ import store from './store'
 import App from './App'
 import { eachArray, eachObject } from './functions/helper'
 import { API } from './functions/api'
+import * as Filters from './functions/filters'
 import Directives from './directives'
 import moment from 'moment'
 // @ts-ignore
@@ -29,6 +30,11 @@ eachArray(requireComponent.keys(), (fileName: string) => {
 // Регистрация директив
 eachObject(Directives, (config: DirectiveOptions | DirectiveFunction, directiveName: string) => {
   Vue.directive(directiveName, config)
+})
+
+// Регистрация общих фильтров
+eachObject(Filters, (config: any, filterName: any) => {
+  Vue.filter(filterName, config)
 })
 
 // Подключение Lodash

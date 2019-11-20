@@ -1,0 +1,273 @@
+.edit-lpr-section {
+  &__arrow {
+    text-align: end;
+    @include media-query((
+      text-align: (md: start, lg: end, xl: end),
+      margin-bottom: (md: 14px, lg: 22px, xl: 22px)
+    ));
+    &__icon {
+      color: map_get($gray, '6') !important;
+      svg {
+        width: 16px !important;
+        height: 16px !important;
+      }
+    }
+  }
+  &__fields-container {
+    & > .row > .flex.sm12 {
+      & h3 {
+        @include media-query((
+          margin-bottom: (sm: 34px)
+        ));
+      }
+      & div {
+        @include media-query((
+          margin-bottom: (sm: 0)
+        ));
+      }
+    }
+    &__group {
+      @include media-query((
+        padding-right: (
+          md: 1px !important,
+          lg: 0px !important,
+          xl: 0px !important),
+        padding-left: (
+          sm: 8px !important,
+          lg: 1px !important,
+          xl: 0px !important)
+      ));
+      &-title {
+        @include media-query((
+          font-size: (sm: 17px, md: 19px, lg: 19px, xl: 23px),
+          line-height: (sm: 22px),
+          letter-spacing: (sm: -0.5px),
+          margin-bottom: (xs: 40px, sm: 41px, md: 40px, lg: 32px),
+        ));
+      }
+      &-new-account {
+        @include media-query((
+          padding-right: (
+            sm: 8px !important,
+            md: 8px !important,
+            lg: 16px !important,
+            xl: 18px !important),
+          padding-left: (
+            md: 0px !important,
+            lg: 0px !important,
+            xl: 0px !important),
+          padding-bottom: (
+            xs: 3px !important,
+            sm: 0px !important)
+        ));
+      }
+      &-login {
+        @include media-query((
+          padding-right: (
+            lg: 9px !important,
+            xl: 10px !important),
+          padding-left: (
+            lg: 7px !important,
+            xl: 9px !important),
+        ));
+      }
+      &-role {
+        @include media-query((
+          padding-right: (
+            lg: 1px !important,
+            xl: 0px !important),
+          padding-left: (
+            lg: 16px !important,
+            xl: 18px !important),
+        ));
+      }
+      &-field {
+        @include media-query((
+          margin-bottom: (xs: 32px, md: 30px, lg: 32px, xl: 32px !important)
+        ));
+        & > .er-input__control > .er-input__slot,
+        & > .er-text-field > .er-input__control > .er-input__slot {
+          @include media-query((
+            min-height: (
+              md: 40px !important,
+              lg: 40px !important,
+              xl: 48px !important
+            ),
+            padding: (
+              xs: 0 5px 0 8px !important,
+              md: 0 13px
+            )
+          ));
+          .er-text-field__success-icon {
+            display: none;
+          }
+          label {
+            &.er-text-field--active {
+              @include media-query((
+                font: (sm: map_get($text, 'xs'), md: map_get($text, 'small'), lg: map_get($text, 'xs'), xl: map_get($text, 'xs')),
+                line-height: (lg: 16px, xl: 15px),
+                transform: (
+                  xs: scale(0.85) translateY(-36px),
+                  sm: scale(0.85) translateY(-37px),
+                  md: scale(0.85) translateY(-37px),
+                  lg: scale(0.85) translateY(-36px),
+                  xl: scale(0.85) translateY(-40px)
+                ),
+                margin-left: (xs: -9px, md: -8px)
+              ));
+              color: rgba(map_get($shades, 'black'), 0.3);
+            }
+            @include media-query((
+              font-size: (md: 14px, lg: 14px, xl: 16px),
+              line-height: (md: 19px, lg: 19px, xl: 21px),
+              letter-spacing: (xl: -0.5px),
+              margin-bottom: (xl: 20px),
+            ));
+            color: rgba(map_get($shades, 'black'), 0.8);
+            font-family: $fedra-book;
+          }
+          input {
+            @include media-query((
+              font: (md: map_get($text, 'small'), lg: map_get($text, 'small'), xl: map_get($text, 'medium'))
+            ));
+          }
+        }
+        &__label {
+          position: absolute;
+          transform-origin: 0 0;
+          transform: scale(0.85) translateY(-24px);
+          @include media-query((
+            font: (sm: map_get($text, 'xs'), md: map_get($text, 'small')),
+            transform: (
+              xs: scale(0.85) translateY(-21px),
+              sm: scale(0.85) translateY(-22px),
+              md: scale(0.85) translateY(-24px),
+            )
+          ));
+          color: rgba(map_get($shades, 'black'), 0.3);
+          pointer-events: none;
+        }
+      }
+      &__text-info {
+        @include media-query((
+          padding-left: (md: 12px, lg: 7px, xl: 10px !important),
+          padding-top: (xs: 12px !important, xl: 0px !important),
+          margin-top: (xs: -15px, sm: -16px, md: -14px, lg: -15px, xl: -4px),
+          padding-bottom: (xs: 38px),
+          font-size: (xs: 12px, md: 14px, lg: 14px, xl: 16px),
+          line-height: (md: 19px, lg: 18px, xl: 21px),
+          letter-spacing: (xl: -0.5px)
+        ));
+        color: rgba(map_get($shades, 'black'), 0.8);
+      }
+      & > div:last-child {
+        & > *:last-child {
+          padding-bottom: 0;
+        }
+      }
+    }
+  }
+  &__btn-similar {
+    @include media-query((
+      margin-top: (xs: -8px, sm: -4px, md: -16px, lg: 2px, xl: 4px),
+      margin-bottom: (xs: 26px, sm: 50px, md: 40px, lg: 0, xl: 0),
+      padding-left: (xs: 5px, sm: 2px, md: 5px, lg: 5px, xl: 5px)
+    ));
+    display: flex;
+    cursor: pointer;
+    transition: $primary-transition;
+    & .er-input {
+      @include media-query((
+        display: (
+          lg: block !important,
+          xl: block !important),
+        flex: (lg: none, xl: none)
+      ));
+    }
+    & .er-toggle > .er-input__control > .er-input__slot {
+      @include media-query((
+        margin-top: (
+          xs: 10px !important,
+          sm: 8px !important,
+          md: 8px !important,
+          lg: 0px !important,
+          xl: 0 !important)
+      ));
+    }
+    &-text--dashed {
+      @include media-query((
+        font-size: (xs: 12px, md: 14px, xl: 16px),
+        line-height: (md: 19px, xl: 21px),
+        letter-spacing: (xl: -0.5px),
+        padding-top: (
+          lg: 2px !important,
+          xl: 2px !important),
+        padding-left: (
+          xs: 10px !important,
+          sm: 20px !important,
+          md: 10px !important,
+          lg: 10px !important,
+          xl: 9px !important),
+        padding-right: (
+          md: 15px !important)
+      ));
+      & > span {
+        color: white;
+        text-decoration: none;
+        font-family: $fedra-book;
+        color: rgba(map_get($shades, 'black'), 0.5);
+        border-bottom: 1px dashed rgba(map_get($shades, 'black'), 0.5);
+        @include media-query((
+          padding-top: (
+            xs: 0 !important,
+            lg: 0 !important,
+            xl: 0 !important)
+        ));
+        &:hover {
+          color: rgba(map_get($shades, 'black'), 0.8);
+          border-bottom-color: rgba(map_get($shades, 'black'), 0.8);
+        }
+        &:active {
+          color: map_get($yellow, 'base');
+          border-bottom-color: map_get($yellow, 'base');
+        }
+      }
+    }
+    &--active {
+      & > span {
+        color: rgba(map_get($shades, 'black'), 0.8);
+        border-bottom-color: rgba(map_get($shades, 'black'), 0.8);
+      }
+    }
+  }
+  .flex {
+    padding-right: 0;
+    padding-left: 0;
+  }
+  .row {
+    margin-right: 0;
+    margin-left: 0;
+  }
+  .er-text-field--required,
+  .er-select > .er-text-field--required {
+    &:before {
+      top: -18px;
+    }
+    & > .er-input__control > .er-input__slot {
+      label {
+        &.er-text-field--active {
+          @include media-query((
+            margin-left: (xs: 4px)
+          ));
+        }
+      }
+    }
+  }
+  .er-text-field--success > .er-input__control > .er-input__slot {
+    border: 1px solid rgba(map_get($shades, 'black'), 0.2);
+    &:hover {
+      border-color: #000000 !important;
+      background: #FFFFFF !important;
+    }
+  }
+}

@@ -1,0 +1,199 @@
+.account-form {
+  @include media-query((
+    padding: (xs: 0 30px)
+  ));
+  &__separator {
+    border-top: 1px solid map_get($gray, '4');
+    color: map_get($shades, 'transparent');
+    @include media-query((
+      margin-top: (sm: 10px !important, md: 24px !important)
+    ));
+  }
+  &__btns-group {
+    margin-top: 32px;
+    margin-bottom: 32px;
+    @include media-query((
+      margin-top: (
+        sm: 32px !important,
+        md: 39px !important,
+        lg: 32px !important,
+        xl: 32px !important),
+      margin-bottom: (
+        sm: 32px,
+        md: 39px,
+        lg: 32px,
+        xl: 32px)
+    ));
+  }
+  &__error {
+    flex-wrap: nowrap !important;
+    @include media-query((
+      margin: (xs: 25px 0 !important)
+    ));
+    color: map_get($red, 'base')
+  }
+  &__required-caption {
+    display: flex;
+    align-items: center;
+    margin-top: 2px;
+    @include media-query((
+      margin-top: (sm: 2px, md: 0, lg: 0, xl: 0),
+    ));
+    &__circle {
+      width: 8px;
+      height: 8px;
+      margin-right: 2px;
+      @include media-query((
+        margin-right: (sm: 2px, md: 4px, lg: 4px, xl: 4px),
+        line-height: (md: 16px, lg: 16px, xl: 16px)
+      ));
+      background-color: map_get($yellow, 'base');
+      border-radius: 50%;
+    }
+    &__text {
+      font-size: 12px;
+      @include media-query((
+        font-size: (sm: 11px, md: 12px, lg: 12px, xl: 12px),
+        line-height: (md: 16px, lg: 16px, xl: 16px)
+      ));
+      font-family: $fedra-demi;
+      color: rgba(map_get($shades, 'black'), 0.5);
+    }
+  }
+  &-mobile {
+    display: block;
+    left: 0;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: map_get($gray, '3');
+    z-index: 100;
+    overflow-y: auto;
+    overflow-x: hidden;
+    &__header {
+      margin-bottom: 36px;
+      @include media-query((
+        padding-top: (xs: 11px, sm: 13px),
+        padding-bottom: (sm: 8px),
+        padding-left: (xs: 16px, sm: 24px),
+        padding-right: (xs: 16px, sm: 24px),
+        margin-bottom: (sm: 44px, md: 0, lg: 0, xl: 0)
+      ));
+      & > .row > .flex.sm4 {
+        text-align: right;
+      }
+      background: map_get($shades, 'white');
+      &-title {
+        @include media-query((
+          font-size: (xs: 17px, sm: 22px),
+          line-height: (xs: 22px, sm: 28px),
+          letter-spacing: (sm: -1px),
+          margin-bottom: (xs: 13px, sm: 6px),
+          margin-top: (sm: 6px)
+        ));
+      }
+      &__btns-group {
+        width: 100%;
+        @include media-query((
+            padding-top: (xs: 6px !important, sm: 8px !important),
+            display: (xs: block, md: inline),
+            margin-top: (xs: -5px, sm: -5px, md: 0)
+        ));
+        &--disabled {
+          pointer-events: none;
+          opacity: 0.5;
+        }
+        cursor: pointer;
+        &__text {
+          @include media-query((
+            font-size: (xs: 13px, sm: 13px),
+            line-height: (sm: 18px, md: 28px),
+            letter-spacing: (sm: -1px),
+            margin-bottom: (sm: 6px),
+            padding-top: (xs: 8px !important),
+          ));
+          color: map_get($green, 'base');
+          text-decoration: none;
+          font-family: $fedra-book;
+          border-bottom: 1px dashed rgba(map_get($green, 'base'), 0.5);
+          &:hover {
+            border-bottom-color: map_get($shades, 'transparent');
+          }
+        }
+        &__icon {
+          opacity: 0.6;
+          padding-left: 20px !important;
+          svg {
+            width: 16px !important;
+          }
+          &:hover {
+            transition: opacity 0.2s ease-in;
+            opacity: 1;
+          }
+        }
+      }
+    }
+    &__content {
+      height: 100%;
+      @include media-query((
+        padding-left: (xs: 16px, sm: 24px),
+        padding-right: (xs: 16px, sm: 24px),
+      ));
+      & > .er-form > .row {
+        margin-left: -9px;
+        margin-right: -9px;
+        & > .flex.sm6 {
+          @include media-query((
+            padding: (xs: 0 15px, sm: 0 9px, md: 0 15px)
+          ));
+        }
+      }
+    }
+    .access-section.active {
+      & .access-section__add-rights, .access-section__add-btn {
+        background-color: white;
+        @include media-query((
+          margin-right: (
+            xs: -16px,
+            sm: -24px,
+          ),
+          margin-left: (
+            xs: -16px,
+            sm: -24px,
+          )
+        ));
+      }
+      .access-section__add-rights + .access-section__add-btn {
+        padding-top: 0;
+      }
+    }
+  }
+  & > .er-form > .row {
+    @include media-query((
+      margin-bottom: (md: 16px, xl: 32px)
+    ));
+    .er-button {
+      @include media-query((
+        height: (
+          xs: 40px !important,
+          xl: 48px !important)
+      ));
+    }
+  }
+  .er-button--flat {
+    background: map_get($shades, 'white') !important;
+  }
+  .edit-lpr-section {
+    @include media-query((
+      margin-top: (xs: 8px, sm: 0, md: 25px, lg: 15px, xl: 16px),
+      margin-bottom: (sm: 11px, md: 0)
+    ));
+  }
+  .access-section {
+    @include media-query((
+      margin-top: (xs: 0, sm: 0, md: 0, lg: 38px, xl: 35px),
+      margin-bottom: (sm: -11px, md: 0)
+    ));
+  }
+}

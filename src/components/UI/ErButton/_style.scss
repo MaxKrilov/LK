@@ -66,7 +66,7 @@
   }
   &--flat {
     background: map_get($gray, '9');
-    color: rgba(map_get($shades, 'black'), 0.5);
+    color: rgba(map_get($shades, 'black'), 0.8);
     &:hover {
       background: map_get($shades, 'white');
       color: map_get($shades, 'black');
