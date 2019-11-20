@@ -1,4 +1,10 @@
 .er-select {
+  &--disabled {
+    cursor: not-allowed;
+    > .er-text-field {
+      pointer-events: none;
+    }
+  }
   &__list {
     background: linear-gradient(to top right, map_get($gray, '19'), map_get($shades, 'white'));
     padding: 1px;

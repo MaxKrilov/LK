@@ -94,7 +94,7 @@ export default {
       }],
       on: { click: this.onClick }
     }, [
-      h('div', {
+      h('span', {
         staticClass: `${this.pre}__content`
       }, [
         this.preIcon && this.genIcon(this.preIcon, 'prev'),

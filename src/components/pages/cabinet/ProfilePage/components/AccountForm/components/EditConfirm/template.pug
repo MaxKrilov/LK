@@ -1,0 +1,26 @@
+er-dialog(
+  :class="`${pre}`"
+  maxWidth="544px"
+  :value="isModalVisible" @update:returnValue="onCancel")
+  er-card(:class="`${pre}__card`")
+    div(:class="`${pre}__inner`")
+      div(:class="`${pre}__header`").mb-32
+        er-icon(:class="`${pre}__icon_question`" name='question')
+        div(:class="`${pre}__icon_close`" @click="onCancel")
+          er-icon(name='close')
+      h1(:class="`${pre}__title`").mb-12
+        | Вы действительно хотите изменить логин для входа в личный кабинет?
+      p После сохранения профиля учетные данные будут отправлены на вашу эл. почту
+      div(:class="`${pre}__name`").mb-80
+      div(:class="`${pre}__error`").my-12 {{ error }}
+      er-row(:class="`${pre}__buttons`")
+        er-flex(:class="`${pre}__button_wrap`" xs12, sm6).mb-12
+          er-button(
+            :class="`${pre}__button`",
+            @click="onSave",
+            color="yellow"
+            :disabled="isFetching"
+            :loading="isFetching"
+          ) Изменить
+        er-flex(:class="`${pre}__button_wrap`" xs12, sm6).mb-12
+          er-button(:class="`${pre}__button`" @click="onCancel" flat) Отмена

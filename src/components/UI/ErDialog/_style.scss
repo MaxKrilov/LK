@@ -6,7 +6,7 @@
   width: 100%;
   z-index: inherit;
   box-shadow: -16px 16px 16px rgba(map_get($shades, 'black'), 0.05);
-  border-radius: 4px;
+  border-radius: 12px;
   &__content {
     display: flex;
     align-items: center;

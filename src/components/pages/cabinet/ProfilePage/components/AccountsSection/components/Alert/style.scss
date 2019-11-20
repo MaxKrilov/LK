@@ -1,0 +1,17 @@
+.alert {
+  &__message {
+    display: flex;
+    align-items: center;
+    font: map_get($text, 'medium');
+    &__text {
+    }
+    &__icon {
+    }
+    &--fail {
+      color: map_get($red, 'base')
+    }
+    &--success {
+      color: map_get($green, 'base')
+    }
+  }
+}

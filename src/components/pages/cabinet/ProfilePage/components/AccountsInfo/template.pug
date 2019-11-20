@@ -1,0 +1,13 @@
+er-dialog(:class="`${pre}`" fullWidth :value="isModalVisible" @update:returnValue="close")
+  er-card(:class="`${pre}__card`")
+    div(:class="`${pre}__inner`")
+      div(:class="`${pre}__wrapper`")
+        er-icon(v-if="modalType === 'success'" :class="`${pre}__icon ${pre}__icon--success`" name="circle_ok")
+        er-icon(v-if="modalType === 'info'" :class="`${pre}__icon ${pre}__icon--info`" name="question")
+        er-icon(v-if="modalType === 'error'" :class="`${pre}__icon ${pre}__icon--error`" name="cancel")
+        div(:class="`${pre}__text-block`")
+          h1(:class="`${pre}__title`" )
+            | Учетные записи
+          p(:class="`${pre}__content`" v-html="modalMsg")
+      div(v-if="modalType === 'info'" :class="`${pre}__close`" @click="close") Спасибо
+      div(v-else :class="`${pre}__close`" @click="close") Вернуться в профиль

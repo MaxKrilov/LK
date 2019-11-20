@@ -29,6 +29,7 @@ export default {
       type: String,
       default: 'id'
     },
+    disabled: Boolean,
     label: {
       type: String,
       default: 'value'
@@ -194,6 +195,7 @@ export default {
           label: this.placeholder,
           appendInnerIcon: 'corner_down',
           autocomplete: 'off',
+          disabled: this.disabled,
           readonly: this.readonly,
           labelChanged: this.labelChanged,
           isShowLabelRequired: this.isShowLabelRequired,
@@ -308,7 +310,10 @@ export default {
         }
       }
     return h('div', {
-      staticClass: 'er-select'
+      staticClass: 'er-select',
+      class: {
+        'er-select--disabled': this.disabled
+      }
     }, [
       h(this.isMobile ? 'er-dialog' : 'er-menu', {
         ...options,

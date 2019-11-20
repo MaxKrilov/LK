@@ -1,0 +1,81 @@
+div(:class="`${pre}`")
+  er-row
+    er-flex(xs12 sm6 md6 lg4 :class="`${pre}__signature`")
+      div
+        h3(:class="`${pre}-title ${pre}-title--large`") Мой&nbsp;профиль
+        er-text-field(
+          :class="`${pre}-field`"
+          name="inputLastName"
+          label="Фамилия"
+          v-model="value.lastName"
+          isShowSuccess
+          :rules="fullNameRule")
+      div
+        er-text-field(
+          :class="`${pre}-field`"
+          name="inputFirstName"
+          label="Имя"
+          v-model="value.firstName"
+          isShowSuccess
+          :rules="fullNameRule")
+      div
+        er-text-field(
+          :class="`${pre}-field`"
+          name="inputMiddleName"
+          label="Отчество"
+          v-model="value.middleName"
+          isShowSuccess
+          :rules="fullNameRule")
+    er-flex(xs12 sm6 md6 lg4 :class="`${pre}__my-profile`")
+      div
+        h3(:class="`${pre}-title`") Право подписи
+        er-text-field(
+          :class="`${pre}-field`"
+          label="Фамилия в род. падеже")
+      div
+        er-text-field(
+          :class="`${pre}-field`"
+          label="Имя в род. падеже")
+      div
+        er-text-field(
+          :class="`${pre}-field`"
+          label="Отчество в род. падеже")
+      div
+        er-text-field(
+          :class="`${pre}-field`"
+          label="Должность  в род. падеже")
+    er-flex(sm6 md6 lg4 :class="`${pre}__account`")
+      er-row
+        er-flex(xs12 md12 lg12)
+          div
+            h3(:class="`${pre}-title`") Учетная запись (логин)
+            er-text-field(
+              :class="`${pre}-field`"
+              name="inputPhoneNumber"
+              label="Введите номер телефона"
+              mask="phone"
+              v-model="value.phoneNumber"
+              isShowSuccess
+              ref="phone"
+              :rules="phoneRule"
+            )
+          div
+            er-text-field(
+              :class="`${pre}-field`"
+              name="inputEmail"
+              label="Введите электронную почту"
+              type="email"
+              v-model="value.email"
+              isShowSuccess
+              ref="email"
+              :rules="emailRule"
+            )
+        er-flex(
+          xs12
+          md12
+          lg12
+          v-if="isMD || isLG")
+          div
+            p(:class="`${pre}__text-info`") В качестве логина для доступа в
+              b &nbsp;личный кабинет
+              | &nbsp;вы можете использовать номер телефона либо почту

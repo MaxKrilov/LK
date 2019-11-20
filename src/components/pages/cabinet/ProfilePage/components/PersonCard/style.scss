@@ -1,0 +1,138 @@
+.person-card {
+  font: map_get($text, 'small');
+  &__inner {
+    @include media-query((
+      padding: (xs: 20px 16px 16px, md: 30px 20px 28px 24px, lg: 30px)
+    ));
+  }
+  &__title {
+    @include media-query((
+      font: (
+        xs: (normal 15px/20px $fedra-book, 'Roboto', 'Helvetica', sans-serif),
+        sm: (normal 18px/23px $fedra-book, 'Roboto', 'Helvetica', sans-serif),
+        xl: (normal 16px/21px $fedra-book, 'Roboto', 'Helvetica', sans-serif)
+      ),
+      margin-bottom: (
+        xs: 12px,
+        md: 16px,
+        lg: 20px
+      )
+    ));
+  }
+  &__name {
+    display: block;
+    color: rgba(map_get($shades, 'black'), 0.5);
+    @include media-query((
+      font: (
+        xs: map_get($text, 'small'),
+        md: map_get($text, 'medium'),
+        lg: map_get($text, 'large')
+      ),
+      line-height: (
+        lg: 22px,
+        md: 21px,
+        sm: 19px,
+        xs: 18px
+      )
+    ));
+  }
+  &__family-name {
+    @include media-query((
+      font: (
+        xs: (normal 17px/22px $fedra-demi, 'Roboto', 'Helvetica', sans-serif),
+        sm: (normal 20px/25px $fedra-demi, 'Roboto', 'Helvetica', sans-serif),
+        md: (normal 26px/32px $fedra-demi, 'Roboto', 'Helvetica', sans-serif),
+        lg: (normal 32px/36px $fedra-demi, 'Roboto', 'Helvetica', sans-serif),
+        xl: (normal 30px/38px $fedra-demi, 'Roboto', 'Helvetica', sans-serif)
+      )
+    ));
+    display: block;
+  }
+  &__permissions {
+    @include media-query((
+      min-height: (
+        xs: 109px,
+        sm: 121px,
+        lg: 142px
+      ),
+      padding: (
+        xs: 0,
+        md: 9px 0,
+        lg: 12px 0
+      )
+    ));
+    &__role {
+      color: rgba(map_get($shades, 'black'), 0.8);
+      letter-spacing: -1px;
+      @include media-query((
+        font: (
+          xs: (normal 15px/20px $fedra-book, 'Roboto', 'Helvetica', sans-serif),
+          sm: (normal 18px/23px $fedra-book, 'Roboto', 'Helvetica', sans-serif)
+        )
+      ));
+    }
+    &__link {
+      text-decoration: none;
+      padding: 10px 0;
+    }
+  }
+  &__message__wrapper {
+    padding: 20px;
+    @include media-query((
+      order: (
+        xs: -1,
+        lg: 1
+      )
+    ));
+  }
+  &__icon {
+    &.er-icon svg {
+      width: 16px;
+    }
+    &--edit {
+      margin: -3px 7px 0 -2px;
+    }
+  }
+  &__message {
+    width: inherit;
+    justify-content: flex-start;
+    @include media-query((
+      justify-content: (
+        lg: flex-end
+      )
+    ));
+    &--success {
+      color: map_get($green, 'base');
+    }
+    &--error {
+      color: map_get($red, 'base');
+    }
+  }
+  &__button.er-button {
+    display: flex;
+    justify-content: center;
+    height: 40px;
+    @include media-query((
+    max-width: (
+      sm: 100%,
+      md: 203px
+    )
+    ));
+    .er-button__content {
+      @include media-query((
+        font: (
+          xs: (normal 13px/16px $fedra-demi, 'Roboto', 'Helvetica', sans-serif),
+          md: (normal 14px/17px $fedra-demi, 'Roboto', 'Helvetica', sans-serif),
+          lg: (normal 16px/20px $fedra-demi, 'Roboto', 'Helvetica', sans-serif)
+        ),
+        letter-spacing: (
+          xs: 0.35px,
+          sm: 0
+        )
+      ));
+    }
+    @include media-query((
+      height: (md: 48px)
+    ));
+  }
+}

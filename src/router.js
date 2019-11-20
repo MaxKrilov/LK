@@ -1,11 +1,18 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+
 // Шаблоны
 import LkTemplate from './components/templates/LkTemplate/index'
 
 // Страницы сервисной части
 // Главная страница
 import IndexPage from './components/pages/cabinet/IndexPage/index'
+
+// Страница Профиля
+import ProfilePage from './components/pages/cabinet/ProfilePage/index'
+import EditProfilePage from './components/pages/cabinet/ProfilePage/pages/EditProfilePage'
+import MainProfilePage from './components/pages/cabinet/ProfilePage/pages/MainProfilePage'
+
 // Страница документы
 import DocumentPage from './components/pages/cabinet/DocumentPage/index'
 import OrderDocumentPage from './components/pages/cabinet/OrderDocumentPage'
@@ -29,13 +36,15 @@ import OldBrowserPage from './components/pages/errors/old-browsers'
 
 Vue.use(Router)
 
-export default new Router({
+const router = new Router({
   mode: 'history',
   base: process.env.BASE_URL,
   routes: [
     {
       path: '/',
-      redirect: '/lk'
+      redirect: {
+        name: 'index'
+      }
     },
     {
       path: '/lk',
@@ -43,7 +52,28 @@ export default new Router({
       children: [
         {
           path: '/',
+          name: 'index',
           component: IndexPage
+        },
+        {
+          path: 'profile',
+          component: ProfilePage,
+          children: [
+            {
+              path: '',
+              name: 'profile',
+              component: MainProfilePage
+            },
+            {
+              path: 'edit',
+              name: 'profile-edit',
+              component: EditProfilePage
+            },
+            {
+              path: '/*',
+              redirect: '/lk'
+            }
+          ]
         },
         {
           name: 'documents',
@@ -82,11 +112,21 @@ export default new Router({
     },
     {
       path: '/create-client',
+      name: 'create-client',
       component: DMPFormPage
     },
     {
       path: '/old-browser',
       component: OldBrowserPage
     }
-  ]
+  ],
+  scrollBehavior (to, from, savedPosition) {
+    if (savedPosition) {
+      return savedPosition
+    } else {
+      return { x: 0, y: 0 }
+    }
+  }
 })
+
+export default router

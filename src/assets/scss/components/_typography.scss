@@ -110,8 +110,13 @@ a.link {
 }
 
 .caption {
-  font: 12px/15px $fedra-demi;
   color: rgba(map_get($shades, 'black'), 0.3);
+  @include media-query((
+    font: (
+      xs: map_get($text, 'xs'),
+      lg: map_get($text, 'small')
+    )
+  ));
 }
 
 .caption1 {

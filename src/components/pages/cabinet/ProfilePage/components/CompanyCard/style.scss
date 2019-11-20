@@ -1,0 +1,17 @@
+.company-card {
+  color: rgba(map_get($shades, 'black'), 0.8);
+  display: flex;
+  flex-direction: column;
+  margin-top: -3px;
+  &__header {
+    &__title {
+      font: map_get($title, 'medium');
+      letter-spacing: -1px;
+      margin-bottom: 24px;
+    }
+  }
+  &__content {
+    font: map_get($text, 'small');
+    margin-bottom: 32px;
+  }
+}

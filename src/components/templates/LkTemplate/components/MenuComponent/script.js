@@ -39,7 +39,7 @@ export default {
         ]
       },
       {
-        name: 'Интернет',
+        label: 'Интернет',
         icon: 'internet',
         isOpen: false,
         subitem: [

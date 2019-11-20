@@ -12,3 +12,15 @@
     font-family: $fedra-med !important;
   }
 }
+
+@each $name, $value in $text {
+  .text--#{$name} {
+    font: $value;
+  }
+}
+
+@each $name, $value in $title {
+  .title--#{$name} {
+    font: $value;
+  }
+}

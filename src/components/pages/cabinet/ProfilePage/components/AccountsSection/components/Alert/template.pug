@@ -1,0 +1,5 @@
+div(:class="`${pre}`")
+  div(:class="classes")
+    er-icon(v-if="!isFail" :class="`${pre}__icon`" name="circle_ok")
+    er-icon(v-if="isFail" :class="`${pre}__icon`" name="cancel")
+    p.ml-8(:class="`${pre}__text`" v-html="message")

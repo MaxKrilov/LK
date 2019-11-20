@@ -1,16 +1,34 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import createPersistedState from 'vuex-persistedstate'
 
+import auth from './modules/auth'
+import accounts from './modules/accounts'
+import modal from './modules/modal'
+import accountForm from './modules/accountForm'
+import directories from './modules/directories'
 import api from './modules/api'
 import variables from './modules/variables'
 import dictionary from './modules/dictionary'
+
+const debug = process.env.NODE_ENV !== 'production'
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
   modules: {
+    auth,
+    accounts,
+    modal,
+    accountForm,
+    directories,
     api,
     variables,
     dictionary
-  }
+  },
+  strict: debug,
+  plugins: [createPersistedState({
+    key: 'lkb2b',
+    paths: ['auth.userToken', 'auth.accessToken', 'auth.refreshToken', 'auth.userInfo']
+  })]
 })

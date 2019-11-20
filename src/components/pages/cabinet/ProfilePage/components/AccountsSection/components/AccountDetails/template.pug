@@ -1,0 +1,54 @@
+div.pb-8(:class="`${pre}`")
+  remove-account(
+    :first-name="firstName",
+    :last-name="lastName",
+    :middle-name="middleName",
+    v-model="dialogRemoveAccount",
+    @remove="handleRemoveAccountClick",
+    @cancel="handleRemoveAccountCancelClick")
+  template(v-if="!isDesktop")
+    h3.mb-12 Учетная запись (логин)
+    dl.mb-20(:class="`${pre}__tags`")
+      template(v-if="phone")
+        dt.caption Номер телефона
+        dd(:class="`${pre}__tags__description`")
+          | {{ phone | formatPhone }}
+      template(v-if="email")
+        dt.caption(:class="`${pre}__tags__title`")
+          | Электронная почта
+        dd(:class="`${pre}__tags__description`")
+          | {{email}}
+
+  div(v-if="!isShowAccountForm")
+    access-section(
+        ref="accessSec",
+        v-model="sectionAccessRightsData")
+
+  div(v-if="isShowAccountForm")
+    account-form(
+      isLPR
+      isUpdate
+      :userId="userId"
+      :userPostId="userPostId"
+      :firstName="firstName"
+      :middleName="middleName"
+      :lastName="lastName"
+      :role="role"
+      :roles="roles"
+      :systems="systems"
+      :phoneNumber="phone"
+      :email="email"
+      @success="onSuccessForm"
+      @fail="onFailForm"
+      @cancel="onCancelForm")
+
+  er-row(v-if="!isDesktop").mt-24
+    er-flex(xs12, sm6, md5)
+      er-button.mb-16(
+        v-if="!isShowAccountForm",
+        @click="handleUpdateClick") Редактировать
+    er-flex(xs12, sm6, md5)
+      er-button.mb-16(
+        flat,
+        v-if="!isShowAccountForm && !isLPRAccount",
+        @click="handleShowRemoveAccountClick") Удалить запись

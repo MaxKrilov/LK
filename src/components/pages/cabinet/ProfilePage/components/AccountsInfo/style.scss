@@ -1,0 +1,70 @@
+.accounts-info {
+  padding: 48px 16px 24px;
+  color: rgba(map_get($shades, 'black'), 0.8);
+  &__card.er-card {
+    height: 496px;
+    max-height: 100%;
+    max-height: 80vh;
+    .er-card__content {
+      height: 100%;
+    }
+  }
+  &__inner {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 22px;
+  }
+  &__wrapper {
+    display: flex;
+    @include media-query((
+      flex-direction: (xs: column, sm: row),
+      align-items: (sm: center)
+    ));
+  }
+  &__text-block {
+    padding-top: 22px;
+  }
+  &__icon {
+    &.er-icon svg {
+      width: 64px;
+    }
+    @include media-query((
+      margin-right: (xs: 0, sm: 22px)
+    ));
+    &--info {
+      color: map_get($yellow, 'base');
+    }
+    &--error {
+      color: map_get($red, 'base')
+    }
+    &--success {
+      color: map_get($green, 'base')
+    }
+  }
+  &__title {
+    display: block;
+    margin-bottom: 6px;
+    color: rgba(map_get($shades, 'black'), 0.8);
+    font: (normal 17px/22px $fedra-demi, 'Roboto', 'Helvetica', sans-serif);
+  }
+  &__content {
+    display: block;
+    letter-spacing: 0.25px;
+    font: (normal 13px/18px $fedra-book, 'Roboto', 'Helvetica', sans-serif),
+  }
+  &__close {
+    display: inline-block;
+    cursor: pointer;
+    margin-top: auto;
+    align-self: flex-end;
+    font: (normal 13px/16px $fedra-book, 'Roboto', 'Helvetica', sans-serif);
+    color: map_get($green, 'base');
+    border-bottom: 1px dashed map-get($green, 'base');
+    &:hover {
+      border-bottom: 1px dashed map_get($shades, 'transparent');
+    }
+
+  }
+}
