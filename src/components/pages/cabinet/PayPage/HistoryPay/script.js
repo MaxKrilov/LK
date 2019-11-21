@@ -8,12 +8,13 @@ export default {
     FiltersPay
   },
   data: () => ({
-    pre: 'history-pay'
+    pre: 'history-pay',
+    openLeftMenu: false,
   }),
   methods: {
     paypage () {
       this.$router.push('/lk/pay')
-    }
+    },
   }
 
 }

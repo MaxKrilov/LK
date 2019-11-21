@@ -1,6 +1,8 @@
 .menu-component {
   &__left {
-    position: fixed;
+    position: absolute;
+    background: red;
+    z-index: 7;
     top: 0;
     left: 0;
     width: 100%;

@@ -37,6 +37,9 @@ export default {
       default: 'DD.MM.YY'
     }
   },
+  mounted () {
+    this.result = document.getElementById('period').innerText
+  },
   computed: {
     valueForTextInput () {
       return !this.value || this._.isEmpty(this.value)

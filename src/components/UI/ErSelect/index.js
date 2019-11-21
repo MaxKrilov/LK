@@ -146,8 +146,12 @@ export default {
           this.internalValue = e
         },
         blur: this.onBlur,
-        focus: () => {
+        focus: (e) => {
+          e.target.nextSibling.style.display = 'none'
           this.$refs.activator.$refs.input.select()
+          setTimeout(function() {
+            e.target.nextSibling.style.display = 'block'
+          }, 500);
         }
       }
     },

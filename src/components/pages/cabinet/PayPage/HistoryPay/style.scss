@@ -5,8 +5,8 @@
     margin-left: -16px;
     @include media-query((
       margin-top: (
-        xs: -45px,
-        sm: -54px,
+        xs: -14px,
+        sm: -25px,
         md: -46px,
         lg: -40px,
         xl: -42px,
@@ -51,67 +51,6 @@
         xxl: 112% !important
       ),
     ));
-  }
-  &__info {
-    &__block1 {
-      @include media-query((
-        margin-left: (
-          sm: 25px !important,
-          md: 0 !important
-        ),
-      ));
-    }
-    &__block2 {
-      @include media-query((
-        margin-left: (
-          sm: 40px !important,
-          md: -20px !important,
-          lg: 0px !important,
-          xl: -18px !important,
-          xxl: 0px !important
-        ),
-      ));
-    }
-    &__block3 {
-      @include media-query((
-        margin-top: (
-          sm: -13px !important,
-          md: 0px !important,
-        ),
-      ));
-    }
-    &__block2-1 {
-      @include media-query((
-        padding-left: (
-          xl: 18px !important,
-          xxl: 23px !important
-        ),
-      ));
-    }
-    &__bottom {
-      @include media-query((
-        margin-top: (
-          xs: -7px,
-          sm: -7px,
-          md: 12px,
-          lg: -2px,
-          xl: 11px,
-          xxl: 15px,
-        ),
-        margin-bottom: (
-          sm: 22px !important,
-          md: 32px !important,
-          lg: 43px !important,
-          xl: 23px !important,
-        ),
-        max-width: (
-          md: 640px !important,
-          lg: 800px !important,
-          xl: 860px !important,
-          xxl: 953px !important,
-        )
-      ));
-    }
   }
   &__back-arr {
     margin-left: 10px;
@@ -158,243 +97,6 @@
     height: 16px;
     margin-left: -7px;
   }
-  /*
-  &__icon-span {
-    display: inline-block;
-    position: absolute;
-    vertical-align: top;
-    width: 50px;
-    font-family: $fedra-demi;
-    font-size: 11px !important;
-    letter-spacing: 0.35px;
-    line-height: 18px;
-    @include media-query((
-      width: (
-        sm: 160px,
-      ),
-      font-size: (
-        lg: 13px !important,
-        xl: 14px !important,
-      ),
-      letter-spacing: (
-        lg: 1px,
-        md: normal
-      )
-    ));
-  }
-  &__icon-pos {
-    position: absolute;
-    left: 22px;
-    top: 64px;
-    @include media-query((
-      top: (
-        md: 62px !important,
-        xxl: 64px !important
-      ),
-    ));
-  }
-  &__card-height {
-    height: 147px !important;
-    @include media-query((
-      height: (
-        md: 166px !important,
-        lg: 190px !important,
-      ),
-    ));
-  }
-  &__card-hover {
-   &__card-shadow:hover {
-      border-radius: 12px;
-      background: radial-gradient(map_get($yellow, 'other-4') 55.5%, map_get($yellow, 'base') 100%);
-      box-shadow: -4px 4px 32px map_get($yellow, 'other-5') !important;
-    }
-    &__icon svg {
-      display: none !important;
-      height: 80px !important;
-      position: absolute;
-      //top: -30px;
-      width: 200px !important;
-      //left: 10px;
-      color: map_get($yellow, 'other-6');
-      @include media-query((
-        top: (
-          sm: -26px !important,
-          md: -14px !important,
-          lg: 17px !important,
-          xl: 12px !important,
-          xxl: -2px !important,
-        ),
-        left: (
-          sm: 64px !important,
-          md: 130px !important,
-          lg: 59px !important,
-          xl: 34px !important,
-          xxl: 48px !important
-        ),
-      ));
-    }
-    svg {
-      display: none !important;
-      height: 100px !important;
-      position: absolute;
-      bottom: -76px;
-      width: 200px !important;
-      left: 30px;
-      color: map_get($yellow, 'other-6');
-      transition: 2s ease;
-      @include media-query((
-        bottom: (
-          sm: -80px !important,
-          lg: -86 px !important,
-          xxl: -69px !important
-        ),
-        left: (
-          sm: 84px !important,
-          md: 150px !important,
-          lg: 81px !important,
-          xl: 56px !important,
-          xxl: 48px !important
-        ),
-      ));
-    }
-  }
-  &__card-title {
-    position: relative;
-    z-index: 2;
-    font-family: $fedra-book;
-    font-size: 15px;
-    width: 100px;
-    color: rgba(map_get($shades, 'black'), 0.8);
-    letter-spacing: -0.35px;
-    margin-top: -4px;
-    @include media-query((
-      width: (
-        md: 160px,
-        xl: 140px
-      ),
-      margin-top: (
-        sm: -11px,
-        md: 0px,
-        xxl: 2px
-      ),
-      font-size: (
-        md: 18px,
-        xxl: 20px
-      ),
-      letter-spacing: (
-        md: -1px
-      )
-    ));
-  }
-  &__card-row {
-    @include media-query((
-      margin-left: (
-        xs: 5.6vw !important,
-        sm: 4.4vw !important,
-        md: 0 !important,
-      ),
-      padding-right: (
-        md: 0
-      )
-  ));
-  }
-  &__card-scale {
-    flex-basis: auto !important;
-    padding: 0 !important;
-    @include media-query((
-      width: (
-        xs: 42vw !important,
-        sm: 43vw !important,
-        md: 44vw !important,
-        lg: 22vw !important,
-        xl: 16vw !important,
-        xxl: 208px !important,
-      ),
-      max-width: (
-        md: 293px !important,
-        lg: 210px !important,
-        xl: 190px !important,
-      )
-    ));
-    &__left {
-      margin-right: 24px;
-      @include media-query((
-        margin-right: (
-          xs: 16px,
-          sm: 16px
-        )
-      ));
-    }
-    &__right-top {
-      @include media-query((
-        margin-right: (
-          md: 16px,
-        )
-      ));
-    }
-  }
-  &__fast-links {
-    a:hover {
-      background: map_get($yellow, 'base');
-      box-shadow: none;
-      .pay-page {
-        &__card-hover svg {
-          position: relative;
-          display: block !important;
-          animation: move 150ms linear;
-          animation-fill-mode: forwards;
-          @keyframes move {
-            0% { transform: none; }
-            100% {
-              transform: scale(2,2.5);
-              margin-left: -42px;
-              top: -20px;
-            }
-          }
-          z-index: 1;
-        }
-        &__card-hover__icon svg {
-          position: relative;
-          margin-top: -16px;
-          margin-left: -62px;
-          display: block !important;
-          animation: move-icon 150ms linear;
-          animation-fill-mode: forwards;
-          @keyframes move-icon {
-            0% { transform: none; }
-            100% {
-              transform: scale(2.7,3.3);
-            }
-          }
-          z-index: 1;
-        }
-        &__icon-span {
-          color: map_get($shades, 'white') !important;
-        }
-        &__icon-height svg {
-          color: map_get($shades, 'white') !important;
-        }
-      }
-    }
-    a {
-      display: flex;
-      flex-direction: column;
-      padding: 17px;
-      text-decoration: none;
-      height: 149px;
-      position: relative;
-      overflow: hidden;
-      @include media-query((
-        padding: (sm: 24px),
-        height: (
-          sm: 158px,
-          md: 170px,
-          lg: 193px,
-        )
-      ));
-    }
-  }
-  */
   &__welcome-title {
     width: 256px;
     margin-bottom: 22px;
@@ -409,147 +111,6 @@
       ),
       margin-bottom: (sm: 24px, lg: 29px, xl: 42px)
     ))
-  }
-  &__balance-score {
-    display: none;
-    font: 10px $fedra-demi !important;
-    line-height: 12px;
-    letter-spacing: 0.5px;
-    color: rgba(map_get($shades, 'black'), 0.5);
-    @include media-query((
-      display: (sm: block),
-      font-size: (
-        md: 12px !important,
-        lg: 13px !important,
-        xl: 14px !important
-      ),
-      line-height: (
-        md: 16px !important,
-        xl: 19px !important
-      ),
-      letter-spacing: (md: 1)
-    ));
-    &__block {
-      @include media-query((
-        margin-left: (
-          xxl: 87px !important
-        )
-      ));
-    }
-    &__data {
-      color: rgba(map_get($shades, 'black'), 0.8);
-      @include media-query((
-        font-size: (
-          sm: 13px !important,
-          md: 24px !important,
-          lg: 26px !important,
-          xl: 28px !important,
-          xxl: 30px !important
-        ),
-        line-height: (
-          sm: 18px !important,
-          md: 30px !important,
-          lg: 32px !important,
-          xl: 38px !important
-        ),
-        letter-spacing: (
-          sm: 0.25px,
-          md: -1px
-        ),
-        margin-top: (
-          sm: -17px !important,
-          md: 0 !important,
-        ),
-        margin-left: (
-          sm: -40px !important,
-          md: 8px !important,
-        )
-      ));
-    }
-    &__calendar {
-      display: none;
-      @include media-query((
-        display: (md: block)
-      ));
-    }
-    &__dop {
-      display: block;
-      @include media-query((
-        display: (sm: none)
-      ));
-    }
-    &__subtitle {
-      font: 12px/16px $fedra-demi;
-      color: map_get($red, 'base') !important;
-      opacity: 1;
-      @include media-query((
-        font-size: (md: 12px !important),
-        line-height: (md: 16px !important),
-      ));
-    }
-    &__currency {
-      font: 14px $fedra-book;
-      opacity: 0.5;
-      @include media-query((
-        font-size: (
-          xl: 16px !important,
-        ),
-      ))
-    }
-    &__line {
-      cursor: pointer;
-      border-bottom: 2px solid map_get($yellow, 'base');
-    }
-  }
-  &__service {
-    &__title {
-      @include media-query((
-        margin: (
-          xs: 20px 0 51px -17px,
-          sm: 23px 0 65px -15px,
-          md: 36px 0 47px -15px,
-          lg: 43px 0 65px -15px,
-          xl: 26px 0 65px -15px,
-          xxl: 41px 0 60px -15px,
-        ),
-      ))
-    }
-    &__data {
-      position: absolute;
-      font: 13px/18px $fedra-book;
-      letter-spacing: 0.25px;
-      color: map_get($shades, 'black');
-      @include media-query((
-        font-size: (lg: 16px),
-        line-height: (lg: 21px),
-        letter-spacing: (lg: -0.5px)
-      ));
-      @include media-query((
-        margin-top: (
-          xs: 16px,
-          sm: 23px,
-          md: 10px,
-          lg: 21px,
-          xl: 17px,
-        ),
-      ));
-      &__dm {
-        opacity: 0.5;
-      }
-      &__yy {
-        opacity: 0.2;
-      }
-    }
-  }
-  &__operation {
-    width: 100%;
-    &__submit-inn {
-      width: 100%;
-      max-width: 156px;
-      button {
-        color: map_get($shades, 'black');
-      }
-    }
   }
   &__button-group {
     @include media-query((
@@ -607,3 +168,442 @@
   }
 }
 
+/*
+ &__info {
+   &__block1 {
+     @include media-query((
+       margin-left: (
+         sm: 25px !important,
+         md: 0 !important
+       ),
+     ));
+   }
+   &__block2 {
+     @include media-query((
+       margin-left: (
+         sm: 40px !important,
+         md: -20px !important,
+         lg: 0px !important,
+         xl: -18px !important,
+         xxl: 0px !important
+       ),
+     ));
+   }
+   &__block3 {
+     @include media-query((
+       margin-top: (
+         sm: -13px !important,
+         md: 0px !important,
+       ),
+     ));
+   }
+   &__block2-1 {
+     @include media-query((
+       padding-left: (
+         xl: 18px !important,
+         xxl: 23px !important
+       ),
+     ));
+   }
+   &__bottom {
+     @include media-query((
+       margin-top: (
+         xs: -7px,
+         sm: -7px,
+         md: 12px,
+         lg: -2px,
+         xl: 11px,
+         xxl: 15px,
+       ),
+       margin-bottom: (
+         sm: 22px !important,
+         md: 32px !important,
+         lg: 43px !important,
+         xl: 23px !important,
+       ),
+       max-width: (
+         md: 640px !important,
+         lg: 800px !important,
+         xl: 860px !important,
+         xxl: 953px !important,
+       )
+     ));
+   }
+ }
+&__icon-span {
+  display: inline-block;
+  position: absolute;
+  vertical-align: top;
+  width: 50px;
+  font-family: $fedra-demi;
+  font-size: 11px !important;
+  letter-spacing: 0.35px;
+  line-height: 18px;
+  @include media-query((
+    width: (
+      sm: 160px,
+    ),
+    font-size: (
+      lg: 13px !important,
+      xl: 14px !important,
+    ),
+    letter-spacing: (
+      lg: 1px,
+      md: normal
+    )
+  ));
+}
+&__icon-pos {
+  position: absolute;
+  left: 22px;
+  top: 64px;
+  @include media-query((
+    top: (
+      md: 62px !important,
+      xxl: 64px !important
+    ),
+  ));
+}
+&__card-height {
+  height: 147px !important;
+  @include media-query((
+    height: (
+      md: 166px !important,
+      lg: 190px !important,
+    ),
+  ));
+}
+&__card-hover {
+ &__card-shadow:hover {
+    border-radius: 12px;
+    background: radial-gradient(map_get($yellow, 'other-4') 55.5%, map_get($yellow, 'base') 100%);
+    box-shadow: -4px 4px 32px map_get($yellow, 'other-5') !important;
+  }
+  &__icon svg {
+    display: none !important;
+    height: 80px !important;
+    position: absolute;
+    //top: -30px;
+    width: 200px !important;
+    //left: 10px;
+    color: map_get($yellow, 'other-6');
+    @include media-query((
+      top: (
+        sm: -26px !important,
+        md: -14px !important,
+        lg: 17px !important,
+        xl: 12px !important,
+        xxl: -2px !important,
+      ),
+      left: (
+        sm: 64px !important,
+        md: 130px !important,
+        lg: 59px !important,
+        xl: 34px !important,
+        xxl: 48px !important
+      ),
+    ));
+  }
+  svg {
+    display: none !important;
+    height: 100px !important;
+    position: absolute;
+    bottom: -76px;
+    width: 200px !important;
+    left: 30px;
+    color: map_get($yellow, 'other-6');
+    transition: 2s ease;
+    @include media-query((
+      bottom: (
+        sm: -80px !important,
+        lg: -86 px !important,
+        xxl: -69px !important
+      ),
+      left: (
+        sm: 84px !important,
+        md: 150px !important,
+        lg: 81px !important,
+        xl: 56px !important,
+        xxl: 48px !important
+      ),
+    ));
+  }
+}
+&__card-title {
+  position: relative;
+  z-index: 2;
+  font-family: $fedra-book;
+  font-size: 15px;
+  width: 100px;
+  color: rgba(map_get($shades, 'black'), 0.8);
+  letter-spacing: -0.35px;
+  margin-top: -4px;
+  @include media-query((
+    width: (
+      md: 160px,
+      xl: 140px
+    ),
+    margin-top: (
+      sm: -11px,
+      md: 0px,
+      xxl: 2px
+    ),
+    font-size: (
+      md: 18px,
+      xxl: 20px
+    ),
+    letter-spacing: (
+      md: -1px
+    )
+  ));
+}
+&__card-row {
+  @include media-query((
+    margin-left: (
+      xs: 5.6vw !important,
+      sm: 4.4vw !important,
+      md: 0 !important,
+    ),
+    padding-right: (
+      md: 0
+    )
+));
+}
+&__card-scale {
+  flex-basis: auto !important;
+  padding: 0 !important;
+  @include media-query((
+    width: (
+      xs: 42vw !important,
+      sm: 43vw !important,
+      md: 44vw !important,
+      lg: 22vw !important,
+      xl: 16vw !important,
+      xxl: 208px !important,
+    ),
+    max-width: (
+      md: 293px !important,
+      lg: 210px !important,
+      xl: 190px !important,
+    )
+  ));
+  &__left {
+    margin-right: 24px;
+    @include media-query((
+      margin-right: (
+        xs: 16px,
+        sm: 16px
+      )
+    ));
+  }
+  &__right-top {
+    @include media-query((
+      margin-right: (
+        md: 16px,
+      )
+    ));
+  }
+}
+&__fast-links {
+  a:hover {
+    background: map_get($yellow, 'base');
+    box-shadow: none;
+    .pay-page {
+      &__card-hover svg {
+        position: relative;
+        display: block !important;
+        animation: move 150ms linear;
+        animation-fill-mode: forwards;
+        @keyframes move {
+          0% { transform: none; }
+          100% {
+            transform: scale(2,2.5);
+            margin-left: -42px;
+            top: -20px;
+          }
+        }
+        z-index: 1;
+      }
+      &__card-hover__icon svg {
+        position: relative;
+        margin-top: -16px;
+        margin-left: -62px;
+        display: block !important;
+        animation: move-icon 150ms linear;
+        animation-fill-mode: forwards;
+        @keyframes move-icon {
+          0% { transform: none; }
+          100% {
+            transform: scale(2.7,3.3);
+          }
+        }
+        z-index: 1;
+      }
+      &__icon-span {
+        color: map_get($shades, 'white') !important;
+      }
+      &__icon-height svg {
+        color: map_get($shades, 'white') !important;
+      }
+    }
+  }
+  a {
+    display: flex;
+    flex-direction: column;
+    padding: 17px;
+    text-decoration: none;
+    height: 149px;
+    position: relative;
+    overflow: hidden;
+    @include media-query((
+      padding: (sm: 24px),
+      height: (
+        sm: 158px,
+        md: 170px,
+        lg: 193px,
+      )
+    ));
+  }
+}
+&__balance-score {
+  display: none;
+  font: 10px $fedra-demi !important;
+  line-height: 12px;
+  letter-spacing: 0.5px;
+  color: rgba(map_get($shades, 'black'), 0.5);
+  @include media-query((
+    display: (sm: block),
+    font-size: (
+      md: 12px !important,
+      lg: 13px !important,
+      xl: 14px !important
+    ),
+    line-height: (
+      md: 16px !important,
+      xl: 19px !important
+    ),
+    letter-spacing: (md: 1)
+  ));
+  &__block {
+    @include media-query((
+      margin-left: (
+        xxl: 87px !important
+      )
+    ));
+  }
+  &__data {
+    color: rgba(map_get($shades, 'black'), 0.8);
+    @include media-query((
+      font-size: (
+        sm: 13px !important,
+        md: 24px !important,
+        lg: 26px !important,
+        xl: 28px !important,
+        xxl: 30px !important
+      ),
+      line-height: (
+        sm: 18px !important,
+        md: 30px !important,
+        lg: 32px !important,
+        xl: 38px !important
+      ),
+      letter-spacing: (
+        sm: 0.25px,
+        md: -1px
+      ),
+      margin-top: (
+        sm: -17px !important,
+        md: 0 !important,
+      ),
+      margin-left: (
+        sm: -40px !important,
+        md: 8px !important,
+      )
+    ));
+  }
+  &__calendar {
+    display: none;
+    @include media-query((
+      display: (md: block)
+    ));
+  }
+  &__dop {
+    display: block;
+    @include media-query((
+      display: (sm: none)
+    ));
+  }
+  &__subtitle {
+    font: 12px/16px $fedra-demi;
+    color: map_get($red, 'base') !important;
+    opacity: 1;
+    @include media-query((
+      font-size: (md: 12px !important),
+      line-height: (md: 16px !important),
+    ));
+  }
+  &__currency {
+    font: 14px $fedra-book;
+    opacity: 0.5;
+    @include media-query((
+      font-size: (
+        xl: 16px !important,
+      ),
+    ))
+  }
+  &__line {
+    cursor: pointer;
+    border-bottom: 2px solid map_get($yellow, 'base');
+  }
+}
+&__service {
+  &__title {
+    @include media-query((
+      margin: (
+        xs: 20px 0 51px -17px,
+        sm: 23px 0 65px -15px,
+        md: 36px 0 47px -15px,
+        lg: 43px 0 65px -15px,
+        xl: 26px 0 65px -15px,
+        xxl: 41px 0 60px -15px,
+      ),
+    ))
+  }
+  &__data {
+    position: absolute;
+    font: 13px/18px $fedra-book;
+    letter-spacing: 0.25px;
+    color: map_get($shades, 'black');
+    @include media-query((
+      font-size: (lg: 16px),
+      line-height: (lg: 21px),
+      letter-spacing: (lg: -0.5px)
+    ));
+    @include media-query((
+      margin-top: (
+        xs: 16px,
+        sm: 23px,
+        md: 10px,
+        lg: 21px,
+        xl: 17px,
+      ),
+    ));
+    &__dm {
+      opacity: 0.5;
+    }
+    &__yy {
+      opacity: 0.2;
+    }
+  }
+}
+&__operation {
+  width: 100%;
+  &__submit-inn {
+    width: 100%;
+    max-width: 156px;
+    button {
+      color: map_get($shades, 'black');
+    }
+  }
+}
+*/

@@ -23,34 +23,7 @@ er-row(no-gutters)
               :class="`${pre}__toggle--desktop`"
             )
               er-icon(:name= "arr_direct")
-
-              er-menu(
-              openOnHover=null,
-              offset-x,
-              nudge-left="1000",
-              nudge-bottom="30",
-              min-width="200",
-              )
-                template(v-slot:activator="{ on }")
-                  a.link--dashed--yellow(href="#", v-on="on", @click.prevent="")
-                    | {{ item.descr }}
-                div(:class="`${pre}__dropdown`")
-                  div(:class="`${pre}__dropdown__content`")
-                    div
-                      | Интернет
-                    div
-                      | Видеонаблюдение
-                    div
-                      | Wi-Fi для бизнеса
-                    div
-                      | Антивирусы
-                    div
-                      | Пополнение счета
-
-
-
-              //a {{ item.descr }}
-
+              a {{ item.descr }}
             div(
               v-else
               :class="`${pre}__message`",
@@ -70,5 +43,6 @@ er-row(no-gutters)
   )
     ListAddress(index=0)
     ListAddress(index=1)
+
 
 

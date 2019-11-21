@@ -1,4 +1,8 @@
+import { mapGetters } from 'vuex'
 import ErFilterClose from '../ErFilterClose'
+import ListAddress from '../ListAddress/index.vue'
+import { SCREEN_WIDTH } from '@/store/actions/variables'
+
 
 // var colorActive = 'white';
 // var colorAct = '#E9E9E9';
@@ -87,11 +91,28 @@ export default {
       {month: 'февраль', active: 'none'},
       {month: 'март', active: 'none'},
     ],
+    // tmpActive_internet: false,
+    openFilterMob: false
+
   }),
   components: {
-    ErFilterClose
+    ErFilterClose,
+    ListAddress
   },
+  computed: {
+    ...mapGetters([SCREEN_WIDTH]),
+  },
+  watch: {
+    SCREEN_WIDTH () {
+      this.isFiltersVisible = this[SCREEN_WIDTH] >= 640
+    }
+  },
+
   methods: {
+    filtersVisible (select) {
+      this.openFilterMob = this[SCREEN_WIDTH] < 640 ? select : false
+      this.isFiltersVisible = select
+    },
     selectMonth (e) {
       this.typePeriod = this.typePeriod.map(function(name) {
         if (e.target.innerHTML === name.month) {
