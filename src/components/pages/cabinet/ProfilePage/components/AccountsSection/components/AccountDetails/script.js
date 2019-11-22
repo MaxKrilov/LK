@@ -95,7 +95,7 @@ export default {
       'removedAccountInfo'
     ]),
     isLPRAccount () {
-      return this.userId === this.user?.sub
+      return this.userId === this.user?.userId
     }
   }
 }

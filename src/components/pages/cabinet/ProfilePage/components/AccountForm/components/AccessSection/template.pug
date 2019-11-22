@@ -18,13 +18,13 @@ div(:class="[{ active: isShowAddAccessRights }, `${pre}`]")
       er-flex(
         sm12
         xs12
-        :class="`${pre}__side-menu__list`")
+        :class="`${pre}__side-menu__list`").text--blured
         er-row(
           v-for="item in value"
           :id="`${item.code}-${_uid}`"
           :data-id="item.code"
           :key="item.id"
-          :class="{[`${pre}__side-menu__list__item`]: true, [`${pre}__side-menu__list__item--active`]: item.menu.selected}"
+          :class="{[`${pre}__side-menu__list__item`]: true, [`${pre}__side-menu__list__item--active`]: item.menu.selected, [`${pre}__side-menu__list__item--not-active`]: !item.menu.selected }"
           @click="handleMenuItemClick(item)")
           div(:class="{[`${pre}__side-menu__list__item__active-line`]: item.menu.selected}")
           er-icon(:name="item.menu.icon").my-auto.mr-8

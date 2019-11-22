@@ -92,7 +92,6 @@ const actions = {
       const url = generateUrl('getSystems')
       const { success, message, output } = await api
         .setWithCredentials()
-        .setBranch('web-15631-3')
         .setData({
           token: accessToken
         })
@@ -119,7 +118,6 @@ const actions = {
       const url = generateUrl('getRoles')
       const { success, message, output } = await api
         .setWithCredentials()
-        .setBranch('web-15631-3')
         .setData({
           token: accessToken
         })

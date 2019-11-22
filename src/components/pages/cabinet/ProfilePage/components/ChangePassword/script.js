@@ -31,12 +31,12 @@ export default {
     },
     submit () {
       if (this.isPasswordCorrect && this.isConfirmCorrect) {
-        const { sub } = this.user
+        const { userId } = this.user
 
         this.changePasswordRequest({
           api: this.$api,
           password: this.passwordNew,
-          userId: sub
+          userId: userId
         })
       }
     },

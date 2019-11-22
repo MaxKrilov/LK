@@ -130,7 +130,6 @@ const actions = {
       const { tomsId } = rootGetters['auth/user']
       const { success, message, output } = await api
         .setWithCredentials()
-        .setBranch('web-15631-3')
         .setData({
           token: accessToken,
           user: userId,
@@ -165,7 +164,6 @@ const actions = {
       const url = generateUrl('createUserRoles')
       const { success, message, output } = await api
         .setWithCredentials()
-        .setBranch('web-15631-3')
         .setData({
           token: accessToken,
           post: userPostId,
@@ -200,7 +198,6 @@ const actions = {
       const url = generateUrl('changePosition')
       const { success, message, output } = await api
         .setWithCredentials()
-        .setBranch('web-15631-3')
         .setData({
           token: accessToken,
           post: postId,
@@ -227,7 +224,6 @@ const actions = {
       const token = rootState.auth.accessToken
       const { success, message, output } = await api
         .setWithCredentials()
-        .setBranch('web-15631-3')
         .setData({
           token,
           post: userPostId,
@@ -261,7 +257,6 @@ const actions = {
       const url = generateUrl('updateUser')
       const { success, message, output } = await api
         .setWithCredentials()
-        .setBranch('web-15631-3')
         .setData({
           token: accessToken,
           user: userId,
@@ -294,7 +289,6 @@ const actions = {
       const url = generateUrl('changeAttributes')
       const { success, message, output } = await api
         .setWithCredentials()
-        .setBranch('web-15631-3')
         .setData({
           token: accessToken,
           user: userId,
@@ -327,7 +321,6 @@ const actions = {
       const url = generateUrl('getPost')
       const { success, message, output } = await api
         .setWithCredentials()
-        .setBranch('web-15631-3')
         .setData({
           token: accessToken,
           post: userPostId

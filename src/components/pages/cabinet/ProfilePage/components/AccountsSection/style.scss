@@ -103,7 +103,7 @@
     .er-icon {
       opacity: 0.3;
       @include media-query((
-        margin-right: (__add-btn
+        margin-right: (
           md: 5px,
           lg: 20px,
           xl: 15px
@@ -268,6 +268,10 @@
       ))
     }
     .profile-table {
+      margin-top: 2px;
+      @include media-query((
+        margin-top: (sm: 2px, md: 0, lg: 0, xl: 0)
+      ));
       &__header {
         background: map_get($gray, '4');
         color: map_get($gray, '6');
@@ -281,8 +285,8 @@
           @include media-query((
             font: (xs: 10px/12px $fedra-demi, sm: 11px/12px $fedra-demi),
             padding: (
-              xs: 8px 0 10px,
-              sm: 8px map_get($gap, 'sm') 12px,
+              xs: 10px 0 8px,
+              sm: 10px 0 8px !important,
               md: 15px map_get($gap, 'md') 12px
             )
           ));
@@ -414,5 +418,74 @@
         sm: 108px
       )
     ));
+  }
+
+  .text--blured {
+    .access-section__side-menu__list__item {
+      position: relative;
+      &:before {
+        position: absolute;
+        right: 0;
+        top: 0;
+        content:"";
+        display:block;
+        height: 100%;
+        width: 100%;
+      }
+    }
+    @include media-max-width('md') {
+      .access-section__side-menu__list__item--active + .access-section__side-menu__list__item--not-active {
+        &:before {
+          background-image: linear-gradient(to right, map_get($shades, 'transparent'), map_get($shades, 'white') 75%)
+        }
+      }
+      .access-section__side-menu__list__item--not-active:first-child {
+        &:before {
+          background-image: linear-gradient(to left, map_get($shades, 'transparent'), map_get($shades, 'white') 75%)
+        }
+      }
+    }
+    @include max-breakpoint('sm') {
+      .access-section__side-menu__list__item--active + .access-section__side-menu__list__item--not-active {
+        &:before {
+          background-image: linear-gradient(to right, map_get($shades, 'transparent'), map_get($shades, 'white') 50%)
+        }
+      }
+      .access-section__side-menu__list__item--not-active:first-child {
+        &:before {
+          background-image: linear-gradient(to left, map_get($shades, 'transparent'), map_get($shades, 'white') 50%)
+        }
+      }
+    }
+  }
+  // Для серой подложки на мобильном разрешении
+  .account-form-mobile {
+    .text--blured {
+      @include media-max-width('md') {
+        .access-section__side-menu__list__item--active + .access-section__side-menu__list__item--not-active {
+          &:before {
+            background-image: linear-gradient(to right, map_get($shades, 'transparent'), map_get($gray, '3') 75%)
+          }
+        }
+        .access-section__side-menu__list__item--not-active:first-child {
+          &:before {
+            background-image: linear-gradient(to left, map_get($shades, 'transparent'), map_get($gray, '3') 75%)
+          }
+        }
+      }
+      @include max-breakpoint('sm') {
+        .access-section__side-menu__list__item--active + .access-section__side-menu__list__item--not-active {
+          &:before {
+            background-image: linear-gradient(to right, map_get($shades, 'transparent'), map_get($gray, '3') 50%)
+          }
+        }
+        .access-section__side-menu__list__item--not-active:first-child {
+          &:before {
+            background-image: linear-gradient(to left, map_get($shades, 'transparent'), map_get($gray, '3') 50%)
+          }
+        }
+      }
+    }
+
   }
 }

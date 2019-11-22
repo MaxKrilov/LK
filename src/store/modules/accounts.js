@@ -48,17 +48,17 @@ const generateFormattedList = (obj, bSystems) => {
     const baseSystems = copyObject(bSystems)
     const fData = {
       ...curr,
-      phone: toDefaultPhoneNumber(curr.phone),
-      ...toFullName(curr.firstName),
-      systems: prev[curr.userPostId]?.systems || { ...baseSystems },
+      phone: toDefaultPhoneNumber(curr?.phone),
+      ...toFullName(curr?.firstName),
+      systems: prev[curr?.userPostId]?.systems || { ...baseSystems },
       role: {
-        id: curr.roleId,
-        code: curr.roleName,
-        value: USER_ROLES[curr.roleName].label
+        id: curr?.roleId,
+        code: curr?.roleName,
+        value: USER_ROLES[curr?.roleName]?.label
       }
     }
-    if (curr?.systemName && fData.systems[curr.systemName]) {
-      fData.systems[curr.systemName].content = getAccessRight()
+    if (curr?.systemName && fData.systems[curr?.systemName]) {
+      fData.systems[curr?.systemName].content = getAccessRight()
     }
     return { ...prev, [curr.userPostId]: { ...fData } }
   }, {}))
@@ -113,7 +113,7 @@ const getters = {
     })
   },
   isDeletableUser: (state, getters, rootState, rootGetters) => (id) => {
-    return rootGetters['auth/user']?.sub !== id
+    return rootGetters['auth/user']?.userId !== id
   },
   getResourceAccessLabels: ({ usersInfo }) => (id) => {
     const tUser = usersInfo.find((user) => {
@@ -143,7 +143,6 @@ const actions = {
       }
       const { success, output, message } = await api
         .setWithCredentials()
-        .setBranch('web-15631-3')
         .setData({
           toms: user?.tomsId,
           token
@@ -153,7 +152,7 @@ const actions = {
       if (success) {
         const baseSystems = rootGetters['directories/systemsDirectory']
         const usersInfo = generateFormattedList(output.results['users-info'], baseSystems)
-        return commit(ACCOUNTS_SUCCESS, sortByPriorityId(usersInfo, user?.sub))
+        return commit(ACCOUNTS_SUCCESS, sortByPriorityId(usersInfo, user?.userId))
       }
 
       commit(ACCOUNTS_ERROR, message)
@@ -172,7 +171,6 @@ const actions = {
       const url = generateUrl('createUserLpr')
       const { success, message, output } = await api
         .setWithCredentials()
-        .setBranch('web-15631-3')
         .setData({
           token: accessToken,
           email,
@@ -214,7 +212,6 @@ const actions = {
 
       const { success, output } = await api
         .setWithCredentials()
-        .setBranch('web-15631-3')
         .setData({
           token: accessToken,
           post: userPostId

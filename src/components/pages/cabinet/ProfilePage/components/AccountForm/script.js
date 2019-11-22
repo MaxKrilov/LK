@@ -424,7 +424,7 @@ export default {
       return JSON.stringify(this.snapshot.accessRights) !== JSON.stringify(formAccessRightsData)
     },
     isLPRAccount () {
-      return this.userId === this.user?.sub
+      return this.userId === this.user?.userId
     },
     isFilled () {
       const { formData } = this.getFormData()

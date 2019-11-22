@@ -120,7 +120,6 @@ const actions = {
 
       const response = await api
         .setWithCredentials()
-        .setBranch('web-15631-3')
         .setData(params)
         .query(url)
 
@@ -150,7 +149,6 @@ const actions = {
       const url = generateUrl('refreshToken')
       const response = await api
         .setWithCredentials()
-        .setBranch('web-15631-3')
         .setData({
           token: refreshToken
         })
