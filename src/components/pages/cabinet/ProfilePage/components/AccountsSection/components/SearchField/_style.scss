@@ -22,7 +22,7 @@
       width: (xs: 95px, sm: 210px, md: 264px),
       display: (xs: block, lg: none),
       margin-right: (xs: 30px),
-      top: (xs: 4px, sm: 4px, md: 2px)
+      top: (xs: 3px, sm: 3px, md: 2px)
     ));
     right: 0;
     z-index: map_get($z-index, 'search-field');
@@ -30,6 +30,19 @@
       transition: width .2s cubic-bezier(0.000, 0.795, 0.000, 1.000), right .05s ease;
     }
     &--active {
+      @include media-query((
+        right: (xs: 5px, sm: 15px, md: 0),
+        width: (xs: calc(100% - 67px), sm: 57%)
+      ));
+      & > .er-text-field > .er-input__control > .er-input__slot {
+        @include media-query((
+          border: (
+            xs: 1px solid map_get($yellow, 'base') !important,
+            lg: none,
+            xl: none
+          )
+        ));
+      }
     }
     &__input {
       .er-text-field__slot {
@@ -45,7 +58,7 @@
       &.er-text-field > .er-input__control > .er-input__slot {
         @include media-query((
           border: (
-            xs: 0,
+            xs: none,
             md: 1px solid rgba(map_get($shades, 'black'), 0.2)
           ),
           min-height: (xs: 32px, sm: 34px, md: 40px)

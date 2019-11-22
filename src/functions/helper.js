@@ -10,7 +10,8 @@ import { Cookie } from './storage'
  * @return {string}
  */
 export function toDefaultPhoneNumber (str) {
-  return str.replace(/[\s-()+]/g, '')
+  if (str) { return str.replace(/[\s-()+]/g, '') }
+  return ''
 }
 /**
  * Функция, преобразует строку в ФИО

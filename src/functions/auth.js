@@ -14,6 +14,7 @@ const makeUserInfo = function (token) {
   const { firstName } = userInfo
   userInfo = {
     ...userInfo,
+    userId: userInfo?.sub,
     ...toFullName(firstName)
   }
 

@@ -55,7 +55,6 @@ const actions = {
       const { accessToken } = rootState.auth
       const url = generateUrl('changePassword')
       const { success, message } = await api
-        .setBranch('web-15631-3')
         .setData({
           token: accessToken,
           user: userId,
