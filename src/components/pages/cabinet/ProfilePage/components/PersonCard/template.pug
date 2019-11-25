@@ -13,7 +13,7 @@ er-card(:class="`${pre}`")
       template(v-if="canEdit")
         router-link(:to="{name: `profile-edit`}", :class="`${pre}__permissions__link`")
           er-icon.caption(name="edit", :class="`${pre}__icon ${pre}__icon--edit`")
-          span.link.link--dashed--black Редактировать свой профиль
+          a.link.link--dashed--black Редактировать свой профиль
     er-row.align-items-center(no-gutters)
       er-flex(xs12, md7)
         er-button(:class="`${pre}__button`" flat, @click="handleOpenPasswordChange") Изменить пароль
