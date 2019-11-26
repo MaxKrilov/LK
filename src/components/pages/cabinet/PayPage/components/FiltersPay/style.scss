@@ -5,12 +5,12 @@
     ),
     margin-left: (
       xs: 16px,
+      sm: 26px,
       md: 0px
     ),
   ));
   &__container {
     width: 77.5vw;
-    background: #ffffff;
     z-index: 6;
     top: 0;
     @include media-query((
@@ -33,6 +33,7 @@
       ),
       min-height: (
         xs: 480px,
+        sm: 323px,
         md: auto
       ),
       position: (
@@ -47,6 +48,10 @@
         xs: 90%,
         sm: 93%,
         md: 112%
+      ),
+      background: (
+        xs: map_get($gray, '9'),
+        md: map_get($shades, 'white')
       )
     ));
   }
@@ -57,6 +62,33 @@
     margin-top: -16px;
     @include media-query((
       display: (md: none),
+    ));
+  }
+  &__find {
+    @include media-query((
+      padding-right: (
+        xs: 0px !important,
+        sm: 4px !important,
+        md: auto
+      ),
+    ));
+  }
+  &__butt-filter {
+    @include media-query((
+      padding-right: (
+        xs: 0px !important,
+        sm: 8px !important,
+        md: auto
+      ),
+    ));
+  }
+  &__butt-clean {
+    @include media-query((
+      padding-left: (
+        xs: 0px !important,
+        sm: 8px !important,
+        md: auto
+      ),
     ));
   }
   &__back-main-xs svg {
@@ -70,6 +102,15 @@
     }
     @include media-query((
       display: (md: none),
+    ));
+  }
+  &__back-arr {
+    @include media-query((
+      margin-bottom: (
+        xs: 19px,
+        sm: 19px,
+        md: auto
+      ),
     ));
   }
   &__title {
@@ -121,15 +162,32 @@
   &__typeFind {
     margin-top: 23px;
     padding-right: 7px;
+    /*
+    @include media-query((
+      margin: (
+        xs: -30px 0 0 0,
+        sm: 4px 0 0 0,
+        md: 0px 23px 0 0
+      ),
+    ));
+    */
+
   }
   &__services {
     padding-right: 7px !important;
     @include media-query((
       margin: (
-        xs: -30px 0 0 0,
+        xs: -24px 0 0 0,
+        sm: 4px 0 0 0,
         md: 0px 23px 0 0
       ),
-    ));
+      padding-left: (
+        xs: 0px !important,
+        sm: 4px !important,
+        md: auto
+      ),
+
+  ));
     &__title {
       font: 12px/16px $fedra-demi !important;
       opacity: 0.3;
@@ -154,9 +212,14 @@
     padding-right: 7px !important;
     @include media-query((
       margin: (
-        xs: -30px 0 0 0,
+        xs: -24px 0 0 0,
         md: 0px 30px 0 0
       ),
+      padding-right: (
+        sm: 11px !important,
+        md: auto
+      ),
+
     ));
     &__title {
       opacity: 0.3;
@@ -173,11 +236,15 @@
   }
   &__typePay {
     padding-right: 7px !important;
-
     @include media-query((
       margin: (
-        xs: -30px 0 0 0,
+        xs: -24px 0 0 0,
         md: 0px 23px 0 0
+      ),
+      padding-left: (
+        xs: 0px !important,
+        sm: 4px !important,
+        md: auto
       ),
 
     ));

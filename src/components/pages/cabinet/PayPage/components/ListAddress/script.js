@@ -23,7 +23,8 @@ export default {
     subtmpActive: false,
     subarr_direct: 'corner_down',
     topDelimiter: '-2px',
-    topTitle: '4px'
+    topTitle: '4px',
+    heightDelimiter: '40px'
   }),
   computed: {
     item () {
@@ -31,13 +32,17 @@ export default {
         (this.index === '1' && this.month !== 'Адрес') ||
         (this.index === '5' && this.month === 'Адрес')
       ) {
+        this.heightDelimiter = this.month === 'Адрес' ? '20px' : '40px'
         this.border = ''
       } else {
         this.border = '__border'
+        this.heightDelimiter = '40px'
       }
+
       if (this.month === 'Адрес') {
         this.topDelimiter = '7px'
         this.topTitle = '-12px'
+
       } else {
         this.topDelimiter = '-2px'
         this.topTitle = '4px'

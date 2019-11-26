@@ -132,38 +132,42 @@
     color: rgba(map_get($shades, 'black'), 0.5);
     @include media-query((
       font-size: (
+        sm: 13px !important,
         md: 14px !important,
         lg: 14px !important,
         xl: 16px !important,
       ),
       line-height: (
+        sm: 18px !important,
         md: 19px !important,
         lg: 19px !important,
         xl: 21px !important
       ),
-      letter-spacing: (md: -1px),
+      letter-spacing: (
+        sm: 0.25px,
+        md: -1px),
       top: (
+        sm: 13px,
         md: 27px,
         lg: 16px
       ),
       left: (
+        sm: 19px,
         md: 24px
       )
     ));
     &__yy {
       //display: block;
       opacity: 0.3;
-      /*
       @include media-query((
-        opacity: (md: 0.3),
-        !*
+        opacity: (sm: 0.5),
+        /*
         display: (
           sm: none,
           md: block,
         ),
-        *!
+        */
       ))
-      */
     }
     /*
     &__yy-mob {
@@ -188,8 +192,9 @@
     top: 0px;
     font: 11px/16px $fedra-demi;
     letter-spacing: 0.35px;
-    color: rgba(map_get($shades, 'black'), 0.3);
+    opacity: 0.3;
     @include media-query((
+      opacity: (sm: 0.5),
       font-size: (
         md: 14px !important,
         lg: 14px !important,
@@ -202,8 +207,12 @@
       ),
       letter-spacing: (md: -1px),
       top: (
+        sm: 19px,
         md: 51px,
         lg: 41px
+      ),
+      left: (
+        sm: 0
       )
     ))
   }
@@ -279,6 +288,12 @@
     color: rgba(map_get($shades, 'black'), 0.2);
     margin-right: 9px;
     margin-left: -3px;
+    @include media-query((
+      margin-left: (
+        sm: 65px,
+      )
+    ));
+
   }
   &__icon {
     color: rgba(map_get($shades, 'black'), 0.2);
@@ -286,28 +301,29 @@
     margin-left: 0px;
   }
   &__title {
-    font: 13px/18px $fedra-book;
+    font: 13px/18px $fedra-demi;
     letter-spacing: 0.25px;
     color: rgba(map_get($shades, 'black'), 0.8);
     padding-right: 34px;
     @include media-query((
       font-size: (
-        sm: 13px,
+        sm: 15px,
         md: 14px,
         xl: 16px,
       ),
       line-height: (
-        sm: 18px,
+        sm: 20px,
         md: 19px,
         xl: 21px,
   ),
       letter-spacing: (
-        sm: 0.25px,
+        sm: -0.35px,
         md: 0,
         xl: -0.5px,
       ),
       margin-top: (
-        xs: 4px,
+        xs: -10px !important,
+        sm: 4px !important,
         md: 5px !important,
         xxl: 0 !important,
       )
@@ -339,7 +355,7 @@
     &__bott-all {
       cursor: pointer;
       @include media-query((
-        height: (sm: 46px)
+        height: (sm: 40px)
       ));
       &__border {
         cursor: pointer;

@@ -268,18 +268,18 @@
       svg {
         width: 100px !important;
         position: absolute;
-        left: -13px;
-        top: 0;
+        left: -13px !important;
+        top: 0 !important;
         color: map_get($gray, '3');
         @include media-query((
           top: (
-            sm: 10px,
+            //sm: 10px,
             md: 5px,
             lg: 2px,
             xl: 0
           ),
           left: (
-            sm: 58px,
+            //sm: 58px,
             md: 46px,
             lg: 54px,
             xl: -2px,
@@ -422,10 +422,12 @@
         cursor: pointer;
         @include media-query((
           font-size: (
+            sm: 11px,
             md: 13px,
             lg: 13px
           ),
           line-height: (
+            sm: 16px,
             md: 16px,
             lg: 16px
           ),
@@ -459,7 +461,7 @@
       ),
       top: (
         xs: 40px,
-        sm: 0
+        sm: 0 !important
       ),
       right: (
         sm: 37px,
@@ -524,6 +526,7 @@
       border-radius: (lg: 12px),
     ));
     &__address {
+      background-color: map_get($gray, '2');
       @include media-query((
         width: (lg: 100%),
         margin-left: (
