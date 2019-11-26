@@ -5,38 +5,38 @@ div(:class="`${pre}`")
     div.caption(:class="`${pre}__back-main`")
       div.ml-auto
         er-icon(name="arrow_l" :class="`${pre}__icon-height`")
-        a.caption(href="#" :class="`${pre}__back-main__text`" @click="paypage") Назад
+        a.caption(
+          href="#"
+          :class="`${pre}__back-main__text`"
+          @click="paypage"
+        )
+          | Назад
 
     div.mb-8.d--flex.align-items-start(:class="`${pre}__back-arr`")
-      div(:class="`${pre}__back-main-xs`")
+      div(:class="`${pre}__back-main-xs`" @click="paypage")
         er-icon(name="left")
       h1.fonts--demi(:class="`${pre}__welcome-title`")
         | История платежей
 
-    FiltersPay
-
-    er-container(:class="`${pre}__container`")
-      er-flex(xs12)
-        ActionMonth(month="Январь")
-        ActionMonth(month="Февраль")
+    FiltersPay(@typeFind="typeFind($event)")
 
     er-container.mb-24(full :class="`${pre}__container-operation`")
-      er-row.justify-content-between(
-        no-gutters
-        :class="`${pre}__button-group`"
-      )
-        er-flex(
-          sm6
-          md5
-          lg3
-          :class="`${pre}__button-group__history`"
-        )
-        er-flex(
-          sm6
-          md5
-          lg3
-          :class="`${pre}__button-group__load`"
-        )
-          er-icon(name="download" :class="`${pre}__download-icon`")
-          er-button.align-items-center(type="submit")
-            | Скачать PDF
+      ActionMonth(:month="valSelect")
+
+    //er-container.mb-24(full :class="`${pre}__container-operation`")
+    //  er-row.justify-content-between(
+    //    no-gutters
+    //    :class="`${pre}__button-group`"
+    //  )
+    //    er-flex(
+    //      sm6 md5 lg3
+    //      :class="`${pre}__button-group__history`"
+    //    )
+    //    er-flex(
+    //      sm6 md5 lg3
+    //      :class="`${pre}__button-group__load`"
+    //    )
+    div(:class="`${pre}__button`")
+      er-icon(name="download" :class="`${pre}__download-icon`")
+      er-button.align-items-center(type="submit")
+        | Скачать PDF

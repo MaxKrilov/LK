@@ -4,7 +4,7 @@
       display: block;
       align-items: center;
       cursor: pointer;
-      margin-left: 12px;
+      margin-left: 6px;
       @include media-query((
         display: (sm: flex),
         margin-top: (md: 7px)
@@ -57,6 +57,7 @@
   }
   &__price {
     margin-left: auto;
+    margin-right: 8px;
     @include media-query((
       margin-left: (
         xs: auto,
@@ -108,7 +109,7 @@
     cursor: pointer;
     background: map_get($gray, '2');
     border-radius: 0;
-    margin-bottom: -20px;
+    margin-bottom: -32px; //-20px;
     @include media-query((
       border-radius: (
         lg: 12px,
@@ -122,12 +123,96 @@
       ),
     ));
   }
+  &__date {
+    position: absolute;
+    left: 44px;
+    top: 30px;
+    font: 11px/16px $fedra-demi;
+    letter-spacing: 0.35px;
+    color: rgba(map_get($shades, 'black'), 0.5);
+    @include media-query((
+      font-size: (
+        md: 14px !important,
+        lg: 14px !important,
+        xl: 16px !important,
+      ),
+      line-height: (
+        md: 19px !important,
+        lg: 19px !important,
+        xl: 21px !important
+      ),
+      letter-spacing: (md: -1px),
+      top: (
+        md: 27px,
+        lg: 16px
+      ),
+      left: (
+        md: 24px
+      )
+    ));
+    &__yy {
+      //display: block;
+      opacity: 0.3;
+      /*
+      @include media-query((
+        opacity: (md: 0.3),
+        !*
+        display: (
+          sm: none,
+          md: block,
+        ),
+        *!
+      ))
+      */
+    }
+    /*
+    &__yy-mob {
+      display: block;
+      position: relative;
+      top: 16px;
+      left: -42px;
+      opacity: 1 !important;
+      letter-spacing: 0.35px;
+      @include media-query((
+        display: (
+          sm: block,
+          md: none,
+        ),
+      ))
+    }
+    */
+  }
+  &__time {
+    position: absolute;
+    left: 55px;
+    top: 0px;
+    font: 11px/16px $fedra-demi;
+    letter-spacing: 0.35px;
+    color: rgba(map_get($shades, 'black'), 0.3);
+    @include media-query((
+      font-size: (
+        md: 14px !important,
+        lg: 14px !important,
+        xl: 16px !important,
+      ),
+      line-height: (
+        md: 19px !important,
+        lg: 19px !important,
+        xl: 21px !important
+      ),
+      letter-spacing: (md: -1px),
+      top: (
+        md: 51px,
+        lg: 41px
+      )
+    ))
+  }
   &__title-row {
     position: relative;
     align-items: center;
     border-radius: 12px;
     padding: 16px 28px 16px 29px;
-    margin-left: 11px;
+    //margin-left: 11px;
     border-left: 4px solid map_get($gray, '2');
     height: 56px;
     @include media-query((
@@ -152,7 +237,7 @@
     align-items: center;
     background: map_get($shades, 'white');
     padding: 16px 28px 16px 29px;
-    margin-left: 11px;
+    //margin-left: 11px;
     border-left: 4px solid map_get($yellow, 'base');
     height: 56px;
     @include media-query((
@@ -190,9 +275,15 @@
   &__geo-active {
     color: map_get($yellow, 'base');
   }
+  &__icon-address {
+    color: rgba(map_get($shades, 'black'), 0.2);
+    margin-right: 9px;
+    margin-left: -3px;
+  }
   &__icon {
     color: rgba(map_get($shades, 'black'), 0.2);
     margin-right: 9px;
+    margin-left: 0px;
   }
   &__title {
     font: 13px/18px $fedra-book;
@@ -216,6 +307,7 @@
         xl: -0.5px,
       ),
       margin-top: (
+        xs: 4px,
         md: 5px !important,
         xxl: 0 !important,
       )
@@ -238,14 +330,24 @@
   }
   &__delimiter {
     position: relative;
-    margin-left: 30px;
+    margin-left: 18px;
     margin-right: 33px;
-    height: 10px;
-    &__bottl {
-      border-bottom: 1px solid rgba(map_get($gray, '30'), 0.4);
+    height: 32px;
+    @include media-query((
+      top: (xs: -2px),
+    ));
+    &__bott-all {
+      cursor: pointer;
       @include media-query((
-        height: (sm: 30px)
-      ))
+        height: (sm: 46px)
+      ));
+      &__border {
+        cursor: pointer;
+        border-bottom: 1px solid rgba(map_get($gray, '30'), 0.4);
+        @include media-query((
+          height: (sm: 32px)
+        ));
+      }
     }
     &__bott {
       @include media-query((

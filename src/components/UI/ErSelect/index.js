@@ -1,5 +1,8 @@
+import { mapGetters } from 'vuex'
+import { SCREEN_WIDTH } from '@/store/actions/variables'
 import './_style.scss'
 import { getFirstElement, isEmpty, isMobile } from '../../../functions/helper'
+// import {mapGetters} from "vuex/types/index";
 
 export default {
   name: 'er-select',
@@ -46,6 +49,7 @@ export default {
     }
   },
   computed: {
+    ...mapGetters([SCREEN_WIDTH]),
     getFilteredItems () {
       return this.items.filter(item => {
         return this.isOnInput
@@ -147,11 +151,10 @@ export default {
         },
         blur: this.onBlur,
         focus: (e) => {
-          e.target.nextSibling.style.display = 'none'
+         if (this[SCREEN_WIDTH] < 640) {
+           e.target.nextSibling.style.display = 'none'
+         }
           this.$refs.activator.$refs.input.select()
-          setTimeout(function() {
-            e.target.nextSibling.style.display = 'block'
-          }, 500);
         }
       }
     },
@@ -237,7 +240,9 @@ export default {
       this.isSelected = true
       this.filterMobile = ''
     },
-    onBlur () {
+    onBlur (e) {
+      setTimeout(()=>{e.target.nextSibling.style.display = 'block'}, 500);
+
       setTimeout(() => {
         if (!this.isSelected) {
           this.internalValue = this.value

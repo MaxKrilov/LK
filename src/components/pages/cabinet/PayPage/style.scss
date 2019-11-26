@@ -34,12 +34,12 @@
   &__container-operation {
     padding: 0 !important;
     position: relative;
-    left: -12px;
+    //left: -12px;
     margin-top: -48px;
     width: 108% !important;
     @include media-query((
       left: (
-        sm: 0,
+        xs: 0,
         md: -24px,
         lg: 0px,
         xl: 0px,

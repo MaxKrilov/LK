@@ -15,7 +15,7 @@ export default {
     tag: 'er-menu', // todo change on er-menu
     isOpenDialog: false,
     typeOfCalendar: 'report',
-    result: "1-й квартал  2019",
+    result: '1-й квартал  2019',
     /**
      * @param {Date}
      */
@@ -35,21 +35,21 @@ export default {
     format: {
       type: String,
       default: 'DD.MM.YY'
-    }
+    },
+    periodInfo: String
   },
   mounted () {
-    this.result = document.getElementById('period').innerText
+    this.result = this.periodInfo
   },
   computed: {
     valueForTextInput () {
       return !this.value || this._.isEmpty(this.value)
         ? ''
-        : this.result[0]==='u'
+        : this.result[0] === 'u'
           ? this._.isArray(this.value)
             ? `${this.$moment(this._.head(this.value)).format(this.format)}${this.separator}${this.$moment(this._.last(this.value)).format(this.format)}`
             : this.$moment(this.value).format('DD MMM YYYY')
           : this.result
-
     }
   },
   watch: {
@@ -219,7 +219,6 @@ export default {
             },
             on: {
               input: (e) => {
-                console.log(e)
                 this.$emit('datename', e[2])
                 this.$emit('yearname', e[3])
                 this.result = `${e[2]}  20${e[3]}`

@@ -3,10 +3,17 @@ import Mixin from './mixin'
 
 const transformDate = date => {
   return new Date(
+    '2020',
+    '01',
+    '01'
+  )
+/*
+  return new Date(
     date.getFullYear(),
     date.getMonth(),
     date.getDate()
   )
+*/
 }
 
 export default {

@@ -1,14 +1,39 @@
 // ListAddress
 
-div.mb-32(:class="`${pre}`")
+div(:class="`${pre}`")
   div(:class="`${pre}__item`", @click="subwork_internet")
     div.d--flex(:class="`${pre}__${title}`")
-      div(:class="`${pre}__icon`")
+      div(v-if="month ==='Адрес'")
+        div.mb-8.d--flex.align-items-center(:class="`${pre}__date`")
+          span
+            div(:class="`${pre}__date__dm`")
+              | {{ item.date }}
+          span
+            div(:class="`${pre}__date__yy`")
+              | {{ item.year }}
+          span
+            div(:class="`${pre}__time`")
+              | {{ item.time }}
+        div(:class="`${pre}__icon-address`")
+          er-icon(
+            :class="`${pre}__${geo}`"
+            :name="item.icon"
+          )
+        //div.mb-8.d--flex.align-items-center(:class="`${pre}__date`")
+        //  span
+        //    h4(:class="`${pre}__date__dm`")
+        //      | {{ item.date }}
+        //    h4(:class="`${pre}__date__yy`")
+        //      | {{ item.year }}
+        //  div(:class="`${pre}__time`")
+        //    | {{ item.time }}
+      div(:class="`${pre}__icon`" v-else)
         er-icon(
-          :class="`${pre}__${geo}`"
-          name="geolocation"
+        :class="`${pre}__${geo}`"
+        :name="item.icon"
         )
-      div(:class="`${pre}__title`")
+
+      div(:class="`${pre}__title`" :style="'margin-top: ' + topTitle")
         | {{ item.city }}
         | {{ item.street }}
       div(:class="`${pre}__price`")
@@ -22,8 +47,13 @@ div.mb-32(:class="`${pre}`")
     er-slide-up-down(:active="subtmpActive")
       div(:class="`${pre}__top`")
       DetailPay
-      div(:class="`${pre}__delimiter ${pre}__delimiter__bottl`" v-if="index==='0'")
-      div(:class="`${pre}__delimiter ${pre}__delimiter__bott`" v-else)
+      ////div(:class="`${pre}__delimiter ${pre}__delimiter__bottl`" v-if="index==='0'")
+      //div(:class="`${pre}__delimiter ${pre}__delimiter__bott`")
 
+  div(
+    :class="`${pre}__delimiter ${pre}__delimiter__bott-all${border}`",
+    @click="subwork_internet"
+    :style="'top: ' + topDelimiter"
+  )
 
 

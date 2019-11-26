@@ -1,6 +1,6 @@
 .action-month {
   &__service {
-    &__data {
+    &__date {
       position: absolute;
       font: 13px/18px $fedra-book;
       letter-spacing: 0.25px;
@@ -8,16 +8,17 @@
       @include media-query((
         font-size: (lg: 16px),
         line-height: (lg: 21px),
-        letter-spacing: (lg: -0.5px)
-      ));
-      @include media-query((
+        letter-spacing: (lg: -0.5px),
         margin-top: (
-          xs: 16px,
+          xs: 20px,
           sm: 23px,
           md: 10px,
           lg: 21px,
           xl: 17px,
         ),
+        margin-left: (
+          xs: 18px
+        )
       ));
       &__dm {
         opacity: 0.5;
@@ -25,6 +26,12 @@
       &__yy {
         opacity: 0.2;
       }
+    }
+  }
+  &__height {
+    height: 49px;
+    &__address {
+      height: 22px;
     }
   }
 }

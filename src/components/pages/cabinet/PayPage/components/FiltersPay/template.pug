@@ -4,23 +4,29 @@ div(:class="`${pre}`")
   div(:class="`${pre}__title`")
     | Фильтровать
   er-row.no-gutters(v-if="!isFiltersVisible")
-    div.mr-8( style="cursor: pointer" @click="filtersVisible(true)")
+    div.mr-16( style="cursor: pointer" @click="filtersVisible(true)")
       er-icon.caption(name="filter_1")
-    div.mr-40.no-gutters
-      div(:class="`${pre}__infoFilter`" id="period")
+    div.mr-16.no-gutters(style="margin-top: -3px")
+      div(:class="`${pre}__infoFilter`")
         span(:class="`${pre}__infoFilter__date`" v-if="!isFiltersMonthVisible")
           | {{ datePeriod }}
         span(:class="`${pre}__infoFilter__date`" v-if="isFiltersMonthVisible")
           | {{ date }}
         span(:class="`${pre}__infoFilter__year`" v-if="isFiltersMonthVisible")
           | {{ year }}
-    div.mr-40.justify-content.between.no-gutters(v-if="isCloseService")
+    div.mr-16.justify-content.between.no-gutters(
+      v-if="isCloseService"
+      style="margin-top: -3px"
+    )
       div(:class="`${pre}__infoFilter`")
         | {{ typeFindLabel }}
         span(:class="`${pre}__close`" @click="closeService()")
           er-icon(name="close")
-    div.justify-content.between.no-gutters(v-if="isCloseTypePay")
-      div(:class="`${pre}__infoFilter`")
+    div.justify-content.between.no-gutters(
+      v-if="isCloseTypePay"
+      style="margin-top: -3px"
+    )
+      div(:class="`${pre}__infoFilter ${pre}__infoFilter__ml${zero}`")
         | {{ typePayLabel }}
         span(:class="`${pre}__close`" @click="closeTypePay()")
           er-icon(name="close" :class="`${pre}__close`")
@@ -39,7 +45,6 @@ div(:class="`${pre}`")
     er-row.justify-content.between(no-gutters :class="`${pre}__row`")
       er-flex(xs12 md2)
         er-select(
-          id="aa"
           :class="`${pre}__typeFind`"
           :placeholder="typeFindLabel",
           :items="typeFind",
@@ -71,6 +76,7 @@ div(:class="`${pre}`")
           @datename="dateName($event)",
           @yearname="yearName($event)",
           @input="inp($event)"
+          :periodInfo="periodInfo"
         )
       er-flex(xs12 md2 :class="`${pre}__typePay`" @click="visTitleTypePay")
         div(:class="`${pre}__typePay__title ${pre}__typePay__title__${visTypePay}`")
@@ -98,8 +104,6 @@ div(:class="`${pre}`")
             er-button(type="submit", flat=true, @click="")
               | Сбросить фильтр
 
-
-
   div.d--flex.justify-content.center(
     v-if="isFiltersMonthVisible"
     :class="`${pre}__months-filter`"
@@ -109,23 +113,10 @@ div(:class="`${pre}`")
     :class="`${pre}__months-filter__span`"
     )
       er-button(type="button", flat=true,
-      :class="`${pre}__months-filter__${month.active}`"
+      :class="`${pre}__months-filter__text ${pre}__months-filter__${month.active}`"
       @click="selectMonth($event)"
       )
         | {{ month.month }}
-
-
-
-
-    //er-flex(xs1)
-    //  er-button(type="submit", flat=true, @click="history")
-    //    | Февраль
-    //er-flex(xs1)
-    //  er-button(type="submit", flat=true, @click="history")
-    //    | март
-    //er-flex(xs1)
-    //  er-button(type="submit", flat=true, @click="history")
-    //    | апрель
 
 
 

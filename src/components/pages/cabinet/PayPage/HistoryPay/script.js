@@ -9,12 +9,20 @@ export default {
   },
   data: () => ({
     pre: 'history-pay',
-    openLeftMenu: false,
+    // openLeftMenu: false,
+    valSelect: 'Январь'
   }),
   methods: {
     paypage () {
       this.$router.push('/lk/pay')
     },
+    typeFind (select) {
+      if (select === 'По услуге') {
+        this.valSelect = 'Январь'
+      } else {
+        this.valSelect = 'Адрес'
+      }
+    }
   }
 
 }

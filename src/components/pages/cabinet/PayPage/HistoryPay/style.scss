@@ -16,6 +16,13 @@
         md: 0,
         lg: 0,
         xxl: 18px
+      ),
+      margin-bottom: (
+        xs: -7px,
+        //sm: -24px,
+        //md: 0,
+        //lg: 0,
+        //xxl: 18px
       )
     ));
   }
@@ -34,7 +41,7 @@
   &__container-operation {
     padding: 0 !important;
     position: relative;
-    left: -12px;
+    //left: -12px;
     width: 108% !important;
     @include media-query((
       left: (
@@ -112,48 +119,40 @@
       margin-bottom: (sm: 24px, lg: 29px, xl: 42px)
     ))
   }
-  &__button-group {
+  &__button {
+    position: relative;
     @include media-query((
-      margin: (
-        xs: 38px 36px -31px 28px !important,
-        sm: 17px 53px -32px 38px !important,
-        md: 17px 34px -21px 27px !important,
-        lg: 17px 8px -33px 10px !important,
-        xl: 15px 8px 0 -1px !important,
+      top: (
+        xs: -7px,
+        //sm: 8px,
+        //md: 34px,
+        //lg: 16px,
+        //xl: 22px,
+        //xxl: 65px
       ),
+      padding-left: (
+        xs: 16px,
+        sm: 8px,
+        md: 34px,
+        lg: 16px,
+        xl: 22px,
+        xxl: 65px
+      ),
+      padding-right: (
+        xs: 16px,
+        sm: 8px,
+        md: 34px,
+        lg: 16px,
+        xl: 22px,
+        xxl: 65px
+      )
     ));
-    &__history {
-      @include media-query((
-        margin-bottom: (
-          xs: 18px !important,
-          sm: 0 !important
-        ),
-        padding-right: (
-          sm: 8px !important,
-          md: 34px !important,
-          lg: 16px !important,
-          xl: 22px !important,
-          xxl: 65px !important
-        )
-      ));
-    }
-    &__load {
-      @include media-query((
-        padding-left: (
-          sm: 8px !important,
-          md: 34px !important,
-          lg: 16px !important,
-          xl: 22px !important,
-          xxl: 65px !important
-        )
-      ));
-    }
   }
   &__download-icon svg {
     position: absolute;
     height: 16px;
-    top: 14px;
-    left: 16px;
+    top: 12px;
+    left: 27px;
     z-index: 1;
     color: rgba(map_get($shades, 'black'), 0.3);
     @include media-query((

@@ -3,9 +3,6 @@ import ErFilterClose from '../ErFilterClose'
 import ListAddress from '../ListAddress/index.vue'
 import { SCREEN_WIDTH } from '@/store/actions/variables'
 
-
-// var colorActive = 'white';
-// var colorAct = '#E9E9E9';
 export default {
   name: 'filters-pay',
   data: () => ({
@@ -18,57 +15,57 @@ export default {
       'Wi-Fi для бизнеса',
       'Антивирусы'
     ],
-    cities: ['Все города','Абакан', 'Москва', 'Санкт-Петербург'],
+    cities: ['Все города', 'Абакан', 'Москва', 'Санкт-Петербург'],
     typePay: ['Все платежи', 'Списание', 'Начисление'],
     years: [
-      {month: 'январь', active: 'active'},
-      {month: 'февраль', active: 'none'},
-      {month: 'март', active: 'none'},
-      {month: 'апрель', active: 'none'},
-      {month: 'май', active: 'none'},
-      {month: 'июнь', active: 'none'},
-      {month: 'июль', active: 'none'},
-      {month: 'август', active: 'none'},
-      {month: 'сентябрь', active: 'none'},
-      {month: 'октябрь', active: 'none'},
-      {month: 'ноябрь', active: 'none'},
-      {month: 'декабрь', active: 'none'},
+      { month: 'Январь', active: 'active' },
+      { month: 'Февраль', active: 'none' },
+      { month: 'Март', active: 'none' },
+      { month: 'Апрель', active: 'none' },
+      { month: 'Май', active: 'none' },
+      { month: 'Июнь', active: 'none' },
+      { month: 'Июль', active: 'none' },
+      { month: 'Август', active: 'none' },
+      { month: 'Сентябрь', active: 'none' },
+      { month: 'Октябрь', active: 'none' },
+      { month: 'Ноябрь', active: 'none' },
+      { month: 'Декабрь', active: 'none' }
     ],
     quarter1: [
-      {month: 'январь', active: 'active'},
-      {month: 'февраль', active: 'none'},
-      {month: 'март', active: 'none'},
+      { month: 'Январь', active: 'active' },
+      { month: 'Февраль', active: 'none' },
+      { month: 'Март', active: 'none' }
     ],
     quarter2: [
-      {month: 'апрель', active: 'active'},
-      {month: 'май', active: 'none'},
-      {month: 'июнь', active: 'none'},
+      { month: 'Апрель', active: 'active' },
+      { month: 'Май', active: 'none' },
+      { month: 'Июнь', active: 'none' }
     ],
     quarter3: [
-      {month: 'июль', active: 'active'},
-      {month: 'август', active: 'none'},
-      {month: 'сентябрь', active: 'none'},
+      { month: 'Июль', active: 'active' },
+      { month: 'Август', active: 'none' },
+      { month: 'Сентябрь', active: 'none' }
     ],
     quarter4: [
-      {month: 'октябрь', active: 'active'},
-      {month: 'ноябрь', active: 'none'},
-      {month: 'декабрь', active: 'none'},
+      { month: 'Октябрь', active: 'active' },
+      { month: 'Ноябрь', active: 'none' },
+      { month: 'Декабрь', active: 'none' }
     ],
     firstHalfYear: [
-      {month: 'январь', active: 'active'},
-      {month: 'февраль', active: 'none'},
-      {month: 'март', active: 'none'},
-      {month: 'апрель', active: 'none'},
-      {month: 'май', active: 'none'},
-      {month: 'июнь', active: 'none'}
+      { month: 'Январь', active: 'active' },
+      { month: 'Февраль', active: 'none' },
+      { month: 'Март', active: 'none' },
+      { month: 'Апрель', active: 'none' },
+      { month: 'Май', active: 'none' },
+      { month: 'Июнь', active: 'none' }
     ],
     secondHalfYear: [
-      {month: 'июль', active: 'active'},
-      {month: 'август', active: 'none'},
-      {month: 'сентябрь', active: 'none'},
-      {month: 'октябрь', active: 'none'},
-      {month: 'ноябрь', active: 'none'},
-      {month: 'декабрь', active: 'none'},
+      { month: 'Июль', active: 'active' },
+      { month: 'Август', active: 'none' },
+      { month: 'Сентябрь', active: 'none' },
+      { month: 'Октябрь', active: 'none' },
+      { month: 'Ноябрь', active: 'none' },
+      { month: 'Декабрь', active: 'none' }
     ],
     typeFindLabel: 'По услуге',
     servicesLabel: 'Все услуги',
@@ -78,22 +75,21 @@ export default {
     visTypePay: 'visBlock',
     service: true,
     period: ['2019-01-01', '2019-03-31'],
-    isFiltersVisible: true,
+    isFiltersVisible: false,
     isFiltersMonthVisible: true,
     isCloseService: true,
     isCloseTypePay: true,
     datePeriod: '',
     date: '1-й квартал',
     year: "'19",
-    topTypePay: "initial",
+    zero: '',
+    topTypePay: 'initial',
     typePeriod: [
-      {month: 'январь', active: 'active'},
-      {month: 'февраль', active: 'none'},
-      {month: 'март', active: 'none'},
+      { month: 'Январь', active: 'active' },
+      { month: 'Февраль', active: 'none' },
+      { month: 'Март', active: 'none' }
     ],
-    // tmpActive_internet: false,
     openFilterMob: false
-
   }),
   components: {
     ErFilterClose,
@@ -101,6 +97,9 @@ export default {
   },
   computed: {
     ...mapGetters([SCREEN_WIDTH]),
+    periodInfo () {
+      return this.isFiltersMonthVisible ? this.date + this.year : this.datePeriod
+    }
   },
   watch: {
     SCREEN_WIDTH () {
@@ -114,17 +113,18 @@ export default {
       this.isFiltersVisible = select
     },
     selectMonth (e) {
-      this.typePeriod = this.typePeriod.map(function(name) {
+      this.typePeriod = this.typePeriod.map(function (name) {
         if (e.target.innerHTML === name.month) {
           name.active = 'active'
         } else {
           name.active = 'none'
         }
-        return name;
-      });
+        return name
+      })
     },
     closeService () {
       this.isCloseService = false
+      this.zero = '__zero'
     },
     closeTypePay () {
       this.isCloseTypePay = false
@@ -133,6 +133,7 @@ export default {
       this.typeFindLabel = item
       this.service = item === 'По услуге'
       this.isCloseService = true
+      this.$emit('typeFind', item)
     },
     servicesValue (item) {
       this.servicesLabel = item
@@ -157,18 +158,19 @@ export default {
       this.visTypePay = 'visNone'
       this.topTypePay = 'initial'
     },
-    inp(payload) {
+    inp (payload) {
       const date1 = payload[0]
-      const period1 = `${date1.getDate()}.${date1.getMonth() + 1}.${String(date1.getFullYear()).slice(-2)}`
+      const zeroDay1 = date1.getDate() > 10 ? '' : '0'
+      const zeroMonth1 = date1.getMonth() + 1 > 10 ? '' : '0'
+      const period1 = `${zeroDay1}${date1.getDate()}.${zeroMonth1}${date1.getMonth() + 1}.${String(date1.getFullYear()).slice(-2)}`
       const date2 = payload[1]
-      const period2 = `${date2.getDate()}.${date2.getMonth() + 1}.${String(date2.getFullYear()).slice(-2)}`
-
-
-      // const period = new Date(payload[0]) - new Date(payload[1])
+      const zeroDay2 = date2.getDate() > 10 ? '' : '0'
+      const zeroMonth2 = date2.getMonth() + 1 > 10 ? '' : '0'
+      const period2 = `${zeroDay2}${date2.getDate()}.${zeroMonth2}${date2.getMonth() + 1}.${String(date2.getFullYear()).slice(-2)}`
       this.datePeriod = `${period1} - ${period2}`
     },
     dateName (payload) {
-      if (payload && payload.indexOf(" - ") === -1) {
+      if (payload && payload.indexOf(' - ') === -1) {
         this.date = payload
         if (payload === '1-й квартал') this.typePeriod = this.quarter1
         if (payload === '2-й квартал') this.typePeriod = this.quarter2
@@ -185,10 +187,6 @@ export default {
     },
     yearName (payload) {
       this.year = "'" + payload
-    },
+    }
   }
 }
-
-
-// this.isFiltersMonthVisible = (payload.indexOf(" - ") === -1)
-// this.isFiltersMonthVisible = payload === undefined

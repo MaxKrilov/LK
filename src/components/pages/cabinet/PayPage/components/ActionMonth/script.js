@@ -7,6 +7,14 @@ export default {
   },
   props: ['month'],
   data: () => ({
-    pre: 'action-month'
-  })
+    pre: 'action-month',
+    height: ''
+  }),
+  updated() {
+      if (this.month === 'Адрес') {
+        this.height = '__address'
+      } else {
+        this.height = ''
+      }
+  }
 }

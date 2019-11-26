@@ -5,6 +5,7 @@
     padding-bottom: 2px;
     @include media-query((
       padding-top: (
+        xs: 12px,
         md: 18px,
         lg: 23px
       ),
