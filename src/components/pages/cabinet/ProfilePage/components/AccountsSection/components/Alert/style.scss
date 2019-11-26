@@ -2,7 +2,12 @@
   &__message {
     display: flex;
     align-items: center;
-    font: map_get($text, 'medium');
+    @include media-query((
+      font: (
+        md: map_get($text, 'small'),
+        lg: map_get($text, 'medium'),
+        xl: map_get($text, 'medium'))
+    ));
     &__text {
     }
     &__icon {

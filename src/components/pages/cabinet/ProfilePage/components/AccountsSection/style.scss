@@ -233,8 +233,10 @@
         right: 0;
         display: flex;
         flex: 1 1 100%;
-        justify-content: center;
         align-items: center;
+        @include media-query((
+          justify-content: (md: start, lg: start, xl: start)
+        ));
         &--error {
           @extend .accounts-section__table__cell__alert;
           background: map_get($red, 'other-2');
@@ -244,7 +246,10 @@
           background: map_get($green, 'other-4');
         }
         .alert {
-          max-width: 457px;
+          @include media-query((
+            margin-left: (md: 49%, lg: 26%, xl: 26%),
+            max-width: (md: 257px, lg: 457px, xl: 457px)
+          ))
         }
       }
 

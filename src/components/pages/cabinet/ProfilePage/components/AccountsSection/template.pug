@@ -153,26 +153,20 @@ div.text--small(:class="`${pre}`")
     @clickRow="handleAccountDetails"
   )
     template(v-slot:cell="{ item, dataKey, index }")
-      div(v-if="expandedAccount === item.userPostId")
-        div(v-if="dataKey === 'systemLabel'", :class="`${pre}__table__cell`")
-          div.d--flex.justify-content-end
-            er-icon(name="corner_down", :class="`${pre}__table__cell__icon`")
-      div(v-else)
-        div(v-if="dataKey === 'firstName'", :class="`${pre}__table__cell`")
-          div(:class="`${pre}__table__cell__person`")
-            div(:class="`${pre}__table__cell__person__family-name`") {{item.lastName}}
-            div(:class="`${pre}__table__cell__person__name`")
-              | {{item.firstName}} {{item.middleName}}
-            div(:class="`${pre}__table__cell__person__role`") {{realmRole(item.roleName)}}
+      div(v-if="dataKey === 'firstName'", :class="`${pre}__table__cell`")
+        div(:class="`${pre}__table__cell__person`")
+          div(:class="`${pre}__table__cell__person__family-name`") {{item.lastName}}
+          div(:class="`${pre}__table__cell__person__name`")
+            | {{item.firstName}} {{item.middleName}}
+          div(:class="`${pre}__table__cell__person__role`") {{realmRole(item.roleName)}}
 
-        div(v-if="dataKey === 'systemLabel'", :class="`${pre}__table__cell`")
-          div.d--flex.justify-content-end
-            .d--inline-block
-              p.mb-8(v-if="item.systems" v-for="system in getResourceAccessLabels(item.userPostId)") {{ system }}
-            er-icon(name="corner_down", :class="`${pre}__table__cell__icon`")
-        div(v-if="dataKey === 'phone'", :class="`${pre}__table__cell`") {{ item[dataKey] | formatPhone }}
-        div(v-if="dataKey === 'email'", :class="`${pre}__table__cell`") {{ item[dataKey]}}
-
+      div(v-if="dataKey === 'systemLabel'", :class="`${pre}__table__cell`")
+        div.d--flex.justify-content-end
+          .d--inline-block
+            p.mb-8(v-if="item.systems" v-for="system in getResourceAccessLabels(item.userPostId)") {{ system }}
+          er-icon(name="corner_down", :class="`${pre}__table__cell__icon`")
+      div(v-if="dataKey === 'phone'", :class="`${pre}__table__cell`") {{ item[dataKey] | formatPhone }}
+      div(v-if="dataKey === 'email'", :class="`${pre}__table__cell`") {{ item[dataKey]}}
       div(
         v-if="dataKey === 'alert' && requestStatus.id === item.userPostId",
         :class="`${pre}__table__cell__alert--${requestStatus.type}`"
