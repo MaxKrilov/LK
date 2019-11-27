@@ -1,6 +1,7 @@
 import { generateUrl, copyObject } from '@/functions/helper'
 import { authParamsAfterRedirect, makeTokens, validationToken } from '@/functions/auth'
 import { USER_ROLES } from '../mock/profile'
+import { isCombat } from '../../functions/helper'
 
 const AUTH_REQUEST = 'AUTH_REQUEST'
 const AUTH_SUCCESS = 'AUTH_SUCCESS'
@@ -168,7 +169,17 @@ const actions = {
     }
   },
 
-  signOut: ({ commit }) => {
+  signOut: async ({ commit }) => {
+    const url = isCombat()
+      ? `https://auth.domru.ru/auth/realms/user/protocol/openid-connect/logout?redirect_uri=${location.origin}`
+      : `https://sso-balancer.testing.srv.loc/auth/realms/user/protocol/openid-connect/logout?redirect_uri=${location.origin}`
+    const result = await fetch(url, {
+      method: 'POST'
+    })
+    if (result.ok) {
+      localStorage.clear()
+      location.reload()
+    }
     commit(AUTH_LOGOUT)
   },
   updateUserInfo ({ commit }, data) {

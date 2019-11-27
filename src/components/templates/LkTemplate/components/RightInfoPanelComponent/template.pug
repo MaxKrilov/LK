@@ -51,12 +51,12 @@ div(:class="[`${pre}`, { open: value }]")
   div.caption.pl-32.mb-8
     | Ваш персональный менеджер
   div.personal-manager.pl-32.mb-16.pr-16
-    | Константин Константинопольский
+    | {{ getManagerInfo.name }}
   div.caption.pl-32.mb-8
     | Телефон
-  a(href="tel:73422462233").personal-manager.pl-32.mb-16.pr-16
-    | +7 342 246 22 33
+  a(:href="`tel:${getManagerInfo.phone}`").personal-manager.pl-32.mb-16.pr-16
+    | {{ getManagerInfo.phone | formatPhone }}
   div.caption.pl-32.mb-8
     | Эл. почта
-  a(href="mailto:konstantinopolsky@domru.ru").personal-manager.pl-32.mb-16.pr-16
-    | konstantinopolsky@domru.ru
+  a(:href="`mailto:${getManagerInfo.email}`").personal-manager.pl-32.mb-16.pr-16
+    | {{ getManagerInfo.email }}

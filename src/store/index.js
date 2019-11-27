@@ -10,6 +10,8 @@ import directories from './modules/directories'
 import api from './modules/api'
 import variables from './modules/variables'
 import dictionary from './modules/dictionary'
+import user from './modules/user'
+import request from './modules/request'
 
 const debug = process.env.NODE_ENV !== 'production'
 
@@ -24,7 +26,9 @@ export default new Vuex.Store({
     directories,
     api,
     variables,
-    dictionary
+    dictionary,
+    user,
+    request
   },
   strict: debug,
   plugins: [createPersistedState({
