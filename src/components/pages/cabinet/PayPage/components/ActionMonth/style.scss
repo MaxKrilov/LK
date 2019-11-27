@@ -12,7 +12,7 @@
         margin-top: (
           xs: 20px,
           sm: 23px,
-          md: 10px,
+          md: 27px,
           lg: 21px,
           xl: 17px,
         ),
@@ -31,6 +31,13 @@
   }
   &__height {
     height: 49px;
+    @include media-query((
+      height: (
+        md: 59px,
+        //lg: 21px,
+        //xl: 17px,
+      ),
+    ));
     &__address {
       height: 22px;
     }

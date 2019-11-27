@@ -2,7 +2,7 @@
 
 div(:class="`${pre}__item`")
   div.d--flex.justify-content-between(
-    :class="`${pre}__subtitle-row`"
+    :class="`${pre}__subtitle-row${paddingLeft}`"
     v-for= "item in items"
     :key="item.name"
   )

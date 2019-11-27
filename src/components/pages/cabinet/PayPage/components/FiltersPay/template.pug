@@ -6,7 +6,7 @@ div(:class="`${pre}`")
   er-row.no-gutters(v-if="!isFiltersVisible")
     div.mr-16( style="cursor: pointer" @click="filtersVisible(true)")
       er-icon.caption(name="filter_1")
-    div.mr-16.no-gutters(style="margin-top: -3px")
+    div.mr-16.no-gutters(:class="`${pre}__info-row`")
       div(:class="`${pre}__infoFilter`")
         span(:class="`${pre}__infoFilter__date`" v-if="!isFiltersMonthVisible")
           | {{ datePeriod }}
@@ -16,7 +16,7 @@ div(:class="`${pre}`")
           | {{ year }}
     div.mr-16.justify-content.between.no-gutters(
       v-if="isCloseService"
-      style="margin-top: -3px"
+      :class="`${pre}__info-row`"
     )
       div(:class="`${pre}__infoFilter`")
         | {{ typeFindLabel }}
@@ -24,7 +24,7 @@ div(:class="`${pre}`")
           er-icon(name="close")
     div.justify-content.between.no-gutters(
       v-if="isCloseTypePay"
-      style="margin-top: -3px"
+      :class="`${pre}__info-row`"
     )
       div(:class="`${pre}__infoFilter ${pre}__infoFilter__ml${zero}`")
         | {{ typePayLabel }}
@@ -43,14 +43,14 @@ div(:class="`${pre}`")
       h3(:class="`${pre}__titleMob`")
         | Фильтровать платежи
     er-row.justify-content.between(no-gutters :class="`${pre}__row`")
-      er-flex(xs12 sm6 md2 :class="`${pre}__find`")
+      er-flex(xs12 sm6 md5 :class="`${pre}__find`")
         er-select(
           :class="`${pre}__typeFind`"
           :placeholder="typeFindLabel",
           :items="typeFind",
           @input="typeFindValue"
         )
-      er-flex(xs12 sm6 md3 :class="`${pre}__services`")
+      er-flex(xs12 sm6 md6 :class="`${pre}__services`")
         div(@click="visTitleService" v-if="service" )
           div(:class="`${pre}__services__title ${pre}__services__title__${visService}`")
             | Услуга
@@ -67,7 +67,7 @@ div(:class="`${pre}`")
             :items="cities",
             @input="citiesValue"
           )
-      er-flex(xs12 sm6 md3 :class="`${pre}__period`")
+      er-flex(xs12 sm6 md5 :class="`${pre}__period`")
         div(:class="`${pre}__period__title`")
           | Период
         er-date-picker(
@@ -78,7 +78,7 @@ div(:class="`${pre}`")
           @input="inp($event)"
           :periodInfo="periodInfo"
         )
-      er-flex(xs12 sm6 md2 :class="`${pre}__typePay`" @click="visTitleTypePay")
+      er-flex(xs12 sm6 md6 :class="`${pre}__typePay`" @click="visTitleTypePay")
         div(:class="`${pre}__typePay__title ${pre}__typePay__title__${visTypePay}`")
           | Тип операции
         er-select(

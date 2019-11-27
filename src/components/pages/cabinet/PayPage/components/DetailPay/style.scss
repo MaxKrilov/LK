@@ -78,13 +78,17 @@
     @include media-query((
       padding: (
         sm: 0 42px 0 30px,
-        md: 0 33px 0 64px,
+        md: 0 33px 0 65px,
         lg: 0px 41px 0px 72px,
         xl: 0px 38px 0px 76px
       ),
       margin-bottom: (
         sm: 2px
       )
-    ))
+    ));
+    &__address {
+      @extend .detail-pay__subtitle-row;
+      padding-left: 105px !important;
+    }
   }
 }

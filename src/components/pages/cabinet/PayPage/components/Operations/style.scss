@@ -243,6 +243,9 @@
       top: (
         md: 51px,
         lg: 60px
+      ),
+      left: (
+        md: 24px
       )
     ))
   }
@@ -373,6 +376,12 @@
     margin-left: 16px;
     width: 220px;
     @include media-query((
+      width: (
+        sm: 260px,
+        md: 400px,
+        lg: 520px,
+        xl: 220px
+      ),
       margin-left: (
         sm: 18px,
         md: 28px,
@@ -527,8 +536,11 @@
     ));
     &__address {
       background-color: map_get($gray, '2');
+      width: 100%;
       @include media-query((
-        width: (lg: 100%),
+      /*
+      width: (sm: 100%),
+      */
         margin-left: (
           xl: 55px,
         )

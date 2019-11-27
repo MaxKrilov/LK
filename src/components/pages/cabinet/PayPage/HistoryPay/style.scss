@@ -7,8 +7,8 @@
       margin-top: (
         xs: -14px,
         sm: -25px,
-        md: -46px,
-        lg: -40px,
+        md: -25px,
+        lg: -23px,
         xl: -42px,
       ),
       margin-left: (
@@ -108,6 +108,7 @@
     width: 256px;
     margin-bottom: 22px;
     margin-top: 15px;
+    letter-spacing: -1px;
     @include media-query((
       margin-top: (
         xl: -2px,
@@ -121,11 +122,12 @@
   }
   &__button {
     position: relative;
+    margin-bottom: 168px;
     @include media-query((
       top: (
         xs: -7px,
         //sm: 8px,
-        //md: 34px,
+        md: 0,
         //lg: 16px,
         //xl: 22px,
         //xxl: 65px
@@ -133,7 +135,7 @@
       padding-left: (
         xs: 16px,
         sm: 247px,
-        md: 34px,
+        md: 383px,
         lg: 16px,
         xl: 22px,
         xxl: 65px
@@ -141,7 +143,7 @@
       padding-right: (
         xs: 16px,
         sm: 0,
-        md: 34px,
+        md: 0px,
         lg: 16px,
         xl: 22px,
         xxl: 65px
@@ -151,14 +153,14 @@
   &__download-icon svg {
     position: absolute;
     height: 16px;
-    top: 12px;
+    top: 15px;
     left: 27px;
     z-index: 1;
     color: rgba(map_get($shades, 'black'), 0.3);
     @include media-query((
       left: (
         sm: 260px !important,
-        md: 44px !important,
+        md: 390px !important,
         lg: 24px !important,
         xl: 30px !important,
         xxl: 72px !important,

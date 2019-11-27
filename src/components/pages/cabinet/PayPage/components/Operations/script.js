@@ -58,10 +58,10 @@ export default {
         }
       } else {
         this.address = '',
-          this.topPrice = '40px',
-          this.topTitle = '15px',
-          this.topToggle = '0',
-          this.heightOperation = '80px'
+        this.topPrice = '40px',
+        this.topTitle = '15px',
+        this.topToggle = '0',
+        this.heightOperation = this[SCREEN_WIDTH] >= 640 ? '96px' : '80px'
       }
       if (this.items[this.index].title === 'Пополнение счета') {
         this.wrapper = 'green'

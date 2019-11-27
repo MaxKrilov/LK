@@ -2,6 +2,9 @@
   @include media-query((
     margin-top: (
       xs: -3px,
+      sm: -7px,
+      md: 11px,
+      lg: 7px
     ),
     margin-left: (
       xs: 16px,
@@ -19,11 +22,11 @@
       ),
       left: (
         xs: auto,
-        md: -45px
+        md: -23px
       ),
       padding: (
         xs:  0 9px 24px 16px,
-        md:  16px 9px 24px 16px,
+        md:  16px 9px 16px 23px,
       ),
       max-width: (
         xs: 480px !important,
@@ -47,7 +50,7 @@
       width: (
         xs: 90%,
         sm: 93%,
-        md: 112%
+        md: 108%
       ),
       background: (
         xs: map_get($gray, '9'),
@@ -62,6 +65,21 @@
     margin-top: -16px;
     @include media-query((
       display: (md: none),
+    ));
+  }
+  &__info-row {
+    @include media-query((
+      margin-top: (
+        xs: -3px,
+        md: 3px
+      ),
+    ));
+  }
+  &__row {
+    @include media-query((
+      margin-top: (
+        md: -32px
+      ),
     ));
   }
   &__find {
@@ -115,7 +133,7 @@
   }
   &__title {
     margin-bottom: 4px;
-    font: 13px/18px $fedra-demi;
+    font: 11px/16px $fedra-demi;
     letter-spacing: 0.35px;
     color: rgba(map_get($shades, 'black'), 0.3);
     @include media-query((
@@ -123,16 +141,22 @@
         sm: 45px
       ),
       font-size: (
-        md: 14px,
-        lg: 14px,
-        xl: 16px,
+        md: 13px,
+        xl: 14px,
+        xxl: 12px
       ),
       line-height: (
-        md: 19px,
-        lg: 19px,
-        xl: 21px
+        md: 16px,
+        xl: 19px,
+        xxl: 16px
       ),
-      letter-spacing: (md: -1px),
+      letter-spacing: (md: normal),
+      margin-bottom: (
+        sm: 9px,
+        //xl: 14px,
+        //xxl: 12px
+      ),
+
     ));
   }
   &__titleMob {
@@ -162,24 +186,20 @@
   &__typeFind {
     margin-top: 23px;
     padding-right: 7px;
-    /*
     @include media-query((
-      margin: (
-        xs: -30px 0 0 0,
-        sm: 4px 0 0 0,
-        md: 0px 23px 0 0
+      padding-right: (
+        md: 37px
       ),
     ));
-    */
 
   }
   &__services {
-    padding-right: 7px !important;
+    padding-right: 10px !important;
     @include media-query((
       margin: (
         xs: -24px 0 0 0,
         sm: 4px 0 0 0,
-        md: 0px 23px 0 0
+        md: 0px 23px 0 -29px
       ),
       padding-left: (
         xs: 0px !important,
@@ -213,11 +233,11 @@
     @include media-query((
       margin: (
         xs: -24px 0 0 0,
-        md: 0px 30px 0 0
+        md: -8px 0 0 0
       ),
       padding-right: (
         sm: 11px !important,
-        md: auto
+        md: 42px !important
       ),
 
     ));
@@ -235,11 +255,11 @@
     }
   }
   &__typePay {
-    padding-right: 7px !important;
+    padding-right: 10px !important;
     @include media-query((
       margin: (
         xs: -24px 0 0 0,
-        md: 0px 23px 0 0
+        md: -8px 23px 0 -29px
       ),
       padding-left: (
         xs: 0px !important,
@@ -277,6 +297,15 @@
       display: (
         xs: none,
         md: block
+      ),
+      position: (
+        md: absolute !important
+      ),
+      top: (
+        md: 17px
+      ),
+      right: (
+        md: 11px
       )
     ));
   }
@@ -305,7 +334,7 @@
         lg: 19px !important,
         xl: 21px !important
       ),
-      letter-spacing: (md: 1px),
+      letter-spacing: (md: normal),
       margin-left: (md: auto),
     ));
     &__date {
@@ -413,7 +442,7 @@
 }
 .er-select__list--mobile, .er-date-picker__wrapper {
   min-height: 480px !important;
-  height: 480px;
+  height: 502px;
 }
 
 /*

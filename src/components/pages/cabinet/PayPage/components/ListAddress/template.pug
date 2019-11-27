@@ -46,9 +46,9 @@ div(:class="`${pre}`")
 
     er-slide-up-down(:active="subtmpActive")
       div(:class="`${pre}__top`")
-      DetailPay
+      DetailPay(:month="month")
       ////div(:class="`${pre}__delimiter ${pre}__delimiter__bottl`" v-if="index==='0'")
-      //div(:class="`${pre}__delimiter ${pre}__delimiter__bott`")
+      div(:class="`${pre}__delimiter ${pre}__delimiter__bott`")
 
   div(
     :class="`${pre}__delimiter ${pre}__delimiter__bott-all${border}`",

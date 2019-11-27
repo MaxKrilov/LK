@@ -131,6 +131,7 @@
     letter-spacing: 0.35px;
     color: rgba(map_get($shades, 'black'), 0.5);
     @include media-query((
+      font-family: (sm: $fedra-book),
       font-size: (
         sm: 13px !important,
         md: 14px !important,
@@ -145,10 +146,11 @@
       ),
       letter-spacing: (
         sm: 0.25px,
-        md: -1px),
+        md: normal
+      ),
       top: (
         sm: 13px,
-        md: 27px,
+        md: 13px,
         lg: 16px
       ),
       left: (
@@ -208,7 +210,7 @@
       letter-spacing: (md: -1px),
       top: (
         sm: 19px,
-        md: 51px,
+        md: 20px,
         lg: 41px
       ),
       left: (
@@ -286,14 +288,18 @@
   }
   &__icon-address {
     color: rgba(map_get($shades, 'black'), 0.2);
-    margin-right: 9px;
+    //margin-right: 9px;
     margin-left: -3px;
     @include media-query((
       margin-left: (
-        sm: 65px,
+        sm: 69px,
+        md: 86px
+      ),
+      margin-right: (
+        xs: 9px,
+        md: 23px
       )
     ));
-
   }
   &__icon {
     color: rgba(map_get($shades, 'black'), 0.2);
@@ -302,29 +308,27 @@
   }
   &__title {
     font: 13px/18px $fedra-demi;
-    letter-spacing: 0.25px;
     color: rgba(map_get($shades, 'black'), 0.8);
     padding-right: 34px;
     @include media-query((
       font-size: (
         sm: 15px,
-        md: 14px,
+        md: 18px,
         xl: 16px,
       ),
       line-height: (
         sm: 20px,
-        md: 19px,
+        md: 23px,
         xl: 21px,
   ),
       letter-spacing: (
-        sm: -0.35px,
-        md: 0,
+        xs: -0.35px,
+        md: -1px,
         xl: -0.5px,
       ),
       margin-top: (
-        xs: -10px !important,
-        sm: 4px !important,
-        md: 5px !important,
+        sm: 2px !important,
+        md: 2px !important,
         xxl: 0 !important,
       )
     ));
@@ -342,7 +346,13 @@
     }
   }
   &__top {
-    height: 10px;
+    @include media-query((
+      height: (
+        xs: 11px,
+        md: 3px,
+        lg: 0
+      )
+    ))
   }
   &__delimiter {
     position: relative;
@@ -361,13 +371,20 @@
         cursor: pointer;
         border-bottom: 1px solid rgba(map_get($gray, '30'), 0.4);
         @include media-query((
-          height: (sm: 32px)
+          height: (
+            //xs: 51px !important,
+            sm: 32px
+          )
         ));
       }
     }
     &__bott {
       @include media-query((
-        height: (sm: 30px)
+        height: (
+          xs: 10px,
+          sm: 18px,
+          md: 28px,
+        )
       ))
     }
   }
