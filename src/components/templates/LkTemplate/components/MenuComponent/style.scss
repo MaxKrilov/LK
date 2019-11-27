@@ -39,6 +39,8 @@
         opacity: 0;
         transition: $primary-transition;
         pointer-events: none;
+        user-select: none;
+        cursor: pointer;
         @include media-query((
           display: (xl: none)
         ));
@@ -113,6 +115,8 @@
       height: 48px;
       display: flex;
       align-items: center;
+      user-select: none;
+      cursor: pointer;
       @include media-query((
         height: (xl: 56px)
       ));

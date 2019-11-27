@@ -13,6 +13,8 @@
 import { mapGetters, mapState } from 'vuex'
 import { SCREEN_WIDTH } from './store/actions/variables'
 import { getScreenWidth } from './functions/helper'
+import { GET_CLIENT_INFO, GET_MANAGER_INFO, GET_UNSIGNED_DOCUMENTS } from '@/store/actions/user'
+import { GET_REQUEST } from '@/store/actions/request'
 
 export default {
   name: 'app',
@@ -22,6 +24,12 @@ export default {
   async created () {
     if (!this.refreshedToken.isFetching && !this.serverErrorMessage) {
       this.$store.dispatch('auth/checkAuth', { api: this.$api })
+      const clientInfo = await this.$store.dispatch(`user/${GET_CLIENT_INFO}`, { api: this.$api })
+      if (clientInfo) {
+        this.$store.dispatch(`user/${GET_MANAGER_INFO}`, { api: this.$api })
+        this.$store.dispatch(`request/${GET_REQUEST}`, { api: this.$api })
+        this.$store.dispatch(`user/${GET_UNSIGNED_DOCUMENTS}`, { api: this.$api })
+      }
     }
   },
   mounted () {

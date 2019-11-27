@@ -69,7 +69,7 @@ export function API () {
   /**
    * Устанавливает ветку
    * @param {string} branch
-   * @return {API}
+   * @return {_api}
    */
   this.setBranch = function (branch) {
     _branch = branch
@@ -78,7 +78,7 @@ export function API () {
   /**
    * Устанавливает тип передаваемых данных (object, array или json)
    * @param {string} type
-   * @return {API}
+   * @return {_api}
    */
   this.setType = function (type) {
     if (![TYPE_OBJECT, TYPE_ARRAY, TYPE_JSON].includes(type)) {
@@ -90,7 +90,7 @@ export function API () {
   /**
    * Устанавливает метод запроса (POST, GET, etc)
    * @param {string} method
-   * @return {API}
+   * @return {_api}
    */
   this.setMethod = function (method) {
     _method = method
@@ -99,7 +99,7 @@ export function API () {
   /**
    * Устанавливает данные запроса
    * @param {object|Array|string} data
-   * @return {API}
+   * @return {_api}
    */
   this.setData = function (data) {
     _data = data

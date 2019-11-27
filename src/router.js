@@ -69,10 +69,10 @@ const router = new Router({
               name: 'profile-edit',
               component: EditProfilePage
             },
-            {
-              path: '/*',
-              redirect: '/lk'
-            }
+            // {
+            //   path: '/*',
+            //   redirect: '/lk'
+            // }
           ]
         },
         {

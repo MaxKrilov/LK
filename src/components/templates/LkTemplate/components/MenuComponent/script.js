@@ -1,8 +1,9 @@
 import { eachArray } from '@/functions/helper'
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import { BREAKPOINT_XL } from '@/constants/breakpoint'
 import RightInfoPanelComponent from '../RightInfoPanelComponent/index.vue'
 import { SCREEN_WIDTH } from '../../../../../store/actions/variables'
+import { formatPhone } from '../../../../../functions/filters'
 
 export default {
   name: 'menu-component',
@@ -19,6 +20,7 @@ export default {
         name: 'Главная',
         icon: 'home',
         isOpen: false,
+        url: '/lk',
         subitem: [
           {
             name: 'Профиль',
@@ -39,9 +41,10 @@ export default {
         ]
       },
       {
-        label: 'Интернет',
+        name: 'Интернет',
         icon: 'internet',
         isOpen: false,
+        url: '/lk/internet',
         subitem: [
           {
             name: 'Статистика',
@@ -63,22 +66,16 @@ export default {
         isOpen: false,
         subitem: [{ name: 'Портал ОАТС', url: '/lk/oats' }]
       }
-      // {
-      //   name: 'Интернет',
-      //   icon: 'internet',
-      //   isOpen: false,
-      //   subitem: [
-      //     { name: 'Статистика' },
-      //     { name: 'Контент-фильтрация' },
-      //     { name: 'Скорость' }
-      //   ]
-      // }
     ]
   }),
+  filters: {
+    formatPhone
+  },
   computed: {
-    ...mapGetters([
-      SCREEN_WIDTH
-    ]),
+    ...mapGetters({
+      SCREEN_WIDTH,
+      getManagerInfo: 'user/getManagerInfo'
+    }),
     isOpenSubMenu () {
       return !!this.menu.filter(item => item.isOpen).length
     },
@@ -104,9 +101,13 @@ export default {
     },
     toggleRightPanel () {
       this.isOpenRightPanel = !this.isOpenRightPanel
-    }
+    },
+    ...mapActions({
+      signOut: 'auth/signOut'
+    })
   },
   mounted () {
+    // console.log(this['user/getManagerInfo'])
     if (this.isDesktop) {
       this.openSubMenuBackground = true
       this.menu[0].isOpen = true
