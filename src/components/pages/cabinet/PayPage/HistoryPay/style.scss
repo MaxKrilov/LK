@@ -15,7 +15,6 @@
         sm: -24px,
         md: 0,
         lg: 0,
-        xxl: 18px
       ),
       margin-bottom: (
         xs: -7px,
@@ -55,7 +54,7 @@
         sm: 108% !important,
         lg: 100% !important,
         xl: 100% !important,
-        xxl: 112% !important
+        xxl: 100% !important
       ),
     ));
   }
@@ -156,16 +155,10 @@
       left: (
         sm: 13px !important,
         md: 11px !important,
-        lg: 11px !important,
-        xl: 11px !important,
-        xxl: 72px !important,
       ),
       top: (
         sm: 11px !important,
         md: 14px !important,
-        lg: 14px !important,
-        xl: 14px !important,
-        xxl: 72px !important,
       ),
     ));
   }
@@ -178,7 +171,7 @@
         md: 390px !important,
         lg: 237px !important,
         xl: 237px !important,
-        xxl: 72px !important,
+        xxl: 237px !important,
       )
     ));
   }
