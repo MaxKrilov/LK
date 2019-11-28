@@ -36,7 +36,8 @@ div(:class="`${pre}`")
     //      sm6 md5 lg3
     //      :class="`${pre}__button-group__load`"
     //    )
-    div(:class="`${pre}__button`")
-      er-icon(name="download" :class="`${pre}__download-icon`")
-      er-button.align-items-center(type="submit")
-        | Скачать PDF
+    div(:class="`${pre}__button-wrapper`")
+      div(:class="`${pre}__button`")
+        er-icon(name="download" :class="`${pre}__download-icon`")
+        er-button(type="submit")
+          | Скачать PDF

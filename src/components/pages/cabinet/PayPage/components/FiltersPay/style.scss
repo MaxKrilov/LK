@@ -22,11 +22,13 @@
       ),
       left: (
         xs: auto,
-        md: -23px
+        md: -23px,
+        lg: -32px
       ),
       padding: (
         xs:  0 9px 24px 16px,
         md:  16px 9px 16px 23px,
+        lg:  24px 9px 24px 32px,
       ),
       max-width: (
         xs: 480px !important,
@@ -188,23 +190,27 @@
     padding-right: 7px;
     @include media-query((
       padding-right: (
-        md: 37px
+        md: 37px,
+        lg: 78px
       ),
     ));
 
   }
   &__services {
-    padding-right: 10px !important;
     @include media-query((
       margin: (
         xs: -24px 0 0 0,
         sm: 4px 0 0 0,
-        md: 0px 23px 0 -29px
+        md: 0px 23px 0 -29px,
+        lg: 0px 23px 0 -55px,
       ),
       padding-left: (
         xs: 0px !important,
         sm: 4px !important,
-        md: auto
+      ),
+      padding-right: (
+        xs: 10px !important,
+        lg: 6px !important,
       ),
 
   ));
@@ -233,11 +239,13 @@
     @include media-query((
       margin: (
         xs: -24px 0 0 0,
-        md: -8px 0 0 0
+        md: -8px 0 0 0,
+        lg: 0 0 0 3px,
       ),
       padding-right: (
         sm: 11px !important,
-        md: 42px !important
+        md: 42px !important,
+        lg: 15px !important,
       ),
 
     ));
@@ -259,12 +267,16 @@
     @include media-query((
       margin: (
         xs: -24px 0 0 0,
-        md: -8px 23px 0 -29px
+        md: -8px 23px 0 -29px,
+        lg: 0 23px 0 12px,
       ),
       padding-left: (
         xs: 0px !important,
         sm: 4px !important,
         md: auto
+      ),
+      padding-right: (
+        lg: 3px !important,
       ),
 
     ));
@@ -302,7 +314,8 @@
         md: absolute !important
       ),
       top: (
-        md: 17px
+        md: 17px,
+        lg: 49px,
       ),
       right: (
         md: 11px
@@ -360,6 +373,13 @@
     margin-left: -45px;
     padding: 2px 40px !important;
     width: 109vw;
+    @include media-query((
+      margin-top: (
+        lg: 17px,
+        //xl: 16px,
+      ),
+    ));
+
     &__span {
       padding: 0 1px !important;
     }

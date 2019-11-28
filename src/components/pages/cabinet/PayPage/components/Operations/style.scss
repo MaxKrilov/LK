@@ -191,7 +191,7 @@
     @include media-query((
       top: (
         md: 27px,
-        lg: 29px
+        lg: 27px
       ),
       left: (
         md: 24px
@@ -242,7 +242,7 @@
       ),
       top: (
         md: 51px,
-        lg: 60px
+        lg: 57px
       ),
       left: (
         md: 24px
@@ -282,14 +282,14 @@
             xl: 0
           ),
           left: (
-            //sm: 58px,
-            md: 46px,
-            lg: 54px,
+            md: -8px !important,
+            lg: 1px !important,
             xl: -2px,
             xxl: 50px
           ),
           width: (
             md: 90px !important,
+            lg: 96px !important,
             xl: 96px !important
           )
         ));
@@ -380,7 +380,7 @@
         sm: 260px,
         md: 400px,
         lg: 520px,
-        xl: 220px
+        xl: 600px
       ),
       margin-left: (
         sm: 18px,
@@ -390,8 +390,8 @@
       ),
       margin-top: (
         sm: 18px,
-        md: 27px,
-        lg: 29px
+        md: 26px,
+        lg: 26px !important
       ),
     ));
   }
@@ -542,7 +542,7 @@
       width: (sm: 100%),
       */
         margin-left: (
-          xl: 55px,
+          lg: 55px,
         )
       ));
     }

@@ -41,18 +41,19 @@ export default {
       let len = this.items[this.index].title.length
       if (this.month === 'Адрес') {
         this.address = '__address'
-        this.heightOperation = '97px'
+        this.heightOperation = '96px'
         this.topPrice = '47px'
         this.topTitle = '22px'
         this.topToggle = '13px'
         if (len > 24 && len < 50) {
           this.topPrice = '60px'
           this.topTitle = '14px'
+          this.topTitle = (this[SCREEN_WIDTH] >= 640 && len < 45) ? '22px' : '14px'
           this.topToggle = '11px'
         }
         if (len > 49) {
           this.topPrice = '80px'
-          this.heightOperation = '120px'
+          this.heightOperation = this[SCREEN_WIDTH] >= 480 ? '96px' : '120px'
           this.topTitle = '14px'
           this.topToggle = '21px'
         }

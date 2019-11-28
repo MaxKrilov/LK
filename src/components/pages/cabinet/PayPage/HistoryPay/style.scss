@@ -122,8 +122,12 @@
   }
   &__button {
     position: relative;
-    margin-bottom: 168px;
+    margin: 0 auto;
+    right: 0;
     @include media-query((
+      position: (
+        sm: absolute
+      ),
       top: (
         xs: -7px,
         //sm: 8px,
@@ -132,34 +136,45 @@
         //xl: 22px,
         //xxl: 65px
       ),
-      padding-left: (
-        xs: 16px,
-        sm: 247px,
-        md: 383px,
-        lg: 16px,
-        xl: 22px,
-        xxl: 65px
-      ),
-      padding-right: (
-        xs: 16px,
-        sm: 0,
-        md: 0px,
-        lg: 16px,
-        xl: 22px,
-        xxl: 65px
+      width: (
+        xs: 288px,
+        sm: 208px,
+        md: 212px,
+        lg: 206px,
+        xl: 203px,
       )
     ));
   }
   &__download-icon svg {
     position: absolute;
     height: 16px;
-    top: 15px;
-    left: 27px;
+    top: 11px;
+    left: 13px;
     z-index: 1;
     color: rgba(map_get($shades, 'black'), 0.3);
     @include media-query((
       left: (
-        sm: 260px !important,
+        sm: 13px !important,
+        md: 11px !important,
+        lg: 11px !important,
+        xl: 11px !important,
+        xxl: 72px !important,
+      ),
+      top: (
+        sm: 11px !important,
+        md: 14px !important,
+        lg: 14px !important,
+        xl: 14px !important,
+        xxl: 72px !important,
+      ),
+    ));
+  }
+  &__button-wrapper {
+    position: relative;
+    @include media-query((
+      margin-bottom: (
+        xs: 160px,
+        sm: 224px,
         md: 390px !important,
         lg: 24px !important,
         xl: 30px !important,
