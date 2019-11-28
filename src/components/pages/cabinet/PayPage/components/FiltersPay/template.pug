@@ -43,14 +43,14 @@ div(:class="`${pre}`")
       h3(:class="`${pre}__titleMob`")
         | Фильтровать платежи
     er-row.justify-content.between(no-gutters :class="`${pre}__row`")
-      er-flex(xs12 sm6 md5 lg3 :class="`${pre}__find`")
+      er-flex(xs12 sm6 md5 lg3 xl3 :class="`${pre}__find`")
         er-select(
           :class="`${pre}__typeFind`"
           :placeholder="typeFindLabel",
           :items="typeFind",
           @input="typeFindValue"
         )
-      er-flex(xs12 sm6 md6 lg3 :class="`${pre}__services`")
+      er-flex(xs12 sm6 md6 lg3 xl3 :class="`${pre}__services`")
         div(@click="visTitleService" v-if="service" )
           div(:class="`${pre}__services__title ${pre}__services__title__${visService}`")
             | Услуга
@@ -67,7 +67,7 @@ div(:class="`${pre}`")
             :items="cities",
             @input="citiesValue"
           )
-      er-flex(xs12 sm6 md5 lg3 :class="`${pre}__period`")
+      er-flex(xs12 sm6 md5 lg3 xl3 :class="`${pre}__period`")
         div(:class="`${pre}__period__title`")
           | Период
         er-date-picker(
@@ -78,7 +78,7 @@ div(:class="`${pre}`")
           @input="inp($event)"
           :periodInfo="periodInfo"
         )
-      er-flex(xs12 sm6 md6 lg2 :class="`${pre}__typePay`" @click="visTitleTypePay")
+      er-flex(xs12 sm6 md6 lg2 xl2 :class="`${pre}__typePay`" @click="visTitleTypePay")
         div(:class="`${pre}__typePay__title ${pre}__typePay__title__${visTypePay}`")
           | Тип операции
         er-select(
@@ -86,7 +86,7 @@ div(:class="`${pre}`")
           :items="typePay",
           @input="typePayValue"
         )
-      er-flex(xs1 :class="`${pre}__close-filter`")
+      er-flex(xs1 xl1 :class="`${pre}__close-filter`")
         er-filter-close(@click="filtersVisible(false)")
 
       div(:class="`${pre}__container-button`")

@@ -23,12 +23,14 @@
       left: (
         xs: auto,
         md: -23px,
-        lg: -32px
+        lg: -32px,
+        xl: -45px,
       ),
       padding: (
         xs:  0 9px 24px 16px,
         md:  16px 9px 16px 23px,
         lg:  24px 9px 24px 32px,
+        xl:  24px 9px 24px 45px,
       ),
       max-width: (
         xs: 480px !important,
@@ -191,7 +193,8 @@
     @include media-query((
       padding-right: (
         md: 37px,
-        lg: 78px
+        lg: 78px,
+        xl: 70px,
       ),
     ));
 
@@ -203,14 +206,17 @@
         sm: 4px 0 0 0,
         md: 0px 23px 0 -29px,
         lg: 0px 23px 0 -55px,
+        xl: 0px 23px 0 -43px,
       ),
       padding-left: (
         xs: 0px !important,
         sm: 4px !important,
+        xl: 0px !important,
       ),
       padding-right: (
         xs: 10px !important,
         lg: 6px !important,
+        xl: 0px !important,
       ),
 
   ));
@@ -241,11 +247,13 @@
         xs: -24px 0 0 0,
         md: -8px 0 0 0,
         lg: 0 0 0 3px,
+        xl: 0 0 0 7px,
       ),
       padding-right: (
         sm: 11px !important,
         md: 42px !important,
         lg: 15px !important,
+        xl: 0px !important,
       ),
 
     ));
@@ -269,14 +277,18 @@
         xs: -24px 0 0 0,
         md: -8px 23px 0 -29px,
         lg: 0 23px 0 12px,
+        xl: 0 23px 0 31px,
       ),
       padding-left: (
         xs: 0px !important,
         sm: 4px !important,
-        md: auto
-      ),
+        md: auto,
+        xl: 0 !important,
+
+  ),
       padding-right: (
         lg: 3px !important,
+        xl: 0 !important,
       ),
 
     ));
@@ -318,7 +330,8 @@
         lg: 49px,
       ),
       right: (
-        md: 11px
+        md: 11px,
+        xl: -7px
       )
     ));
   }

@@ -89,6 +89,15 @@
     &__address {
       @extend .detail-pay__subtitle-row;
       padding-left: 105px !important;
+      @include media-query((
+        padding-left: (
+          sm: 30px !important,
+          md: 111px !important,
+          lg: 171px !important,
+          xl: 175px !important
+        ),
+      ));
+
     }
   }
 }
