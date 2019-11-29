@@ -161,7 +161,7 @@
       .button-pay {
         &__card-icon {
           position: relative;
-          color: #FFEE80 !important;
+          color: map_get($yellow, 'other-6') !important;
           @include media-query((
             left: (
               xs: 58px,

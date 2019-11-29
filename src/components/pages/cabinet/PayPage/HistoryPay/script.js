@@ -9,7 +9,6 @@ export default {
   },
   data: () => ({
     pre: 'history-pay',
-    // openLeftMenu: false,
     valSelect: 'Январь'
   }),
   methods: {

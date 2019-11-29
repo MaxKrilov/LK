@@ -9,7 +9,6 @@
         lg: 1200px !important,
       )
     ));
-
   }
   &__info {
     &__block1 {
@@ -59,9 +58,9 @@
         ),
         margin-bottom: (
           sm: 22px !important,
-          md: 32px !important,
-          lg: 43px !important,
-          xl: 23px !important,
+          md: 13px !important,
+          lg: 17px !important,
+          xl: 16px !important,
         ),
         max-width: (
           md: 640px !important,
@@ -72,14 +71,21 @@
       ));
     }
   }
+  &__info-subtext {
+    @include media-query((
+      margin-bottom: (
+        xs: 8px,
+        sm: 13px,
+        md: 0
+      ),
+    ));
+  }
   &__balance-score {
-    display: none;
     font: 10px $fedra-demi !important;
     line-height: 12px;
     letter-spacing: 0.5px;
     color: rgba(map_get($shades, 'black'), 0.5);
     @include media-query((
-      display: (sm: block),
       font-size: (
         md: 12px !important,
         lg: 13px !important,
@@ -91,6 +97,12 @@
       ),
       letter-spacing: (md: 1)
     ));
+    &__vis {
+      display: none;
+      @include media-query((
+        display: (sm: block),
+      ));
+    }
     &__block {
       @include media-query((
         margin-left: (
@@ -110,7 +122,7 @@
         ),
         line-height: (
           sm: 18px !important,
-          md: 30px !important,
+          md: 38px !important,
           lg: 32px !important,
           xl: 38px !important
         ),
@@ -144,9 +156,13 @@
       font: 12px/16px $fedra-demi;
       color: map_get($red, 'base') !important;
       opacity: 1;
+      letter-spacing: 0.5px;
       @include media-query((
         font-size: (md: 12px !important),
         line-height: (md: 16px !important),
+        letter-spacing: (
+          sm: normal
+        )
       ));
     }
     &__currency {

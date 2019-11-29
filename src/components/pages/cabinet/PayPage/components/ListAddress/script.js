@@ -38,11 +38,9 @@ export default {
         this.border = '__border'
         this.heightDelimiter = '40px'
       }
-
       if (this.month === 'Адрес') {
         this.topDelimiter = '7px'
         this.topTitle = '-12px'
-
       } else {
         this.topDelimiter = '-2px'
         this.topTitle = '4px'

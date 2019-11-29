@@ -19,14 +19,6 @@ div(:class="`${pre}`")
             :class="`${pre}__${geo}`"
             :name="item.icon"
           )
-        //div.mb-8.d--flex.align-items-center(:class="`${pre}__date`")
-        //  span
-        //    h4(:class="`${pre}__date__dm`")
-        //      | {{ item.date }}
-        //    h4(:class="`${pre}__date__yy`")
-        //      | {{ item.year }}
-        //  div(:class="`${pre}__time`")
-        //    | {{ item.time }}
       div(:class="`${pre}__icon`" v-else)
         er-icon(
         :class="`${pre}__${geo}`"
@@ -47,7 +39,6 @@ div(:class="`${pre}`")
     er-slide-up-down(:active="subtmpActive")
       div(:class="`${pre}__top`")
       DetailPay(:month="month")
-      ////div(:class="`${pre}__delimiter ${pre}__delimiter__bottl`" v-if="index==='0'")
       div(:class="`${pre}__delimiter ${pre}__delimiter__bott`")
 
   div(

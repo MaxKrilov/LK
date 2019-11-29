@@ -28,16 +28,22 @@ div(:class="`${pre}`")
     er-container.mb-24(full :class="`${pre}__container-operation`")
       ActionMonth(month="Январь")
 
-    er-container.mb-24(full :class="`${pre}__container-operation`")
+    er-container.mb-24(full :class="`${pre}__container-button`")
       er-row.justify-content-between(
         no-gutters
         :class="`${pre}__button-group`"
       )
-        er-flex(sm6 md5 lg3 :class="`${pre}__button-group__history`")
-          er-button(type="submit", flat=true, @click="history")
+        er-flex(xs11 sm4 md4 lg3 )
+          er-button(
+            type="submit",
+            flat=true,
+            @click="history"
+            :class="`${pre}__button-group__history`"
+          )
             | История платежей
-
-        er-flex(sm6 md5 lg3 :class="`${pre}__button-group__load`")
-          er-icon(name="download" :class="`${pre}__download-icon`")
-          er-button.align-items-center(type="submit")
+        er-flex(xs11 sm5 md5 lg3 style="position: relative")
+          er-button.align-items-center(type="submit" :class="`${pre}__button-group__load`")
             | Скачать PDF
+            er-icon(name="download" :class="`${pre}__download-icon`")
+
+

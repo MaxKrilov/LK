@@ -30,7 +30,7 @@
         xs:  0 9px 24px 16px,
         md:  16px 9px 16px 23px,
         lg:  24px 9px 24px 32px,
-        xl:  24px 9px 24px 45px,
+        xl:  24px 0px 24px 45px,
       ),
       max-width: (
         xs: 480px !important,
@@ -54,7 +54,8 @@
       width: (
         xs: 90%,
         sm: 93%,
-        md: 108%
+        md: 108%,
+        xl: 108.98%
       ),
       background: (
         xs: map_get($gray, '9'),
@@ -157,8 +158,6 @@
       letter-spacing: (md: normal),
       margin-bottom: (
         sm: 9px,
-        //xl: 14px,
-        //xxl: 12px
       ),
 
     ));
@@ -173,7 +172,6 @@
     ));
   }
   &__left {
-    background: red;
     position: absolute;
     top: 0;
     left: 0;
@@ -197,7 +195,6 @@
         xl: 70px,
       ),
     ));
-
   }
   &__services {
     @include media-query((
@@ -218,8 +215,7 @@
         lg: 6px !important,
         xl: 0px !important,
       ),
-
-  ));
+    ));
     &__title {
       font: 12px/16px $fedra-demi !important;
       opacity: 0.3;
@@ -255,7 +251,6 @@
         lg: 15px !important,
         xl: 0px !important,
       ),
-
     ));
     &__title {
       opacity: 0.3;
@@ -284,13 +279,11 @@
         sm: 4px !important,
         md: auto,
         xl: 0 !important,
-
-  ),
+      ),
       padding-right: (
         lg: 3px !important,
         xl: 0 !important,
       ),
-
     ));
     &__title {
       font: 12px/16px $fedra-demi !important;
@@ -381,7 +374,7 @@
     }
   }
   &__months-filter {
-    background: #E9E9E9 !important;
+    background: map_get($gray, '11') !important;
     margin-top: 20px;
     margin-left: -45px;
     padding: 2px 40px !important;
@@ -389,10 +382,8 @@
     @include media-query((
       margin-top: (
         lg: 17px,
-        //xl: 16px,
       ),
     ));
-
     &__span {
       padding: 0 1px !important;
     }
@@ -440,11 +431,6 @@
       top: 0;
       cursor: pointer;
       @include media-query((
-        /*
-        padding-right: (
-          sm: 30px
-        ),
-        */
         font-size: (
           xs: 13px !important,
           md: 14px !important,
@@ -462,13 +448,6 @@
 
     }
     & input {
-      /*
-      font: 16px/21px $fedra-book !important;
-      color: map_get($shades, 'black') !important;
-      letter-spacing: -0.5px;
-      bottom: 0;
-      cursor: pointer;
-      */
       opacity: 1;
     }
   }
@@ -477,48 +456,3 @@
   min-height: 480px !important;
   height: 502px;
 }
-
-/*
-.er-text-field__slot  {
-  & label {
-    font-family: $fedra-book !important;
-    color: rgba(map_get($shades, 'black'), 0.8) !important;
-    letter-spacing: 0.25px;
-    bottom: 0;
-    top: 0;
-    cursor: pointer;
-    @include media-query((
-      padding-right: (
-        sm: 45px
-      ),
-      font-size: (
-        xs: 13px !important,
-        md: 14px !important,
-        lg: 14px !important,
-        xl: 16px !important,
-      ),
-      line-height: (
-        xs: 18px !important,
-        md: 19px !important,
-        lg: 19px !important,
-        xl: 21px !important
-      ),
-      letter-spacing: (md: -1px),
-    ));
-
-  }
-  & input {
-    font: 16px/21px $fedra-book !important;
-    color: map_get($shades, 'black') !important;
-    letter-spacing: -0.5px;
-    bottom: 0;
-    cursor: pointer;
-
-  }
-}
-*/
-/*
-button:active{
-  background:olive;
-}
-*/

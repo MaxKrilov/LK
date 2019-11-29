@@ -12,7 +12,7 @@ er-container(:class="`${pre}__container`")
     )
       div.caption2.mb-8(:class="`${pre}__balance-score`")
         | На вашем счете:
-      div.mb-8.d--flex.align-items-center
+      div.d--flex.align-items-center(:class="`${pre}__info-subtext`")
         div.caption
           er-icon(name="wallet_auto")
         h2.mr-8.ml-8 155 054,02
@@ -21,7 +21,7 @@ er-container(:class="`${pre}__container`")
         | На счете недостаточно средств для списания
 
         div(:class="`${pre}__balance-score__dop`")
-          div.mt-16.d--flex.align-items-center
+          div.mt-24.d--flex.align-items-center
             div.caption2
               | Следующее списание:
             div.caption
@@ -44,7 +44,7 @@ er-container(:class="`${pre}__container`")
         xxl4 offset-xxl1
         :class="`${pre}__info__block2-1`"
         )
-          div.mb-8(:class="`${pre}__balance-score`")
+          div.mb-8(:class="`${pre}__balance-score ${pre}__balance-score__vis`")
             | Сумма к оплате:
           div.mb-24.d--flex.align-items-center
             div.caption
@@ -58,12 +58,12 @@ er-container(:class="`${pre}__container`")
         lg3 offset-lg2
         xl3 offset-xl2
         xxl3 offset-xxl2
-        :class="`${pre}__balance-score ${pre}__balance-score__block`"
+        :class="`${pre}__balance-score ${pre}__balance-score__vis ${pre}__balance-score__block`"
         )
           er-row(no-gutters)
             div.mb-8(:class="`${pre}__info__block3`")
               | Дата списания:
             div.mb-8.d--flex.align-items-center
-              div.caption(:class="`${pre}__balance-score__calendar`")
+              div(:class="`${pre}__balance-score__calendar`")
                 er-icon(name="calendar")
               h2.ml-12(:class="`${pre}__balance-score__data`") 01.02.17

@@ -159,34 +159,11 @@
       )
     ));
     &__yy {
-      //display: block;
       opacity: 0.3;
       @include media-query((
         opacity: (sm: 0.5),
-        /*
-        display: (
-          sm: none,
-          md: block,
-        ),
-        */
       ))
     }
-    /*
-    &__yy-mob {
-      display: block;
-      position: relative;
-      top: 16px;
-      left: -42px;
-      opacity: 1 !important;
-      letter-spacing: 0.35px;
-      @include media-query((
-        display: (
-          sm: block,
-          md: none,
-        ),
-      ))
-    }
-    */
   }
   &__time {
     position: absolute;
@@ -248,7 +225,6 @@
     align-items: center;
     background: map_get($shades, 'white');
     padding: 16px 28px 16px 29px;
-    //margin-left: 11px;
     border-left: 4px solid map_get($yellow, 'base');
     height: 56px;
     @include media-query((
@@ -288,7 +264,6 @@
   }
   &__icon-address {
     color: rgba(map_get($shades, 'black'), 0.2);
-    //margin-right: 9px;
     margin-left: -3px;
     @include media-query((
       margin-left: (
@@ -372,7 +347,6 @@
         border-bottom: 1px solid rgba(map_get($gray, '30'), 0.4);
         @include media-query((
           height: (
-            //xs: 51px !important,
             sm: 32px
           )
         ));
