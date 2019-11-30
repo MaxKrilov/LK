@@ -128,13 +128,12 @@
     ));
   }
   &__back-arr {
-    @include media-query((
-      margin-bottom: (
-        xs: 19px,
-        sm: 19px,
-        md: auto
-      ),
-    ));
+    background: map_get($shades, 'white');
+    margin-bottom: 9px;
+    margin-left: -16px;
+    margin-right: -9px;
+    padding-bottom: 14px;
+    padding-left: 12px;
   }
   &__title {
     margin-bottom: 4px;
@@ -167,6 +166,14 @@
     font: 17px/22px $fedra-demi;
     letter-spacing: -0.5px;
     color: rgba(map_get($shades, 'black'), 0.9);
+
+    //background: aqua;
+    //margin-left: -16px;
+    //margin-right: -9px;
+    //padding-bottom: 19px;
+    //margin-bottom: 0px;
+    //padding-left: 6px;
+
     @include media-query((
       display: (md: none),
     ));
