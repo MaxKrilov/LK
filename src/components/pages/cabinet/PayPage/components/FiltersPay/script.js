@@ -89,7 +89,10 @@ export default {
       { month: 'Февраль', active: 'none' },
       { month: 'Март', active: 'none' }
     ],
-    openFilterMob: false
+    openFilterMob: false,
+    visArr: false,
+    padding: '',
+    margLeft: 0
   }),
   components: {
     ErFilterClose,
@@ -104,6 +107,14 @@ export default {
   watch: {
     SCREEN_WIDTH () {
       this.isFiltersVisible = this[SCREEN_WIDTH] >= 640
+      const delta = this[SCREEN_WIDTH] >= 1200 ? 378 : 72
+      if (this.typePeriod.length*82 > this[SCREEN_WIDTH] - delta) {
+        this.visArr = true
+        this.padding = '__padding'
+      } else {
+        this.visArr = false
+        this.padding = ''
+      }
     }
   },
 
@@ -184,9 +195,25 @@ export default {
       } else {
         this.isFiltersMonthVisible = false
       }
+      const delta = this[SCREEN_WIDTH] >= 1200 ? 378 : 72
+      if (this.typePeriod.length*82 > this[SCREEN_WIDTH] - delta) {
+        this.visArr = true
+        this.padding = '__padding'
+      } else {
+        this.visArr = false
+        this.padding = ''
+      }
     },
     yearName (payload) {
       this.year = "'" + payload
+    },
+    moveMonth(direct) {
+      if (direct === 'left') {
+        this.margLeft = (this.margLeft + 82).toString() + 'px'
+      } else {
+        this.margLeft = (this.margLeft - 82).toString() + 'px'
+      }
+
     }
   }
 }

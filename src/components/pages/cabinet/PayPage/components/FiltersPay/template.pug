@@ -104,16 +104,23 @@ div(:class="`${pre}`")
             er-button(type="submit", flat=true, @click="")
               | Сбросить фильтр
 
-  div.d--flex.justify-content.center(
-    v-if="isFiltersMonthVisible"
-    :class="`${pre}__months-filter`"
-  )
-    span(
-    v-for="month in typePeriod"
-    :class="`${pre}__months-filter__span`"
-    )
-      er-button(type="button", flat=true,
-      :class="`${pre}__months-filter__text ${pre}__months-filter__${month.active}`"
-      @click="selectMonth($event)"
+
+  div(:class="`${pre}__arr${padding}`")
+    div(:class="`${pre}__icon-arr`" @click="moveMonth('left')" v-if="visArr")
+      er-icon(name="left_big")
+    div(:class="`${pre}__months-filter1`")
+      div(
+        :style="'margin-left: ' + margLeft"
+        :class="`${pre}__months-filter2`"
       )
-        | {{ month.month }}
+        span(
+          v-for="month in typePeriod"
+          :class="`${pre}__months-filter__span`"
+        )
+          er-button(type="button", flat=true,
+          :class="`${pre}__months-filter__text ${pre}__months-filter__${month.active}`"
+          @click="selectMonth($event)"
+          )
+                | {{ month.month }}
+    div(:class="`${pre}__icon-arr`" @click="moveMonth('right')" v-if="visArr")
+      er-icon(name="right_big")

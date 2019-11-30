@@ -166,14 +166,6 @@
     font: 17px/22px $fedra-demi;
     letter-spacing: -0.5px;
     color: rgba(map_get($shades, 'black'), 0.9);
-
-    //background: aqua;
-    //margin-left: -16px;
-    //margin-right: -9px;
-    //padding-bottom: 19px;
-    //margin-bottom: 0px;
-    //padding-left: 6px;
-
     @include media-query((
       display: (md: none),
     ));
@@ -422,6 +414,60 @@
         letter-spacing: (xs: 0.35px, md: -1px),
       ));
     }
+  }
+  &__arr {
+    background:  map_get($gray, '11') !important;
+    margin-top: 20px;
+    margin-left: -45px;
+    padding: 2px 33px 0px 13px !important;
+    height: 40px;
+    @include media-query((
+      width: (
+        xs: 115%,
+        sm: 116%,
+        md: 112%,
+        lg: 109%
+      ),
+    ));
+    &__padding {
+      @extend .filters-pay__arr;
+      padding: 2px 33px 0px 45px !important;
+    }
+  }
+  &__icon-arr {
+    display: inline-block;
+    position: absolute;
+    margin-top: 7px;
+    width: 13px !important;
+    & svg {
+      color: map_get($gray, '32');
+      width: 13px !important;
+      &:hover {
+        color: map_get($yellow, 'base');
+      }
+    }
+  }
+  &__months-filter1 {
+    display: inline-block;
+    width: 97%;
+    height: 37px;
+    overflow: hidden;
+  }
+  &__months-filter2 {
+    margin-top: 0px;
+    display: inline-block;
+    padding-left: 30px;
+    width: 117%;
+    height: 40px;
+    @include media-query((
+      padding-right: (
+        xs: 13px,
+        sm: 30px,
+        md: 96px,
+        lg: 14px,
+        xl: 160px
+      ),
+    ));
   }
 }
 .er-text-field {
