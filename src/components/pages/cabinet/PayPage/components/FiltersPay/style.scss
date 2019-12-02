@@ -27,7 +27,7 @@
         xl: -45px,
       ),
       padding: (
-        xs:  0 9px 24px 16px,
+        xs:  0 9px 21px 16px,
         md:  16px 9px 16px 23px,
         lg:  24px 9px 24px 32px,
         xl:  24px 0px 24px 45px,
@@ -439,6 +439,15 @@
     position: absolute;
     margin-top: 7px;
     width: 13px !important;
+    cursor: pointer;
+    background: map_get($gray, '11'); //yellow;
+    margin-top: -2px;
+    margin-left: -18px;
+    padding-left: 18px;
+    padding-top: 8px;
+    padding-right: 34px;
+    height: 40px;
+
     & svg {
       color: map_get($gray, '32');
       width: 13px !important;
@@ -449,25 +458,16 @@
   }
   &__months-filter1 {
     display: inline-block;
-    width: 97%;
+    width: 99%;
     height: 37px;
+    margin-left: 32px;
+    margin-right: -32px;
     overflow: hidden;
   }
   &__months-filter2 {
     margin-top: 0px;
     display: inline-block;
-    padding-left: 30px;
-    width: 117%;
     height: 40px;
-    @include media-query((
-      padding-right: (
-        xs: 13px,
-        sm: 30px,
-        md: 96px,
-        lg: 14px,
-        xl: 160px
-      ),
-    ));
   }
 }
 .er-text-field {
@@ -498,7 +498,6 @@
         ),
         letter-spacing: (md: -1px),
       ));
-
     }
     & input {
       opacity: 1;

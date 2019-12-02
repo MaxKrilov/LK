@@ -31,7 +31,12 @@ div(:class="`${pre}`")
         span(:class="`${pre}__close`" @click="closeTypePay()")
           er-icon(name="close" :class="`${pre}__close`")
 
-  er-overlay(v-model="openFilterMob" :z-index="6" :class="`${pre}__left`")
+
+  er-overlay(
+    v-model="openFilterMob"
+    :z-index="6"
+    :class="`${pre}__left`"
+  )
 
   div(:class="`${pre}__container`" v-if="isFiltersVisible")
     div.d--flex.align-items-end(:class="`${pre}__back-arr`")
@@ -104,9 +109,12 @@ div(:class="`${pre}`")
             er-button(type="submit", flat=true, @click="")
               | Сбросить фильтр
 
-
   div(:class="`${pre}__arr${padding}`")
-    div(:class="`${pre}__icon-arr`" @click="moveMonth('left')" v-if="visArr")
+    div(
+      :class="`${pre}__icon-arr`"
+      @click="moveMonth('left')"
+      v-if="visArr"
+    )
       er-icon(name="left_big")
     div(:class="`${pre}__months-filter1`")
       div(
@@ -122,5 +130,9 @@ div(:class="`${pre}`")
           @click="selectMonth($event)"
           )
                 | {{ month.month }}
-    div(:class="`${pre}__icon-arr`" @click="moveMonth('right')" v-if="visArr")
+    div(
+      :class="`${pre}__icon-arr`"
+      @click="moveMonth('right')"
+      v-if="visArr"
+    )
       er-icon(name="right_big")

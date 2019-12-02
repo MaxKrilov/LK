@@ -92,7 +92,7 @@ export default {
     openFilterMob: false,
     visArr: false,
     padding: '',
-    margLeft: 0
+    margLeft: '0px'
   }),
   components: {
     ErFilterClose,
@@ -108,7 +108,7 @@ export default {
     SCREEN_WIDTH () {
       this.isFiltersVisible = this[SCREEN_WIDTH] >= 640
       const delta = this[SCREEN_WIDTH] >= 1200 ? 378 : 72
-      if (this.typePeriod.length*82 > this[SCREEN_WIDTH] - delta) {
+      if (this.typePeriod.length * 82 > this[SCREEN_WIDTH] - delta) {
         this.visArr = true
         this.padding = '__padding'
       } else {
@@ -196,7 +196,7 @@ export default {
         this.isFiltersMonthVisible = false
       }
       const delta = this[SCREEN_WIDTH] >= 1200 ? 378 : 72
-      if (this.typePeriod.length*82 > this[SCREEN_WIDTH] - delta) {
+      if (this.typePeriod.length * 82 > this[SCREEN_WIDTH] - delta) {
         this.visArr = true
         this.padding = '__padding'
       } else {
@@ -207,13 +207,13 @@ export default {
     yearName (payload) {
       this.year = "'" + payload
     },
-    moveMonth(direct) {
+    moveMonth (direct) {
+      let marg = +this.margLeft.slice(0, this.margLeft.indexOf('px'))
       if (direct === 'left') {
-        this.margLeft = (this.margLeft + 82).toString() + 'px'
+        if (this.margLeft !== '0px') this.margLeft = (marg + 85).toString() + 'px'
       } else {
-        this.margLeft = (this.margLeft - 82).toString() + 'px'
+        this.margLeft = (marg - 85).toString() + 'px'
       }
-
     }
   }
 }
