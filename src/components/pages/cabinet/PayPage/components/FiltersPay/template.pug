@@ -6,7 +6,7 @@ div(:class="`${pre}`")
   er-row.no-gutters(v-if="!isFiltersVisible")
     div.mr-16( style="cursor: pointer" @click="filtersVisible(true)")
       er-icon.caption(name="filter_1")
-    div.mr-16.no-gutters(:class="`${pre}__info-row`")
+    div.mr-16.no-gutters(:class="`${pre}__info-row`" @click="filtersVisible(true)")
       div(:class="`${pre}__infoFilter`")
         span(:class="`${pre}__infoFilter__date`" v-if="!isFiltersMonthVisible")
           | {{ datePeriod }}
@@ -18,19 +18,23 @@ div(:class="`${pre}`")
       v-if="isCloseService"
       :class="`${pre}__info-row`"
     )
-      div(:class="`${pre}__infoFilter`")
-        | {{ typeFindLabel }}
+      div
+        span(:class="`${pre}__infoFilter`" @click="filtersVisible(true)")
+          | {{ typeFindLabel }}
         span(:class="`${pre}__close`" @click="closeService()")
           er-icon(name="close")
     div.justify-content.between.no-gutters(
       v-if="isCloseTypePay"
       :class="`${pre}__info-row`"
     )
-      div(:class="`${pre}__infoFilter ${pre}__infoFilter__ml${zero}`")
-        | {{ typePayLabel }}
+      div
+        span(
+          :class="`${pre}__infoFilter ${pre}__infoFilter__ml${zero}`"
+          @click="filtersVisible(true)"
+        )
+          | {{ typePayLabel }}
         span(:class="`${pre}__close`" @click="closeTypePay()")
           er-icon(name="close" :class="`${pre}__close`")
-
 
   er-overlay(
     v-model="openFilterMob"
@@ -38,78 +42,80 @@ div(:class="`${pre}`")
     :class="`${pre}__left`"
   )
 
-  div(:class="`${pre}__container`" v-if="isFiltersVisible")
-    div.d--flex.align-items-end(:class="`${pre}__back-arr`")
-      div.pb-4(
-        :class="`${pre}__back-main-xs`"
-        @click="filtersVisible(false)"
-      )
-        er-icon(name="left")
-      h3(:class="`${pre}__titleMob`")
-        | Фильтровать платежи
-    er-row.justify-content.between(no-gutters :class="`${pre}__row`")
-      er-flex(xs12 sm6 md5 lg3 xl3 :class="`${pre}__find`")
-        er-select(
-          :class="`${pre}__typeFind`"
-          :placeholder="typeFindLabel",
-          :items="typeFind",
-          @input="typeFindValue"
+  div(:class="`${pre}__filter-wrapper__relative`" v-if="isFiltersVisible")
+  div(:class="`${pre}__filter-wrapper`")
+    div(:class="`${pre}__container`" v-if="isFiltersVisible")
+      div.d--flex.align-items-end(:class="`${pre}__back-arr`")
+        div.pb-4(
+          :class="`${pre}__back-main-xs`"
+          @click="filtersVisible(false)"
         )
-      er-flex(xs12 sm6 md6 lg3 xl3 :class="`${pre}__services`")
-        div(@click="visTitleService" v-if="service" )
-          div(:class="`${pre}__services__title ${pre}__services__title__${visService}`")
-            | Услуга
+          er-icon(name="left")
+        h3(:class="`${pre}__titleMob`")
+          | Фильтровать платежи
+      er-row.justify-content.between(no-gutters :class="`${pre}__row`")
+        er-flex(xs12 sm6 md5 lg3 xl3 :class="`${pre}__find`")
           er-select(
-            :placeholder="servicesLabel",
-            :items="services",
-            @input="servicesValue"
+            :class="`${pre}__typeFind`"
+            :placeholder="typeFindLabel",
+            :items="typeFind",
+            @input="typeFindValue"
           )
-        div(@click="visTitleService" v-else)
-          div(:class="`${pre}__services__title ${pre}__services__title__${visService}`")
-            | Город
+        er-flex(xs12 sm6 md6 lg3 xl3 :class="`${pre}__services`")
+          div(@click="visTitleService" v-if="service" )
+            div(:class="`${pre}__services__title ${pre}__services__title__${visService}`")
+              | Услуга
+            er-select(
+              :placeholder="servicesLabel",
+              :items="services",
+              @input="servicesValue"
+            )
+          div(@click="visTitleService" v-else)
+            div(:class="`${pre}__services__title ${pre}__services__title__${visService}`")
+              | Город
+            er-select(
+              :placeholder="cityLabel",
+              :items="cities",
+              @input="citiesValue"
+            )
+        er-flex(xs12 sm6 md5 lg3 xl3 :class="`${pre}__period`")
+          div(:class="`${pre}__period__title`")
+            | Период
+          er-date-picker(
+            format="DD.MM.YY",
+            v-model="period",
+            @datename="dateName($event)",
+            @yearname="yearName($event)",
+            @input="inp($event)"
+            :periodInfo="periodInfo"
+          )
+        er-flex(xs12 sm6 md6 lg2 xl2 :class="`${pre}__typePay`" @click="visTitleTypePay")
+          div(:class="`${pre}__typePay__title ${pre}__typePay__title__${visTypePay}`")
+            | Тип операции
           er-select(
-            :placeholder="cityLabel",
-            :items="cities",
-            @input="citiesValue"
+            :placeholder="typePayLabel",
+            :items="typePay",
+            @input="typePayValue"
           )
-      er-flex(xs12 sm6 md5 lg3 xl3 :class="`${pre}__period`")
-        div(:class="`${pre}__period__title`")
-          | Период
-        er-date-picker(
-          format="DD.MM.YY",
-          v-model="period",
-          @datename="dateName($event)",
-          @yearname="yearName($event)",
-          @input="inp($event)"
-          :periodInfo="periodInfo"
-        )
-      er-flex(xs12 sm6 md6 lg2 xl2 :class="`${pre}__typePay`" @click="visTitleTypePay")
-        div(:class="`${pre}__typePay__title ${pre}__typePay__title__${visTypePay}`")
-          | Тип операции
-        er-select(
-          :placeholder="typePayLabel",
-          :items="typePay",
-          @input="typePayValue"
-        )
-      er-flex(xs1 xl1 :class="`${pre}__close-filter`")
-        er-filter-close(@click="filtersVisible(false)")
+        er-flex(xs1 xl1 :class="`${pre}__close-filter`")
+          er-filter-close(@click="filtersVisible(false)")
 
-      div(:class="`${pre}__container-button`")
-        er-row(no-gutters)
-          er-flex.mb-16.d--flex.justify-content-center(xs12)
-            er-icon.mr-8.color--green-base(name="lens" :class="`${pre}__icon-height`")
-            span.caption.color--green-base(:class="`${pre}__icon-span`")
-              | Найдено 2 платежа
+        div(:class="`${pre}__container-button`")
+          er-row(no-gutters)
+            er-flex.mb-16.d--flex.justify-content-center(xs12)
+              er-icon.mr-8.color--green-base(name="lens" :class="`${pre}__icon-height`")
+              span.caption.color--green-base(:class="`${pre}__icon-span`")
+                | Найдено 2 платежа
 
-          er-flex.mb-8(xs12 sm6 :class="`${pre}__butt-filter`")
-            er-button(type="submit" @click="filtersVisible(false)")
-              | Фильтровать
+            er-flex.mb-8(xs12 sm6 :class="`${pre}__butt-filter`")
+              er-button(type="submit" @click="filtersVisible(false)")
+                | Фильтровать
 
-          er-flex(xs12 sm6 :class="`${pre}__butt-clean`")
-            er-button(type="submit", flat=true, @click="")
-              | Сбросить фильтр
+            er-flex(xs12 sm6 :class="`${pre}__butt-clean`")
+              er-button(type="submit", flat=true, @click="")
+                | Сбросить фильтр
 
-  div(:class="`${pre}__arr${padding}`")
+  div(:class="`${pre}__arr${padding} ${pre}__arr${topFilter}`")
     div(
       :class="`${pre}__icon-arr`"
       @click="moveMonth('left')"
@@ -131,7 +137,7 @@ div(:class="`${pre}`")
           )
                 | {{ month.month }}
     div(
-      :class="`${pre}__icon-arr`"
+      :class="`${pre}__icon-arr ${pre}__icon-arr__right`"
       @click="moveMonth('right')"
       v-if="visArr"
     )

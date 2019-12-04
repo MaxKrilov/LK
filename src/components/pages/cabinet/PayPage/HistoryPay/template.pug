@@ -18,10 +18,16 @@ div(:class="`${pre}`")
       h1.fonts--demi(:class="`${pre}__welcome-title`")
         | История платежей
 
-    FiltersPay(@typeFind="typeFind($event)")
+    FiltersPay(
+      @typeFind="typeFind($event)"
+      @topOperation="topOperation($event)"
+    )
 
-    er-container.mb-24(full :class="`${pre}__container-operation`")
-      ActionMonth(:month="valSelect")
+    er-container.mb-24(full
+      :class="`${pre}__container-operation ${pre}__container-operation${visFilter}`"
+      :style="'width: ' + widthContainer"
+    )
+      ActionMonth(:month="valSelect" page="history")
 
     div(:class="`${pre}__button-wrapper`")
       div(:class="`${pre}__button`")

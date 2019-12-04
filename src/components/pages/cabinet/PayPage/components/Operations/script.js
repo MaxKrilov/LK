@@ -33,7 +33,8 @@ export default {
     topPrice: '40px',
     topTitle: '15px',
     topToggle: '0',
-    heightOperation: '80px'
+    heightOperation: '80px',
+    visYellow: false
   }),
   computed: {
     ...mapGetters([SCREEN_WIDTH]),
@@ -58,10 +59,10 @@ export default {
           this.topToggle = '21px'
         }
       } else {
-        this.address = '',
-        this.topPrice = '40px',
-        this.topTitle = '15px',
-        this.topToggle = '0',
+        this.address = ''
+        this.topPrice = '40px'
+        this.topTitle = '15px'
+        this.topToggle = '0'
         this.heightOperation = this[SCREEN_WIDTH] >= 640 ? '96px' : '80px'
       }
       if (this.items[this.index].title === 'Пополнение счета') {
@@ -79,9 +80,11 @@ export default {
       if (this.tmpActive_internet === true) {
         this.iconBg = 'gray'
         this.arr_direct = 'corner_down'
+        this.visYellow = false
       } else {
         this.iconBg = 'yellow'
         this.arr_direct = 'corner_up'
+        this.visYellow = true
       }
       this.tmpActive_internet = !this.tmpActive_internet
     }

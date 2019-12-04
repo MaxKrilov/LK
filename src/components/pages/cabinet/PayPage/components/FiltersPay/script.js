@@ -81,7 +81,7 @@ export default {
     isCloseTypePay: true,
     datePeriod: '',
     date: '1-й квартал',
-    year: "'19",
+    year: " 2019",
     zero: '',
     topTypePay: 'initial',
     typePeriod: [
@@ -92,7 +92,9 @@ export default {
     openFilterMob: false,
     visArr: false,
     padding: '',
-    margLeft: '0px'
+    margLeft: '0px',
+    topFilter: '',
+    // visMonth: true
   }),
   components: {
     ErFilterClose,
@@ -117,11 +119,17 @@ export default {
       }
     }
   },
-
   methods: {
     filtersVisible (select) {
       this.openFilterMob = this[SCREEN_WIDTH] < 640 ? select : false
       this.isFiltersVisible = select
+      if (select === false) {
+        this.topFilter = '__top'
+        this.$emit('topOperation', false)
+      } else {
+        this.topFilter = ''
+        this.$emit('topOperation', true)
+      }
     },
     selectMonth (e) {
       this.typePeriod = this.typePeriod.map(function (name) {
@@ -170,10 +178,14 @@ export default {
       this.topTypePay = 'initial'
     },
     inp (payload) {
-      const date1 = payload[0]
-      const zeroDay1 = date1.getDate() > 10 ? '' : '0'
-      const zeroMonth1 = date1.getMonth() + 1 > 10 ? '' : '0'
-      const period1 = `${zeroDay1}${date1.getDate()}.${zeroMonth1}${date1.getMonth() + 1}.${String(date1.getFullYear()).slice(-2)}`
+      // if (typeof payload[0] !== "string") {
+        const date1 = payload[0]
+        const zeroDay1 = date1.getDate() > 10 ? '' : '0'
+        const zeroMonth1 = date1.getMonth() + 1 > 10 ? '' : '0'
+        const period1 = `${zeroDay1}${date1.getDate()}.${zeroMonth1}${date1.getMonth() + 1}.${String(date1.getFullYear()).slice(-2)}`
+      // } else {
+      //   const period1 ='31-03-2019'
+      // }
       const date2 = payload[1]
       const zeroDay2 = date2.getDate() > 10 ? '' : '0'
       const zeroMonth2 = date2.getMonth() + 1 > 10 ? '' : '0'

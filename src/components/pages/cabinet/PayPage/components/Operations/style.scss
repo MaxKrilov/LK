@@ -86,7 +86,10 @@
   &__icon {
     background: map_get($gray, '4');
     margin: 1px 0 0 0;
+    //position: relative;
+    //z-index: 1;
     &__address {
+      background: map_get($gray, '4');
       @include media-query((
         width: (
           xs: 49px !important,
@@ -158,6 +161,108 @@
       ),
       flex-direction: (sm: row)
     ))
+  }
+  &__icon-yellow {
+    background: map_get($yellow, 'base');
+    margin: 1px 0 0 0;
+      /*
+      position: relative;
+      z-index: 2;
+      */
+    @include media-query((
+      width: (
+        xs: 108px,
+        sm: 133px
+      ),
+      border-bottom-left-radius: (
+        xs: 0,
+        lg: 11px
+      ),
+      border-top-left-radius: (
+        xs: 0,
+        lg: 11px
+      ),
+      flex-direction: (sm: row)
+    ));
+    &__address {
+      @include media-query((
+        width: (
+          xs: 49px !important,
+          lg: 57px !important
+        ),
+        border-bottom-left-radius: (
+          xs: 0,
+          lg: 11px
+        ),
+        border-top-left-radius: (
+          xs: 0,
+          lg: 11px
+        ),
+    ));
+      svg {
+        width: 100px !important;
+        position: absolute;
+        left: -13px !important;
+        top: 0 !important;
+        color: map_get($gray, '3');
+        @include media-query((
+          top: (
+            md: 5px,
+            lg: 2px,
+            xl: 0
+          ),
+          left: (
+            md: -8px !important,
+            lg: 1px !important,
+            xl: -2px,
+            xxl: 50px
+          ),
+          width: (
+            md: 90px !important,
+            lg: 96px !important,
+            xl: 96px !important
+          )
+        ));
+      }
+    }
+    svg {
+      width: 64px !important;
+      position: absolute;
+      left: 28px;
+      top: 11px;
+      color: map_get($gray, '3');
+      @include media-query((
+        top: (
+          sm: 10px,
+          md: 5px,
+          lg: 2px,
+          xl: 0
+        ),
+        left: (
+          sm: 58px,
+          md: 46px,
+          lg: 54px,
+          xl: 46px,
+          xxl: 50px
+        ),
+        width: (
+          md: 90px !important,
+          xl: 96px !important
+        )
+      ));
+    }
+    &__gray {
+      background:  map_get($gray, '4');
+    }
+    &__yellow {
+      background: map_get($yellow, 'base');
+    }
+
+
+    //@extend .operations__icon;
+    //background: map_get($yellow, 'base');
+    //position: relative;
+    //z-index: 2;
   }
   &__icon__yellow svg {
       color: map_get($yellow, 'other-7');
@@ -336,6 +441,10 @@
     border-radius: 0 0 12px 12px;
     position: relative;
     width: 100%;
+    margin-bottom: -7px;
+    margin-top: -7px;
+    padding-top: 7px;
+    box-shadow: none !important;
     @include media-query((
       width: (lg: 100%),
       margin-left: (
@@ -352,6 +461,9 @@
     &__address {
       background-color: map_get($gray, '2');
       width: 100%;
+      margin-bottom: -7px;
+      margin-top: -7px;
+      padding-top: 7px;
       @include media-query((
         margin-left: (
           lg: 55px,

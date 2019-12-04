@@ -7,9 +7,9 @@
       margin-top: (
         xs: -14px,
         sm: -25px,
-        md: -25px,
-        lg: -23px,
-        xl: -42px,
+        md: -24px,
+        lg: -21px,
+        xl: -23px,
       ),
       margin-left: (
         sm: -24px,
@@ -34,9 +34,16 @@
   }
   &__container-operation {
     padding: 0 !important;
+    //margin-top: 61px;
+    //top: 227px;
     position: relative;
-    width: 108% !important;
+    //width: 108% !important;
     @include media-query((
+      margin-top: (
+        xs: 32px,
+        md: 25px,
+        lg: 30px
+      ),
       left: (
         sm: 0,
         md: -24px,
@@ -45,12 +52,25 @@
         xxl: 0px
       ),
       width: (
-        sm: 108% !important,
+        xs: 108% !important,
+        /*
         lg: 100% !important,
         xl: 100% !important,
         xxl: 100% !important
+        */
       ),
     ));
+    &__vis-filter {
+      @include media-query((
+        margin-top: (
+          //xs: 32px,
+          md: 61px,
+          lg: 10px,
+          xl: 18px,
+        ),
+      ));
+
+    }
   }
   &__back-arr {
     margin-left: 10px;

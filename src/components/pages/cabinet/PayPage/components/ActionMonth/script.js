@@ -5,10 +5,10 @@ export default {
   components: {
     Operations
   },
-  props: ['month'],
+  props: ['month', 'page'],
   data: () => ({
     pre: 'action-month',
-    height: ''
+    height: '',
   }),
   updated() {
       if (this.month === 'Адрес') {
@@ -16,5 +16,5 @@ export default {
       } else {
         this.height = ''
       }
-  }
+  },
 }

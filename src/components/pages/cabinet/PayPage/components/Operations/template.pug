@@ -3,7 +3,26 @@
 er-row(no-gutters)
   div(:class="`${pre}`" :style="'height: ' + heightOperation")
     div(:class="`${pre}__content`", @click="active_internet")
-      div(:class="`${pre}__icon${address} ${pre}__icon__${iconBg}`")
+      div(
+        :class="`${pre}__icon-yellow${address} ${pre}__icon__${iconBg}`"
+        v-if="visYellow"
+      )
+        er-icon(:name="item.icon")
+
+        div(v-if="month !=='Адрес'")
+          div.mb-8.d--flex.align-items-center(:class="`${pre}__date`")
+            span
+              h4(:class="`${pre}__date__dm`")
+                | {{ item.date }}
+            span
+              h4(:class="`${pre}__date__yy`")
+                | {{ item.year }}
+          div(:class="`${pre}__time`")
+            | {{ item.time }}
+
+      div(:class="`${pre}__icon${address}`"
+        v-else
+      )
         er-icon(:name="item.icon")
 
         div(v-if="month !=='Адрес'")

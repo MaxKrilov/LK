@@ -12,6 +12,33 @@
       md: 0px
     ),
   ));
+  &__filter-wrapper {
+    position: absolute;
+    //top: 252px;
+    left: 0;
+    width: 100%;
+    //padding-: 0 32px 0 316px;
+    background: #FFFFFF;
+    @include media-query((
+      top: (
+        xs: 0,
+        md: 202px,
+        lg: 214px,
+        xl: 275px,
+      ),
+      padding: (
+        //xs:  0 9px 21px 16px,
+        md:  0 30px 0 26px,
+        lg:  0 36px 0 32px,
+        xl:  0 40px 0 316px,
+      ),
+    ));
+    &__relative {
+      //@extend .filters-pay__filter-wrapper;
+      position: relative;
+      height: 150px;
+    }
+  }
   &__container {
     width: 77.5vw;
     z-index: 6;
@@ -30,7 +57,7 @@
         xs:  0 9px 21px 16px,
         md:  16px 9px 16px 23px,
         lg:  24px 9px 24px 32px,
-        xl:  24px 0px 24px 45px,
+        xl:  3px 0px 23px 45px,
       ),
       max-width: (
         xs: 480px !important,
@@ -39,8 +66,8 @@
         lg: 1200px !important,
       ),
       min-height: (
-        xs: 480px,
-        sm: 323px,
+        xs: 100vh, //480px,
+        //sm: 323px,
         md: auto
       ),
       position: (
@@ -83,7 +110,9 @@
   &__row {
     @include media-query((
       margin-top: (
-        md: -32px
+        md: -52px,
+        lg: -54px,
+        xl: -34px,
       ),
     ));
   }
@@ -136,7 +165,6 @@
     padding-left: 12px;
   }
   &__title {
-    margin-bottom: 4px;
     font: 11px/16px $fedra-demi;
     letter-spacing: 0.35px;
     color: rgba(map_get($shades, 'black'), 0.3);
@@ -156,6 +184,7 @@
       ),
       letter-spacing: (md: normal),
       margin-bottom: (
+        xs: 7px,
         sm: 9px,
       ),
 
@@ -319,7 +348,7 @@
       ),
       top: (
         md: 17px,
-        lg: 49px,
+        lg: 54px,
       ),
       right: (
         md: 11px,
@@ -339,6 +368,7 @@
     font: 13px/18px $fedra-book;
     letter-spacing: 0.25px;
     opacity: 0.8;
+    cursor: pointer;
     height: 20px;
     border-bottom: 1px map_get($shades, 'black') dashed;
     @include media-query((
@@ -398,6 +428,7 @@
       box-shadow: none !important;
     }
     &__text {
+      box-shadow: none !important;
       @include media-query((
         font-size: (
           xs: 11px !important,
@@ -416,11 +447,13 @@
     }
   }
   &__arr {
+    position: absolute;
     background:  map_get($gray, '11') !important;
-    margin-top: 20px;
+    margin-top: 9px;
     margin-left: -45px;
     padding: 2px 33px 0px 13px !important;
     height: 40px;
+    z-index: 1;
     @include media-query((
       width: (
         xs: 115%,
@@ -428,10 +461,32 @@
         md: 112%,
         lg: 109%
       ),
+      margin-top: (
+        xs: 20px,
+        sm: 15px,
+        md: 58px !important,
+        lg: 0 !important,
+        xl: 11px !important
+      )
     ));
     &__padding {
       @extend .filters-pay__arr;
       padding: 2px 33px 0px 45px !important;
+      //padding: 2px 33px 0px 360px !important;
+    }
+    &__top {
+      @extend .filters-pay__arr;
+      @include media-query((
+        margin-top: (
+          xs: 20px,
+          sm: 15px !important,
+          md: 19px !important,
+          lg: 22px !important,
+          xl: 22px !important
+
+    )
+      ));
+
     }
   }
   &__icon-arr {
@@ -445,15 +500,31 @@
     margin-left: -18px;
     padding-left: 18px;
     padding-top: 8px;
-    padding-right: 34px;
+    //padding-right: 50px;
     height: 40px;
-
+    z-index: 1;
     & svg {
       color: map_get($gray, '32');
       width: 13px !important;
       &:hover {
         color: map_get($yellow, 'base');
       }
+    }
+
+    &__left {
+      padding-right: 34px;
+    }
+    &__right {
+      padding-right: 50px;
+      @include media-query((
+        right: (
+          xs: -2px,
+          sm: 50px,
+          md: 57px,
+          lg: 73px,
+          xl: 379px,
+        )
+      ));
     }
   }
   &__months-filter1 {
@@ -504,7 +575,19 @@
     }
   }
 }
+.er-input__slot {
+  @include media-query((
+    min-height: (
+      md: 40px !important,
+      lg: 48px !important,
+      xl: 50px !important
+    ),
+  ));
+
+}
+/*
 .er-select__list--mobile, .er-date-picker__wrapper {
   min-height: 480px !important;
   height: 502px;
 }
+*/

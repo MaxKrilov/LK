@@ -32,14 +32,21 @@
     }
   }
   &__height {
-    height: 49px;
     @include media-query((
       height: (
+        xs: 49px,
         md: 59px,
       ),
     ));
     &__address {
-      height: 22px;
+      //height: 22px;
+      @include media-query((
+        height: (
+          xs: 49px,
+          sm: 49px,
+          md: 59px,
+        ),
+      ));
     }
   }
 }
