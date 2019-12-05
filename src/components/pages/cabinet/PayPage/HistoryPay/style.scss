@@ -34,10 +34,7 @@
   }
   &__container-operation {
     padding: 0 !important;
-    //margin-top: 61px;
-    //top: 227px;
     position: relative;
-    //width: 108% !important;
     @include media-query((
       margin-top: (
         xs: 32px,
@@ -51,19 +48,10 @@
         xl: 0px,
         xxl: 0px
       ),
-      width: (
-        xs: 108% !important,
-        /*
-        lg: 100% !important,
-        xl: 100% !important,
-        xxl: 100% !important
-        */
-      ),
     ));
     &__vis-filter {
       @include media-query((
         margin-top: (
-          //xs: 32px,
           md: 61px,
           lg: 10px,
           xl: 18px,

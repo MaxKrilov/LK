@@ -8,13 +8,13 @@ export default {
   props: ['month', 'page'],
   data: () => ({
     pre: 'action-month',
-    height: '',
+    height: ''
   }),
-  updated() {
-      if (this.month === 'Адрес') {
-        this.height = '__address'
-      } else {
-        this.height = ''
-      }
-  },
+  updated () {
+    if (this.month === 'Адрес') {
+      this.height = '__address'
+    } else {
+      this.height = ''
+    }
+  }
 }

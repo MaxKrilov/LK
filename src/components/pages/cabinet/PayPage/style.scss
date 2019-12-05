@@ -33,7 +33,6 @@
     padding: 0 !important;
     position: relative;
     margin-top: -48px;
-    width: 108% !important;
     @include media-query((
       left: (
         xs: 0,
@@ -41,12 +40,6 @@
         lg: 0px,
         xl: 0px,
         xxl: 0px
-      ),
-      width: (
-        sm: 108% !important,
-        lg: 100% !important,
-        xl: 100% !important,
-        xxl: 100% !important
       ),
     ));
   }
@@ -74,8 +67,6 @@
       width: (
         sm: 108% !important,
         lg: 100% !important,
-        xl: 100% !important,
-        xxl: 100% !important
       ),
     ));
   }

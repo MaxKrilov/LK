@@ -14,11 +14,9 @@
   ));
   &__filter-wrapper {
     position: absolute;
-    //top: 252px;
     left: 0;
     width: 100%;
-    //padding-: 0 32px 0 316px;
-    background: #FFFFFF;
+    background: map_get($shades, 'white');
     @include media-query((
       top: (
         xs: 0,
@@ -27,14 +25,12 @@
         xl: 275px,
       ),
       padding: (
-        //xs:  0 9px 21px 16px,
         md:  0 30px 0 26px,
         lg:  0 36px 0 32px,
         xl:  0 40px 0 316px,
       ),
     ));
     &__relative {
-      //@extend .filters-pay__filter-wrapper;
       position: relative;
       height: 150px;
     }
@@ -66,8 +62,7 @@
         lg: 1200px !important,
       ),
       min-height: (
-        xs: 100vh, //480px,
-        //sm: 323px,
+        xs: 100vh,
         md: auto
       ),
       position: (
@@ -149,12 +144,14 @@
     cursor: pointer;
     margin-top: 20px;
     color: rgba(map_get($yellow, 'base'), 0.8);
-    &__text {
-      text-decoration: none;
-    }
     @include media-query((
       display: (md: none),
     ));
+    /*
+    &__text {
+      text-decoration: none;
+    }
+    */
   }
   &__back-arr {
     background: map_get($shades, 'white');
@@ -187,7 +184,6 @@
         xs: 7px,
         sm: 9px,
       ),
-
     ));
   }
   &__titleMob {
@@ -456,10 +452,9 @@
     z-index: 1;
     @include media-query((
       width: (
-        xs: 115%,
-        sm: 116%,
-        md: 112%,
-        lg: 109%
+        xs: 108% !important,
+        sm: 113% !important,
+        lg: 109% !important
       ),
       margin-top: (
         xs: 20px,
@@ -472,7 +467,6 @@
     &__padding {
       @extend .filters-pay__arr;
       padding: 2px 33px 0px 45px !important;
-      //padding: 2px 33px 0px 360px !important;
     }
     &__top {
       @extend .filters-pay__arr;
@@ -483,10 +477,8 @@
           md: 19px !important,
           lg: 22px !important,
           xl: 22px !important
-
-    )
+        )
       ));
-
     }
   }
   &__icon-arr {
@@ -495,12 +487,11 @@
     margin-top: 7px;
     width: 13px !important;
     cursor: pointer;
-    background: map_get($gray, '11'); //yellow;
+    background: map_get($gray, '11');
     margin-top: -2px;
     margin-left: -18px;
     padding-left: 18px;
     padding-top: 8px;
-    //padding-right: 50px;
     height: 40px;
     z-index: 1;
     & svg {
@@ -510,16 +501,17 @@
         color: map_get($yellow, 'base');
       }
     }
-
+    /*
     &__left {
       padding-right: 34px;
     }
+    */
     &__right {
       padding-right: 50px;
       @include media-query((
         right: (
           xs: -2px,
-          sm: 50px,
+          sm: 49px,
           md: 57px,
           lg: 73px,
           xl: 379px,
@@ -583,11 +575,4 @@
       xl: 50px !important
     ),
   ));
-
 }
-/*
-.er-select__list--mobile, .er-date-picker__wrapper {
-  min-height: 480px !important;
-  height: 502px;
-}
-*/

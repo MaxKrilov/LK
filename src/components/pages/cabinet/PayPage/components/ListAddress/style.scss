@@ -27,15 +27,6 @@
         ))
       }
     }
-    &--mobile {
-      color: rgba(map_get($shades, 'black'), 0.5);
-      @include media-query((
-        display: (sm: block)
-      ));
-      svg {
-        width: 16px !important;
-      }
-    }
   }
   &__value {
     font: 15px/20px $fedra-book;
@@ -84,32 +75,12 @@
         ),
       ))
     }
-    &__caption {
-      white-space: nowrap;
-    }
-    &__group {
-      display: flex;
-      align-items: flex-end;
-      @include media-query((
-        flex-direction: (sm: column)
-      ))
-    }
-    &__value {
-      font: 26px/24px $fedra-demi;
-      color: map_get($red, 'base');
-      margin-right: 5px;
-      @include media-query((
-        font-size: (lg: 30px, xl: 32px),
-        line-height: (lg: 35px, xl: 36px),
-        letter-spacing: (lg: -1.5px)
-      ))
-    }
   }
   &__item {
     cursor: pointer;
     background: map_get($gray, '2');
     border-radius: 0;
-    margin-bottom: -32px; //-20px;
+    margin-bottom: -32px;
     @include media-query((
       border-radius: (
         lg: 12px,
@@ -200,7 +171,6 @@
     align-items: center;
     border-radius: 12px;
     padding: 16px 28px 16px 29px;
-    //margin-left: 11px;
     border-left: 4px solid map_get($gray, '2');
     height: 56px;
     @include media-query((
@@ -244,18 +214,6 @@
       )
     ));
   }
-  &__active-mobile {
-    position: absolute;
-    top: 100px;
-    left: 0;
-    padding: 16px 0;
-    border-left: 4px solid map_get($yellow, 'base');
-    height: 56px;
-    display: block;
-    @include media-query((
-      display: (sm: none),
-    ));
-  }
   &__geo {
     color: rgba(map_get($shades, 'black'), 0.2);
   }
@@ -295,7 +253,7 @@
         sm: 20px,
         md: 23px,
         xl: 21px,
-  ),
+      ),
       letter-spacing: (
         xs: -0.35px,
         md: -1px,
@@ -307,18 +265,6 @@
         xxl: 0 !important,
       )
     ));
-    &__value {
-      font: 18px $fedra-demi !important;
-      color: rgba(map_get($shades, 'black'), 0.8);
-      @include media-query((
-        font-size: (
-          lg: 30px,
-          xl: 32px
-        ),
-        line-height: (lg: 35px, xl: 36px),
-        letter-spacing: (lg: -1.5px)
-      ))
-    }
   }
   &__top {
     @include media-query((

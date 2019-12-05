@@ -115,7 +115,10 @@ div(:class="`${pre}`")
               er-button(type="submit", flat=true, @click="")
                 | Сбросить фильтр
 
-  div(:class="`${pre}__arr${padding} ${pre}__arr${topFilter}`")
+  div(
+    :class="`${pre}__arr${padding} ${pre}__arr${topFilter}`"
+    :style="'width: ' + widthContainer"
+  )
     div(
       :class="`${pre}__icon-arr`"
       @click="moveMonth('left')"
@@ -135,7 +138,7 @@ div(:class="`${pre}`")
           :class="`${pre}__months-filter__text ${pre}__months-filter__${month.active}`"
           @click="selectMonth($event)"
           )
-                | {{ month.month }}
+            | {{ month.month }}
     div(
       :class="`${pre}__icon-arr ${pre}__icon-arr__right`"
       @click="moveMonth('right')"

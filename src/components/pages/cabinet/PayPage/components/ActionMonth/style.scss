@@ -39,7 +39,6 @@
       ),
     ));
     &__address {
-      //height: 22px;
       @include media-query((
         height: (
           xs: 49px,

@@ -75,13 +75,13 @@ export default {
     visTypePay: 'visBlock',
     service: true,
     period: ['2019-01-01', '2019-03-31'],
-    isFiltersVisible: false,
+    isFiltersVisible: true,
     isFiltersMonthVisible: true,
     isCloseService: true,
     isCloseTypePay: true,
     datePeriod: '',
     date: '1-й квартал',
-    year: " 2019",
+    year: ' 2019',
     zero: '',
     topTypePay: 'initial',
     typePeriod: [
@@ -94,7 +94,18 @@ export default {
     padding: '',
     margLeft: '0px',
     topFilter: '',
-    // visMonth: true
+    widthContainer: '113%',
+    changeArr () {
+      this.isFiltersVisible = this[SCREEN_WIDTH] >= 640
+      const delta = this[SCREEN_WIDTH] >= 1200 ? 378 : 72
+      if (this.typePeriod.length * 82 > this[SCREEN_WIDTH] - delta) {
+        this.visArr = true
+        this.padding = '__padding'
+      } else {
+        this.visArr = false
+        this.padding = ''
+      }
+    }
   }),
   components: {
     ErFilterClose,
@@ -108,15 +119,11 @@ export default {
   },
   watch: {
     SCREEN_WIDTH () {
-      this.isFiltersVisible = this[SCREEN_WIDTH] >= 640
-      const delta = this[SCREEN_WIDTH] >= 1200 ? 378 : 72
-      if (this.typePeriod.length * 82 > this[SCREEN_WIDTH] - delta) {
-        this.visArr = true
-        this.padding = '__padding'
-      } else {
-        this.visArr = false
-        this.padding = ''
-      }
+      this.changeArr()
+      this.widthContainer = (this[SCREEN_WIDTH] >= 900) ? this.widthContainer = '109% !important'
+        : (this[SCREEN_WIDTH] >= 770) ? this.widthContainer = '110% !important'
+          : (this[SCREEN_WIDTH] > 680) ? this.widthContainer = '112% !important'
+            : this.widthContainer = '113% !important'
     }
   },
   methods: {
@@ -178,14 +185,10 @@ export default {
       this.topTypePay = 'initial'
     },
     inp (payload) {
-      // if (typeof payload[0] !== "string") {
-        const date1 = payload[0]
-        const zeroDay1 = date1.getDate() > 10 ? '' : '0'
-        const zeroMonth1 = date1.getMonth() + 1 > 10 ? '' : '0'
-        const period1 = `${zeroDay1}${date1.getDate()}.${zeroMonth1}${date1.getMonth() + 1}.${String(date1.getFullYear()).slice(-2)}`
-      // } else {
-      //   const period1 ='31-03-2019'
-      // }
+      const date1 = payload[0]
+      const zeroDay1 = date1.getDate() > 10 ? '' : '0'
+      const zeroMonth1 = date1.getMonth() + 1 > 10 ? '' : '0'
+      const period1 = `${zeroDay1}${date1.getDate()}.${zeroMonth1}${date1.getMonth() + 1}.${String(date1.getFullYear()).slice(-2)}`
       const date2 = payload[1]
       const zeroDay2 = date2.getDate() > 10 ? '' : '0'
       const zeroMonth2 = date2.getMonth() + 1 > 10 ? '' : '0'
@@ -207,14 +210,7 @@ export default {
       } else {
         this.isFiltersMonthVisible = false
       }
-      const delta = this[SCREEN_WIDTH] >= 1200 ? 378 : 72
-      if (this.typePeriod.length * 82 > this[SCREEN_WIDTH] - delta) {
-        this.visArr = true
-        this.padding = '__padding'
-      } else {
-        this.visArr = false
-        this.padding = ''
-      }
+      this.changeArr()
     },
     yearName (payload) {
       this.year = "'" + payload

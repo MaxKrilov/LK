@@ -13,26 +13,23 @@ export default {
     pre: 'history-pay',
     valSelect: 'Январь',
     visFilter: '__vis-filter',
-    widthContainer: '108% !important'
+    widthContainer: '108% !important',
+    changeWidth () {
+      this.widthContainer = (this[SCREEN_WIDTH] >= 960) ? this.widthContainer = '100% !important'
+        : (this[SCREEN_WIDTH] >= 900) ? this.widthContainer = '106% !important'
+          : (this[SCREEN_WIDTH] > 800) ? this.widthContainer = '107% !important'
+            : this.widthContainer = '108% !important'
+    }
   }),
   computed: {
-    ...mapGetters([SCREEN_WIDTH]),
+    ...mapGetters([SCREEN_WIDTH])
+  },
+  mounted () {
+    this.changeWidth()
   },
   watch: {
     SCREEN_WIDTH () {
-      if(this[SCREEN_WIDTH] <= 800) {
-        this.widthContainer = '108% !important'
-      }
-      if(this[SCREEN_WIDTH] > 800 && this[SCREEN_WIDTH] < 900) {
-        this.widthContainer = '107% !important'
-      }
-      if(this[SCREEN_WIDTH] >= 900 && this[SCREEN_WIDTH] < 960) {
-        this.widthContainer = '106% !important'
-      }
-      if(this[SCREEN_WIDTH] >= 960) {
-        this.widthContainer = '100% !important'
-      }
-
+      this.changeWidth()
     }
   },
   methods: {

@@ -25,10 +25,16 @@ div(:class="`${pre}`")
         h2(:class="`${pre}__service__title`")
           | Последние операции
 
-    er-container.mb-24(full :class="`${pre}__container-operation`")
+    er-container.mb-24(full
+      :class="`${pre}__container-operation`"
+      :style="'width: ' + widthContainer"
+    )
       ActionMonth(month="Январь" page="pay")
 
-    er-container.mb-24(full :class="`${pre}__container-button`")
+    er-container.mb-24(full
+      :class="`${pre}__container-button`"
+      :style="'width: ' + widthContButt"
+    )
       er-row.justify-content-between(
         no-gutters
         :class="`${pre}__button-group`"
