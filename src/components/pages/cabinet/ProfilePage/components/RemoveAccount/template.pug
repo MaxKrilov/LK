@@ -1,0 +1,25 @@
+er-dialog(:class="`${pre}`" maxWidth="544px" :value="value.visible" @update:returnValue="onCancel")
+  er-card(:class="`${pre}__card`")
+    div(:class="`${pre}__inner`")
+      div(:class="`${pre}__header`").mb-32
+        er-icon(:class="`${pre}__icon_question`" name='question')
+        div(:class="`${pre}__icon_close`" @click="onCancel")
+          er-icon(name='close')
+      h1(:class="`${pre}__title`").mb-12 Вы действительно хотите удалить сотрудника?
+      div(:class="`${pre}__name`").mb-80
+        strong(:class="`${pre}__name_last`") {{lastName}}
+        div(:class="`${pre}__names`")
+          span(:class="`${pre}__name_first`") {{firstName}}
+          span(:class="`${pre}__name_middle`") {{middleName}}
+      div(:class="`${pre}__error`").my-12 {{value.error}}
+      er-row(:class="`${pre}__buttons`")
+        er-flex(:class="`${pre}__button_wrap`" xs12, sm6).mb-12
+          er-button(
+            :class="`${pre}__button`",
+            @click="onRemove",
+            color="yellow"
+            :disabled="value.fetching"
+            :loading="value.fetching"
+          ) Удалить
+        er-flex(:class="`${pre}__button_wrap`" xs12, sm6).mb-12
+          er-button(:class="`${pre}__button`" @click="onCancel" flat) Отмена

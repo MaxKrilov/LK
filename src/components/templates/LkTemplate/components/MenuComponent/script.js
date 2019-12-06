@@ -1,8 +1,9 @@
 import { eachArray } from '@/functions/helper'
+import { mapGetters, mapActions } from 'vuex'
 import { BREAKPOINT_XL } from '@/constants/breakpoint'
 import RightInfoPanelComponent from '../RightInfoPanelComponent/index.vue'
-import { mapGetters } from 'vuex'
-import { SCREEN_WIDTH } from '@/store/actions/variables'
+import { SCREEN_WIDTH } from '../../../../../store/actions/variables'
+import { formatPhone } from '../../../../../functions/filters'
 
 export default {
   name: 'menu-component',
@@ -19,31 +20,65 @@ export default {
         name: 'Главная',
         icon: 'home',
         isOpen: false,
+        url: '/lk',
         subitem: [
-          { name: 'Профиль' },
-          { name: 'Платежи' },
-          { name: 'Документы' }
+          {
+            name: 'Профиль',
+            url: '/lk/profile'
+          },
+          {
+            name: 'Платежи',
+            url: '/lk/payments'
+          },
+          {
+            name: 'Документы',
+            url: '/lk/documents'
+          },
+          {
+            name: 'Поддержка',
+            url: '/lk/support'
+          }
         ]
       },
       {
         name: 'Интернет',
         icon: 'internet',
         isOpen: false,
+        url: '/lk/internet',
         subitem: [
-          { name: 'Статистика' },
-          { name: 'Контент-фильтрация' },
-          { name: 'Скорость' }
+          {
+            name: 'Статистика',
+            url: '/lk/statistic'
+          },
+          {
+            name: 'Контент-фильтрация',
+            url: '/lk/filter'
+          },
+          {
+            name: 'Скорость',
+            url: '/lk/speed'
+          }
         ]
+      },
+      {
+        name: 'Облачная телефония',
+        icon: 'cloud_telephone',
+        isOpen: false,
+        subitem: [{ name: 'Портал ОАТС', url: '/lk/oats' }]
       }
     ]
   }),
+  filters: {
+    formatPhone
+  },
   computed: {
+    ...mapGetters({
+      SCREEN_WIDTH,
+      getManagerInfo: 'user/getManagerInfo'
+    }),
     isOpenSubMenu () {
       return !!this.menu.filter(item => item.isOpen).length
     },
-    ...mapGetters([
-      SCREEN_WIDTH
-    ]),
     isDesktop () {
       return this[SCREEN_WIDTH] >= BREAKPOINT_XL
     }
@@ -66,9 +101,13 @@ export default {
     },
     toggleRightPanel () {
       this.isOpenRightPanel = !this.isOpenRightPanel
-    }
+    },
+    ...mapActions({
+      signOut: 'auth/signOut'
+    })
   },
   mounted () {
+    // console.log(this['user/getManagerInfo'])
     if (this.isDesktop) {
       this.openSubMenuBackground = true
       this.menu[0].isOpen = true

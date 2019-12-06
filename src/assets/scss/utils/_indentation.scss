@@ -23,7 +23,7 @@ $i: $min-indentation;
     &y-#{$i} {
       margin: {
         top: #{$i}px !important;
-        right: #{$i}px !important;
+        bottom: #{$i}px !important;
       };
     }
   }
@@ -49,7 +49,7 @@ $i: $min-indentation;
     &y-#{$i} {
       padding: {
         top: #{$i}px !important;
-        right: #{$i}px !important;
+        bottom: #{$i}px !important;
       };
     }
   }
@@ -78,7 +78,7 @@ $i: $min-indentation;
   &y-auto {
     margin: {
       top: auto !important;
-      right: auto !important;
+      bottom: auto !important;
     };
   }
 }

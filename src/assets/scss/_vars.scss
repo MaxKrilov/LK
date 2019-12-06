@@ -20,6 +20,7 @@ $secondary-transition:  200ms map_get($transition, ease-in-out);
 
 $ripple-animation-transition-in: transform .25s map_get($transition, fast-out-slow-in), opacity .1s map_get($transition, fast-out-slow-in);
 $ripple-animation-transition-out: opacity .3s map_get($transition, fast-out-slow-in);
+$ripple-z-index: 0;
 
 // Progress Circular
 $progress-circular-rotate-animation:            progress-circular-rotate 1.4s linear infinite;
@@ -31,7 +32,57 @@ $progress-circular-overlay-transition:          all .6s ease-in-out;
 $min-indentation: 4;
 $max-indentation: 64;
 
+$padding-x1: $min-indentation * 1px;
+$padding-x2: $min-indentation * 2px;
+$padding-x3: $min-indentation * 3px;
+$padding-x4: $min-indentation * 4px;
+$padding-x6: $min-indentation * 6px;
+$padding-x7: $min-indentation * 7px;
+$padding-x8: $min-indentation * 8px;
+$padding-x10: $min-indentation * 10px;
+$padding-x12: $min-indentation * 12px;
+$padding-x16: $max-indentation * 1px;
+$padding-x32: $max-indentation * 2px;
+
+
 $z-index: (
         'top-menu': 5,
-        'left-menu': 7
-)
+        'left-menu': 7,
+        'right-modal': 100,
+        'search-field': 1,
+        'top-overlay': 6
+);
+
+// Fonts
+$text: (
+  'xs': (normal 12px/1.2rem $fedra-book, 'Roboto', 'Helvetica', sans-serif),
+  'small': (normal 14px/18px $fedra-book, 'Roboto', 'Helvetica', sans-serif),
+  'medium': (normal 16px/20px $fedra-book, 'Roboto', 'Helvetica', sans-serif),
+  'large': (normal 18px/23px $fedra-book, 'Roboto', 'Helvetica', sans-serif),
+  'xl': (normal 20px/25px $fedra-book, 'Roboto', 'Helvetica', sans-serif)
+);
+
+$title: (
+  'xs': (normal 15px/20px $fedra-demi, 'Roboto', 'Helvetica', sans-serif),
+  'small': (normal 18px/22px $fedra-demi, 'Roboto', 'Helvetica', sans-serif),
+  'medium': (normal 24px/30px $fedra-demi, 'Roboto', 'Helvetica', sans-serif),
+  'large': (normal 28px/1.8rem $fedra-demi, 'Roboto', 'Helvetica', sans-serif),
+  'xl': (normal 36px/45px $fedra-demi, 'Roboto', 'Helvetica', sans-serif),
+);
+
+$left-menu-width: 271px;
+
+$menu-top-height: (
+  'default': 56px,
+  'md': 64px,
+  'lg': 72px,
+  'xl': 96px
+);
+
+$content-max-width: 1024px;
+
+$main-content-width: (
+  'default': $content-max-width,
+  'xl': 900px,
+  'lg': 100%
+);

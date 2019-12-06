@@ -1,0 +1,105 @@
+component(
+  v-bind:is="currentComponent()"
+  :disabled="false"
+  :value="true"
+  :fullscreen="true && !isFormSended"
+)
+  .er-document-order(:class="classObject")
+    div(v-if="!isFormSended").er-document-order__wrap
+      div(v-if="isMobile").er-document-order__header
+        .er-document-order__title
+          | Заказать другой документ
+        .er-document-order__close(
+          @click="$router.push('/lk/documents')"
+        )
+          er-icon(
+            name="close"
+          ).er-icon--close
+
+      div(v-else)
+        er-page-header(
+          linkText="Назад на главную"
+          title="Заказать другой документ"
+          backlink="/lk/documents"
+        )
+
+      .er-document-order__body
+        form.er-document-order__form.width-limiter
+          p.text-color-black08
+            | Укажите контактное лицо, телефон, и удобное время для звонка. С вами свяжется ваш персональный менеджер для уточнения деталей
+
+          er-container.full.container--no-padding
+            er-row
+              er-flex.form-input.xs12.sm6.md12.required-fields__wrap
+                p.required-fields
+                  span.required-fields__dot
+                  span.required-fields__label
+                    | &nbsp;&mdash; Поля обязательны к заполнению
+
+              er-flex.form-input.xs12.sm6.md6.lg7.r-offset-md6.order-sm1.order-md2
+                er-select(placeholder="Как к вам обращаться?")
+
+              er-flex.form-input.xs12.sm6.lg7.order-sm3.order-md3
+                er-text-field(
+                  mask="phone"
+                  :isShowLabelRequired="true"
+                  label="Телефон для связи"
+                )
+
+              er-flex.form-input.xs12.sm6.lg5.order-sm2.order-md4
+                .er-time-range.er-time-range--padding
+                  .er-time-range__label.text-color-black03 Удобное время для звонка
+                  .er-time-range__inputs
+                    er-text-field(
+                      v-model="fromTime"
+                      mask="99:99"
+                    )
+                    .er-time-range__dash.text-color-black05 &mdash;
+                    er-text-field(
+                      v-model="toTime"
+                      mask="99:99"
+                    )
+
+              er-flex.form-input.xs12.sm6.md12.order-sm4.order-md5
+                er-textarea(
+                  label="Укажите документ"
+                  :rows="textareaRows"
+                  v-model="description"
+                )
+
+              er-flex.form-input.xs12.sm6.md5.lg5.order-sm5.order-md6
+                er-button(@click="onFormSend()")
+                  | Заказать
+
+    div(v-else).er-document-order__wrap
+      div(v-if="isMobile").er-document-order__header
+        .er-document-order__title
+          | Заказать другой документ
+        .er-document-order__close(
+          @click="$router.push('/lk/documents')"
+        )
+          er-icon(
+            name="close"
+          ).er-icon--close
+
+      div(v-else)
+        er-overlay
+        er-page-header(
+          linkText="Назад на главную"
+          title="Заказать другой документ"
+          backlink="/lk/documents"
+        )
+
+      .er-document-order__body
+        .er-document-order__success-message
+          er-icon(name="circle_ok").er-icon--circle_ok
+
+          .er-document-order__success_text
+            .er-document-order__title
+              | Документы отправлены на указанный адрес эл. почты
+            .er-document-order__email
+              | {{ successEmail }}
+
+        er-button(
+          @click="$router.push('/lk/documents')"
+        ).er-button--back Все документы

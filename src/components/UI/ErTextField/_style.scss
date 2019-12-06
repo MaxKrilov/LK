@@ -2,7 +2,7 @@
 .er-textarea {
   > .er-input__control {
     > .er-input__slot {
-      min-height: 40px;
+      height: 40px;
       border: 1px solid rgba(map_get($shades, 'black'), 0.2);
       border-radius: 12px;
       padding: 0 13px;
@@ -15,7 +15,7 @@
         transition: $primary-transition;
       }
       @include media-query((
-              min-height: (md: 48px)
+              height: (xl: 48px)
       ));
       &:hover {
         border-color: map_get($shades, 'black');
@@ -38,8 +38,7 @@
     input,
     label,
     textarea {
-      font: 14px/17px $fedra-book;
-      letter-spacing: -1px;
+      @extend %body-font;
     }
     input,
     textarea {

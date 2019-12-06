@@ -1,0 +1,31 @@
+er-dialog(
+  :value="active"
+  @update:returnValue="onClose()"
+)
+  .er-dialog-advanced__modal
+    .er-dialog-advanced__close(
+      @click="onClose()"
+      @click-outside="onClose()"
+      ref="content"
+    )
+      er-icon(name="close")
+
+    .er-dialog-advanced__body
+      .er-dialog-advanced__icon
+        er-icon(
+          :name="icon"
+          :class="getIconClass()"
+        )
+
+      .er-dialog-advanced__content
+        .er-dialog-advanced__title
+          slot(name="title")
+
+        .er-dialog-advanced__text
+          slot
+
+        .er-dialog-advanced__status
+          slot(name="status")
+
+    .er-dialog-advanced__actions
+      slot(name="actions")

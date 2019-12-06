@@ -1,0 +1,21 @@
+.page-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: $padding-x6;
+
+  @include min-breakpoint('md') {
+    margin-bottom: $padding-x12;
+  }
+
+  @include min-breakpoint('xl') {
+    margin-bottom: $padding-x16;
+    display: block;
+  }
+
+  .title {
+    @include min-breakpoint('xl') {
+      pointer-events: none;
+    }
+  }
+}

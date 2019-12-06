@@ -14,11 +14,13 @@ export default {
     isMobile: false,
     tag: 'er-menu', // todo change on er-menu
     isOpenDialog: false,
+    //typeOfCalendar: 'calendar',
     typeOfCalendar: 'report',
     result: '1-й квартал  2019',
     /**
      * @param {Date}
      */
+    //internalValue: null
     internalValue: ['2019-01-01', '2019-03-31'] // null
   }),
   props: {
@@ -36,6 +38,7 @@ export default {
       type: String,
       default: 'DD.MM.YY'
     },
+    isShowRequiredLabel: Boolean
     periodInfo: String
   },
   mounted () {
@@ -76,7 +79,8 @@ export default {
           appendInnerIcon: 'calendar',
           autocomplete: 'off',
           readonly: true,
-          value: this.valueForTextInput
+          value: this.valueForTextInput,
+          isShowRequiredLabel: this.isShowRequiredLabel
         },
         on: props.on,
         ref: 'input'
@@ -92,6 +96,7 @@ export default {
           [
             this.$createElement('a', {
               attrs: {
+                //'data-type': 'calendar'
                 'data-type': 'report'
               },
               on: {
@@ -100,6 +105,7 @@ export default {
             }, 'Отчетный период')
           ]
         ),
+        //this._.isArray(this.internalValue) && this.$createElement('div',
         this.$createElement('div',
           { staticClass: `${this.pre}__head__slider-item` },
           [
@@ -218,6 +224,7 @@ export default {
               disabledDate: this.disabledDate
             },
             on: {
+              //input: e => { this.internalValue = e }
               input: (e) => {
                 this.$emit('datename', e[2])
                 this.$emit('yearname', e[3])

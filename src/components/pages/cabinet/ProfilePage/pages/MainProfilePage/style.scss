@@ -1,0 +1,114 @@
+.main-profile-page {
+  &__title {
+    @include media-query((
+      font: (xs: map_get($title, 'large'), md: map_get($title, 'xl'))
+    ))
+  }
+  &__welcome-title {
+    display: flex;
+    align-items: center;
+    @include media-query((
+      flex-direction: (xs: row, md: column),
+      align-items: (xs: center, md: flex-start),
+      margin: (xs: 4px 0 56px)
+    ));
+    &__back-link {
+      cursor: pointer;
+      display: inline-block;
+      text-decoration: none;
+      @include media-query((
+        margin-bottom: (xs: 0, md: 8px)
+      ));
+      &__icon {
+        display: inline-block;
+        &.desktop {
+          @include media-query((
+            display: (xs: none, md: inline-block)
+          ));
+          svg {
+            width: 16px;
+          }
+        }
+        &.mobile {
+          @include media-query((
+            display: (xs: inline-block, md: none)
+          ));
+          padding-right: 8px;
+          svg {
+            transform: rotate(-90deg);
+            color: map_get($yellow, 'base');
+            width: 18px;
+          }
+        }
+      }
+      &__label {
+        margin-left: 11px;
+        font: map_get($text, 'xs');
+        font-family: $fedra-demi;
+        @include media-query((
+          display: (xs: none, md: inline-block)
+        ));
+      }
+      &:hover {
+        color: rgba(map_get($shades, 'black'), 0.8);
+        * > svg {
+          color: map_get($yellow, 'base');
+        }
+      }
+      &:active {
+        color: map_get($yellow, 'base');
+      }
+    }
+  }
+  &__switcher {
+    background: map_get($gray, '11');
+    &__controls {
+      .er-switch__label {
+        padding-left: 0;
+        justify-content: center;
+      }
+      .er-switch__toggle__wrapper {
+        display: none;
+      }
+    }
+    &--mobile {
+      @include media-query((
+        display: (md: none)
+      ));
+    }
+  }
+
+  &__cards {
+    display: flex;
+    margin-bottom: 37px;
+    transform: translateX(0);
+    transition: transform 0.2s ease-out;
+    @include media-query((
+      flex-wrap: (xs: nowrap, md: wrap)
+    ));
+    &__item {
+      flex: 0 0 auto;
+      margin-right: 25px;
+      @include media-query((
+        max-width: (xs: 100%, sm: 294px, md: 401px, lg: 468px),
+        flex: (xs: 0 0 auto, md: 1 1 100%)
+      ));
+    }
+  }
+
+  &__accounts {
+    overflow: hidden;
+    @include media-query((
+      margin: (
+        xs: 0 -15px,
+        sm: 0 -24px,
+        md: 8px 0,
+        xl: 25px 0 0
+      ),
+      box-shadow: (
+        md: (0 2px 12px rgba(map_get($shades, 'black'), 0.1), 0 2px 2px rgba(map_get($shades, 'black'), 0.05))
+      ),
+      border-radius: (xs: 0, md: 12px)
+    ))
+  }
+}

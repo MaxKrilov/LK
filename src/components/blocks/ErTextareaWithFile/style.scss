@@ -1,0 +1,29 @@
+.er-textarea__slot {
+  flex-direction: column;
+}
+
+.er-textarea-with-file__file-input {
+  height: 20px;
+  margin-top: auto;
+  input {
+    display: none;
+  }
+  label {
+    pointer-events: all;
+    i {
+      color: rgba(map_get($shades, 'black'), 0.2);
+      svg {
+        @include media-query((
+          width: (md: 24px)
+        ))
+      }
+    }
+    span {
+      cursor: pointer;
+      font: 13px/18px $fedra-book;
+      letter-spacing: 0.25px;
+      color: rgba(map_get($shades, 'black'), 0.3);
+      border-bottom: 1px dashed rgba(map_get($shades, 'black'), 0.3);
+    }
+  }
+}

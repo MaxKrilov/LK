@@ -2,9 +2,11 @@ $footer-menu-border-color: map_get($named_colors, 'footer-menu-border');
 
 .er-footer-menu {
   flex-grow: 1;
+  border-bottom: 1px solid $footer-menu-border-color;
 
   .er-icon {
     opacity: .5;
+    transition: all $primary-transition;
   }
 
   &__expander {
@@ -15,15 +17,14 @@ $footer-menu-border-color: map_get($named_colors, 'footer-menu-border');
     bottom: 0;
     text-align: right;
 
-    @include min-breakpoint('lg') {
+    @include min-breakpoint('md') {
       display: none;
     }
   }
 
   &__title {
-    color: map_get($shades, 'white');
-    line-height: 24px;
-    font-size: 18px;
+    @extend %menu-head-font;
+    @include color-white(.8);
     display: block;
     position: relative;
   }
@@ -32,42 +33,48 @@ $footer-menu-border-color: map_get($named_colors, 'footer-menu-border');
     transition: all .2s ease;
     max-height: 1000px;
     overflow: hidden;
-    margin-top: 16px;
+    margin-top: 8px;
 
     &.is-force-expanded {
       max-height: 1000px;
     }
 
     .expander {
-      @include min-breakpoint('lg') {
+      @include min-breakpoint('md') {
         height: inherit !important;
       }
     }
 
-    @include max-breakpoint('md') {
-      margin-top: 8px;
+    @include min-breakpoint('md') {
+      margin-top: 16px;
     }
   }
 
   &__item {
-    color: map_get($shades, 'white');
+    @extend %menu-item-font;
+    @include color-white(.5);
     text-decoration: none;
-    font-size: 14px;
     display: block;
     margin-bottom: 12px;
     text-decoration: none;
-    opacity: .5;
     cursor: pointer;
-    transition: opacity .1s ease-in-out;
+    transition: color .15s ease-in-out;
+    -webkit-tap-highlight-color: transparent;
 
     &:focus,
     &:hover {
-      opacity: 1;
+      @include color-white(1);
       text-decoration: underline;
     }
   }
 
-  @include max-breakpoint('md') {
-    border-bottom: 1px solid $footer-menu-border-color;
+  &--opened {
+    .er-icon {
+      transform: rotate(180deg);
+    }
+  }
+
+  @include min-breakpoint('md') {
+    border-bottom: none;
   }
 }

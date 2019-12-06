@@ -1,0 +1,22 @@
+.alert {
+  &__message {
+    display: flex;
+    align-items: center;
+    @include media-query((
+      font: (
+        md: map_get($text, 'small'),
+        lg: map_get($text, 'medium'),
+        xl: map_get($text, 'medium'))
+    ));
+    &__text {
+    }
+    &__icon {
+    }
+    &--fail {
+      color: map_get($red, 'base')
+    }
+    &--success {
+      color: map_get($green, 'base')
+    }
+  }
+}

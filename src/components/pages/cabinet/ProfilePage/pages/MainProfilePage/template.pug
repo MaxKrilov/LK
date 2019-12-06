@@ -1,0 +1,27 @@
+div(:class="`${pre}`")
+  div(:class="`${pre}__welcome-title`")
+    router-link.caption(:to="{name: 'index'}", :class="`${pre}__welcome-title__back-link`")
+      span(:class="`${pre}__welcome-title__back-link__icon`")
+        er-icon(:class="`${pre}__welcome-title__back-link__icon desktop`", name="arrow_l")
+        er-icon(:class="`${pre}__welcome-title__back-link__icon mobile`", name="corner_up")
+      span(:class="`${pre}__welcome-title__back-link__label`") Назад в кабинет
+    h1(:class="`${pre}__title`") Профиль
+  er-row(v-if="serverErrorMessage")
+    er-flex
+      | {{serverErrorMessage}}
+  er-row(v-else-if="hasAccess")
+    er-flex(:class="`${pre}__cards`", xs12)
+      person-card(
+        v-if="user",
+        :class="`${pre}__cards__item`",
+        :first-name="user.firstName",
+        :last-name="user.lastName",
+        :middle-name="user.middleName",
+        :roles="realmRoles",
+        :can-edit="!isLPR"
+      )
+
+  div(v-if="isLPR && !serverErrorMessage", :class="`${pre}__accounts`")
+    accounts-section
+  change-password
+  modal-accounts-info

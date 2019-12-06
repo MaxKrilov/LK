@@ -1,0 +1,171 @@
+$pre: '.er-filter-container';
+
+$active-filter-transition: .1s ease-in-out;
+
+
+#{$pre} {
+  $label-height: $padding-x8;
+  $selected-height: $padding-x6;
+
+  margin-top: $padding-x4;
+  margin-bottom: $padding-x2;
+  position: relative;
+
+  // устанавливаем минимальную высоту блока,
+  // так как &__selected имеет position:absolute
+  // для скрытия лейблов при открытом фильтре
+  min-height: $label-height + $selected-height;
+
+  .container {
+    .row {
+      margin-left: -$padding-x2;
+      margin-right: -$padding-x2;
+
+      @include min-breakpoint('lg') {
+        margin-left: -$padding-x3;
+        margin-right: -$padding-x3;
+      }
+
+      @include min-breakpoint('xl') {
+        margin-left: -$padding-x2;
+        margin-right: -$padding-x2;
+      }
+    }
+
+    .flex {
+      padding-left: $padding-x2;
+      padding-right: $padding-x2;
+
+      @include min-breakpoint('lg') {
+        padding-left: $padding-x3;
+        padding-right: $padding-x3;
+      }
+
+
+      @include min-breakpoint('xl') {
+        padding-left: $padding-x2;
+        padding-right: $padding-x2;
+      }
+    }
+  }
+  &__title {
+    @extend %h3;
+    padding: $padding-x4;
+    display: flex;
+    align-items: stretch;
+    background-color: map_get($shades, 'white');
+
+    .er-icon {
+      color: map_get($yellow, 'base');
+      transform: rotate(-90deg);
+
+      svg {
+        width: 16px;
+        height: 16px;
+      }
+    }
+
+    @include min-breakpoint('md') {
+      display: none;
+    }
+  }
+
+  &__label {
+    @extend %caption1;
+
+    @include color-black(.3);
+    margin-bottom: $padding-x2;
+
+    @include min-breakpoint('xl') {
+      margin-bottom: $padding-x4;
+    }
+  }
+
+  &__filter-icon {
+    color: map_get($shades, 'black');
+    opacity: .2;
+    margin-right: $padding-x4;
+  }
+
+  // список выбранных фильтров
+  &__selected {
+    position: absolute;
+    left: 0;
+    right: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    height: $padding-x6;
+    transition: all $primary-transition;
+  }
+
+  &__body {
+    position: relative;
+  }
+
+  &__active-filter {
+    @extend %body-font;
+    @include color-black(.8);
+
+    cursor: pointer;
+    transition: color $active-filter-transition;
+    display: inline-block;
+    border-bottom: 1px dashed;
+
+    &:hover {
+      @include color-black(1);
+    }
+  }
+
+  &__filter-content {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    background-color: map_get($gray, '9');
+  }
+
+  .er-right-modal__content {
+    display: flex;
+  }
+
+  &__action-buttons {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding-top: $padding-x4;
+
+    .er-button:first-child {
+      margin-bottom: $padding-x2;
+    }
+
+    @include min-breakpoint('md') {
+      display: none;
+    }
+  }
+
+  &--active {
+    #{$pre}__selected {
+      @include min-breakpoint('md') {
+        display: none;
+      }
+    }
+  }
+
+  .er-right-modal__content {
+    width: 90vw;
+  }
+
+  @include min-breakpoint('sm') {
+    margin-bottom: $padding-x4;
+  }
+
+  @include min-breakpoint('md') {
+    margin-bottom: $padding-x8;
+  }
+
+  @include min-breakpoint('xl') {
+    margin-top: $padding-x8;
+    margin-bottom: $padding-x12;
+  }
+}

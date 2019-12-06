@@ -1,0 +1,128 @@
+$pre: '.er-dialog-advanced';
+
+$color-success: map_get($green, 'base');
+$color-warning: map_get($red, 'base');
+$color-yellow: map_get($yellow, 'base');
+$color-dialog-bg: map_get($shades, 'white');
+$color-close-button: rgba(map_get($shades, 'black'), .2);
+$color-action: rgba(map_get($shades, 'black'), .5);
+
+.er-dialog-advanced__dialog {
+  padding: 16px;
+}
+
+
+#{$pre} {
+  &__modal {
+    background-color: $color-dialog-bg;
+    border-radius: 12px;
+    position: relative;
+    padding: $padding-x4;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  &__body {
+    display: flex;
+    flex-direction: column;
+
+    @include min-breakpoint('sm') {
+      flex-direction: row;
+    }
+  }
+
+  &__icon {
+
+    @include min-breakpoint('sm') {
+      margin-right: $padding-x4;
+      margin-top: $padding-x2;
+    }
+
+    .er-icon {
+      svg {
+        width: 64px;
+      }
+
+      &--ok,
+      &--circle_ok {
+        color: $color-success;
+      }
+
+      &--doc {
+        color: $color-yellow;
+      }
+
+      &--warning {
+        color: $color-warning;
+      }
+    }
+  }
+
+  &__close {
+    position: absolute;
+    right: $padding-x4;
+    top: $padding-x4;
+
+    .er-icon {
+      color: $color-close-button;
+      svg {
+        width: 16px;
+      }
+    }
+  }
+
+  &__title {
+    @extend %h3;
+    margin-top: $padding-x4;
+
+    @include min-breakpoint('sm') {
+      margin-top: $padding-x2;
+    }
+  }
+
+  &__text {
+    @extend %body-font;
+    margin-top: $padding-x2;
+    @include color-black(.8);
+
+    a {
+      @extend %link-font;
+      @extend %link-color;
+      border-bottom: 1px solid;
+    }
+
+    a:not(first-child) {
+      &::before {
+        content: ' '
+      }
+    }
+  }
+
+  &__actions {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: $padding-x6;
+
+    @include min-breakpoint('sm') {
+      justify-content: flex-end;
+    }
+
+    a {
+      @extend %button-font;
+      border-bottom: 1px dashed;
+      color: $color-action;
+      text-decoration: none;
+
+      &:hover {
+        border-width: 0;
+      }
+
+      &.link-success {
+        color: $color-success;
+      }
+    }
+  }
+}

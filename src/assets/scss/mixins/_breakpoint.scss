@@ -8,6 +8,38 @@
   }
 }
 
+
+@mixin media-min-width($size) {
+  /*
+    Usage:
+    .devil {
+      display: none;
+
+      @include media-min-width(666px) {
+        display: block;
+      }
+    }
+  */
+  @media screen and (min-width: $size) {
+    @content;
+  }
+}
+
+@mixin media-max-width($size) {
+  /*
+    Usage:
+
+    body {
+      @include media-max-width(240px) {
+        display: none;
+      }
+    }
+  */
+  @media screen and (max-width: $size) {
+    @content;
+  }
+}
+
 @mixin min-breakpoint($breakpoint) {
   /*
     $breakpoint is 'xs', 'sm', 'lg' or etc
@@ -19,7 +51,7 @@
       }
     }
   */
-  @media screen and (min-width: map_get($grid-breakpoint, $breakpoint)) {
+  @include media-min-width(map_get($grid-breakpoint, $breakpoint)) {
     @content;
   }
 }
@@ -36,7 +68,15 @@
       }
     }
   */
-  @media screen and (max-width: map_get($grid-breakpoint, $breakpoint)) {
+
+  /*
+    Медиазапрос max-width это "меньше или равно",
+    поэтому отнимаем пиксель что-бы не было пересечений с
+    аналогичным значением min-width
+  */
+  $max-width: map_get($grid-breakpoint, $breakpoint) - .1px;
+
+  @include media-max-width($max-width) {
     @content;
   }
 }

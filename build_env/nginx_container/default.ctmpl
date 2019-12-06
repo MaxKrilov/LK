@@ -8,7 +8,7 @@ server {
     {{if env "CI_BUILD_TAG"}}
         add_header Content-Security-Policy "frame-src http://service-portal-dmp-int1.nonprod.cloud-bss.loc; frame-ancestors http://ert-int.nonprod.cloud-bss.loc/;";
     {{else}}
-        add_header Content-Security-Policy "frame-src http://service-portal-dmp-int1.nonprod.cloud-bss.loc; frame-ancestors http://ert-int.nonprod.cloud-bss.loc/;";
+        add_header Content-Security-Policy "frame-src http://service-portal-dmp-sit1.nonprod.cloud-bss.loc; frame-ancestors http://ert-sit1.nonprod.cloud-bss.loc/;";
     {{end}}
 
     index index.html;

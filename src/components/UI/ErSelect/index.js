@@ -1,14 +1,14 @@
+import './_style.scss'
+import { getFirstElement, isEmpty } from '@/functions/helper'
 import { mapGetters } from 'vuex'
 import { SCREEN_WIDTH } from '@/store/actions/variables'
-import './_style.scss'
-import { getFirstElement, isEmpty, isMobile } from '../../../functions/helper'
-// import {mapGetters} from "vuex/types/index";
+import { BREAKPOINT_MD } from '../../../constants/breakpoint'
 
 export default {
   name: 'er-select',
   data: () => ({
     tagList: 'er-menu',
-    isMobile: false,
+    // isMobile: false,
     isOpenDialog: false,
     filterMobile: '',
     isOnInput: false,
@@ -29,6 +29,7 @@ export default {
       type: String,
       default: 'id'
     },
+    disabled: Boolean,
     label: {
       type: String,
       default: 'value'
@@ -41,33 +42,44 @@ export default {
       type: null
     },
     isSelectFirst: Boolean,
+    /**
+     * Возможность добавления собственного значения
+     */
+    isTagging: Boolean,
+    taggingFunction: Function,
     isShowLabelRequired: Boolean,
     labelChanged: String,
     rules: {
       type: Array,
       default: () => ([])
-    }
+    },
+    maskFilter: String
   },
   computed: {
-    ...mapGetters([SCREEN_WIDTH]),
     getFilteredItems () {
       return this.items.filter(item => {
         return this.isOnInput
           ? typeof item === 'string'
-            ? item.matchAll(new RegExp(this.internalValue, 'ig'))
-            : item[this.label].matchAll(new RegExp(this.internalValue, 'ig'))
+            ? item.match(new RegExp(RegExp.escape(this.internalValue), 'ig'))
+            : item[this.label].match(new RegExp(RegExp.escape(this.internalValue), 'ig'))
           : true
       })
     },
     getFilteredItemsMobile () {
       return this.items.filter(item => {
         return typeof item === 'string'
-          ? item.match(new RegExp(this.filterMobile, 'ig'))
-          : item[this.label].match(new RegExp(this.filterMobile, 'ig'))
+          ? item.match(new RegExp(RegExp.escape(this.filterMobile), 'ig'))
+          : item[this.label].match(new RegExp(RegExp.escape(this.filterMobile), 'ig'))
       })
     },
     filterDesktop () {
       return this.isOnInput ? this.internalValue : ''
+    },
+    ...mapGetters([
+      SCREEN_WIDTH
+    ]),
+    isMobile () {
+      return this[SCREEN_WIDTH] < BREAKPOINT_MD
     }
   },
   watch: {
@@ -82,7 +94,7 @@ export default {
     __getClass () {
       return `er-select__list${this.isMobile ? '--mobile' : ''}`
     },
-    __generateList () {
+    __generateList (h) {
       return this.$createElement('div', {
         staticClass: this.__getClass(),
         class: {
@@ -91,27 +103,48 @@ export default {
       }, this.isMobile ? [
         this.generateHeaderMobile(),
         !this.readonly && this.generateSearchMobile(),
-        this.generateItemsMobile()
+        this.generateItemsMobile(h)
       ] : [
-        this.generateItems()
+        this.generateItems(h)
       ])
     },
-    __generateItems () {
-      return this.$createElement('div', {
-        staticClass: `${this.__getClass()}__items`
-      }, isEmpty(this[this.isMobile ? 'getFilteredItemsMobile' : 'getFilteredItems'])
-        ? [this.$createElement('div', {
-          staticClass: `${this.__getClass()}__item`,
-          class: 'not-found'
-        }, [this.notFoundText])]
-        : this[this.isMobile ? 'getFilteredItemsMobile' : 'getFilteredItems']
-          .map(item => this.isMobile ? this.generateItemMobile(item) : this.generateItem(item))
+    __generateItems (h) {
+      return (
+        <div class={`${this.__getClass()}__items`}>
+          {
+            isEmpty(this[this.isMobile ? 'getFilteredItemsMobile' : 'getFilteredItems']) && !this.isTagging
+              ? (
+                <div class={`${this.__getClass()}__item not-found`}>
+                  {this.notFoundText}
+                </div>
+              )
+              : (
+                [this[this.isMobile ? 'getFilteredItemsMobile' : 'getFilteredItems']
+                  .map(item => this.isMobile ? this.generateItemMobile(item) : this.generateItem(item)),
+                this.isTagging && (
+                  this.isMobile ? this.filterMobile : this.internalValue
+                ) !== '' && (
+                  <div
+                    class={`${this.__getClass()}__item tagging`}
+                    vOn:click={() => {
+                      this.taggingFunction(this.isMobile ? this.filterMobile : this.internalValue)
+                      this.isOpenDialog = false
+                      this.isSelected = true
+                      this.filterMobile = ''
+                    }}
+                  >
+                    Добавить значение &laquo;{this.isMobile ? this.filterMobile : this.internalValue}&raquo;
+                  </div>
+                )
+                ])
+          }
+        </div>
       )
     },
     __generateItem (item) {
       const isString = typeof item === 'string'
       const replaceArgs = [
-        new RegExp(this[this.isMobile ? 'filterMobile' : 'filterDesktop'], 'ig'),
+        new RegExp(RegExp.escape(this[this.isMobile ? 'filterMobile' : 'filterDesktop']), 'ig'),
         '<span>$&</span>'
       ]
       return this.$createElement('a', {
@@ -165,26 +198,28 @@ export default {
           label: this.placeholder,
           appendInnerIcon: 'corner_down',
           autocomplete: 'off',
+          disabled: this.disabled,
           readonly: this.readonly,
           labelChanged: this.labelChanged,
           isShowLabelRequired: this.isShowLabelRequired,
-          rules: this.rules
+          rules: this.rules,
+          mask: this.maskFilter
         },
         on: this.__getEventsForActivator(props.on),
         ref: 'activator'
       })
     },
-    generateList () {
-      return this.__generateList()
+    generateList (h) {
+      return this.__generateList(h)
     },
-    generateListMobile () {
-      return this.__generateList()
+    generateListMobile (h) {
+      return this.__generateList(h)
     },
-    generateItems () {
-      return this.__generateItems()
+    generateItems (h) {
+      return this.__generateItems(h)
     },
-    generateItemsMobile () {
-      return this.__generateItems()
+    generateItemsMobile (h) {
+      return this.__generateItems(h)
     },
     generateItem (item) {
       return this.__generateItem(item)
@@ -213,7 +248,8 @@ export default {
         this.$createElement('er-text-field', {
           props: {
             appendInnerIcon: 'lens',
-            value: this.filterMobile
+            value: this.filterMobile,
+            mask: this.maskFilter
           },
           on: {
             input: e => { this.filterMobile = e }
@@ -279,21 +315,23 @@ export default {
         }
       }
     return h('div', {
-      staticClass: 'er-select'
+      staticClass: 'er-select',
+      class: {
+        'er-select--disabled': this.disabled
+      }
     }, [
-      h(this.tagList, {
+      h(this.isMobile ? 'er-dialog' : 'er-menu', {
         ...options,
         scopedSlots,
         on: events
       }, [
         this.isMobile
-          ? this.generateListMobile()
-          : this.generateList()
+          ? this.generateListMobile(h)
+          : this.generateList(h)
       ])
     ])
   },
   created () {
-    this.isMobile = isMobile()
     this.isMobile && (this.tagList = 'er-dialog')
   }
 }

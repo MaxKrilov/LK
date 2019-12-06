@@ -1,20 +1,33 @@
 .lk-template {
   background: map_get($gray, '3');
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+
   &__content {
     width: 100%;
     //max-width: 1208px;
     max-width: 1440px;
     padding: 89px 16px 0;
-    //overflow: hidden;
     @include media-query((
-            padding: (
-                    sm: 100px 24px 0,
-                    md: 115px 24px 0,
-                    lg: 120px 32px 0,
-                    xl: 146px 32px 0 316px,
-                    xxl: 146px 152px 0 316px
-            )
+      padding: (
+        sm: 100px 24px 0,
+        md: 115px 24px 0,
+        lg: 120px 32px 0,
+        xl: 146px 32px 0 316px,
+        xxl: 146px 152px 0 316px
+      )
     ))
+  }
+  &__notification {
+    position: fixed;
+    text-align: center;
+    z-index: 20;
+    width: 100%;
+  }
+  .space-before-footer {
+    // Спец блок для отступа от контента до футера
+    // т.к. у футера уже есть margin-top: auto
+    padding-top: $padding-x32;
   }
 }

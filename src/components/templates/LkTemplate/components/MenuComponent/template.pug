@@ -29,10 +29,12 @@ div(:class="`${pre}`")
           er-icon(name="corner_down")
         div(:class="[`${pre}__left__body-item__sub-items`, { open: menuItem.isOpen }]")
           a(:class="[`${pre}__left__body-item__sub-item`, 'main']") {{ menuItem.name }}
-          a(
+          router-link(
+            to="/lk/support"
             v-for="(subItem, subIndex) in menuItem.subitem",
             :class="`${pre}__left__body-item__sub-item`",
             :key="subIndex"
+            :to="subItem.url ? subItem.url : '/'"
           )
             | {{ subItem.name }}
   div(:class="`${pre}__top`")
@@ -96,23 +98,23 @@ div(:class="`${pre}`")
               div.caption.mb-4
                 | Ваш персональный менджер
               div.value.mb-12
-                | Черноморцева Татьяна Александровна
+                | {{ getManagerInfo.name }}
               div.caption.mb-4
                 | Телефон
               div.value.mb-12
-                a(href="tel:73422983456") +7 342 298 34 56
+                a(:href="`tel:${getManagerInfo.phone}`") {{ getManagerInfo.phone | formatPhone }}
               div.caption.mb-4
                 | Эл. почта
               div.value.mb-12
-                a(href="mailto:konstantinopolsky@domru.ru") konstantinopolsky@domru.ru
+                a(:href="`mailto:${getManagerInfo.email}`") {{ getManagerInfo.email }}
               div.support
                 er-icon.mr-8(name="service")
-                a(href="#") Поддержка
+                router-link(to="/lk/support") Поддержка
     div.ml-auto(:class="`${pre}__top__chat ${pre}__top__badge`", data-count="15")
       er-icon(name="chat")
     div(:class="`${pre}__top__notification ${pre}__top__badge`", data-count="25")
       er-icon(name="bell")
-    div.ml-56(:class="`${pre}__top__exit`")
+    div.ml-56(:class="`${pre}__top__exit`", @click="signOut")
       er-icon(name="exit")
     div(:class="`${pre}__top__profile--mobile`", @click="toggleRightPanel")
       er-icon(name="profile")

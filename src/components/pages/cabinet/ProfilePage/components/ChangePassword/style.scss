@@ -1,0 +1,104 @@
+.change-password {
+  color: rgba(map_get($shades, 'black'), 0.8);
+
+  &__inner {
+    @include media-query((
+      padding: (xs: 20px 16px 16px, md: 30px 24px)
+    ));
+    .text-xl {
+      font: map_get($text, 'large');
+      line-height: 25px;
+    }
+    .text-sm {
+      font: map_get($text, 'small');
+      line-height: 19px;
+      &.err {
+        color: map_get($red, 'base');
+      }
+    }
+    .text-xs {
+      font: map_get($text, 'xs');
+      line-height: 16px;
+    }
+  }
+  &__form {
+    & .er-text-field > .er-input__control > .er-input__slot > .er-text-field__slot {
+      & > .er-text-field__success-icon {
+        display: none !important;
+      }
+    }
+  }
+  &__title {
+    font: 26px/32px $fedra-demi;
+    letter-spacing: -1px;
+    color: rgba(map_get($shades, 'black'), 0.8);
+    margin-bottom: 8px;
+    @include media-query((
+      font-size:    (md: 26px, lg: 28px, xl: 30px),
+      line-height:  (md: 32px, lg: 38px, xl: 44px),
+      letter-spacing: (md: -2px),
+      margin-bottom: (md: 16px)
+    ));
+  }
+  &__checks {
+    margin-bottom: 24px;
+    @include media-query((
+      margin-bottom: (md: 32px)
+    ));
+  }
+  &__check {
+    display: flex;
+    flex-direction: column;
+    color: rgba(map_get($shades, 'black'), 0.5);
+    span + span {
+      margin-top: 5px;
+    }
+    &.ok {
+      span {
+        color: map_get($green, 'base');
+      }
+    }
+    &.err {
+      span {
+        color: map_get($red, 'base');
+      }
+    }
+  }
+
+  &__buttons {
+    justify-content: space-between;
+    margin-top: 8px;
+    @include media-query((
+      margin-top: (md: 16px)
+    ));
+  }
+  &__button {
+    @include media-query((
+      height: (md: 48px!important)
+    ));
+    &_wrap {
+      & + & {
+        @include media-query(
+            (padding-top: (xs: 8px, sm: 0))
+        );
+      }
+    }
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  &__icon {
+    svg {
+      width: 15px;
+      height: 15px;
+    }
+  }
+  &__field_new.ok, &__field_conf.ok {
+    .er-input__slot {
+      border-color: map_get($green, 'base')!important;
+      label {
+        color: map_get($green, 'base')!important;
+      }
+    }
+  }
+}

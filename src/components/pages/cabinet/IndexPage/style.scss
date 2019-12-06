@@ -3,12 +3,6 @@
     color: rgba(map_get($shades, 'black'), 0.5);
     margin-bottom: 5px;
   }
-  &__welcome-title {
-    margin-bottom: 22px;
-    @include media-query((
-      margin-bottom: (sm: 24px, lg: 29px, xl: 42px)
-    ))
-  }
   &__balance {
     &--mobile {
       margin-bottom: 34px;

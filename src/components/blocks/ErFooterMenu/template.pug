@@ -1,0 +1,22 @@
+.er-footer-menu(
+  :class="{'er-footer-menu--opened': isExpanded}"
+)
+  .er-footer-menu__title
+    | {{ title }}
+    .er-footer-menu__expander(@click="onClickExpander")
+      er-icon(
+        name="corner_down"
+        width="16px"
+        height="16px"
+      )
+  .er-footer-menu__list
+    er-slide-up-down(
+      class="expander"
+      :active="isExpanded"
+    )
+      a.er-footer-menu__item(
+        v-for="item in items"
+        :href="item.url"
+        :key="item.title"
+      )
+        | {{ item.title }}

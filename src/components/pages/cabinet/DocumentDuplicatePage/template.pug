@@ -1,0 +1,15 @@
+component(
+  v-bind:is="currentComponent()"
+  :disabled="false"
+  :value="true"
+  :fullscreen="true"
+)
+  .er-document-duplicate
+    .er-document-duplicate__list
+      er-container.full.container--no-padding
+        er-row
+          er-flex(
+            v-for="document in documentList"
+            :key="document.number"
+          )
+            report-document(:document="document")

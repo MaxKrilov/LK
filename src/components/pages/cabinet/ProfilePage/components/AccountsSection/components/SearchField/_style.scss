@@ -1,0 +1,80 @@
+/** SEARCH **/
+.search-field {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: flex-start;
+
+  &__count {
+    font: map_get($text, 'medium');
+    color: rgba(map_get($shades, 'black'), 0.5);
+    margin-right: 30px;
+    margin-top: 16px;
+    @include media-query((
+      display: (xs: none, lg: block)
+    ));
+  }
+  &__form {
+    box-sizing: border-box;
+    top: 2px;
+    @include media-query((
+      position: (xs: absolute, md: relative),
+      width: (xs: 95px, sm: 210px, md: 264px),
+      display: (xs: block, lg: none),
+      margin-right: (xs: 30px),
+      top: (xs: 3px, sm: 3px, md: 2px)
+    ));
+    right: 0;
+    z-index: map_get($z-index, 'search-field');
+    &:hover {
+      transition: width .2s cubic-bezier(0.000, 0.795, 0.000, 1.000), right .05s ease;
+    }
+    &--active {
+      @include media-query((
+        right: (xs: 5px, sm: 15px, md: 0),
+        width: (xs: calc(100% - 67px), sm: 57%)
+      ));
+      & > .er-text-field > .er-input__control > .er-input__slot {
+        @include media-query((
+          border: (
+            xs: 1px solid map_get($yellow, 'base') !important,
+            lg: none,
+            xl: none
+          )
+        ));
+      }
+    }
+    &__input {
+      .er-text-field__slot {
+        overflow: hidden;
+        label {
+          overflow: hidden;
+          width: 100%;
+        }
+      }
+      .er-messages {
+        display: none;
+      }
+      &.er-text-field > .er-input__control > .er-input__slot {
+        @include media-query((
+          border: (
+            xs: none,
+            md: 1px solid rgba(map_get($shades, 'black'), 0.2)
+          ),
+          min-height: (xs: 32px, sm: 34px, md: 40px)
+        ));
+        margin-bottom: 0;
+        & .er-input__append-inner {
+          @include media-query((
+            margin-right: (xs: -10px, sm: 0, md: -10px)
+          ));
+        }
+        & input {
+          @include media-query((
+            font: (sm: map_get($text, 'xs'), md: map_get($text, 'small'))
+          ));
+        }
+      }
+    }
+  }
+}

@@ -159,7 +159,7 @@ export default {
     },
     onBlur (e) {
       this.hasFocus = false
-      this.isSuccess = this.validate()
+      if (this.isShowSuccess) { this.isSuccess = this.validate() }
       this.$emit('blur', e)
     },
     onMouseDown (e) {

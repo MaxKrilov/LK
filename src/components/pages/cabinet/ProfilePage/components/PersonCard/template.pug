@@ -1,0 +1,23 @@
+er-card(:class="`${pre}`")
+  div(:class="`${pre}__inner`")
+    div(:class="`${pre}__title`")
+      | Вы авторизованы как:
+    div.mb-12
+      strong(:class="`${pre}__family-name`") {{ lastName }}
+      span(:class="`${pre}__name`") {{ firstName }} {{ middleName }}
+    div(:class="`${pre}__permissions`")
+      div.caption.mb-4
+        | Права доступа:
+      div.mb-20(:class="`${pre}__permissions__role`")
+        | {{ roleText }}
+      template(v-if="canEdit")
+        router-link(:to="{name: `profile-edit`}", :class="`${pre}__permissions__link`")
+          er-icon.caption(name="edit", :class="`${pre}__icon ${pre}__icon--edit`")
+          a.link.link--dashed--black Редактировать свой профиль
+    er-row.align-items-center(no-gutters)
+      er-flex(xs12, md7)
+        er-button(:class="`${pre}__button`" flat, @click="handleOpenPasswordChange") Изменить пароль
+      er-flex(xs12, md5, v-if="hasMessage", :class="`${pre}__message__wrapper`")
+        div.d--flex(:class="`${pre}__message ${pre}__message--${message.type}`")
+          er-icon.mr-4(:class="`${pre}__icon`", :name="message.icon ")
+          span {{ message.text }}

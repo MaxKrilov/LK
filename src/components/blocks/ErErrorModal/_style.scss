@@ -1,6 +1,7 @@
 .er-error-modal {
   &__content {
     width: 100%;
+    background-color: map_get($shades, 'white');
     h1 {
       width: 100%;
       max-width: 245px;

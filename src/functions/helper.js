@@ -1,6 +1,44 @@
 import { FRONTEND_TESTING } from '../constants/url'
 import { COMBAT_DOMAIN, LOCALHOST_DOMAIN, TESTING_DOMAIN } from '../constants/domain'
+import { ENDPOINTS_API } from '../constants/endpoints'
+import { BREAKPOINT_XL, BREAKPOINT_MD } from '@/constants/breakpoint'
 import { Cookie } from './storage'
+
+/**
+ * Функция, приводит мобильный телефон к одному типу: 79196026543
+ * @param {string}
+ * @return {string}
+ */
+export function toDefaultPhoneNumber (str) {
+  if (str) { return str.replace(/[\s-()+]/g, '') }
+  return ''
+}
+/**
+ * Функция, преобразует строку в ФИО
+ * @param {string}  исходный объект
+ * @return {Object} новый объект
+ */
+export function toFullName (str) {
+  const nameArr = str.split(' ')
+  switch (nameArr.length) {
+    case 2:
+      return { firstName: nameArr[1], lastName: nameArr[0], middleName: '' }
+    case 3:
+      return { firstName: nameArr[1], lastName: nameArr[0], middleName: nameArr[2] }
+    default:
+      return { firstName: nameArr[0], lastName: '', middleName: '' }
+  }
+}
+
+/**
+ * Функция, копирующая объект, поддерживает глубокое копирование
+ * @param {Object} object исходный объект
+ * @return {Object} новый объект
+ */
+export function copyObject (object) {
+  return JSON.parse(JSON.stringify(object))
+}
+
 /**
  * Функция, перебирающая элементы объекта
  * @param {Object} object исходный объект
@@ -253,6 +291,10 @@ export function getScreenWidth () {
   return window.screen.width
 }
 
+export function getWindowWidth () {
+  return window.innerWidth
+}
+
 export function getZIndex (el) {
   if (!el || el.nodeType !== Node.ELEMENT_NODE) {
     return 0
@@ -285,7 +327,11 @@ export function escapeHTML (str) {
 }
 
 export function isMobile () {
-  return getScreenWidth() < 640
+  return getScreenWidth() < BREAKPOINT_MD
+}
+
+export function isDesktop () {
+  return getWindowWidth() >= BREAKPOINT_XL
 }
 
 function renderImage (url, scale = 0.3) {
@@ -337,6 +383,55 @@ export const daysOfWeek = [
 
 export function getMonthByNumber (number) {
   return months[number]
+}
+
+/**
+ * Генерирует строку URL
+ * @param {string} endpoint
+ * @param {string} api
+ * @param {string} postfix
+ * @return {string}
+ */
+
+export function generateUrl (endpoint, api = ENDPOINTS_API, postfix = null) {
+  if (!api.endpoints.hasOwnProperty(endpoint)) {
+    console.warn(`There is no ${endpoint} endpoint`)
+    return endpoint
+  }
+  const endpointUrl = api.endpoints[endpoint]
+  const url = `${api.url}/${endpointUrl}`
+  return postfix ? `${url}/${postfix}` : url
+}
+
+/**
+ * Декодирует JWT
+ * @param {string} token
+ * @return {object}
+ */
+
+export function parseJwt (token) {
+  const base64Url = token.split('.')[1]
+  const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/')
+  const component = atob(base64).split('').map((c) => {
+    return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)
+  }).join('')
+  const jsonPayload = decodeURIComponent(component)
+
+  return JSON.parse(jsonPayload)
+}
+
+/**
+ * Приводим строку snake_case к camelCase
+ * @param str
+ * @returns {string}
+ */
+
+export function stringToCamel (str) {
+  return str.replace(/([-_][a-z])/ig, ($1) => {
+    return $1.toUpperCase()
+      .replace('-', '')
+      .replace('_', '')
+  })
 }
 
 export function validateINN (inn) {
@@ -392,4 +487,24 @@ export function getAllUrlParams (url) {
   return obj
 }
 
+export const getNoun = (number, one, two, five) => {
+  let n = Math.abs(number)
+  n %= 100
+  if (n >= 5 && n <= 20) {
+    return five
+  }
+  n %= 10
+  if (n === 1) {
+    return one
+  }
+  if (n >= 2 && n <= 4) {
+    return two
+  }
+  return five
+}
+
 export const ucfirst = str => str.charAt(0).toUpperCase() + str.substr(1, str.length - 1)
+
+export const kebabCase = str => (str || '').replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase()
+
+export const createRange = length => Array.from({ length }, (v, k) => k)

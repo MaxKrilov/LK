@@ -7,12 +7,12 @@ export default {
   }),
   props: {
     /**
-     * Цвет кнопки. Доступные значения - yellow, blue, green.
+     * Цвет кнопки. Доступные значения - yellow, blue, green, gray.
      */
     color: {
       type: String,
       default: 'yellow',
-      validator: value => ['yellow', 'blue', 'green'].includes(value)
+      validator: value => ['yellow', 'blue', 'green', 'gray'].includes(value)
     },
     /**
      * Отключение кнопки
@@ -85,13 +85,16 @@ export default {
         disabled: this.disabled || this.loading,
         type: this.type
       },
+      props: {
+        to: this.to
+      },
       directives: [{
         name: 'ripple',
         value: { class: 'color--shades-white' }
       }],
       on: { click: this.onClick }
     }, [
-      h('div', {
+      h('span', {
         staticClass: `${this.pre}__content`
       }, [
         this.preIcon && this.genIcon(this.preIcon, 'prev'),

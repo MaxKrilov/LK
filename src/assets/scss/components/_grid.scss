@@ -19,6 +19,13 @@
       )
     ));
   }
+
+  &.container--no-padding {
+    padding: {
+      left: 0;
+      right: 0;
+    }
+  }
 }
 
 .row {
@@ -40,6 +47,21 @@
       };
     }
   }
+  &.no-gutters-child {
+    &--padding {
+      > .flex:not(:first-of-type) {
+        padding: {
+          left: $grid-gutter-width;
+        }
+      }
+    }
+    > .flex {
+      padding: {
+        left: 0;
+        right: 0;
+      }
+    }
+  }
 }
 
 .flex {
@@ -58,10 +80,36 @@
         }
       }
       @for $i from 1 to $grid-columns {
+        /*
+          Отступ перед колонкой (слева)
+        */
         &.offset-#{$breakpoint}#{$i} {
           margin: {
             left: percentage($i / $grid-columns);
           };
+        }
+      }
+
+      @for $i from 0 to $grid-columns {
+        /*
+          Отступ после колонки (справа)
+          Пример: .space-md4
+
+          Можно отключать отступ указывая 0 (ноль)
+          Пример:
+            .space-md4.space-lg0
+
+          создаст отступ справа при точке останова 'md'
+          и уберёт отступ на 'lg'
+        */
+        &.r-offset-#{$breakpoint}#{$i} {
+          margin-right: percentage($i / $grid-columns);
+        }
+      }
+
+      @for $i from 1 through $grid-columns {
+        &.order-#{$breakpoint}#{$i} {
+          order: $i;
         }
       }
     }

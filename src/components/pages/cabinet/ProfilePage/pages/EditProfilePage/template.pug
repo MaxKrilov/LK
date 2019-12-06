@@ -1,0 +1,30 @@
+div(:class="`${pre}`")
+  div(:class="`${pre}__welcome-title`")
+    router-link.caption(:to="{name: 'profile'}", :class="`${pre}__welcome-title__back-link`")
+      span(:class="`${pre}__welcome-title__back-link__icon`")
+        er-icon(:class="`${pre}__welcome-title__back-link__icon desktop`", name="arrow_l")
+        er-icon(:class="`${pre}__welcome-title__back-link__icon mobile`", name="corner_up")
+      span(:class="`${pre}__welcome-title__back-link__label`") Назад в кабинет
+    h1(:class="`${pre}__title`") Профиль
+
+  div(
+    v-if="!isLPR"
+    :class="`${pre}__wrapper`")
+    er-row(v-if="serverErrorMessage")
+      er-flex
+        | {{ serverErrorMessage }}
+    er-row(v-else-if="hasAccess")
+      er-flex(xs-12)
+        account-form(
+          isUpdate
+          :class="`${pre}__edit-form`"
+          :userId="user.userId"
+          :lastName="user.lastName",
+          :firstName="user.firstName",
+          :middleName="user.middleName",
+          :phoneNumber="user.phone",
+          :email="user.email",
+          :systems="userResourceAccess"
+          @success="handleEventForm"
+          @fail="handleEventForm"
+          @cancel="handleEventForm")

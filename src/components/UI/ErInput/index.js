@@ -14,7 +14,8 @@ export default {
     prependOuterIcon: String,
     appendOuterIcon: String,
     prependInnerIcon: String,
-    appendInnerIcon: String
+    appendInnerIcon: String,
+    isShowRequiredLabel: Boolean
   },
   computed: {
     classes () {},
@@ -83,8 +84,14 @@ export default {
         },
         ref: 'input-slot'
       }, [
-        this.generateDefaultSlot()
+        this.generateDefaultSlot(),
+        this.isShowRequiredLabel && this.generateRequiredLabel()
       ])
+    },
+    generateRequiredLabel () {
+      return this.$createElement('div', {
+        staticClass: `${this.m_pre}__required-label`
+      })
     },
     generateMessages () {
       return this.$createElement('er-message', { props: { value: this.messages } })

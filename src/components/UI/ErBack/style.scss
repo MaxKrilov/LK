@@ -1,0 +1,80 @@
+.er-back {
+  .er-icon {
+    &.arrow {
+      @include color-black(.2);
+      margin-right: $padding-x2;
+      transition: color .15s ease-in-out;
+
+      svg {
+        width: 16px;
+      }
+    }
+
+    &.corner {
+      transform: rotate(90deg);
+      color: map_get($yellow, 'base');
+      margin-right: $padding-x2;
+      margin-top: $padding-x1;
+
+      svg {
+        width: 20px;
+        margin: auto 0;
+      }
+    }
+  }
+
+  &__button {
+    cursor: pointer;
+    display: inline-flex;
+
+    &:hover {
+      .er-back__title {
+        @include color-black(.8);
+      }
+
+      .arrow {
+        color: map_get($yellow, 'base');
+      }
+    }
+
+    &:active {
+      .er-back__title {
+        color: map_get($yellow, 'base');
+      }
+
+      .arrow {
+        color: map_get($yellow, 'base');
+      }
+    }
+
+    @include min-breakpoint('xl') {
+      margin-bottom: $padding-x4;
+    }
+  }
+
+  &__title {
+    @extend %caption2;
+    @include color-black(.3);
+    transition: color .15s ease-in-out;
+    display: none;
+    user-select: none;
+
+    @include min-breakpoint('lg') {
+      display: block;
+    }
+  }
+
+  .lg-hide {
+    @include min-breakpoint('xl') {
+      display: none;
+    }
+  }
+
+  .lg-show {
+    display: none;
+
+    @include min-breakpoint('xl') {
+      display: block;
+    }
+  }
+}

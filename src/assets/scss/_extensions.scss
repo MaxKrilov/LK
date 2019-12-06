@@ -1,0 +1,171 @@
+%h1-font {
+  font: 26px/32px $fedra-demi;
+  letter-spacing: -1px;
+
+  @include min-breakpoint('md') {
+    font-size: 30px;
+    line-height: 37px;
+    letter-spacing: -2px;
+  }
+
+  @include min-breakpoint('lg') {
+    font-size: 32px;
+    line-height: 40px;
+    letter-spacing: -1px;
+  }
+
+  @include min-breakpoint('xxl') {
+    font-size: 36px;
+    line-height: 45px;
+    letter-spacing: -2px;
+  }
+}
+
+%h1 {
+  @extend %h1-font;
+  color: rgba(map_get($shades, 'black'), 0.8);
+}
+
+%h1-light {
+  @extend %h1-font;
+  font-family: $fedra-demi;
+  color: rgba(map_get($shades, 'black'), 0.8);
+}
+
+%h2 {
+  font: 22px/28px $fedra-demi;
+  letter-spacing: -1px;
+  color: rgba(map_get($shades, 'black'), 0.8);
+  @include media-query((
+    font-size:    (md: 24px, lg: 26px, xl: 28px),
+    line-height:  (md: 38px, lg: 32px, xl: 38px)
+  ));
+}
+
+%h3 {
+  font: 17px/23px $fedra-demi;
+  letter-spacing: -0.5px;
+  color: rgba(map_get($shades, 'black'), 0.8);
+  @include media-query((
+    font-size:      (md: 20px, xl: 24px),
+    line-height:    (md: 25px, xl: 30px),
+    letter-spacing: (md: -1px)
+  ));
+}
+
+%h4 {
+  font: 15px/20px $fedra-demi;
+  letter-spacing: -0.35px;
+  color: rgba(map_get($shades, 'black'), 0.8);
+  @include media-query((
+    font-size:      (md: 18px),
+    line-height:    (md: 22px),
+    letter-spacing: (md: -1px)
+  ));
+}
+
+%caption1-font {
+  font: 11px/16px $fedra-demi;
+  letter-spacing: 0.35px;
+
+  @include min-breakpoint('md') {
+    font-size: 13px;
+  }
+
+  @include min-breakpoint('xl') {
+    font-size: 14px;
+    line-height: 19px;
+  }
+}
+
+%caption1 {
+  @extend %caption1-font;
+  @include color-black(.5);
+}
+
+%caption2-font {
+  font: 10px/12px $fedra-demi;
+  letter-spacing: 0.5px;
+
+  @include min-breakpoint('md') {
+    font-size: 12px;
+    line-height: 16px;
+  }
+}
+
+%caption2 {
+  @extend %caption2-font;
+  @include color-black(.3);
+}
+
+%button-font {
+  font: 13px/16px $fedra-demi;
+  letter-spacing: 0.35px;
+
+  @include min-breakpoint('md') {
+    font-size: 14px;
+    line-height: 17px;
+  }
+
+  @include min-breakpoint('xl') {
+    font-size: 16px;
+    line-height: 20px;
+    letter-spacing: -0.5px;
+  }
+}
+
+%body-color {
+  @include color-black(.8);
+}
+
+%body-font {
+  font: 13px/18px $fedra-book;
+  letter-spacing: 0.25px;
+
+  @include min-breakpoint('md') {
+    font-size: 14px;
+    line-height: 19px;
+    letter-spacing: normal;
+  }
+
+  @include min-breakpoint('xl') {
+    font-size: 16px;
+    line-height: 21px;
+    letter-spacing: -0.5px;
+  }
+}
+
+%link-font {
+  @extend %body-font;
+  text-decoration: none;
+}
+
+%link-color {
+  color: map_get($blue, 'base');
+
+  &:hover {
+    color: map_get($blue, 'link-hover');
+  }
+}
+
+%link {
+  @extend %link-font;
+  cursor: pointer;
+
+  text-decoration: none;
+  display: inline;
+  border-bottom: 1px solid;
+}
+
+
+%menu-head-font {
+  // в типографике макета 'menu head'
+  font: 18px/22px $fedra-demi;
+  letter-spacing: -0.5px;
+}
+
+%menu-item-font {
+  // в типографике макета 'menu'
+  font-size: 14px;
+  line-height: 120%;
+}

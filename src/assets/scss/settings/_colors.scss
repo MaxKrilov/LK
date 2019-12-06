@@ -21,6 +21,7 @@ $red: (
         'lighten-2':  #FF4E53,
         'lighten-3':  #FF8A8A,
         'other-1':    #FA2A30,
+        'other-2':    #FFEFF0
 );
 
 $blue: (
@@ -30,6 +31,7 @@ $blue: (
         'lighten-2':  #8EB0EF,
         'lighten-3':  #B0CBFF,
         'other-1':    #7496D9,
+        'link-hover': #6895EB,
 );
 
 $green: (
@@ -40,7 +42,8 @@ $green: (
         'lighten-3':  #8DE549,
         'other-1':    #6FC42E,
         'other-2':    #55A815,
-        'other-3':    #56A718
+        'other-3':    #56A718,
+        'other-4':    #DEF6CC
 );
 
 $gray: (
@@ -73,9 +76,10 @@ $gray: (
         '27': #F2F2F2,
         '28': #ECECEC,
         '29': #8A8A8A,
-        '30': #979797,
+        '30': #5E5E5E,
         '31': #F7F7F7,
-        '32': #C0C0C0
+        '32': #C0C0C0,
+        '33': #979797
 );
 
 $shades: (
@@ -98,4 +102,24 @@ $colors: (
 $named-colors: (
   'footer-bg': map_get($gray, '7'),
   'footer-menu-border': map_get($gray, '29')
+);
+
+
+$document-colors: (
+  'green-header': map_get($green, 'base'),
+  'green-gradient': radial-gradient(69.47% 69.47% at 42.16% 56.49%, #69BE28 0%, #56AB14 100%),
+  'gray-header': map_get($gray, '4'),
+  'gray-gradient': '',
+  'yellow-header': map_get($yellow, 'base'),
+  'yellow-gradient': '',
+  'blue-header': map_get($blue, 'base'),
+  'blue-gradient': radial-gradient(121.46% 198.36% at 48.38% 67.19%, #7DA2E9 0%, #6789CA 100%),
+  'red-header': map_get($red, 'base'),
+  'red-gradient': radial-gradient(46.87% 121.08% at 52.43% 50.22%, #EA262C 0%, #D7011B 100%)
+);
+
+$soc-icon-color: (
+  'fb': #5d93fd,
+  'vk': #2fa6ff,
+  'instagram': #e86dfd
 );
