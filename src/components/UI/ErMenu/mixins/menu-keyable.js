@@ -43,6 +43,7 @@ export default {
       } else {
         this.changeListIndex(e)
       }
+      this.$emit('keydown', e)
     },
     changeListIndex (e) {
       this.getTiles()

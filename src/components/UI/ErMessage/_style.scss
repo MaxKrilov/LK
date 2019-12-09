@@ -4,6 +4,7 @@
   min-height: 12px;
   min-width: 1px;
   position: relative;
+  pointer-events: none;
   &__message {
     line-height: normal;
     word-break: break-all;

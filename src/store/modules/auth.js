@@ -2,6 +2,7 @@ import { generateUrl, copyObject } from '@/functions/helper'
 import { authParamsAfterRedirect, makeTokens, validationToken } from '@/functions/auth'
 import { USER_ROLES } from '../mock/profile'
 import { isCombat } from '../../functions/helper'
+import { ERROR_MODAL } from '../actions/variables'
 
 const AUTH_REQUEST = 'AUTH_REQUEST'
 const AUTH_SUCCESS = 'AUTH_SUCCESS'
@@ -169,18 +170,25 @@ const actions = {
     }
   },
 
-  signOut: async ({ commit }) => {
-    const url = isCombat()
-      ? `https://auth.domru.ru/auth/realms/user/protocol/openid-connect/logout?redirect_uri=${location.origin}`
-      : `https://sso-balancer.testing.srv.loc/auth/realms/user/protocol/openid-connect/logout?redirect_uri=${location.origin}`
-    const result = await fetch(url, {
-      method: 'POST'
-    })
-    if (result.ok) {
-      localStorage.clear()
-      location.reload()
+  signOut: async ({ commit, rootState }, { api }) => {
+    try {
+      const { accessToken } = rootState.auth
+      const result = await api
+        .setWithCredentials()
+        .setData({
+          token: accessToken
+        })
+        .query('/sso/default/reject-token')
+      if (result.success) {
+        commit(AUTH_LOGOUT)
+        localStorage.removeItem(LKB2B_ACCESS)
+        location.href = result.redirect
+      }
+    } catch (e) {
+      commit(ERROR_MODAL, true, { root: true })
+      // todo Логирование
     }
-    commit(AUTH_LOGOUT)
+    // commit(AUTH_LOGOUT)
   },
   updateUserInfo ({ commit }, data) {
     const fData = {

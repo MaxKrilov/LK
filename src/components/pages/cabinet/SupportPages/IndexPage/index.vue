@@ -19,7 +19,7 @@
               @click="() => { setFilterRequest(getTypeFilterRequestAll) }"
               ) Все
           er-flex(xs12 sm6 order-sm order-sm1)
-            er-select(:items="listCity")
+            er-select(:items="listCity2", placeholder="Город", v-model="city", :deep="2", :nudge-bottom="0")
         .b-request__body
           .b-request__thead
             .b-request__thead-item(

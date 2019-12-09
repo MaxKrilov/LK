@@ -1,12 +1,12 @@
 <template lang="pug">
   div.app(data-app="true")
     div.app__content
-      template(v-if="isFetching")
+      //template(v-if="isFetching")
         | Проверяем авторизацию
-      template(v-else-if="!hasAccess")
+      //template(v-else-if="!hasAccess")
         | Доступ закрыт
-      template(v-else)
-        router-view
+
+      router-view
 </template>
 
 <script>
@@ -22,15 +22,15 @@ export default {
     model: 1
   }),
   async created () {
-    if (!this.refreshedToken.isFetching && !this.serverErrorMessage) {
-      this.$store.dispatch('auth/checkAuth', { api: this.$api })
-      const clientInfo = await this.$store.dispatch(`user/${GET_CLIENT_INFO}`, { api: this.$api })
-      if (clientInfo) {
-        this.$store.dispatch(`user/${GET_MANAGER_INFO}`, { api: this.$api })
-        this.$store.dispatch(`request/${GET_REQUEST}`, { api: this.$api })
-        this.$store.dispatch(`user/${GET_UNSIGNED_DOCUMENTS}`, { api: this.$api })
-      }
-    }
+    // if (!this.refreshedToken.isFetching && !this.serverErrorMessage) {
+    //   // this.$store.dispatch('auth/checkAuth', { api: this.$api })
+    //   const clientInfo = await this.$store.dispatch(`user/${GET_CLIENT_INFO}`, { api: this.$api })
+    //   if (clientInfo) {
+    //     this.$store.dispatch(`user/${GET_MANAGER_INFO}`, { api: this.$api })
+    //     this.$store.dispatch(`request/${GET_REQUEST}`, { api: this.$api })
+    //     this.$store.dispatch(`user/${GET_UNSIGNED_DOCUMENTS}`, { api: this.$api })
+    //   }
+    // }
   },
   mounted () {
     this.$store.commit(SCREEN_WIDTH, getScreenWidth())

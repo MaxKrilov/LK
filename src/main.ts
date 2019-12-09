@@ -20,7 +20,7 @@ import './functions/polyfill'
 Vue.prototype.$api = new API()
 
 // Регистрация UI компонентов
-const requireComponent = require.context('./components/UI', true, /Er[A-Z]\w+\/index\.(vue|js)$/)
+const requireComponent = require.context('./components/UI', true, /Er[A-Z]\w+\/index\.(vue|js|ts|tsx)$/)
 eachArray(requireComponent.keys(), (fileName: string) => {
   const componentConfig = requireComponent(fileName)
   const componentName = fileName.replace(/^\.\/(.*)\/index\.\w+$/, '$1')
