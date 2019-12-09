@@ -102,9 +102,9 @@ export default {
     toggleRightPanel () {
       this.isOpenRightPanel = !this.isOpenRightPanel
     },
-    ...mapActions({
-      signOut: 'auth/signOut'
-    })
+    signOut () {
+      this.$store.dispatch('auth/signOut', { api: this.$api })
+    }
   },
   mounted () {
     // console.log(this['user/getManagerInfo'])

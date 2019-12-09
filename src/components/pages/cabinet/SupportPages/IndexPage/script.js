@@ -29,6 +29,13 @@ export default class SupportIndexPage extends Vue {
     'Екатеринбург',
     'Уфа'
   ]
+  listCity2 = [
+    { caption: 'А', items: ['Абакан', 'Астрахань'] },
+    { caption: 'Б', items: ['Березники'] },
+    { caption: 'П', items: ['Пермь'] },
+    { caption: 'У', items: ['Уфа'] }
+  ]
+  city = ''
   /**
    * Тип заявок (для фильтрации)
    * @type {string}

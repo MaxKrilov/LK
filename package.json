@@ -3,7 +3,7 @@
   "version": "2.1.0",
   "private": true,
   "scripts": {
-    "dev": "vue-cli-service serve --https --host localhost.frontend2.b2bweb.t2.ertelecom.ru",
+    "dev": "vue-cli-service serve --http --host localhost.frontend2.b2bweb.t2.ertelecom.ru",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint"
   },
