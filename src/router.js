@@ -68,11 +68,7 @@ const router = new Router({
               path: 'edit',
               name: 'profile-edit',
               component: EditProfilePage
-            },
-            // {
-            //   path: '/*',
-            //   redirect: '/lk'
-            // }
+            }
           ]
         },
         {

@@ -1,5 +1,5 @@
 import { eachArray } from '@/functions/helper'
-import { mapGetters, mapActions } from 'vuex'
+import { mapGetters } from 'vuex'
 import { BREAKPOINT_XL } from '@/constants/breakpoint'
 import RightInfoPanelComponent from '../RightInfoPanelComponent/index.vue'
 import { SCREEN_WIDTH } from '../../../../../store/actions/variables'
