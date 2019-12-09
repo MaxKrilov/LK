@@ -94,6 +94,22 @@
       display: (md: none),
     ));
   }
+  &__top-padding2 {
+    @include media-query((
+      display: (
+        xs: block,
+        sm: none
+      )
+    ));
+  }
+  &__top-padding34 {
+    @include media-query((
+      display: (
+        xs: block,
+        lg: none
+      )
+    ));
+  }
   &__info-row {
     @include media-query((
       margin-top: (
@@ -109,6 +125,7 @@
         lg: -54px,
         xl: -34px,
       ),
+      margin-bottom: (md: 11px)
     ));
   }
   &__find {
@@ -147,11 +164,6 @@
     @include media-query((
       display: (md: none),
     ));
-    /*
-    &__text {
-      text-decoration: none;
-    }
-    */
   }
   &__back-arr {
     background: map_get($shades, 'white');
@@ -501,11 +513,6 @@
         color: map_get($yellow, 'base');
       }
     }
-    /*
-    &__left {
-      padding-right: 34px;
-    }
-    */
     &__right {
       padding-right: 50px;
       @include media-query((

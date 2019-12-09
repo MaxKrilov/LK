@@ -62,6 +62,7 @@ div(:class="`${pre}`")
             @input="typeFindValue"
           )
         er-flex(xs12 sm6 md6 lg3 xl3 :class="`${pre}__services`")
+          div.main-content--top-padding(:class="`${pre}__top-padding2`")
           div(@click="visTitleService" v-if="service" )
             div(:class="`${pre}__services__title ${pre}__services__title__${visService}`")
               | Услуга
@@ -79,6 +80,7 @@ div(:class="`${pre}`")
               @input="citiesValue"
             )
         er-flex(xs12 sm6 md5 lg3 xl3 :class="`${pre}__period`")
+          div.main-content--top-padding(:class="`${pre}__top-padding34`")
           div(:class="`${pre}__period__title`")
             | Период
           er-date-picker(
@@ -90,6 +92,7 @@ div(:class="`${pre}`")
             :periodInfo="periodInfo"
           )
         er-flex(xs12 sm6 md6 lg2 xl2 :class="`${pre}__typePay`" @click="visTitleTypePay")
+          div.main-content--top-padding(:class="`${pre}__top-padding34`")
           div(:class="`${pre}__typePay__title ${pre}__typePay__title__${visTypePay}`")
             | Тип операции
           er-select(
@@ -102,7 +105,7 @@ div(:class="`${pre}`")
 
         div(:class="`${pre}__container-button`")
           er-row(no-gutters)
-            er-flex.mb-16.d--flex.justify-content-center(xs12)
+            er-flex.mt-16.mb-20.d--flex.justify-content-center(xs12)
               er-icon.mr-8.color--green-base(name="lens" :class="`${pre}__icon-height`")
               span.caption.color--green-base(:class="`${pre}__icon-span`")
                 | Найдено 2 платежа

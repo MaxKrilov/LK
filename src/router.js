@@ -74,11 +74,7 @@ const router = new Router({
               path: 'edit',
               name: 'profile-edit',
               component: EditProfilePage
-            },
-            // {
-            //   path: '/*',
-            //   redirect: '/lk'
-            // }
+            }
           ]
         },
         {
@@ -87,7 +83,7 @@ const router = new Router({
           component: DocumentPage
         },
         {
-          path: 'pay',
+          path: 'payments',
           component: PayPage
         },
         {

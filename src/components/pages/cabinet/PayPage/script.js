@@ -42,6 +42,14 @@ export default {
         this.widthContainer = '100% !important'
         this.widthContButt = '100% !important'
       }
+      if (this[SCREEN_WIDTH] >= 1200) {
+        this.widthContainer = '104% !important'
+        this.widthContButt = '104% !important'
+      }
+      if (this[SCREEN_WIDTH] >= 1400) {
+        this.widthContainer = '111% !important'
+        this.widthContButt = '111% !important'
+      }
     }
   }),
   computed: {

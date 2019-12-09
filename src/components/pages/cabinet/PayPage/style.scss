@@ -26,6 +26,7 @@
         sm: 640px !important,
         md: 960px !important,
         lg: 1200px !important,
+        xl: 1440px !important
       )
     ));
   }
@@ -44,7 +45,6 @@
     ));
   }
   &__container-button {
-    width: 100% !important;
     padding-right: 0 !important;
     position: relative;
     @include media-query((
@@ -63,10 +63,6 @@
         lg: 0px,
         xl: 0px,
         xxl: 0px
-      ),
-      width: (
-        sm: 108% !important,
-        lg: 100% !important,
       ),
     ));
   }

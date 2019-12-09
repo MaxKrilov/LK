@@ -1,7 +1,6 @@
 import { mapGetters } from 'vuex'
 import { SCREEN_WIDTH } from '@/store/actions/variables'
 
-
 export default {
   name: 'detail-pay',
   props: ['month'],
@@ -15,7 +14,7 @@ export default {
     ]
   }),
   computed: {
-    ...mapGetters([SCREEN_WIDTH]),
+    ...mapGetters([SCREEN_WIDTH])
   },
   watch: {
     month () {

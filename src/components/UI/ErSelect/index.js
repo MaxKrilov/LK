@@ -184,9 +184,9 @@ export default {
         },
         blur: this.onBlur,
         focus: (e) => {
-         if (this[SCREEN_WIDTH] < 640) {
-           e.target.nextSibling.style.display = 'none'
-         }
+          if (this[SCREEN_WIDTH] < 640) {
+            e.target.nextSibling.style.display = 'none'
+          }
           this.$refs.activator.$refs.input.select()
         }
       }
@@ -277,7 +277,7 @@ export default {
       this.filterMobile = ''
     },
     onBlur (e) {
-      setTimeout(()=>{e.target.nextSibling.style.display = 'block'}, 500);
+      setTimeout(() => { e.target.nextSibling.style.display = 'block' }, 500)
 
       setTimeout(() => {
         if (!this.isSelected) {

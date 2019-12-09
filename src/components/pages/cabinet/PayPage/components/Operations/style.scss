@@ -33,16 +33,11 @@
   &__content {
     cursor: pointer;
     height: 100%;
+    width: 100%;
     background-color: map_get($shades, 'white');
     border-radius: inherit;
     border-right: 4px solid map_get($shades, 'transparent');
     display: flex;
-    @include media-query((
-      width: (
-        xs: 100%,
-        lg: 1199px
-      ),
-    ));
   }
   &__date {
     position: absolute;

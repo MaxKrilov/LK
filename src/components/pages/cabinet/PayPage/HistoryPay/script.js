@@ -15,10 +15,14 @@ export default {
     visFilter: '__vis-filter',
     widthContainer: '108% !important',
     changeWidth () {
-      this.widthContainer = (this[SCREEN_WIDTH] >= 960) ? this.widthContainer = '100% !important'
-        : (this[SCREEN_WIDTH] >= 900) ? this.widthContainer = '106% !important'
-          : (this[SCREEN_WIDTH] > 800) ? this.widthContainer = '107% !important'
-            : this.widthContainer = '108% !important'
+      let width
+      if (this[SCREEN_WIDTH] <= 800) width = '108'
+      if (this[SCREEN_WIDTH] > 800 && this[SCREEN_WIDTH] < 900) width = '107'
+      if (this[SCREEN_WIDTH] >= 900 && this[SCREEN_WIDTH] < 960) width = '106'
+      if (this[SCREEN_WIDTH] >= 960) width = '100'
+      if (this[SCREEN_WIDTH] >= 1200) width = '104'
+      if (this[SCREEN_WIDTH] >= 1400) width = '111'
+      this.widthContainer = `${width}% !important`
     }
   }),
   computed: {
@@ -34,7 +38,7 @@ export default {
   },
   methods: {
     paypage () {
-      this.$router.push('/lk/pay')
+      this.$router.push('/lk/payments')
     },
     typeFind (select) {
       if (select === 'По услуге') {
