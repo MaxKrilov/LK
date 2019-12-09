@@ -1,7 +1,6 @@
 import { generateUrl, copyObject } from '@/functions/helper'
 import { authParamsAfterRedirect, makeTokens, validationToken } from '@/functions/auth'
 import { USER_ROLES } from '../mock/profile'
-import { isCombat } from '../../functions/helper'
 import { ERROR_MODAL } from '../actions/variables'
 
 const AUTH_REQUEST = 'AUTH_REQUEST'
