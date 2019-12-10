@@ -6,6 +6,12 @@ import { BACKEND_COMBAT, BACKEND_TESTING } from '@/constants/url'
 import { API_DADATA } from '@/store/actions/api'
 import store from '../store'
 
+
+if (process.env.VUE_APP_USE_SSO_AUTH === 'no') {
+  return
+}
+
+
 export class API {
   private _branch = 'master'
   private _type: string = TYPE_OBJECT
