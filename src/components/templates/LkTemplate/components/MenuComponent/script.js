@@ -64,6 +64,7 @@ export default {
         name: 'Облачная телефония',
         icon: 'cloud_telephone',
         isOpen: false,
+        url: '/lk/oats/promo',
         subitem: [{ name: 'Портал ОАТС', url: '/lk/oats' }]
       }
     ]

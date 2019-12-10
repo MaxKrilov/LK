@@ -30,7 +30,8 @@ import DigitalProductsIndexPage from './components/pages/digital-products/IndexP
 // Создание клиента (для DMP)
 import DMPFormPage from './components/pages/dmp-form/index'
 
-import OATSPage from './components/pages/oats/index'
+import OATSPromoPage from './components/pages/oats/promo/index'
+import OATSMainPage from './components/pages/oats/index'
 // Страницы с ошибками
 import OldBrowserPage from './components/pages/errors/old-browsers'
 
@@ -91,8 +92,12 @@ const router = new Router({
           component: DigitalProductsIndexPage
         },
         {
+          path: 'oats/promo',
+          component: OATSPromoPage
+        },
+        {
           path: 'oats',
-          component: OATSPage
+          component: OATSMainPage
         },
         {
           path: 'support',

@@ -1,0 +1,14 @@
+div(:class="`${pre}`")
+  div(:class="`${pre}__title`") Доп. сервисы:
+
+  div(
+    :class="`${pre}__item`"
+    v-for="(item, index) in servicesList" :key="index"
+    )
+    er-icon(:name="item.icon" class="icon")
+    div(class="name")
+      div {{ item.name }}
+      div(v-if="item.description" class="description") {{ item.description }}
+    div(class="price-wrapper")
+      div(class="price") {{ item.price }}
+      span(class="units") &nbsp₽/месяц

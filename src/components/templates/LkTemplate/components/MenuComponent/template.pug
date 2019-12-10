@@ -28,7 +28,11 @@ div(:class="`${pre}`")
         div(:class="`${pre}__left__body-item__toggle`")
           er-icon(name="corner_down")
         div(:class="[`${pre}__left__body-item__sub-items`, { open: menuItem.isOpen }]")
-          a(:class="[`${pre}__left__body-item__sub-item`, 'main']") {{ menuItem.name }}
+          router-link(
+            :class="[`${pre}__left__body-item__sub-item`, 'main']"
+            :to="menuItem.url ? menuItem.url : '/'"
+            )
+            | {{ menuItem.name }}
           router-link(
             to="/lk/support"
             v-for="(subItem, subIndex) in menuItem.subitem",
