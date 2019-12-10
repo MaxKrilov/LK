@@ -22,13 +22,15 @@ export default {
     model: 1
   }),
   async created () {
-    if (!this.refreshedToken.isFetching && !this.serverErrorMessage) {
-      // this.$store.dispatch('auth/checkAuth', { api: this.$api })
-      const clientInfo = await this.$store.dispatch(`user/${GET_CLIENT_INFO}`, { api: this.$api })
-      if (clientInfo) {
-        this.$store.dispatch(`user/${GET_MANAGER_INFO}`, { api: this.$api })
-        this.$store.dispatch(`request/${GET_REQUEST}`, { api: this.$api })
-        this.$store.dispatch(`user/${GET_UNSIGNED_DOCUMENTS}`, { api: this.$api })
+    if (process.env.VUE_APP_USE_SSO_AUTH !== 'no') {
+      if (!this.refreshedToken.isFetching && !this.serverErrorMessage) {
+        // this.$store.dispatch('auth/checkAuth', { api: this.$api })
+        const clientInfo = await this.$store.dispatch(`user/${GET_CLIENT_INFO}`, { api: this.$api })
+        if (clientInfo) {
+          this.$store.dispatch(`user/${GET_MANAGER_INFO}`, { api: this.$api })
+          this.$store.dispatch(`request/${GET_REQUEST}`, { api: this.$api })
+          this.$store.dispatch(`user/${GET_UNSIGNED_DOCUMENTS}`, { api: this.$api })
+        }
       }
     }
   },
