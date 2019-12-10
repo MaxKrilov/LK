@@ -1,0 +1,73 @@
+.additional-services {
+  &__item {
+    display: flex;
+    padding-bottom: $padding-x4;
+    padding-top: $padding-x4;
+    border-top: 1px solid rgba(map_get($shades, "black"), 0.2);
+    align-items: center;
+    .icon {
+      @include color-black(0.2);
+    }
+    .name {
+      padding-left: $padding-x1;
+      @include min-breakpoint('md') {
+        padding-left: $padding-x2;
+      }
+      @include min-breakpoint('xl') {
+        padding-left: $padding-x4;
+      }
+      flex-basis: 100%;
+      justify-content: space-between;
+      align-items: center;
+      @include media-query(
+      (
+        display: (
+          sm: flex
+        ),
+        justify-content: (
+          md: unset
+        )
+      )
+      );
+    }
+    .description {
+      @extend %caption1;
+      flex-basis: 55%;
+      @include media-query(
+      (
+        flex-basis: (
+          md: 70%,
+          lg: 80%
+        ),
+        padding-right: (
+          sm: 20px,
+          md: 10px,
+          lg: 50px
+        ),
+        padding-left: (
+          md: $padding-x6
+        )
+      )
+    );
+    }
+    .price-wrapper {
+      display: flex;
+      align-items: baseline;
+    }
+    .units {
+      @extend %caption1;
+      white-space: nowrap;
+    }
+  }
+
+  &__title {
+    @extend %caption2;
+    padding-bottom: $padding-x2;
+  }
+
+  .price {
+    @extend %h4
+  }
+
+
+}
