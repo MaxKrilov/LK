@@ -1,4 +1,4 @@
-div xmlns:v-slot="http://www.w3.org/1999/XSL/Transform"(:class="`${pre}`")
+div(:class="`${pre}`")
   er-overlay(v-model="openLeftMenu", :z-index="6")
   er-overlay(v-model="isOpenRightPanel", :z-index="6")
   div(:class="[`${pre}__left`, { 'open': openLeftMenu || isDesktop }]")
@@ -15,7 +15,8 @@ div xmlns:v-slot="http://www.w3.org/1999/XSL/Transform"(:class="`${pre}`")
       div(
 
       v-for="(menuItem, index) in menu",
-        :class="`${pre}__left__body-item`",
+
+      :class="`${pre}__left__body-item`",
         @click="openSubMenu(menuItem)",
         :key="index"
       )
