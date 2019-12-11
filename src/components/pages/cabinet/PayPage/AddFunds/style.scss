@@ -1,0 +1,305 @@
+.add-funds {
+  width: 100%;
+  &__container-main {
+    min-width: 320px;
+    margin-left: -16px;
+    @include media-query((
+      margin-top: (
+        xs: -14px,
+        sm: -25px,
+        md: -24px,
+        lg: -21px,
+        xl: -23px,
+      ),
+      margin-left: (
+        sm: -24px,
+        md: 0,
+        lg: 0,
+      ),
+      margin-bottom: (
+        xs: -7px,
+      )
+    ));
+  }
+  &__container-main {
+    padding: 0 !important;
+    @include media-query((
+      max-width: (
+        xs: 480px !important,
+        sm: 640px !important,
+        md: 960px !important,
+        lg: 1200px !important,
+      )
+    ));
+  }
+  &__back-arr {
+    margin-left: 10px;
+    @include media-query((
+      margin-left: (
+        sm: 16px,
+        md: -10px,
+        lg: -17px,
+        xl: 0px,
+      ),
+      padding-left: (
+        xl: 0px,
+      )
+    ));
+  }
+  &__back-main {
+    display: none;
+    &__text {
+      text-decoration: none;
+    }
+    @include media-query((
+      margin-top: (
+        xl: 4px
+      ),
+      margin-bottom: (lg: 14px),
+      display: (xl: block),
+      padding-right: (lg: 16px !important)
+    ));
+  }
+  &__back-main-xs svg {
+    display: block;
+    height: 12px;
+    cursor: pointer;
+    margin-top: 26px;
+    color: rgba(map_get($yellow, 'base'), 0.8);
+    &__text {
+      text-decoration: none;
+    }
+    @include media-query((
+      display: (xl: none),
+    ));
+  }
+  &__icon-height svg {
+    height: 16px;
+    margin-left: -7px;
+  }
+  &__welcome-title {
+    width: 256px;
+    margin-bottom: 22px;
+    margin-top: 15px;
+    letter-spacing: -1px;
+    @include media-query((
+      margin-top: (
+        xl: -2px,
+        xxl: -4px
+      ),
+      width: (
+        sm: 456px
+      ),
+      margin-bottom: (sm: 24px, lg: 29px, xl: 42px)
+    ))
+  }
+  &__carousel {
+    &__item {
+      position: relative;
+
+      picture {
+        img {
+          width: 100%;
+          border-radius: 12px;
+          box-shadow: -0 2px 2px rgba(map_get($shades, 'black'), 0.03), 0 2px 12px rgba(map_get($shades, 'black'), 0.04);
+          @include media-query((
+            width: (lg: auto)
+          ))
+        }
+      }
+      .er-button {
+        position: absolute;
+        width: 160px;
+        bottom: 30px;
+        left: 24px;
+      }
+    }
+  }
+  &__main {
+    width: 1120px;
+    background: #E2E2E2;
+    box-shadow: inset 0 4px 16px rgba(0, 0, 0, .05);
+    margin-left: -64px;
+    padding: {
+      left: 64px;
+      right: 64px;
+    };
+    display: flex;
+    overflow: hidden;
+  }
+  &__sum {
+    width: 373px;
+    padding-top: 48px;
+    &__title {
+      font-size: 20px;
+      letter-spacing: -1px;
+      color: #000000;
+      opacity: .8;
+      font-weight: 300;
+      margin: 0;
+    }
+    &__input {
+      width: 203px;
+      margin-top: 23px;
+      position: relative;
+      & input {
+        position: relative;
+        font-size: 24px !important;
+      }
+      &__h3 {
+        @extend %h3;
+        /*
+        position: relative;
+        //left: -53px;
+        opacity: 0.3;
+        background: red;
+        */
+      }
+    }
+    &__remember {
+      margin-top: 20px;
+      display: flex;
+      align-items: center;
+      width: 263px;
+    }
+    &__button {
+      width: 203px;
+      margin-top: 50px;
+    }
+    &__text {
+      width: 305px;
+      margin: {
+        top: 30px;
+        bottom: 27px;
+      }
+    ;
+      line-height: 20px;
+      font-size: 14px;
+      color: #4E4E4E;
+
+      & a {
+        font-size: 14px;
+      }
+
+      & > div {
+        position: relative;
+        top: 4px;
+        left: 1px;
+      }
+    }
+  }
+  &__check {
+    margin-top: 64px;
+    width: 420px;
+    position: relative;
+    z-index: 6;
+    &__decoration {
+      position: relative;
+      width: 100%;
+      height: 26px;
+      background-color: #E0E0E0;
+      border-radius: 12px;
+    }
+    &__decoration-line {
+      position: absolute;
+      top: 10px;
+      left: 13px;
+      width: calc(100% - 26px);
+      height: 6px;
+      background-color: #C2C2C2;
+      box-shadow: inset -2px 2px 2px rgba(0, 0, 0, .3);
+      border-radius: 4px;
+    }
+    &__get-check {
+      width: 392px;
+      height: 263px;
+      padding: 50px 40px 37px 34px;
+      margin-top: -13px;
+      margin-left: 13px;
+      position: relative;
+      background-image: url("./get-check-bg.png");
+      background-position: center;
+      background-repeat: no-repeat;
+      filter: drop-shadow(-4px 6px 6px rgba(0, 0, 0, .15));
+      background-size: 392px 100%;
+    }
+    &__header {
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding-bottom: 16px;
+      border-bottom: 1px dashed #D5D5D5;
+    }
+    &__title {
+      font-size: 24px;
+      line-height: 28px;
+      color: #000000;
+      opacity: .8;
+      margin-right: 32px;
+    }
+    &__body {
+      margin-top: 36px;
+    }
+    &__input {
+      position: relative;
+      top: -13px;
+      text-align: center;    }
+  }
+
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 100%, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+/*
+&__welcome-title {
+  padding: 22px 16px 16px;
+  @include media-query((
+    padding: (
+      sm: 20px 24px 16px,
+      md: 20px 0 16px 30px,
+      lg: 27px 30px 17px,
+      xl: 25px 30px 15px
+    ),
+    font-size: (
+      'xl': 30px,
+    )
+  ));
+  &__question {
+    display: inline-block;
+    @include media-query((
+      padding: (
+        'xs': 0 10px,
+        'lg': 0 15px
+      )
+    ));
+    &__wrapper {
+      min-height: 130px;
+      h2.title--medium {
+        display: block;
+        margin-bottom: 15px;
+        letter-spacing: -1px;
+      }
+    }
+    &__text {
+      font: (normal 16px/20px $fedra-book, 'Roboto', 'Helvetica', sans-serif);
+      letter-spacing: -0.5px;
+    }
+    &__icon {
+      color: map_get($gray, '24');
+      &:hover {
+        color: map_get($yellow, 'base');
+        transition: color 0.2s ease-in;
+      }
+    }
+  }
+}
+*/
