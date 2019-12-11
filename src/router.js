@@ -30,6 +30,9 @@ import PayPage from './components/pages/cabinet/PayPage/index'
 // Страница история платежей
 import HistoryPay from './components/pages/cabinet/PayPage/HistoryPay/index'
 
+// Страница пополнения счета
+import AddFunds from './components/pages/cabinet/PayPage/AddFunds/index'
+
 // Цифровые продукты (от DMP)
 import DigitalProductsIndexPage from './components/pages/digital-products/IndexPage/index'
 
@@ -89,6 +92,10 @@ const router = new Router({
         {
           path: '/history-pay',
           component: HistoryPay
+        },
+        {
+          path: '/add-funds',
+          component: AddFunds
         },
         {
           name: 'documents.order',
