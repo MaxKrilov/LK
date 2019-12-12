@@ -34,7 +34,7 @@ export default {
       }
     }
   },
-  mounted () {
+  beforeCreate () {
     this.$store.commit(SCREEN_WIDTH, getScreenWidth())
     window.addEventListener('resize', () => {
       this.$store.commit(SCREEN_WIDTH, getScreenWidth())
