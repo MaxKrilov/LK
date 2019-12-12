@@ -1,5 +1,13 @@
 .add-funds {
   width: 100%;
+  &__line {
+    left: 0;
+    background: map_get($gray, '13');
+    height: 438px;
+    position: absolute;
+    right: 0;
+
+  }
   &__container-main {
     min-width: 320px;
     margin-left: -16px;
@@ -116,14 +124,16 @@
     }
   }
   &__main {
-    width: 1120px;
-    background: #E2E2E2;
+    width: 100%; //1120px;
+    background: map_get($gray, '13');
     box-shadow: inset 0 4px 16px rgba(0, 0, 0, .05);
+    /*
     margin-left: -64px;
     padding: {
       left: 64px;
       right: 64px;
     };
+    */
     display: flex;
     overflow: hidden;
   }

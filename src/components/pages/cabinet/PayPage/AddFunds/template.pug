@@ -19,67 +19,72 @@ div(:class="`${pre}`").main-content.main-content--h-padding
       h1.fonts--demi(:class="`${pre}__welcome-title`")
         | Пополнить счет
 
-  divt(:class="`${pre}__main`")
-    er-container(full :class="`${pre}__sum`")
-      er-row(no-gutters)
-        er-flex.mb-16.pr-8(xs5)
-          h3(:class="`${pre}__sum__title`") Сумма оплаты
-          div(:class="`${pre}__sum__input`")
-            er-text-field(
-              value="100500,00"
-              mask="999 999,99"
+
+    div(:class="`${pre}__main`")
+      div(:class="`${pre}__line`")
+      er-container(full :class="`${pre}__sum`")
+        er-row(no-gutters)
+          er-flex.mb-16.pr-8(xs5)
+            h3(:class="`${pre}__sum__title`") Сумма оплаты
+            div(:class="`${pre}__sum__input`")
+              er-text-field(
+                value="100500,00"
+                mask="999 999,99"
+              )
+                template(slot="append-inner")
+                  div.rub
+
+            div(:class="`${pre}__sum__remember`" v-if="true")
+              er-toggle(
+              )
+              div.caption.mb-4(style="border-bottom: 1px dashed black")
+                | Подключить автоплатёж
+              er-hint.ml-8
+                h4
+                  | Автоплатёж
+                | - это бесплатный сервис,
+                | При подключении автоплатежа
+                | зы соглашаетесь на
+                | автоматическое списание суммы,
+                | равной ежемесячной
+                | абонентской плате. Денежные
+                | средства будут списаны с 20 по
+                | последнее число месяца,
+                | предшествующего отчетному
+                | (например авансовый платеж за
+                | апрель будет списан c 20 по 31
+                | нарта).
+
+              //div(:class="`${pre}__welcome-title__question`")
+              //  er-tooltip(right)
+              //    template(v-slot:activator="{ on }")
+              //      span(
+              //      :class="[`${pre}__welcome-title__question__icon`]",
+              //      v-on="on")
+              //        er-icon(name="question")
+              //    div(:class="`${pre}__welcome-title__question__wrapper`")
+              //      h2.title--medium Учетные записи
+              //      p(:class="`${pre}__welcome-title__question__text`") Учетные записи дают доступ в Личный кабинет Дом.ru Бизнеc и в другие порталы
+
+            div(:class="`${pre}__sum__button`")
+              er-button(width="100%", @click="") Пополнить счёт
+            div(:class="`${pre}__sum__text`")
+              | Нажимая на кнопку, Вы принимаете&ensp;
+              a.link.gray-dashed(
+              href="https://console.ertelecom.ru/files/upload/d/1/0/d108447fbf9c5d88c2801d14a6e76725.pdf",
+              target="_blank"
+              ) условия оплаты и безопасности
+
+          er-flex(xs7)
+            er-carousel(
+            :data="getCarouselItem"
+            direction="up"
+            indicators=true
+            indicatorType="disc"
             )
-              template(slot="append-inner")
-                div.rub
 
-          div(:class="`${pre}__sum__remember`" v-if="true")
-            er-toggle(
-            )
-            div.caption.mb-4(style="border-bottom: 1px dashed black")
-              | Подключить автоплатёж
-            er-hint.ml-8
-              h4
-                | Автоплатёж
-              | - это бесплатный сервис,
-              | При подключении автоплатежа
-              | зы соглашаетесь на
-              | автоматическое списание суммы,
-              | равной ежемесячной
-              | абонентской плате. Денежные
-              | средства будут списаны с 20 по
-              | последнее число месяца,
-              | предшествующего отчетному
-              | (например авансовый платеж за
-              | апрель будет списан c 20 по 31
-              | нарта).
 
-            //div(:class="`${pre}__welcome-title__question`")
-            //  er-tooltip(right)
-            //    template(v-slot:activator="{ on }")
-            //      span(
-            //      :class="[`${pre}__welcome-title__question__icon`]",
-            //      v-on="on")
-            //        er-icon(name="question")
-            //    div(:class="`${pre}__welcome-title__question__wrapper`")
-            //      h2.title--medium Учетные записи
-            //      p(:class="`${pre}__welcome-title__question__text`") Учетные записи дают доступ в Личный кабинет Дом.ru Бизнеc и в другие порталы
 
-          div(:class="`${pre}__sum__button`")
-            er-button(width="100%", @click="") Пополнить счёт
-          div(:class="`${pre}__sum__text`")
-            | Нажимая на кнопку, Вы принимаете&ensp;
-            a.link.gray-dashed(
-            href="https://console.ertelecom.ru/files/upload/d/1/0/d108447fbf9c5d88c2801d14a6e76725.pdf",
-            target="_blank"
-            ) условия оплаты и безопасности
-
-        er-flex(xs7)
-          er-carousel(
-          :data="getCarouselItem"
-          direction="up"
-          indicators=true
-          indicatorType="disc"
-          )
 
   div(:class="`${pre}__check`")#get-check
     div(:class="`${pre}__check__decoration`")
