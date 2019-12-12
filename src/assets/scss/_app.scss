@@ -91,3 +91,7 @@ $color-of-dragger: map_get($yellow, 'base');
 .vb.vb-dragging-phantom > .vb-dragger > .vb-dragger-styler {
   background-color: rgba($color-of-dragger, 1);
 }
+
+.overflow-y-hidden {
+  overflow-y: hidden;
+}

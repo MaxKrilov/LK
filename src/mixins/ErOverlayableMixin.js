@@ -142,17 +142,10 @@ export default {
       return path
     },
     hideScroll () {
-      if (getScreenWidth() <= BREAKPOINT_SM) {
-        addClass(document.documentElement, 'overflow-y-hidden')
-      } else {
-        window.addEventListener('while', this.scrollListener, { passive: false })
-        window.addEventListener('keydown', this.scrollListener)
-      }
+      addClass(document.documentElement, 'overflow-y-hidden')
     },
     showScroll () {
       removeClass(document.documentElement, 'overflow-y-hidden')
-      window.removeEventListener('wheel', this.scrollListener)
-      window.removeEventListener('keydown', this.scrollListener)
     }
   },
   beforeDestroy () {
