@@ -79,7 +79,7 @@ export default class ErSelect extends mixins(ErTextField) {
   multiselectStartValue = []
 
   get directives () {
-    return this.hasFocus ? [{
+    return this.hasFocus && !this.isMobile ? [{
       name: 'click-outside',
       value: this.blur,
       args: {
@@ -241,9 +241,9 @@ export default class ErSelect extends mixins(ErTextField) {
         this.isMultiple && this.issetValue ? this.generateClearIcon() : null,
         this.generateToggleIcon()
       ]),
-      this.isMobile
-        ? this.generateDialog()
-        : this.generateMenu()
+      !this.isMobile
+        ? this.generateMenu()
+        : this.generateDialog()
     ]
   }
 
