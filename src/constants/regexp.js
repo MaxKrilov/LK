@@ -9,3 +9,4 @@ export const PATTERN_NOT_LETTERS = /^[a-zA-Z]+$/
 export const PATTERN_RUSSIAN_PHONE = /^((\s|8|\+7)(-?|\s?))?\(?\d{3}\)?(-?|\s?)?\d{1}-?\d{1}-?\d{1}-?\d{1}-?\d{1}-?\d{1}-?\d{1}/
 export const PATTERN_CYRILLIC_LETTERS = /^[аАбБвВгГдДеЕёЁжЖзЗиИйЙкКлЛмМнНоОпПрРсСтТуУфФхХцЦчЧшШщЩъЪыЫьЬэЭюЮяЯ]+$/
 export const PATTERN_HAS_CYRILLIC_LETTERS = /[ЁёА-я]+/
+export const PATTERN_HTML_TAGS = /(<(\/?[^>]+)>)/

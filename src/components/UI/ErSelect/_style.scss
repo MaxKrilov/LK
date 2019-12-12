@@ -1,114 +1,221 @@
 .er-select {
-  .er-input > .er-input__control > .er-input__slot {
-    height: auto;
+   > .er-input__control
+   > .er-input__slot {
+    height: auto !important;
     min-height: 40px;
     align-items: flex-start;
-    padding-top: 12px;
-    > .er-text-field__slot {
-      flex-wrap: wrap;
-      input {
-        pointer-events: none;
-        flex: 1 1;
-      }
-      label {
-        user-select: none;
-      }
+    padding-top: 10px !important;
+    padding-bottom: 10px !important;
+    @include min-breakpoint('xl') {
+      min-height: 46px;
+      padding-top: 13px !important;
+      padding-bottom: 13px !important;
     }
   }
-  &__head {
-    width: 100%;
-    height: 48px;
-    .title {
-      @extend %h3;
+  &__list {
+    background: linear-gradient(to top, map_get($gray, '26') 28.65%, map_get($shades, 'white') 90.63%);
+    box-shadow: -8px 8px 16px rgba(map_get($shades, 'black'), 0.04),
+                0 8px 24px rgba(map_get($shades, 'black'), 0.06);
+    border-radius: 8px;
+    padding: 1px;
+    .content {
+      width: 100%;
+      background: map_get($shades, 'white');
+      border-radius: inherit;
+      padding: 12px 0;
+      max-height: 304px;
     }
-    button {
-      background: map_get($shades, 'transparent');
+  }
+  &__selections {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    flex: 1 1;
+    max-width: 100%;
+    min-width: 0;
+    + .er-text-field__slot {
+      position: static;
+    }
+    &--chip {
+      @extend %caption2;
+      font-weight: 400;
+      @include color-black(0.8);
+      text-decoration: underline;
+      text-decoration-style: dashed;
+      margin-right: 16px;
+      button {
+        background-color: map_get($shades, 'transparent');
+        border: none;
+        outline: none;
+        cursor: pointer;
+        margin-left: 2px;
+        svg {
+          width: 16px;
+          @include color-black(0.2)
+        }
+      }
+    }
+    input {
+      flex: 1 1;
+    }
+  }
+  &__slot {
+    position: relative;
+    align-items: center;
+    display: flex;
+    max-width: 100%;
+    width: 100%;
+    > .er-select__toggle {
+      align-self: flex-start;
+      > .er-input__append-inner > .er-icon > svg {
+        width: 16px;
+        @include color-black(0.2);
+        transition: $primary-transition;
+      }
+      &.rotate > .er-input__append-inner > .er-icon > svg {
+        transform: rotate(180deg);
+        @include color-black(0.5);
+      }
+    }
+    input,
+    label {
+      @extend %body-font;
+    }
+    input {
+      width: 100%;
+      height: 100%;
       border: none;
       outline: none;
-      cursor: pointer;
-      svg {
-        pointer-events: none;
-        @include color-black(0.5);
-        width: 16px;
+      color: rgba(map_get($shades, 'black'), 0.8);
+      background: map_get($shades, 'transparent');
+    }
+    label {
+      position: absolute;
+      color: rgba(map_get($shades, 'black'), 0.5);
+      pointer-events: none;
+      transition: $primary-transition;
+      transform-origin: left;
+      height: 20px;
+      left: 0;
+      top: 0;
+      &.er-text-field,
+      &.er-textarea {
+        &--active {
+          transform: scale(0.85) translateY(-40px);
+        }
       }
     }
   }
   &__item {
-    width: 100%;
-    height: 32px;
-    @extend %body-font;
-    line-height: 32px;
-    border-left: 4px solid map_get($shades, 'transparent');
-    user-select: none;
-    @include color-black(0.5);
-    transition: $primary-transition;
-    margin-bottom: 8px;
     display: flex;
+    border-left: 4px solid map_get($shades, 'transparent');
     align-items: center;
-    cursor: pointer;
-    span {
-      font-family: $fedra-med;
-      @include color-black(0.8)
+    @include color-black(0.8);
+    margin-right: -20px;
+    i {
+      color: map_get($green, 'base');
+      display: block;
+      align-self: flex-start;
+      margin-right: 16px;
+      margin-top: 4px;
+      svg { width: 16px; }
     }
-    @include min-breakpoint('md') {
-      &:hover:not(:active):not(.active) {
-        background-color: map_get($shades, 'white');
-        @include color-black(0.8);
-        border-left-color: map_get($yellow, 'base');
+    &--inner {
+      display: flex;
+      width: 100%;
+      min-height: 32px;
+      padding: 4px 12px;
+      @extend %body-font;
+      cursor: pointer;
+      transition: $primary-transition;
+      span {
+        font-family: $fedra-med;
       }
+      &.empty { pointer-events: none; }
+    }
+    &:hover {
+      background-color: map_get($gray, '2');
+      border-left-color: map_get($yellow, 'base');
+      @include color-black()
     }
     &:active {
-      @include color-black();
       background-color: map_get($yellow, 'base');
     }
     &.active {
       color: map_get($green, 'base');
-      &::after {
-        content: '';
-        background: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik03LjE2NDA5IDkuMTg3MzRMNC4zOTUxOSA2LjQxODMzTDIuOTgwOTYgNy44MzI1Nkw3LjIyMzQxIDEyLjA3NUwxNS4wNjExIDQuMzU2MjlMMTMuNTg3NiAyLjg4MjgxTDcuMTY0MDkgOS4xODczNFoiIGZpbGw9IiM2OUJFMjgiPjwvcGF0aD4KPC9zdmc+") no-repeat;
-        display: block;
-        width: 16px;
-        height: 16px;
-        margin-left: auto;
-      }
+    }
+  }
+  &__clear {
+    @include color-black(0.5);
+    cursor: pointer;
+    svg {
+      width: 16px !important;
     }
   }
   &__caption {
     @extend %caption2;
   }
-  &__chip {
-    .content {
-      @extend %caption2;
-      @include color-black(0.8);
-      text-decoration: underline;
-      text-decoration-style: dashed;
-      user-select: none;
-    }
-    .close {
-      background-color: map_get($shades, 'transparent');
-      border: none;
-      outline: none;
-      cursor: pointer;
-      svg {
-        width: 16px;
-        @include color-black(0.2);
-        pointer-events: none;
+
+  &.er-text-field--error {
+    > .er-input__control {
+      > .er-input__slot {
+        > .er-select__slot {
+          > label {
+            color: map_get($red, 'base');
+          }
+        }
       }
     }
   }
-  &__menu {
-    background: linear-gradient(to top, map_get($gray, '26') 0%, map_get($shades, 'white') 100%);
-    border-radius: 0 0 12px 12px;
-    padding: 1px;
-    box-shadow: -4px 4px 16px rgba(map_get($shades, 'black'), 0.1);
-    height: auto;
-    max-height: 300px;
-    .content {
-      width: 100%;
-      height: 100%;
-      background: map_get($shades, 'white');
-      border-radius: inherit;
-      padding: 16px 0;
+
+  &__dialog {
+    background-color: map_get($gray, '3');
+    overflow: hidden;
+    .er-select {
+      &__head {
+        height: 48px;
+        background-color: map_get($shades, 'white');
+        .title {
+          @extend %h3;
+        }
+        button {
+          background-color: map_get($shades, 'transparent');
+          border: none;
+          outline: none;
+          margin-left: auto;
+          @include color-black(0.5);
+          cursor: pointer;
+          svg {
+            width: 16px;
+          }
+        }
+      }
+      &__body {
+        padding-bottom: 64px;
+      }
+      &__item {
+        margin-right: 0;
+      }
+    }
+  }
+  &__dialog-confirm {
+    position: fixed;
+    width: 100%;
+    display: flex;
+    background-color: map_get($shades, 'white');
+    padding: 12px;
+    bottom: 0;
+    transform: translateY(64px);
+    transition: $primary-transition;
+    .er-button:first-child {
+      max-width: 64px;
+      margin-right: 16px;
+    }
+    .er-button:last-child {
+      max-width: 192px;
+    }
+    &.show {
+      transform: translateY(0);
     }
   }
 }

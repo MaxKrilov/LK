@@ -1,9 +1,9 @@
 <template lang="pug">
   div.app(data-app="true")
     div.app__content
-      template(v-if="isFetching")
+      //template(v-if="isFetching")
         | Проверяем авторизацию
-      template(v-else-if="!hasAccess")
+      //template(v-else-if="!hasAccess")
         | Доступ закрыт
 
       router-view
