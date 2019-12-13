@@ -1,37 +1,40 @@
 .button-pay {
-  &__icon-height svg {
-    height: 16px;
-    margin-left: -7px;
+  &__icon-height {
+    vertical-align: unset !important;
+    svg {
+      height: 16px;
+      margin-left: -7px;
+    }
   }
   &__icon-span {
     display: inline-block;
     position: absolute;
     vertical-align: top;
     width: 50px;
-    font-family: $fedra-demi;
-    font-size: 11px !important;
+    font: 11px/16px $fedra-demi;
     letter-spacing: 0.35px;
-    line-height: 18px;
     @include media-query((
       width: (
         sm: 160px,
       ),
       font-size: (
-        lg: 13px !important,
-        xl: 14px !important,
+        md: 13px,
+        xl: 14px,
       ),
+      line-height: (xl: 19px),
       letter-spacing: (
-        lg: 1px,
-        md: normal
+        md: normal,
+        lg: 0.35px,
+        xl: normal
       )
     ));
   }
   &__card-height {
-    height: 147px !important;
+    height: 147px;
     @include media-query((
       height: (
-        md: 166px !important,
-        lg: 190px !important,
+        md: 166px,
+        lg: 190px
       ),
     ));
   }
@@ -70,9 +73,7 @@
         sm: 4.4vw !important,
         md: 0 !important,
       ),
-      padding-right: (
-        md: 0
-      )
+      //padding-right: (md: 0)
     ));
   }
   &__card-scale {

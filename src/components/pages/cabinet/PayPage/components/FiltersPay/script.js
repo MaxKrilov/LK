@@ -120,10 +120,12 @@ export default {
   watch: {
     SCREEN_WIDTH () {
       this.changeArr()
-      this.widthContainer = (this[SCREEN_WIDTH] >= 900) ? this.widthContainer = '109% !important'
-        : (this[SCREEN_WIDTH] >= 770) ? this.widthContainer = '110% !important'
-          : (this[SCREEN_WIDTH] > 680) ? this.widthContainer = '112% !important'
-            : this.widthContainer = '113% !important'
+      this.widthContainer = (this[SCREEN_WIDTH] >= 1600) ? this.widthContainer = '62% !important'
+        : (this[SCREEN_WIDTH] >= 1440) ? this.widthContainer = '80% !important'
+          : (this[SCREEN_WIDTH] >= 900) ? this.widthContainer = '109% !important'
+            : (this[SCREEN_WIDTH] >= 770) ? this.widthContainer = '110% !important'
+              : (this[SCREEN_WIDTH] > 680) ? this.widthContainer = '112% !important'
+                : this.widthContainer = '113% !important'
     }
   },
   methods: {
