@@ -140,6 +140,9 @@
         xl: 0px,
       )
     ));
+    &__left svg {
+      transform: rotate(90deg);
+    }
   }
   &__back-main {
     display: none;

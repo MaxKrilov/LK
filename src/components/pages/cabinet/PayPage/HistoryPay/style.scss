@@ -3,9 +3,10 @@
   &__container-main {
     min-width: 320px;
     margin-left: -16px;
+    margin-top: -14px;
+    margin-bottom: -7px;
     @include media-query((
       margin-top: (
-        xs: -14px,
         sm: -25px,
         md: -24px,
         lg: -21px,
@@ -16,16 +17,13 @@
         md: 0,
         lg: 0,
       ),
-      margin-bottom: (
-        xs: -7px,
-      )
     ));
   }
   &__container {
     padding: 0 !important;
+    max-width: 480px !important;
     @include media-query((
       max-width: (
-        xs: 480px !important,
         sm: 640px !important,
         md: 960px !important,
         lg: 1200px !important,
@@ -36,9 +34,9 @@
   &__container-operation {
     padding: 0 !important;
     position: relative;
+    margin-top: 32px;
     @include media-query((
       margin-top: (
-        xs: 32px,
         md: 25px,
         lg: 30px
       ),

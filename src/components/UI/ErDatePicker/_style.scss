@@ -31,7 +31,6 @@
 
 .er-date-picker {
   width: 100%;
-//  max-width: 320px;
   max-width: 360px;
   &__wrapper {
     display: flex;
@@ -79,7 +78,6 @@
       color: rgba(map_get($shades, 'black'), 0.8);
       white-space: nowrap;
       cursor: pointer;
-//      padding-right: 36px;
       padding-right: 11px;
       a {
         border-bottom: 1px dashed rgba(map_get($shades, 'black'), 0.8);

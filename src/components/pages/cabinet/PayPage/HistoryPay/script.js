@@ -13,7 +13,7 @@ export default {
     pre: 'history-pay',
     valSelect: 'Январь',
     visFilter: '__vis-filter',
-    widthContainer: '108% !important',
+    widthContainer: '108%',
     changeWidth () {
       let width
       if (this[SCREEN_WIDTH] <= 800) width = '108'
@@ -22,7 +22,7 @@ export default {
       if (this[SCREEN_WIDTH] >= 960) width = '100'
       if (this[SCREEN_WIDTH] >= 1200) width = '104'
       if (this[SCREEN_WIDTH] >= 1400) width = '111'
-      this.widthContainer = `${width}% !important`
+      this.widthContainer = `${width}%`
     }
   }),
   computed: {
@@ -37,9 +37,6 @@ export default {
     }
   },
   methods: {
-    paypage () {
-      this.$router.push('/lk/payments')
-    },
     typeFind (select) {
       if (select === 'По услуге') {
         this.valSelect = 'Январь'

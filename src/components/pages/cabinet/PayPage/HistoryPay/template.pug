@@ -6,16 +6,14 @@ div.main-content.main-content--h-padding.main-content--top-menu-fix(:class="`${p
     div.caption(:class="`${pre}__back-main`")
       div.ml-auto
         er-icon(name="arrow_l" :class="`${pre}__icon-height`")
-        a.caption(
-          href="#"
-          :class="`${pre}__back-main__text`"
-          @click="paypage"
-        )
-          | Назад
+        a.caption(href="#" :class="`${pre}__back-main__text`")
+        router-link(to="/lk/payments") Назад
 
     div.mb-8.d--flex.align-items-start(:class="`${pre}__back-arr`")
-      div(:class="`${pre}__back-main-xs`" @click="paypage")
-        er-icon(name="left")
+      div(:class="`${pre}__back-main-xs`")
+        router-link(to="/lk/payments")
+          er-icon(name="left")
+
       h1.fonts--demi(:class="`${pre}__welcome-title`")
         | История платежей
 

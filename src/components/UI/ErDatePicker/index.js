@@ -14,7 +14,6 @@ export default {
     isMobile: false,
     tag: 'er-menu', // todo change on er-menu
     isOpenDialog: false,
-    // typeOfCalendar: 'calendar',
     typeOfCalendar: 'report',
     result: '1-й квартал  2019',
     /**
@@ -96,7 +95,6 @@ export default {
           [
             this.$createElement('a', {
               attrs: {
-                // 'data-type': 'calendar'
                 'data-type': 'report'
               },
               on: {
@@ -105,7 +103,6 @@ export default {
             }, 'Отчетный период')
           ]
         ),
-        // this._.isArray(this.internalValue) && this.$createElement('div',
         this.$createElement('div',
           { staticClass: `${this.pre}__head__slider-item` },
           [
@@ -150,18 +147,6 @@ export default {
     },
     generateHeadTitleForReport () {
       let number, period, year
-
-      /*
-            if (this._.head(this.internalValue).getFullYear() !== this._.last(this.internalValue).getFullYear()) {
-              return this.generateHeadTitleForCalendar()
-            }
-            year = '2019' //this._.head(this.internalValue).getFullYear()
-            const dayBegin = '15' //this._.head(this.internalValue).getDate()
-            const dayEnd = ''; '20' //this._.last(this.internalValue).getDate()
-            const monthBegin = '01' //this._.head(this.internalValue).getMonth()
-            const monthEnd = '03' //this._.last(this.internalValue).getMonth()
-
-      */
       year = '2019'
       const dayBegin = '1'
       const dayEnd = '20'
@@ -224,7 +209,6 @@ export default {
               disabledDate: this.disabledDate
             },
             on: {
-              // input: e => { this.internalValue = e }
               input: (e) => {
                 this.$emit('datename', e[2])
                 this.$emit('yearname', e[3])

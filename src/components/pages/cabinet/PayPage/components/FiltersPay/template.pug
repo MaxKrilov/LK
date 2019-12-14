@@ -118,24 +118,28 @@ div(:class="`${pre}`")
               er-button(type="submit", flat=true, @click="")
                 | Сбросить фильтр
 
+
+
+
+  div(:class="`${pre}__arr__wrapper`")
   div(
-    :class="`${pre}__arr${padding} ${pre}__arr${topFilter}`"
-    :style="'width: ' + widthContainer"
+  :class="`${pre}__arr${padding} ${pre}__arr${topFilter}`"
+  :style="'width: ' + widthContainer"
   )
     div(
-      :class="`${pre}__icon-arr`"
-      @click="moveMonth('left')"
-      v-if="visArr"
+    :class="`${pre}__icon-arr`"
+    @click="moveMonth('left')"
+    v-if="visArr"
     )
       er-icon(name="left_big")
     div(:class="`${pre}__months-filter1`")
       div(
-        :style="'margin-left: ' + margLeft"
-        :class="`${pre}__months-filter2`"
+      :style="'margin-left: ' + margLeft"
+      :class="`${pre}__months-filter2`"
       )
         span(
-          v-for="month in typePeriod"
-          :class="`${pre}__months-filter__span`"
+        v-for="month in typePeriod"
+        :class="`${pre}__months-filter__span`"
         )
           er-button(type="button", flat=true,
           :class="`${pre}__months-filter__text ${pre}__months-filter__${month.active}`"
@@ -143,8 +147,44 @@ div(:class="`${pre}`")
           )
             | {{ month.month }}
     div(
-      :class="`${pre}__icon-arr ${pre}__icon-arr__right`"
-      @click="moveMonth('right')"
-      v-if="visArr"
+    :class="`${pre}__icon-arr ${pre}__icon-arr__right`"
+    @click="moveMonth('right')"
+    v-if="visArr"
     )
       er-icon(name="right_big")
+  //
+
+
+
+  //div(:class="`${pre}__arr__wrapper`")
+  //div(:class="`${pre}__arr${padding} ${pre}__arr${topFilter} ${pre}__arr__hidden`")
+  //  div(
+  //    :class="``"
+  //    :style="'width: ' + widthContainer"
+  //  )
+  //    div(
+  //      :class="`${pre}__icon-arr`"
+  //      @click="moveMonth('left')"
+  //      v-if="visArr"
+  //    )
+  //      er-icon(name="left_big")
+  //    div(:class="`${pre}__months-filter1`")
+  //      div(
+  //        :style="'margin-left: ' + margLeft"
+  //        :class="`${pre}__months-filter2`"
+  //      )
+  //        span(
+  //          v-for="month in typePeriod"
+  //          :class="`${pre}__months-filter__span`"
+  //        )
+  //          er-button(type="button", flat=true,
+  //          :class="`${pre}__months-filter__text ${pre}__months-filter__${month.active}`"
+  //          @click="selectMonth($event)"
+  //          )
+  //            | {{ month.month }}
+  //  div(
+  //    :class="`${pre}__icon-arr ${pre}__icon-arr__right`"
+  //    @click="moveMonth('right')"
+  //    v-if="visArr"
+  //  )
+  //    er-icon(name="right_big")
