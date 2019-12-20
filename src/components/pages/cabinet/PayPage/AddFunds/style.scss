@@ -1,16 +1,19 @@
 .add-funds {
   width: 100%;
+  background: #F3F3F3;
   &__line {
     left: 0;
     background: map_get($gray, '13');
-    height: 438px;
+    //background: #CAC9C9;
+    height: 386px;
     position: absolute;
     right: 0;
-
+    border: 1px solid black;
   }
   &__container-main {
     min-width: 320px;
     margin-left: -16px;
+    //height: 432px;
     @include media-query((
       margin-top: (
         xs: -14px,
@@ -21,7 +24,7 @@
       ),
       margin-left: (
         sm: -24px,
-        md: 0,
+        md: 30px,
         lg: 0,
       ),
       margin-bottom: (
@@ -98,7 +101,11 @@
       width: (
         sm: 456px
       ),
-      margin-bottom: (sm: 24px, lg: 29px, xl: 42px)
+      margin-bottom: (
+        sm: 24px,
+        lg: 29px,
+        xl: 0px
+      )
     ))
   }
   &__carousel {
@@ -124,7 +131,11 @@
     }
   }
   &__main {
-    width: 100%; //1120px;
+    width: 104%; //1120px;
+    //////// <<<< 4386 >>>> ////////
+    height: 386px;
+    margin-top: 38px;
+    //padding-top: 44px;
     background: map_get($gray, '13');
     box-shadow: inset 0 4px 16px rgba(0, 0, 0, .05);
     /*
@@ -138,15 +149,18 @@
     overflow: hidden;
   }
   &__sum {
-    width: 373px;
-    padding-top: 48px;
+    width: 100%; //373px;
+    padding-top: 0; //48px;
+    background: #F3F3F3;
+    //margin: 0
+
     &__title {
       font-size: 20px;
       letter-spacing: -1px;
       color: #000000;
       opacity: .8;
       font-weight: 300;
-      margin: 0;
+      margin: 44px 0 0;
     }
     &__input {
       width: 203px;
@@ -174,7 +188,7 @@
     }
     &__button {
       width: 203px;
-      margin-top: 50px;
+      margin-top: 31px;
     }
     &__text {
       width: 305px;
@@ -200,9 +214,17 @@
   }
   &__check {
     margin-top: 64px;
-    width: 420px;
+    width: 313px; //420
     position: relative;
     z-index: 6;
+    margin-left: -12px;
+    @include media-query((
+      width: (md: 420px),
+      margin-left: (
+        md: 46px,
+        lg: 16px,
+      ),
+    ));
     &__decoration {
       position: relative;
       width: 100%;
@@ -221,17 +243,22 @@
       border-radius: 4px;
     }
     &__get-check {
-      width: 392px;
+      width: 288px;  //392px
       height: 263px;
       padding: 50px 40px 37px 34px;
       margin-top: -13px;
       margin-left: 13px;
       position: relative;
-      background-image: url("./get-check-bg.png");
+      background-image: url("../../../../../../static/get-check-bg.png");
       background-position: center;
       background-repeat: no-repeat;
       filter: drop-shadow(-4px 6px 6px rgba(0, 0, 0, .15));
-      background-size: 392px 100%;
+      background-size: 288px 100%;
+      @include media-query((
+        width: (md: 392px),
+        background-size: (md: 392px)
+    ));
+
     }
     &__header {
       text-align: center;
@@ -256,7 +283,10 @@
       top: -13px;
       text-align: center;    }
   }
-
+  &__cards {
+    margin-left: -14px;
+    background: blue;
+  }
 }
 
 @keyframes fadeInUp {

@@ -20,15 +20,16 @@ div(:class="`${pre}`").main-content.main-content--h-padding
         | Пополнить счет
 
 
+      //
     div(:class="`${pre}__main`")
       div(:class="`${pre}__line`")
-      er-container(full :class="`${pre}__sum`")
+      div(full :class="`${pre}__sum`")
         er-row(no-gutters)
-          er-flex.mb-16.pr-8(xs5)
-            h3(:class="`${pre}__sum__title`") Сумма оплаты
+          er-flex.mb-16.pr-8(xs12 lg5 order-xs2 order-lg1)
+            h4(:class="`${pre}__sum__title`") Сумма оплаты
             div(:class="`${pre}__sum__input`")
               er-text-field(
-                value="100500,00"
+                :value="sumPay"
                 mask="999 999,99"
               )
                 template(slot="append-inner")
@@ -75,17 +76,18 @@ div(:class="`${pre}`").main-content.main-content--h-padding
               target="_blank"
               ) условия оплаты и безопасности
 
-          er-flex(xs7)
-            er-carousel(
-            :data="getCarouselItem"
-            direction="up"
-            indicators=true
-            indicatorType="disc"
-            )
+          er-flex(xs12 lg7 order-xs1 order-lg2)
+            PayCard
 
 
 
 
+
+
+
+
+
+  //
   div(:class="`${pre}__check`")#get-check
     div(:class="`${pre}__check__decoration`")
       div(:class="`${pre}__check__decoration-line`")
@@ -105,3 +107,18 @@ div(:class="`${pre}`").main-content.main-content--h-padding
         value="konstantinopolsky@company.ru"
         )
 
+  //img(src="@/assets/images/card_new_320.png" v-if="screenW === '320'")
+  //img(src="@/assets/images/card_new_480.png" v-if="screenW === '480'")
+  //img(src="@/assets/images/card_new_640.png" v-if="screenW === '640'")
+  //img(src="@/assets/images/card_new_960.png" v-if="screenW === '960'")
+  //img(src="@/assets/images/card_new_1200.png" v-if="screenW === '1200'")
+  //img(src="@/assets/images/card_new_1440.png" v-if="screenW === '1440'")
+
+
+
+//er-carousel(
+//:data="getCarouselItem"
+//direction="up"
+//indicators=true
+//indicatorType="disc"
+//)
