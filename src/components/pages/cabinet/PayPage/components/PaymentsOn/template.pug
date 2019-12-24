@@ -1,0 +1,34 @@
+// Payments On
+
+div(:class="`${pre}`" id="bgg")
+  er-container(full :class="`${pre}__container`")
+    er-row.justify-content-between.no-gutters
+      er-flex(xs2 )
+        div
+          er-icon(name="circle_ok" :class="`${pre}__icon-height`")
+      er-flex(xs10)
+        div(:class="`${pre}__pos`")
+          h2.mb-4(style="")
+            | Оплата прошла успешно
+          div(:class="`${pre}__info`")
+            er-icon(name="ok" :class="`${pre}__info__icon`")
+            span.caption(:class="`${pre}__info__span`")
+              | Включен автоплатёж
+          div.mt-20(:class="`${pre}__info`")
+            er-icon(name="ok" :class="`${pre}__info__icon`")
+            span.caption(:class="`${pre}__info__span`")
+              | Карта сохранена
+          div.mt-64
+            h4.mb-4
+              | Чек отправлен
+            div.caption2.mb-4
+              | на электронную почту:
+            h4(:class="`${pre}__email`")
+              | konstantinopolsky@company.ru
+
+        er-flex.no-gutters(xs3 :class="`${pre}__butt`")
+          er-button(
+            type="submit"
+            @click="tryAgain"
+          )
+            | В платежи

@@ -21,7 +21,7 @@ div(:class="`${pre}`").main-content.main-content--h-padding
 
 
       //
-    div(:class="`${pre}__main`")
+    div(:class="`${pre}__main`" v-if="visInfo")
       div(:class="`${pre}__line`")
       div(full :class="`${pre}__sum`")
         er-row(no-gutters)
@@ -68,7 +68,10 @@ div(:class="`${pre}`").main-content.main-content--h-padding
               //      p(:class="`${pre}__welcome-title__question__text`") Учетные записи дают доступ в Личный кабинет Дом.ru Бизнеc и в другие порталы
 
             div(:class="`${pre}__sum__button`")
-              er-button(width="100%", @click="") Пополнить счёт
+              er-button(
+                width="100%",
+                @click="paymentConfirm"
+              ) Пополнить счёт
             div(:class="`${pre}__sum__text`")
               | Нажимая на кнопку, Вы принимаете&ensp;
               a.link.gray-dashed(
@@ -77,18 +80,14 @@ div(:class="`${pre}`").main-content.main-content--h-padding
               ) условия оплаты и безопасности
 
           er-flex(xs12 lg7 order-xs1 order-lg2)
-            PayCard
+            PayCard(@openDelConfirm="openDelConfirm")
 
 
+    PaymentsOn(v-if="!visInfo && success" @try="tryAgain")
+    PaymentsOff(v-if="!visInfo && !success" @try="tryAgain")
 
 
-
-
-
-
-
-  //
-  div(:class="`${pre}__check`")#get-check
+  div(:class="`${pre}__check`" v-if="visInfo")#get-check
     div(:class="`${pre}__check__decoration`")
       div(:class="`${pre}__check__decoration-line`")
     div(:class="`${pre}__check__get-check`")
@@ -107,18 +106,91 @@ div(:class="`${pre}`").main-content.main-content--h-padding
         value="konstantinopolsky@company.ru"
         )
 
-  //img(src="@/assets/images/card_new_320.png" v-if="screenW === '320'")
-  //img(src="@/assets/images/card_new_480.png" v-if="screenW === '480'")
-  //img(src="@/assets/images/card_new_640.png" v-if="screenW === '640'")
-  //img(src="@/assets/images/card_new_960.png" v-if="screenW === '960'")
-  //img(src="@/assets/images/card_new_1200.png" v-if="screenW === '1200'")
-  //img(src="@/assets/images/card_new_1440.png" v-if="screenW === '1440'")
 
 
+  er-overlay(
+    v-model="openСonfirmPay"
+    :z-index="7"
+    :class="`${pre}__left`"
+  )
+  div(:class="`${pre}__confirm`" v-if="openСonfirmPay")
+    div(:class="`${pre}__confirm__content`")
+      div.mb-44
+        er-icon(name="question" :class="`${pre}__confirm__icon-height`")
+      h4
+        | Вы уверены, что хотите оплатить
+      div.d--flex
+        span
+          h3
+            | 100 500
+        span
+          h3(:class="`${pre}__confirm__decimal`")
+            | ,00
 
-//er-carousel(
-//:data="getCarouselItem"
-//direction="up"
-//indicators=true
-//indicatorType="disc"
-//)
+        div.rub(:class="`${pre}__confirm__currency`")
+      h4
+        | сохраненной картой:
+      h3
+        | МИР, 5402 33 ** **** 2365
+
+    div(
+      :class="`${pre}__confirm__close`"
+      @click="closeConfirm"
+    )
+      er-icon(name="close")
+
+    er-container(full
+    :class="`${pre}__confirm__container-button`"
+    )
+      er-row.justify-content-between.no-gutters
+        er-flex.pr-16(xs6 )
+          er-button(
+            type="submit"
+            @click="paymentsOn"
+          )
+            | Оплатить
+        er-flex.pl-16(xs6)
+          er-button.align-items-center(
+            type="submit"
+            flat=true
+            @click="paymentsOff"
+          )
+            | Отменить
+
+  er-overlay(
+  v-model="openСonfirmDel"
+  :z-index="7"
+  :class="`${pre}__left`"
+  )
+  div(:class="`${pre}__confirm`" v-if="openСonfirmDel")
+    div(:class="`${pre}__confirm__content`")
+      div.mb-44
+        er-icon(name="question" :class="`${pre}__confirm__icon-height`")
+      h4
+        | Вы уверены, что хотите удалить карту ?
+      h3
+        | МИР, 5402 33 ** **** 2365
+
+    div(
+    :class="`${pre}__confirm__close`"
+    @click="closeConfirm"
+    )
+      er-icon(name="close")
+
+    er-container(full
+    :class="`${pre}__confirm__container-button`"
+    )
+      er-row.justify-content-between.no-gutters
+        er-flex.pr-16(xs6 )
+          er-button(
+          type="submit"
+          @click="delCard"
+          )
+            | Удалить
+        er-flex.pl-16(xs6)
+          er-button.align-items-center(
+          type="submit"
+          flat=true
+          @click="closeConfirm"
+          )
+            | Отменить

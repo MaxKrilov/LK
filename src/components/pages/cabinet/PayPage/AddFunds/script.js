@@ -1,11 +1,15 @@
 import PayCard from '../components/PayCard/index.vue'
+import PaymentsOn from '../components/PaymentsOn/index.vue'
+import PaymentsOff from '../components/PaymentsOff/index.vue'
 import { mapGetters } from 'vuex'
 import { SCREEN_WIDTH } from '@/store/actions/variables'
 
 export default {
   name: 'add-funds',
   components: {
-    PayCard
+    PayCard,
+    PaymentsOn,
+    PaymentsOff
   },
   data: () => ({
     pre: 'add-funds',
@@ -15,29 +19,14 @@ export default {
     valSelect: 'Январь',
     visFilter: '__vis-filter',
     widthContainer: '108% !important',
+    openСonfirmPay: false,
+    openСonfirmDel: false,
+    visInfo: true,
+    success: false
+
   }),
   computed: {
     ...mapGetters([SCREEN_WIDTH]),
-/*
-    getCarouselItem () {
-      // todo Переделать после реализации админ-панели
-      // return ['slide_1', 'slide_2'].map(item => this.$createElement('div', {
-      return ['slide_1'].map(item => this.$createElement('div', {
-        staticClass: `${this.pre}__carousel__item`
-      }, [
-        this.$createElement('picture', [
-          this.$createElement('source', { attrs: { srcset: require(`@/assets/images/card_noenter_1200.png`), media: '(min-width: 1200px)' } }),
-          // this.$createElement('source', { attrs: { srcset: require(`@/assets/images/carousel/${item}/1200.png`), media: '(min-width: 1200px)' } }),
-          this.$createElement('source', { attrs: { srcset: require(`@/assets/images/carousel/${item}/960.png`), media: '(min-width: 960px)' } }),
-          this.$createElement('source', { attrs: { srcset: require(`@/assets/images/carousel/${item}/640.png`), media: '(min-width: 640px)' } }),
-          this.$createElement('source', { attrs: { srcset: require(`@/assets/images/carousel/${item}/480.png`), media: '(min-width: 480px)' } }),
-          this.$createElement('source', { attrs: { srcset: require(`@/assets/images/carousel/${item}/320.png`), media: '(min-width: 0)' } }),
-          this.$createElement('img', { attrs: { src: require(`@/assets/images/carousel/${item}/1200.png`) } })
-        ])
-      ]))
-    }
-*/
-
   },
   mounted () {
     // this.imgScreen ()
@@ -49,7 +38,12 @@ export default {
     SCREEN_WIDTH () {
       // this.screenW = String(this[SCREEN_WIDTH])
       // this.imgScreen ()
+    },
+/*
+    valclick () {
+      alert(this.valclick)
     }
+*/
   },
   methods: {
     paypage () {
@@ -64,6 +58,33 @@ export default {
     },
     topOperation (payload) {
       this.visFilter = payload ? '__vis-filter' : ''
+    },
+    paymentConfirm () {
+      this.openСonfirmPay = true
+    },
+    openDelConfirm () {
+      this.openСonfirmDel = true
+    },
+    closeConfirm () {
+      this.openСonfirmPay = false
+      this.openСonfirmDel = false
+    },
+    delCard () {
+      this.openСonfirmDel = false
+      this.$emit('update')
+    },
+    paymentsOn () {
+      this.openСonfirmPay = false
+      this.visInfo = false
+      this.success = true
+    },
+    paymentsOff () {
+      this.openСonfirmPay = false
+      this.visInfo = false
+      this.success = false
+    },
+    tryAgain () {
+      this.visInfo = true
     }
   }
 }

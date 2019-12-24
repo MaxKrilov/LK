@@ -3,6 +3,7 @@ export default {
   data: () => ({
     pre: 'pay-card',
     selected: true,
+    selected1: true,
     index: 0,
     topMove: 0,
     leftMove: [0, -128, -128, -128],
@@ -10,8 +11,13 @@ export default {
     visButtTop: [false, false, false],
     visButtBott: [true, false, false],
     moveInd: 0,
-    cvc: ''
+    cvc: '',
+    visCardDel: false,
+    openСonfirmDel: false
   }),
+  created: function() {
+    this.$parent.$on('update', this.cardDel);
+  },
   methods: {
     moveUp () {
       if(this.index < 3) {
@@ -28,8 +34,8 @@ export default {
         this.visButtTop[this.index] = true
         this.visButtBott[this.index + 1] = true
         this.moveInd += 16
-
         this.index ++
+        this.visCardDel = false
       }
     },
     moveDown () {
@@ -48,7 +54,16 @@ export default {
         this.visButtBott[this.index - 1] = true
         this.moveInd -= 16
         this.index --
+        this.visCardDel = false
       }
-    }
+    },
+    delConfirm () {
+      this.$emit('openDelConfirm')
+      this.openСonfirmDel = true
+    },
+    cardDel () {
+      this.visCardDel = true
+    },
+
   }
 }

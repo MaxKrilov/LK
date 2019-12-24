@@ -1,0 +1,63 @@
+.payments-off {
+  position: relative;
+  background: map_get($gray, '3');
+  z-index: 2;
+  left: -300px;
+  top: 47px;
+  min-height: 381px;
+  &__container {
+    width: 100% !important;
+    margin-left: 300px !important;
+  }
+  &__icon-height svg {
+    position: absolute;
+    width: 128px !important;
+    left: 0px;
+    top: 0px;
+    color: map_get($red, 'base');
+  }
+  &__pos {
+    position: relative;
+    margin-left: -10px;
+    top: 16px;
+  }
+  &__info {
+    color: map_get($red, 'base');
+    position: absolute;
+    font-family: $fedra-demi;
+    &__icon svg{
+      width: 16px !important;
+      margin-right: 5px;
+    }
+    &__span {
+      font-family: $fedra-demi !important;
+      color: map_get($red, 'base') !important;
+    }
+  }
+  &__butt {
+    &__left {
+      max-width: 180px !important;
+    }
+    &__right {
+      left: 35px;
+    }
+    &__text {
+      font: 16px/20px $fedra-demi !important;
+      color: rgba(map_get($shades, 'black'), 0.8) !important;
+      letter-spacing: -0.5px;
+      margin-top: 6px;
+      margin-bottom: 9px;
+    }
+    &__icon svg {
+      width: 32px !important;
+      color:  map_get($yellow, 'base');
+      margin-right: 16px;
+    }
+    &__container {
+      position: relative;
+      left: 0;
+      top: 124px;
+      padding-left: 0 !important;
+    }
+  }
+}

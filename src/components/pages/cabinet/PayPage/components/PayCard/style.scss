@@ -1,25 +1,7 @@
 .pay-card {
-  /*
-  &__butt {
-    position: absolute;
-    left: -69px;
-    top: 15px
-  }
-  */
-  /*
-  &__11 {
-    position: absolute;
-    top: 364px;
-    left: 364px;
-    height: 20px;
-    width: 100px;
-    background: white;
-    z-index: 10;
-  }
-  */
   &__card-butt {
     position: absolute;
-    width: 492px !important;
+    width: 340px !important;
     height: 92px !important;
     background: #EBEBEB;
     border-radius: 12px;
@@ -96,7 +78,9 @@
         ),
         letter-spacing: (md: normal),
       ));
-
+      &__empty {
+        color: #FFFFFF;
+      }
     }
     &__value {
       position: absolute;
@@ -122,7 +106,7 @@
     }
   }
   &__indicators {
-    position: relative;
+    position: absolute;
     width: 4px;
     height: 161px;
     top: 114px;
@@ -250,39 +234,46 @@
       */
 
     }
-
+    &__text {
+      @extend .pay-card__card-title__delete__text;
+      //font-family: $fedra-demi !important;
+      //height: min-content;
+      //margin-left: 4px;
+      margin-top: 0 !important;
+    }
   }
   &__card-title {
     display: flex;
     position: relative;
     top: 33px;
-    //z-index: 2;
-    //font-family: $fedra-book;
-    //font-size: 15px;
-    //width: 100px;
-    //color: rgba(map_get($shades, 'black'), 0.8);
-    //letter-spacing: -0.35px;
-    //margin-top: -4px;
-    @include media-query((
-      /*
-      width: (
-        md: 160px,
-        xl: 140px
-      ),
-      margin-top: (
-        sm: -11px,
-        md: 0px,
-        xxl: 2px
-      ),
-      font-size: (
-        md: 18px,
-        xxl: 20px
-      ),
-      letter-spacing: (
-        md: -1px
-      )
-      */
-    ));
+    &__delete {
+      position: absolute;
+      bottom: 19px;
+      left: 25px;
+      &__icon svg {
+        width: 32px !important;
+      }
+      &__text {
+        font-family: $fedra-demi !important;
+        height: min-content;
+        margin-top: 6px;
+        margin-left: 4px;
+      }
+    }
+    &__autopay {
+      color: #69BE28;
+      position: absolute;
+      top: 21px;
+      left: 201px;
+      &__icon svg{
+        width: 16px !important;
+        margin-right: 5px;
+      }
+      &__span {
+        font-family: $fedra-demi !important;
+        color: #69BE28 !important;
+      }
+    }
     &__circle {
       height: 16px;
       width: 99px;
@@ -313,7 +304,7 @@
   &__card {
     position: relative;
     padding: 0 !important;
-    background-image: url("11.png");
+    background-image: url("../../../../../../../static/get-check-bg.png");
     background-position: center;
     background-repeat: no-repeat;
     z-index: 2;
@@ -365,13 +356,68 @@
           @extend .pay-card__card__bg__strip;
           background: #EFC900;
           transform: matrix(1, 0, 0, -1, 0, 0);
+          &__empty {
+            background: #000000;
+            opacity: 0.2;
+            transform: matrix(1, 0, 0, -1, 0, 0);
+          }
         }
+      }
+      &__empty {
+        background: #E31E24;
+        box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1), 0px 4px 6px rgba(0, 0, 0, 0.05);
+        border-radius: 12px;
+
       }
     }
     &__img-bg {
       width: 255px !important;
       margin-left: 59px;
       margin-top: 14px;
+    }
+    &__deleted {
+      position: relative;
+      background: #EBEBEB;
+      margin: -15px 0 0 -20px;
+      padding: 15px 0 0 18px;
+      top: 85px;
+      left: 0;
+      z-index: 8;
+      height: 237px;
+      width: 500px;
+      &__size {
+        height: 208px;
+        width: 336px;
+      }
+      &__content {
+        background: #FFEFF0;
+        border: 1px solid #E31E24;
+        box-sizing: border-box;
+        box-shadow: 0px 16px 16px rgba(0, 0, 0, 0.03), 0px 8px 6px rgba(0, 0, 0, 0.02);
+        border-radius: 12px;      }
+      &__text {
+        position: absolute;
+        width: 111px;
+        height: 21px;
+        left: 58px;
+        top: 77px;
+        font-family: $fedra-book;
+        font-size: 16px;
+        line-height: 21px;
+        letter-spacing: -0.5px;
+        color: #E31E24;
+      }
+      &__icon {
+        position: absolute;
+        //width: 128px;
+        //height: 128px;
+        left: 95px;
+        top: 34px;
+        opacity: 0.1;
+        &__size svg {
+          width: 104px !important;
+        }
+      }
     }
   }
   &__card-pos {
@@ -442,22 +488,74 @@
     }
     &__top-h2 {
       top: 10px;
+      width: 100px;
     }
     &__bottom  {
       left: 204px !important;
       top: -36px;
+      width: 100px;
       &__next {
+        width: 100px;
         top: -18px;
       }
     }
   }
+  &__confirm {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    width: 544px;
+    height: 416px;
+    background: #FFFFFF;
+    box-shadow: -8px 8px 16px rgba(0, 0, 0, 0.04), 0px 8px 24px rgba(0, 0, 0, 0.06);
+    border-radius: 12px;
+    z-index: 7;
+    margin: auto;
+    &__content {
+      position: absolute;
+      left: 31px;
+      top: 26px;
+    }
+    &__icon-height svg {
+      position: absolute;
+      width: 52px !important;
+      left: 0px;
+      top: 0px;
+      color: #FFDD00;
+    }
+    &__container-button {
+      position: absolute;
+      padding: 0 32px 0 32px !important;
+      bottom: 32px;
+    }
+    &__close svg {
+      opacity: 0.2;
+      width: 16px !important;
+      position: absolute;
+      right: 29px;
+      top: 29px;
+      cursor: pointer;
+    }
+    &__decimal {
+      opacity: .3;
+    }
+    &__currency {
+      margin-top: 6px;
+      margin-left: 4px;
+      opacity: .3;
+    }
+  }
+
+  /*
   &__card-shadow:hover {
     border-radius: 12px;
     background: map_get($yellow, 'other-8');
     box-shadow: -4px 5px 32px map_get($yellow, 'other-5') !important;
   }
   &__fast-links {
-    /*
+    !*
     a {
       display: flex;
       flex-direction: column;
@@ -536,8 +634,9 @@
         }
       }
     }
-    */
+    *!
   }
+  */
 }
 .er-hint__message {
   //padding: 32px !important;
