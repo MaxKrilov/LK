@@ -5,9 +5,18 @@
     left: 0;
     background: map_get($gray, '13');
     //background: #CAC9C9;
-    height: 386px;
+    height: 274px;
     position: absolute;
     right: 0;
+    @include media-query((
+      height: (
+        sm: 253px,
+        md: 386px,
+        //lg: -21px,
+        //xl: -23px,
+      ),
+    ));
+
     //border: 1px solid black;
   }
   &__container-main {
@@ -24,8 +33,8 @@
         xl: -23px,
       ),
       margin-left: (
-        sm: -24px,
-        md: 30px,
+        sm: 0,
+        md: 0,
         lg: 0,
       ),
       margin-bottom: (
@@ -37,7 +46,7 @@
         md: 960px !important,
         lg: 1200px !important,
       )
-  ));
+    ));
   }
   /*
   &__container-main {
@@ -133,9 +142,33 @@
     }
   }
   &__main {
-    width: 104%; //1120px;
+    width: 108%; //1120px;
     //////// <<<< 4386 >>>> ////////
+
     height: 386px;
+    //margin-left: 20px;
+    @include media-query((
+      margin-left: (
+        sm: -24px,
+        md: 0
+      ),
+      height: (
+        xs: 800px,
+        lg: 386px,
+      ),
+      width: (
+        //xs: 100%,
+        sm: 111%,
+        md: 104%
+      )
+      /*
+      padding-left: (
+        sm: 22px,
+        md: 0
+      )
+      */
+    ));
+
     margin-top: 38px;
     //padding-top: 44px;
     background: map_get($gray, '13');
@@ -154,8 +187,6 @@
     width: 100%; //373px;
     padding-top: 0; //48px;
     background: #F3F3F3;
-    //margin: 0
-
     &__title {
       font-size: 20px;
       letter-spacing: -1px;
@@ -212,6 +243,28 @@
         top: 4px;
         left: 1px;
       }
+    }
+    &__move-card {
+      max-width: 519px;
+      height: 383px;
+      overflow: hidden;
+      top: 16px;
+      @include media-query((
+        top: (
+          sm: 32px,
+        ),
+      ));
+
+    }
+    &__pos {
+      padding-left: 39px !important;
+      @include media-query((
+        padding-left: (
+          sm: 39px !important,
+          md: 15px !important
+        )
+      ));
+
     }
   }
   &__check {

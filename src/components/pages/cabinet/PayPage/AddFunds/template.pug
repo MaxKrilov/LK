@@ -24,8 +24,15 @@ div(:class="`${pre}`").main-content.main-content--h-padding
     div(:class="`${pre}__main`" v-if="visInfo")
       div(:class="`${pre}__line`")
       div(full :class="`${pre}__sum`")
-        er-row(no-gutters)
-          er-flex.mb-16.pr-8(xs12 lg5 order-xs2 order-lg1)
+        div.d--flex(:class="`${direct}`")
+          er-flex.mb-16.pr-8(
+            xs12
+            md12
+            lg5 xl5
+            order-xs2
+            order-lg1
+            :class="`${pre}__sum__pos`"
+          )
             h4(:class="`${pre}__sum__title`") Сумма оплаты
             div(:class="`${pre}__sum__input`")
               er-text-field(
@@ -79,8 +86,17 @@ div(:class="`${pre}`").main-content.main-content--h-padding
               target="_blank"
               ) условия оплаты и безопасности
 
-          er-flex(xs12 lg7 order-xs1 order-lg2)
-            PayCard(@openDelConfirm="openDelConfirm")
+          er-flex(
+            xs12
+            md12
+            lg6 xl7
+            order-xs1
+            order-lg2
+            :class="`${pre}__sum__move-card`"
+          )
+            PayCard(
+              @openDelConfirm="openDelConfirm"
+            )
 
 
     PaymentsOn(v-if="!visInfo && success" @try="tryAgain")

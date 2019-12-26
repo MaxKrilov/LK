@@ -22,28 +22,22 @@ export default {
     openСonfirmPay: false,
     openСonfirmDel: false,
     visInfo: true,
-    success: false
-
+    success: false,
+    direct: 'row',
+    changeWidth () {
+        this.direct = this[SCREEN_WIDTH] < -960 ? 'column' : 'row'
+    }
   }),
   computed: {
     ...mapGetters([SCREEN_WIDTH]),
   },
   mounted () {
-    // this.imgScreen ()
-    // this.screenW = String(this[SCREEN_WIDTH])
-    // console.log(this.screenW)
-    // console.log(`"@/assets/images/card_new_${this.screenW}.png"`)
+    this.changeWidth()
   },
   watch: {
     SCREEN_WIDTH () {
-      // this.screenW = String(this[SCREEN_WIDTH])
-      // this.imgScreen ()
+      this.changeWidth()
     },
-/*
-    valclick () {
-      alert(this.valclick)
-    }
-*/
   },
   methods: {
     paypage () {

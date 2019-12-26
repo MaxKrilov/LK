@@ -7,6 +7,50 @@
     border-radius: 12px;
     z-index: 3;
     cursor: pointer;
+    &__container {
+      position: absolute;
+      height: 100px;
+      //background: green;
+      display: block;
+      z-index: 1;
+      //margin-top: 16px;
+      @include media-query((
+        display: (md: none),
+        margin-top: (
+          md: 46px
+        )
+      ));
+    }
+    &__lateral-left {
+      position: relative;
+      width: 60px !important;
+      left: -51px;
+      cursor: pointer;
+      //height: 160px;
+      //background: red !important;
+    }
+    &__lateral-right {
+      position: relative;
+      width: 100px !important;
+      //height: 160px;
+      //background: blue !important;
+      right: -24px;
+      cursor: pointer;
+      @include media-query((
+        right: (sm: -56px)
+      ));
+
+      &__next {
+        @extend .pay-card__card-butt__lateral-right;
+        right: -29px;
+        @include media-query((
+          right: (sm: -80px)
+        ));
+      }
+    }
+    &__card-height {
+      height: 160px;
+    }
     &__left {
       width: 320px !important;
       background: #F3F3F3;
@@ -27,9 +71,17 @@
     }
     &__top {
       top: -116px;
+      display: none;
+      @include media-query((
+        display: (md: block)
+      ));
     }
     &__bottom {
       bottom: -116px;
+      display: none;
+      @include media-query((
+        display: (md: block)
+      ));
       &__first {
         bottom: -157px;
       }
@@ -106,12 +158,35 @@
     }
   }
   &__indicators {
-    position: absolute;
+    position: relative;
     width: 4px;
     height: 161px;
+    /*
     top: 114px;
     //background: aqua;
     left: 537px;
+    */
+    margin: 0 auto;
+
+
+    //left: 289px;
+    top: 162px;
+    transform: rotate(-90deg);
+
+    @include media-query((
+      position: (
+        md: absolute
+      ),
+      left: (md: 537px),
+      top: (
+        sm: 115px,
+        md: 114px),
+      transform: (md: rotate(0deg))
+    ));
+
+
+
+
     &__line {
       position: absolute;
       width: 4px;
@@ -141,24 +216,34 @@
   }
   &__move {
     position: absolute;
-    top: 0;
+    top: -48px;
     left: 0;
     transition: .5s;
-    /*
-    !*
-    &__moveUp {
-      transform: translateY(-233px);
-      &__next {
-        transition: 2s;
+    @include media-query((
+      transition: (
+        xs: 1s
+      ),
+      top: (
+        //sm: -48px,
+        md: 0,
+      )
+    ));
+
+      /*
+      !*
+      &__moveUp {
         transform: translateY(-233px);
+        &__next {
+          transition: 2s;
+          transform: translateY(-233px);
+        }
       }
-    }
-    *!
-    &__moveDown {
-      transition: 1s;
-      //transform: translateY(233px);
-    }
-    */
+      *!
+      &__moveDown {
+        transition: 1s;
+        //transform: translateY(233px);
+      }
+      */
   }
   &__container {
     padding-left: 0 !important;
@@ -195,10 +280,10 @@
     ));
   }
   &__card-height {
-    height: 147px;
+    height: 160px;
     @include media-query((
       height: (
-        md: 166px,
+        md: 208px,
         lg: 190px,
         xl: 207px,
       ),
@@ -292,13 +377,21 @@
     }
   }
   &__card-row {
+    flex-wrap: nowrap !important;
+
     @include media-query((
-      margin-left: (
-        xs: 5.6vw !important,
-        sm: 4.4vw !important,
-        md: 0 !important,
+      flex-wrap: (
+        md: wrap !important
       ),
-      //padding-right: (md: 0)
+      margin-left: (
+        //xs: 5.6vw !important,
+        //sm: 4.4vw !important,
+        md: 16px !important,
+      ),
+      padding-left: (
+        xs: 30px,
+        md: 0
+      )
     ));
   }
   &__card {
@@ -311,27 +404,38 @@
     @include media-query((
       width: (
         //xs: 42vw !important,
-        //sm: 43vw !important,
-        //md: 44vw !important,
+        xs: 256px !important,
+        md: 336px !important,
         //lg: 22vw !important,
-        xl: 337px !important,
+        //xl: 337px !important,
         //xxl: 208px !important,
       ),
     ));
     &__bg {
       position: absolute;
-      top: -198px;
-      left: 128px;
+      top: -160px;
+      left: 0;
       z-index: 1;
+      padding: 0 !important;
       background: transparent !important;
-      transition: .5s;
+      transition: 1s;
       @include media-query((
+        transition: (
+          sm: 1s
+        ),
+        left: (
+          sm: 128px
+        ),
+        top: (
+          sm: -151px,
+          md: -198px
+        ),
         width: (
           //xs: 42vw !important,
-          //sm: 43vw !important,
-          //md: 44vw !important,
+          xs: 256px !important,
+          md: 336px !important,
           //lg: 22vw !important,
-          xl: 337px !important,
+          //xl: 337px !important,
           //xxl: 208px !important,
         ),
       ));
@@ -351,7 +455,7 @@
         width: 100%;
         background: #D6D6D6;
         top: 32px;
-        left: -1px;
+        //left: 1px;
         &__next {
           @extend .pay-card__card__bg__strip;
           background: #EFC900;
@@ -425,33 +529,51 @@
     padding: 0 !important;
     margin-bottom: 66px;
     top: 48px;
+    left: 24px;
     //left: 32px;
-    //@include media-query((
-    //  width: (
-    //    //xs: 42vw !important,
-    //    //sm: 43vw !important,
-    //    //md: 44vw !important,
-    //    //lg: 22vw !important,
-    //    //xl: 46% !important,
-    //    //xxl: 208px !important,
-    //  ),
-    //  /*
-    //  max-width: (
-    //    md: 293px !important,
-    //    lg: 210px !important,
-    //    xl: 190px !important,
-    //  )
-    //  */
-    //));
-    &__left {
-      margin-right: 24px;
-      @include media-query((
-        margin-right: (
-          xs: 16px,
-          sm: 16px
-        )
-      ));
-    }
+    @include media-query((
+      margin-bottom: (
+        sm: 0,
+        md: 66px
+      ),
+      margin-right: (
+        xs: 75px,
+        sm: 175px,
+        md: 0
+      ),
+      /*
+      margin-left: (
+        sm: 48px
+      )
+      */
+
+      /*
+      width: (
+        //xs: 42vw !important,
+        //sm: 43vw !important,
+        //md: 44vw !important,
+        //lg: 22vw !important,
+        //xl: 46% !important,
+        //xxl: 208px !important,
+      ),
+      */
+      /*
+      max-width: (
+        md: 293px !important,
+        lg: 210px !important,
+        xl: 190px !important,
+      )
+      */
+    ));
+    //&__left {
+    //  margin-right: 24px;
+    //  @include media-query((
+    //    margin-right: (
+    //      xs: 16px,
+    //      sm: 16px
+    //    )
+    //  ));
+    //}
     &__right-top {
       @include media-query((
         margin-right: (
