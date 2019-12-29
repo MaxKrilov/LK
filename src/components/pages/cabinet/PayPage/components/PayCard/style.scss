@@ -1,7 +1,7 @@
 .pay-card {
   &__card-butt {
     position: absolute;
-    width: 340px !important;
+    width: 480px !important;
     height: 92px !important;
     background: #EBEBEB;
     border-radius: 12px;
@@ -10,6 +10,7 @@
     &__container {
       position: absolute;
       height: 100px;
+      top: 182px;
       //background: green;
       display: block;
       z-index: 1;
@@ -72,6 +73,9 @@
     &__top {
       top: -116px;
       display: none;
+      background: #EBEBEB;
+      transition: 1s;
+      //opacity: 0;
       @include media-query((
         display: (md: block)
       ));
@@ -79,6 +83,9 @@
     &__bottom {
       bottom: -116px;
       display: none;
+      background: #EBEBEB;
+      opacity: 0;
+      transition: 1s;
       @include media-query((
         display: (md: block)
       ));
@@ -108,11 +115,31 @@
   }
   &__cvc {
     position: relative;
-    left: 223px;
-    top: 103px;
+    left: 38px;
+    top: 118px;
     background: transparent;
     height: 91px;
-    width: 100px;
+    width: 220px;
+    display: flex;
+    @include media-query((
+      display: (
+        sm: unset
+      ),
+      width: (
+        sm: 100px
+      ),
+      left: (
+        sm: 149px,
+        md: 223px
+      ),
+      top: (
+        sm: 64px,
+        md: 103px,
+      ),
+    ));
+    &__empty {
+      left: 26px;
+    }
     &__label {
       font: 11px/16px $fedra-demi;
       letter-spacing: 0.35px;
@@ -135,21 +162,37 @@
       }
     }
     &__value {
-      position: absolute;
+      position: unset;
       width: 82px;
       height: 32px;
       left: 0;
       top: 49px;
+      margin-left: 16px;
+      margin-top: -8px;
       border-radius: 8px;
       background: white;
-
-      font-family: fedra-demi;
-      font-size: 20px;
-      line-height: 25px;
-      text-align: center;
+      font: 20px/25px $fedra-demi;
+      color: rgba(map_get($shades, 'black'), 0.8);
+      //text-align: center;
       letter-spacing: -1px;
-      color: #000000;
-      opacity: 0.8;
+      @include media-query((
+        display: (
+          position: absolute
+        ),
+        /*
+        width: (
+          md: 100px
+        ),
+        */
+        margin-left: (
+          sm: 0
+        ),
+        margin-top: (
+          sm: 10px,
+          md: 0,
+        ),
+      ));
+
       & .er-text-field > .er-input__control > .er-input__slot {
         //background: #ff1d2e !important;
         height: 32px;
@@ -183,10 +226,6 @@
         md: 114px),
       transform: (md: rotate(0deg))
     ));
-
-
-
-
     &__line {
       position: absolute;
       width: 4px;
@@ -218,10 +257,10 @@
     position: absolute;
     top: -48px;
     left: 0;
-    transition: .5s;
+    transition: 0.1s;
     @include media-query((
       transition: (
-        xs: 1s
+        sm: 0.5s
       ),
       top: (
         //sm: -48px,
@@ -292,12 +331,23 @@
   &__remcard {
     display: flex;
     position: relative;
-    top: 60px;
+    top: 55px;
     height: 15px;
+    @include media-query((
+      top: (md: 60px),
+    ));
     &__ertoogle {
       position: relative;
       max-width: 30px;
       margin-top: -16px;
+      transform: scale(0.8);
+      @include media-query((
+        transform: (md: none),
+        margin-top: (
+          md: -11px,
+          lg: -16px
+        )
+      ));
     }
     &__title {
       border-bottom: 1px dashed black;
@@ -305,7 +355,10 @@
     }
     &__hint {
       margin-left: 8px;
-      margin-top: -6px;
+      margin-top: -16px;
+      @include media-query((
+        margin-top: (md: -6px),
+      ));
     }
     &__hint-card {
       width: 30px;
@@ -320,36 +373,72 @@
 
     }
     &__text {
-      @extend .pay-card__card-title__delete__text;
-      //font-family: $fedra-demi !important;
-      //height: min-content;
-      //margin-left: 4px;
-      margin-top: 0 !important;
+      //@extend .pay-card__card-title__delete__text;
+      font: 11px/16px $fedra-demi;
+      color: rgba(map_get($shades, 'black'), 0.8) !important;
+      margin-top: -13px !important;
+      margin-left: 0 !important;
+      @include media-query((
+        margin-top: (md: 0 !important),
+        margin-left: (md: 4px !important),
+      ));
     }
   }
   &__card-title {
     display: flex;
     position: relative;
-    top: 33px;
+    top: 20px;
+    @include media-query((
+      top: (md: 33px),
+    ));
     &__delete {
       position: absolute;
       bottom: 19px;
       left: 25px;
       &__icon svg {
-        width: 32px !important;
+        width: 24px !important;
+        @include media-query((
+          width: (md: 32px !important),
+        ));
+
       }
       &__text {
-        font-family: $fedra-demi !important;
+        font: 11px/16px $fedra-demi !important;
+        color: rgba(map_get($shades, 'black'), 0.5) !important;
         height: min-content;
-        margin-top: 6px;
+        margin-top: 2px;
         margin-left: 4px;
+        @include media-query((
+          margin-top: (md: 6px),
+          /*
+          margin-left: (md: 4px !important),
+          */
+        ));
       }
     }
     &__autopay {
       color: #69BE28;
       position: absolute;
-      top: 21px;
-      left: 201px;
+      top: 25px;
+      left: 146px;
+      font: 11px/16px $fedra-demi;
+      letter-spacing: 0.35px;
+      color: rgba(map_get($shades, 'black'), 0.3);
+      @include media-query((
+        top: (md: 21px),
+        left: (md: 201px),
+        font-size: (
+          md: 13px,
+          lg: 13px,
+          xl: 14px,
+        ),
+        line-height: (
+          md: 16px,
+          lg: 16px,
+          xl: 19px
+        ),
+        letter-spacing: (md: normal),
+      ));
       &__icon svg{
         width: 16px !important;
         margin-right: 5px;
@@ -360,19 +449,56 @@
       }
     }
     &__circle {
-      height: 16px;
-      width: 99px;
-      margin-top: 33px;
-      margin-right: 9px;
-      margin-left: 9px;
+      height: 13px;
+      width: 73px !important;
+      margin-top: 21px;
+      margin-right: 6px;
+      margin-left: 2px;
+      @include media-query((
+        margin-top: (
+          md: 33px
+        ),
+        height: (
+          md: 16px
+        ),
+        margin-right: (
+          md: 9px
+        ),
+        margin-left: (
+          md: 9px
+        )
+    ));
+
     }
     &__next {
       position: relative;
-      top: 26px;
+      top: 14px;
+      letter-spacing: -1px;
+      @include media-query((
+        top: (md: 26px),
+      ));
+
     }
     &__label {
       position: relative;
-      top: 22px;
+      top: 12px;
+      font: 11px/16px $fedra-demi;
+      letter-spacing: 0.35px;
+      color: rgba(map_get($shades, 'black'), 0.3);
+      @include media-query((
+        top: (md: 22px),
+        font-size: (
+          md: 13px,
+          lg: 13px,
+          xl: 14px,
+        ),
+        line-height: (
+          md: 16px,
+          lg: 16px,
+          xl: 19px
+        ),
+        letter-spacing: (md: normal),
+      ));
 
     }
   }
@@ -397,10 +523,11 @@
   &__card {
     position: relative;
     padding: 0 !important;
-    background-image: url("../../../../../../../static/get-check-bg.png");
-    background-position: center;
-    background-repeat: no-repeat;
+    background: url("../../../../../../../static/get-check-bg.png") no-repeat center;
     z-index: 2;
+    /*
+    transition: .5s;
+    */
     @include media-query((
       width: (
         //xs: 42vw !important,
@@ -418,13 +545,14 @@
       z-index: 1;
       padding: 0 !important;
       background: transparent !important;
-      transition: 1s;
+      transition: .5s;
       @include media-query((
         transition: (
-          sm: 1s
+          sm: .5s
         ),
         left: (
-          sm: 128px
+          sm: 216px,//128px
+          md: 128px
         ),
         top: (
           sm: -151px,
@@ -451,10 +579,10 @@
       }
       &__strip {
         position: absolute;
-        height: 36px;
+        height: 28px;
         width: 100%;
         background: #D6D6D6;
-        top: 32px;
+        top: 24px;
         //left: 1px;
         &__next {
           @extend .pay-card__card__bg__strip;
@@ -475,9 +603,22 @@
       }
     }
     &__img-bg {
-      width: 255px !important;
-      margin-left: 59px;
-      margin-top: 14px;
+      width: 193px !important;
+      margin-left: 39px;
+      margin-top: -1px;
+      @include media-query((
+        width: (
+          md: 256px !important,
+        ),
+        margin-left: (
+          md: 59px
+        ),
+        margin-top: (
+          md: 14px
+        )
+
+      ));
+
     }
     &__deleted {
       position: relative;
@@ -531,14 +672,14 @@
     top: 48px;
     left: 24px;
     //left: 32px;
+    margin-right: 75px;
     @include media-query((
       margin-bottom: (
         sm: 0,
         md: 66px
       ),
       margin-right: (
-        xs: 75px,
-        sm: 175px,
+        sm: 152px,//175px,
         md: 0
       ),
       /*
@@ -584,12 +725,19 @@
   }
   &__logo {
     position: relative;
-    top: 20px;  //51
+    top: 24px;  //51
     left: 24px;
-    img {
-      width: 64px;
+    &__img1 {
+      width: 48px !important;
       @include media-query((
-        width: (xl: 64px)
+        width: (md: 64px !important),
+      ))
+    }
+    img {
+      width: 71px;
+      @include media-query((
+        width: (md: 64px),
+        top: (md: 20px),
       ))
     }
     &__card {

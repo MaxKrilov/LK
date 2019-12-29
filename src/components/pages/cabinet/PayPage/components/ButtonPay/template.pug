@@ -7,7 +7,7 @@ er-row(no-gutters)
         er-card(:class="`${pre}__card-shadow`")
           div(:class="`${pre}__card-height`")
             router-link(to="/add-funds" :class="`${pre}__card-shadow`")
-              h4(:class="`${pre}__card-title`")
+              h4(:class="`${pre}__card-title`" @click="aa")
                 | Оплата картой
                 div.new
                   div.mb-4
@@ -22,7 +22,7 @@ er-row(no-gutters)
       er-flex.mb-16(xs6 lg3 :class="`${pre}__card-scale ${pre}__card-scale__right-top`")
         er-card(:class="`${pre}__card-shadow`")
           div(:class="`${pre}__card-height`")
-            router-link(to="/")
+            router-link(to="/add-funds")
               h4(:class="`${pre}__card-title`")
                 | Счет на оплату
               div.d--flex.align-items-end.mt-auto
@@ -31,16 +31,16 @@ er-row(no-gutters)
 
       er-flex.mb-16(xs6 lg3 :class="`${pre}__card-scale ${pre}__card-scale__left`")
         er-card(:class="`${pre}__card-shadow`")
-          div(:class="`${pre}__card-height`")
-            router-link(to="/")
-              h4(:class="`${pre}__card-title`")
-                | Обещанный платёж
-              div.d--flex.align-items-end.mt-auto
-                template(v-if="true")
-                  div.ml-auto
-                    er-icon.color--yellow-base(name="trast_pay" :class="`${pre}__card-icon`")
+          div(:class="`${pre}__card-height`" @click="aa")
+            //router-link(to="/")
+            h4(:class="`${pre}__card-title`")
+              | Обещанный платёж
+            div.d--flex.align-items-end.mt-auto
+              template(v-if="true")
+                div.ml-auto
+                  er-icon.color--yellow-base(name="trast_pay" :class="`${pre}__card-icon`")
 
-      er-flex.mb-16(xs6 lg3 :class="`${pre}__card-scale`")
+      er-flex.mb-16(xs6 lg3 :class="`${pre}__card-scale`" @click="aa")
         er-card(:class="`${pre}__card-shadow`")
           div(:class="`${pre}__card-height`")
             router-link(to="/")
