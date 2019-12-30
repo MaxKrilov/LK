@@ -4,30 +4,29 @@ er-container(full :class="`${pre}__container`")
   er-container(full :class="`${pre}__card-butt__container`")
     er-row.no-gutters.justify-content-between
       er-flex.xs3
-        er-card(
+        div(
           :class="`${pre}__card-butt__lateral-left`"
           v-if="visButtLeft"
         )
           div(:class="`${pre}__card-butt__card-height`" @click="moveDown")
       er-flex.xs3
-        er-card(
+        div(
           :class="`${pre}__card-butt__lateral-right${rightNext}`"
           v-if="visButtRight"
         )
-          | {{index}} {{opp}}
           div(:class="`${pre}__card-butt__card-height`" @click="moveUp")
 
 
   // общий сдвиг
   er-row.no-gutters(id="bgg"
     :class="`${pre}__move`"
-    :style="'transform: translate(' + rightMove + '%, ' + topMove + 'px)'"
+    :style="'transform: translate(' + rightMove + unit + ', ' + topMove + 'px)'"
   )
     div(:class="`${pre}__card-row ${direct}`")
-      // Новая карта
+      // Новая карта :style="'transform: translate(' + leftMove0 + 'px)'"
       er-flex(xs3 sm2 lg9 xl12
         :class="`${pre}__card-pos`"
-        :style="'margin-right: ' + delta + '%'"
+        :style="'margin-right: ' + delta + unit"
       )
         er-row(no-gutters)
           er-flex
@@ -99,8 +98,7 @@ er-container(full :class="`${pre}__container`")
           er-flex
             er-card(
               :class="`${pre}__card__bg`"
-              :style="'transform: translate(' + leftMove[0] + 'px, ' " +
-              "+  topBg[0] + 'px)'"
+              :style="'transform: translate(' + leftMove[0] + 'px, ' +  topBg[0] + 'px)'"
             )
               div(:class="`${pre}__card__bg__content`")
                 div(:class="`${pre}__card-height`")
@@ -176,7 +174,7 @@ er-container(full :class="`${pre}__container`")
           er-flex
             er-card(
               :class="`${pre}__card__bg`"
-              :style="'opacity: ' + op + '; transform: translate(' + leftMove[1] + 'px, ' +  topBg[1] + 'px)'"
+              :style="'opacity: ' + op[0] + '; transform: translate(' + leftMove[1] + 'px, ' +  topBg[1] + 'px)'"
             )
               div(:class="`${pre}__card__bg__content__next`")
                 div(:class="`${pre}__card-height`")
@@ -267,7 +265,7 @@ er-container(full :class="`${pre}__container`")
           er-flex
             er-card(
               :class="`${pre}__card__bg`"
-              :style="'opacity: ' + opp + '; transform: translate(' + leftMove[2] + 'px, ' +  topBg[2] + 'px)'"
+              :style="'opacity: ' + op[1] + '; transform: translate(' + leftMove[2] + 'px, ' +  topBg[2] + 'px)'"
             )
               div(:class="`${pre}__card__bg__content__next`")
                 div(:class="`${pre}__card-height ${pre}__card__bg__empty`")
@@ -339,7 +337,7 @@ er-container(full :class="`${pre}__container`")
           er-flex
             er-card(
             :class="`${pre}__card__bg`"
-            :style="'opacity: ' + opp1 + '; transform: translate(' + leftMove[3] + 'px, ' +  topBg[3] + 'px)'"
+            :style="'opacity: ' + op[2] + '; transform: translate(' + leftMove[3] + 'px, ' +  topBg[3] + 'px)'"
             )
               div(:class="`${pre}__card__bg__content__next`")
                 div(:class="`${pre}__card-height`")
@@ -390,6 +388,10 @@ er-container(full :class="`${pre}__container`")
       :class="`${pre}__indicators__circle__down`"
       @click="moveUp"
     )
+
+  //div()
+  //| {{index}} {{op}}
+
 
 
 

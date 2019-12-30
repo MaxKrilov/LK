@@ -24,8 +24,12 @@ export default {
     visInfo: true,
     success: false,
     direct: 'row',
+    selected: false,
+    visButtConf: false,
+    checkAutoPay: 'Подключить автоплатёж',
     changeWidth () {
-        this.direct = this[SCREEN_WIDTH] < -960 ? 'column' : 'row'
+      this.direct = this[SCREEN_WIDTH] < 960 ? 'row' : 'column'
+      this.visButtConf = this[SCREEN_WIDTH] < 1200
     }
   }),
   computed: {
@@ -40,6 +44,9 @@ export default {
     },
   },
   methods: {
+    autopay () {
+      this.checkAutoPay = this.selected ? 'Подключить автоплатёж' : 'Автоплатёж'
+    },
     paypage () {
       this.$router.push('/lk/payments')
     },

@@ -8,18 +8,41 @@
   &__container {
     width: 100% !important;
     margin-left: 300px !important;
+    margin-top: -43px;
   }
   &__icon-height svg {
     position: absolute;
-    width: 128px !important;
+    width: 64px !important;
     left: 0px;
     top: 0px;
     color:#69BE28;
+    @include media-query((
+      width: (
+        md: 80px !important,
+        //md: 128px !important,
+      ),
+      /*
+      margin-top: (
+        md: 64px,
+        lg: 64px,
+      ),
+      margin-left: (
+        md: 46px,
+        lg: 16px,
+      ),
+      */
+    ));
+
   }
   &__pos {
     position: relative;
-    margin-left: -10px;
-    top: 16px;
+    margin-left: 30px;
+    top: 0;
+    @include media-query((
+      margin-left: (md: -10px),
+      top: (md: 16px),
+    ));
+
   }
   &__info {
     color: #69BE28;
@@ -36,13 +59,36 @@
   }
   &__butt {
     position: relative;
-    top: 86px;
-    left: -173px;
-    width: 179px;
+    top: 36px;
+    left: -55px;
+    max-width: 127% !important;
+    width: 360px !important;
+    @include media-query((
+      max-width: (sm: 100% !important),
+      width: (
+        sm: 241px !important
+      ),
+      left: (
+        sm: -81px
+      ),
+      top: (sm: 86px),
+    ));
   }
   &__email {
-    font: 16px/21px $fedra-book;
+    font: 13px/18px $fedra-book;
     color: rgba(map_get($shades, 'black'), 0.8);
-    letter-spacing: -0.5px;
+    letter-spacing: -0.25px;
+    @include media-query((
+      font-size: (
+        md: 14px,
+      ),
+      line-height: (
+        md: 19px,
+      ),
+      letter-spacing: (
+        md: -1px
+      )
+    ))
+
   }
 }

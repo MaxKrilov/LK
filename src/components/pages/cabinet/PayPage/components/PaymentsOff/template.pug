@@ -1,10 +1,10 @@
 // Payments Off
 
-div(:class="`${pre}`" id="bgg")
+div(:class="`${pre}`")
   er-container(full :class="`${pre}__container`")
     er-row.justify-content-between.no-gutters
       er-flex(xs2 )
-        div
+        div(:class="`${pre}__container`")
           er-icon(name="cancel" :class="`${pre}__icon-height`")
       er-flex(xs10)
         div(:class="`${pre}__pos`")
@@ -20,15 +20,15 @@ div(:class="`${pre}`" id="bgg")
               | Карта не сохранена
 
     er-container(:class="`${pre}__butt__container`")
-      er-row.no-gutters
-        er-flex.no-gutters(xs3 :class="`${pre}__butt__left`")
+      er-row.no-gutters.justify-content-between
+        er-flex.no-gutters(xs12 sm6 lg3 xl3 :class="`${pre}__butt__left`")
           er-button(
             type="submit"
             @click="tryAgain"
           )
             | Попробовать снова
 
-        er-flex.no-gutters(xs3 offset-xs1 :class="`${pre}__butt__right`")
+        er-flex.no-gutters(xs12 sm6 lg9 xl3 offset-xs1 :class="`${pre}__butt__right`")
           .er-attach(:class="`${pre}__butt__icon`")
             er-icon(name="chat")
             a.link--dashed--black(

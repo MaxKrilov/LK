@@ -1,6 +1,6 @@
 .lk-template {
   background: map_get($gray, '3');
-  min-height: 100vh;
+  //min-height: 100vh;        <--- чтобы было правильное расстояние до футера
   display: flex;
   flex-direction: column;
 

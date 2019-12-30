@@ -10,7 +10,7 @@
     &__container {
       position: absolute;
       height: 100px;
-      top: 182px;
+      //top: 182px;
       //background: green;
       display: block;
       z-index: 1;
@@ -19,7 +19,7 @@
         display: (md: none),
         margin-top: (
           md: 46px
-        )
+        ),
       ));
     }
     &__lateral-left {
@@ -27,18 +27,27 @@
       width: 60px !important;
       left: -51px;
       cursor: pointer;
+      background: #FFFFFF;
+      border-radius: 12px;
       //height: 160px;
       //background: red !important;
+      @include media-query((
+        width: (sm: 97px !important),
+        background: (sm: transparent)
+      ));
+
     }
     &__lateral-right {
       position: relative;
       width: 100px !important;
       //height: 160px;
-      //background: blue !important;
+      background: #FFFFFF;
+      border-radius: 12px;
       right: -24px;
       cursor: pointer;
       @include media-query((
-        right: (sm: -56px)
+        right: (sm: -56px),
+        background: (sm: transparent)
       ));
 
       &__next {
@@ -110,7 +119,20 @@
       margin-top: -16px;
     }
     &__title {
-      margin-left: 4px;
+      margin-left: 10px;
+      margin-top: -4px;
+      font-family: $fedra-demi;
+      color: map_get($green, 'base');
+      @include media-query((
+        font-size: (
+          md: 13px,
+          xl: 14px,
+        ),
+        line-height: (
+          md: 16px,
+          xl: 19px
+        ),
+      ));
     }
   }
   &__cvc {
@@ -210,8 +232,6 @@
     left: 537px;
     */
     margin: 0 auto;
-
-
     //left: 289px;
     top: 162px;
     transform: rotate(-90deg);
@@ -220,7 +240,10 @@
       position: (
         md: absolute
       ),
-      left: (md: 537px),
+      right: (
+        md: 51px,
+        xl: 0
+      ),
       top: (
         sm: 115px,
         md: 114px),
@@ -257,7 +280,7 @@
     position: absolute;
     top: -48px;
     left: 0;
-    transition: 0.1s;
+    transition: 1s;
     @include media-query((
       transition: (
         sm: 0.5s
@@ -323,8 +346,8 @@
     @include media-query((
       height: (
         md: 208px,
-        lg: 190px,
-        xl: 207px,
+        lg: 208px,
+        xl: 208px,
       ),
     ));
   }
@@ -374,12 +397,15 @@
     }
     &__text {
       //@extend .pay-card__card-title__delete__text;
+      position: relative;
+      top: -10px;
       font: 11px/16px $fedra-demi;
       color: rgba(map_get($shades, 'black'), 0.8) !important;
-      margin-top: -13px !important;
+      margin-top: -3px !important;
       margin-left: 0 !important;
       @include media-query((
         margin-top: (md: 0 !important),
+        top: (md: 0),
         margin-left: (md: 4px !important),
       ));
     }
@@ -504,7 +530,6 @@
   }
   &__card-row {
     flex-wrap: nowrap !important;
-
     @include media-query((
       flex-wrap: (
         md: wrap !important
@@ -512,7 +537,7 @@
       margin-left: (
         //xs: 5.6vw !important,
         //sm: 4.4vw !important,
-        md: 16px !important,
+        md: -9px !important,
       ),
       padding-left: (
         xs: 30px,
@@ -545,7 +570,7 @@
       z-index: 1;
       padding: 0 !important;
       background: transparent !important;
-      transition: .5s;
+      transition: 1s;
       @include media-query((
         transition: (
           sm: .5s
@@ -623,12 +648,12 @@
     &__deleted {
       position: relative;
       background: #EBEBEB;
-      margin: -15px 0 0 -20px;
+      margin: -15px 0 0 -18px;
       padding: 15px 0 0 18px;
       top: 85px;
       left: 0;
       z-index: 8;
-      height: 237px;
+      height: 248px;
       width: 500px;
       &__size {
         height: 208px;
@@ -736,7 +761,10 @@
     img {
       width: 71px;
       @include media-query((
-        width: (md: 64px),
+        width: (
+          md: 64px,
+          lg: 99px,
+        ),
         top: (md: 20px),
       ))
     }

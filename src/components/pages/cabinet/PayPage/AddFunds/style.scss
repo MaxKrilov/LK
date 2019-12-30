@@ -28,7 +28,7 @@
       margin-top: (
         xs: -14px,
         sm: -25px,
-        md: -24px,
+        md: 71px !important,
         lg: -21px,
         xl: -23px,
       ),
@@ -75,7 +75,7 @@
     }
     @include media-query((
       margin-top: (
-        xl: 4px
+        xl: 11px
       ),
       margin-bottom: (lg: 14px),
       display: (xl: block),
@@ -86,13 +86,16 @@
     display: block;
     height: 12px;
     cursor: pointer;
-    margin-top: 26px;
+    margin-top: 25px;
     color: rgba(map_get($yellow, 'base'), 0.8);
     &__text {
       text-decoration: none;
     }
     @include media-query((
       display: (xl: none),
+      margin-top: (
+        md: 27px,
+      ),
     ));
   }
   &__icon-height svg {
@@ -106,7 +109,7 @@
     letter-spacing: -1px;
     @include media-query((
       margin-top: (
-        xl: -2px,
+        xl: -5px,
         xxl: -4px
       ),
       width: (
@@ -144,8 +147,12 @@
   &__main {
     width: 108%; //1120px;
     //////// <<<< 4386 >>>> ////////
-
-    height: 386px;
+    margin-top: 3px;
+    background: map_get($gray, '13');
+    box-shadow: inset 0 4px 16px rgba(0, 0, 0, .05);
+    display: flex;
+    overflow: hidden;
+    height: 614px;
     //margin-left: 20px;
     @include media-query((
       margin-left: (
@@ -153,26 +160,21 @@
         md: 0
       ),
       height: (
-        xs: 800px,
+        sm: 600px,
+        md: 700px,
         lg: 386px,
       ),
       width: (
         //xs: 100%,
         sm: 111%,
         md: 104%
+      ),
+      margin-top: (
+        sm: 5px,
+        md: 0,
+        xl: 53px,
       )
-      /*
-      padding-left: (
-        sm: 22px,
-        md: 0
-      )
-      */
     ));
-
-    margin-top: 38px;
-    //padding-top: 44px;
-    background: map_get($gray, '13');
-    box-shadow: inset 0 4px 16px rgba(0, 0, 0, .05);
     /*
     margin-left: -64px;
     padding: {
@@ -180,73 +182,163 @@
       right: 64px;
     };
     */
-    display: flex;
-    overflow: hidden;
+
+    //padding-top: 44px;
   }
   &__sum {
     width: 100%; //373px;
     padding-top: 0; //48px;
     background: #F3F3F3;
     &__title {
-      font-size: 20px;
-      letter-spacing: -1px;
-      color: #000000;
-      opacity: .8;
-      font-weight: 300;
-      margin: 44px 0 0;
+      //font-size: 20px;
+      //letter-spacing: -1px;
+      //color: #000000;
+      //opacity: .8;
+      //font-weight: 300;
+      margin: 0;
+      @include media-query((
+        margin-top: (
+          sm: -25px,
+          md: 47px,
+        )
+      ));
+
     }
     &__input {
-      width: 203px;
-      margin-top: 23px;
+      width: 288px;
+      margin-top: 19px;
       position: relative;
+      @include media-query((
+        width: (
+          sm: 203px,
+          md: 203px
+        ),
+        margin-top: (
+          sm: 17px,
+          md: 23px,
+          lg: 18px,
+        ),
+        /*
+        height: (
+          sm: 313px,
+          md: 383px
+        ),
+        */
+      ));
       & input {
         position: relative;
-        font-size: 24px !important;
+        //font-size: 24px !important;
+        font: 17px/22px $fedra-demi !important;
+        letter-spacing: -0.5px;
+        color: map_get($shades, 'black') !important;
+        @include media-query((
+          font-size: (
+            md: 18px,
+            xxl: 20px
+          ),
+          line-height: (
+            md: 23px,
+            xxl: 26px
+          ),
+          letter-spacing: (
+            md: -1px
+          )
+        ))
+
       }
+      & .er-text-field .er-input__control .er-input__slot {
+        min-height: 39px !important;
+      }
+      /*
       &__h3 {
         @extend %h3;
-        /*
+        !*
         position: relative;
         //left: -53px;
         opacity: 0.3;
         background: red;
-        */
+        *!
       }
+      */
     }
     &__remember {
       margin-top: 20px;
       display: flex;
       align-items: center;
-      width: 263px;
+      width: 280px;
+      @include media-query((
+        margin-top: (
+          lg: 13px,
+        ),
+      ));
     }
     &__button {
-      width: 203px;
+      width: 288px;
       margin-top: 31px;
+      @include media-query((
+        margin-top: (
+          sm: 44px,
+          md: 34px,
+          lg: 53px,
+          xl: 40px,
+        ),
+        width: (
+          sm: 203px,
+          md: 203px
+        ),
+      ));
     }
     &__text {
-      width: 305px;
+      @extend .add-funds__sum__autopay;
+      width: 288px;
+      left: 0 !important;
+      top: 18px !important;
+      border-bottom: none !important;
+      color: rgba(map_get($shades, 'black'), 0.5) !important;
+      @include media-query((
+        top: (
+          sm: -37px !important,
+          md: -41px !important,
+          lg: 30px !important,
+        ),
+        left: (
+          sm: 219px !important,
+          md: 286px !important,
+          lg: -11px !important,
+        ),
+        width: (
+          sm: 249px,
+          md: 270px
+        ),
+      ));
+
+      /*
       margin: {
+        left: 30px;
         top: 30px;
         bottom: 27px;
       }
+      */
+    /*
     ;
       line-height: 20px;
       font-size: 14px;
       color: #4E4E4E;
+    */
 
       & a {
-        font-size: 14px;
+        color: rgba(map_get($shades, 'black'), 0.5) !important;
       }
 
-      & > div {
-        position: relative;
-        top: 4px;
-        left: 1px;
-      }
+      //& > div {
+      //  position: relative;
+      //  top: 4px;
+      //  left: 1px;
+      //}
     }
     &__move-card {
       max-width: 519px;
-      height: 383px;
+      height: 307px;
       overflow: hidden;
       top: 16px;
       @include media-query((
@@ -254,33 +346,77 @@
           sm: 32px,
           md: 0
         ),
+        height: (
+          sm: 313px,
+          md: 383px
+        ),
       ));
 
     }
     &__pos {
-      padding-left: 39px !important;
+      padding-left: 31px !important;
       @include media-query((
         padding-left: (
           sm: 39px !important,
           md: 15px !important
         )
       ));
-
+    }
+    &__hint {
+      position: relative;
+      margin-left: 7px;
+      top: -4px;
+      @include media-query((
+        margin-left: (
+          md: 14px,
+        ),
+      ))
+    }
+    &__autopay {
+      position: relative;
+      margin-left: 11px;
+      top: -3px;
+      border-bottom: 1px dashed map_get($shades, 'black');
+      font: 11px/16px $fedra-demi;
+      letter-spacing: 0.35px;
+      color: rgba(map_get($shades, 'black'), 0.8);
+      @include media-query((
+        font-size: (
+          md: 13px,
+          xl: 14px,
+        ),
+        line-height: (
+          md: 16px,
+          xl: 19px,
+        ),
+        letter-spacing: (
+          md: normal
+        )
+      ))
     }
   }
   &__check {
-    margin-top: 64px;
+    margin-top: 0;
     width: 313px; //420
     position: relative;
     z-index: 1;
     margin-left: -12px;
     @include media-query((
       width: (md: 420px),
+      margin-top: (
+        sm: -50px,
+        md: 27px,
+        lg: 58px,
+      ),
       margin-left: (
         md: 46px,
         lg: 16px,
       ),
     ));
+    &__question {
+      margin-left: -25px;
+      margin-top: 2px;
+    }
     &__decoration {
       position: relative;
       width: 100%;
@@ -299,11 +435,12 @@
       border-radius: 4px;
     }
     &__get-check {
-      width: 288px;  //392px
-      height: 263px;
+      width: 288px;
+      height: 227px;
       padding: 50px 40px 37px 34px;
       margin-top: -13px;
       margin-left: 13px;
+      margin-bottom: 47px;
       position: relative;
       background-image: url("../../../../../../static/get-check-bg.png");
       background-position: center;
@@ -311,6 +448,7 @@
       filter: drop-shadow(-4px 6px 6px rgba(0, 0, 0, .15));
       background-size: 288px 100%;
       @include media-query((
+        height: (md: 263px),
         width: (md: 392px),
         background-size: (md: 392px)
     ));
@@ -323,39 +461,72 @@
       justify-content: center;
       padding-bottom: 16px;
       border-bottom: 1px dashed #D5D5D5;
+      margin-top: -7px;
     }
     &__title {
+      /*
       font-size: 24px;
       line-height: 28px;
       color: #000000;
       opacity: .8;
+      */
       margin-right: 32px;
     }
     &__body {
-      margin-top: 36px;
+      margin-top: 27px;
     }
     &__input {
       position: relative;
       top: -13px;
-      text-align: center;    }
+      text-align: center;
+    }
+    &__email {
+      margin-top: -3px;
+    }
   }
   &__cards {
     margin-left: -14px;
     background: blue;
   }
   &__confirm {
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     bottom: 0;
     right: 0;
-    width: 544px;
-    height: 416px;
+    margin: auto;
+    width: 288px;
+    height: 480px;
     background: #FFFFFF;
     box-shadow: -8px 8px 16px rgba(0, 0, 0, 0.04), 0px 8px 24px rgba(0, 0, 0, 0.06);
     border-radius: 12px;
     z-index: 7;
-    margin: auto;
+    margin-top: 247px;
+    @include media-query((
+      margin: (
+        md: 420px auto,
+      ),
+      /*
+      margin-left: (
+        md: auto,
+        lg: 16px,
+      ),
+      */
+      height: (
+        sm: 288px,
+        md: 353px,
+        lg: 352px,
+      ),
+      width: (
+        sm: 448px,
+        md: 384px,
+        lg: 384px,
+      ),
+      top: (
+        //md: -722px,
+        lg: 16px,
+      ),
+    ));
     &__content {
       position: absolute;
       left: 31px;
@@ -370,8 +541,19 @@
     }
     &__container-button {
       position: absolute;
-      padding: 0 32px 0 32px !important;
+      padding: 0 32px 0 24px !important;
       bottom: 32px;
+      width: 90%;
+      @include media-query((
+        width: (
+          sm: 100%,
+          //xxl: 20px
+        ),
+        padding: (
+          md: 0 32px 0 32px !important,
+          //xxl: 26px
+        ),
+      ))
     }
     &__close svg {
       opacity: 0.2;
@@ -389,9 +571,64 @@
       margin-left: 4px;
       opacity: .3;
     }
+    &__pay {
+      cursor: pointer;
+      &__text {
+        font: 13px/120% $fedra-demi;
+        letter-spacing: 0.35px;
+        color: map_get($green, 'base');
+        border-bottom: 1px dashed map_get($green, 'base');
+        @include media-query((
+          font-size: (
+            md: 18px,
+            xxl: 20px
+          ),
+          line-height: (
+            md: 23px,
+            xxl: 26px
+          ),
+          letter-spacing: (
+            md: -1px
+          )
+        ))
+      }
+    }
+    &__no {
+      cursor: pointer;
+      &__text {
+        font: 13px/120% $fedra-demi;
+        letter-spacing: 0.35px;
+        color: map_get($shades, 'black');
+        border-bottom: 1px dashed map_get($green, 'base');
+        opacity: 0.3;
+        @include media-query((
+          font-size: (
+            md: 18px,
+            xxl: 20px
+          ),
+          line-height: (
+            md: 23px,
+            xxl: 26px
+          ),
+          letter-spacing: (
+            md: -1px
+          )
+        ))
+      }
+    }
+    &__butt {
+      justify-content: space-between;
+      @include media-query((
+        justify-content: (
+          sm: end,
+        ),
+      ));
+
+    }
   }
 }
 
+/*
 @keyframes fadeInUp {
   from {
     opacity: 0;
@@ -402,6 +639,8 @@
     transform: translate3d(0, 0, 0);
   }
 }
+*/
+
 /*
 &__welcome-title {
   padding: 22px 16px 16px;

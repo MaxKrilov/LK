@@ -5,21 +5,48 @@
   left: -300px;
   top: 47px;
   min-height: 381px;
+  @include media-query((
+    min-height: (
+      sm: 247px,
+    ),
+  ));
   &__container {
     width: 100% !important;
     margin-left: 300px !important;
+    margin-top: -43px;
   }
   &__icon-height svg {
     position: absolute;
-    width: 128px !important;
+    width: 64px !important;
     left: 0px;
     top: 0px;
     color: map_get($red, 'base');
+    @include media-query((
+      width: (
+        md: 80px !important
+      ),
+      /*
+      margin-top: (
+        md: 64px,
+        lg: 64px,
+      ),
+      margin-left: (
+        md: 46px,
+        lg: 16px,
+      ),
+      */
+    ));
+
   }
   &__pos {
     position: relative;
-    margin-left: -10px;
-    top: 16px;
+    margin-left: 30px;
+    top: 0;
+    @include media-query((
+      margin-left: (md: -10px),
+      top: (md: 16px),
+    ));
+
   }
   &__info {
     color: map_get($red, 'base');
@@ -36,10 +63,33 @@
   }
   &__butt {
     &__left {
-      max-width: 180px !important;
+      position: relative;
+      top: -51px;
+      left: 10px;
+      max-width: 127% !important;
+      width: 360px !important;
+      @include media-query((
+        max-width: (sm: 100% !important),
+        width: (sm: 179px !important),
+        left: (
+          sm: -81px
+        ),
+        top: (sm: 86px),
+      ));
+   //   max-width: 180px !important;
     }
     &__right {
+      top: -30px;
       left: 35px;
+      @include media-query((
+        left: (
+          sm: 109px,
+          md: 202px
+        ),
+        top: (
+          sm: 50px
+        ),
+      ));
     }
     &__text {
       font: 16px/20px $fedra-demi !important;
@@ -58,6 +108,18 @@
       left: 0;
       top: 124px;
       padding-left: 0 !important;
+      @include media-query((
+        left: (
+          sm: 81px,
+          //md: -10px
+        ),
+        top: (
+          sm: 0,
+          lg: 6px
+          //md: -10px
+        ),
+      ));
+
     }
   }
 }
