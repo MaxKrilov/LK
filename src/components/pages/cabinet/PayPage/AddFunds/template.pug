@@ -19,8 +19,6 @@ div(:class="`${pre}`").main-content.main-content--h-padding
       h1.fonts--demi(:class="`${pre}__welcome-title`")
         | Пополнить счет
 
-
-      //
     div(:class="`${pre}__main`" v-if="visInfo")
       div(:class="`${pre}__line`")
       div(full :class="`${pre}__sum`")
@@ -94,8 +92,6 @@ div(:class="`${pre}`").main-content.main-content--h-padding
     PaymentsOn(v-if="!visInfo && success" @try="tryAgain")
     PaymentsOff(v-if="!visInfo && !success" @try="tryAgain")
 
-
-
     div(:class="`${pre}__check`" v-if="visInfo")#get-check
       div(:class="`${pre}__check__decoration`")
         div(:class="`${pre}__check__decoration-line`")
@@ -155,14 +151,14 @@ div(:class="`${pre}`").main-content.main-content--h-padding
               type="submit"
               @click="paymentsOn"
               v-if="!visButtConf"
-            )
+            ) Оплатить
           er-flex.pl-16(xs3 xl6)
             er-button.align-items-center(
               type="submit"
               flat=true
               @click="paymentsOff"
               v-if="!visButtConf"
-            )
+            ) Отменить
 
         er-row.no-gutters(:class="`${pre}__confirm__butt`")
           er-flex(xs3 xl6)
@@ -179,9 +175,6 @@ div(:class="`${pre}`").main-content.main-content--h-padding
                   :class="`${pre}__confirm__pay__text`"
                   v-if="visButtConf"
               ) Оплатить
-
-
-
 
   er-overlay(
   v-model="openСonfirmDel"
@@ -223,7 +216,7 @@ div(:class="`${pre}`").main-content.main-content--h-padding
           )
             | Отменить
 
-      er-row.justify-content-between.no-gutters
+      er-row.no-gutters(:class="`${pre}__confirm__butt`")
         er-flex(xs3 xl6)
           div(:class="`${pre}__confirm__no`")
             a(

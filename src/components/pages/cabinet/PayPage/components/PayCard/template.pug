@@ -16,14 +16,13 @@ er-container(full :class="`${pre}__container`")
         )
           div(:class="`${pre}__card-butt__card-height`" @click="moveUp")
 
-
   // общий сдвиг
   er-row.no-gutters(id="bgg"
     :class="`${pre}__move`"
     :style="'transform: translate(' + rightMove + unit + ', ' + topMove + 'px)'"
   )
     div(:class="`${pre}__card-row ${direct}`")
-      // Новая карта :style="'transform: translate(' + leftMove0 + 'px)'"
+      // Новая карта
       er-flex(xs3 sm2 lg9 xl12
         :class="`${pre}__card-pos`"
         :style="'margin-right: ' + delta + unit"
@@ -281,12 +280,8 @@ er-container(full :class="`${pre}__container`")
                         mask="9   9   9"
                       )
 
-
-
       // карта МС
-      er-flex(xs3 sm2 lg9 xl12 :class="`${pre}__card-pos`"
-
-      )
+      er-flex(xs3 sm2 lg9 xl12 :class="`${pre}__card-pos`")
         er-row(no-gutters)
           er-flex
             div(
@@ -353,9 +348,6 @@ er-container(full :class="`${pre}__container`")
                       mask="9   9   9"
                       )
 
-
-
-
   div(
     :class="`${pre}__card__deleted`"
     v-if="visCardDel"
@@ -388,9 +380,6 @@ er-container(full :class="`${pre}__container`")
       :class="`${pre}__indicators__circle__down`"
       @click="moveUp"
     )
-
-  //div()
-  //| {{index}} {{op}}
 
 
 

@@ -15,24 +15,12 @@
     width: 64px !important;
     left: 0px;
     top: 0px;
-    color:#69BE28;
+    color: map_get($gray, 'base');
     @include media-query((
       width: (
         md: 80px !important,
-        //md: 128px !important,
       ),
-      /*
-      margin-top: (
-        md: 64px,
-        lg: 64px,
-      ),
-      margin-left: (
-        md: 46px,
-        lg: 16px,
-      ),
-      */
     ));
-
   }
   &__pos {
     position: relative;
@@ -42,7 +30,6 @@
       margin-left: (md: -10px),
       top: (md: 16px),
     ));
-
   }
   &__info {
     color: #69BE28;

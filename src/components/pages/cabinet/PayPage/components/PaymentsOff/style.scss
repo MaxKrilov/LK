@@ -25,18 +25,7 @@
       width: (
         md: 80px !important
       ),
-      /*
-      margin-top: (
-        md: 64px,
-        lg: 64px,
-      ),
-      margin-left: (
-        md: 46px,
-        lg: 16px,
-      ),
-      */
     ));
-
   }
   &__pos {
     position: relative;
@@ -46,7 +35,6 @@
       margin-left: (md: -10px),
       top: (md: 16px),
     ));
-
   }
   &__info {
     color: map_get($red, 'base');
@@ -76,7 +64,6 @@
         ),
         top: (sm: 86px),
       ));
-   //   max-width: 180px !important;
     }
     &__right {
       top: -30px;
@@ -111,15 +98,12 @@
       @include media-query((
         left: (
           sm: 81px,
-          //md: -10px
         ),
         top: (
           sm: 0,
           lg: 6px
-          //md: -10px
         ),
       ));
-
     }
   }
 }

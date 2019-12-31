@@ -1,10 +1,9 @@
 .add-funds {
   width: 100%;
-  background: #F3F3F3;
+  background: map_get($gray, '3');
   &__line {
     left: 0;
     background: map_get($gray, '13');
-    //background: #CAC9C9;
     height: 274px;
     position: absolute;
     right: 0;
@@ -12,18 +11,13 @@
       height: (
         sm: 253px,
         md: 386px,
-        //lg: -21px,
-        //xl: -23px,
       ),
     ));
-
-    //border: 1px solid black;
   }
   &__container-main {
     padding: 0 !important;
     min-width: 320px;
     margin-left: -16px;
-    //height: 432px;
     @include media-query((
       margin-top: (
         xs: -14px,
@@ -48,12 +42,6 @@
       )
     ));
   }
-  /*
-  &__container-main {
-    @include media-query((
-    ));
-  }
-  */
   &__back-arr {
     margin-left: 10px;
     @include media-query((
@@ -145,15 +133,13 @@
     }
   }
   &__main {
-    width: 108%; //1120px;
-    //////// <<<< 4386 >>>> ////////
+    width: 108%;
     margin-top: 3px;
     background: map_get($gray, '13');
     box-shadow: inset 0 4px 16px rgba(0, 0, 0, .05);
     display: flex;
     overflow: hidden;
     height: 614px;
-    //margin-left: 20px;
     @include media-query((
       margin-left: (
         sm: -24px,
@@ -165,7 +151,6 @@
         lg: 386px,
       ),
       width: (
-        //xs: 100%,
         sm: 111%,
         md: 104%
       ),
@@ -175,26 +160,12 @@
         xl: 53px,
       )
     ));
-    /*
-    margin-left: -64px;
-    padding: {
-      left: 64px;
-      right: 64px;
-    };
-    */
-
-    //padding-top: 44px;
   }
   &__sum {
-    width: 100%; //373px;
-    padding-top: 0; //48px;
-    background: #F3F3F3;
+    width: 100%;
+    padding-top: 0;
+    background: map_get($gray, '3');
     &__title {
-      //font-size: 20px;
-      //letter-spacing: -1px;
-      //color: #000000;
-      //opacity: .8;
-      //font-weight: 300;
       margin: 0;
       @include media-query((
         margin-top: (
@@ -202,7 +173,6 @@
           md: 47px,
         )
       ));
-
     }
     &__input {
       width: 288px;
@@ -218,16 +188,9 @@
           md: 23px,
           lg: 18px,
         ),
-        /*
-        height: (
-          sm: 313px,
-          md: 383px
-        ),
-        */
       ));
       & input {
         position: relative;
-        //font-size: 24px !important;
         font: 17px/22px $fedra-demi !important;
         letter-spacing: -0.5px;
         color: map_get($shades, 'black') !important;
@@ -249,17 +212,6 @@
       & .er-text-field .er-input__control .er-input__slot {
         min-height: 39px !important;
       }
-      /*
-      &__h3 {
-        @extend %h3;
-        !*
-        position: relative;
-        //left: -53px;
-        opacity: 0.3;
-        background: red;
-        *!
-      }
-      */
     }
     &__remember {
       margin-top: 20px;
@@ -311,30 +263,9 @@
           md: 270px
         ),
       ));
-
-      /*
-      margin: {
-        left: 30px;
-        top: 30px;
-        bottom: 27px;
-      }
-      */
-    /*
-    ;
-      line-height: 20px;
-      font-size: 14px;
-      color: #4E4E4E;
-    */
-
       & a {
         color: rgba(map_get($shades, 'black'), 0.5) !important;
       }
-
-      //& > div {
-      //  position: relative;
-      //  top: 4px;
-      //  left: 1px;
-      //}
     }
     &__move-card {
       max-width: 519px;
@@ -351,7 +282,6 @@
           md: 383px
         ),
       ));
-
     }
     &__pos {
       padding-left: 31px !important;
@@ -397,7 +327,7 @@
   }
   &__check {
     margin-top: 0;
-    width: 313px; //420
+    width: 313px;
     position: relative;
     z-index: 1;
     margin-left: -12px;
@@ -421,7 +351,7 @@
       position: relative;
       width: 100%;
       height: 26px;
-      background-color: #E0E0E0;
+      background-color: map_get($gray, '10');
       border-radius: 12px;
     }
     &__decoration-line {
@@ -430,7 +360,7 @@
       left: 13px;
       width: calc(100% - 26px);
       height: 6px;
-      background-color: #C2C2C2;
+      background-color: map_get($gray, '35');
       box-shadow: inset -2px 2px 2px rgba(0, 0, 0, .3);
       border-radius: 4px;
     }
@@ -451,8 +381,7 @@
         height: (md: 263px),
         width: (md: 392px),
         background-size: (md: 392px)
-    ));
-
+      ));
     }
     &__header {
       text-align: center;
@@ -460,16 +389,10 @@
       align-items: center;
       justify-content: center;
       padding-bottom: 16px;
-      border-bottom: 1px dashed #D5D5D5;
+      border-bottom: 1px dashed map_get($gray, '36');
       margin-top: -7px;
     }
     &__title {
-      /*
-      font-size: 24px;
-      line-height: 28px;
-      color: #000000;
-      opacity: .8;
-      */
       margin-right: 32px;
     }
     &__body {
@@ -497,21 +420,18 @@
     margin: auto;
     width: 288px;
     height: 480px;
-    background: #FFFFFF;
+    background: map_get($shades, 'white');
     box-shadow: -8px 8px 16px rgba(0, 0, 0, 0.04), 0px 8px 24px rgba(0, 0, 0, 0.06);
     border-radius: 12px;
     z-index: 7;
-    margin-top: 247px;
+    margin: 184px auto;
     @include media-query((
       margin: (
-        md: 420px auto,
+        sm: 247px auto,
+        md: 282px auto,
+        lg: 258px auto,
+        xl: 289px auto,
       ),
-      /*
-      margin-left: (
-        md: auto,
-        lg: 16px,
-      ),
-      */
       height: (
         sm: 288px,
         md: 353px,
@@ -523,7 +443,6 @@
         lg: 384px,
       ),
       top: (
-        //md: -722px,
         lg: 16px,
       ),
     ));
@@ -537,7 +456,7 @@
       width: 52px !important;
       left: 0px;
       top: 0px;
-      color: #FFDD00;
+      color: map_get($yellow, 'base');
     }
     &__container-button {
       position: absolute;
@@ -547,11 +466,9 @@
       @include media-query((
         width: (
           sm: 100%,
-          //xxl: 20px
         ),
         padding: (
-          md: 0 32px 0 32px !important,
-          //xxl: 26px
+          md: 0 10px 0 32px !important,
         ),
       ))
     }
@@ -580,15 +497,15 @@
         border-bottom: 1px dashed map_get($green, 'base');
         @include media-query((
           font-size: (
-            md: 18px,
+            md: 14px,
             xxl: 20px
           ),
           line-height: (
-            md: 23px,
+            md: 17px,
             xxl: 26px
           ),
           letter-spacing: (
-            md: -1px
+            md: nornal
           )
         ))
       }
@@ -603,15 +520,18 @@
         opacity: 0.3;
         @include media-query((
           font-size: (
-            md: 18px,
+            md: 14px,
             xxl: 20px
           ),
           line-height: (
-            md: 23px,
+            md: 17px,
             xxl: 26px
           ),
           letter-spacing: (
-            md: -1px
+            md: normal
+          ),
+          margin-left: (
+            md: -22px,
           )
         ))
       }
@@ -623,65 +543,6 @@
           sm: end,
         ),
       ));
-
     }
   }
 }
-
-/*
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translate3d(0, 100%, 0);
-  }
-  to {
-    opacity: 1;
-    transform: translate3d(0, 0, 0);
-  }
-}
-*/
-
-/*
-&__welcome-title {
-  padding: 22px 16px 16px;
-  @include media-query((
-    padding: (
-      sm: 20px 24px 16px,
-      md: 20px 0 16px 30px,
-      lg: 27px 30px 17px,
-      xl: 25px 30px 15px
-    ),
-    font-size: (
-      'xl': 30px,
-    )
-  ));
-  &__question {
-    display: inline-block;
-    @include media-query((
-      padding: (
-        'xs': 0 10px,
-        'lg': 0 15px
-      )
-    ));
-    &__wrapper {
-      min-height: 130px;
-      h2.title--medium {
-        display: block;
-        margin-bottom: 15px;
-        letter-spacing: -1px;
-      }
-    }
-    &__text {
-      font: (normal 16px/20px $fedra-book, 'Roboto', 'Helvetica', sans-serif);
-      letter-spacing: -0.5px;
-    }
-    &__icon {
-      color: map_get($gray, '24');
-      &:hover {
-        color: map_get($yellow, 'base');
-        transition: color 0.2s ease-in;
-      }
-    }
-  }
-}
-*/
