@@ -272,7 +272,12 @@
       height: 307px;
       overflow: hidden;
       top: 16px;
+      left: 24px;
       @include media-query((
+        left: (
+          sm: 16px,
+          md: 0
+        ),
         top: (
           sm: 32px,
           md: 0

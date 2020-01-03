@@ -20,10 +20,12 @@
       ));
     }
     &__lateral-left {
-      position: relative;
+      position: absolute;
       width: 60px !important;
-      left: -51px;
+      left: -39px;
       cursor: pointer;
+      z-index: 1;
+      top: 0;
       background: map_get($shades, 'white');
       border-radius: 12px;
       @include media-query((
@@ -32,21 +34,23 @@
       ));
     }
     &__lateral-right {
-      position: relative;
+      position: absolute; //relative;
       width: 100px !important;
       background: map_get($shades, 'white');
       border-radius: 12px;
-      right: -24px;
+      right: -39px; //-24px;
+      top: 0; //
+      z-index: 1;
       cursor: pointer;
       @include media-query((
-        right: (sm: -56px),
+        right: (sm: -4px),
         background: (sm: transparent)
       ));
       &__next {
         @extend .pay-card__card-butt__lateral-right;
-        right: -29px;
+        right: -44px;
         @include media-query((
-          right: (sm: -80px)
+          right: (sm: -4px)
         ));
       }
     }
@@ -205,6 +209,25 @@
       }
     }
   }
+  &__inf {
+    position: relative;
+    width: 360px;
+    height: 161px;
+    margin: 0 auto;
+    top: 68px;
+    @include media-query((
+      position: (
+        md: absolute
+      ),
+      right: (
+        md: 51px,
+        xl: 0
+      ),
+      top: (
+        sm: 68px,
+      ),
+    ));
+  }
   &__indicators {
     position: relative;
     width: 4px;
@@ -254,16 +277,21 @@
   &__move {
     position: absolute;
     top: -48px;
-    left: 0;
+    left: 8px;
     transition: 1s;
+    //padding-left: 24px;
     @include media-query((
       transition: (
         sm: 0.5s
       ),
       top: (
         md: 0,
+      ),
+      padding-left: (
+        md: 26px,
+        xl: 11px
       )
-    ));
+  ));
   }
   &__container {
     padding-left: 0 !important;
@@ -510,7 +538,7 @@
           sm: .5s
         ),
         left: (
-          sm: 216px,
+          sm: 0px,
           md: 128px
         ),
         top: (
@@ -576,14 +604,25 @@
       background: map_get($gray, '13');
       margin: -15px 0 0 -18px;
       padding: 15px 0 0 18px;
-      top: 85px;
-      left: 0;
+      top: -159px;
+      left: 35px;
       z-index: 8;
       height: 248px;
-      width: 500px;
+      width: 279px;
+      @include media-query((
+        top: (
+          md: 85px
+        ),
+        left: (md: 0),
+        width: (md: 500px),
+      ));
       &__size {
-        height: 208px;
-        width: 336px;
+        height: 160px;
+        width: 256px;
+        @include media-query((
+          height: (md: 208px),
+          width: (md: 336px),
+        ));
       }
       &__content {
         background: map_get($red, 'other-2');
@@ -620,17 +659,20 @@
     padding: 0 !important;
     margin-bottom: 66px;
     top: 48px;
-    left: 24px;
-    margin-right: 75px;
+    //background: aqua;
+    //left: 24px;
+    //margin-right: 75px;
     @include media-query((
       margin-bottom: (
         sm: 0,
         md: 66px
       ),
+      /*
       margin-right: (
         sm: 152px,
         md: 0
       ),
+      */
     ));
     &__right-top {
       @include media-query((
