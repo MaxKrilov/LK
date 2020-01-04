@@ -11,53 +11,37 @@ export default {
     topMove: 0,
     rightMove: 0,
     leftMove: [],
-    leftMove0: 0,
-    leftMove1: [],
     topBg: [],
-    topBg1: [],
     visButtTop: [false, false, false],
     visButtBott: [true, false, false],
     moveInd: 0,
     cvc: '',
     visCardDel: false,
-    openСonfirmDel: false,
+    openConfirmDel: false,
     direct: 'row',
     visButtLeft: false,
     visButtRight: true,
     rightNext: '',
-    op: [],
-    delta1: 0,
     delta: [],
     op1: 0,
-    unit: '',
-    aa: [],
     changeWidth () {
       this.direct = this[SCREEN_WIDTH] >= 640 ? 'column' : 'row'
       if (this[SCREEN_WIDTH] >= 640) {
-        this.op = [1, 1, 1]
         this.delta = [0, 0, 0, 0]
-        this.unit = 'px'
-        // this.leftMove1 = [0, 0, 0, 0]
-        this.leftMove = [0, -428, -228, -228]
+        this.leftMove = [0, -128, -128, -128]
         this.topBg = [0, 0, 0, 0]
-        this.topBg1 = [0, 0, 0, 0]
       } else {
+        let rbutt1, delta1
         if (this[SCREEN_WIDTH] < 480) {
-          this.op = [1, 1, 1]
-          this.leftMove = [10, 0, 0, 0]
-          this.leftMove1 = [0, 0, 0, 0] // main
-          this.topBg = [66, 0, 0, 0]
-          this.delta = [0, 0, 0, 0]
-          this.unit = 'px'
+          delta1 = 24 + (this[SCREEN_WIDTH] - 320) * 0.8
+          rbutt1 = 8 + (this[SCREEN_WIDTH] - 320) * 0.74
         } else {
-          const rbutt1 = this[SCREEN_WIDTH] * 0.76 - 264
-          this.op = [0, 0, 0]
-          this.delta1 = this[SCREEN_WIDTH] -(24 + 256 + 65)
-          this.delta = [this.delta1, 0, 0, 0]
-          this.leftMove = [rbutt1, 0, 0, 0] // bg
-          this.topBg = [0, -9, -9, -9]
-          this.topBg1 = [0, 0, 0, 0]
+          delta1 = 151 + (this[SCREEN_WIDTH] - 480) * 0.91
+          rbutt1 = 128 + (this[SCREEN_WIDTH] - 480) * 0.55
         }
+        this.delta = [delta1, 0, 0, 0]
+        this.leftMove = [rbutt1, 10, 10, 10] // bg
+        this.topBg = [this[SCREEN_WIDTH] < 480 ? 66 : 0, -9, -9, -9]
       }
     }
   }),
@@ -79,39 +63,39 @@ export default {
     moveUp () {
       if (this.index < 3) {
         if (this[SCREEN_WIDTH] >= 640) {
-          const top = this.topMove === 0 ? 233 : 273
-          this.topMove -= top
-
+          this.topMove -= this.topMove === 0 ? 233 : 273
           this.leftMove[this.index] -= 128
           this.leftMove[this.index + 1] += 128
           this.topBg[this.index] -= 10
           this.topBg[this.index + 1] += 10
-
           this.op1 = 1
         } else {
-          if (this[SCREEN_WIDTH] >= 480) {
-            const ll1 = 256 - (this[SCREEN_WIDTH]*0.15 - 72)
-            const ll2 = 280 + (this[SCREEN_WIDTH] - 480)*0.1
-            const right = this.index === 0 ? ll1 : ll2
-            this.rightMove -= right
-            this.delta1 = this[SCREEN_WIDTH]*0.6 - 137
-            this.delta[this.index] = this[SCREEN_WIDTH]*0.1 - 24 //40
-            this.delta[this.index + 1] = this.delta1
+          let ll1, ll2, delta0, delta1, bg1, scrwidth
+          if (this[SCREEN_WIDTH] < 480) {
+            scrwidth = this[SCREEN_WIDTH] - 320
+            ll1 = 264 - scrwidth * 0.05
+            ll2 = 272 + scrwidth * 0.045
+            delta0 = 16 + scrwidth * 0.05
+            delta1 = 16 + scrwidth * 0.85
+            bg1 = 8 + scrwidth * 0.75
+          } else {
+            scrwidth = this[SCREEN_WIDTH] - 480
+            ll1 = 256 - (this[SCREEN_WIDTH] * 0.15 - 72)
+            ll2 = 280 + scrwidth * 0.075
+            delta0 = 24 + scrwidth * 0.1
+            delta1 = 151 + scrwidth * 0.52
+            bg1 = 128 + scrwidth * 0.41
+          }
+          this.rightMove -= this.index === 0 ? ll1 : ll2
+          this.delta[this.index] = delta0
+          this.delta[this.index + 1] = delta1
+          this.leftMove[this.index + 1] = bg1
+          this.leftMove[this.index] = -10
 
-            // bg
-            const bg1 = 128 + (this[SCREEN_WIDTH] - 480)*0.49
-            this.leftMove[this.index + 1] += bg1 //128 //216
-            this.leftMove[this.index] -= 236
+          if (this[SCREEN_WIDTH] >= 480) {
             this.topBg[this.index] -= 16
             this.topBg[this.index + 1] += 16
-
           } else {
-            const ll1 = 398 - (this[SCREEN_WIDTH] - 320) * 0.38
-            const right = this.index === 0 ? ll1 : 406
-            this.rightMove -= right
-
-            this.leftMove[this.index] -= 8
-            this.leftMove[this.index + 1] += 8
             this.topBg[this.index] -= 66
             this.topBg[this.index + 1] += 66
           }
@@ -141,30 +125,32 @@ export default {
           this.topBg[this.index - 1] += 10
           this.topBg[this.index] -= 10
         } else {
+          let ll1, ll2, delta0, delta1, bg1, scrwidth, k0
+          if (this[SCREEN_WIDTH] < 480) {
+            scrwidth = this[SCREEN_WIDTH] - 320
+            ll1 = 264 - scrwidth * 0.05
+            ll2 = 272 + scrwidth * 0.045
+            delta0 = 16 + scrwidth * 0.05
+            delta1 = 16 + scrwidth * 0.85
+            bg1 = 8 + scrwidth * 0.75
+          } else {
+            scrwidth = this[SCREEN_WIDTH] - 480
+            ll1 = 256 - (this[SCREEN_WIDTH] * 0.15 - 72)
+            ll2 = 280 + scrwidth * 0.075
+            delta0 = 24 + scrwidth * 0.1
+            k0 = this.index === 1 ? [0.91, 0.55] : [0.52, 0.41]
+            delta1 = 151 + scrwidth * k0[0]
+            bg1 = 128 + scrwidth * k0[1]
+          }
+          this.rightMove += this.index === 1 ? ll1 : ll2
+          this.delta[this.index - 1] = delta1
+          this.delta[this.index] = delta0
+          this.leftMove[this.index - 1] = bg1
+          this.leftMove[this.index] = 10
           if (this[SCREEN_WIDTH] >= 480) {
-            const ll1 = 256 - (this[SCREEN_WIDTH]*0.15 - 72)
-            const ll2 = 280 + (this[SCREEN_WIDTH] - 480)*0.1
-            const right = this.index === 1 ? ll1 : ll2
-            this.rightMove += right
-            this.delta1 = this[SCREEN_WIDTH]*0.6 - 137
-            if (this.index === 1) this.delta1 = this[SCREEN_WIDTH] -(24 + 256 + 65)
-            this.delta[this.index - 1] = this.delta1
-            this.delta[this.index] = 0
-
-            // bg
-            let bg1 = 128 + (this[SCREEN_WIDTH] - 480)*0.49
-            if (this.index === 1) bg1 = this[SCREEN_WIDTH] * 0.76 - 264
-            this.leftMove[this.index-1] = bg1 //128 //216
-            this.leftMove[this.index] = 0 //236
             this.topBg[this.index - 1] += 16
             this.topBg[this.index] -= 16
           } else {
-            const ll1 = 398 - (this[SCREEN_WIDTH] - 320) * 0.38
-            const right = this.index === 1 ? ll1 : 406
-            this.rightMove += right
-
-            this.leftMove[this.index - 1] += 8
-            this.leftMove[this.index] -= 8
             this.topBg[this.index - 1] += 66
             this.topBg[this.index] -= 66
           }
@@ -185,7 +171,7 @@ export default {
     },
     delConfirm () {
       this.$emit('openDelConfirm')
-      this.openСonfirmDel = true
+      this.openConfirmDel = true
     },
     cardDel () {
       this.visCardDel = true

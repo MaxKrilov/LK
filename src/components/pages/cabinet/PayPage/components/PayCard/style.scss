@@ -26,31 +26,35 @@
       cursor: pointer;
       z-index: 1;
       top: 0;
-      background: map_get($shades, 'white');
+      background: transparent;
       border-radius: 12px;
+      display: block;
       @include media-query((
+        display: (md: none),
         width: (sm: 97px !important),
         background: (sm: transparent)
       ));
     }
     &__lateral-right {
-      position: absolute; //relative;
+      position: absolute;
       width: 100px !important;
-      background: map_get($shades, 'white');
+      background: transparent;
       border-radius: 12px;
-      right: -39px; //-24px;
+      right: 17px;
       top: 0; //
-      z-index: 1;
+      z-index: 10;
       cursor: pointer;
+      display: block;
       @include media-query((
-        right: (sm: -4px),
+        display: (md: none),
+        right: (sm: 11px),
         background: (sm: transparent)
       ));
       &__next {
         @extend .pay-card__card-butt__lateral-right;
-        right: -44px;
+        right: -26px; // -44
         @include media-query((
-          right: (sm: -4px)
+          right: (sm: 11px)
         ));
       }
     }
@@ -202,7 +206,6 @@
           md: 0,
         )
       ));
-
       & .er-text-field > .er-input__control > .er-input__slot {
         height: 32px;
         min-height: 32px !important;
@@ -273,13 +276,23 @@
         background: map_get($yellow, 'base');
       }
     }
+    &__disable {
+      position: absolute;
+      width: 4px;
+      height: 197px;
+      border-radius: 2px;
+      z-index: 2;
+      display: block;
+      @include media-query((
+        display: (xl: none),
+      ));
+    }
   }
   &__move {
     position: absolute;
     top: -48px;
     left: 8px;
-    transition: 1s;
-    //padding-left: 24px;
+    transition: 0.5s;
     @include media-query((
       transition: (
         sm: 0.5s
@@ -417,13 +430,12 @@
       }
     }
     &__autopay {
-      color: map_get($green, 'base');
       position: absolute;
       top: 25px;
       left: 146px;
       font: 11px/16px $fedra-demi;
       letter-spacing: 0.35px;
-      color: rgba(map_get($shades, 'black'), 0.3);
+      color: rgba(map_get($green, 'base'), 0.3);
       @include media-query((
         top: (md: 21px),
         left: (md: 201px),
@@ -532,7 +544,7 @@
       z-index: 1;
       padding: 0 !important;
       background: transparent !important;
-      transition: 1s;
+      transition: 0.5s;
       @include media-query((
         transition: (
           sm: .5s
@@ -659,20 +671,11 @@
     padding: 0 !important;
     margin-bottom: 66px;
     top: 48px;
-    //background: aqua;
-    //left: 24px;
-    //margin-right: 75px;
     @include media-query((
       margin-bottom: (
         sm: 0,
         md: 66px
       ),
-      /*
-      margin-right: (
-        sm: 152px,
-        md: 0
-      ),
-      */
     ));
     &__right-top {
       @include media-query((

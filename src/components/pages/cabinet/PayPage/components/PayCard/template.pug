@@ -2,6 +2,7 @@
 
 er-container(full :class="`${pre}__container`")
   div(:class="`${pre}__indicators`")
+    div(:class="`${pre}__indicators__disable`")
     div(
     :class="`${pre}__indicators__line`"
     :style="'top: ' + moveInd + 'px'"
@@ -17,22 +18,18 @@ er-container(full :class="`${pre}__container`")
     @click="moveUp"
     )
 
-  div(:class="`${pre}__inf`")
-    | {{index}} {{topBg}} {{leftMove}}
-
   div(
     :class="`${pre}__card-butt__lateral-left`"
     v-if="visButtLeft"
   )
     div(:class="`${pre}__card-butt__card-height`" @click="moveDown")
-  //er-flex.xs3
-  div(
+  div(id="bgg1"
     :class="`${pre}__card-butt__lateral-right${rightNext}`"
     v-if="visButtRight"
   )
     div(:class="`${pre}__card-butt__card-height`" @click="moveUp")
 
-  // общий сдвиг :style="'transform: translate(' + rightMove + unit + ', ' + topMove + 'px)'"
+  // общий сдвиг
   er-row.no-gutters(
     :class="`${pre}__move`"
     :style="'transform: translate(' + rightMove + 'px, ' + topMove + 'px)'"
@@ -299,8 +296,7 @@ er-container(full :class="`${pre}__container`")
       // карта МС
       er-flex(
         :class="`${pre}__card-pos`"
-      :style="'margin-right: ' + delta[3] + 'px'"
-
+        :style="'margin-right: ' + delta[3] + 'px'"
       )
         er-row(no-gutters)
           er-flex
