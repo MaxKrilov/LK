@@ -19,8 +19,19 @@ export default {
     valSelect: 'Январь',
     visFilter: '__vis-filter',
     widthContainer: '108% !important',
-    openСonfirmPay: false,
-    openСonfirmDel: false,
+    openConfirmPay: false,
+    openConfirmAutoPay: false,
+    openConfirmDel: false,
+    openConfirmDataCard: false,
+    textRemcard: `Данные карты вы заполняете 
+    на следующем шаге. 
+    В целях вашей безопасности 
+    мы не храним все данные карты.
+    Данные карты хранит банк, 
+    мы храним только ссылку на данные карты. 
+    Если вы запомните карту, в следующий раз 
+    можно будет ввести только CVC`,
+    textOnAutopay: '',
     visInfo: true,
     success: false,
     direct: 'row',
@@ -30,10 +41,15 @@ export default {
     changeWidth () {
       this.direct = this[SCREEN_WIDTH] < 960 ? 'row' : 'column'
       this.visButtConf = this[SCREEN_WIDTH] < 1200
+      if (this.selected) {
+        this.textOnAutopay = 'При отключении автоплатежа вам необходимо самостоятельно пополнять баланс на сумму равной ежемесячной абонентской плате до 1 числа отчетного месяца. Денежные средства будут списаны с 20 по последнее число месяца, предшествующего отчетному (например авансовый платеж за апрель будет списан с 20 по 31 марта).'
+      } else {
+        this.textOnAutopay = 'При подключении автоплатежа вы соглашаетесь на автоматическое списание суммы равной ежемесячной абонентской плате. Денежные средства будут списаны с 20 по последнее число месяца, предшествующего отчетному (например авансовый платеж за апрель будет списан с 20 по 31 марта).'
+      }
     }
   }),
   computed: {
-    ...mapGetters([SCREEN_WIDTH]),
+    ...mapGetters([SCREEN_WIDTH])
   },
   mounted () {
     this.changeWidth()
@@ -41,11 +57,29 @@ export default {
   watch: {
     SCREEN_WIDTH () {
       this.changeWidth()
-    },
+    }
   },
   methods: {
     autopay () {
       this.checkAutoPay = this.selected ? 'Подключить автоплатёж' : 'Автоплатёж'
+      // this.selected = true
+      if (this.selected) {
+        this.textOnAutopay = 'При подключении автоплатежа вы соглашаетесь на автоматическое списание суммы равной ежемесячной абонентской плате. Денежные средства будут списаны с 20 по последнее число месяца, предшествующего отчетному (например авансовый платеж за апрель будет списан с 20 по 31 марта).'
+      } else {
+        this.textOnAutopay = 'При отключении автоплатежа вам необходимо самостоятельно пополнять баланс на сумму равной ежемесячной абонентской плате до 1 числа отчетного месяца. Денежные средства будут списаны с 20 по последнее число месяца, предшествующего отчетному (например авансовый платеж за апрель будет списан с 20 по 31 марта).'
+      }
+    },
+    autopayButtRight () {
+      this.checkAutoPay = 'Автоплатёж'
+      this.selected = true
+      this.openConfirmAutoPay = false
+    },
+    autopayButtLeft () {
+      if (this.selected) {
+        this.checkAutoPay = 'Подключить автоплатёж'
+        this.selected = false
+      }
+      this.openConfirmAutoPay = false
     },
     paypage () {
       this.$router.push('/lk/payments')
@@ -60,32 +94,59 @@ export default {
     topOperation (payload) {
       this.visFilter = payload ? '__vis-filter' : ''
     },
+    payAutoConfirm () {
+      if (this.selected) {
+        this.buttLeft = 'Отключить'
+        this.buttRight = 'Не отключать'
+        this.textOnAutopay = 'При отключении автоплатежа вам необходимо самостоятельно пополнять баланс на сумму равной ежемесячной абонентской плате до 1 числа отчетного месяца. Денежные средства будут списаны с 20 по последнее число месяца, предшествующего отчетному (например авансовый платеж за апрель будет списан с 20 по 31 марта).'
+      } else {
+        this.buttLeft = 'Нет, спасибо'
+        this.buttRight = 'Подключить'
+        this.textOnAutopay = 'При подключении автоплатежа вы соглашаетесь на автоматическое списание суммы равной ежемесячной абонентской плате. Денежные средства будут списаны с 20 по последнее число месяца, предшествующего отчетному (например авансовый платеж за апрель будет списан с 20 по 31 марта).'
+      }
+      this.openConfirmAutoPay = true
+    },
     paymentConfirm () {
-      this.openСonfirmPay = true
+      this.openConfirmPay = true
     },
     openDelConfirm () {
-      this.openСonfirmDel = true
+      this.openConfirmDel = true
+    },
+    openRemcard () {
+      this.openConfirmDataCard = true
     },
     closeConfirm () {
-      this.openСonfirmPay = false
-      this.openСonfirmDel = false
+      this.openConfirmPay = false
+      this.openConfirmDel = false
+      this.openConfirmAutoPay = false
+      this.openConfirmDataCard = false
     },
     delCard () {
-      this.openСonfirmDel = false
+      this.openConfirmDel = false
       this.$emit('update')
     },
     paymentsOn () {
-      this.openСonfirmPay = false
+      this.openConfirmPay = false
       this.visInfo = false
       this.success = true
     },
     paymentsOff () {
-      this.openСonfirmPay = false
+      this.openConfirmPay = false
       this.visInfo = false
       this.success = false
     },
     tryAgain () {
       this.visInfo = true
-    }
+    },
+    remcardButtLeft () {
+      // alert(4)
+      // console.log(1)
+      this.openConfirmDataCard = false
+      this.$emit('update1')
+    },
+    remcardButtRight () {
+      this.openConfirmDataCard = false
+      this.$emit('update2')
+    },
   }
 }

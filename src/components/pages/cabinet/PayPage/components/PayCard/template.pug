@@ -53,16 +53,6 @@ er-container(full :class="`${pre}__container`")
                   )
                   h3(:class="`${pre}__card-title`")
                     | Оплата новой картой
-                    //er-hint(:class="`${pre}__remcard__hint-card`")
-                    //  h3.mb-8
-                    //    | Данные карты
-                    //  | Данные карты вы
-                    //  | заполняете на
-                    //  | следующем шаге. В целях
-                    //  | вашей безопасности мы
-                    //  | не храним все данные
-                    //  | карты
-
                   div(:class="`${pre}__remcard`")
                     er-toggle(
                       type="checkbox"
@@ -77,12 +67,12 @@ er-container(full :class="`${pre}__container`")
                     er-hint(:class="`${pre}__remcard__hint`").ml-8
                       h3.mb-8
                         | Запомнить карту
-                      | Данные карты хранит
-                      | банк, мы храним только
-                      | ссылку на данные карты.
-                      | Если вы запомните карту,
-                      | в следующий раз можно
-                      | будет ввести только CVC
+                      | {{ textDataCard }}
+                    div(@click="openRemcard")
+                      er-icon(
+                      name="question"
+                      :class="`${pre}__remcard__confirm`"
+                      )
 
             div(
               :class="`${pre}__card-butt ${pre}__card-butt__bottom ${pre}__card-butt__bottom__first`"
@@ -380,10 +370,13 @@ er-container(full :class="`${pre}__container`")
             div(:class="`${pre}__card__deleted__text`")
               | Карта удалена
 
-            er-card(:class="`${pre}__card__bg`")
-              div(:class="`${pre}__card__bg__content`")
-                div(:class="`${pre}__card-height`")
-                  div(:class="`${pre}__card__bg__strip`")
+            er-card(
+              :class="`${pre}__card__deleted__bg`"
+              :style="'transform: translate(' + leftMove[0] + 'px, ' +  topBg[0] + 'px)'"
+            )
+              div(:class="`${pre}__card__deleted__bg__content`")
+                div(:class="`${pre}__deleted__card-height`")
+                  div(:class="`${pre}__card__deleted__bg__strip`")
 
 
 

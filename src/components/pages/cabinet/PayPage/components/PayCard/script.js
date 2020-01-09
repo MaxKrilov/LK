@@ -17,6 +17,14 @@ export default {
     moveInd: 0,
     cvc: '',
     visCardDel: false,
+    textDataCard: `Данные карты вы заполняете 
+    на следующем шаге. 
+    В целях вашей безопасности 
+    мы не храним все данные карты.
+    Данные карты хранит банк, 
+    мы храним только ссылку на данные карты. 
+    Если вы запомните карту, в следующий раз 
+    можно будет ввести только CVC`,
     openConfirmDel: false,
     direct: 'row',
     visButtLeft: false,
@@ -47,6 +55,8 @@ export default {
   }),
   created () {
     this.$parent.$on('update', this.cardDel)
+    this.$parent.$on('update1', this.updateSelectL)
+    this.$parent.$on('update2', this.updateSelectR)
   },
   mounted () {
     this.changeWidth()
@@ -175,6 +185,15 @@ export default {
     },
     cardDel () {
       this.visCardDel = true
+    },
+    openRemcard () {
+      this.$emit('openRemcard')
+    },
+    updateSelectL () {
+      this.selected1 = false
+    },
+    updateSelectR () {
+      this.selected1 = true
     }
   }
 }

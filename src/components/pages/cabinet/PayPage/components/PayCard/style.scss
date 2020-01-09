@@ -378,9 +378,28 @@
     &__hint {
       margin-left: 8px;
       margin-top: -16px;
+      display: none;
       @include media-query((
         margin-top: (md: -6px),
+        display: (xl: block)
       ));
+    }
+    &__confirm {
+      position: relative;
+      margin-left: 7px;
+      top: -16px;
+      display: inline-block;
+      opacity: 0.2;
+      cursor: pointer;
+      @include media-query((
+        margin-left: (
+          md: 14px,
+        ),
+        top: (
+          md: -8px,
+        ),
+        display: (xl: none !important)
+      ))
     }
     &__hint-card {
       width: 30px;
@@ -617,15 +636,18 @@
       margin: -15px 0 0 -18px;
       padding: 15px 0 0 18px;
       top: -159px;
-      left: 35px;
-      z-index: 8;
+      left: 14px;
+      z-index: 18;
       height: 248px;
       width: 279px;
       @include media-query((
         top: (
           md: 85px
         ),
-        left: (md: 0),
+        left: (
+          md: 9px,
+          xl: -7px,
+        ),
         width: (md: 500px),
       ));
       &__size {
@@ -662,6 +684,45 @@
         opacity: 0.1;
         &__size svg {
           width: 104px !important;
+        }
+      }
+      &__bg {
+        position: absolute;
+        top: 69px;
+        left: 38px;
+        z-index: -1;
+        display: block;
+        max-height: 160px;
+        background: map_get($gray, '4') !important;
+        box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1), 0px 4px 6px rgba(0, 0, 0, 0.05) !important;
+        @include media-query((
+          display: (md: none),
+          left: (
+            sm: 0px,
+            md: 128px
+          ),
+          top: (
+            sm: -151px,
+            md: -198px
+          ),
+          width: (
+            xs: 256px !important,
+            md: 336px !important,
+          ),
+        ));
+        /*
+        &__content {
+          background: map_get($gray, '4');
+          box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1), 0px 4px 6px rgba(0, 0, 0, 0.05);
+          border-radius: 12px;
+        }
+        */
+        &__strip {
+          position: absolute;
+          height: 28px;
+          width: 100%;
+          background: map_get($gray, '34');
+          top: 24px;
         }
       }
     }

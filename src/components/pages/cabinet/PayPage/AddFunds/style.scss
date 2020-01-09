@@ -301,10 +301,26 @@
       position: relative;
       margin-left: 7px;
       top: -4px;
+      display: none !important;
       @include media-query((
         margin-left: (
           md: 14px,
         ),
+        display: (xl: inline-block !important)
+      ))
+    }
+    &__confirm {
+      position: relative;
+      margin-left: 7px;
+      top: -4px;
+      display: inline-block;
+      opacity: 0.2;
+      cursor: pointer;
+      @include media-query((
+        margin-left: (
+          md: 14px,
+        ),
+        display: (xl: none !important)
       ))
     }
     &__autopay {
@@ -422,13 +438,13 @@
     left: 0;
     bottom: 0;
     right: 0;
-    margin: auto;
+    //margin: auto;
     width: 288px;
     height: 480px;
     background: map_get($shades, 'white');
     box-shadow: -8px 8px 16px rgba(0, 0, 0, 0.04), 0px 8px 24px rgba(0, 0, 0, 0.06);
     border-radius: 12px;
-    z-index: 7;
+    z-index: 13;
     margin: 184px auto;
     @include media-query((
       margin: (
@@ -453,12 +469,36 @@
     ));
     &__content {
       position: absolute;
-      left: 31px;
+      left: 23px;
       top: 26px;
+      width: 264px;
+      @include media-query((
+        width: (sm: 380px),
+        left: ( sm: 41px),
+      ));
+      &__size {
+        margin-bottom: 57px;
+        @include media-query((
+          margin-bottom: (
+          sm: 48px,
+          md: 57px
+          ),
+        ));
+      }
+      &__text {
+        @include media-query((
+          left: (
+            sm: 22px
+          ),
+          top: (
+            sm: 8px
+          ),
+        ));
+      }
     }
     &__icon-height svg {
       position: absolute;
-      width: 52px !important;
+      width: 64px !important;
       left: 0px;
       top: 0px;
       color: map_get($yellow, 'base');
@@ -473,17 +513,36 @@
           sm: 100%,
         ),
         padding: (
+          //sm: 0 10px 0 131px !important,
+          sm: 0 10px 0 31px !important,
           md: 0 10px 0 32px !important,
         ),
-      ))
+      ));
+      &__remcard {
+        @extend .add-funds__confirm__container-button;
+        @include media-query((
+          width: (
+            sm: 100%,
+          ),
+          padding: (
+            sm: 0 10px 0 131px !important,
+            //md: 0 10px 0 32px !important,
+          ),
+        ));
+      }
     }
     &__close svg {
+      display: block;
       opacity: 0.2;
       width: 16px !important;
       position: absolute;
       right: 29px;
       top: 29px;
       cursor: pointer;
+      @include media-query((
+        display: (xl: block),
+      ));
+
     }
     &__decimal {
       opacity: .3;
@@ -514,6 +573,10 @@
           )
         ))
       }
+      &__butt-remcard {
+        position: relative;
+        left: 24px;
+      }
     }
     &__no {
       cursor: pointer;
@@ -538,7 +601,29 @@
           margin-left: (
             md: -22px,
           )
-        ))
+        ));
+        &__remcard {
+          @extend .add-funds__confirm__no__text;
+          @include media-query((
+            /*
+            font-size: (
+              md: 14px,
+              xxl: 20px
+            ),
+            line-height: (
+              md: 17px,
+              xxl: 26px
+            ),
+            letter-spacing: (
+              md: normal
+            ),
+            */
+            margin-left: (
+              md: -14px,
+            )
+          ));
+
+        }
       }
     }
     &__butt {
@@ -549,5 +634,117 @@
         ),
       ));
     }
+    &__text {
+      font: 13px/18px $fedra-book;
+      letter-spacing: 0.25px;
+      color: rgba(map_get($gray, '8'), 0.8);
+      width: 240px;
+      @include media-query((
+        width: (
+          sm: 340px,
+          md: 348px
+        ),
+        position: ( sm: relative),
+        top: (
+          sm: -72px,
+          md: -26px,
+        ),
+        left: (
+          sm: 73px,
+          md: 0,
+        ),
+        font-size: (
+            md: 14px,
+            xxl: 20px
+          ),
+        line-height: (
+          md: 19px,
+          xxl: 26px
+        ),
+        letter-spacing: (
+          md: nornal
+        )
+      ));
+      &__header {
+        @extend .add-funds__confirm__text;
+        @include media-query((
+          width: (sm: 240px !important),
+          position: ( sm: relative),
+          top: (
+            sm: -20px,
+            md: 10px
+          ),
+          left: (
+            sm: 68px,
+            md: -36px
+          ),
+          font-size: (
+            md: 14px,
+            xxl: 20px
+          ),
+          line-height: (
+            md: 17px,
+            xxl: 26px
+          ),
+          letter-spacing: (
+            md: nornal
+          )
+        ));
+      }
+      &__title {
+        @include media-query((
+          position: ( sm: relative),
+          left: (sm: -34px),
+          top: (md: 6px),
+        ));
+        &__remcard {
+          @include media-query((
+            position: ( sm: relative),
+            left: (sm: -34px),
+            top: (md: 18px),
+          ));
+        }
+      }
+      &__remcard {
+        @extend .add-funds__confirm__text;
+        @include media-query((
+          width: (
+            sm: 327px,
+            //md: 348px
+          ),
+          /*
+          position: ( sm: relative),
+          */
+          top: (
+            sm: -66px,
+            md: -26px,
+          ),
+          /*
+          left: (
+            sm: 73px,
+            md: 0,
+          ),
+          font-size: (
+            md: 14px,
+            xxl: 20px
+          ),
+          line-height: (
+            md: 19px,
+            xxl: 26px
+          ),
+          letter-spacing: (
+            md: nornal
+          )
+          */
+        ));
+
+      }
+    }
+    &__header {
+      padding-left: 0 !important;
+    }
   }
+}
+.er-hint__message {
+  max-width: 410px !important;
 }
