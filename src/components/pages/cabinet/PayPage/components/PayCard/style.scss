@@ -633,23 +633,40 @@
     &__deleted {
       position: relative;
       background: map_get($gray, '13');
-      margin: -15px 0 0 -18px;
-      padding: 15px 0 0 18px;
+      //margin: -18px 0 0 -18px;
+      //padding: 15px 0 0 18px;
+      margin: -18px 0 0 0;
+      padding: 15px 0 0 0;
       top: -159px;
-      left: 14px;
+      //left: 38px;
       z-index: 18;
       height: 248px;
       width: 279px;
       @include media-query((
+        height: (
+          sm: 236px,
+          md: 248px
+        ),
         top: (
-          md: 85px
+          md: 91px
         ),
         left: (
-          md: 9px,
-          xl: -7px,
+          md: 9px !important,
+          xl: -7px !important,
         ),
-        width: (md: 500px),
+        width: (md: 500px !important),
       ));
+      /*
+      &__overflow {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 340px;
+        height: 248px;
+        background: blue;
+        z-index: -1;
+      }
+      */
       &__size {
         height: 160px;
         width: 256px;
@@ -688,27 +705,29 @@
       }
       &__bg {
         position: absolute;
-        top: 69px;
+        top: 73px;
         left: 38px;
         z-index: -1;
         display: block;
         max-height: 160px;
+        width: 256px !important;
         background: map_get($gray, '4') !important;
         box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1), 0px 4px 6px rgba(0, 0, 0, 0.05) !important;
         @include media-query((
           display: (md: none),
+          /*
           left: (
             sm: 0px,
-            md: 128px
           ),
+          */
           top: (
-            sm: -151px,
-            md: -198px
+            sm: 31px,
           ),
+          /*
           width: (
             xs: 256px !important,
-            md: 336px !important,
           ),
+          */
         ));
         /*
         &__content {
@@ -723,6 +742,7 @@
           width: 100%;
           background: map_get($gray, '34');
           top: 24px;
+          left: -1px;
         }
       }
     }

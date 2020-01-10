@@ -32,6 +32,9 @@ export default {
     rightNext: '',
     delta: [],
     op1: 0,
+    bgDeleteLeft: 0,
+    bgDeleteWidth: 0,
+    deleteLeft: 0,
     changeWidth () {
       this.direct = this[SCREEN_WIDTH] >= 640 ? 'column' : 'row'
       if (this[SCREEN_WIDTH] >= 640) {
@@ -39,13 +42,21 @@ export default {
         this.leftMove = [0, -128, -128, -128]
         this.topBg = [0, 0, 0, 0]
       } else {
-        let rbutt1, delta1
+        let rbutt1, delta1, scrwidth
         if (this[SCREEN_WIDTH] < 480) {
-          delta1 = 24 + (this[SCREEN_WIDTH] - 320) * 0.8
-          rbutt1 = 8 + (this[SCREEN_WIDTH] - 320) * 0.74
+          scrwidth = this[SCREEN_WIDTH] - 320
+          this.bgDeleteLeft = 9 + scrwidth * 0.75
+          this.bgDeleteWidth = 270 + scrwidth * 0.82
+          this.deleteLeft = 14 + scrwidth * 0.088
+          delta1 = 24 + scrwidth * 0.8
+          rbutt1 = 8 + scrwidth * 0.74
         } else {
-          delta1 = 151 + (this[SCREEN_WIDTH] - 480) * 0.91
-          rbutt1 = 128 + (this[SCREEN_WIDTH] - 480) * 0.55
+          scrwidth = this[SCREEN_WIDTH] - 480
+          this.bgDeleteLeft = 128 + scrwidth * 0.48
+          this.bgDeleteWidth = 400 + scrwidth * 0.56
+          this.deleteLeft = 28 + scrwidth * 0.22
+          delta1 = 151 + scrwidth * 0.91
+          rbutt1 = 128 + scrwidth * 0.55
         }
         this.delta = [delta1, 0, 0, 0]
         this.leftMove = [rbutt1, 10, 10, 10] // bg

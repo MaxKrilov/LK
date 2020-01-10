@@ -357,6 +357,7 @@ er-container(full :class="`${pre}__container`")
     :class="`${pre}__card__deleted`"
     v-if="visCardDel"
     @click="visCardDel=false"
+    :style="'left: ' + deleteLeft + 'px; width: ' + bgDeleteWidth + 'px'"
   )
     div(:class="`${pre}__card__deleted__size`")
       er-card
@@ -372,7 +373,7 @@ er-container(full :class="`${pre}__container`")
 
             er-card(
               :class="`${pre}__card__deleted__bg`"
-              :style="'transform: translate(' + leftMove[0] + 'px, ' +  topBg[0] + 'px)'"
+              :style="'left: ' + bgDeleteLeft + 'px'"
             )
               div(:class="`${pre}__card__deleted__bg__content`")
                 div(:class="`${pre}__deleted__card-height`")
