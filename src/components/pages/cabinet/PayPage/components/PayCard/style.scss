@@ -41,7 +41,7 @@
       background: transparent;
       border-radius: 12px;
       right: 17px;
-      top: 0; //
+      top: 0;
       z-index: 10;
       cursor: pointer;
       display: block;
@@ -52,7 +52,7 @@
       ));
       &__next {
         @extend .pay-card__card-butt__lateral-right;
-        right: -26px; // -44
+        right: -26px;
         @include media-query((
           right: (sm: 11px)
         ));
@@ -64,7 +64,7 @@
     &__left {
       width: 320px !important;
       background: map_get($gray, '3');
-      box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1), 0px 4px 6px rgba(0, 0, 0, 0.05);
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1), 0 4px 6px rgba(0, 0, 0, 0.05);
       border-radius: 12px;
       height: 92px;
       .er-card__content {
@@ -263,7 +263,7 @@
       position: relative;
       width: 4px;
       height: 4px;
-      left: 0px;
+      left: 0;
       margin-bottom: 12px;
       background: map_get($gray, '24');
       border-radius: 2px;
@@ -356,7 +356,11 @@
     top: 55px;
     height: 15px;
     @include media-query((
-      top: (md: 60px),
+      top: (
+        md: 74px,
+        lg: 77px,
+        xl: 69px
+      ),
     ));
     &__ertoogle {
       position: relative;
@@ -583,11 +587,11 @@
       ));
       &__content {
         background: map_get($gray, '4');
-        box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1), 0px 4px 6px rgba(0, 0, 0, 0.05);
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1), 0 4px 6px rgba(0, 0, 0, 0.05);
         border-radius: 12px;
         &__next {
           background: radial-gradient(50% 50% at 50% 50%, map_get($yellow, 'base') 55.5%, map_get($yellow, 'other-4') 100%);
-          box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1), 0px 4px 6px rgba(0, 0, 0, 0.05);
+          box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1), 0 4px 6px rgba(0, 0, 0, 0.05);
           border-radius: 12px;
         }
       }
@@ -610,7 +614,7 @@
       }
       &__empty {
         background: map_get($red, 'base');
-        box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1), 0px 4px 6px rgba(0, 0, 0, 0.05);
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1), 0 4px 6px rgba(0, 0, 0, 0.05);
         border-radius: 12px;
       }
     }
@@ -633,12 +637,9 @@
     &__deleted {
       position: relative;
       background: map_get($gray, '13');
-      //margin: -18px 0 0 -18px;
-      //padding: 15px 0 0 18px;
       margin: -18px 0 0 0;
       padding: 15px 0 0 0;
       top: -159px;
-      //left: 38px;
       z-index: 18;
       height: 248px;
       width: 279px;
@@ -656,17 +657,6 @@
         ),
         width: (md: 500px !important),
       ));
-      /*
-      &__overflow {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 340px;
-        height: 248px;
-        background: blue;
-        z-index: -1;
-      }
-      */
       &__size {
         height: 160px;
         width: 256px;
@@ -715,27 +705,8 @@
         box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1), 0px 4px 6px rgba(0, 0, 0, 0.05) !important;
         @include media-query((
           display: (md: none),
-          /*
-          left: (
-            sm: 0px,
-          ),
-          */
-          top: (
-            sm: 31px,
-          ),
-          /*
-          width: (
-            xs: 256px !important,
-          ),
-          */
+          top: (sm: 31px),
         ));
-        /*
-        &__content {
-          background: map_get($gray, '4');
-          box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1), 0px 4px 6px rgba(0, 0, 0, 0.05);
-          border-radius: 12px;
-        }
-        */
         &__strip {
           position: absolute;
           height: 28px;
@@ -836,8 +807,8 @@
     &__icon-height svg {
       position: absolute;
       width: 52px !important;
-      left: 0px;
-      top: 0px;
+      left: 0;
+      top: 0;
       color: map_get($yellow, 'base');
     }
     &__container-button {

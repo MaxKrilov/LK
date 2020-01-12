@@ -139,8 +139,7 @@ export default {
     moveDown () {
       if (this.index > 0) {
         if (this[SCREEN_WIDTH] >= 640) {
-          const top = this.topMove === -233 ? 233 : 273
-          this.topMove += top
+          this.topMove += this.topMove === -233 ? 233 : 273
           this.leftMove[this.index - 1] += 128
           this.leftMove[this.index] -= 128
           this.topBg[this.index - 1] += 10

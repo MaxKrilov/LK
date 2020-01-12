@@ -49,7 +49,7 @@ div(:class="`${pre}`").main-content.main-content--h-padding
               span.mb-4(:class="`${pre}__sum__autopay`")
                 | {{ checkAutoPay }}
               span()
-                er-hint(:class="`${pre}__sum__hint`" ).ml-8
+                er-hint(:class="`${pre}__sum__hint`").ml-8
                   h3.mb-8
                     | Автоплатёж
                   | — это бесплатный сервис.<br /><br />
@@ -94,19 +94,58 @@ div(:class="`${pre}`").main-content.main-content--h-padding
       div(:class="`${pre}__check__get-check`")
         div(:class="`${pre}__check__header`")
           h3(:class="`${pre}__check__title`") Отправить чек
-          div(:class="`${pre}__check__question`")
-            er-hint(
-              title="Получение чека",
-              text="Мы обязаны отправить вам чек об оплате услуг. Для получения чека введите электронную почту.",
-              width="275px"
-            )
+          span()
+            er-hint(:class="`${pre}__sum__hint__check`")
+              h3.mb-8
+                | Получение чека
+              | {{ textCheck }}
+            div(@click="checkConfirm")
+              er-icon(
+                name="question"
+                :class="`${pre}__sum__confirm__check`"
+              )
         div(:class="`${pre}__check__body`")
           div.caption(:class="`${pre}__check__input`")
             | на электронную почту:
-          er-text-field(:class="`${pre}__check__email`"
-          value="konstantinopolsky@company.ru"
+          er-select(
+            placeholder="konstantinopolsky@company.ru",
           )
-    // Пополнить счет
+
+    er-overlay(
+    v-model="openConfirmCheck"
+    :z-index="12"
+    :class="`${pre}__left`"
+    )
+    div(:class="`${pre}__confirm__check`" v-if="openConfirmCheck")
+      div(:class="`${pre}__confirm__content`")
+        er-container(:class="`${pre}__confirm__header`")
+          er-row.no-gutters.mb-24.d--flex.justify-content-between
+            er-flex.mb-60(xs12 sm4)
+              er-icon(name="question" :class="`${pre}__confirm__icon-height`")
+            er-flex(xs12 sm8)
+              h3(:class="`${pre}__confirm__text__title__remcard`")
+                | Отправить чек
+        div(:class="`${pre}__confirm__text`")
+          | {{ textCheck }}
+
+      div(
+      :class="`${pre}__confirm__close`"
+      @click="closeConfirm"
+      )
+        er-icon(name="close")
+
+      er-container(full
+      :class="`${pre}__confirm__container-button`"
+      )
+        er-row.no-gutters(:class="`${pre}__confirm__butt`")
+          er-flex(offset-xs9 sm3)
+            div(:class="`${pre}__confirm__pay`")
+              a(
+              @click="closeConfirm"
+              :class="`${pre}__confirm__pay__text`"
+              v-if="visButtConf"
+              ) Понятно
+
     er-overlay(
       v-model="openConfirmPay"
       :z-index="12"
@@ -116,30 +155,29 @@ div(:class="`${pre}`").main-content.main-content--h-padding
       div(:class="`${pre}__confirm__content`")
         div(:class="`${pre}__confirm__content__size`")
           er-icon(name="question" :class="`${pre}__confirm__icon-height`")
-        h4
-          | Вы уверены, что хотите оплатить
-        div.d--flex
-          span
-            h3
-              | 100 500
-          span
-            h3(:class="`${pre}__confirm__decimal`")
-              | ,00
-
-          div.rub(:class="`${pre}__confirm__currency`")
-        h4
-          | сохраненной картой:
-        h3
-          | МИР, 5402 33 ** **** 2365
+        div(:class="`${pre}__confirm__content__pos`")
+          h4
+            | Вы уверены, что хотите оплатить
+          div.d--flex
+            span
+              h3
+                | 100 500
+            span
+              h3(:class="`${pre}__confirm__decimal`")
+                | ,00
+            div.rub(:class="`${pre}__confirm__currency`")
+          h4
+            | сохраненной картой:
+          h3
+            | МИР, 5402 33 ** **** 2365
 
       div(
         :class="`${pre}__confirm__close`"
         @click="closeConfirm"
       )
         er-icon(name="close")
-
       er-container(full
-      :class="`${pre}__confirm__container-button`"
+        :class="`${pre}__confirm__container-button`"
       )
         er-row.justify-content-start.no-gutters
           er-flex.pr-16(xs3 xl6)
@@ -158,7 +196,7 @@ div(:class="`${pre}`").main-content.main-content--h-padding
 
         er-row.no-gutters(:class="`${pre}__confirm__butt`")
           er-flex(xs3 xl6)
-            div(:class="`${pre}__confirm__no`")
+            div(:class="`${pre}__confirm__no__payment`")
               a(
                 @click="paymentsOff"
                 :class="`${pre}__confirm__no__text`"
@@ -172,9 +210,6 @@ div(:class="`${pre}`").main-content.main-content--h-padding
                   v-if="visButtConf"
               ) Оплатить
 
-
-
-    // Запомнить карту
     er-overlay(
       v-model="openConfirmDataCard"
       :z-index="12"
@@ -201,8 +236,8 @@ div(:class="`${pre}`").main-content.main-content--h-padding
         :class="`${pre}__confirm__container-button__remcard`"
       )
         er-row.no-gutters(:class="`${pre}__confirm__butt`")
-          er-flex(xs5 sm4 md3 xl6)
-            div(:class="`${pre}__confirm__no`")
+          er-flex(xs5 sm5 md3 xl6)
+            div(:class="`${pre}__confirm__no__remcard`")
               a(
                 @click="remcardButtLeft"
                 :class="`${pre}__confirm__no__text__remcard`"
@@ -214,9 +249,6 @@ div(:class="`${pre}`").main-content.main-content--h-padding
                 :class="`${pre}__confirm__pay__text ${pre}__confirm__pay__butt-remcard`"
               ) Запомнить карту
 
-
-
-    // Автоплатеж
     er-overlay(
       v-model="openConfirmAutoPay"
       :z-index="12"
@@ -261,66 +293,62 @@ div(:class="`${pre}`").main-content.main-content--h-padding
                 v-if="visButtConf"
               ) {{ buttRight }}
 
-
-
-  // Удалить карту
-  er-overlay(
-    v-model="openConfirmDel"
-    :z-index="12"
-    :class="`${pre}__left`"
-  )
-  div(:class="`${pre}__confirm`" v-if="openConfirmDel")
-    er-row.justify-content-between(:class="`${pre}__confirm__content`")
-      er-flex(xs11 offset-xs1 sm1)
+    er-overlay(
+      v-model="openConfirmDel"
+      :z-index="12"
+      :class="`${pre}__left`"
+    )
+    div(:class="`${pre}__confirm`" v-if="openConfirmDel")
+      div(:class="`${pre}__confirm__content`")
         div(:class="`${pre}__confirm__content__size`")
           er-icon(name="question" :class="`${pre}__confirm__icon-height`")
-      er-flex(xs12 sm11 :class="`${pre}__confirm__content__text`")
-        h4
-          | Вы уверены, что хотите удалить карту ?
-        h3
-          | МИР, 5402 33 ** **** 2365
+        div(:class="`${pre}__confirm__content__pos`")
+          h4
+            | Вы уверены, что хотите удалить карту ?
+          h3
+            | МИР, 5402 33 ** **** 2365
 
-    div(
-    :class="`${pre}__confirm__close`"
-    @click="closeConfirm"
-    )
-      er-icon(name="close")
+      div(
+      :class="`${pre}__confirm__close`"
+      @click="closeConfirm"
+      )
+        er-icon(name="close")
 
-    er-container(full
-    :class="`${pre}__confirm__container-button`"
-    )
-      er-row.justify-content-between.no-gutters
-        er-flex.pr-16(xs6 )
-          er-button(
-            type="submit"
-            @click="delCard"
-            v-if="!visButtConf"
-          )
-            | Удалить
-        er-flex.pl-16(xs6)
-          er-button.align-items-center(
-            type="submit"
-            flat=true
-            @click="closeConfirm"
-            v-if="!visButtConf"
-          )
-            | Отменить
-
-      er-row.no-gutters(:class="`${pre}__confirm__butt`")
-        er-flex(xs3 xl6)
-          div(:class="`${pre}__confirm__no`")
-            a(
+      er-container(full
+      :class="`${pre}__confirm__container-button`"
+      )
+        er-row.justify-content-between.no-gutters
+          er-flex.pr-16(xs6 )
+            er-button(
+              type="submit"
               @click="delCard"
-              :class="`${pre}__confirm__no__text`"
-              v-if="visButtConf"
-            ) Удалить
-        er-flex(xs4 xl6)
-          div(:class="`${pre}__confirm__pay`")
-            a(
-                @click="closeConfirm"
-                :class="`${pre}__confirm__pay__text`"
+              v-if="!visButtConf"
+            )
+              | Удалить
+          er-flex.pl-16(xs6)
+            er-button.align-items-center(
+              type="submit"
+              flat=true
+              @click="closeConfirm"
+              v-if="!visButtConf"
+            )
+              | Отменить
+
+        er-row.no-gutters(:class="`${pre}__confirm__butt`")
+          er-flex(xs3 xl6)
+            div(:class="`${pre}__confirm__no`")
+              a(
+                @click="delCard"
+                :class="`${pre}__confirm__no__text`"
                 v-if="visButtConf"
-            ) Не удалять
+              ) Удалить
+          er-flex(xs4 xl6 :class="`${pre}__confirm__del`")
+            div(:class="`${pre}__confirm__pay`")
+              a(
+                  @click="closeConfirm"
+                  :class="`${pre}__confirm__pay__text`"
+                  v-if="visButtConf"
+              ) Не удалять
 
 
 

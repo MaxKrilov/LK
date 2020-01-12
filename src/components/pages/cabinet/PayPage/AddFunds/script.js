@@ -21,6 +21,7 @@ export default {
     widthContainer: '108% !important',
     openConfirmPay: false,
     openConfirmAutoPay: false,
+    openConfirmCheck: false,
     openConfirmDel: false,
     openConfirmDataCard: false,
     textRemcard: `Данные карты вы заполняете 
@@ -31,6 +32,9 @@ export default {
     мы храним только ссылку на данные карты. 
     Если вы запомните карту, в следующий раз 
     можно будет ввести только CVC`,
+    textCheck: `Мы обязаны отправить вам чек 
+    об оплате услуг. Для получения чека 
+    введите электронную почту.`,
     textOnAutopay: '',
     visInfo: true,
     success: false,
@@ -38,6 +42,7 @@ export default {
     selected: false,
     visButtConf: false,
     checkAutoPay: 'Подключить автоплатёж',
+    ss: 'konstantinopolsky@company.ru',
     changeWidth () {
       this.direct = this[SCREEN_WIDTH] < 960 ? 'row' : 'column'
       this.visButtConf = this[SCREEN_WIDTH] < 1200
@@ -62,7 +67,6 @@ export default {
   methods: {
     autopay () {
       this.checkAutoPay = this.selected ? 'Подключить автоплатёж' : 'Автоплатёж'
-      // this.selected = true
       if (this.selected) {
         this.textOnAutopay = 'При подключении автоплатежа вы соглашаетесь на автоматическое списание суммы равной ежемесячной абонентской плате. Денежные средства будут списаны с 20 по последнее число месяца, предшествующего отчетному (например авансовый платеж за апрель будет списан с 20 по 31 марта).'
       } else {
@@ -109,6 +113,9 @@ export default {
     paymentConfirm () {
       this.openConfirmPay = true
     },
+    checkConfirm () {
+      this.openConfirmCheck = true
+    },
     openDelConfirm () {
       this.openConfirmDel = true
     },
@@ -120,6 +127,7 @@ export default {
       this.openConfirmDel = false
       this.openConfirmAutoPay = false
       this.openConfirmDataCard = false
+      this.openConfirmCheck = false
     },
     delCard () {
       this.openConfirmDel = false
@@ -139,14 +147,12 @@ export default {
       this.visInfo = true
     },
     remcardButtLeft () {
-      // alert(4)
-      // console.log(1)
       this.openConfirmDataCard = false
       this.$emit('update1')
     },
     remcardButtRight () {
       this.openConfirmDataCard = false
       this.$emit('update2')
-    },
+    }
   }
 }
