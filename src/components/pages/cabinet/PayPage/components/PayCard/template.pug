@@ -62,7 +62,8 @@ er-container(full :class="`${pre}__container`")
                     )
                     .er-attach
                       a.link--dashed--black(
-                      :class="`${pre}__remcard__text`"
+                        @click="selected1 = !selected1"
+                        :class="`${pre}__remcard__text`"
                       ) Запомнить карту
                     er-hint(:class="`${pre}__remcard__hint`").ml-8
                       h3.mb-8
@@ -376,5 +377,4 @@ er-container(full :class="`${pre}__container`")
               :style="'left: ' + bgDeleteLeft + 'px'"
             )
               div(:class="`${pre}__card__deleted__bg__content`")
-                div(:class="`${pre}__deleted__card-height`")
-                  div(:class="`${pre}__card__deleted__bg__strip`")
+                div(:class="`${pre}__card__deleted__bg__strip`")
