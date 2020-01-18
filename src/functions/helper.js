@@ -441,13 +441,13 @@ export function validateINN (inn) {
   }
   if (inn.length === 10) {
     const sum = [2, 4, 10, 3, 5, 9, 4, 6, 8].reduce((sum, item, index) => sum + item * inn[index], 0)
-    const residue = sum % 11
+    const residue = sum % 11 % 10
     return residue === +inn[9]
   }
   const firstSumm = [7, 2, 4, 10, 3, 5, 9, 4, 6, 8].reduce((sum, item, index) => sum + item * inn[index], 0)
   const secondSumm = [3, 7, 2, 4, 10, 3, 5, 9, 4, 6, 8].reduce((sum, item, index) => sum + item * inn[index], 0)
-  const firstResidue = firstSumm % 11
-  const secondResidue = secondSumm % 11
+  const firstResidue = firstSumm % 11 % 10
+  const secondResidue = secondSumm % 11 % 10
   return firstResidue === +inn[10] && secondResidue === +inn[11]
 }
 
