@@ -73,7 +73,6 @@
         sm: 4.4vw !important,
         md: 0 !important,
       ),
-      //padding-right: (md: 0)
     ));
   }
   &__card-scale {
@@ -116,106 +115,88 @@
     background: map_get($yellow, 'other-8');
     box-shadow: -4px 5px 32px map_get($yellow, 'other-5') !important;
   }
-  /*
-  &__timer1:hover .button-pay__card-shadow {
-    border-radius: 12px;
-    background: red; //map_get($yellow, 'other-8');
-    box-shadow: -4px 5px 32px map_get($yellow, 'other-5') !important;
-  }
-  */
-
-    &__fast-links {
-    a {
-      display: flex;
-      flex-direction: column;
-      padding: 17px;
-      text-decoration: none;
-      height: 149px;
-      position: relative;
-      overflow: hidden;
-      @include media-query((
-        padding: (sm: 24px),
-        height: (
-          sm: 158px,
-          md: 170px,
-          lg: 193px,
-        )
-      ));
-      .button-pay {
-        &__card-icon {
-          position: relative;
-          transition: 0.15s transform;
-          transform: scale(1, 1);
-          @include media-query((
-            left: (
-              xs: 11px,
-              sm: 20px,
-              md: 3px,
-              lg: -3px,
-              xl: 0,
-              xxl: 1px
-            ),
-            top: (
-              xs: 10px,
-              md: 2px,
-              lg: 1px,
-              xl: -2px
-            ),
-          ));
-        }
-      }
-    }
-    a:hover {
-      background: radial-gradient(map_get($yellow, 'other-4') 55.5%, map_get($yellow, 'base') 100%);
-      .button-pay {
-        &__card-icon {
-          position: relative;
-          color: map_get($yellow, 'other-6') !important;
-          @include media-query((
-            left: (
-              xs: 58px,
-              sm: 49px,
-              md: 21px,
-              lg: 11px,
-              xl: 6px,
-              xxl: 51px,
-            ),
-            top: (
-              xs: 26px,
-              sm: 20px,
-              md: 30px,
-              lg: 26px,
-              xxl: 30px
-            ),
-            transform: (
-              xs: scale(8,8),
-              md: scale(6,7),
-              lg: scale(6,6.3),
-              xxl: scale(8,8),
-            )
-          ));
-        }
-        &__icon-span {
-          color: map_get($shades, 'white') !important;
-        }
-        &__icon-height svg {
-          color: map_get($shades, 'white') !important;
-        }
-      }
-    }
-  }
-  &__timer {
-    margin: -61px 0 21px 18px;
-    //position: relative;
-    //z-index: 10;
+  &__fast-links {
+  a {
+    display: flex;
+    flex-direction: column;
+    padding: 17px;
+    text-decoration: none;
+    height: 149px;
+    position: relative;
+    overflow: hidden;
     @include media-query((
-      margin: (
-        sm: -62px 0 21px 24px,
-        md: -76px 0 21px 24px,
-        lg: -69px 0 21px 24px,
-        xl: -75px 0 21px 24px,
+      padding: (sm: 24px),
+      height: (
+        sm: 158px,
+        md: 170px,
+        lg: 193px,
       )
     ));
+    .button-pay {
+      &__card-icon {
+        position: relative;
+        transition: 0.15s transform;
+        transform: scale(1, 1);
+        @include media-query((
+          left: (
+            xs: 11px,
+            sm: 20px,
+            md: 3px,
+            lg: -3px,
+            xl: 0,
+            xxl: 1px
+          ),
+          top: (
+            xs: 10px,
+            md: 2px,
+            lg: 1px,
+            xl: -2px
+          ),
+        ));
+      }
+    }
+  }
+  a:hover {
+    background: radial-gradient(map_get($yellow, 'other-4') 55.5%, map_get($yellow, 'base') 100%);
+    .button-pay {
+      &__card-icon {
+        position: relative;
+        color: map_get($yellow, 'other-6') !important;
+        @include media-query((
+          left: (
+            xs: 58px,
+            sm: 49px,
+            md: 21px,
+            lg: 11px,
+            xl: 6px,
+            xxl: 51px,
+          ),
+          top: (
+            xs: 26px,
+            sm: 20px,
+            md: 30px,
+            lg: 26px,
+            xxl: 30px
+          ),
+          transform: (
+            xs: scale(8,8),
+            md: scale(6,7),
+            lg: scale(6,6.3),
+            xxl: scale(8,8),
+          )
+        ));
+      }
+      &__icon-span {
+        color: map_get($shades, 'white') !important;
+      }
+      &__icon-height svg {
+        color: map_get($shades, 'white') !important;
+      }
+    }
+  }
+}
+  &__timer {
+    margin: -61px 0 21px 18px;
     &__label {
       position: relative;
       z-index: 1;
@@ -235,19 +216,9 @@
       ))
     }
     &__time-title {
-      //position: absolute;
       margin: -65px 0 21px 18px;
       position: relative;
       z-index: 100;
-
-      /*
-      top: 88px;
-      left: 399px;
-      width: 128px;
-      font: 13px/18px $fedra-book;
-      letter-spacing: 0.25px;
-      color: rgba(map_get($shades, 'black'), 0.8);
-      */
       @include media-query((
         left: (sm: auto),
         top: (
@@ -299,30 +270,5 @@
         opacity: 0.3;
       }
     }
-    /*
-    &__all {
-
-    }
-    */
-    /*
-    &__text {
-      margin-top: -3px;
-      font: 10px/120% $fedra-demi;
-      letter-spacing: 0.5px;
-      color: rgba(map_get($shades, 'black'), 0.5);
-      @include media-query((
-        font-size: (
-          md: 12px,
-        ),
-        line-height: (
-          md: 16px,
-        ),
-        letter-spacing: (
-          md: normal
-        )
-      ))
-    }
-    */
-
   }
 }

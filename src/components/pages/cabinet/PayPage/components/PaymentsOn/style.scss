@@ -32,7 +32,7 @@
     ));
   }
   &__info {
-    color: #69BE28;
+    color: map_get($green, 'base');
     position: absolute;
     font-family: $fedra-demi;
     &__icon svg{
@@ -41,7 +41,7 @@
     }
     &__span {
       font-family: $fedra-demi !important;
-      color: #69BE28 !important;
+      color: map_get($green, 'base') !important;
     }
   }
   &__butt {

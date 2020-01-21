@@ -1,9 +1,7 @@
 .promise-pay {
-  //width: 100%;
   background: map_get($gray, '3');
   &__container-main {
     padding: 0 !important;
-    //min-width: 320px;
     margin-left: 0;
     margin-bottom: -7px; //
     @include media-query((
@@ -101,7 +99,6 @@
     @include media-query((
       margin-top: (
         xl: 0,
-        //xxl: -4px
       ),
       width: (
         sm: 456px
@@ -114,7 +111,6 @@
     ))
   }
   &__subtitle {
-    //width: 288px;
     padding-right: 33px;
     font: 13px/18px $fedra-book;
     letter-spacing: 0.25px;
@@ -138,20 +134,15 @@
         lg: 568px,
         xl: 568px,
       ),
-      //padding-right: (xl: 0)
     ));
   }
   &__icon {
     margin-top: 24px;
     @include media-query((
       margin-top: (
-        //sm: 24px,
-        //lg: 29px,
         xl: 0px
       ),
       margin-bottom: (
-        //sm: 24px,
-        //lg: 29px,
         xl: 15px
       )
     ));
@@ -161,7 +152,6 @@
       @include media-query((
         width: (
           md: 64px !important,
-          //lg: 29px,
           xl: 64px !important
         )
       ));
@@ -171,13 +161,9 @@
     margin-top: 14px;
     @include media-query((
       margin-top: (
-        //sm: 24px,
-        //lg: 29px,
         xl: 0px
       ),
       margin-bottom: (
-        //sm: 24px,
-        //lg: 29px,
         xl: 15px !important
       )
     ));
@@ -189,7 +175,6 @@
     @include media-query((
       margin-top: (
         md: 42px,
-        //lg: 29px,
         xl: 90px
       ),
       margin-bottom: (
@@ -218,7 +203,6 @@
     min-width: 245px;
     &__text {
       @extend .promise-pay__subtitle;
-      //width: auto;
       margin-top: 8px;
       @include media-query((
         padding-right: (
@@ -226,28 +210,18 @@
         ),
         margin-top: (
         md: 16px,
-        //lg: 29px,
         xl: 0px
       ),
         margin-bottom: (
           md: 11px,
-          //lg: 29px,
           xl: 0px
         ),
         width: (
-          //sm: 432px,
-          //md: 284px,
           md: auto,
           lg: auto,
-          //xl: auto,
           xl: 265px,
           xxl: 278px,
         ),
-        /*
-        min-width: (
-          md: 264px
-        )
-        */
       ));
     }
   }
@@ -256,7 +230,6 @@
     padding-left: 0px;
     &__text {
       @extend .promise-pay__subtitle;
-      //width: auto;
       margin-top: 8px;
       @include media-query((
         padding-left: (
@@ -265,21 +238,14 @@
         ),
         margin-top: (
             md: 16px,
-            //lg: 29px,
             xl: 0px
           ),
           width: (
-          //sm: 432px,
           md: 259px,
           lg: auto,
           xl: auto,
           xxl: 307px,
-          ),
-        /*
-        min-width: (
-          md: 264px
-        )
-        */
+        ),
       ));
     }
   }
@@ -287,34 +253,22 @@
     min-width: 224px;
     &__text {
       @extend .promise-pay__subtitle;
-      //width: auto;
       margin-top: 8px;
       @include media-query((
         margin-top: (
           md: 16px,
-          //lg: 29px,
           xl: 0px
         ),
         padding-right: (
           lg: 91px
-          //md: 300px,
-          //md: 0
         ),
         width: (
-          //sm: 432px,
           md: 258px,
           lg: auto,
           xl: auto,
-          //xl: 245px,
         ),
-        /*
-        min-width: (
-          md: 264px
-        )
-        */
       ));
     }
-
   }
   &__confirm {
     position: fixed;
@@ -714,11 +668,9 @@
         ),
         font-size: (
           md: 18px,
-          //xxl: 20px
         ),
         line-height: (
           md: 23px,
-          //xxl: 26px
         ),
         letter-spacing: (
           md: -0.75px
@@ -735,16 +687,13 @@
           md: 7px 0 18px,
           xl: 8px 0 16px
         ),
-        //font-weight: (md: normal),
         font-size: (
           md: 14px,
           xl: 16px
-          //xxl: 20px
         ),
         line-height: (
           md: 19px,
           xl: 21px
-          //xxl: 26px
         ),
         letter-spacing: (
           xl: -0.5px

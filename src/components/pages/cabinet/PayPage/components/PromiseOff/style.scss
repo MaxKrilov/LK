@@ -19,13 +19,6 @@
     margin-top: -43px;
     padding-left: 0 !important;
     @include media-query((
-      /*
-      margin-left: (
-        sm: 11px,
-        //md: 14px,
-        //xl: 16px
-      ),
-      */
       margin-top: (
         md: -48px,
         lg: -52px,
@@ -84,19 +77,6 @@
       ),
     ));
   }
-  /*
-  &__pos {
-    position: relative;
-    //margin-left: 30px;
-    !*
-    top: 61px;
-    @include media-query((
-      margin-left: (md: -10px),
-      top: (md: 16px),
-    ));
-    *!
-  }
-  */
   &__value {
     font: 13px/18px $fedra-book;
     letter-spacing: 0.25px;
@@ -138,64 +118,7 @@
       margin-bottom: 3px;
     }
   }
-  &__fio {}
-  &__info {
-    color: map_get($red, 'base');
-    position: absolute;
-    font-family: $fedra-demi;
-    &__icon svg{
-      width: 16px !important;
-      margin-right: 5px;
-    }
-    &__span {
-      font-family: $fedra-demi !important;
-      color: map_get($red, 'base') !important;
-    }
-  }
   &__butt {
-    &__left {
-      position: relative;
-      top: -51px;
-      left: 10px;
-      max-width: 127% !important;
-      width: 360px !important;
-      @include media-query((
-        max-width: (sm: 100% !important),
-        width: (sm: 179px !important),
-        left: (
-          sm: -81px
-        ),
-        top: (
-          sm: 86px,
-          md: 42px,
-        ),
-      ));
-    }
-    &__right {
-      top: -30px;
-      left: 35px;
-      @include media-query((
-        left: (
-          sm: 109px,
-          md: 202px
-        ),
-        top: (
-          sm: 50px
-        ),
-      ));
-    }
-    &__text {
-      font: 16px/20px $fedra-demi !important;
-      color: rgba(map_get($shades, 'black'), 0.8) !important;
-      letter-spacing: -0.5px;
-      margin-top: 6px;
-      margin-bottom: 9px;
-    }
-    &__icon svg {
-      width: 32px !important;
-      color:  map_get($yellow, 'base');
-      margin-right: 16px;
-    }
     &__container {
       position: relative;
       left: 0;
@@ -208,7 +131,6 @@
         width: (
           sm: 208px !important,
           md: 237px !important,
-
         ),
         left: (
           sm: 0,
