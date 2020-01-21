@@ -1,0 +1,222 @@
+.promise-on {
+  position: relative;
+  background: map_get($gray, '3');
+  z-index: 2;
+  left: -313px;
+  top: 47px;
+  min-height: 332px;
+  @include media-query((
+    min-height: (
+      sm: 257px,
+      md: 293px,
+      xl: 332px,
+    ),
+  ));
+  & .er-card__content {
+    background: map_get($green, 'other-4') !important;
+  }
+  &__container {
+    width: 100% !important;
+    margin-left: 313px !important;
+    margin-top: -43px;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    @include media-query((
+      width: (
+        xl: 95% !important,
+      ),
+      margin-top: (
+        xl: -24px
+      )
+
+  ));
+
+  }
+  &__card-height {
+    //width: 288px !important;
+    height: 168px !important;
+    @include media-query((
+      /*
+      width: (
+        sm: 432px !important,
+      ),
+      */
+      height: (
+        sm: 96px !important,
+        md: 120px !important,
+        xl: 159px !important,
+      ),
+    ));
+  }
+  &__icon-height svg {
+    position: absolute;
+    width: 64px !important;
+    left: 14px;
+    top: 14px;
+    color: map_get($green, 'base');
+    @include media-query((
+      top: (
+        md: 20px,
+        lg: 12px,
+      ),
+      width: (
+        md: 80px !important,
+        lg: 96px !important,
+        xl: 128px !important,
+      ),
+    ));
+  }
+  &__pos {
+    position: relative;
+    left: 70px;
+    top: 3px;
+    @include media-query((
+      left: (
+        md: 100px,
+        xl: 147px,
+      ),
+      top: (
+        md: 13px,
+        xl:22px
+      ),
+      width: (
+        sm: 163px,
+        md: 185px,
+        xl: 225px,
+      ),
+    ));
+    &__time-title {
+      position: absolute;
+      top: 88px;
+      //right: -204px;
+      left: 399px;
+      width: 128px;
+      font: 13px/18px $fedra-book;
+      letter-spacing: 0.25px;
+      color: rgba(map_get($shades, 'black'), 0.8);
+      @include media-query((
+        left: (sm: auto),
+        top: (
+          sm: 22px,
+          md: 26px,
+        ),
+        right: (
+          sm: -298px,
+          md: -292px,
+          xl: -236px
+        ),
+        font-size: (
+          md: 14px,
+          xl: 16px
+        ),
+        line-height: (
+          md: 19px,
+          xl: 21px
+        ),
+        letter-spacing: (
+          md: normal,
+          xl: -0.5px
+        )
+      ))
+    }
+  }
+  &__timer {
+    &__day {
+      display: inline-block;
+      margin-right: 8px;
+      @include media-query((
+        margin-right: (md: 16px,)
+      ));
+      &__value {
+        opacity: 0.8;
+      }
+    }
+    &__hour {
+      display: inline-block;
+      margin-right: 8px;
+      @include media-query((
+        margin-right: (md: 16px,)
+      ));
+      &__value {
+        opacity: 0.5;
+      }
+    }
+    &__min {
+      display: inline-block;
+      &__value {
+        opacity: 0.3;
+      }
+    }
+    &__text {
+      margin-top: -3px;
+      font: 10px/120% $fedra-demi;
+      letter-spacing: 0.5px;
+      color: rgba(map_get($shades, 'black'), 0.5);
+      @include media-query((
+        font-size: (
+          md: 12px,
+        ),
+        line-height: (
+          md: 16px,
+        ),
+        letter-spacing: (
+          md: normal
+        )
+      ))
+    }
+  }
+  /*
+  &__info {
+    color: map_get($green, 'base');
+    position: absolute;
+    font-family: $fedra-demi;
+    &__icon svg{
+      width: 16px !important;
+      margin-right: 5px;
+    }
+    &__span {
+      font-family: $fedra-demi !important;
+      color: map_get($green, 'base') !important;
+    }
+  }
+  */
+  &__butt {
+    position: relative;
+    top: 36px;
+    //left: -55px;
+    max-width: 127%;
+    width: 288px;
+    @include media-query((
+      max-width: (sm: 100% !important),
+      width: (
+        sm: 208px
+      ),
+      left: (
+        sm: 0px
+      ),
+      top: (
+        sm: 33px,
+        md: 39px,
+      ),
+    ));
+  }
+  /*
+  &__email {
+    font: 13px/18px $fedra-book;
+    color: rgba(map_get($shades, 'black'), 0.8);
+    letter-spacing: -0.25px;
+    @include media-query((
+      font-size: (
+        md: 14px,
+      ),
+      line-height: (
+        md: 19px,
+      ),
+      letter-spacing: (
+        md: -1px
+      )
+    ))
+
+  }
+  */
+}

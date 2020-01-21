@@ -7,7 +7,7 @@ er-row(no-gutters)
         er-card(:class="`${pre}__card-shadow`")
           div(:class="`${pre}__card-height`")
             router-link(to="/add-funds" :class="`${pre}__card-shadow`")
-              h4(:class="`${pre}__card-title`" @click="aa")
+              h4(:class="`${pre}__card-title`")
                 | Оплата картой
                 div.new
                   div.mb-4
@@ -19,6 +19,7 @@ er-row(no-gutters)
               div.d--flex.align-items-end.mt-auto
                 div.ml-auto
                   er-icon.color--yellow-base(name="pay_card" :class="`${pre}__card-icon`")
+
       er-flex.mb-16(xs6 lg3 :class="`${pre}__card-scale ${pre}__card-scale__right-top`")
         er-card(:class="`${pre}__card-shadow`")
           div(:class="`${pre}__card-height`")
@@ -31,16 +32,25 @@ er-row(no-gutters)
 
       er-flex.mb-16(xs6 lg3 :class="`${pre}__card-scale ${pre}__card-scale__left`")
         er-card(:class="`${pre}__card-shadow`")
-          div(:class="`${pre}__card-height`" @click="aa")
-            //router-link(to="/")
-            h4(:class="`${pre}__card-title`")
-              | Обещанный платёж
-            div.d--flex.align-items-end.mt-auto
-              template(v-if="true")
+          div(:class="`${pre}__card-height`")
+            router-link(to="/promise-pay")
+              h4(:class="`${pre}__card-title`")
+                | Обещанный платёж
+              div.d--flex.align-items-end.mt-auto(v-if="!timer")
                 div.ml-auto
                   er-icon.color--yellow-base(name="trast_pay" :class="`${pre}__card-icon`")
 
-      er-flex.mb-16(xs6 lg3 :class="`${pre}__card-scale`" @click="aa")
+          div(:class="`${pre}__timer`" v-if="timer")
+            div(:class="`${pre}__timer__label`")
+              | Осталось дд.чч.мм
+            div(:class="`${pre}__timer__day`")
+              h2(:class="`${pre}__timer__day__value`") 2
+            div(:class="`${pre}__timer__hour`")
+              h2(:class="`${pre}__timer__hour__value`") 23
+            div(:class="`${pre}__timer__min`")
+              h2(:class="`${pre}__timer__min__value`") 59
+
+      er-flex.mb-16(xs6 lg3 :class="`${pre}__card-scale`")
         er-card(:class="`${pre}__card-shadow`")
           div(:class="`${pre}__card-height`")
             router-link(to="/")

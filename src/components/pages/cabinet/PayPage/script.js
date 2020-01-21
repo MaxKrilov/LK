@@ -2,6 +2,7 @@ import ButtonPay from './components/ButtonPay/index.vue'
 import InfoScore from './components/InfoScore/index.vue'
 import ActionMonth from './components/ActionMonth/index.vue'
 import HistoryPay from './HistoryPay/index.vue'
+import PromisePay from './PromisePay/index.vue'
 import { mapGetters } from 'vuex'
 import { SCREEN_WIDTH } from '@/store/actions/variables'
 
@@ -11,7 +12,8 @@ export default {
     ButtonPay,
     InfoScore,
     ActionMonth,
-    HistoryPay
+    HistoryPay,
+    PromisePay
   },
   data: () => ({
     pre: 'pay-page',
@@ -69,6 +71,6 @@ export default {
     },
     main () {
       this.$router.push('/')
-    }
+    },
   }
 }

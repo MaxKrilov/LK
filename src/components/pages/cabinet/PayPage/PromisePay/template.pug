@@ -1,0 +1,118 @@
+// Promise Pay
+
+div(:class="`${pre}`").main-content.main-content--h-padding
+  div.main-content--top-padding(:class="`${pre}__back-main`")
+  div(:class="`${pre}__container-main`").main-content--top-menu-fix
+    div.caption(:class="`${pre}__back-main`")
+      div.ml-auto
+        er-icon(name="arrow_l" :class="`${pre}__icon-height`")
+        a.caption2(
+        href="#"
+        :class="`${pre}__back-main__text`"
+        @click="paypage"
+        )
+          | Назад в платежи и начисления
+
+    div.d--flex.align-items-start(:class="`${pre}__back-arr`")
+      div(:class="`${pre}__back-main-xs`" @click="paypage")
+        er-icon(name="left")
+      h1.fonts--demi(:class="`${pre}__welcome-title`")
+        | Обещанный платеж
+
+    div(:class="`${pre}__subtitle`" v-if="visInfo")
+      | Вы можете активировать сервис <b>«обещанный платеж»</b>, который позволит вам <b>получить доступ к услугам на 3 дня.</b> Дополнительная плата за пользование не взымается.
+
+    div(:class="`${pre}__container`" v-if="visInfo")
+      er-row.no-gutters.justify-content-start
+        er-flex(xs12 md4 lg4 :class="`${pre}__content1`")
+          div(:class="`${pre}__icon`")
+            er-icon(name="time")
+          h3(:class="`${pre}__title`")
+            | Сервис немедленно
+          div(:class="`${pre}__content1__text`")
+            | Сервис предоставляется немедленно после активации. Доступ в интернет при отрицательном или нулевом балансе лицевого счета предоставляется по истечении пяти минут с момента активации
+
+        er-flex(xs12 md4 lg4 :class="`${pre}__content2`")
+          div(:class="`${pre}__icon`")
+            er-icon(name="calendar")
+          h3(:class="`${pre}__title`")
+            | В течение трех суток
+          div(:class="`${pre}__content2__text`")
+            | В течение трех суток с момента активации сервиса необходимо внести на лицевой счет денежную сумму не менее суммы отсроченного платежа
+
+        er-flex(xs12 md4 lg4 :class="`${pre}__content3`")
+          div(:class="`${pre}__icon`")
+            er-icon(name="rouble")
+          h3(:class="`${pre}__title`")
+            | Плата не взимается
+          div(:class="`${pre}__content3__text`")
+            | Плата за активацию Сервиса не взимается
+
+      div(:class="`${pre}__button`")
+        er-button(
+          width="100%",
+          @click="paymentConfirm"
+        ) Активировать до 30.07.2018
+
+    PromiseOn(v-if="!visInfo && success && active")
+    PromiseOff(v-if="!visInfo && !success && active")
+    PromiseExpired(v-if="visExpired && !active")
+
+    // Пополнение
+    er-overlay(
+      v-model="openConfirmPromise"
+      :z-index="12"
+      :class="`${pre}__left`"
+    )
+    div(:class="`${pre}__confirm`" v-if="openConfirmPromise")
+      div(:class="`${pre}__confirm__content`")
+        div(:class="`${pre}__confirm__content__size`")
+          er-icon(name="question" :class="`${pre}__confirm__icon-height`")
+        div(:class="`${pre}__confirm__content__pos`")
+          div(:class="`${pre}__confirm__question`")
+            | Вы уверены, что хотите активировать обещанный платеж?
+          div(:class="`${pre}__confirm__date`")
+            span(:class="`${pre}__confirm__date__b`") до:&nbsp;
+            span
+              | 29.01.2019
+          div.caption(:class="`${pre}__confirm__prompt`")
+            | Не забудьте пополнить счет
+
+      div(
+        :class="`${pre}__confirm__close`"
+        @click="promiseExpired"
+      )
+        er-icon(name="close")
+      er-container(full :class="`${pre}__confirm__container-button`")
+        er-row.justify-content-start.no-gutters
+          er-flex.pr-28(xs3 xl6)
+            er-button(
+              type="submit"
+              @click="promiseOn"
+              v-if="!visButtConf"
+            ) Активировать
+          er-flex.pr-24.pl-4(xs3 xl6)
+            er-button.align-items-center(
+              type="submit"
+              flat=true
+              @click="promiseOff"
+              v-if="!visButtConf"
+            ) Отменить
+
+        er-row.no-gutters(:class="`${pre}__confirm__butt`")
+          er-flex(xs3 xl6)
+            div(:class="`${pre}__confirm__no__promise`")
+              a(
+                @click="promiseOff"
+                :class="`${pre}__confirm__no__text`"
+                v-if="visButtConf"
+              ) Отменить
+          er-flex(xs3 xl6)
+            div(:class="`${pre}__confirm__yes__promise`")
+              a(
+                @click="promiseOn"
+                :class="`${pre}__confirm__yes__text`"
+                v-if="visButtConf"
+              ) Активировать
+
+

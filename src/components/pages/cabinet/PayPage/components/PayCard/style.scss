@@ -422,11 +422,13 @@
       margin-left: 2px;
       @include media-query((
         margin-top: (
-          md: 33px
+          md: 38px,
+          lg: 35px,
+          xl: 38px
         ),
-        height: (
-          md: 16px
-        ),
+        /*
+        height: (md: 13px,),
+        */
         margin-right: (
           md: 9px
         ),
@@ -705,7 +707,7 @@
       width: 100px;
       &__next {
         width: 100px;
-        top: -18px;
+        top: -10px;
       }
     }
   }

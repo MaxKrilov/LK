@@ -8,14 +8,14 @@ er-container(full :class="`${pre}__container`")
     :style="'top: ' + moveInd + 'px'"
     )
     div(
-    v-for="i in 3"
-    :class="`${pre}__indicators__circle`"
-    @click="moveDown"
+      v-for="i in 3"
+      :class="`${pre}__indicators__circle`"
+      @click="moveDown"
     )
     div(
-    v-for="i in 3"
-    :class="`${pre}__indicators__circle__down`"
-    @click="moveUp"
+      v-for="i in 3"
+      :class="`${pre}__indicators__circle__down`"
+      @click="moveUp"
     )
 
   div(

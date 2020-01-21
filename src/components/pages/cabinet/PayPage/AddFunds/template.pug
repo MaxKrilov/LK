@@ -21,11 +21,11 @@ div(:class="`${pre}`").main-content.main-content--h-padding
 
     div(:class="`${pre}__main`" v-if="visInfo")
       div(:class="`${pre}__line`")
-      div(full :class="`${pre}__sum`")
+      div(:class="`${pre}__sum`")
         div.d--flex(:class="`${direct}`")
           er-flex.mb-16.pr-8(
             xs12
-            md12
+            md7
             lg4 xl5
             order-xs2
             order-lg1
@@ -133,8 +133,8 @@ div(:class="`${pre}`").main-content.main-content--h-padding
           | {{ textCheck }}
 
       div(
-      :class="`${pre}__confirm__close`"
-      @click="closeConfirm"
+        :class="`${pre}__confirm__close`"
+        @click="closeConfirm"
       )
         er-icon(name="close")
 

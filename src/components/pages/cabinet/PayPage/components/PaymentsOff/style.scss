@@ -18,8 +18,8 @@
   &__icon-height svg {
     position: absolute;
     width: 64px !important;
-    left: 0px;
-    top: 0px;
+    left: 0;
+    top: 0;
     color: map_get($red, 'base');
     @include media-query((
       width: (
