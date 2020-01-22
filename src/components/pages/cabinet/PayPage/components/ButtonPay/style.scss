@@ -197,6 +197,14 @@
 }
   &__timer {
     margin: -61px 0 21px 18px;
+    @include media-query((
+      margin: (
+        sm: -62px 0 21px 24px,
+        md: -76px 0 21px 24px,
+        lg: -69px 0 21px 24px,
+        xl: -75px 0 21px 24px,
+      )
+    ));
     &__label {
       position: relative;
       z-index: 1;
