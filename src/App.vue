@@ -24,7 +24,7 @@ export default {
   async created () {
     if (process.env.VUE_APP_USE_SSO_AUTH !== 'no') {
       if (!this.refreshedToken.isFetching && !this.serverErrorMessage) {
-        this.$store.dispatch('auth/checkAuth', { api: this.$api })
+        await this.$store.dispatch('auth/checkAuth', { api: this.$api })
         const clientInfo = await this.$store.dispatch(`user/${GET_CLIENT_INFO}`, { api: this.$api })
         if (clientInfo) {
           this.$store.dispatch(`user/${GET_MANAGER_INFO}`, { api: this.$api })
