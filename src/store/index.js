@@ -12,6 +12,7 @@ import variables from './modules/variables'
 import dictionary from './modules/dictionary'
 import user from './modules/user'
 import request from './modules/request'
+import loading from './modules/loading'
 
 const debug = process.env.NODE_ENV !== 'production'
 
@@ -28,7 +29,8 @@ export default new Vuex.Store({
     variables,
     dictionary,
     user,
-    request
+    request,
+    loading
   },
   strict: debug,
   plugins: [createPersistedState({

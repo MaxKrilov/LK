@@ -1,65 +1,70 @@
 div(:class="`${pre}`").main-content.main-content--padding.main-content--top-menu-fix
-  h4(:class="`${pre}__organisation-name`")
-    | ООО «Шуруповерт-Холдинг», Пермский филиал
+  er-preloader(:active="loadingClientInfo")
+    h4(:class="`${pre}__organisation-name`")
+      | {{ clientName || 'ООО «Шуруповерт-Холдинг», Пермский филиал' }}
   h1.fonts--demi(:class="`${pre}__welcome-title`")
     | Добро пожаловать в личный кабинет
   div(:class="`${pre}__balance--mobile`")
     div.caption.mb-8
       | Ваш баланс
-    div.d--flex.align-items-center(:class="`${pre}__balance--mobile__wrapper`")
-      div.icon
-        er-icon(name="wallet_auto")
-      a.link--solid--yellow.fonts--demi.rub 144 500
-      span Автоплатёж
+    er-preloader(:active="menuComponentBalance")
+      div.d--flex.align-items-center(:class="`${pre}__balance--mobile__wrapper`")
+        div.icon
+          er-icon(name="wallet_auto")
+        a.link--solid--yellow.fonts--demi.rub {{ balanceInfo.balance || '0.0' }}
+        span(v-if="balanceInfo.autoPay") Автоплатёж
   er-container.mb-48(full)
     er-row(no-gutters)
       er-flex(xs12, lg6, xl5, :class="`${pre}__fast-links`")
         er-row(no-gutters)
           er-flex.mb-16.pr-8(xs6)
             er-card
-              router-link(to="/")
-                div.title
-                  | Мои документы
-                div.footer.d--flex.align-items-end.mt-auto
-                  div.new
-                    div.caption.mb-4
-                      | Новые
-                    div.value
-                      | 1
-                  div.icon.ml-auto
-                    er-icon(name="doc")
-          er-flex.mb-16.pl-8(xs6)
-            er-card
-              router-link(to="/")
-                div.title
-                  | Оставить заявку
-                div.footer.d--flex.align-items-end.mt-auto
-                  div.new
-                    div.caption.mb-4
-                      | В работе
-                    div.value
-                      | 1
-                  div.icon.ml-auto
-                    er-icon(name="lifebuoy")
-          er-flex.mb-16.pr-8(xs6)
-            er-card
-              router-link(to="/")
-                div.title
-                  | Обещанный платёж
-                div.footer.d--flex.align-items-end.mt-auto
-                  template(v-if="true")
+              er-preloader(:active="loadingDocuments" icon)
+                router-link(to="/")
+                  div.title
+                    | Мои документы
+                  div.footer.d--flex.align-items-end.mt-auto
                     div.new
                       div.caption.mb-4
-                        | Осталось:
-                      div.promised-payment-left
-                        span 03
-                        span :12
-                        span :60
-                    div.promised-payment-left__line
-                      div.promised-payment-left__passed(:style="{ width: '25%' }")
-                  template(v-else)
+                        | Новые
+                      div.value
+                        | 1
                     div.icon.ml-auto
-                      er-icon(name="rouble")
+                      er-icon(name="doc")
+          er-flex.mb-16.pl-8(xs6)
+            er-card
+              er-preloader(:active="loadingRequest" icon)
+                router-link(to="/")
+                  div.title
+                    | Оставить заявку
+                  div.footer.d--flex.align-items-end.mt-auto
+                    div.new
+                      div.caption.mb-4
+                        | В работе
+                      div.value
+                        | 1
+                    div.icon.ml-auto
+                      er-icon(name="lifebuoy")
+          er-flex.mb-16.pr-8(xs6)
+            er-card
+              er-preloader(:active="loadingPromisedPayment" icon)
+                router-link(to="/")
+                  div.title
+                    | Обещанный платёж
+                  div.footer.d--flex.align-items-end.mt-auto
+                    template(v-if="true")
+                      div.new
+                        div.caption.mb-4
+                          | Осталось:
+                        div.promised-payment-left
+                          span 03
+                          span :12
+                          span :60
+                      div.promised-payment-left__line
+                        div.promised-payment-left__passed(:style="{ width: '25%' }")
+                    template(v-else)
+                      div.icon.ml-auto
+                        er-icon(name="rouble")
           er-flex.mb-16.pl-8(xs6)
             er-card
               router-link(to="/")
@@ -112,59 +117,31 @@ div(:class="`${pre}`").main-content.main-content--padding.main-content--top-menu
         )
       div.ml-8(:class="`${pre}__filters--desktop__toggle`")
         er-switch(:labels="dataFilterSwitch", v-model="modelSortService", name="sortService")
-  div(:class="`${pre}__products`")
-    div(:class="`${pre}__products__card`")
-      div(:class="`${pre}__products__card__content`")
-        div(:class="`${pre}__products__card__icon`")
-          er-icon(name="geolocation", :shadow="{ shadowColor: 'rgba(0, 0, 0, 0.08)', shadowOffset: { x: '-4px', y: '4px' }, shadowRadius: '4px' }")
-        div(:class="`${pre}__products__card__info`")
-          div(:class="`${pre}__products__card__title`")
-            | Санкт-Петербург, Большая Константинопольская, 100
-            div(:class="`${pre}__products__card__toggle--desktop`", @click="tmpActive = !tmpActive")
-              er-icon(name="corner_down")
-              a Свернуть
-          div(:class="`${pre}__products__card__price`")
-            div.caption(:class="`${pre}__products__card__price__caption`")
-              | Абонентская плата
-            div(:class="`${pre}__products__card__price__group`")
-              div(:class="`${pre}__products__card__price__value`")
-                | 2 000
-              div(:class="`${pre}__products__card__price__unit`")
-                | &nbsp;₽/месяц
-        div(:class="`${pre}__products__card__toggle--mobile`", @click="tmpActive = !tmpActive")
-          er-icon(name="corner_down")
-    er-slide-up-down(:active="tmpActive")
-      div(:class="`${pre}__products__card-detail`")
-        div(:class="`${pre}__products__card-detail__item`")
-          div.d--flex(:class="`${pre}__products__card-detail__title-row`")
-            div(:class="`${pre}__products__card-detail__icon`")
-              er-icon(name="internet")
-            div(:class="`${pre}__products__card-detail__title`")
-              | Интернет
-            div(:class="`${pre}__products__card-detail__toggle--mobile`")
-              er-icon(name="corner_down")
-          div.d--flex(:class="`${pre}__products__card-detail__detail-row`")
-            div(:class="`${pre}__products__card-detail__tariff`")
-              div.caption(:class="`${pre}__products__card-detail__tariff__caption`")
-                | Тариф
-              div(:class="`${pre}__products__card-detail__tariff-name`")
-                a(href="#") Бизнес драйв 16
-              div.caption(:class="`${pre}__products__card-detail__tariff__caption`")
-                | Доп. сервисы
-              div(:class="`${pre}__products__card-detail__services`")
-                a(href="#") Статистика
-                a(href="#") Управляемая контент фильтрация
-            div(:class="`${pre}__products__card-detail__packet`")
-              div.caption(:class="`${pre}__products__card-detail__packet__caption`")
-                | Скорость
-              div(:class="`${pre}__products__card-detail__packet__value`")
-                | 16
-              div(:class="`${pre}__products__card-detail__packet__unit`")
-                | Гбит/с
-            div(:class="`${pre}__products__card-detail__price`")
-              div.caption(:class="`${pre}__products__card-detail__price__caption`")
-                | Абонентская плата
-              div(:class="`${pre}__products__card-detail__price__value`")
-                | 1 000
-              div(:class="`${pre}__products__card-detail__price__unit`")
-                | ₽/месяц
+  template(v-if="indexPageProductByAddress")
+    div(:class="`${pre}__products__loading`")
+      .content
+        img(:src="require('@/assets/images/preloaders/3.svg')")
+  template(v-else-if="isEmptyListProduct")
+    div(:class="`${pre}__products__empty`")
+      .content
+        er-icon(name="no")
+        | Нет подключённых продуктов
+  template(v-else)
+    template(v-if="modelSortService === 'service'")
+      product-item-component(
+        v-for="product in listProductByService"
+        :key="product.code"
+        :title="product.name"
+        :price="product.price"
+        :product-type="product.code"
+        sort-by="service"
+      )
+    template(v-else)
+      product-item-component(
+        v-for="product in listProductByAddress"
+        :key="product.id"
+        :title="product.address"
+        :price="product.price"
+        :address-id="product.addressId"
+        sort-by="office"
+      )

@@ -7,19 +7,20 @@ const state = {
 
 const actions = {
   [GET_REQUEST]: async ({ rootState, rootGetters, commit }, { api }) => {
-    const { tomsId } = rootGetters['auth/user']
+    const { toms } = rootGetters['auth/user']
     try {
       const result = await api
-        .setBranch('web-bss')
         .setData({
           requestName: 'all',
-          clientId: tomsId
+          clientId: toms
         })
         .query('/problem/management/list')
       commit(GET_REQUEST_SUCCESS, result)
     } catch (error) {
       commit(ERROR_MODAL, true, { root: true })
       // todo Логирование
+    } finally {
+      commit('loading/loadingRequest', false, { root: true })
     }
   }
 }

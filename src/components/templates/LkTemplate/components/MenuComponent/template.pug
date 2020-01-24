@@ -61,42 +61,53 @@ div(:class="`${pre}`")
           nudge-left="26"
           )
           template(v-slot:activator="{ on }")
-            a.link--dashed--yellow(href="#", v-on="on", @click.prevent="")
-              | 0987654321
+            er-preloader(:active="menuComponentBillingAccount")
+              a.link--dashed--yellow(href="#", v-on="on", @click.prevent="")
+                | {{ activeBillingAccountNumber || '987654321' }}
           div(:class="`${pre}__top__dropdown`")
             div(:class="`${pre}__top__dropdown__content`")
               div.caption.mb-4
                 | Организация
               div.organization.mb-32
-                | АО "Эр-Телеком Холдинг", Пермский филиал
+                | {{ legalName }}
               div.caption-choise.mb-16
                 | Выберите лицевой счёт
-              div.caption.mb-4
-                | Договор №
-              div.agreement.mb-8
-                | 78010000123456789999
-              div.personal-account
-                div.caption
-                  | Лицевой счет
-                div.value
-                  | 15890065432000
+              template(
+                v-for="(accounts, contract) in getBillingAccountsGroupByContract"
+              )
+                div.caption.mb-4
+                  | Договор №
+                div.agreement.mb-8
+                  | {{ contract }}
+                div.personal-account(
+                  v-for="account in accounts"
+                  :key="account.billingAccountId"
+                  :class="{ 'active': activeBillingAccountId === account.billingAccountId }"
+                )
+                  div.caption
+                    | Лицевой счет
+                  div.value
+                    er-icon(name="ok")
+                    | {{ account.accountNumber }}
               div.profile
                 er-icon.mr-8(name="profile")
-                a(href="#") Профиль
-    div.autopay(:class="`${pre}__top__balance ${pre}__top__link--desktop`")
+                router-link(to="/lk/profile") Профиль
+    div(:class="[`${pre}__top__balance`, `${pre}__top__link--desktop`, { 'autopay': balanceInfo.autoPay }]")
       div.icon.mr-8
         er-icon(name="wallet_auto")
-      div.info
-        a(href="#").link--solid--yellow 212 000,94
-        span.caption.color--green-base.autopay Автоплатеж
+      er-preloader(:active="menuComponentBalance")
+        div.info
+          a(href="#").link--solid--yellow {{ balanceInfo.balance | price }}
+          span.caption(:class="{ 'autopay': balanceInfo.autoPay }") Автоплатеж
     div(:class="`${pre}__top__manager ${pre}__top__link--desktop`")
       div.icon.mr-8
         er-icon(name="manager")
       div.info
         er-menu(offset-y, min-width="238", max-width="338", transition="slide-y-transition", nudge-left="21")
           template(v-slot:activator="{ on }")
-            a.link--dashed--yellow(href="#", v-on="on", @click.prevent="")
-              | Ваш персональный менеджер
+            er-preloader(:active="menuComponentManager")
+              a.link--dashed--yellow(href="#", v-on="on", @click.prevent="")
+                | Ваш персональный менеджер
           div.manager(:class="`${pre}__top__dropdown`")
             div(:class="`${pre}__top__dropdown__content`")
               div.caption.mb-4
