@@ -1,9 +1,9 @@
 import { eachArray } from '@/functions/helper'
-import { mapGetters } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 import { BREAKPOINT_XL } from '@/constants/breakpoint'
 import RightInfoPanelComponent from '../RightInfoPanelComponent/index.vue'
 import { SCREEN_WIDTH } from '../../../../../store/actions/variables'
-import { formatPhone } from '../../../../../functions/filters'
+import { formatPhone, price } from '../../../../../functions/filters'
 
 export default {
   name: 'menu-component',
@@ -70,12 +70,23 @@ export default {
     ]
   }),
   filters: {
-    formatPhone
+    formatPhone,
+    price
   },
   computed: {
     ...mapGetters({
       SCREEN_WIDTH,
-      getManagerInfo: 'user/getManagerInfo'
+      getManagerInfo: 'user/getManagerInfo',
+      getBillingAccountsGroupByContract: 'user/getBillingAccountsGroupByContract',
+      menuComponentBillingAccount: 'loading/menuComponentBillingAccount',
+      menuComponentBalance: 'loading/menuComponentBalance',
+      menuComponentManager: 'loading/menuComponentManager'
+    }),
+    ...mapState({
+      legalName: state => state.user.clientInfo.legalName,
+      activeBillingAccountId: state => state.user.activeBillingAccount,
+      activeBillingAccountNumber: state => state.user.activeBillingAccountNumber,
+      balanceInfo: state => state.user.paymentInfo
     }),
     isOpenSubMenu () {
       return !!this.menu.filter(item => item.isOpen).length

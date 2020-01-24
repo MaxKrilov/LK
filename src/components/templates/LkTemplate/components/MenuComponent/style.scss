@@ -253,9 +253,6 @@
           color: rgba(map_get($shades, 'black'), 0.2);
         }
         .info {
-          > * {
-            display: block;
-          }
           span {
             margin: { bottom: 2px };
           }
@@ -271,6 +268,7 @@
         position: relative;
         font-size: 18px;
         margin: { bottom: 5px };
+        display: inline-block;
         &::after {
           content: '₽';
           position: absolute;
@@ -280,11 +278,16 @@
           margin: { left: 2px };
         }
       }
+      span {
+        display: block;
+        @include color-black(0.5);
+      }
       .info {
         margin: { top: 3px };
       }
       .autopay {
         text-decoration: underline;
+        color: map_get($green, 'base');
       }
       &.autopay {
         .icon {
@@ -357,6 +360,7 @@
             letter-spacing: -1px;
             position: relative;
             i {
+              display: none;
               position: absolute;
               left: -24px;
               margin: { top: 3px };
@@ -371,7 +375,9 @@
             border-left-color: map_get($yellow, 'base');
           }
           &.active {
-
+            .value i {
+              display: block;
+            }
           }
         }
         .profile,

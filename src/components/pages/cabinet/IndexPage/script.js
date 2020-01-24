@@ -1,5 +1,12 @@
+import { mapState, mapGetters } from 'vuex'
+import { price } from '../../../../functions/filters'
+import ProductItemComponent from './blocks/ProductItemComponent/index.vue'
+
 export default {
   name: 'index-page',
+  components: {
+    ProductItemComponent
+  },
   data: () => ({
     pre: 'index-page',
     isOpenFilter: false,
@@ -27,10 +34,29 @@ export default {
         ]),
         this.$createElement('er-button', ['Начать чат'])
       ]))
+    },
+    ...mapState({
+      clientName: state => state.user.clientInfo.name,
+      balanceInfo: state => state.user.paymentInfo
+    }),
+    ...mapGetters({
+      listProductByAddress: 'user/getListProductByAddress',
+      listProductByService: 'user/getListProductByService',
+      indexPageProductByAddress: 'loading/indexPageProductByAddress',
+      loadingClientInfo: 'loading/clientInfo',
+      menuComponentBalance: 'loading/menuComponentBalance',
+      loadingDocuments: 'loading/loadingDocuments',
+      loadingRequest: 'loading/loadingRequest',
+      loadingPromisedPayment: 'loading/loadingPromisedPayment'
+    }),
+
+    isEmptyListProduct () {
+      return this.listProductByAddress.length === 0
     }
   },
   filters: {
-    sortBy: val => val === 'service' ? 'По услугам' : 'По офисам'
+    sortBy: val => val === 'service' ? 'По услугам' : 'По офисам',
+    price
   },
   methods: {
     openFilterForm () {

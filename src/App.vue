@@ -1,19 +1,24 @@
 <template lang="pug">
   div.app(data-app="true")
     div.app__content
-      //template(v-if="isFetching")
+      template(v-if="isFetching")
         | Проверяем авторизацию
-      //template(v-else-if="!hasAccess")
+      template(v-else-if="!hasAccess")
         | Доступ закрыт
-
-      router-view
+      template(v-else)
+        router-view
 </template>
 
 <script>
 import { mapGetters, mapState } from 'vuex'
 import { SCREEN_WIDTH } from './store/actions/variables'
 import { getScreenWidth } from './functions/helper'
-import { GET_CLIENT_INFO, GET_MANAGER_INFO, GET_UNSIGNED_DOCUMENTS } from '@/store/actions/user'
+import {
+  GET_CLIENT_INFO,
+  GET_LIST_BILLING_ACCOUNT, GET_LIST_PRODUCT_BY_ADDRESS, GET_LIST_PRODUCT_BY_SERVICE,
+  GET_MANAGER_INFO, GET_PAYMENT_INFO, GET_PROMISED_PAYMENT_INFO,
+  GET_UNSIGNED_DOCUMENTS
+} from '@/store/actions/user'
 import { GET_REQUEST } from '@/store/actions/request'
 
 export default {
@@ -30,6 +35,11 @@ export default {
           this.$store.dispatch(`user/${GET_MANAGER_INFO}`, { api: this.$api })
           this.$store.dispatch(`request/${GET_REQUEST}`, { api: this.$api })
           this.$store.dispatch(`user/${GET_UNSIGNED_DOCUMENTS}`, { api: this.$api })
+          await this.$store.dispatch(`user/${GET_LIST_BILLING_ACCOUNT}`, { api: this.$api })
+          this.$store.dispatch(`user/${GET_PAYMENT_INFO}`, { api: this.$api })
+          this.$store.dispatch(`user/${GET_PROMISED_PAYMENT_INFO}`, { api: this.$api })
+          await this.$store.dispatch(`user/${GET_LIST_PRODUCT_BY_ADDRESS}`, { api: this.$api })
+          this.$store.dispatch(`user/${GET_LIST_PRODUCT_BY_SERVICE}`, { api: this.$api })
         }
       }
     }
@@ -56,9 +66,6 @@ export default {
   &__content {
     width: 100%;
     min-height: 100vh;
-    &.blur {
-      /*filter: blur(32px);*/
-    }
   }
 }
 </style>
