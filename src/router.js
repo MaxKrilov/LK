@@ -27,6 +27,9 @@ import SupportIndexPage from './components/pages/cabinet/SupportPages/IndexPage/
 // Страница платежи
 import PayPage from './components/pages/cabinet/PayPage/index'
 
+// Страница обещанный платеж
+import PromisePay from './components/pages/cabinet/PayPage/PromisePay/index'
+
 // Страница история платежей
 import HistoryPay from './components/pages/cabinet/PayPage/HistoryPay/index'
 
@@ -53,6 +56,7 @@ const router = new Router({
       path: '/',
       redirect: {
         name: 'index'
+        // name: 'add-funds',
       }
     },
     {
@@ -61,6 +65,7 @@ const router = new Router({
       children: [
         {
           path: '/',
+          // path: '/in',
           name: 'index',
           component: IndexPage
         },
@@ -77,7 +82,7 @@ const router = new Router({
               path: 'edit',
               name: 'profile-edit',
               component: EditProfilePage
-            }
+            },
           ]
         },
         {
@@ -90,10 +95,16 @@ const router = new Router({
           component: PayPage
         },
         {
+          path: '/promise-pay',
+          component: PromisePay
+        },
+        {
           path: '/history-pay',
           component: HistoryPay
         },
         {
+          name: 'add-funds',
+          // path: '/',
           path: '/add-funds',
           component: AddFunds
         },
