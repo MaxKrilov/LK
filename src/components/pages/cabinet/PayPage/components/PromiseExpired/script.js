@@ -1,11 +1,11 @@
 export default {
   name: 'promise-expired',
   data: () => ({
-    pre: 'promise-expired',
+    pre: 'promise-expired'
   }),
   methods: {
-    paypage() {
+    paypage () {
       this.$router.push('/lk/payments')
-    },
+    }
   }
 }

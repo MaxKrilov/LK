@@ -71,6 +71,6 @@ export default {
     },
     main () {
       this.$router.push('/')
-    },
+    }
   }
 }

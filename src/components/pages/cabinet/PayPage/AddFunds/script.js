@@ -1,7 +1,6 @@
 import PayCard from '../components/PayCard/index.vue'
 import PaymentsOn from '../components/PaymentsOn/index.vue'
 import PaymentsOff from '../components/PaymentsOff/index.vue'
-// import ErPhoneSelect from '../components/ErPhoneSelect/index'
 import { mapGetters, mapState } from 'vuex'
 import { SCREEN_WIDTH } from '@/store/actions/variables'
 import { PATTERN_EMAIL } from '@/constants/regexp'
@@ -11,8 +10,7 @@ export default {
   components: {
     PayCard,
     PaymentsOn,
-    PaymentsOff,
-    // ErPhoneSelect
+    PaymentsOff
   },
   data: () => ({
     pre: 'add-funds',
@@ -57,7 +55,7 @@ export default {
     emails: [
       'konstantinopolsky@company.ru',
       'konstantinopolsky1@company.ru',
-      'konstant',
+      'konstant'
     ],
     currentEmail: 'konstantinopolsky@company.ru',
 
@@ -73,6 +71,7 @@ export default {
   }),
   computed: {
     ...mapGetters([SCREEN_WIDTH]),
+/*
     ...mapState({
       clientInfo: state => state.user.clientInfo
     }),
@@ -80,9 +79,7 @@ export default {
       let aa = this.clientInfo?.contacts?.map(item => item.contactMethods.filter(_item => _item['@type'].match(/email/ig)).value) || []
       return aa
     },
-    currentEmail () {
-      alert(1)
-    }
+*/
   },
   mounted () {
     this.changeWidth()
@@ -93,8 +90,8 @@ export default {
     }
   },
   methods: {
-    selectEmail (item) {
-      this.currentEmail = item
+    selectEmail () {
+      // this.currentEmail = item
       if (this.currentEmail === '' || !this.currentEmail.match(this.valEmail)) {
         this.visEmptyEmail = true
         this.borderCheck = '__border'
@@ -102,12 +99,6 @@ export default {
         this.visEmptyEmail = false
         this.borderCheck = ''
       }
-/*
-      if (this.currentEmail !== '' &&
-        this.sumPay !== '' &&
-        this.currentEmail.match(this.valEmail)
-      ) this.openConfirmPay = true
-*/
     },
     autopay () {
       this.checkAutoPay = this.selected ? 'Подключить автоплатёж' : 'Автоплатёж'
@@ -173,25 +164,6 @@ export default {
         this.visEmptySum = false
         this.borderSum = ''
       }
-
-/*
-      alert('Внимание!!! '+this.currentEmail)
-      if (this.currentEmail.match(this.valEmail)) {
-        alert('Это хорошо')
-      } else {
-        alert('Это плохо')
-      }
-*/
-
-/*
-      if (this.currentEmail === '' || !this.currentEmail.match(this.valEmail)) {
-        this.visEmptyEmail = true
-        this.borderCheck = '__border'
-      } else {
-        this.visEmptyEmail = false
-        this.borderCheck = ''
-      }
-*/
       if (this.currentEmail !== '' &&
         this.sumPay !== '' &&
         this.currentEmail.match(this.valEmail)

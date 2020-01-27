@@ -1,7 +1,7 @@
 export default {
   name: 'payments-off',
   data: () => ({
-    pre: 'payments-off',
+    pre: 'payments-off'
   }),
   methods: {
     tryAgain () {

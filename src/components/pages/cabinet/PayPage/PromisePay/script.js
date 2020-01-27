@@ -4,7 +4,6 @@ import PromiseOn from '../components/PromiseOn/index.vue'
 import PromiseOff from '../components/PromiseOff/index.vue'
 import PromiseExpired from '../components/PromiseExpired/index.vue'
 
-
 export default {
   name: 'promise-pay',
   components: {
@@ -47,6 +46,6 @@ export default {
       this.visExpired = true
       this.visInfo = false
       this.active = false
-    },
+    }
   }
 }

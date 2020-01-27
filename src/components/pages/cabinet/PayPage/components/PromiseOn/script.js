@@ -1,11 +1,11 @@
 export default {
   name: 'promise-on',
   data: () => ({
-    pre: 'promise-on',
+    pre: 'promise-on'
   }),
   methods: {
-    paypage() {
+    paypage () {
       this.$router.push('/lk/payments')
-    },
+    }
   }
 }
