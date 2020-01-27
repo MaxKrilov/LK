@@ -1,19 +1,22 @@
 import PayCard from '../components/PayCard/index.vue'
 import PaymentsOn from '../components/PaymentsOn/index.vue'
 import PaymentsOff from '../components/PaymentsOff/index.vue'
-import { mapGetters } from 'vuex'
+// import ErPhoneSelect from '../components/ErPhoneSelect/index'
+import { mapGetters, mapState } from 'vuex'
 import { SCREEN_WIDTH } from '@/store/actions/variables'
+import { PATTERN_EMAIL } from '@/constants/regexp'
 
 export default {
   name: 'add-funds',
   components: {
     PayCard,
     PaymentsOn,
-    PaymentsOff
+    PaymentsOff,
+    // ErPhoneSelect
   },
   data: () => ({
     pre: 'add-funds',
-    sumPay: '100500,00',
+    sumPay: '',
     screenW: '320',
     bottom: 'bottom',
     valSelect: 'Январь',
@@ -43,8 +46,21 @@ export default {
     direct: 'row',
     selected: false,
     visButtConf: false,
+    borderSum: '',
+    borderCheck: '',
+    visEmptySum: false,
+    visEmptyEmail: false,
+    valEmail: PATTERN_EMAIL,
+    // email: '', //'konstantinopolsky@company.ru',
     checkAutoPay: 'Подключить автоплатёж',
-    ss: 'konstantinopolsky@company.ru',
+
+    emails: [
+      'konstantinopolsky@company.ru',
+      'konstantinopolsky1@company.ru',
+      'konstant',
+    ],
+    currentEmail: 'konstantinopolsky@company.ru',
+
     changeWidth () {
       this.direct = this[SCREEN_WIDTH] < 960 ? 'row' : 'column'
       this.visButtConf = this[SCREEN_WIDTH] < 1200
@@ -56,7 +72,17 @@ export default {
     }
   }),
   computed: {
-    ...mapGetters([SCREEN_WIDTH])
+    ...mapGetters([SCREEN_WIDTH]),
+    ...mapState({
+      clientInfo: state => state.user.clientInfo
+    }),
+    listEmail () {
+      let aa = this.clientInfo?.contacts?.map(item => item.contactMethods.filter(_item => _item['@type'].match(/email/ig)).value) || []
+      return aa
+    },
+    currentEmail () {
+      alert(1)
+    }
   },
   mounted () {
     this.changeWidth()
@@ -67,6 +93,22 @@ export default {
     }
   },
   methods: {
+    selectEmail (item) {
+      this.currentEmail = item
+      if (this.currentEmail === '' || !this.currentEmail.match(this.valEmail)) {
+        this.visEmptyEmail = true
+        this.borderCheck = '__border'
+      } else {
+        this.visEmptyEmail = false
+        this.borderCheck = ''
+      }
+/*
+      if (this.currentEmail !== '' &&
+        this.sumPay !== '' &&
+        this.currentEmail.match(this.valEmail)
+      ) this.openConfirmPay = true
+*/
+    },
     autopay () {
       this.checkAutoPay = this.selected ? 'Подключить автоплатёж' : 'Автоплатёж'
       if (this.selected) {
@@ -124,7 +166,36 @@ export default {
       this.openConfirmAutoPay = true
     },
     paymentConfirm () {
-      this.openConfirmPay = true
+      if (this.sumPay === '') {
+        this.visEmptySum = true
+        this.borderSum = '__border'
+      } else {
+        this.visEmptySum = false
+        this.borderSum = ''
+      }
+
+/*
+      alert('Внимание!!! '+this.currentEmail)
+      if (this.currentEmail.match(this.valEmail)) {
+        alert('Это хорошо')
+      } else {
+        alert('Это плохо')
+      }
+*/
+
+/*
+      if (this.currentEmail === '' || !this.currentEmail.match(this.valEmail)) {
+        this.visEmptyEmail = true
+        this.borderCheck = '__border'
+      } else {
+        this.visEmptyEmail = false
+        this.borderCheck = ''
+      }
+*/
+      if (this.currentEmail !== '' &&
+        this.sumPay !== '' &&
+        this.currentEmail.match(this.valEmail)
+      ) this.openConfirmPay = true
     },
     checkConfirm () {
       this.openConfirmCheck = true

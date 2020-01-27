@@ -189,6 +189,9 @@
       & .er-text-field .er-input__control .er-input__slot {
         min-height: 39px !important;
       }
+      &__border > .er-text-field .er-input__control .er-input__slot {
+        border: 1px solid map_get($red, 'base') !important;
+      }
     }
     &__remember {
       margin-top: 20px;
@@ -345,6 +348,27 @@
         )
       ))
     }
+    &__empty {
+      //position: relative;
+      margin-left: 184px;
+      font: 10px/120% $fedra-demi;
+      color: map_get($red, 'base');
+      letter-spacing: 0.5px;
+      @include media-query((
+        font-size: (
+          md: 12px,
+        ),
+        line-height: (
+          md: 16px,
+        ),
+        letter-spacing: (
+          md: normal,
+        ),
+        margin-left: (
+          xl: 88px
+        )
+      ));
+    }
   }
   &__check {
     margin-top: 0;
@@ -418,11 +442,47 @@
     }
     &__body {
       margin-top: 27px;
+      &__border > .er-select > .er-text-field .er-input__control .er-input__slot {
+        border: 1px solid map_get($red, 'base') !important;
+      }
     }
     &__input {
       position: relative;
       top: -13px;
       text-align: center;
+      &__over {
+        position: absolute;
+        height: 14px;
+        width: 316px;
+        left: 36px;
+        top: 123px;
+        background: #F8F8F8;
+        z-index: 2;
+      }
+    }
+    &__empty {
+      margin-left: 112px;
+      margin-top: -19px;
+      font: 10px/120% $fedra-demi;
+      color: map_get($red, 'base');
+      letter-spacing: 0.5px;
+      @include media-query((
+        font-size: (
+          md: 12px,
+        ),
+        line-height: (
+          md: 16px,
+        ),
+        letter-spacing: (
+          md: normal,
+        ),
+        margin-top: (
+          xl: -3px
+        ),
+        margin-left: (
+          xl: 165px
+        )
+      ));
     }
   }
   &__confirm {
@@ -706,7 +766,7 @@
       @include media-query((
         left: (
           sm: 21px,
-          md: 0
+          md: 52px
         ),
         justify-content: (
           sm: end,
