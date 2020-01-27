@@ -1,34 +1,50 @@
 <template lang="pug">
   div.app(data-app="true")
-   router-view
+    div.app__content
+      template(v-if="isFetching")
+        | Проверяем авторизацию
+      template(v-else-if="!hasAccess")
+        | Доступ закрыт
+      template(v-else)
+        router-view
 </template>
 
 <script>
-// import { mapGetters, mapState } from 'vuex'
+import { mapGetters, mapState } from 'vuex'
 import { SCREEN_WIDTH } from './store/actions/variables'
 import { getScreenWidth } from './functions/helper'
-// import { GET_CLIENT_INFO, GET_MANAGER_INFO, GET_UNSIGNED_DOCUMENTS } from '@/store/actions/user'
-// import { GET_REQUEST } from '@/store/actions/request'
+import {
+  GET_CLIENT_INFO,
+  GET_LIST_BILLING_ACCOUNT, GET_LIST_PRODUCT_BY_ADDRESS, GET_LIST_PRODUCT_BY_SERVICE,
+  GET_MANAGER_INFO, GET_PAYMENT_INFO, GET_PROMISED_PAYMENT_INFO,
+  GET_UNSIGNED_DOCUMENTS
+} from '@/store/actions/user'
+import { GET_REQUEST } from '@/store/actions/request'
 
 export default {
   name: 'app',
   data: () => ({
     model: 1
   }),
-  /*
   async created () {
-    if (!this.refreshedToken.isFetching && !this.serverErrorMessage) {
-      this.$store.dispatch('auth/checkAuth', { api: this.$api })
-      const clientInfo = await this.$store.dispatch(`user/${GET_CLIENT_INFO}`, { api: this.$api })
-      if (clientInfo) {
-        this.$store.dispatch(`user/${GET_MANAGER_INFO}`, { api: this.$api })
-        this.$store.dispatch(`request/${GET_REQUEST}`, { api: this.$api })
-        this.$store.dispatch(`user/${GET_UNSIGNED_DOCUMENTS}`, { api: this.$api })
+    if (process.env.VUE_APP_USE_SSO_AUTH !== 'no') {
+      if (!this.refreshedToken.isFetching && !this.serverErrorMessage) {
+        await this.$store.dispatch('auth/checkAuth', { api: this.$api })
+        const clientInfo = await this.$store.dispatch(`user/${GET_CLIENT_INFO}`, { api: this.$api })
+        if (clientInfo) {
+          this.$store.dispatch(`user/${GET_MANAGER_INFO}`, { api: this.$api })
+          this.$store.dispatch(`request/${GET_REQUEST}`, { api: this.$api })
+          this.$store.dispatch(`user/${GET_UNSIGNED_DOCUMENTS}`, { api: this.$api })
+          await this.$store.dispatch(`user/${GET_LIST_BILLING_ACCOUNT}`, { api: this.$api })
+          this.$store.dispatch(`user/${GET_PAYMENT_INFO}`, { api: this.$api })
+          this.$store.dispatch(`user/${GET_PROMISED_PAYMENT_INFO}`, { api: this.$api })
+          await this.$store.dispatch(`user/${GET_LIST_PRODUCT_BY_ADDRESS}`, { api: this.$api })
+          this.$store.dispatch(`user/${GET_LIST_PRODUCT_BY_SERVICE}`, { api: this.$api })
+        }
       }
     }
   },
-  */
-  mounted () {
+  beforeCreate () {
     this.$store.commit(SCREEN_WIDTH, getScreenWidth())
     window.addEventListener('resize', () => {
       this.$store.commit(SCREEN_WIDTH, getScreenWidth())
@@ -36,14 +52,12 @@ export default {
     window.addEventListener('orientationchange', () => {
       this.$store.commit(SCREEN_WIDTH, getScreenWidth())
     })
+  },
+  methods: {},
+  computed: {
+    ...mapGetters('auth', ['user', 'hasAccess']),
+    ...mapState('auth', ['error', 'isFetching', 'isFetched', 'refreshedToken'])
   }
-  /*
-    methods: {} /*
-    computed: {
-      ...mapGetters('auth', ['user', 'hasAccess']),
-      ...mapState('auth', ['error', 'isFetching', 'isFetched', 'refreshedToken'])
-    }
-  */
 }
 </script>
 
@@ -52,9 +66,6 @@ export default {
   &__content {
     width: 100%;
     min-height: 100vh;
-    &.blur {
-      /*filter: blur(32px);*/
-    }
   }
 }
 </style>

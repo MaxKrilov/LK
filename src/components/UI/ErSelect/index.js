@@ -1,337 +1,521 @@
 import './_style.scss'
-import { getFirstElement, isEmpty } from '@/functions/helper'
-import { mapGetters } from 'vuex'
-import { SCREEN_WIDTH } from '@/store/actions/variables'
+
+import Component, { mixins } from 'vue-class-component'
+import ErTextField from '../ErTextField'
+
+import ClickOutside from '../../../directives/click-outside'
+import { compareObject, regExpByStr } from '../../../functions/helper'
+import { mapState } from 'vuex'
+import { SCREEN_WIDTH } from '../../../store/actions/variables'
 import { BREAKPOINT_MD } from '../../../constants/breakpoint'
 
-export default {
-  name: 'er-select',
-  data: () => ({
-    tagList: 'er-menu',
-    // isMobile: false,
-    isOpenDialog: false,
-    filterMobile: '',
-    isOnInput: false,
-    internalValue: '',
-    isSelected: false
-  }),
+export const defaultMenuProps = {
+  closeOnClick: false,
+  closeOnContentClick: false,
+  disableKeys: true,
+  openOnClick: false,
+  maxHeight: 304,
+  offsetY: true,
+  offsetOverflow: true,
+  transition: false
+}
+
+export const defaultDialogProps = {
+  fullscreen: true,
+  transition: 'dialog-bottom-transition'
+}
+
+@Component({
+  directives: {
+    ClickOutside
+  },
   props: {
     items: {
       type: Array,
       default: () => ([])
     },
-    placeholder: {
-      type: String,
-      default: 'Выберите значение'
-    },
-    readonly: Boolean,
     trackId: {
       type: String,
       default: 'id'
     },
-    disabled: Boolean,
     label: {
       type: String,
       default: 'value'
     },
+    placeholder: String,
+    autocomplete: {
+      type: String,
+      default: 'off'
+    },
     notFoundText: {
       type: String,
-      default: 'Результатов не найдено'
+      default: 'Ничего не найдено (；⌣̀_⌣́)'
     },
-    value: {
-      type: null
-    },
-    isSelectFirst: Boolean,
-    /**
-     * Возможность добавления собственного значения
-     */
-    isTagging: Boolean,
-    taggingFunction: Function,
-    isShowLabelRequired: Boolean,
-    labelChanged: String,
-    rules: {
-      type: Array,
-      default: () => ([])
-    },
-    maskFilter: String
+    deep: {
+      type: Number,
+      default: 1,
+      validator: val => val === 1 || val === 2
+    }
   },
   computed: {
-    getFilteredItems () {
-      return this.items.filter(item => {
-        return this.isOnInput
-          ? typeof item === 'string'
-            ? item.match(new RegExp(RegExp.escape(this.internalValue), 'ig'))
-            : item[this.label].match(new RegExp(RegExp.escape(this.internalValue), 'ig'))
-          : true
-      })
-    },
-    getFilteredItemsMobile () {
-      return this.items.filter(item => {
-        return typeof item === 'string'
-          ? item.match(new RegExp(RegExp.escape(this.filterMobile), 'ig'))
-          : item[this.label].match(new RegExp(RegExp.escape(this.filterMobile), 'ig'))
-      })
-    },
-    filterDesktop () {
-      return this.isOnInput ? this.internalValue : ''
-    },
-    ...mapGetters([
-      SCREEN_WIDTH
-    ]),
-    isMobile () {
-      return this[SCREEN_WIDTH] < BREAKPOINT_MD
-    }
+    ...mapState({
+      screenWidth: state => state.variables[SCREEN_WIDTH]
+    })
   },
   watch: {
-    value (val) {
-      this.internalValue = typeof val === 'string' ? val : val[this.label]
-    },
-    items (val) {
-      this.isSelectFirst && this.$emit('input', getFirstElement(val))
-    }
-  },
-  methods: {
-    __getClass () {
-      return `er-select__list${this.isMobile ? '--mobile' : ''}`
-    },
-    __generateList (h) {
-      return this.$createElement('div', {
-        staticClass: this.__getClass(),
-        class: {
-          'er-select__list--mobile--readonly': this.isMobile && this.readonly
-        }
-      }, this.isMobile ? [
-        this.generateHeaderMobile(),
-        !this.readonly && this.generateSearchMobile(),
-        this.generateItemsMobile(h)
-      ] : [
-        this.generateItems(h)
-      ])
-    },
-    __generateItems (h) {
-      return (
-        <div class={`${this.__getClass()}__items`}>
-          {
-            isEmpty(this[this.isMobile ? 'getFilteredItemsMobile' : 'getFilteredItems']) && !this.isTagging
-              ? (
-                <div class={`${this.__getClass()}__item not-found`}>
-                  {this.notFoundText}
-                </div>
-              )
-              : (
-                [this[this.isMobile ? 'getFilteredItemsMobile' : 'getFilteredItems']
-                  .map(item => this.isMobile ? this.generateItemMobile(item) : this.generateItem(item)),
-                this.isTagging && (
-                  this.isMobile ? this.filterMobile : this.internalValue
-                ) !== '' && (
-                  <div
-                    class={`${this.__getClass()}__item tagging`}
-                    vOn:click={() => {
-                      this.taggingFunction(this.isMobile ? this.filterMobile : this.internalValue)
-                      this.isOpenDialog = false
-                      this.isSelected = true
-                      this.filterMobile = ''
-                    }}
-                  >
-                    Добавить значение &laquo;{this.isMobile ? this.filterMobile : this.internalValue}&raquo;
-                  </div>
-                )
-                ])
-          }
-        </div>
-      )
-    },
-    __generateItem (item) {
-      const isString = typeof item === 'string'
-      const replaceArgs = [
-        new RegExp(RegExp.escape(this[this.isMobile ? 'filterMobile' : 'filterDesktop']), 'ig'),
-        '<span>$&</span>'
-      ]
-      return this.$createElement('a', {
-        staticClass: `${this.__getClass()}__item`,
-        class: {
-          'active': isString
-            ? item === this.value
-            : this._.isEqual(item, this.value)
-        },
-        attrs: {
-          'data-id': isString ? item : item[this.trackId]
-        },
-        on: {
-          click: this.onSelectItem
-        }
-      }, [
-        this.$createElement('div', {
-          domProps: {
-            innerHTML: this[this.isMobile ? 'filterMobile' : 'filterDesktop']
-              ? isString
-                ? item.replace(...replaceArgs)
-                : item[this.label].replace(...replaceArgs)
-              : isString
-                ? item
-                : item[this.label]
-          }
-        }),
-        this.$createElement('er-icon', { props: { name: 'ok' } })
-      ])
-    },
-    __getEventsForActivator (on) {
-      return {
-        ...on,
-        input: e => {
-          this.isOnInput = true
-          this.internalValue = e
-        },
-        blur: this.onBlur,
-        focus: (e) => {
-          if (this[SCREEN_WIDTH] < 640) {
-            e.target.nextSibling.style.display = 'none'
-          }
-          this.$refs.activator.$refs.input.select()
-        }
+    isMenuActive (val) {
+      if (!val) {
+        this.internalSearch = ''
+        this.validate()
       }
-    },
-    generateActivator (props) {
-      return this.$createElement('er-text-field', {
-        props: {
-          value: this.internalValue,
-          label: this.placeholder,
-          appendInnerIcon: 'corner_down',
-          autocomplete: 'off',
-          disabled: this.disabled,
-          readonly: this.readonly,
-          labelChanged: this.labelChanged,
-          isShowLabelRequired: this.isShowLabelRequired,
-          rules: this.rules,
-          mask: this.maskFilter
-        },
-        on: this.__getEventsForActivator(props.on),
-        ref: 'activator'
-      })
-    },
-    generateList (h) {
-      return this.__generateList(h)
-    },
-    generateListMobile (h) {
-      return this.__generateList(h)
-    },
-    generateItems (h) {
-      return this.__generateItems(h)
-    },
-    generateItemsMobile (h) {
-      return this.__generateItems(h)
-    },
-    generateItem (item) {
-      return this.__generateItem(item)
-    },
-    generateHeaderMobile () {
+    }
+  }
+})
+export default class ErSelect extends mixins(ErTextField) {
+  isMenuActive = false
+  internalSearch = ''
+  content = null
+  isChanged = false
+  multiselectStartValue = []
+
+  get directives () {
+    return this.hasFocus && !this.isMobile ? [{
+      name: 'click-outside',
+      value: this.blur,
+      args: {
+        closeConditional: this.closeConditional
+      }
+    }] : undefined
+  }
+
+  get isMultiple () {
+    return Array.isArray(this.value)
+  }
+
+  get issetValue () {
+    return this.isMultiple
+      ? this.value.length > 0
+      : !!this.value
+  }
+
+  get filteredItems () {
+    return this.items.filter(item => this.getText(item)?.match(regExpByStr(this.internalSearch)))
+  }
+
+  get labelClasses () {
+    return {
+      [`${this.pre}--active`]: this.hasFocus || (Array.isArray(this.value) ? this.value.length > 0 : this.value)
+    }
+  }
+
+  get classes () {
+    return {
+      ...ErTextField.computed.classes.call(this),
+      'er-select': true
+    }
+  }
+
+  get isMobile () {
+    return this.screenWidth < BREAKPOINT_MD
+  }
+
+  blur (e) {
+    ErTextField.methods.onBlur.call(this, e)
+    this.isMenuActive = false
+    this.hasFocus = false
+    this.multiselectStartValue = []
+    this.isChanged = false
+  }
+
+  onCancel (e) {
+    this.$emit('input', this.multiselectStartValue)
+    this.blur(e)
+  }
+
+  getText (item) {
+    if (typeof item === 'string') {
+      return item
+    }
+    return item[this.label]
+  }
+
+  isActiveItem (item) {
+    if (this.isMultiple) {
+      return this.value.findIndex(_item => typeof _item === 'string'
+        ? _item === item
+        : compareObject(_item, item)
+      ) > -1
+    }
+    return typeof item === 'string'
+      ? item === this.value
+      : compareObject(item, this.value)
+  }
+
+  onClick () {
+    ErTextField.methods.onClick.call(this)
+    this.isMenuActive = true
+    this.multiselectStartValue = this.value
+    if (!this.hasFocus) {
+      this.hasFocus = true
+      this.$emit('focus')
+    }
+  }
+
+  onBlur (e) {
+    e && this.$emit('blur', e)
+  }
+
+  onFocus (e) {
+    this.$emit('focus', e)
+  }
+
+  onRemoveMultiple (e, item) {
+    e.stopPropagation()
+    const fIndex = this.value.findIndex(_item => typeof _item === 'string'
+      ? _item === item
+      : compareObject(_item, item)
+    )
+    const value = this.value
+    value.splice(fIndex, 1)
+    this.$emit('input', value)
+  }
+
+  generateCommaSelection () {
+    return this.$createElement('div', {
+      staticClass: 'er-select__selections--comma'
+    }, [
+      this.getText(this.value)
+    ])
+  }
+
+  generateMultipleSelection () {
+    return this.value.map((item, i) => {
       return this.$createElement('div', {
-        staticClass: 'er-select__list--mobile__header'
+        staticClass: 'er-select__selections--chip',
+        key: i
       }, [
-        this.$createElement('div', {
-          staticClass: 'er-select__list--mobile__title'
-        }, [ this.placeholder || '' ]),
-        this.$createElement('div', {
-          staticClass: 'er-select__list--mobile__close',
+        this.getText(item),
+        this.$createElement('button', {
           on: {
-            click: () => { this.isOpenDialog = false; this.filterMobile = '' }
+            click: e => this.onRemoveMultiple(e, item)
           }
         }, [
           this.$createElement('er-icon', { props: { name: 'close' } })
         ])
       ])
-    },
-    generateSearchMobile () {
-      return this.$createElement('div', {
-        staticClass: 'er-select__list--mobile__search'
-      }, [
-        this.$createElement('er-text-field', {
-          props: {
-            appendInnerIcon: 'lens',
-            value: this.filterMobile,
-            mask: this.maskFilter
-          },
-          on: {
-            input: e => { this.filterMobile = e }
-          }
-        })
-      ])
-    },
-    generateItemMobile (item) {
-      return this.__generateItem(item)
-    },
-    onSelectItem (e) {
-      const id = e.target.closest('a').dataset.id
-      const isString = typeof getFirstElement(this.items) === 'string'
-      const result = this.items.find(item => {
-        return isString
-          ? id === item
-          : id === item[this.trackId]
-      })
-      if (!result) {
-        throw new Error('Unknow error')
-      }
-      this.$emit('input', result)
-      this.isOpenDialog = false
-      this.isSelected = true
-      this.filterMobile = ''
-    },
-    onBlur (e) {
-      setTimeout(() => { e.target.nextSibling.style.display = 'block' }, 500)
+    })
+  }
 
-      setTimeout(() => {
-        if (!this.isSelected) {
-          this.internalValue = this.value
-            ? typeof this.value === 'string'
-              ? this.value
-              : this.value[this.label]
-            : ''
-        }
-        this.isSelected = false
-        this.isOnInput = false
-        this.$emit('blur')
-      }, 100)
+  generateSelections () {
+    const children = []
+    if (this.isMultiple) {
+      children.push(...this.generateMultipleSelection())
+    } else if (!this.hasFocus) {
+      children.push(this.generateCommaSelection())
     }
-  },
-  render (h) {
-    const scopedSlots = {
-      activator: props => this.generateActivator(props)
-    }
-    const events = {
-      input: () => { this.isOpenDialog = true }
-    }
-    const options = this.isMobile
-      ? {
-        props: {
-          fullscreen: true,
-          transition: 'dialog-bottom-transition',
-          value: this.isOpenDialog
-        }
-      }
-      : {
-        props: {
-          offsetY: true,
-          nudgeBottom: -20
-        }
-      }
-    return h('div', {
-      staticClass: 'er-select',
+    return this.$createElement('div', {
+      staticClass: 'er-select__selections'
+    }, [
+      ...children,
+      this.generateInput()
+    ])
+  }
+
+  generateInput () {
+    const input = ErTextField.methods.generateInput.call(this)
+    input.data.domProps.value = this.internalSearch
+    input.data.on.input = e => { this.internalSearch = e.target.value }
+    input.data.on.keypress = this.onKeyPress
+
+    return input
+  }
+
+  generateDefaultSlot () {
+    return [
+      this.$createElement('div', {
+        staticClass: 'er-select__slot',
+        directives: this.directives
+      }, [
+        this.generateLabel(),
+        this.generateSelections(),
+        this.isMultiple && this.issetValue ? this.generateClearIcon() : null,
+        this.generateToggleIcon()
+      ]),
+      !this.isMobile
+        ? this.generateMenu()
+        : this.generateDialog()
+    ]
+  }
+
+  generateToggleIcon () {
+    return this.$createElement('div', {
+      staticClass: 'er-select__toggle',
       class: {
-        'er-select--disabled': this.disabled
+        'rotate': this.isMenuActive
       }
     }, [
-      h(this.isMobile ? 'er-dialog' : 'er-menu', {
-        ...options,
-        scopedSlots,
-        on: events
-      }, [
-        this.isMobile
-          ? this.generateListMobile(h)
-          : this.generateList(h)
+      this.generateSlot('inner', 'append', [
+        this.generateIcon('corner_down')
       ])
     ])
-  },
-  created () {
-    this.isMobile && (this.tagList = 'er-dialog')
   }
+
+  generateClearIcon () {
+    return this.$createElement('div', {
+      staticClass: 'er-select__clear',
+      on: {
+        click: e => {
+          e.stopPropagation()
+          this.$emit('input', [])
+          this.$nextTick(() => {
+            this.$refs.menu &&
+            (this.$refs.menu.updateDimensions())
+          })
+        }
+      }
+    }, [
+      this.$createElement('er-icon', { props: { name: 'cancel' } })
+    ])
+  }
+
+  generateLabel () {
+    if (this.$slots['placeholder'] || this.placeholder) {
+      return this.$createElement('label', { class: this.labelClasses, for: this.id }, [
+        this.$slots['placeholder'] ? this.$slots['placeholder'] : this.placeholder
+      ])
+    }
+  }
+
+  generateMenu () {
+    const props = defaultMenuProps
+    props.activator = this.$refs['input-slot']
+    props.value = this.isMenuActive
+
+    return this.$createElement('er-menu', {
+      attrs: { role: undefined },
+      props,
+      on: {
+        input: val => {
+          this.hasFocus = val
+          this.isMenuActive = val
+        }
+      },
+      ref: 'menu'
+    }, [this.generateList()])
+  }
+
+  generateDialog () {
+    const props = defaultDialogProps
+    props.activator = this.$refs['input-slot']
+    props.value = this.isMenuActive
+
+    return this.$createElement('er-dialog', {
+      attrs: { role: undefined },
+      props,
+      on: {
+        input: val => {
+          this.hasFocus = val
+          this.isMenuActive = val
+        }
+      }
+    }, [this.generateDialogContent()])
+  }
+
+  generateDialogContent () {
+    return this.$createElement('div', {
+      staticClass: 'er-select__dialog'
+    }, [
+      this.generateDialogHead(),
+      this.generateDialogBody()
+    ])
+  }
+
+  generateDialogHead () {
+    const h = this.$createElement
+    return h('div', {
+      staticClass: 'er-select__head',
+      class: ['d--flex', 'align-items-center', 'px-16']
+    }, [
+      h('div', { staticClass: 'title' }, [this.placeholder]),
+      h('button', {
+        on: {
+          click: this.blur
+        }
+      }, [
+        h('er-icon', { props: { name: 'close' } })
+      ])
+    ])
+  }
+
+  generateSearchMobile () {
+    const h = this.$createElement
+    return h('div', {
+      staticClass: 'er-select__search',
+      class: ['pa-16']
+    }, [
+      h('er-text-field', {
+        props: {
+          appendInnerIcon: 'lens',
+          value: this.internalSearch
+        },
+        on: {
+          input: e => { this.internalSearch = e }
+        }
+      })
+    ])
+  }
+
+  generateConfirmMobile () {
+    const h = this.$createElement
+    return h('div', {
+      staticClass: 'er-select__dialog-confirm',
+      class: { 'show': this.isChanged }
+    }, [
+      h('er-button', {
+        on: {
+          click: this.blur
+        }
+      }, 'ОК')
+    ])
+  }
+
+  generateDialogBody () {
+    const listItem = this.generateListItem()
+    const h = this.$createElement
+    return h('div', {
+      staticClass: 'er-select__body'
+    }, [
+      this.generateSearchMobile(),
+      listItem.length > 0 ? listItem : this.generateEmptyItem(),
+      this.generateConfirmMobile()
+    ])
+  }
+
+  generateListItem () {
+    if (this.deep === 1) {
+      return this.filteredItems.map((item, i) => this.generateItem(item, i))
+    } else {
+      return this.items.map(item => {
+        const filtered = item.items
+          .filter(_item => this.getText(_item).match(regExpByStr(this.internalSearch)))
+          .map((_item, i) => this.generateItem(_item, i))
+        if (filtered.length > 0) {
+          return this.$createElement('div', {}, [
+            this.$createElement('div', { staticClass: 'er-select__caption', class: 'px-16' }, [item.caption]),
+            ...filtered
+          ])
+        } else {
+          return null
+        }
+      }).filter(item => item)
+    }
+  }
+
+  generateList () {
+    const mapped = this.generateListItem()
+
+    return this.$createElement('div', {
+      staticClass: 'er-select__list',
+      directives: [
+        {
+          name: 'bar',
+          rawName: 'v-bar'
+        }
+      ]
+    }, [
+      this.$createElement('div', {
+        staticClass: 'content'
+      }, mapped.length > 0 ? mapped : [this.generateEmptyItem()])
+    ])
+  }
+
+  generateEmptyItem () {
+    return this.$createElement('div', {
+      staticClass: 'er-select__item'
+    }, [
+      this.$createElement('div', {
+        staticClass: 'er-select__item--inner',
+        class: 'empty'
+      }, [
+        this.notFoundText
+      ])
+    ])
+  }
+
+  generateItem (item, i) {
+    const content = []
+    const isActive = this.isActiveItem(item)
+
+    if (this.$scopedSlots['item']) {
+      content.push(this.$scopedSlots['item']({ item }))
+    } else {
+      content.push(
+        this.$createElement('div', {
+          staticClass: 'er-select__item--inner',
+          domProps: {
+            innerHTML: this.getText(item).replace(regExpByStr(this.internalSearch), '<span>$&</span>')
+          }
+        })
+      )
+    }
+    return this.$createElement('div', {
+      staticClass: 'er-select__item',
+      class: {
+        'active': isActive
+      },
+      on: {
+        click: e => {
+          e.stopPropagation()
+          this.selectItem(item)
+        }
+      }
+    }, [
+      content,
+      isActive && this.$createElement('er-icon', { props: { name: 'ok' } })
+    ])
+  }
+
+  closeConditional (e) {
+    return (
+      this.content &&
+        !this.content.contains(e.target) &&
+        this.$el &&
+        !this.$el.contains(e.target) &&
+        e.target !== this.$el
+    )
+  }
+
+  selectItem (item) {
+    if (!this.isMultiple) {
+      this.$emit('input', item)
+      this.isMenuActive = false
+      this.hasFocus = false
+    } else {
+      const fIndex = this.value.findIndex(_item => typeof _item === 'string'
+        ? _item === item
+        : compareObject(_item, item)
+      )
+      if (fIndex === -1) {
+        this.$emit('input', this.value.concat([item]))
+      } else {
+        const value = this.value
+        value.splice(fIndex, 1)
+        this.$emit('input', value)
+      }
+      this.internalSearch = ''
+      this.$nextTick(() => {
+        this.$refs.menu &&
+          (this.$refs.menu.updateDimensions())
+        !this.isChanged && (this.isChanged = true)
+      })
+    }
+  }
+
+  mounted () {
+    this.content = this.$refs.menu && this.$refs.menu.$refs.content
+  }
+
+  onKeyDown (e) {}
+
+  onKeyPress (e) {}
 }

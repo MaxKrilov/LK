@@ -3,6 +3,7 @@ import { COMBAT_DOMAIN, LOCALHOST_DOMAIN, TESTING_DOMAIN } from '../constants/do
 import { ENDPOINTS_API } from '../constants/endpoints'
 import { BREAKPOINT_XL, BREAKPOINT_MD } from '@/constants/breakpoint'
 import { Cookie } from './storage'
+import Vue from 'vue'
 
 /**
  * Функция, приводит мобильный телефон к одному типу: 79196026543
@@ -440,13 +441,13 @@ export function validateINN (inn) {
   }
   if (inn.length === 10) {
     const sum = [2, 4, 10, 3, 5, 9, 4, 6, 8].reduce((sum, item, index) => sum + item * inn[index], 0)
-    const residue = sum % 11
+    const residue = sum % 11 % 10
     return residue === +inn[9]
   }
   const firstSumm = [7, 2, 4, 10, 3, 5, 9, 4, 6, 8].reduce((sum, item, index) => sum + item * inn[index], 0)
   const secondSumm = [3, 7, 2, 4, 10, 3, 5, 9, 4, 6, 8].reduce((sum, item, index) => sum + item * inn[index], 0)
-  const firstResidue = firstSumm % 11
-  const secondResidue = secondSumm % 11
+  const firstResidue = firstSumm % 11 % 10
+  const secondResidue = secondSumm % 11 % 10
   return firstResidue === +inn[10] && secondResidue === +inn[11]
 }
 
@@ -508,3 +509,31 @@ export const ucfirst = str => str.charAt(0).toUpperCase() + str.substr(1, str.le
 export const kebabCase = str => (str || '').replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase()
 
 export const createRange = length => Array.from({ length }, (v, k) => k)
+
+export const escape = s => String(s).replace(/[\\^$*+?.()|[\]{}]/g, '\\$&')
+
+export const regExpByStr = (s, f = 'i') => new RegExp(escape(s), f)
+
+export const compareObject = (obj1, obj2) => JSON.stringify(obj1) === JSON.stringify(obj2)
+
+export function mergeSlotSafely (source, vm, slotName) {
+  if (vm.$scopedSlots[slotName] === void 0) {
+    return source
+  }
+
+  const slot = vm.$scopedSlots[slotName]()
+  return source !== void 0
+    ? source.concat(slot)
+    : slot
+}
+
+export function createSimpleComponent (c, el = 'div', name) {
+  return Vue.extend({
+    name: name || c.replace(/__/g, '-'),
+    functional: true,
+    render (h, { data, children }) {
+      data.staticClass = (`${c} ${data.staticClass || ''}`).trim()
+      return h(el, data, children)
+    }
+  })
+}

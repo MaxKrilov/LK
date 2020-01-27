@@ -42,7 +42,8 @@ import DigitalProductsIndexPage from './components/pages/digital-products/IndexP
 // Создание клиента (для DMP)
 import DMPFormPage from './components/pages/dmp-form/index'
 
-import OATSPage from './components/pages/oats/index'
+import OATSPromoPage from './components/pages/oats/promo/index'
+import OATSMainPage from './components/pages/oats/index'
 // Страницы с ошибками
 import OldBrowserPage from './components/pages/errors/old-browsers'
 
@@ -56,7 +57,6 @@ const router = new Router({
       path: '/',
       redirect: {
         name: 'index'
-        // name: 'add-funds',
       }
     },
     {
@@ -65,7 +65,6 @@ const router = new Router({
       children: [
         {
           path: '/',
-          // path: '/in',
           name: 'index',
           component: IndexPage
         },
@@ -82,7 +81,7 @@ const router = new Router({
               path: 'edit',
               name: 'profile-edit',
               component: EditProfilePage
-            },
+            }
           ]
         },
         {
@@ -123,8 +122,12 @@ const router = new Router({
           component: DigitalProductsIndexPage
         },
         {
+          path: 'oats/promo',
+          component: OATSPromoPage
+        },
+        {
           path: 'oats',
-          component: OATSPage
+          component: OATSMainPage
         },
         {
           path: 'support',

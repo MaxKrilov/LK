@@ -1,9 +1,9 @@
 import { eachArray } from '@/functions/helper'
-import { mapGetters, mapActions } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 import { BREAKPOINT_XL } from '@/constants/breakpoint'
 import RightInfoPanelComponent from '../RightInfoPanelComponent/index.vue'
 import { SCREEN_WIDTH } from '../../../../../store/actions/variables'
-import { formatPhone } from '../../../../../functions/filters'
+import { formatPhone, price } from '../../../../../functions/filters'
 
 export default {
   name: 'menu-component',
@@ -64,17 +64,29 @@ export default {
         name: 'Облачная телефония',
         icon: 'cloud_telephone',
         isOpen: false,
+        url: '/lk/oats/promo',
         subitem: [{ name: 'Портал ОАТС', url: '/lk/oats' }]
       }
     ]
   }),
   filters: {
-    formatPhone
+    formatPhone,
+    price
   },
   computed: {
     ...mapGetters({
       SCREEN_WIDTH,
-      getManagerInfo: 'user/getManagerInfo'
+      getManagerInfo: 'user/getManagerInfo',
+      getBillingAccountsGroupByContract: 'user/getBillingAccountsGroupByContract',
+      menuComponentBillingAccount: 'loading/menuComponentBillingAccount',
+      menuComponentBalance: 'loading/menuComponentBalance',
+      menuComponentManager: 'loading/menuComponentManager'
+    }),
+    ...mapState({
+      legalName: state => state.user.clientInfo.legalName,
+      activeBillingAccountId: state => state.user.activeBillingAccount,
+      activeBillingAccountNumber: state => state.user.activeBillingAccountNumber,
+      balanceInfo: state => state.user.paymentInfo
     }),
     isOpenSubMenu () {
       return !!this.menu.filter(item => item.isOpen).length
@@ -102,9 +114,9 @@ export default {
     toggleRightPanel () {
       this.isOpenRightPanel = !this.isOpenRightPanel
     },
-    ...mapActions({
-      signOut: 'auth/signOut'
-    })
+    signOut () {
+      this.$store.dispatch('auth/signOut', { api: this.$api })
+    }
   },
   mounted () {
     // console.log(this['user/getManagerInfo'])

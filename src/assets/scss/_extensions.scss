@@ -84,12 +84,13 @@
 }
 
 %caption2-font {
-  font: 10px/12px $fedra-demi;
+  font: 10px/13px $fedra-demi;
   letter-spacing: 0.5px;
 
   @include min-breakpoint('md') {
     font-size: 12px;
     line-height: 16px;
+    letter-spacing: 0px;
   }
 }
 

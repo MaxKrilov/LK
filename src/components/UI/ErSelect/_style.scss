@@ -1,129 +1,221 @@
 .er-select {
-  &--disabled {
-    cursor: not-allowed;
-    > .er-text-field {
-      pointer-events: none;
+   > .er-input__control
+   > .er-input__slot {
+    height: auto !important;
+    min-height: 40px;
+    align-items: flex-start;
+    padding-top: 10px !important;
+    padding-bottom: 10px !important;
+    @include min-breakpoint('xl') {
+      min-height: 46px;
+      padding-top: 13px !important;
+      padding-bottom: 13px !important;
     }
   }
   &__list {
-    background: linear-gradient(to top right, map_get($gray, '19'), map_get($shades, 'white'));
-    padding: 1px;
+    background: linear-gradient(to top, map_get($gray, '26') 28.65%, map_get($shades, 'white') 90.63%);
+    box-shadow: -8px 8px 16px rgba(map_get($shades, 'black'), 0.04),
+                0 8px 24px rgba(map_get($shades, 'black'), 0.06);
     border-radius: 8px;
-    &__items {
+    padding: 1px;
+    .content {
+      width: 100%;
       background: map_get($shades, 'white');
       border-radius: inherit;
+      padding: 12px 0;
+      max-height: 304px;
     }
-    &__item {
-      min-height: 32px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0 12px 0 8px;
-      font: 16px/20px $fedra-book;
-      letter-spacing: -1px;
+  }
+  &__selections {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    flex: 1 1;
+    max-width: 100%;
+    min-width: 0;
+    + .er-text-field__slot {
+      position: static;
+    }
+    &--chip {
+      @extend %caption2;
+      font-weight: 400;
+      @include color-black(0.8);
+      text-decoration: underline;
+      text-decoration-style: dashed;
+      margin-right: 16px;
+      button {
+        background-color: map_get($shades, 'transparent');
+        border: none;
+        outline: none;
+        cursor: pointer;
+        margin-left: 2px;
+        svg {
+          width: 16px;
+          @include color-black(0.2)
+        }
+      }
+    }
+    input {
+      flex: 1 1;
+    }
+  }
+  &__slot {
+    position: relative;
+    align-items: center;
+    display: flex;
+    max-width: 100%;
+    width: 100%;
+    > .er-select__toggle {
+      align-self: flex-start;
+      > .er-input__append-inner > .er-icon > svg {
+        width: 16px;
+        @include color-black(0.2);
+        transition: $primary-transition;
+      }
+      &.rotate > .er-input__append-inner > .er-icon > svg {
+        transform: rotate(180deg);
+        @include color-black(0.5);
+      }
+    }
+    input,
+    label {
+      @extend %body-font;
+    }
+    input {
+      width: 100%;
+      height: 100%;
+      border: none;
+      outline: none;
+      color: rgba(map_get($shades, 'black'), 0.8);
+      background: map_get($shades, 'transparent');
+    }
+    label {
+      position: absolute;
       color: rgba(map_get($shades, 'black'), 0.5);
+      pointer-events: none;
+      transition: $primary-transition;
+      transform-origin: left;
+      height: 20px;
+      left: 0;
+      top: 0;
+      &.er-text-field,
+      &.er-textarea {
+        &--active {
+          transform: scale(0.85) translateY(-40px);
+        }
+      }
+    }
+  }
+  &__item {
+    display: flex;
+    border-left: 4px solid map_get($shades, 'transparent');
+    align-items: center;
+    @include color-black(0.8);
+    margin-right: -20px;
+    i {
+      color: map_get($green, 'base');
+      display: block;
+      align-self: flex-start;
+      margin-right: 16px;
+      margin-top: 4px;
+      svg { width: 16px; }
+    }
+    &--inner {
+      display: flex;
+      width: 100%;
+      min-height: 32px;
+      padding: 4px 12px;
+      @extend %body-font;
       cursor: pointer;
-      border-left: 4px solid map_get($shades, 'transparent');
       transition: $primary-transition;
       span {
-        border-bottom: 1px solid rgba(map_get($shades, 'black'), 0.8);
         font-family: $fedra-med;
-        letter-spacing: 0;
-        color: rgba(map_get($shades, 'black'), 0.8);
       }
-      svg {
-        display: none;
-        color: map_get($green, 'base');
-        width: 16px;
-      }
-      &:hover {
-        background-color: map_get($gray, '2');
-        color: rgba(map_get($shades, 'black'), 0.8);
-        border-left-color: map_get($yellow, 'base');
-      }
-      &.active {
-        color: map_get($shades, 'black');
-        svg {
-          display: block;
+      &.empty { pointer-events: none; }
+    }
+    &:hover {
+      background-color: map_get($gray, '2');
+      border-left-color: map_get($yellow, 'base');
+      @include color-black()
+    }
+    &:active {
+      background-color: map_get($yellow, 'base');
+    }
+    &.active {
+      color: map_get($green, 'base');
+    }
+  }
+  &__clear {
+    @include color-black(0.5);
+    cursor: pointer;
+    svg {
+      width: 16px !important;
+    }
+  }
+  &__caption {
+    @extend %caption2;
+  }
+
+  &.er-text-field--error {
+    > .er-input__control {
+      > .er-input__slot {
+        > .er-select__slot {
+          > label {
+            color: map_get($red, 'base');
+          }
         }
       }
     }
-    &--mobile {
-      background-color: map_get($gray, '9');
-      &__header {
+  }
+
+  &__dialog {
+    background-color: map_get($gray, '3');
+    overflow: hidden;
+    .er-select {
+      &__head {
         height: 48px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 0 16px;
         background-color: map_get($shades, 'white');
-        margin-bottom: 16px;
-      }
-      &__title {
-        font: 15px/26px $fedra-book;
-        letter-spacing: -1px;
-        color: rgba(map_get($shades, 'black'), 0.8);
-      }
-      &__close {
-        color: rgba(map_get($shades, 'black'), 0.5);
-        cursor: pointer;
-        svg {
-          width: 16px !important;
+        .title {
+          @extend %h3;
+        }
+        button {
+          background-color: map_get($shades, 'transparent');
+          border: none;
+          outline: none;
+          margin-left: auto;
+          @include color-black(0.5);
+          cursor: pointer;
+          svg {
+            width: 16px;
+          }
         }
       }
-      &__search {
-        padding: 0 16px;
-        margin-bottom: 8px;
-      }
-      &__items {
-        height: calc(100vh - 120px);
-        overflow: auto;
+      &__body {
+        padding-bottom: 64px;
       }
       &__item {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        min-height: 32px;
-        padding: 0 8px 0 22px;
-        font: 15px/19px $fedra-book;
-        letter-spacing: -1px;
-        color: rgba(map_get($shades, 'black'), 0.8);
-        margin-bottom: 4px;
-        span {
-          border-bottom: 1px solid rgba(map_get($shades, 'black'), 0.8);
-          font-family: $fedra-med;
-          letter-spacing: 0;
-        }
-        svg {
-          display: none;
-          width: 16px;
-          color: map_get($green, 'base');
-        }
-        &:not(.not-found) {
-          &.active,
-          &:active {
-            color: map_get($shades, 'black');
-          }
-          &.active svg {
-            display: block;
-          }
-          &:active {
-            background-color: map_get($yellow, 'base');
-          }
-        }
+        margin-right: 0;
       }
     }
   }
-  .er-input__append-inner {
-    color: rgba(map_get($shades, 'black'), 0.5);
-    svg {
-      width: 16px;
-      transition: $primary-transition;
+  &__dialog-confirm {
+    position: fixed;
+    width: 100%;
+    display: flex;
+    background-color: map_get($shades, 'white');
+    padding: 12px;
+    bottom: 0;
+    transform: translateY(64px);
+    transition: $primary-transition;
+    .er-button:first-child {
+      max-width: 64px;
+      margin-right: 16px;
     }
-  }
-  .er-text-field--focus {
-    .er-input__append-inner {
-      transform: rotate(180deg);
+    .er-button:last-child {
+      max-width: 192px;
+    }
+    &.show {
+      transform: translateY(0);
     }
   }
 }

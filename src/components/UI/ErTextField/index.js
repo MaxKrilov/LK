@@ -59,6 +59,11 @@ export default {
     }
   },
   methods: {
+    blur (e) {
+      window.requestAnimationFrame(() => {
+        this.$refs.input && this.$refs.input.blur()
+      })
+    },
     generateTextFieldSlot () {
       return this.$createElement('div', {
         staticClass: `${this.pre}__slot`
@@ -137,7 +142,8 @@ export default {
         on: {
           focus: this.onFocus,
           blur: this.onBlur,
-          input: this.onInput
+          input: this.onInput,
+          keydown: this.onKeyDown
         }
       })
     },
@@ -154,13 +160,21 @@ export default {
       }
     },
     onFocus (e) {
-      this.hasFocus = true
-      this.$emit('focus', e)
+      if (!this.$refs.input) return
+      if (document.activeElement !== this.$refs.input) {
+        return this.$refs.input.focus()
+      }
+      if (!this.hasFocus) {
+        this.hasFocus = true
+        this.$emit('focus', e)
+      }
     },
     onBlur (e) {
       this.hasFocus = false
       if (this.isShowSuccess) { this.isSuccess = this.validate() }
-      this.$emit('blur', e)
+      e && this.$nextTick(() => {
+        this.$emit('blur', e)
+      })
     },
     onMouseDown (e) {
       if (e.target !== this.$refs.input) {

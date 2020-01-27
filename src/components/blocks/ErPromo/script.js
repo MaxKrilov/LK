@@ -1,10 +1,6 @@
-import ErPromo from '../../blocks/ErPromo'
-
 export default {
   name: 'promo-component',
-  components: {
-    ErPromo
-  },
+
   props: {
     title: {
       type: String,
