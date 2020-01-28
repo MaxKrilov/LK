@@ -60,7 +60,7 @@
       &.er-text-field,
       &.er-textarea {
         &--active {
-          transform: scale(0.85) translateY(-40px);
+          transform: scale(0.85) translateY(-45px);
         }
       }
     }
@@ -109,18 +109,23 @@
     > .er-input__control {
       > .er-input__slot {
         &,
-        &:hover {
+        &:hover,
+        &:active {
           border-color: rgba(map_get($shades, 'black'), 0.2);
           cursor: not-allowed;
+          background: map_get($shades, 'transparent');
           > .er-input__prepend-inner,
           > .er-input__append-inner {
             &,
-            &:hover {
+            &:hover,
+            &:active {
               color: rgba(map_get($shades, 'black'), 0.2);
+              background: map_get($shades, 'transparent');
             }
           }
-          > .er-text-field__slot {
-            > input {
+          > .er-text-field__slot,
+          > .er-select__slot {
+            input {
               cursor: not-allowed;
               background: map_get($shades, 'transparent');
             }

@@ -1,11 +1,28 @@
 import { Vue, Component, Prop } from 'vue-property-decorator'
+import { CANCEL_REQUEST } from '../../../../../../store/actions/request'
 
-@Component
+const localisationTicketType = val => val.match(/Problem/ig)
+  ? 'Инцидент'
+  : val.match(/Complaint/ig)
+    ? 'Претензия'
+    : val.match(/Request/ig)
+      ? 'Запрос на обслуживание'
+      : 'Другое'
+
+@Component({
+  filters: {
+    localisationTicketType
+  }
+})
 export default class RequestItemComponent extends Vue {
   /**
    * Номер заявки
    */
   @Prop([String, Number]) ticketId
+  /**
+   * Имя заявки
+   */
+  @Prop(String) ticketName
   /**
    * Тип заявки
    */
@@ -21,7 +38,7 @@ export default class RequestItemComponent extends Vue {
   /**
    * Тип проблемы
    */
-  @Prop(String) category
+  @Prop(String) type
   /**
    * Дата/время изменения
    */
@@ -46,16 +63,28 @@ export default class RequestItemComponent extends Vue {
    * Дата/время закрытия
    */
   @Prop([String, Number]) resolvedWhen
+  /**
+   * Дата/время отмены
+   */
+  @Prop([String, Number]) cancelledWhen
   /** @type {boolean} */
   isOpenDetail = false
   /** @type {boolean} */
   isOpenHistory = false
+  /** @type {boolean} */
+  isOpenCancel = false
+  /** @type {string} */
+  reasonOfCancel = ''
+  isSuccessCancel = false
 
   /**
    * Получение метки-статуса
    * @return {{name: string, id: string}}
    */
   get getLabelStatus () {
+    if (this.cancelledWhen) {
+      return { id: 'cancel', name: 'Отменена' }
+    }
     if (this.resolvedWhen) {
       return { id: 'resolved', name: 'Закрыта' }
     }
@@ -88,11 +117,13 @@ export default class RequestItemComponent extends Vue {
       'progress': 'Специалисты занимаются решением Вашей заявки.',
       'hold': 'Для решения заявки требуется получить дополнительную информацию от Клиента.',
       'solved': 'Работы по заявке выполнены. Ожидается подтверждение от Клиента решения заявки.',
-      'resolved': 'Спасибо за Ваше обращение. Работы по заявке выполнены.'
+      'resolved': 'Спасибо за Ваше обращение. Работы по заявке выполнены.',
+      'cancel': 'Заявка отменена пользователем'
     }
   }
   get getHistoryArray () {
     return [
+      this.cancelledWhen && { id: 'cancel', name: 'Отменена', text: this.getTextStatus.cancel, time: this.cancelledWhen },
       this.resolvedWhen && { id: 'resolved', name: 'Закрыта', text: this.getTextStatus.resolved, time: this.resolvedWhen },
       this.solvedWhen && { id: 'solved', name: 'Решена', text: this.getTextStatus.solved, time: this.solvedWhen },
       this.onHoldWhen && { id: 'hold', name: 'В ожидании', text: this.getTextStatus.hold, time: this.onHoldWhen },
@@ -102,8 +133,8 @@ export default class RequestItemComponent extends Vue {
   }
   get getDetailInfoMobile () {
     return [
-      { caption: 'Тип заявки', value: this.ticketType },
-      { caption: 'Тип проблемы', value: this.category },
+      { caption: 'Тип заявки', value: localisationTicketType(this.ticketType) },
+      { caption: 'Тип проблемы', value: this.type },
       { caption: 'Продукт', value: this.affectedProduct },
       { caption: 'Статус', value: this.getTextStatus[this.getLabelStatus.id] }
     ]
@@ -111,7 +142,7 @@ export default class RequestItemComponent extends Vue {
   get getDetailInfoDesktop () {
     return [
       { caption: 'Тип заявки', value: this.ticketType },
-      { caption: 'Тип проблемы', value: this.category },
+      { caption: 'Тип проблемы', value: this.type },
       { caption: 'Продукт', value: this.affectedProduct },
       { caption: 'Адрес подключения', value: this.location }
     ]
@@ -125,5 +156,31 @@ export default class RequestItemComponent extends Vue {
   }
   toggleHistoryMobile () {
     this.isOpenHistory = !this.isOpenHistory
+  }
+  openCancelDialog () {
+    this.isOpenCancel = true
+  }
+  closeCancelDialog () {
+    this.isOpenCancel = false
+  }
+  closeSuccessCancel () {
+    this.isSuccessCancel = false
+  }
+  async cancelRequest () {
+    if (!this.$refs.cancel_form.validate()) {
+      return false
+    }
+    const result = await this.$store.dispatch(`request/${CANCEL_REQUEST}`, {
+      api: this.$api,
+      requestId: this.ticketId,
+      description: this.reasonOfCancel
+    })
+    if (result) {
+      this.closeCancelDialog()
+      this.isSuccessCancel = true
+      this.$emit('cancel', {
+        id: this.ticketId
+      })
+    }
   }
 }

@@ -54,7 +54,7 @@ export default {
       drop-shadow(${this.shadow.shadowOffset.x} ${this.shadow.shadowOffset.y} ${this.shadow.shadowRadius} ${this.shadow.shadowColor})`
     }
   },
-  created () {
+  mounted () {
     this.icon = require(`@/assets/icons/${this.name}.svg`)
   },
   render (h) {
@@ -63,15 +63,16 @@ export default {
     }, [
       h('svg', {
         attrs: {
-          viewBox: this.icon.default.viewBox,
+          viewBox: this.icon?.default?.viewBox,
           width: this.width,
           style: `filter: ${this.getStyleShadow}`,
           height: this.height
-        }
+        },
+        key: this.name
       }, [
         h('use', {
           attrs: {
-            'xlink:href': this.icon.default.url,
+            'xlink:href': this.icon?.default?.url,
             'xmlns:xlink': 'http://www.w3.org/1999/xlink'
           }
         })

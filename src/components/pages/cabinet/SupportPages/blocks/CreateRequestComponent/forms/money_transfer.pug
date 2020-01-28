@@ -1,0 +1,40 @@
+//- Перевод денежных средств
+include ./_mixins
+er-form(ref='form')
+  er-row
+    er-flex(xs12)
+      er-row
+        er-flex.mb-32(xs12)
+          +listRequestTheme
+        er-flex.mb-32(xs12 sm6)
+          er-select(
+            :items="listFirstPersonalAccount"
+            v-model="firstPersonalAccount"
+            placeholder="С лицевого счета"
+            is-show-required-label
+          )
+        er-flex.mb-32(xs12 sm6)
+          er-select(
+            :items="listSecondPersonalAccount"
+            v-model="secondPersonalAccount"
+            placeholder="На лицевой счёт"
+            is-show-required-label
+          )
+        er-flex.mb-32(xs12)
+          er-text-field(
+            v-model="sumTransfer"
+            mask="money"
+            label="Сумма"
+            is-show-required-label
+          )
+    er-flex(xs12)
+      er-row
+        er-flex.mb-32(xs12 sm6)
+          +phoneNumber
+        er-flex.mb-32(xs12 sm6)
+          +timePickerRange
+        er-flex.mb-32(xs12)
+          +name
+    er-flex(xs12)
+      +appeal("Здесь Вы можете указать дополнительную информацию по заявке")
+    +footer

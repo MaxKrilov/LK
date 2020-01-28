@@ -17,7 +17,7 @@
                 .request-item-detail__number
                   | №&nbsp;
                   span.number
-                    | {{ ticketId }}
+                    | {{ ticketName }}
                 .request-item-detail__status(:class="getLabelStatus.id")
                   span {{ getLabelStatus.name }}
               .request-item-detail__row
@@ -40,7 +40,7 @@
               er-icon(name="warning")
               span Заявку можно отменить только до  момента принятия её в работу
             .request-item-detail__action
-              er-button
+              er-button(@click="openCancelDialog")
                 | Закрыть заявку
           template(v-else)
             er-dialog(fullscreen, v-model="isOpenHistory" transition="dialog-bottom-transition")
@@ -53,7 +53,7 @@
                   .title.mr-8
                     | История заявки&nbsp;
                   .number
-                    | №&nbsp;{{ ticketId }}
+                    | №&nbsp;{{ ticketName }}
                   a.close(@click.prevent="toggleHistoryMobile")
                     er-icon(name="close")
                 .request-item-detail__body
@@ -78,7 +78,7 @@
               .request-item-detail__caption
                 | Номер заявки&nbsp;
               .request-item-detail__value.ticket-id
-                | {{ ticketId }}
+                | {{ ticketName }}
               template(v-for="item in getDetailInfoDesktop")
                 .request-item-detail__caption
                   | {{ item.caption }}
@@ -101,7 +101,7 @@
               er-icon(name="warning")
               span Заявку можно отменить только до  момента принятия её в работу
             .request-item-detail__action
-              er-button
+              er-button(@click="openCancelDialog")
                 | Закрыть заявку
     .request-item-component(v-if="!isOpenDetail" @dblclick="toggleDetail")
       .request-item-component__row.top.d--flex
@@ -110,9 +110,9 @@
         .request-item-component__ticket-id
           | №&nbsp;
           span.number
-            | {{ ticketId }}
+            | {{ ticketName }}
           span.ticket-type
-            | {{ ticketType }}
+            | {{ ticketType | localisationTicketType }}
         .request-item-component__address--desktop
           | {{ location }}
         .request-item-component__status(:class="getLabelStatus.id")
@@ -129,6 +129,33 @@
         .request-item-component__updated--mobile
           span.caption Обновлена:&nbsp;
           +dateNTime()
+    er-dialog(v-model="isOpenCancel", max-width="544")
+      .request-item-component__cancel-request-dialog
+        .content
+          .icon
+            er-icon(name="question")
+          .title
+            | Вы действительно хотите отменить заявку?
+          er-form.text-field(ref="cancel_form")
+            er-textarea(v-model="reasonOfCancel" label="Укажите причину" is-show-label-required :rules="[v => !!v || 'Поле обязательно к заполнению']")
+          er-row.actions.d--flex
+            er-flex.action.xs12.sm6.px-16
+              er-button(@click="cancelRequest")
+                | Отменить
+            er-flex.action.xs12.sm6.px-16
+              er-button(flat, @click="closeCancelDialog")
+                | Не отменять
+    er-dialog(v-model="isSuccessCancel" max-width="544")
+      .request-item-component__cancel-request-dialog-success
+        .content
+          .icon
+            er-icon(name="circle_ok")
+          .title
+            | Заявка № {{ ticketName }} успешно отменена
+          er-row.actions.d--flex
+            er-flex.action.xs12.sm6.px-16
+              er-button(@click="closeSuccessCancel")
+                | Закрыть
 </template>
 
 <script src="./script.js"></script>

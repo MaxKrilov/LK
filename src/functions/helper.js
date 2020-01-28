@@ -57,10 +57,11 @@ export function toDefaultPhoneNumber (str) {
 }
 /**
  * Функция, преобразует строку в ФИО
- * @param {string}  исходный объект
+ * @param {string} str исходный объект
  * @return {Object} новый объект
  */
 export function toFullName (str) {
+  str = str || ''
   const nameArr = str.split(' ')
   switch (nameArr.length) {
     case 2:

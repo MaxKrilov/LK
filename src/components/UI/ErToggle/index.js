@@ -37,7 +37,8 @@ export default {
     },
     name: String,
     checked: Boolean,
-    disabled: Boolean
+    disabled: Boolean,
+    label: String
   },
   computed: {
     classes () {
@@ -90,7 +91,10 @@ export default {
       }, [
         this.view === 'switch' && this.generateSwitch(),
         this.view === 'radio' && this.generateRadio(),
-        this.view === 'radio-check' && this.generateRadioCheck()
+        this.view === 'radio-check' && this.generateRadioCheck(),
+        this.label && this.$createElement('div', {
+          staticClass: `${this.pre}__label-text`
+        }, [this.label])
       ])
     },
     generateSwitch () {

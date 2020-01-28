@@ -1,0 +1,17 @@
+//- Заказ документа
+include ./_mixins
+er-form(ref='form')
+  er-row
+    er-flex(xs12 sm12 md12)
+      er-row
+        er-flex.mb-32(xs12 sm12 md6 order-md1 lg12)
+          +listRequestTheme
+        er-flex.mb-32(xs12 sm6 md6 order-md2 lg12)
+          +phoneNumber
+        er-flex.mb-32(xs12 sm6 md6 order-md4 lg12)
+          +timePickerRange
+        er-flex.mb-32(xs12 sm12 md6 order-md3 lg12)
+          +name
+    er-flex.mb-32(xs12 sm12 md12)
+      +appeal(label="Укажите требуемый документ")
+    +footer

@@ -55,7 +55,8 @@ export const defaultDialogProps = {
       type: Number,
       default: 1,
       validator: val => val === 1 || val === 2
-    }
+    },
+    loading: Boolean
   },
   computed: {
     ...mapState({
@@ -152,6 +153,9 @@ export default class ErSelect extends mixins(ErTextField) {
   }
 
   onClick () {
+    if (this.disabled) {
+      return
+    }
     ErTextField.methods.onClick.call(this)
     this.isMenuActive = true
     this.multiselectStartValue = this.value
@@ -250,16 +254,30 @@ export default class ErSelect extends mixins(ErTextField) {
   }
 
   generateToggleIcon () {
-    return this.$createElement('div', {
-      staticClass: 'er-select__toggle',
-      class: {
-        'rotate': this.isMenuActive
-      }
-    }, [
-      this.generateSlot('inner', 'append', [
-        this.generateIcon('corner_down')
+    return this.loading
+      ? this.$createElement('div', {
+        staticClass: 'er-select__loading'
+      }, [
+        this.generateSlot('inner', 'append', [
+          this.$createElement('er-progress-circular', {
+            props: {
+              indeterminate: true,
+              width: 2,
+              size: 16
+            }
+          })
+        ])
       ])
-    ])
+      : this.$createElement('div', {
+        staticClass: 'er-select__toggle',
+        class: {
+          'rotate': this.isMenuActive
+        }
+      }, [
+        this.generateSlot('inner', 'append', [
+          this.generateIcon('corner_down')
+        ])
+      ])
   }
 
   generateClearIcon () {

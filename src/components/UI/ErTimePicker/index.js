@@ -33,6 +33,8 @@ export default {
     cancelDialog () {
       this.time = null
       this.openDialog = false
+      // this.timeTextField = ''
+      this.$emit('input', '')
     },
     confirmDialog () {
       this.timeTextField = this.time
@@ -44,8 +46,9 @@ export default {
     const scopedSlots = {
       activator: props => (
         <er-text-field
-          vOn:click={props.on.click}
+          vOn:click={props.on.click || (e => {})}
           vModel={this.timeTextField}
+          disabled={this.disabled}
         />
       )
     }
@@ -56,6 +59,7 @@ export default {
         width={290}
         vModel={this.openDialog}
         class
+        disabled={this.disabled}
       >
         <div class={'er-time-picker__dialog'}>
           {h(ErTimePicker, {
@@ -75,7 +79,7 @@ export default {
             domProps: { value: this.time },
             on: { input: e => { this.time = e } }
           })}
-          <div class={['er-time-picker__actions', 'd--flex', 'mx-8', 'mb-8']}>
+          <div class={['er-time-picker__actions', 'd--flex', 'mx-8', 'pb-8']}>
             <er-button class={'mr-4'} vOn:click={this.confirmDialog}>ОК</er-button>
             <er-button class={'ml-4'} flat vOn:click={this.cancelDialog}>Отмена</er-button>
           </div>
