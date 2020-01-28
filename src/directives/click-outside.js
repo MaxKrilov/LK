@@ -22,7 +22,7 @@ export default {
   inserted (el, binding) {
     const onClick = e => directive(e, el, binding)
     const app = document.querySelector('[data-app]')
-    app.addEventListener('click', onClick, true)
+    app.addEventListener('mousedown', onClick, true)
     el._clickOutside = onClick
   },
   unbind (el) {
@@ -30,7 +30,7 @@ export default {
       return undefined
     }
     const app = document.querySelector('[data-app]')
-    app && app.removeEventListener('click', el._clickOutside, true)
+    app && app.removeEventListener('mousedown', el._clickOutside, true)
     delete el._clickOutside
   }
 }

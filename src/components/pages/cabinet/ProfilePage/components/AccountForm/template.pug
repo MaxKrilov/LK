@@ -53,11 +53,22 @@ div(:class="`${pre}`")
           :isLPR="isLPRAccount"
           :isAdding="!isUpdate"
           :isChanged="isChanged"
+          :isLastNameChanged="isLastNameChanged"
+          :isFirstNameChanged="isFirstNameChanged"
+          :isMiddleNameChanged="isMiddleNameChanged"
+          :isPhoneChanged="isPhoneChanged"
+          :isEmailChanged="isEmailChanged"
+          :isRoleChanged="isRoleChanged"
           ref="editLprSec")
         edit-section(
           v-else
           isUpdate
           v-model="sectionLprData"
+          :isLastNameChanged="isLastNameChanged"
+          :isFirstNameChanged="isFirstNameChanged"
+          :isMiddleNameChanged="isMiddleNameChanged"
+          :isPhoneChanged="isPhoneChanged"
+          :isEmailChanged="isEmailChanged"
           ref="editSec").mb-24
         access-section(
           ref="accessSec",
@@ -94,11 +105,22 @@ div(:class="`${pre}`")
         :isLPR="isLPRAccount"
         :isAdding="!isUpdate"
         :isChanged="isChanged"
+        :isLastNameChanged="isLastNameChanged"
+        :isFirstNameChanged="isFirstNameChanged"
+        :isMiddleNameChanged="isMiddleNameChanged"
+        :isPhoneChanged="isPhoneChanged"
+        :isEmailChanged="isEmailChanged"
+        :isRoleChanged="isRoleChanged"
         ref="editLprSec")
       edit-section(
         v-else
         isUpdate
         v-model="sectionLprData"
+        :isLastNameChanged="isLastNameChanged"
+        :isFirstNameChanged="isFirstNameChanged"
+        :isMiddleNameChanged="isMiddleNameChanged"
+        :isPhoneChanged="isPhoneChanged"
+        :isEmailChanged="isEmailChanged"
         ref="editSec")
       access-section(
         ref="accessSec",

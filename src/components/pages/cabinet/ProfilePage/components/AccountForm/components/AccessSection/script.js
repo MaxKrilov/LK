@@ -1,5 +1,6 @@
 import { BREAKPOINT_MD, BREAKPOINT_LG } from '@/constants/breakpoint'
 import Responsive from '@/mixins/ResponsiveMixin'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'access-section',
@@ -139,6 +140,9 @@ export default {
     }
   },
   computed: {
+    ...mapGetters('directories', [
+      'systemsDirectory'
+    ]),
     portalsCount () {
       return Object.keys(this.value).length
     },

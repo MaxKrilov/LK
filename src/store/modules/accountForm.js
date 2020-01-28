@@ -127,14 +127,14 @@ const actions = {
       await dispatch('auth/checkAuth', { api }, { root: true })
       const { accessToken } = rootState.auth
       const url = generateUrl('createUserPosition')
-      const { tomsId } = rootGetters['auth/user']
+      const { toms } = rootGetters['auth/user']
       const { success, message, output } = await api
         .setWithCredentials()
         .setData({
           token: accessToken,
           user: userId,
           role: roleId,
-          toms: tomsId
+          toms: toms
         })
         .query(url)
       const { results } = output
@@ -142,8 +142,8 @@ const actions = {
       if (success) {
         return commit(CREATE_USER_POSITION_SUCCESS, {
           id: results.user_post.id,
-          tomsId: results.user_post.tomsId,
-          dmpId: results.user_post.tomsId,
+          toms: results.user_post.toms,
+          dmpId: results.user_post.toms,
           userId: results.user_post.userId,
           userRole: results.user_post.userRole
         })
@@ -175,7 +175,7 @@ const actions = {
       if (success) {
         return commit(CREATE_USER_ROLES_SUCCESS, {
           id: results['user-post'].id,
-          tomsId: results['user-post'].tomsId,
+          toms: results['user-post'].toms,
           systemRoles: results['user-post'].systemRoles,
           dmpId: results['user-post'].dmpId,
           userId: results['user-post'].userId,
@@ -235,7 +235,7 @@ const actions = {
       if (success) {
         return commit(REMOVE_USER_ROLES_SUCCESS, {
           id: results['user-post'].id,
-          tomsId: results['user-post'].tomsId,
+          toms: results['user-post'].toms,
           dmpId: results['user-post'].dmpId,
           userId: results['user-post'].userId,
           userRole: results['user-post'].userRole

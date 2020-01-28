@@ -195,7 +195,7 @@ export default {
       let data = {}
       switch (mask) {
         case 'phone':
-          mask = '+7 (999) 999-99-99'
+          mask = '+7 (999) 99 999 99'
           break
         case 'money':
           mask = 'currency'

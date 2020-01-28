@@ -61,7 +61,14 @@
     }
   }
   &__switcher {
-    background: map_get($gray, '11');
+    overflow: hidden;
+    @include media-query((
+      margin: (
+        sm: 0 -24px !important,
+        md: 0,
+        lg: 0,
+        xl: 0)
+    ));
     &__controls {
       .er-switch__label {
         padding-left: 0;
@@ -75,23 +82,56 @@
       @include media-query((
         display: (md: none)
       ));
+      background: map_get($gray, '11');
     }
   }
 
   &__cards {
+    &__wrapper {
+      @include media-query((
+        width: (xs: calc(100% + 32px), sm: calc(100% + 48px), md: 100%),
+        margin-left: (xs: -16px, sm: -24px, md: 0),
+        overflow: (xs: hidden, md: auto)
+      ));
+    }
     display: flex;
     margin-bottom: 37px;
-    transform: translateX(0);
+    padding: 12px 0 !important;
     transition: transform 0.2s ease-out;
+    overflow: hidden;
+    &::-webkit-scrollbar {
+      display: none;
+    }
     @include media-query((
-      flex-wrap: (xs: nowrap, md: wrap)
+      flex-wrap: (md: nowrap, lg: nowrap, xl: nowrap),
     ));
     &__item {
-      flex: 0 0 auto;
-      margin-right: 25px;
+    }
+    & > .company-card {
+      min-width: 270px;
       @include media-query((
-        max-width: (xs: 100%, sm: 294px, md: 401px, lg: 468px),
-        flex: (xs: 0 0 auto, md: 1 1 100%)
+        min-width: (sm: 300px, md: 120px, lg: auto, xl: auto),
+        padding-right: (xs: 16px, sm: 24px, md: 0),
+        flex: (
+          sm: 1 1 50%,
+          md: 1 1 49%,
+          lg: 1 1 auto,
+          xl: 1 1 auto)
+      ));
+    }
+    & > .person-card {
+      min-width: 240px;
+      margin-right: 16px;
+      @include media-query((
+        min-width: (sm: 298px, md: 120px, lg: 200px, xl: 300px),
+        max-width: (xl: 424px),
+        margin-right: (sm: 38px, md: 40px, lg: 62px, xl: 68px),
+        margin-left: (xs: 16px, sm: 24px, md: 0),
+        flex: (
+          sm: 1 1 100%,
+          md: 1 1 45%,
+          lg: 1 1 38%,
+          xl: 1 1 58%)
       ));
     }
   }

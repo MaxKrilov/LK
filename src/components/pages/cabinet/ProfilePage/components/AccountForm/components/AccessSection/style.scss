@@ -97,7 +97,6 @@
   }
   &__side-menu {
     &__list {
-      max-height: 200px;
       // scroll-snap-type: x mandatory;
       @include media-query((
         position: (md: relative),
@@ -158,7 +157,7 @@
             xl: nowrap !important),
           padding: (
             xs: 0,
-            md: 0,
+            md: 0px 6px,
             lg: 8px 6px,
             xl: 12px 6px),
           align-items: (xs: stretch),

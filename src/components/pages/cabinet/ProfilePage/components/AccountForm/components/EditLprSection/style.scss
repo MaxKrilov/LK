@@ -14,6 +14,9 @@
     }
   }
   &__fields-container {
+    &__input-block {
+      position: relative;
+    }
     & > .row > .flex.sm12 {
       & h3 {
         @include media-query((
@@ -123,7 +126,7 @@
               letter-spacing: (xl: -0.5px),
               margin-bottom: (xl: 20px),
             ));
-            color: rgba(map_get($shades, 'black'), 0.8);
+            color: rgba(map_get($shades, 'black'), 0.5);
             font-family: $fedra-book;
           }
           input {
@@ -264,10 +267,27 @@
     }
   }
   .er-text-field--success > .er-input__control > .er-input__slot {
+    position: relative;
     border: 1px solid rgba(map_get($shades, 'black'), 0.2);
     &:hover {
       border-color: #000000 !important;
       background: #FFFFFF !important;
+    }
+  }
+  &__changed {
+    position: absolute;
+    top: -22.4px;
+    right: 0;
+    &-icon {
+      svg {
+        width: 14px !important;
+        color: map_get($green, 'base');
+      }
+    }
+    &-text {
+      padding-left: 2px;
+      color: map_get($green, 'base');
+      font: 10.2px/12.75px $fedra-demi;
     }
   }
 }

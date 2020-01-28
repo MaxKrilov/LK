@@ -1,11 +1,41 @@
 div(:class="`${pre}`")
   div(:class="`${pre}__header`")
     div(:class="`${pre}__header__title`") Организация
-    div.caption.mb-4
-      | Наименование:
-    div.mb-16
-      | ООО «Шуруповерт-Холдинг»
-    div(:class="`${pre}__content`")
-      | Чтобы заключить договор и пользоваться услугами нужно заполнить данные организации. Это не займёт много времени, регистрация автоматизирована и занимает 5–8 минут
-
-    er-button(color="yellow") Заполнить данные
+    template(v-if="filled")
+      div(:class="`${pre}__name`")
+        div(:class="`${pre}__caption`")
+          p(:class="`${pre}__caption-text`")
+            | Наименование:
+          p(:class="`${pre}__caption-name`")
+            | {{name}}
+      div(:class="`${pre}__requisites`")
+        div(:class="`${pre}__caption`")
+          p(:class="`${pre}__caption-text`")
+            | ИНН:
+          p(:class="`${pre}__caption-content`")
+            | {{inn}}
+        div(:class="`${pre}__caption`")
+          p(:class="`${pre}__caption-text`")
+            | КПП:
+          p(:class="`${pre}__caption-content`")
+            | {{kpp}}
+        div(:class="`${pre}__caption`")
+          p(:class="`${pre}__caption-text`")
+            | ОГРН:
+          p(:class="`${pre}__caption-content`")
+            | {{ogrn}}
+      div(:class="`${pre}__address`")
+        div(:class="`${pre}__caption`")
+          p(:class="`${pre}__caption-text`")
+            | Юр. адрес:
+          p(:class="`${pre}__caption-content`")
+            | {{address}}
+    template(v-else)
+      div(:class="`${pre}__caption`")
+        p(:class="`${pre}__caption-text`")
+          | Наименование:
+        p(:class="`${pre}__caption-content`")
+          | {{name}}
+      div(:class="`${pre}__caption`")
+        p(:class="`${pre}__caption-content`")
+          | Чтобы заключить договор и пользоваться услугами нужно заполнить данные организации. Это не займёт много времени, регистрация автоматизирована и занимает 5–8 минут

@@ -35,8 +35,7 @@ const INITIAL_STATE = {
 
 const mappingResourceAccess = (rawAccess, bSystems) => {
   const baseSystems = copyObject(bSystems)
-  const resourceAccess = Object.keys(rawAccess)
-  return resourceAccess.reduce((prev, curr) => {
+  return rawAccess.reduce((prev, curr) => {
     if (baseSystems[curr]) {
       baseSystems[curr].content = [
         {
@@ -55,25 +54,22 @@ const state = INITIAL_STATE
 
 const getters = {
   isLPR (state, { user }) {
-    const roles = user?.realmAccess?.roles
+    const roles = user?.postRole
     if (!roles) {
       return false
     }
     return roles.includes(USER_ROLES.LPR.code)
   },
   hasAccess (state, { user }) {
-    const resources = user?.resourceAccess
+    const resources = user?.postAccess
     if (!resources) {
       return false
     }
-    return Object.keys(resources).includes(LKB2B_ACCESS)
+    return resources.includes(LKB2B_ACCESS)
   },
   realmRoles (state, { user }) {
-    const roles = user?.realmAccess?.roles || []
-
-    return roles
-      .map(o => USER_ROLES[o]?.label)
-      .filter(o => o && o.length > 0)
+    const role = user?.postRole || ''
+    return USER_ROLES[role]?.label
   },
   /**
    * Информация о текущем пользователе
@@ -89,7 +85,7 @@ const getters = {
   },
   userResourceAccess (state, getters, rootState, rootGetters) {
     const systemsBase = rootGetters['directories/systemsDirectory']
-    const resultData = mappingResourceAccess(state.userInfo.resourceAccess, systemsBase)
+    const resultData = mappingResourceAccess(state.userInfo.postAccess, systemsBase)
     return resultData
   },
   serverErrorMessage (state) {
