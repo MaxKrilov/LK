@@ -22,9 +22,14 @@ import {
 import { ERROR_MODAL } from '../actions/variables'
 
 const ACCOUNT_MANAGER_ID = '9134601279613203712'
+const INN_ID = '9148328342013670726'
+const KPP_ID = '9154340518713221693'
+const OGRN_ID = '9154340419713221073'
 
 const state = {
-  clientInfo: {},
+  clientInfo: {
+    fullAddress: {}
+  },
   personalManager: {},
   countUnsignedDocuments: [],
   listBillingAccount: [],
@@ -36,6 +41,15 @@ const state = {
 }
 
 const getters = {
+  getClientInfo (state) {
+    return {
+      name: state.clientInfo?.legalName,
+      inn: state.clientInfo?.extendedMap?.[INN_ID]?.singleValue?.attributeValue,
+      kpp: state.clientInfo?.extendedMap?.[KPP_ID]?.singleValue?.attributeValue,
+      ogrn: state.clientInfo?.extendedMap?.[OGRN_ID]?.singleValue?.attributeValue,
+      address: state.clientInfo?.fullLegalAddress
+    }
+  },
   getManagerInfo (state) {
     return {
       name: `${state.personalManager?.surname} ${state.personalManager?.name} ${state.personalManager?.middle_name}`,
@@ -83,7 +97,7 @@ const getters = {
 }
 
 const actions = {
-  [GET_CLIENT_INFO]: async ({ commit, rootState, rootGetters }, { api }) => {
+  [GET_CLIENT_INFO]: async ({ dispatch, commit, rootState, rootGetters }, { api }) => {
     const { toms } = rootGetters['auth/user']
     try {
       const result = await api
@@ -283,7 +297,7 @@ const actions = {
 
 const mutations = {
   [GET_CLIENT_INFO_SUCCESS]: (state, payload) => {
-    state.clientInfo = payload
+    state.clientInfo = { ...state.clientInfo, ...payload }
   },
   [GET_MANAGER_INFO_SUCCESS]: (state, payload) => {
     state.personalManager = payload

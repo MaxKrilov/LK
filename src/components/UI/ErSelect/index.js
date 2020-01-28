@@ -49,7 +49,7 @@ export const defaultDialogProps = {
     },
     notFoundText: {
       type: String,
-      default: 'Ничего не найдено (；⌣̀_⌣́)'
+      default: 'Ничего не найдено'
     },
     deep: {
       type: Number,
@@ -181,11 +181,13 @@ export default class ErSelect extends mixins(ErTextField) {
   }
 
   generateCommaSelection () {
-    return this.$createElement('div', {
-      staticClass: 'er-select__selections--comma'
-    }, [
-      this.getText(this.value)
-    ])
+    if (this.value) {
+      return this.$createElement('div', {
+        staticClass: 'er-select__selections--comma'
+      }, [
+        this.getText(this.value)
+      ])
+    }
   }
 
   generateMultipleSelection () {
@@ -445,7 +447,6 @@ export default class ErSelect extends mixins(ErTextField) {
   generateItem (item, i) {
     const content = []
     const isActive = this.isActiveItem(item)
-
     if (this.$scopedSlots['item']) {
       content.push(this.$scopedSlots['item']({ item }))
     } else {

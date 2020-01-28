@@ -39,41 +39,37 @@ const getters = {
     const { systems = [] } = receivedSystemsDirectory?.content
 
     return systems.reduce((prev, curr) => {
-      // Remove the condition if you want map all systems
-      if (curr.name === 'lkb2b' || curr.name === 'dmp-kc') {
-        return {
-          ...prev,
-          [curr?.name]: {
-            id: curr?.id,
-            code: curr?.name,
-            menu: {
-              label: curr?.label,
-              icon: 'profile',
-              selected: false
+      return {
+        ...prev,
+        [curr?.name]: {
+          id: curr?.id,
+          code: curr?.name,
+          menu: {
+            label: curr?.label,
+            icon: 'profile',
+            selected: false
+          },
+          accessRights: [
+            {
+              id: 1,
+              label: 'Есть доступ',
+              access: true
             },
-            accessRights: [
-              {
-                id: 1,
-                label: 'Есть доступ',
-                access: true
-              },
-              {
-                id: 2,
-                label: 'Без доступа',
-                access: false
-              }
-            ],
-            content: [
-              {
-                id: 2,
-                label: 'Без доступа',
-                access: false
-              }
-            ]
-          }
+            {
+              id: 2,
+              label: 'Без доступа',
+              access: false
+            }
+          ],
+          content: [
+            {
+              id: 2,
+              label: 'Без доступа',
+              access: false
+            }
+          ]
         }
       }
-      return { ...prev }
     }, {})
   },
   rolesDirectory ({ receivedRolesDirectory }) {

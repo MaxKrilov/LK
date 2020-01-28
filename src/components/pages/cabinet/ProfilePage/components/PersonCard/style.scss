@@ -1,21 +1,67 @@
 .person-card {
   font: map_get($text, 'small');
   &__inner {
+    padding: 24px 14px 16px;
     @include media-query((
-      padding: (xs: 20px 16px 16px, md: 30px 20px 28px 24px, lg: 30px)
+      padding: (
+        sm: 22px 16px 16px,
+        md: 29px 23px 22px 23px,
+        lg: 30px 24px 24px 24px,
+        xl: 29px 30px 30px 32px)
     ));
   }
   &__title {
+    font: (normal 13px $fedra-book, 'Roboto', 'Helvetica', sans-serif);
+    margin-bottom: 8px;
+    letter-spacing: 0.25px;
     @include media-query((
       font: (
-        xs: (normal 15px/20px $fedra-book, 'Roboto', 'Helvetica', sans-serif),
-        sm: (normal 18px/23px $fedra-book, 'Roboto', 'Helvetica', sans-serif),
-        xl: (normal 16px/21px $fedra-book, 'Roboto', 'Helvetica', sans-serif)
+        sm: (normal 13px $fedra-book, 'Roboto', 'Helvetica', sans-serif),
+        md: (normal 14px $fedra-book, 'Roboto', 'Helvetica', sans-serif),
+        xl: (normal 16px $fedra-book, 'Roboto', 'Helvetica', sans-serif)
       ),
       margin-bottom: (
-        xs: 12px,
-        md: 16px,
-        lg: 20px
+        sm: 10px,
+        md: 9px,
+        lg: 8px,
+        xl: 6px
+      ),
+      letter-spacing: (sm: 0.25px, md: 0, xl: -0.5px),
+      line-height: (
+        md: 19px,
+      ),
+    ));
+  }
+  &__full-name {
+    margin-bottom: 18px;
+    @include media-query((
+      margin-bottom: (
+        sm: 18px,
+        md: 8px,
+        lg: 4px,
+        xl: 6px
+      )
+    ));
+  }
+  &__family-name {
+    display: block;
+    letter-spacing: -0.5px;
+    @include media-query((
+      font: (
+        xs: (normal 17px/22px $fedra-demi, 'Roboto', 'Helvetica', sans-serif),
+        sm: (normal 17px/25px $fedra-demi, 'Roboto', 'Helvetica', sans-serif),
+        md: (normal 20px/32px $fedra-demi, 'Roboto', 'Helvetica', sans-serif),
+        lg: (normal 26px/36px $fedra-demi, 'Roboto', 'Helvetica', sans-serif),
+        xl: (normal 28px/38px $fedra-demi, 'Roboto', 'Helvetica', sans-serif)
+      ),
+      letter-spacing: (sm: -0.5px, md: -1px),
+      line-height: (
+        sm: 22px,
+        md: 25px,
+        lg: 32px,
+      ),
+      margin-bottom: (
+        xl: 2px
       )
     ));
   }
@@ -25,49 +71,61 @@
     @include media-query((
       font: (
         xs: map_get($text, 'small'),
+        sm: (normal 13px $fedra-book, 'Roboto', 'Helvetica', sans-serif),
         md: map_get($text, 'medium'),
-        lg: map_get($text, 'large')
+        lg: (normal 14px $fedra-book, 'Roboto', 'Helvetica', sans-serif),
+        xl: (normal 16px $fedra-book, 'Roboto', 'Helvetica', sans-serif)
       ),
+      letter-spacing: (xl: -0.5px),
       line-height: (
         lg: 22px,
-        md: 21px,
-        sm: 19px,
+        md: 19px,
+        sm: 18px,
         xs: 18px
       )
     ));
   }
-  &__family-name {
-    @include media-query((
-      font: (
-        xs: (normal 17px/22px $fedra-demi, 'Roboto', 'Helvetica', sans-serif),
-        sm: (normal 20px/25px $fedra-demi, 'Roboto', 'Helvetica', sans-serif),
-        md: (normal 26px/32px $fedra-demi, 'Roboto', 'Helvetica', sans-serif),
-        lg: (normal 32px/36px $fedra-demi, 'Roboto', 'Helvetica', sans-serif),
-        xl: (normal 30px/38px $fedra-demi, 'Roboto', 'Helvetica', sans-serif)
-      )
-    ));
-    display: block;
-  }
   &__permissions {
+    margin-bottom: 12px;
     @include media-query((
       min-height: (
         xs: 109px,
-        sm: 121px,
-        lg: 142px
       ),
       padding: (
         xs: 0,
         md: 9px 0,
-        lg: 12px 0
+        lg: 12px 0 6px
+      ),
+      margin-bottom: (
+        sm: 0,
+        md: 42px,
+        lg: 34px,
+        xl: 41px
       )
     ));
+    & > .caption {
+      margin-bottom: 8px !important;
+      @include media-query((
+        font: (
+          xs: (normal 12px $fedra-book, 'Roboto', 'Helvetica', sans-serif),
+        ),
+        letter-spacing: -0.75px,
+        margin-bottom: (
+          sm: 7px !important,
+          md: 4px !important,
+          lg: 8px !important,
+          xl: 9px !important
+        )
+      ));
+    }
     &__role {
       color: rgba(map_get($shades, 'black'), 0.8);
       letter-spacing: -1px;
       @include media-query((
         font: (
-          xs: (normal 15px/20px $fedra-book, 'Roboto', 'Helvetica', sans-serif),
-          sm: (normal 18px/23px $fedra-book, 'Roboto', 'Helvetica', sans-serif)
+          xs: (normal 15px/20px $fedra-demi, 'Roboto', 'Helvetica', sans-serif),
+          sm: (normal 15px $fedra-demi, 'Roboto', 'Helvetica', sans-serif),
+          md: (normal 18px $fedra-demi, 'Roboto', 'Helvetica', sans-serif)
         )
       ));
     }
@@ -114,8 +172,7 @@
     height: 40px;
     @include media-query((
     max-width: (
-      sm: 100%,
-      md: 203px
+      sm: 100%
     )
     ));
     .er-button__content {

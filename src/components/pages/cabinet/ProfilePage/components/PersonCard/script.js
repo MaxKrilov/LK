@@ -6,7 +6,7 @@ export default {
     firstName: { type: String, default: '' },
     lastName: { type: String, default: '' },
     middleName: { type: String, default: '' },
-    roles: { type: Array, default: () => ({}) },
+    roles: { type: String, default: '' },
     canEdit: { type: Boolean, default: false }
   },
   data: () => ({
@@ -27,7 +27,7 @@ export default {
       }
     ),
     roleText () {
-      return this.roles.join(', ')
+      return this.roles
     },
     hasMessage () {
       return this.message && Object.entries(this.message).length > 0

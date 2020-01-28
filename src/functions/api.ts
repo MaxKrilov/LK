@@ -19,6 +19,7 @@ export class API {
   private static _getUrl (query: string, branch: string): string {
     query = query || '/'
     branch = branch || 'master'
+    
     if (isCombat()) {
       return wrapHttps(`${BACKEND_COMBAT}${query}`)
     }

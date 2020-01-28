@@ -138,13 +138,13 @@ const actions = {
       }
       const user = rootGetters['auth/user']
       const url = generateUrl('getListlk')
-      if (!user?.tomsId) {
-        return commit(ACCOUNTS_ERROR, 'Нет tomsId')
+      if (!user?.toms) {
+        return commit(ACCOUNTS_ERROR, 'Нет toms')
       }
       const { success, output, message } = await api
         .setWithCredentials()
         .setData({
-          toms: user?.tomsId,
+          toms: user?.toms,
           token
         })
         .query(url)

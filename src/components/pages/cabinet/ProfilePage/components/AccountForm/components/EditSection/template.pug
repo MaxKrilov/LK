@@ -3,14 +3,21 @@ div(:class="`${pre}`")
     er-flex(xs12 sm6 md6 lg4 :class="`${pre}__signature`")
       div
         h3(:class="`${pre}-title ${pre}-title--large`") Мой&nbsp;профиль
-        er-text-field(
-          :class="`${pre}-field`"
-          name="inputLastName"
-          label="Фамилия"
-          v-model="value.lastName"
-          isShowSuccess
-          :rules="fullNameRule")
-      div
+        div(:class="`${pre}__input-block`")
+          div(v-if="isLastNameChanged" :class="`${pre}__changed`")
+              er-icon(:class="`${pre}__changed-icon`" name="ok")
+              span(:class="`${pre}__changed-text`") Изменен
+          er-text-field(
+            :class="`${pre}-field`"
+            name="inputLastName"
+            label="Фамилия"
+            v-model="value.lastName"
+            isShowSuccess
+            :rules="fullNameRule")
+      div(:class="`${pre}__input-block`")
+        div(v-if="isFirstNameChanged" :class="`${pre}__changed`")
+          er-icon(:class="`${pre}__changed-icon`" name="ok")
+          span(:class="`${pre}__changed-text`") Изменен
         er-text-field(
           :class="`${pre}-field`"
           name="inputFirstName"
@@ -18,7 +25,10 @@ div(:class="`${pre}`")
           v-model="value.firstName"
           isShowSuccess
           :rules="fullNameRule")
-      div
+      div(:class="`${pre}__input-block`")
+        div(v-if="isMiddleNameChanged" :class="`${pre}__changed`")
+          er-icon(:class="`${pre}__changed-icon`" name="ok")
+          span(:class="`${pre}__changed-text`") Изменен
         er-text-field(
           :class="`${pre}-field`"
           name="inputMiddleName"
@@ -49,17 +59,24 @@ div(:class="`${pre}`")
         er-flex(xs12 md12 lg12)
           div
             h3(:class="`${pre}-title`") Учетная запись (логин)
-            er-text-field(
-              :class="`${pre}-field`"
-              name="inputPhoneNumber"
-              label="Введите номер телефона"
-              mask="phone"
-              v-model="value.phoneNumber"
-              isShowSuccess
-              ref="phone"
-              :rules="phoneRule"
-            )
-          div
+            div(:class="`${pre}__input-block`")
+              div(v-if="isPhoneChanged" :class="`${pre}__changed`")
+                er-icon(:class="`${pre}__changed-icon`" name="ok")
+                span(:class="`${pre}__changed-text`") Изменен
+              er-text-field(
+                :class="`${pre}-field`"
+                name="inputPhoneNumber"
+                label="Введите номер телефона"
+                mask="phone"
+                v-model="value.phoneNumber"
+                isShowSuccess
+                ref="phone"
+                :rules="phoneRule"
+              )
+          div(:class="`${pre}__input-block`")
+            div(v-if="isEmailChanged" :class="`${pre}__changed`")
+              er-icon(:class="`${pre}__changed-icon`" name="ok")
+              span(:class="`${pre}__changed-text`") Изменен
             er-text-field(
               :class="`${pre}-field`"
               name="inputEmail"

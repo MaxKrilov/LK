@@ -6,6 +6,47 @@ import { Cookie } from './storage'
 import Vue from 'vue'
 
 /**
+ * Функция, изменяет горизонтальную позицию скролла
+ * @param {Element} element исходный элемент
+ * @param {number} direction направление движения скролла
+ * @param {number} speed скорость перемещения скролла
+ * @param {number} distance дистанция на которую нужно переместить скролл
+ * @param {number} step шаг с которым будет перемещаться скролл
+ */
+export function scrollXTo (element, direction, speed, distance, step) {
+  let scrollAmount = 0
+  let slideTimer = setInterval(() => {
+    if (direction === 'left') {
+      element.scrollLeft -= step
+    } else {
+      element.scrollLeft += step
+    }
+    scrollAmount += step
+    if (scrollAmount >= distance) {
+      window.clearInterval(slideTimer)
+    }
+  }, speed)
+}
+
+/**
+ * Функция, возвращает скролл в исходную горизонтальную позицию
+ * @param {Element} element исходный элемент
+ * @param {number} currScroll текущая позиция скролла
+ * @param {number} speed скорость перемещения скролла
+ * @param {number} step шаг с которым будет перемещаться скролл
+ */
+export function scrollXToStart (element, currScroll, speed, step) {
+  let scrollAmount = currScroll
+  let slideTimer = setInterval(() => {
+    element.scrollLeft -= step
+    scrollAmount -= step
+    if (scrollAmount <= 0) {
+      window.clearInterval(slideTimer)
+    }
+  }, speed)
+}
+
+/**
  * Функция, приводит мобильный телефон к одному типу: 79196026543
  * @param {string}
  * @return {string}

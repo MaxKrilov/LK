@@ -2,16 +2,112 @@
   color: rgba(map_get($shades, 'black'), 0.8);
   display: flex;
   flex-direction: column;
-  margin-top: -3px;
   &__header {
     &__title {
-      font: map_get($title, 'medium');
+      font: (normal 22px $fedra-demi, 'Roboto', 'Helvetica', sans-serif);
       letter-spacing: -1px;
-      margin-bottom: 24px;
+      margin-bottom: 18px;
+      margin-top: 22px;
+      @include media-query((
+        font: (
+          sm: (normal 22px $fedra-demi, 'Roboto', 'Helvetica', sans-serif),
+          md: (normal 24px $fedra-demi, 'Roboto', 'Helvetica', sans-serif),
+          lg: (normal 26px $fedra-demi, 'Roboto', 'Helvetica', sans-serif),
+          xl: (normal 28px $fedra-demi, 'Roboto', 'Helvetica', sans-serif)),
+        margin-top: (sm: 24px, md: 32px, lg: 32px, xl: 32px)
+      ));
+      @include media-query((
+        margin-bottom: (sm: 16px, md: 18px, lg: 24px, xl: 28px),
+        margin-top: (sm: 21px, md: 30px, lg: 30px, xl: 28px)
+      ));
     }
   }
-  &__content {
-    font: map_get($text, 'small');
-    margin-bottom: 32px;
+  &__name {
+    margin-bottom: 20px;
+    @include media-query((
+      margin-bottom: (sm: 16px, md: 18px, lg: 16px, xl: 18px)
+    ));
+  }
+  &__requisites {
+    display: flex;
+    justify-content: space-between;
+    margin: 0 0 18px 0;
+    @include media-query((
+      margin-bottom: (sm: 16px, md: 20px)
+    ));
+    flex-wrap: nowrap;
+  }
+  &__address {
+    margin-bottom: 10px;
+    @include media-query((
+      margin-bottom: (sm: 25px, md: 10px, lg: 28px, xl: 30px)
+    ));
+  }
+  &__caption {
+    &-name {
+      font: (normal 15px $fedra-demi, 'Roboto', 'Helvetica', sans-serif);
+      margin-bottom: 4px;
+      @include media-query((
+        font: (
+          sm: (normal 15px $fedra-demi, 'Roboto', 'Helvetica', sans-serif),
+          md: (normal 18px $fedra-demi, 'Roboto', 'Helvetica', sans-serif)),
+        margin-bottom: (sm: 4px, md: 4px, lg: 8px, xl: 8px)
+      ));
+    }
+    &-text {
+      font: (normal 11px $fedra-book, 'Roboto', 'Helvetica', sans-serif);
+      margin-bottom: 4px;
+      @include media-query((
+        font: (
+          sm: (normal 11px $fedra-book, 'Roboto', 'Helvetica', sans-serif),
+          md: (normal 12px $fedra-demi, 'Roboto', 'Helvetica', sans-serif),
+          lg: (normal 12px $fedra-demi, 'Roboto', 'Helvetica', sans-serif),
+          xl: (normal 12px $fedra-demi, 'Roboto', 'Helvetica', sans-serif)),
+          margin-bottom: (sm: 8px, md: 4px, lg: 8px, xl: 8px)
+      ));
+      color: map_get($gray, '6');
+    }
+    &-content {
+      font: (normal 13px $fedra-book, 'Roboto', 'Helvetica', sans-serif);
+      @include media-query((
+        font: (
+          sm: (normal 13px $fedra-book, 'Roboto', 'Helvetica', sans-serif),
+          md: map_get($text, 'small'),
+          lg: map_get($text, 'small'),
+          xl: map_get($text, 'medium')),
+        letter-spacing: (xl: -0.5px),
+        line-height: (xl: 21px),
+      ));
+    }
+  }
+  &__buttons {
+    margin: -20px 0;
+    @include media-query((
+      margin: (
+        md: 0,
+        lg: 0,
+        xl: 0)
+    ));
+  }
+  &__button.er-button {
+    display: flex;
+    justify-content: center;
+    height: 40px;
+    .er-button__content {
+      @include media-query((
+        font: (
+          xs: (normal 13px/16px $fedra-demi, 'Roboto', 'Helvetica', sans-serif),
+          md: (normal 14px/17px $fedra-demi, 'Roboto', 'Helvetica', sans-serif),
+          lg: (normal 16px/20px $fedra-demi, 'Roboto', 'Helvetica', sans-serif)
+        ),
+        letter-spacing: (
+          xs: 0.35px,
+          sm: 0
+        )
+      ));
+    }
+    @include media-query((
+      height: (md: 48px)
+    ));
   }
 }

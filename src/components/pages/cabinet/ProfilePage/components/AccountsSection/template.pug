@@ -161,7 +161,7 @@ div.text--small(:class="`${pre}`")
           div(:class="`${pre}__table__cell__person__role`") {{realmRole(item.roleName)}}
 
       div(v-if="dataKey === 'systemLabel'", :class="`${pre}__table__cell`")
-        div.d--flex.justify-content-end
+        div.d--flex.justify-content-between
           .d--inline-block
             p.mb-8(v-if="item.systems" v-for="system in getResourceAccessLabels(item.userPostId)") {{ system }}
           er-icon(name="corner_down", :class="`${pre}__table__cell__icon`")

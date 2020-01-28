@@ -17,7 +17,8 @@ export default {
     ...mapState('accountForm', {
       isModalVisible: (state) => state.modal.isOpen,
       isFetching: (state) => state.modal.isFetching,
-      error: (state) => state.modal.error
+      error: (state) => state.modal.error,
+      message: (state) => state.modal.message
     })
   }
 }

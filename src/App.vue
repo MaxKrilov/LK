@@ -5,8 +5,8 @@
         | Проверяем авторизацию
       template(v-else-if="!hasAccess")
         | Доступ закрыт
-      template(v-else)
-        router-view
+
+      router-view(v-else)
 </template>
 
 <script>

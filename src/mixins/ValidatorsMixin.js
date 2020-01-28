@@ -1,15 +1,14 @@
 import { isEmpty } from '@/functions/helper'
 import {
   PATTERN_EMAIL,
-  PATTERN_CYRILLIC_LETTERS,
-  PATTERN_NOT_LETTERS,
+  PATTERN_СYRILLIC_WITH_DASH,
   PATTERN_RUSSIAN_PHONE,
   PATTERN_NUMBERS } from '@/constants/regexp'
 
 export default {
   methods: {
     validRole (role) {
-      return !isEmpty(role) ? true : 'Поле не заполнено'
+      return role ? true : 'Поле не заполнено'
     },
     validEmail (email) {
       if (PATTERN_EMAIL.test(email) && !isEmpty(email)) {
@@ -26,7 +25,7 @@ export default {
       }
     },
     validFullName (fullName) {
-      if ((PATTERN_NOT_LETTERS.test(fullName) || PATTERN_CYRILLIC_LETTERS.test(fullName)) && !isEmpty(fullName)) {
+      if (PATTERN_СYRILLIC_WITH_DASH.test(fullName) && !isEmpty(fullName)) {
         return true
       } else {
         return 'Поле не заполнено'

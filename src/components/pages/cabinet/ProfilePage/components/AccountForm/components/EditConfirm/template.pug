@@ -8,9 +8,7 @@ er-dialog(
         er-icon(:class="`${pre}__icon_question`" name='question')
         div(:class="`${pre}__icon_close`" @click="onCancel")
           er-icon(name='close')
-      h1(:class="`${pre}__title`").mb-12
-        | Вы действительно хотите изменить логин для входа в личный кабинет?
-      p После сохранения профиля учетные данные будут отправлены на вашу эл. почту
+      h1(:class="`${pre}__title`" ref="tst_error").mb-12 {{ message }}
       div(:class="`${pre}__name`").mb-80
       div(:class="`${pre}__error`").my-12 {{ error }}
       er-row(:class="`${pre}__buttons`")
