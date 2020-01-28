@@ -20,6 +20,7 @@ import {
   GET_PROMISED_PAYMENT_INFO
 } from '../actions/user'
 import { ERROR_MODAL } from '../actions/variables'
+import { eachArray } from '../../functions/helper'
 
 const ACCOUNT_MANAGER_ID = '9134601279613203712'
 const INN_ID = '9148328342013670726'
@@ -52,13 +53,52 @@ const getters = {
   },
   getManagerInfo (state) {
     return {
-      name: `${state.personalManager?.surname} ${state.personalManager?.name} ${state.personalManager?.middle_name}`,
-      phone: state.personalManager?.phone?.replace(/[^\d]+/g, ''),
+      name: state.personalManager?.surname && state.personalManager?.name && state.personalManager?.middle_name
+        ? `${state.personalManager.surname} ${state.personalManager.name} ${state.personalManager.middle_name}`
+        : 'Нет закреплённого менеджера',
+      phone: state.personalManager?.phone?.replace(/[^\d]+/g, '') || '78003339000',
       email: state.personalManager?.email
     }
   },
+  getListContact (state) {
+    return state.clientInfo?.contacts?.map(item => {
+      const result = {}
+      result.id = item.id
+      result.firstName = item.firstName
+      result.name = item.name
+      eachArray(item.contactMethods || [], _item => {
+        if (_item['@type'].match(/phone/i)) {
+          result.phone = {
+            id: _item.id,
+            value: _item.value.replace(/[\D]+/g, '')
+          }
+        } else if (_item['@type'].match(/email/i)) {
+          result.email = {
+            id: _item.id,
+            value: _item.value
+          }
+        }
+      })
+      result.isLPR = !!item.roles.filter(item => item.role.name.match(/decision maker/ig) || item.role.name.match(/лпр/ig)).length
+      return result
+    }) || []
+  },
   getCountUnsignedDocuments (state) {
     return state.countUnsignedDocuments.length
+  },
+  getPhoneList (state) {
+    return state.clientInfo?.contactMethods?.filter(item => item['@type'] === 'PhoneNumber')
+      .map(item => item.name.replace(/[\D]+/g, '')) || []
+  },
+  getEmailList (state) {
+    return state.clientInfo?.contactMethods?.filter(item => item['@type'] === 'Email')
+      .map(item => item.name) || []
+  },
+  getAddressList (state) {
+    return state.clientInfo?.customerLocations?.map(item => ({
+      value: item.fullAddress,
+      id: item.address.id
+    })) || []
   },
   getBillingAccountsGroupByContract (state) {
     return state.listBillingAccount.reduce((result, item) => {
@@ -93,6 +133,9 @@ const getters = {
       name: item.offeringCategory.name,
       price: item.amount.value
     }))
+  },
+  agreementNumber (state) {
+    return state.listBillingAccount.find(item => item.billingAccountId === state.activeBillingAccount)?.contractNumber
   }
 }
 
@@ -177,6 +220,7 @@ const actions = {
         commit(SET_ACTIVE_BILLING_ACCOUNT, result[0].billingAccountId)
         commit(SET_ACTIVE_BILLING_ACCOUNT_NUMBER, result[0].accountNumber)
       }
+      return Array.isArray(result) && result.length !== 0
     } catch (error) {
       commit(ERROR_MODAL, true, { root: true })
       // todo Логирование

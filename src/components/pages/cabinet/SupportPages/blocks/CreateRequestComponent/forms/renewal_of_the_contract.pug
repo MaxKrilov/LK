@@ -1,0 +1,45 @@
+//- Переоформление договора
+include ./_mixins
+er-form(ref="form")
+  er-row
+    er-flex(xs12)
+      er-row
+        er-flex.mb-32(xs12)
+          +listRequestTheme
+        er-flex.mb-32.create-request-component__current-agreement.d--flex.align-items-center(xs12)
+          .caption
+            | Текущий номер договора
+          .agreement
+            | {{ agreementNumber }}
+          .toggle.ml-auto
+            er-toggle(view="radio-check", v-model="isWholeContract")
+              template(slot="append-outer")
+                span.toggle-caption
+                  | Весь договор
+        er-flex.mb-32(xs12)
+          er-select(
+            :items="getAddressList"
+            v-model="address"
+            placeholder="Адрес"
+            is-show-required-label
+            :disabled="isWholeContract"
+          )
+        er-flex.mb-32(xs12)
+          er-select(
+            :items="listService"
+            v-model="services"
+            placeholder="Услуга"
+            is-show-required-label
+            :disabled="isWholeContract"
+          )
+    er-flex(xs12)
+      er-row
+        er-flex.mb-32(xs12 sm6)
+          +phoneNumber
+        er-flex.mb-32(xs12 sm6)
+          +timePickerRange
+        er-flex.mb-32(xs12)
+          +name
+    er-flex.mb-32(xs12)
+      +appeal("Здесь Вы можете указать дополнительную информацию по заявке")
+    +footerFile

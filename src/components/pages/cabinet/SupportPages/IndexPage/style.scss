@@ -1,6 +1,9 @@
 .support-page {
   width: 100%;
   overflow-x: hidden;
+  @include min-breakpoint('xl') {
+    overflow-x: visible;
+  }
   .b-request {
     $b-request: &;
     width: calc(100% + 64px);
@@ -202,5 +205,15 @@
         }
       }
     }
+    &__tbody {
+      &--empty {
+        padding: 32px 24px;
+        @extend %body-font;
+      }
+    }
   }
+}
+
+.flip-list-move {
+  transition: transform 500ms;
 }

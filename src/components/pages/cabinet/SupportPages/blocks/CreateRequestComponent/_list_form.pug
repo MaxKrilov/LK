@@ -1,0 +1,27 @@
+mixin listForm
+  div(v-if="requestTheme.form === 'general_issues'" key="general_issues")
+    include ./forms/general_issues
+  div(v-if="requestTheme.form === 'restoring_a_contract_or_service'" key="restoring_a_contract_or_service")
+    include ./forms/restoring_a_contract_or_service
+  div(v-if="requestTheme.form === 'money_transfer'" key="money_transfer")
+    include ./forms/money_transfer
+  div(v-if="requestTheme.form === 'transfer_point_or_service'" key="transfer_point_or_service")
+    include ./forms/transfer_point_or_service
+  div(v-if="requestTheme.form === 'suspension_of_a_contract_or_service'" key="suspension_of_a_contract_or_service")
+    include ./forms/suspension_of_a_contract_or_service
+  div(v-if="requestTheme.form === 'erroneous_payment'" key="erroneous_payment")
+    include ./forms/erroneous_payment
+  div(v-if="requestTheme.form === 'change_of_details'" key="change_of_details")
+    include ./forms/change_of_details
+  div(v-if="requestTheme.form === 'change_of_internet_protocol'" key="change_of_internet_protocol")
+    include ./forms/change_of_internet_protocol
+  div(v-if="requestTheme.form === 'change_of_tariff'" key="change_of_tariff")
+    include ./forms/change_of_tariff
+  div(v-if="requestTheme.form === 'termination_of_a_contract_or_service'" key="termination_of_a_contract_or_service")
+    include ./forms/termination_of_a_contract_or_service
+  div(v-if="requestTheme.form === 'order_a_document'" key="order_a_document")
+    include ./forms/order_a_document
+  div(v-if="requestTheme.form === 'renewal_of_the_contract'" key="renewal_of_the_contract")
+    include ./forms/renewal_of_the_contract
+  div(v-if="requestTheme.form === 'technical_issues'" key="technical_issues")
+    include ./forms/technical_issues

@@ -1,23 +1,36 @@
-import { LIST_REQUEST_THEME } from '../actions/dictionary'
+import { LIST_COMPLAINT_THEME, LIST_REQUEST_THEME, LIST_TECHNICAL_REQUEST_THEME } from '../actions/dictionary'
 
 const state = {
   [LIST_REQUEST_THEME]: [
-    { id: 'general_issue', param: 5986, value: 'Общие вопросы' },
-    { id: 'technical_issue', param: 5986, value: 'Технические вопросы' },
-    { id: 'order_documents', param: 5986, value: 'Заказать документ' },
-    { id: 'change_tarif', param: 5986, value: 'Смена тарифного плана' },
-    { id: 'restoration_contract', param: 5999, value: 'Восстановление договора' },
-    { id: 'restoration_service', param: 5999, value: 'Восстановление услуги' },
-    { id: 'point_transfer', param: 6000, value: 'Перенос точки' },
-    { id: 'money_transfer', param: 6002, value: 'Перевод денежных средств' },
-    { id: 'payment_error', param: 6002, value: 'Ошибочный платёж' },
-    { id: 'renewal_contract', param: 5997, value: 'Переоформление договора' },
-    { id: 'change_internet_protocol', param: 6009, value: 'Смена Интернет протокола' }
+    { id: '9154749993013188883', value: 'Перенос точки/услуги', form: 'transfer_point_or_service', requestName: 'request' },
+    { id: '9154749993013188882', value: 'Переоформление договора', form: 'renewal_of_the_contract', requestName: 'request' },
+    { id: '9154749993013188884', value: 'Смена тарифного плана', form: 'change_of_tariff', requestName: 'request' },
+    { id: '9154749993013188888', value: 'Сменить Интернет-протокол', form: 'change_of_internet_protocol', requestName: 'request' },
+    { id: '9154749993013188889', value: 'Сменить реквизиты', form: 'change_of_details', requestName: 'request' },
+    { id: '9154749993013188890', value: 'Восстановление договора/услуги', form: 'restoring_a_contract_or_service', requestName: 'request' },
+    { id: '9154749993013188895', value: 'Приостановление договора/услуги', form: 'suspension_of_a_contract_or_service', requestName: 'request' },
+    { id: '9154749993013188896', value: 'Расторжение договора/услуги', form: 'termination_of_a_contract_or_service', requestName: 'request' },
+    { id: '9154749993013188872', value: 'Перевод денежных средств', form: 'money_transfer', requestName: 'request' },
+    { id: '9154749993013188897', value: 'Ошибочный платеж', form: 'erroneous_payment', requestName: 'request' },
+    { id: '9154749993013188885', value: 'Заказать документ', form: 'order_a_document', requestName: 'request' },
+    { id: '9154749993013188894', value: 'Общие вопросы', form: 'general_issues', requestName: 'request' },
+    { id: '0', value: 'Технические вопросы', form: 'technical_issues', requestName: 'request' }
+  ],
+  [LIST_TECHNICAL_REQUEST_THEME]: [
+    { id: '9154741760013186141', value: 'Услуга не работает', requestName: 'problem' },
+    { id: '9154786970013205620', value: 'Потеря качества', requestName: 'problem' },
+    { id: '9154786970013205621', value: 'Консультация', requestName: 'problem' }
+  ],
+  [LIST_COMPLAINT_THEME]: [
+    { id: '0', value: 'Идея', requestName: 'complaint' },
+    { id: '1', value: 'Благодарность', requestName: 'complaint' },
+    { id: '2', value: 'Претензия', requestName: 'complaint' }
   ]
 }
 
 const getters = {
-  [LIST_REQUEST_THEME]: state => state[LIST_REQUEST_THEME]
+  [LIST_REQUEST_THEME]: state => state[LIST_REQUEST_THEME],
+  [LIST_TECHNICAL_REQUEST_THEME]: state => state[LIST_TECHNICAL_REQUEST_THEME]
 }
 
 export default {

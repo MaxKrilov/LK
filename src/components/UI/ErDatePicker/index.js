@@ -33,17 +33,19 @@ export default {
     },
     format: {
       type: String,
-      default: 'DD.MM.YYY'
+      default: 'DD.MM.YYYY'
     },
     isShowRequiredLabel: Boolean
   },
   computed: {
     valueForTextInput () {
-      return !this.value || this._.isEmpty(this.value)
-        ? ''
-        : this._.isArray(this.value)
-          ? `${this.$moment(this._.head(this.value)).format(this.format)}${this.separator}${this.$moment(this._.last(this.value)).format(this.format)}`
-          : this.$moment(this.value).format('DD MMM YYYY')
+      return this._.isArray(this.value)
+        ? this._.isEmpty(this.value)
+          ? ''
+          : `${this.$moment(this._.head(this.value)).format(this.format)}${this.separator}${this.$moment(this._.last(this.value)).format(this.format)}`
+        : !this.value
+          ? ''
+          : this.$moment(this.value).format(this.format)
     }
   },
   watch: {
@@ -57,9 +59,13 @@ export default {
       }
     },
     isOpenDialog (val) {
-      val && (!this.value || this._.isEmpty(this.value)) && (
-        this.internalValue = this._.isArray(this.value) ? [ new Date(), new Date() ] : new Date()
-      )
+      if (val) {
+        if (this._.isArray(this.value) && this._.isEmpty(this.value)) {
+          this.internalValue = [ new Date(), new Date() ]
+        } else if (!this._.isArray(this.value) && !this.value) {
+          this.internalValue = new Date()
+        }
+      }
     }
   },
   methods: {

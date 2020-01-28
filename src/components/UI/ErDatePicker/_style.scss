@@ -262,4 +262,7 @@
   .er-input__append-inner {
     pointer-events: none;
   }
+  .er-dialog__container {
+    display: none !important;
+  }
 }

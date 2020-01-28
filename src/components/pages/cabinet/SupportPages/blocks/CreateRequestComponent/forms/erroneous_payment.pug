@@ -1,0 +1,44 @@
+//- Ошибочный платёж
+include ./_mixins
+er-form(ref='form')
+  er-row
+    er-flex(xs12)
+      er-row
+        er-flex.mb-32(xs12)
+          +listRequestTheme
+        er-flex.mb-32(xs12)
+          er-text-field(
+            v-model="payer"
+            label="Плательщик"
+            is-show-required-label
+          )
+        er-flex.mb-32(xs12)
+          er-text-field(
+            v-model="paymentOrderNumber",
+            label="Номер платёжного поручения"
+            is-show-required-label
+          )
+        er-flex.mb-32(xs12 sm6)
+          er-date-picker(
+            v-model="datePayment",
+            placeholder="Дата платежа"
+            is-show-required-label
+          )
+        er-flex.mb-32(xs12 sm6)
+          er-text-field(
+            v-model="sumPayment"
+            label="Сумма платежа"
+            mask="money"
+            is-show-required-label
+          )
+    er-flex(xs12)
+      er-row
+        er-flex.mb-32(xs12 sm6)
+          +phoneNumber
+        er-flex.mb-32(xs12 sm6)
+          +timePickerRange
+        er-flex.mb-32(xs12)
+          +name
+    er-flex(xs12)
+      +appeal("Здесь Вы можете указать дополнительную информацию по заявке")
+    +footerFile

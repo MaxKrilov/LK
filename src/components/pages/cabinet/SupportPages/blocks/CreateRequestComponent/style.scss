@@ -1,0 +1,173 @@
+.create-request-component {
+  &--mobile {
+    @include min-breakpoint('xl') {
+      display: none;
+    }
+  }
+  &--desktop {
+    display: none;
+    @include min-breakpoint('xl') {
+      display: block;
+    }
+    .create-request-component {
+      &__slide-up-down {
+        padding: 40px 32px 32px;
+        background: map_get($shades, 'white');
+      }
+      &__head {
+        .title {
+          @extend %h3;
+        }
+        .required {
+          @extend %caption1;
+
+          &::before {
+            content: '';
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 4px;
+            background-color: map_get($yellow, 'base');
+            margin-right: 4px;
+          }
+        }
+      }
+    }
+  }
+  &__button {
+    padding: 32px 32px 24px;
+    .er-button {
+      max-width: 243px;
+      &__content {
+        span {
+          display: block;
+          flex: 1;
+          margin-left: -32px;
+        }
+      }
+      &__icon--prev {
+        margin-left: 16px;
+        @include color-black(0.5);
+        svg {
+          width: 16px;
+        }
+      }
+    }
+  }
+  &__dialog {
+    background-color: map_get($gray, '3');
+    .create-request-component {
+      &__head {
+        width: 100%;
+        padding: 16px;
+        background-color: map_get($shades, 'white');
+        position: relative;
+        .title {
+          @extend %h3;
+          margin-bottom: 12px;
+        }
+        .required {
+          @extend %caption2;
+          &::before {
+            content: '';
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 4px;
+            background-color: map_get($yellow, 'base');
+            margin-right: 4px;
+          }
+        }
+        .close {
+          position: absolute;
+          top: 16px;
+          right: 16px;
+          button {
+            background: map_get($shades, 'transparent');
+            border: none;
+            outline: none;
+            cursor: pointer;
+            svg {
+              width: 16px;
+              @include color-black(0.5);
+            }
+          }
+        }
+      }
+      &__body {
+        padding: 32px 16px;
+      }
+    }
+  }
+  &__personal-data {
+    @extend %caption1;
+    a {
+      color: inherit;
+      text-decoration: underline;
+      text-decoration-style: dashed;
+    }
+  }
+  &__current-agreement {
+    position: relative;
+    .caption {
+      @extend %caption1;
+      position: absolute;
+      top: -16px;
+    }
+    .agreement {
+      @extend %body-font;
+    }
+    .toggle {
+      .toggle-caption {
+        @extend %button-font;
+        white-space: nowrap;
+        margin-left: 4px;
+        @include color-black(0.5);
+        border-bottom: 1px dashed;
+      }
+    }
+  }
+  &__date-picker {
+    .er-date-picker {
+      max-width: none;
+    }
+  }
+  &__warning {
+    color: map_get($red, 'base');
+    span {
+      @extend %caption1;
+      color: inherit;
+    }
+  }
+  &__organisation {
+    .caption {
+      @extend %caption2;
+      @include color-black(0.3);
+    }
+    .value {
+      @extend %body-font;
+      @include color-black(0.8);
+    }
+  }
+  &__download-statement {
+    @extend %body-font;
+    @include color-black(0.5);
+  }
+  &__requirements-for-file {
+    @extend %caption1;
+  }
+  &__file-input {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+  }
+  &__internet-protocol {
+    position: relative;
+    .caption {
+      @extend %caption1;
+      position: absolute;
+      top: -20px;
+    }
+  }
+}

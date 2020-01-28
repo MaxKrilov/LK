@@ -1,0 +1,36 @@
+.er-time-picker-range {
+  display: flex;
+  position: relative;
+  align-items: center;
+  .label {
+    @extend %caption1;
+    position: absolute;
+    transform: translateY(-40px);
+    @include color-black(0.3);
+    font-family: $fedra-book;
+    pointer-events: none;
+  }
+  .timepicker {
+    width: 100%;
+    max-width: 64px;
+    @include min-breakpoint('lg') {
+      max-width: 69px;
+    }
+    &.first {
+      display: flex;
+      align-items: center;
+      max-width: 88px;
+      @include min-breakpoint('lg') {
+        max-width: 93px;
+      }
+    }
+    &.first::after {
+      content: '—';
+      @extend %body-font;
+      margin-left: 8px;
+    }
+    .er-dialog__container {
+      display: none !important;
+    }
+  }
+}

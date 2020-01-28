@@ -63,7 +63,7 @@ div(:class="`${pre}`")
           template(v-slot:activator="{ on }")
             er-preloader(:active="menuComponentBillingAccount")
               a.link--dashed--yellow(href="#", v-on="on", @click.prevent="")
-                | {{ activeBillingAccountNumber || '987654321' }}
+                | {{ activeBillingAccountNumber || 'Нет лицевых счетов' }}
           div(:class="`${pre}__top__dropdown`")
             div(:class="`${pre}__top__dropdown__content`")
               div.caption.mb-4

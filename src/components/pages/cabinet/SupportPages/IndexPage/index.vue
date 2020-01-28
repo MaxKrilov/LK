@@ -19,7 +19,7 @@
               @click="() => { setFilterRequest(getTypeFilterRequestAll) }"
               ) Все
           er-flex(xs12 sm6 order-sm order-sm1)
-            er-select(:items="listCity2", placeholder="Город", v-model="city", :deep="2")
+            er-select(:items="getListNameCity", placeholder="Город", v-model="city")
         .b-request__body
           .b-request__thead
             .b-request__thead-item(
@@ -32,11 +32,21 @@
                 span.icon
                   er-icon(name="funnel")
           .b-request__tbody
-            request-item-component(
-              v-for="requestItem in listRequest"
-              v-bind="requestItem"
-              :key="requestItem.ticketId"
-            )
+            transition-group(name="flip-list")
+              request-item-component(
+                v-for="requestItem in listRequestComputed"
+                v-bind="requestItem"
+                :key="requestItem.ticketId"
+                @cancel="cancelRequest"
+              )
+            .b-request__tbody--empty(v-if="listRequestComputed.length === 0")
+              | У вас нет {{ isActiveFilterRequest(getTypeFilterRequestActive) ? 'активных' : '' }} заявок
+          .b-request__create
+            create-request-component
+    contact-info-component
+    er-dialog(
+      v-model="resultDialog"
+    )
 </template>
 
 <script src="./script.js"></script>
