@@ -37,6 +37,8 @@ er-form(ref="form")
             v-model="terminateFrom"
             is-show-required-label
             placeholder="Расторгнуть с ук. даты"
+            :rules="requiredRule"
+            disabled-date="past"
           )
     er-flex(xs12)
       er-row

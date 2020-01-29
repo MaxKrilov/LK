@@ -7,18 +7,18 @@ er-form(ref='form')
         er-flex.mb-32(xs12)
           +listRequestTheme
         er-flex.mb-32(xs12 sm6)
-          er-select(
-            :items="listFirstPersonalAccount"
+          er-text-field(
             v-model="firstPersonalAccount"
             placeholder="С лицевого счета"
             is-show-required-label
+            :rules="requiredRule"
           )
         er-flex.mb-32(xs12 sm6)
-          er-select(
-            :items="listSecondPersonalAccount"
+          er-text-field(
             v-model="secondPersonalAccount"
             placeholder="На лицевой счёт"
             is-show-required-label
+            :rules="requiredRule"
           )
         er-flex.mb-32(xs12)
           er-text-field(
@@ -26,6 +26,7 @@ er-form(ref='form')
             mask="money"
             label="Сумма"
             is-show-required-label
+            :rules="requiredRule"
           )
     er-flex(xs12)
       er-row

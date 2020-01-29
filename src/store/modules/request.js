@@ -1,16 +1,22 @@
 import {
+  ATTACH_FILE,
   CANCEL_REQUEST,
   CREATE_REQUEST,
   CREATE_REQUEST_SUCCESS,
   GET_REQUEST,
   GET_REQUEST_BY_ID,
-  GET_REQUEST_SUCCESS
+  GET_REQUEST_SUCCESS,
+  GET_SERVICES_BY_LOCATION
 } from '../actions/request'
 import { ERROR_MODAL } from '../actions/variables'
+import { TYPE_ARRAY } from '../../constants/type_request'
 
 const CANCELLATION_REASON = '9150410012013966885'
 const REQUEST_REASON = '9154749926213188767'
-const COMPLAINT_REASON = '0'
+const COMPLAINT_REASON = '9154785597113204772'
+const PROBLEM_REASON = '9154786970013205616'
+
+const PROBLEM_REASON_THIRD = '9154741760013186143'
 
 const CHANNEL_OF_NOTIFICATION_VIBER = '9130635331813922067'
 
@@ -67,7 +73,10 @@ const actions = {
     emailAddress,
     complainantContactName,
     complainantPhone,
-    complainantEmail
+    complainantEmail,
+    problemTheme,
+    service,
+    file
   }) => {
     const data = {}
     const { toms: clientId } = rootGetters['auth/user']
@@ -81,9 +90,11 @@ const actions = {
     data.category = requestName.match(/request/i)
       ? REQUEST_REASON
       : requestName.match(/problem/i)
-        ? category
+        ? PROBLEM_REASON
         : COMPLAINT_REASON
-    data.type = type
+    data.type = requestName.match(/problem/i)
+      ? problemTheme
+      : type
     data.phoneNumber = phoneNumber
     if (emailAddress) {
       data.emailAddress = emailAddress
@@ -97,20 +108,31 @@ const actions = {
     if (complainantEmail) {
       data.complainantEmail = complainantEmail
     }
+    if (requestName.match(/problem/i)) {
+      data.element = PROBLEM_REASON_THIRD
+      data.affectedProduct = [service]
+    }
+
     try {
       const result = await api
         .setData(data)
-        .setBranch('web-bss')
+        .setType(TYPE_ARRAY)
         .query('/problem/management/create')
       if (result && result.hasOwnProperty('ticket_id')) {
-        return dispatch(GET_REQUEST_BY_ID, { api, id: result.ticket_id, requestName })
+        const info = await dispatch(GET_REQUEST_BY_ID, { api, id: result.ticket_id, requestName, name: result.ticket_name })
+        if (file) {
+          const fileInfo = await dispatch(ATTACH_FILE, { api, id: result.ticket_id })
+          return fileInfo ? info : false
+        }
+        return info
+      } else {
+        return false
       }
     } catch (error) {
-      commit(ERROR_MODAL, true, { root: true })
-      // todo Логирование
+      return false
     }
   },
-  [GET_REQUEST_BY_ID]: async ({ rootGetters, commit, dispatch }, { api, id, requestName }) => {
+  [GET_REQUEST_BY_ID]: async ({ rootGetters, commit, dispatch }, { api, id, requestName, name }) => {
     const { toms: clientId } = rootGetters['auth/user']
     const data = {
       id,
@@ -120,13 +142,44 @@ const actions = {
     try {
       const result = await api
         .setData(data)
-        .setBranch('web-bss')
         .query('/problem/management/info')
       commit(CREATE_REQUEST_SUCCESS, result)
+      return name
+    } catch (error) {
+      return false
+    }
+  },
+  [GET_SERVICES_BY_LOCATION]: async ({ rootGetters, commit, dispatch }, { api, locationId }) => {
+    const { toms: clientId } = rootGetters['auth/user']
+    try {
+      const result = await api
+        .setData({ clientId, locationId })
+        .query('/customer/product/client')
+      return result
+    } catch (e) {
+      return []
+    }
+  },
+  [ATTACH_FILE]: async ({ rootGetters, commit, dispatch }, { id, type, fileName, bucket, filePath, api }) => {
+    const { toms: clientId } = rootGetters['auth/user']
+    type = type || '9154452676313182655'
+    fileName = fileName || 'ERT.INT.DSG.TBAPI.Интеграционные операции и параметр.xlsx'
+    bucket = bucket || 'customer-docs'
+    filePath = filePath || '9155658058913664055'
+    const data = {
+      clientId,
+      id,
+      type,
+      fileName,
+      bucket,
+      filePath
+    }
+    try {
+      const result = api
+        .setData(data)
+        .query('/problem/management/attache-file')
       return true
     } catch (error) {
-      commit(ERROR_MODAL, true, { root: true })
-      // todo Логирование
       return false
     }
   }
@@ -137,7 +190,7 @@ const mutations = {
     state.listRequest = payload
   },
   [CREATE_REQUEST_SUCCESS]: (state, payload) => {
-    state.listRequest.push(payload)
+    state.listRequest.request.push(payload)
   }
 }
 

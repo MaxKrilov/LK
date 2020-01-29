@@ -14,7 +14,7 @@ const state = {
     { id: '9154749993013188897', value: 'Ошибочный платеж', form: 'erroneous_payment', requestName: 'request' },
     { id: '9154749993013188885', value: 'Заказать документ', form: 'order_a_document', requestName: 'request' },
     { id: '9154749993013188894', value: 'Общие вопросы', form: 'general_issues', requestName: 'request' },
-    { id: '0', value: 'Технические вопросы', form: 'technical_issues', requestName: 'request' }
+    { id: '9156211040213279417', value: 'Технические вопросы', form: 'technical_issues', requestName: 'problem' }
   ],
   [LIST_TECHNICAL_REQUEST_THEME]: [
     { id: '9154741760013186141', value: 'Услуга не работает', requestName: 'problem' },
@@ -22,9 +22,9 @@ const state = {
     { id: '9154786970013205621', value: 'Консультация', requestName: 'problem' }
   ],
   [LIST_COMPLAINT_THEME]: [
-    { id: '0', value: 'Идея', requestName: 'complaint' },
-    { id: '1', value: 'Благодарность', requestName: 'complaint' },
-    { id: '2', value: 'Претензия', requestName: 'complaint' }
+    { id: '9154749993013188892', value: 'Идея', requestName: 'complaint' },
+    { id: '9154749993013188891', value: 'Благодарность', requestName: 'complaint' },
+    { id: '9156159670613264230', value: 'Претензия', requestName: 'complaint' }
   ]
 }
 

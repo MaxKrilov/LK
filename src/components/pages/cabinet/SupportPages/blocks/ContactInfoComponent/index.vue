@@ -49,7 +49,7 @@
           .title Написать директору Дом.ru Бизнес
           .required
             | &nbsp;- Поле обязательно к заполнению
-        +toDirectorForm
+        +toDirectorForm('director_form_desktop')
     er-dialog(
       v-model="toDirectorModal"
       fullscreen
@@ -63,7 +63,25 @@
           .required
             | &nbsp;- Поле обязательно к заполнению
         .b-contact-info__director-modal__body.py-32.px-16
-          +toDirectorForm
+          +toDirectorForm('director_form_mobile')
+    er-activation-modal(
+      type="success"
+      v-model="resultDialogSuccess"
+      :title="`Ваша заявка № ${ticketName} сформирована и отправлена`"
+      :is-show-action-button="false"
+      cancel-button-text="Спасибо"
+    )
+      template(slot="description")
+        | Спасибо за обращение! С Вами свяжется Ваш персональный менджер.
+    er-activation-modal(
+      type="error"
+      v-model="resultDialogError"
+      title="При запросе возникла ошибка"
+      :is-show-action-button="false"
+      cancel-button-text="Спасибо"
+    )
+      template(slot="description")
+        | Попробуйте повторить попытку позже или обратитесь к Вашему персональному менджеру
 </template>
 
 <script src="./script.js"></script>

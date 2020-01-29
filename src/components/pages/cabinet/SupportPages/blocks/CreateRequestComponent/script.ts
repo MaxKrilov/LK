@@ -5,10 +5,11 @@ import ErPhoneSelect from '@/components/blocks/ErPhoneSelect'
 import ErTimePickerRange from '@/components/blocks/ErTimePickerRange'
 import ErTextareaWithFile from '@/components/blocks/ErTextareaWithFile'
 import ErDadataSelect from '@/components/blocks/ErDadataSelect'
+import ErActivationModal from '@/components/blocks/ErActivationModal/index.vue'
 import { SCREEN_WIDTH } from "@/store/actions/variables"
 import { BREAKPOINT_XL } from "@/constants/breakpoint"
 import { getFirstElement } from '@/functions/helper'
-import { CREATE_REQUEST } from '@/store/actions/request'
+import { CREATE_REQUEST, GET_SERVICES_BY_LOCATION } from '@/store/actions/request'
 import { API } from '@/functions/api'
 import { GET_LIST_SERVICE_BY_ADDRESS } from '@/store/actions/user'
 
@@ -26,7 +27,8 @@ interface iContactListItem {
   firstName?: string,
   name?: string,
   phone: iListContactMethodsItem,
-  email: iListContactMethodsItem
+  email: iListContactMethodsItem,
+  isLPR: boolean
 }
 
 interface iRequestTheme {
@@ -57,7 +59,8 @@ interface iRequestTechnicalTheme {
     ErPhoneSelect,
     ErTimePickerRange,
     ErTextareaWithFile,
-    ErDadataSelect
+    ErDadataSelect,
+    ErActivationModal
   }
 })
 export default class CreateRequestComponent extends Vue {
@@ -70,7 +73,7 @@ export default class CreateRequestComponent extends Vue {
   // ===== DATA =====
   // ===== MODELS =====
   // Global
-  requestTheme: iRequestTheme = { id: '9154749993013188894', value: 'Общие вопросы', form: 'general_issues', requestName: 'request' }
+  requestTheme: iRequestTheme | undefined = { id: '9154749993013188894', value: 'Общие вопросы', form: 'general_issues', requestName: 'request' }
   phoneNumber = ''
   address: iListAddressItem | any = {}
   name = ''
@@ -86,8 +89,6 @@ export default class CreateRequestComponent extends Vue {
   sumTransfer = ''
   // Transfer point or service
   street = ''
-  house = ''
-  office = ''
   // Suspension of a contract or service
   stoppedFrom = new Date()
   // Erroneous payment
@@ -96,12 +97,12 @@ export default class CreateRequestComponent extends Vue {
   datePayment = new Date()
   sumPayment = ''
   // Change of Internet Protocol
-  service = ''
+  service: standardSelectItem = {}
   internetProtocol = ''
   // Termination of a contract or service
   terminateFrom = ''
   // Technocal issues
-  technicalRequestTheme = ''
+  technicalRequestTheme: iRequestTechnicalTheme | any = {}
   // ===== LISTS =====
   listRequestTheme!: iRequestTheme[]
   listTechnicalRequestTheme!: iRequestTechnicalTheme[]
@@ -110,19 +111,20 @@ export default class CreateRequestComponent extends Vue {
 
   loadingService: boolean = false
 
-  listService = [] // todo Из хранилища
-  listFirstPersonalAccount = ['8800900654328', '8800900654329', '8800900654330'] // todo Из хранилища
-  listInternetProtocol = ['IPoE']
+  listService: standardSelectItem[] = []
   clientInfo!: any
 
-  resultDialog = false
+  ticketName = ''
 
-  get listSecondPersonalAccount () {
-    return this.listFirstPersonalAccount.filter(item => item !== this.firstPersonalAccount)
-  }
+  resultDialogSuccess = false
+  resultDialogError = false
+
+  loadingCreating = false
+
+  file = ''
 
   get getLinkDeclaration () {
-    switch (this.requestTheme.form) {
+    switch (this.requestTheme?.form) {
       case 'renewal_of_the_contract':
         return `${this.publicPath}documents/zayavlenie_na_pereoformlenie.docx`
       case 'suspension_of_a_contract_or_service':
@@ -138,6 +140,19 @@ export default class CreateRequestComponent extends Vue {
 
   get getPhoneList () {
     return this.getListContact.map((item: iContactListItem) => item.phone?.value)
+  }
+
+  requiredRule = [
+    (v: any) => !!v || 'Поле обязательно к заполнению'
+  ]
+
+  requiredRuleArray = [
+    (v: any[]) => Array.isArray(v) && v.length !== 0 || 'Поле обязательно к заполнению'
+  ]
+
+  @Watch('requestTheme')
+  onRequestThemeChange () {
+    this.reset()
   }
 
   @Watch('firstPersonalAccount')
@@ -168,12 +183,16 @@ export default class CreateRequestComponent extends Vue {
   @Watch('address')
   onAddressChange (val: iListAddressItem) {
     this.loadingService = true
-    this.$store.dispatch(`user/${GET_LIST_SERVICE_BY_ADDRESS}`, {
+    console.log(val)
+    this.$store.dispatch(`request/${GET_SERVICES_BY_LOCATION}`, {
       api: this.$api,
-      address: val.id
+      locationId: val.id
     })
       .then(response => {
-        this.listService = response.map((item: any) => item.offeringCategory.originalName)
+        this.listService = response.map((item: any) => ({
+          id: item.id,
+          value: item.name
+        }))
         this.loadingService = false
       })
   }
@@ -195,36 +214,59 @@ export default class CreateRequestComponent extends Vue {
   }
 
   createRequest () {
+    // @ts-ignore
+    if (!this.$refs.form.validate()) return
+    this.loadingCreating = true
     // Наименование проблемы
-    const requestName = this.requestTheme.requestName
+    const requestName = this.requestTheme?.requestName
     // Идентификатор адреса
     const location = this.address?.id || getFirstElement(this.getAddressList)?.id
     // Описание проблемы
-    const description = 'Test'
+    const description = this.getDescriptionText()
     // Идентификатор типа заявки
-    const type = this.requestTheme.id
+    const type = this.requestTheme?.id
     // Идентификатор контакта кастомера
-    const customerContact = this.getListContact.find((item: iContactListItem) => item.phone?.value === this.phoneNumber.replace(/[\D]+/g, ''))
+    let customerContact = this.getListContact.find((item: iContactListItem) => item.phone?.value === this.phoneNumber.replace(/[\D]+/g, ''))
+    let customerContactId, phoneId
     if (customerContact !== undefined) {
-      const {
-        id: customerContactId,
-        phone: {
-          id: phoneId
-        }
-      } = customerContact
-      this.$store.dispatch(`request/${CREATE_REQUEST}`, {
-        requestName,
-        location,
-        description,
-        type,
-        customerContact: customerContactId,
-        phoneNumber: phoneId,
-        api: this.$api
-      })
-        .then((answer: boolean) => {
-          this.closeForm()
-        })
+      customerContactId = customerContact.id
+      phoneId = customerContact.phone.id
+    } else {
+      customerContact = this.getListContact.find((item: iContactListItem) => item.isLPR)
+      if (customerContact !== undefined) {
+        customerContactId = customerContact.id
+        phoneId = customerContact.phone.id
+      }
     }
+
+    this.$store.dispatch(`request/${CREATE_REQUEST}`, {
+      requestName,
+      location,
+      description,
+      type,
+      customerContact: customerContactId,
+      phoneNumber: phoneId,
+      api: this.$api,
+      problemTheme: this.technicalRequestTheme.id,
+      service: this.service.id,
+      file: this.file
+    })
+      .then((answer: boolean | string) => {
+        if (typeof answer === 'string' && answer !== '') {
+          this.ticketName = answer
+          this.resultDialogSuccess = true
+          this.closeForm()
+          this.reset()
+        } else {
+          this.resultDialogError = true
+        }
+      })
+      .catch((e: any) => {
+        this.resultDialogError = true
+      })
+      .finally(() => {
+        this.loadingCreating = false
+      })
   }
 
   getDescriptionText () {
@@ -234,13 +276,17 @@ export default class CreateRequestComponent extends Vue {
     const agreementOrServices = this.isWholeContract
       ? `Номер договора: ${this.agreementNumber}`
       : `
-        Услуг(а/и): ${this.services};
+        Услуги: ${this.services};
         Адрес: ${this.address.value};
       `
     const address = `Адрес: ${this.address.value}`
-    const services = `Услуг(а/и): ${this.services}`
-    switch (this.requestTheme.form) {
+    const services = `Услуги: ${this.services}`
+    // @ts-ignore
+    const service = `Услуга: ${this.service.value}`
+    switch (this.requestTheme?.form) {
       case 'general_issues':
+      case 'order_a_document':
+      case 'change_of_details':
         return `
           ${comment};
           ${phone};
@@ -264,8 +310,83 @@ export default class CreateRequestComponent extends Vue {
         return `
           ${comment};
           ${address};
-
-        `
+          ${service};
+          ${phone};
+          ${name}.`
+      case 'change_of_tariff':
+        return `
+          ${comment};
+          ${address};
+          ${service};
+          ${phone};
+          ${name}.`
+      case 'suspension_of_a_contract_or_service':
+        return `
+          ${comment};
+          Приостановить с ${this.stoppedFrom};
+          ${agreementOrServices};
+          ${phone};
+          ${name}.`
+      case 'termination_of_a_contract_or_service':
+        return `
+          ${comment};
+          Расторгнуть с ${this.terminateFrom};
+          ${agreementOrServices};
+          ${phone};
+          ${name}.`
+      case 'erroneous_payment':
+        return `
+          ${comment};
+          Плательщик: ${this.payer};
+          Номер платежного поручения: ${this.paymentOrderNumber};
+          Дата платежа: ${this.datePayment};
+          Сумма платежа: ${this.sumPayment};
+          ${phone};
+          ${name}.`
+      case 'money_transfer':
+        return `
+          ${comment};
+          Перевести с л/с ${this.firstPersonalAccount} на л/с ${this.secondPersonalAccount};
+          Сумма перевода: ${this.sumTransfer};
+          ${phone};
+          ${name}.`
+      case 'renewal_of_the_contract':
+        return `
+          ${comment};
+          ${agreementOrServices};
+          ${phone};
+          ${name}.`
+      case `technical_issues`:
+        return `
+          ${comment};
+          ${address};
+          ${service};
+          ${phone};
+          ${name}.`
     }
+  }
+
+  reset () {
+    this.phoneNumber = ''
+    this.address = {}
+    this.name = ''
+    this.comment = ''
+    this.time = []
+    this.services = []
+    this.recoverFrom = new Date()
+    this.isWholeContract = false
+    this.firstPersonalAccount = ''
+    this.secondPersonalAccount = ''
+    this.sumTransfer = ''
+    this.street = ''
+    this.stoppedFrom = new Date()
+    this.payer = ''
+    this.paymentOrderNumber = ''
+    this.datePayment = new Date()
+    this.sumPayment = ''
+    this.service = {}
+    this.internetProtocol = ''
+    this.terminateFrom = ''
+    this.technicalRequestTheme = ''
   }
 }

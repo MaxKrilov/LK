@@ -44,17 +44,18 @@ mixin addresses
       .value
         a(href="#") БЦ «Петровский форт» пр-т Финляндский, 4А
 
-mixin toDirectorForm
-  er-form(ref="director-form")
+mixin toDirectorForm(name)
+  er-form(ref=name)
     er-row
       er-flex(xs12)
         er-row
           er-flex.mb-32(xs12)
             er-select(
               v-model="modelDirectorTheme"
-              :items="listTheme"
+              :items="listComplaint"
               placeholder="Тема обращения"
               is-show-required-label
+              :rules="requiredRule"
             )
           er-flex.mb-32(xs12)
             er-select(
@@ -62,6 +63,7 @@ mixin toDirectorForm
               :items="getAddressList"
               placeholder="Адрес"
               is-show-required-label
+              :rules="requiredRule"
             )
           er-flex.mb-32(xs12)
             er-phone-select(
@@ -69,9 +71,8 @@ mixin toDirectorForm
               :items="getPhoneList"
               placeholder="Телефон"
               is-show-required-label
+              :rules="requiredRule"
             )
-          er-flex.mb-32(xs12)
-            er-time-picker-range(v-model="modelDirectorTime")
       er-flex(xs12)
         er-row
           er-flex.mb-32(xs12)
@@ -80,18 +81,21 @@ mixin toDirectorForm
               :items="getEmailList"
               placeholder="E-mail"
               is-show-required-label
+              :rules="requiredRule"
             )
           er-flex.mb-32(xs12)
             er-text-field(
               v-model="modelDirectorName"
               label="Как к Вам обращаться"
               is-show-required-label
+              :rules="requiredRule"
             )
           er-flex.mb-32(xs12)
             er-text-field(
               v-model="modelDirectorPost"
               label="Ваша должность"
               is-show-required-label
+              :rules="requiredRule"
             )
       er-flex.mb-24(xs12)
         er-textarea-with-file(
@@ -99,12 +103,13 @@ mixin toDirectorForm
           label="Обращение"
           is-show-label-required
           auto-height
+          :rules="requiredRule"
         )
       er-flex.create-request-component__personal-data.mb-24(xs12)
         | Нажимая на кнопку вы соглашаетесь &nbsp;
         a(href="#") на обработку данных
       er-flex.mb-8.mb-sm-0(xs12 md4)
-        er-button(pre-icon="send")
+        er-button(pre-icon="send" @click="writeToDirector" :loading="loadingCreating")
           | Отправить заявку
       er-flex(xs12 md4)
         er-button(flat @click="closeToDirector")

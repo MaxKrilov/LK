@@ -14,6 +14,7 @@ er-form(ref="form")
             v-model="service"
             placeholder="Услуга"
             is-show-required-label
+            :rules="requiredRule"
           )
         er-flex.mb-32(xs12 sm6)
           +phoneNumber
