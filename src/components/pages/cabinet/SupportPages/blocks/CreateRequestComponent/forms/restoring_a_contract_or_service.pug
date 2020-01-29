@@ -37,6 +37,8 @@ er-form(ref="form")
             v-model="recoverFrom"
             is-show-required-label
             placeholder="Восстановить с ук. даты"
+            :rules="requiredRule"
+            disabled-date="past"
           )
     er-flex(xs12)
       er-row

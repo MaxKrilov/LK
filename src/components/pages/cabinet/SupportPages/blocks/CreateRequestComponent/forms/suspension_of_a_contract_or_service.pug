@@ -40,6 +40,8 @@ er-form(ref='form')
             v-model="stoppedFrom"
             is-show-required-label
             placeholder="Приостановить с ук. даты"
+            :rules="requiredRule"
+            disabled-date="past"
           )
     er-flex(xs12)
       er-row

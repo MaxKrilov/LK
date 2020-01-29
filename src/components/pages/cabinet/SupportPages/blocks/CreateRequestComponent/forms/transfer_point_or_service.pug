@@ -14,6 +14,7 @@ er-form(ref='form')
             placeholder="Услуга"
             is-show-required-label
             :loading="loadingService"
+            :rules="requiredRuleArray"
           )
         er-flex.mb-32(xs12)
           span.h3 Перенести на адрес
@@ -22,6 +23,7 @@ er-form(ref='form')
             v-model="street"
             placeholder="Адрес переноса"
             is-show-required-label
+            :rules="requiredRule"
           )
     er-flex(xs12)
       er-row

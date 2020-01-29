@@ -11,18 +11,22 @@ er-form(ref='form')
             v-model="payer"
             label="Плательщик"
             is-show-required-label
+            :rules="requiredRule"
           )
         er-flex.mb-32(xs12)
           er-text-field(
             v-model="paymentOrderNumber",
             label="Номер платёжного поручения"
             is-show-required-label
+            :rules="requiredRule"
           )
         er-flex.mb-32(xs12 sm6)
           er-date-picker(
             v-model="datePayment",
             placeholder="Дата платежа"
             is-show-required-label
+            :rules="requiredRule"
+            disabled-date="future"
           )
         er-flex.mb-32(xs12 sm6)
           er-text-field(
@@ -30,6 +34,7 @@ er-form(ref='form')
             label="Сумма платежа"
             mask="money"
             is-show-required-label
+            :rules="requiredRule"
           )
     er-flex(xs12)
       er-row

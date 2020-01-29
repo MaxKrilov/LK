@@ -12,6 +12,7 @@ mixin phoneNumber
     v-model="phoneNumber"
     placeholder="Телефон"
     is-show-required-label
+    :rules="requiredRule"
   )
 
 mixin timePickerRange
@@ -22,6 +23,7 @@ mixin name
     label="Как к Вам обращаться?"
     is-show-required-label
     v-model="name"
+    :rules="requiredRule"
   )
 
 mixin appeal(label)
@@ -30,6 +32,8 @@ mixin appeal(label)
     is-show-required-label
     label= label
     v-model="comment"
+    :rules="requiredRule"
+    @file-append="e => { file = e }"
   )
 
 mixin footer
@@ -37,7 +41,7 @@ mixin footer
     | Нажимая на кнопку вы соглашаетесь &nbsp;
     a(href="#") на обработку данных
   er-flex.mb-8.mb-sm-0(xs12 md4)
-    er-button(pre-icon="send", @click="createRequest")
+    er-button(pre-icon="send", @click="createRequest" :loading="loadingCreating")
       | Отправить заявку
   er-flex(xs12 md4)
     er-button(flat @click="() => { isOpenFormDesktop = false }")
@@ -63,4 +67,5 @@ mixin address
     v-model="address"
     placeholder="Адрес"
     is-show-required-label
+    :rules="requiredRule"
   )

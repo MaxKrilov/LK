@@ -40,6 +40,24 @@
           er-button(pre-icon="add", @click="openDesktopForm")
             span
               | Создать заявку
+    er-activation-modal(
+      type="success"
+      v-model="resultDialogSuccess"
+      :title="`Ваша заявка № ${ticketName} сформирована и отправлена`"
+      :is-show-action-button="false"
+      cancel-button-text="Спасибо"
+    )
+      template(slot="description")
+        | Спасибо за обращение! С Вами свяжется Ваш персональный менджер.
+    er-activation-modal(
+      type="error"
+      v-model="resultDialogError"
+      title="При запросе возникла ошибка"
+      :is-show-action-button="false"
+      cancel-button-text="Спасибо"
+    )
+      template(slot="description")
+        | Попробуйте повторить попытку позже или обратитесь к Вашему персональному менджеру
 </template>
 
 <script lang="ts" src="./script.ts"></script>

@@ -1,11 +1,11 @@
-import { Vue, Component } from 'vue-property-decorator'
+import { Vue, Component, Watch } from 'vue-property-decorator'
 import CardInstructionsComponent from '../blocks/CardInstructionsComponent'
 import SlideUpDownWithTitleComponent from '../blocks/SlideUpDownWithTitleComponent/index'
 import RequestItemComponent from '../blocks/RequestItemComponent/index'
 import CreateRequestComponent from '../blocks/CreateRequestComponent/index'
 import ContactInfoComponent from '../blocks/ContactInfoComponent/index'
 import { GET_REQUEST } from '../../../../../store/actions/request'
-import { mapGetters } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 import { formatPhone } from '../../../../../functions/filters'
 
 const TYPE_FILTER_REQUEST_ALL = 'all'
@@ -29,6 +29,10 @@ const SORT_DESC = 'desc'
   computed: {
     ...mapGetters({
       getManagerInfo: 'user/getManagerInfo'
+    }),
+    ...mapState({
+      listCity: state => state.request.listRequest?.cities || [],
+      vListRequest: state => state.request.listRequest?.request || []
     })
   }
 })
@@ -37,7 +41,7 @@ export default class SupportIndexPage extends Vue {
    * Список городов по заявкам
    * @type {Array<String>}
    */
-  listCity = {}
+  // listCity = {}
   city = []
   /**
    * Тип заявок (для фильтрации)
@@ -66,6 +70,11 @@ export default class SupportIndexPage extends Vue {
   orderSort = SORT_ASC
 
   listRequest = []
+
+  @Watch('vListRequest')
+  onVListRequestChange (val) {
+    this.setListRequest(val)
+  }
 
   get getListShowRequestByCity () {
     return this.city.reduce((result, item) => result.concat(this.listCity[item]), [])
@@ -198,8 +207,8 @@ export default class SupportIndexPage extends Vue {
     }
   }
   async created () {
-    const result = await this.$store.dispatch(`request/${GET_REQUEST}`, { api: this.$api })
-    this.setListRequest(result.request)
-    this.listCity = result.cities
+    // const result = await this.$store.dispatch(`request/${GET_REQUEST}`, { api: this.$api })
+    // this.setListRequest(result.request)
+    // this.listCity = result.cities
   }
 }

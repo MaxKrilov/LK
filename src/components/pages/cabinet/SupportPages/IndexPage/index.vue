@@ -44,9 +44,6 @@
           .b-request__create
             create-request-component
     contact-info-component
-    er-dialog(
-      v-model="resultDialog"
-    )
 </template>
 
 <script src="./script.js"></script>
