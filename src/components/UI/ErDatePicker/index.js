@@ -251,6 +251,7 @@ export default {
   created () {
     this.isMobile = getScreenWidth() < 640
     this.isMobile && (this.tag = 'er-dialog')
+    this.internalValue = this.value
   },
   render (h) {
     const scopedSlots = {
