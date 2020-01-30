@@ -55,7 +55,7 @@ export default {
       if (this.type === 'checkbox' && Array.isArray(this.modelValue)) {
         return ~this.modelValue.indexOf(this.value)
       }
-      return !!this.modelValue
+      return this.modelValue === this.value
     }
   },
   watch: {
