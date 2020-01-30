@@ -203,7 +203,7 @@ export default class SupportIndexPage extends Vue {
     const { id } = e
     const index = this.listRequest.findIndex(item => item.ticketId === id)
     if (index > -1) {
-      this.listRequest[index].canceledWhen = this.listRequest[index].modifiedWhen = Number(new Date())
+      this.listRequest[index].cancelledWhen = this.listRequest[index].modifiedWhen = Number(new Date())
     }
   }
   async created () {
