@@ -207,8 +207,6 @@ export default class SupportIndexPage extends Vue {
     }
   }
   async created () {
-    // const result = await this.$store.dispatch(`request/${GET_REQUEST}`, { api: this.$api })
-    // this.setListRequest(result.request)
-    // this.listCity = result.cities
+    this.setListRequest(this.vListRequest)
   }
 }

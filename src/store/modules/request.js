@@ -21,6 +21,7 @@ const PROBLEM_REASON_THIRD = '9154741760013186143'
 
 const CHANNEL_OF_NOTIFICATION_VIBER = '9130635331813922067'
 const CHANNEL_OF_NOTIFICATION_CERTIFICATION_LETTER = '9149207479613731216'
+const CHANNEL_OF_NOTIFICATION_EMAIL = '9130635331813922068'
 
 const state = {
   listRequest: {}
@@ -86,7 +87,7 @@ const actions = {
     data.customerAccount = clientId
     data.requestName = requestName
     data.location = location
-    data.channelOfNotification = isPSI() ? CHANNEL_OF_NOTIFICATION_CERTIFICATION_LETTER : CHANNEL_OF_NOTIFICATION_VIBER
+    data.channelOfNotification = CHANNEL_OF_NOTIFICATION_EMAIL
     data.description = description
     data.customerContact = customerContact
     data.category = requestName.match(/request/i)
