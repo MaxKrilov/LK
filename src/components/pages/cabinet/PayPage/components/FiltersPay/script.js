@@ -71,8 +71,8 @@ export default {
     servicesLabel: 'Все услуги',
     cityLabel: 'Все города',
     typePayLabel: 'Все платежи',
-    visService: 'visBlock',
-    visTypePay: 'visBlock',
+    xs1: '',
+    xs2: '',
     service: true,
     period: ['2019-01-01', '2019-03-31'],
     isFiltersVisible: true,
@@ -95,6 +95,9 @@ export default {
     margLeft: '0px',
     topFilter: '',
     widthContainer: '113%',
+    select1: '',
+    select2: '',
+    select3: '',
     changeArr () {
       this.isFiltersVisible = this[SCREEN_WIDTH] >= 640
       const delta = this[SCREEN_WIDTH] >= 1200 ? 378 : 72
@@ -105,11 +108,23 @@ export default {
         this.visArr = false
         this.padding = ''
       }
+    },
+    changeWidth () {
+      if (this[SCREEN_WIDTH] < 480) {
+        this.xs1 = '__xs1'
+        this.xs2 = '__xs2'
+      } else {
+        this.xs1 = ''
+        this.xs2 = ''
+      }
     }
   }),
   components: {
     ErFilterClose,
     ListAddress
+  },
+  mounted () {
+    this.changeWidth()
   },
   computed: {
     ...mapGetters([SCREEN_WIDTH]),
@@ -162,28 +177,23 @@ export default {
       this.service = item === 'По услуге'
       this.isCloseService = true
       this.$emit('typeFind', item)
+      this.servicesLabel = 'Все услуги'
+      this.cityLabel = 'Все города'
     },
     servicesValue (item) {
       this.servicesLabel = item
-      this.visService = 'visBlock'
       this.isCloseService = true
     },
     citiesValue (item) {
       this.cityLabel = item
-      this.visService = 'visBlock'
       this.isCloseService = true
-    },
-    visTitleService () {
-      this.visService = 'visNone'
     },
     typePayValue (item) {
       this.typePayLabel = item
-      this.visTypePay = 'visBlock'
       this.topTypePay = 'active'
       this.isCloseTypePay = true
     },
     visTitleTypePay () {
-      this.visTypePay = 'visNone'
       this.topTypePay = 'initial'
     },
     inp (payload) {

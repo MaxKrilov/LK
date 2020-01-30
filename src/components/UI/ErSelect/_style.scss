@@ -1,7 +1,7 @@
 .er-select {
    > .er-input__control
    > .er-input__slot {
-    height: auto !important;
+    //height: auto !important;  для ужимания по высоте
     min-height: 40px;
     align-items: flex-start;
     padding-top: 10px !important;

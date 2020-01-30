@@ -22,7 +22,7 @@ div(:class="`${pre}`").main-content.main-content--h-padding
     div(:class="`${pre}__main`" v-if="visInfo")
       div(:class="`${pre}__line`")
       div(:class="`${pre}__sum`")
-        div.d--flex(:class="`${direct}`")
+        div.d--flex(:class="`${pre}__sum__left ${direct}`")
           er-flex.mb-16.pr-8(
             xs12
             md7
@@ -35,7 +35,7 @@ div(:class="`${pre}`").main-content.main-content--h-padding
             div(:class="`${pre}__sum__input ${pre}__sum__input${borderSum}`")
               er-text-field(
                 v-model="sumPay"
-                mask="money"
+                mask="moneynorub"
               )
                 template(slot="append-inner")
                   div.rub
@@ -98,7 +98,8 @@ div(:class="`${pre}`").main-content.main-content--h-padding
         div(:class="`${pre}__check__decoration-line`")
       div(:class="`${pre}__check__get-check`")
         div(:class="`${pre}__check__header`")
-          h3(:class="`${pre}__check__title`") Отправить чек
+          h3(:class="`${pre}__check__title`")
+            | Отправить чек
           span()
             er-hint(:class="`${pre}__sum__hint__check`")
               h3.mb-8
@@ -113,20 +114,21 @@ div(:class="`${pre}`").main-content.main-content--h-padding
           div.caption(:class="`${pre}__check__input`")
             | на электронную почту:
           div(:class="`${pre}__check__input__over`")
-          //er-select(
-          //  :placeholder="currentEmail",
-          //  :items="emails",
-          //  @input="selectEmail"
-          //)
+          er-select(
+            :placeholder="currentEmail",
+            :items="emails",
+            v-model="selected2"
+            @input="selectEmail"
+            :class="`${pre}__check__input__select`"
+          )
         div(:class="`${pre}__check__empty`" v-if="visEmptyEmail")
           | Поле заполнено не верно
 
-
     // Чек
     er-overlay(
-    v-model="openConfirmCheck"
-    :z-index="12"
-    :class="`${pre}__left`"
+      v-model="openConfirmCheck"
+      :z-index="12"
+      :class="`${pre}__left`"
     )
     div(:class="`${pre}__confirm__check`" v-if="openConfirmCheck")
       div(:class="`${pre}__confirm__content`")
@@ -256,7 +258,6 @@ div(:class="`${pre}`").main-content.main-content--h-padding
                 @click="remcardButtRight"
                 :class="`${pre}__confirm__yes__text`"
               ) Запомнить карту
-
 
     // Автоплатеж
     er-overlay(

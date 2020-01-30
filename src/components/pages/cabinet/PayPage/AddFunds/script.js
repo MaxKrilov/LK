@@ -10,7 +10,7 @@ export default {
   components: {
     PayCard,
     PaymentsOn,
-    PaymentsOff
+    PaymentsOff,
   },
   data: () => ({
     pre: 'add-funds',
@@ -46,19 +46,17 @@ export default {
     visButtConf: false,
     borderSum: '',
     borderCheck: '',
+    selected2: '',
     visEmptySum: false,
     visEmptyEmail: false,
     valEmail: PATTERN_EMAIL,
-    // email: '', //'konstantinopolsky@company.ru',
     checkAutoPay: 'Подключить автоплатёж',
-
     emails: [
       'konstantinopolsky@company.ru',
       'konstantinopolsky1@company.ru',
       'konstant'
     ],
-    currentEmail: 'konstantinopolsky@company.ru',
-
+    currentEmail: '',
     changeWidth () {
       this.direct = this[SCREEN_WIDTH] < 960 ? 'row' : 'column'
       this.visButtConf = this[SCREEN_WIDTH] < 1200
@@ -71,15 +69,9 @@ export default {
   }),
   computed: {
     ...mapGetters([SCREEN_WIDTH]),
-/*
     ...mapState({
       clientInfo: state => state.user.clientInfo
     }),
-    listEmail () {
-      let aa = this.clientInfo?.contacts?.map(item => item.contactMethods.filter(_item => _item['@type'].match(/email/ig)).value) || []
-      return aa
-    },
-*/
   },
   mounted () {
     this.changeWidth()
@@ -90,8 +82,8 @@ export default {
     }
   },
   methods: {
-    selectEmail () {
-      // this.currentEmail = item
+    selectEmail (item) {
+      this.currentEmail = item
       if (this.currentEmail === '' || !this.currentEmail.match(this.valEmail)) {
         this.visEmptyEmail = true
         this.borderCheck = '__border'
@@ -163,6 +155,13 @@ export default {
       } else {
         this.visEmptySum = false
         this.borderSum = ''
+      }
+      if (this.currentEmail === '' || !this.currentEmail.match(this.valEmail)) {
+        this.visEmptyEmail = true
+        this.borderCheck = '__border'
+      } else {
+        this.visEmptyEmail = false
+        this.borderCheck = ''
       }
       if (this.currentEmail !== '' &&
         this.sumPay !== '' &&

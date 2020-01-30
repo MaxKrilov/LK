@@ -55,29 +55,37 @@ div(:class="`${pre}`")
           | Фильтровать платежи
       er-row.justify-content.between(no-gutters :class="`${pre}__row`")
         er-flex(xs12 sm6 md5 lg3 xl3 :class="`${pre}__find`")
+          div(:class="`${pre}__select__over`")
           er-select(
-            :class="`${pre}__typeFind`"
-            :placeholder="typeFindLabel",
-            :items="typeFind",
+            :class="`${pre}__typeFind ${pre}__select`"
+            :placeholder="typeFindLabel"
+            :items="typeFind"
             @input="typeFindValue"
+            v-model="select1"
           )
         er-flex(xs12 sm6 md6 lg3 xl3 :class="`${pre}__services`")
           div.main-content--top-padding(:class="`${pre}__top-padding2`")
-          div(@click="visTitleService" v-if="service" )
-            div(:class="`${pre}__services__title ${pre}__services__title__${visService}`")
+          div(v-if="service")
+            div(:class="`${pre}__select__over${xs1}`")
+            div(:class="`${pre}__services__title`")
               | Услуга
             er-select(
-              :placeholder="servicesLabel",
-              :items="services",
+              :class="`${pre}__select`"
+              :placeholder="servicesLabel"
+              :items="services"
               @input="servicesValue"
+              v-model="select2"
             )
-          div(@click="visTitleService" v-else)
-            div(:class="`${pre}__services__title ${pre}__services__title__${visService}`")
+          div(v-else)
+            div(:class="`${pre}__select__over${xs1}`")
+            div(:class="`${pre}__services__title`")
               | Город
             er-select(
-              :placeholder="cityLabel",
-              :items="cities",
+              :class="`${pre}__select`"
+              :placeholder="cityLabel"
+              :items="cities"
               @input="citiesValue"
+              v-model="select2"
             )
         er-flex(xs12 sm6 md5 lg3 xl3 :class="`${pre}__period`")
           div.main-content--top-padding(:class="`${pre}__top-padding34`")
@@ -93,13 +101,17 @@ div(:class="`${pre}`")
           )
         er-flex(xs12 sm6 md6 lg2 xl2 :class="`${pre}__typePay`" @click="visTitleTypePay")
           div.main-content--top-padding(:class="`${pre}__top-padding34`")
-          div(:class="`${pre}__typePay__title ${pre}__typePay__title__${visTypePay}`")
-            | Тип операции
-          er-select(
-            :placeholder="typePayLabel",
-            :items="typePay",
-            @input="typePayValue"
-          )
+          div(:class="`${pre}__typePay__over`")
+            div(:class="`${pre}__select__over${xs2}`")
+            div(:class="`${pre}__typePay__title`")
+              | Тип операции
+            er-select(
+              :class="`${pre}__select`"
+              :placeholder="typePayLabel",
+              :items="typePay",
+              @input="typePayValue"
+              v-model="select3"
+            )
         er-flex(xs1 xl1 :class="`${pre}__close-filter`")
           er-filter-close(@click="filtersVisible(false)")
 
@@ -120,32 +132,34 @@ div(:class="`${pre}`")
 
   div(:class="`${pre}__arr__wrapper`")
   div(
-  :class="`${pre}__arr${padding} ${pre}__arr${topFilter}`"
-  :style="'width: ' + widthContainer"
+    :class="`${pre}__arr${padding} ${pre}__arr${topFilter}`"
+    :style="'width: ' + widthContainer"
   )
     div(
-    :class="`${pre}__icon-arr`"
-    @click="moveMonth('left')"
-    v-if="visArr"
+      :class="`${pre}__icon-arr`"
+      @click="moveMonth('left')"
+      v-if="visArr"
     )
       er-icon(name="left_big")
     div(:class="`${pre}__months-filter1`")
       div(
-      :style="'margin-left: ' + margLeft"
-      :class="`${pre}__months-filter2`"
+        :style="'margin-left: ' + margLeft"
+        :class="`${pre}__months-filter2`"
       )
         span(
-        v-for="month in typePeriod"
-        :class="`${pre}__months-filter__span`"
+          v-for="month in typePeriod"
+          :class="`${pre}__months-filter__span`"
         )
-          er-button(type="button", flat=true,
-          :class="`${pre}__months-filter__text ${pre}__months-filter__${month.active}`"
-          @click="selectMonth($event)"
+          er-button(
+            type="button",
+            flat=true,
+            :class="`${pre}__months-filter__text ${pre}__months-filter__${month.active}`"
+            @click="selectMonth($event)"
           )
             | {{ month.month }}
     div(
-    :class="`${pre}__icon-arr ${pre}__icon-arr__right`"
-    @click="moveMonth('right')"
-    v-if="visArr"
+      :class="`${pre}__icon-arr ${pre}__icon-arr__right`"
+      @click="moveMonth('right')"
+      v-if="visArr"
     )
       er-icon(name="right_big")

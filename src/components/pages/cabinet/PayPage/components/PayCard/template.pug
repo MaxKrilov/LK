@@ -1,11 +1,12 @@
 // Pay Card
 
 er-container(full :class="`${pre}__container`")
+  div(style="margin-left: 500px")
   div(:class="`${pre}__indicators`")
     div(:class="`${pre}__indicators__disable`")
     div(
-    :class="`${pre}__indicators__line`"
-    :style="'top: ' + moveInd + 'px'"
+      :class="`${pre}__indicators__line`"
+      :style="'top: ' + moveInd + 'px'"
     )
     div(
       v-for="i in 3"
@@ -23,7 +24,7 @@ er-container(full :class="`${pre}__container`")
     v-if="visButtLeft"
   )
     div(:class="`${pre}__card-butt__card-height`" @click="moveDown")
-  div(id="bgg1"
+  div(
     :class="`${pre}__card-butt__lateral-right${rightNext}`"
     v-if="visButtRight"
   )
@@ -98,7 +99,7 @@ er-container(full :class="`${pre}__container`")
                     )
                     div(:class="`${pre}__auto-pay__title`")
                       | Автоплатеж
-          er-flex
+          er-flex(id="bgg" style="height: 0")
             er-card(
               :class="`${pre}__card__bg`"
               :style="'transform: translate(' + leftMove[0] + 'px, ' +  topBg[0] + 'px)'"
@@ -174,8 +175,8 @@ er-container(full :class="`${pre}__container`")
                 h2(:class="`${pre}__logo__bottom__next`")
                   | 9876
 
-          er-flex
-            er-card(id="bgg"
+          er-flex(id="bgg1" style="height: 0")
+            er-card(
               :class="`${pre}__card__bg`"
               :style="'transform: translate(' + leftMove[1] + 'px, ' +  topBg[1] + 'px)'"
             )
@@ -265,7 +266,7 @@ er-container(full :class="`${pre}__container`")
                   img(src="@/assets/images/paycard/mc-butt-1200.png")
                 h2(:class="`${pre}__logo__bottom__next`")
                   | 2365
-          er-flex
+          er-flex(style="height: 0")
             er-card(
               :class="`${pre}__card__bg`"
               :style="'transform: translate(' + leftMove[2] + 'px, ' +  topBg[2] + 'px)'"
@@ -335,7 +336,7 @@ er-container(full :class="`${pre}__container`")
                     :class="`${pre}__card-title__delete__text`"
                     ) Удалить
 
-          er-flex
+          er-flex(style="height: 0")
             er-card(
             :class="`${pre}__card__bg`"
             :style="'transform: translate(' + leftMove[3] + 'px, ' +  topBg[3] + 'px)'"

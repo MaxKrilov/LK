@@ -273,7 +273,8 @@
       @include media-query((
         padding-left: (
           sm: 39px !important,
-          md: 15px !important
+          md: 23px !important,
+          lg: 0 !important,
         )
       ));
     }
@@ -349,7 +350,6 @@
       ))
     }
     &__empty {
-      //position: relative;
       margin-left: 184px;
       font: 10px/120% $fedra-demi;
       color: map_get($red, 'base');
@@ -365,7 +365,16 @@
           md: normal,
         ),
         margin-left: (
-          xl: 88px
+          sm: 86px,
+        )
+      ));
+    }
+    &__left {
+      @include media-query((
+        margin-left: (
+          md: -21px !important,
+          lg: 0 !important,
+          xl: 5px !important,
         )
       ));
     }
@@ -385,8 +394,9 @@
       ),
       margin-left: (
         sm: 0,
-        md: 46px,
-        lg: 16px,
+        md: 3px,
+        lg: 0,
+        xl: 4px
       ),
     ));
     &__decoration {
@@ -442,7 +452,7 @@
     }
     &__body {
       margin-top: 27px;
-      &__border > .er-select > .er-text-field .er-input__control .er-input__slot {
+      &__border > .er-text-field .er-input__control .er-input__slot {
         border: 1px solid map_get($red, 'base') !important;
       }
     }
@@ -450,19 +460,49 @@
       position: relative;
       top: -13px;
       text-align: center;
+      z-index: 3;
       &__over {
         position: absolute;
-        height: 14px;
-        width: 316px;
-        left: 36px;
-        top: 123px;
-        background: #F8F8F8;
+        height: 20px;
+        width: 249px;
+        left: 18px;
+        top: 108px;
+        background: map_get($gray, '2');
         z-index: 2;
+        @include media-query((
+          height: (md: 29px),
+          left: (md: 36px),
+          width: (md: 317px),
+        ));
+      }
+      &__select {
+        & .er-input__control > .er-input__slot {
+          max-height: 40px;
+          min-height: 40px !important;
+          font: 13px/18px $fedra-book;
+          letter-spacing: 0.25px;
+          color: rgba(map_get($shades, 'black'), 0.8);
+          @include media-query((
+            font-size: (
+              md: 14px,
+              xl: 16px
+            ),
+            line-height: (
+              md: 19px,
+              xl: 21px
+            ),
+            letter-spacing: (
+              md: normal
+            ),
+            min-height: (
+              xl: 48px !important
+            )
+          ));
+        }
       }
     }
     &__empty {
       margin-left: 112px;
-      margin-top: -19px;
       font: 10px/120% $fedra-demi;
       color: map_get($red, 'base');
       letter-spacing: 0.5px;
@@ -476,10 +516,8 @@
         letter-spacing: (
           md: normal,
         ),
-        margin-top: (
-          xl: -3px
-        ),
         margin-left: (
+          md: 161px,
           xl: 165px
         )
       ));

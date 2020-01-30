@@ -121,7 +121,6 @@ export default {
             this.topBg[this.index + 1] += 66
           }
         }
-
         for (let i = 0; i < this.visButtTop.length; i++) {
           this.visButtTop[i] = false
           this.visButtBott[i] = false

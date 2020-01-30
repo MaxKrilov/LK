@@ -26,7 +26,7 @@ export default {
       }
       if (this[SCREEN_WIDTH] > 337 && this[SCREEN_WIDTH] <= 480) {
         this.widthContainer = '108% !important'
-        this.widthContButt = '104% !important'
+        this.widthContButt = '108% !important'
       }
       if (this[SCREEN_WIDTH] > 480 && this[SCREEN_WIDTH] <= 800) {
         this.widthContainer = '108% !important'
