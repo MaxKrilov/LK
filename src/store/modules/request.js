@@ -10,6 +10,7 @@ import {
 } from '../actions/request'
 import { ERROR_MODAL } from '../actions/variables'
 import { TYPE_ARRAY } from '../../constants/type_request'
+import { isPSI } from '../../functions/helper'
 
 const CANCELLATION_REASON = '9150410012013966885'
 const REQUEST_REASON = '9154749926213188767'
@@ -19,6 +20,7 @@ const PROBLEM_REASON = '9154786970013205616'
 const PROBLEM_REASON_THIRD = '9154741760013186143'
 
 const CHANNEL_OF_NOTIFICATION_VIBER = '9130635331813922067'
+const CHANNEL_OF_NOTIFICATION_CERTIFICATION_LETTER = '9150253751213655967'
 
 const state = {
   listRequest: {}
@@ -84,7 +86,7 @@ const actions = {
     data.customerAccount = clientId
     data.requestName = requestName
     data.location = location
-    data.channelOfNotification = CHANNEL_OF_NOTIFICATION_VIBER
+    data.channelOfNotification = isPSI() ? CHANNEL_OF_NOTIFICATION_CERTIFICATION_LETTER : CHANNEL_OF_NOTIFICATION_VIBER
     data.description = description
     data.customerContact = customerContact
     data.category = requestName.match(/request/i)

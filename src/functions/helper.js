@@ -579,3 +579,7 @@ export function createSimpleComponent (c, el = 'div', name) {
     }
   })
 }
+
+export function isPSI () {
+  return location.origin.match(/master2/ig)
+}
