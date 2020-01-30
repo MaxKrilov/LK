@@ -140,22 +140,29 @@
             er-textarea(v-model="reasonOfCancel" label="Укажите причину" is-show-label-required :rules="[v => !!v || 'Поле обязательно к заполнению']")
           er-row.actions.d--flex
             er-flex.action.xs12.sm6.px-16
-              er-button(@click="cancelRequest")
+              er-button(@click="cancelRequest" :loading="loadingCancel")
                 | Отменить
             er-flex.action.xs12.sm6.px-16
               er-button(flat, @click="closeCancelDialog")
                 | Не отменять
-    er-dialog(v-model="isSuccessCancel" max-width="544")
-      .request-item-component__cancel-request-dialog-success
-        .content
-          .icon
-            er-icon(name="circle_ok")
-          .title
-            | Заявка № {{ ticketName }} успешно отменена
-          er-row.actions.d--flex
-            er-flex.action.xs12.sm6.px-16
-              er-button(@click="closeSuccessCancel")
-                | Закрыть
+    er-activation-modal(
+      type="success"
+      v-model="isSuccessCancel"
+      :title="`Заявка № ${ ticketName } успешно отменена`"
+      :is-show-action-button="false"
+      cancel-button-text="Спасибо"
+    )
+      template(slot="description")
+        | Спасибо за обращение!
+    er-activation-modal(
+      type="error"
+      v-model="resultDialogError"
+      title="При запросе возникла ошибка"
+      :is-show-action-button="false"
+      cancel-button-text="Спасибо"
+    )
+      template(slot="description")
+        | Попробуйте повторить попытку позже или обратитесь к Вашему персональному менджеру
 </template>
 
 <script src="./script.js"></script>

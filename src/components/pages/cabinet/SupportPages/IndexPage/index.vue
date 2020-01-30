@@ -37,7 +37,7 @@
                 v-for="requestItem in listRequestComputed"
                 v-bind="requestItem"
                 :key="requestItem.ticketId"
-                @cancel="cancelRequest"
+                @cancel="() => { requestItem.cancelledWhen = requestItem.modifiedWhen = Number(new Date()) }"
               )
             .b-request__tbody--empty(v-if="listRequestComputed.length === 0")
               | У вас нет {{ isActiveFilterRequest(getTypeFilterRequestActive) ? 'активных' : '' }} заявок

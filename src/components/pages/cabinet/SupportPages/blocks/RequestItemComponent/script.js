@@ -1,5 +1,6 @@
 import { Vue, Component, Prop } from 'vue-property-decorator'
 import { CANCEL_REQUEST } from '../../../../../../store/actions/request'
+import ErActivationModal from '../../../../../blocks/ErActivationModal/index'
 
 const localisationTicketType = val => val.match(/Problem/ig)
   ? 'Инцидент'
@@ -10,6 +11,9 @@ const localisationTicketType = val => val.match(/Problem/ig)
       : 'Другое'
 
 @Component({
+  components: {
+    ErActivationModal
+  },
   filters: {
     localisationTicketType
   }
@@ -76,6 +80,8 @@ export default class RequestItemComponent extends Vue {
   /** @type {string} */
   reasonOfCancel = ''
   isSuccessCancel = false
+  resultDialogError = false
+  loadingCancel = false
 
   /**
    * Получение метки-статуса
@@ -141,7 +147,7 @@ export default class RequestItemComponent extends Vue {
   }
   get getDetailInfoDesktop () {
     return [
-      { caption: 'Тип заявки', value: this.ticketType },
+      { caption: 'Тип заявки', value: localisationTicketType(this.ticketType) },
       { caption: 'Тип проблемы', value: this.type },
       { caption: 'Продукт', value: this.affectedProduct },
       { caption: 'Адрес подключения', value: this.location }
@@ -170,17 +176,26 @@ export default class RequestItemComponent extends Vue {
     if (!this.$refs.cancel_form.validate()) {
       return false
     }
-    const result = await this.$store.dispatch(`request/${CANCEL_REQUEST}`, {
+    this.loadingCancel = true
+    this.$store.dispatch(`request/${CANCEL_REQUEST}`, {
       api: this.$api,
       requestId: this.ticketId,
       description: this.reasonOfCancel
     })
-    if (result) {
-      this.closeCancelDialog()
-      this.isSuccessCancel = true
-      this.$emit('cancel', {
-        id: this.ticketId
+      .then(result => {
+        if (result) {
+          this.closeCancelDialog()
+          this.isSuccessCancel = true
+          this.$emit('cancel')
+        } else {
+          this.resultDialogError = true
+        }
       })
-    }
+      .catch(() => {
+        this.resultDialogError = true
+      })
+      .finally(() => {
+        this.loadingCancel = false
+      })
   }
 }

@@ -57,7 +57,7 @@ const actions = {
           description
         })
         .query('/problem/management/close')
-      return true
+      return result === null
     } catch (e) {
       commit(ERROR_MODAL, true, { root: true })
       return false
