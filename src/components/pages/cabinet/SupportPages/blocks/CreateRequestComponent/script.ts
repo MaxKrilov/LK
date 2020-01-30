@@ -139,7 +139,11 @@ export default class CreateRequestComponent extends Vue {
   }
 
   get getPhoneList () {
-    return this.getListContact.map((item: iContactListItem) => item.phone?.value)
+    return this.getListContact.map((item: iContactListItem) => item.phone?.value).filter(item => item)
+  }
+
+  get getEmailList () {
+    return this.getListContact.map((item: iContactListItem) => item.email?.value).filter(item => item)
   }
 
   requiredRule = [
@@ -183,7 +187,6 @@ export default class CreateRequestComponent extends Vue {
   @Watch('address')
   onAddressChange (val: iListAddressItem) {
     this.loadingService = true
-    console.log(val)
     this.$store.dispatch(`request/${GET_SERVICES_BY_LOCATION}`, {
       api: this.$api,
       locationId: val.id
@@ -238,6 +241,7 @@ export default class CreateRequestComponent extends Vue {
         phoneId = customerContact.phone.id
       }
     }
+    const emailAddress = getFirstElement(this.getListContact.map((item: iContactListItem) => item.email?.id).filter(item => item))
 
     this.$store.dispatch(`request/${CREATE_REQUEST}`, {
       requestName,
@@ -249,7 +253,8 @@ export default class CreateRequestComponent extends Vue {
       api: this.$api,
       problemTheme: this.technicalRequestTheme.id,
       service: this.service.id,
-      file: this.file
+      file: this.file,
+      emailAddress
     })
       .then((answer: boolean | string) => {
         if (typeof answer === 'string' && answer !== '') {
