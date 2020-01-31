@@ -69,7 +69,19 @@
       "ecmaFeatures": {
         "legacyDecorators": true
       }
-    }
+    },
+    "overrides": [
+      {
+        "files": ["**/*.ts", "**/*.tsx"],
+        "env": {
+          "node": true
+        },
+        "rules": {},
+        "parserOptions": {
+          "parser": "@typescript-eslint/parser"
+        }
+      }
+    ]
   },
   "postcss": {
     "plugins": {
