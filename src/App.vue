@@ -13,12 +13,14 @@
 import { mapGetters, mapState } from 'vuex'
 import { SCREEN_WIDTH } from './store/actions/variables'
 import { getScreenWidth } from './functions/helper'
+
 import {
   GET_CLIENT_INFO,
   GET_LIST_BILLING_ACCOUNT, GET_LIST_PRODUCT_BY_ADDRESS, GET_LIST_PRODUCT_BY_SERVICE,
   GET_MANAGER_INFO, GET_PAYMENT_INFO, GET_PROMISED_PAYMENT_INFO,
-  GET_UNSIGNED_DOCUMENTS
+  GET_DOCUMENTS
 } from '@/store/actions/user'
+
 import { GET_REQUEST } from '@/store/actions/request'
 
 export default {
@@ -36,7 +38,7 @@ export default {
                 if (Object.keys(clientInfo).length !== 0) {
                   this.$store.dispatch(`user/${GET_MANAGER_INFO}`, { api: this.$api })
                   this.$store.dispatch(`request/${GET_REQUEST}`, { api: this.$api })
-                  this.$store.dispatch(`user/${GET_UNSIGNED_DOCUMENTS}`, { api: this.$api })
+                  this.$store.dispatch(`user/${GET_DOCUMENTS}`, { api: this.$api })
                   this.$store.dispatch(`user/${GET_LIST_BILLING_ACCOUNT}`, { api: this.$api })
                     .then(isValid => {
                       if (isValid) {

@@ -1,13 +1,13 @@
 er-filter-container(
   :active="isFiltersVisible"
-  @click-outside="onCloseFilters()"
+  @click-outside="onCloseFilters"
 ).er-contract-filter
   div(
     slot="selected-filters"
   ).er-contract-filter__current
     span.er-filter-container__active-filter(
-      @click="onShowFilters()"
-    ) Все
+      @click="onShowFilters"
+    ) {{ filterTypes[contractFilterType] }}
 
   div(slot="title")
     | Контрактные документы
@@ -27,6 +27,7 @@ er-filter-container(
                     :value="idx"
                     :id="'id-filter-type-' + idx"
                     :modelValue="contractFilterType"
+                    v-model="contractFilterType"
                   )
                   label(:for="'id-filter-type-' + idx").er-toggle__custom-label
                     | {{ title }}

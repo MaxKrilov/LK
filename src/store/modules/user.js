@@ -10,8 +10,8 @@ import {
   GET_LIST_SERVICE_BY_ADDRESS,
   GET_MANAGER_INFO,
   GET_MANAGER_INFO_SUCCESS,
-  GET_UNSIGNED_DOCUMENTS,
-  GET_UNSIGNED_DOCUMENTS_SUCCESS,
+  GET_DOCUMENTS,
+  GET_DOCUMENTS_SUCCESS,
   SET_ACTIVE_BILLING_ACCOUNT,
   GET_LIST_ADDRESS_BY_SERVICES,
   GET_PAYMENT_INFO,
@@ -20,7 +20,14 @@ import {
   GET_PROMISED_PAYMENT_INFO
 } from '../actions/user'
 import { ERROR_MODAL } from '../actions/variables'
+import { logError } from '@/functions/logging'
 import { eachArray } from '../../functions/helper'
+import {
+  isContractDocument,
+  isBlankDocument,
+  isUserListDocument,
+  isReportDocument
+} from '@/functions/document'
 
 const ACCOUNT_MANAGER_ID = '9134601279613203712'
 const INN_ID = '9148328342013670726'
@@ -32,7 +39,8 @@ const state = {
     fullAddress: {}
   },
   personalManager: {},
-  countUnsignedDocuments: [],
+  countUnsignedDocuments: 0,
+  documents: [],
   listBillingAccount: [],
   activeBillingAccount: '',
   activeBillingAccountNumber: '',
@@ -84,8 +92,14 @@ const getters = {
     }) || []
   },
   getCountUnsignedDocuments (state) {
-    return state.countUnsignedDocuments.length
+    return state.countUnsignedDocuments
   },
+  getReportDocuments: state => state.documents.filter(el => {
+    return isReportDocument(el)
+  }),
+  getContractDocuments: state => state.documents.filter(el => {
+    return isContractDocument(el) || isBlankDocument(el) || isUserListDocument(el)
+  }),
   getPhoneList (state) {
     return state.clientInfo?.contactMethods?.filter(item => item['@type'] === 'PhoneNumber')
       .map(item => item.name.replace(/[\D]+/g, '')) || []
@@ -180,22 +194,30 @@ const actions = {
       }
     }
   },
-  [GET_UNSIGNED_DOCUMENTS]: async ({ commit, rootState, rootGetters }, { api }) => {
-    const { toms } = rootGetters['auth/user']
-    try {
-      const result = await api
-        .setWithCredentials()
-        .setData({
-          clientId: toms
-        })
-        .query('/customer/management/fileinfo')
-      commit(GET_UNSIGNED_DOCUMENTS_SUCCESS, result)
-    } catch (error) {
-      commit(ERROR_MODAL, true, { root: true })
-      // todo Логирование
-    } finally {
-      commit('loading/loadingDocuments', false, { root: true })
+  [GET_DOCUMENTS]: async ({ commit, rootState, rootGetters }, { api }) => {
+    let toms
+
+    if (process.env.VUE_APP_DOCUMENT_TEST_USER_ID !== undefined) {
+      toms = process.env.VUE_APP_DOCUMENT_TEST_USER_ID
+      console.info(`used VUE_APP_DOCUMENT_TEST_USER_ID=${toms}`)
+    } else {
+      toms = rootGetters['auth/user']['toms']
     }
+
+    return api
+      .setWithCredentials()
+      .setBranch('master')
+      .setData({
+        clientId: toms
+      })
+      .query('/customer/management/fileinfo')
+      .then((data) => {
+        commit(GET_DOCUMENTS_SUCCESS, data)
+      })
+      .catch(error => {
+        logError(error)
+        commit(ERROR_MODAL, true, { root: true })
+      })
   },
   /**
    * Получение списка лицевых счетов
@@ -346,8 +368,9 @@ const mutations = {
   [GET_MANAGER_INFO_SUCCESS]: (state, payload) => {
     state.personalManager = payload
   },
-  [GET_UNSIGNED_DOCUMENTS_SUCCESS]: (state, payload) => {
-    state.countUnsignedDocuments = payload
+  [GET_DOCUMENTS_SUCCESS]: (state, payload) => {
+    state.documents = payload
+    state.countUnsignedDocuments = payload.length
   },
   [GET_LIST_BILLING_ACCOUNT_SUCCESS]: (state, payload) => {
     state.listBillingAccount = payload

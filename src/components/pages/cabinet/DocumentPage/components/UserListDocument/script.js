@@ -1,8 +1,12 @@
+import * as DOCUMENT from '@/constants/document'
+
 import CommonDocument from '../CommonDocument'
 import UploadUserlistDialog from './components/UploadUserlistDialog'
 import WarningUserlistDialog from './components/WarningUserlistDialog'
+import DocumentMixin from '@/mixins/ErDocumentMixin'
 
 export default {
+  mixins: [DocumentMixin],
   props: {
     'document': Object
   },
@@ -13,7 +17,8 @@ export default {
   },
   data () {
     return {
-      openDialog: false
+      openDialog: false,
+      DOCUMENT
     }
   },
   computed: {
