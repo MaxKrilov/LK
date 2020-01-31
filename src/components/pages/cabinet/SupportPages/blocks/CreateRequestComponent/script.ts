@@ -77,7 +77,7 @@ export default class CreateRequestComponent extends Vue {
   // ===== DATA =====
   // ===== MODELS =====
   // Global
-  requestTheme: iRequestTheme | undefined = { id: '9154749993013188894', value: 'Общие вопросы', form: 'general_issues', requestName: 'request' }
+  requestTheme: iRequestTheme | undefined = { id: '9154749993013188903', value: 'Общие вопросы', form: 'general_issues', requestName: 'request' }
   phoneNumber = ''
   address: iListAddressItem | any = {}
   name = ''
