@@ -145,4 +145,8 @@
     color: rgba(map_get($shades, 'black'), 0.8);
     text-decoration: none;
   }
+
+  .change-org-button {
+    display: inline-block;
+  }
 }

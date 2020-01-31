@@ -1,0 +1,60 @@
+$change-org-popup-lg-height: 480px;
+$change-org-popup-lg-max-width: 729px;
+$change-org-content-wrap-max-height: 408px;
+
+.change-org-popup {
+  position: absolute;
+  z-index: map_get($z-index, right-modal);
+
+  &__content {
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    background-color: map_get($shades, 'white');
+    padding: $padding-x4;
+    border-radius: 12px;
+
+    width: 100%;
+    height: 100%;
+
+    @include min-breakpoint('lg') {
+      max-width: $change-org-popup-lg-max-width;
+      height: $change-org-popup-lg-height;
+    }
+
+    @include min-breakpoint('sm') {
+      padding: $padding-x6;
+    }
+
+    @include min-breakpoint('xl') {
+      padding: $padding-x8;
+    }
+  }
+
+  &__content-wrap {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    height: 100%;
+    max-height: $change-org-content-wrap-max-height;
+  }
+
+  &__close {
+    position: absolute;
+    z-index: 1;
+
+    top: $padding-x4;
+    right: $padding-x4;
+
+    @include min-breakpoint('sm') {
+      top: $padding-x6;
+      right: $padding-x6;
+    }
+
+    @include min-breakpoint('lg') {
+      top: $padding-x8;
+      right: $padding-x8;
+    }
+  }
+}

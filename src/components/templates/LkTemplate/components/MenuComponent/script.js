@@ -1,13 +1,18 @@
 import { eachArray } from '@/functions/helper'
 import { mapState, mapGetters } from 'vuex'
 import { BREAKPOINT_XL } from '@/constants/breakpoint'
-import RightInfoPanelComponent from '../RightInfoPanelComponent/index.vue'
 import { SCREEN_WIDTH } from '../../../../../store/actions/variables'
+
+import RightInfoPanelComponent from '../RightInfoPanelComponent/index.vue'
+import ChangeOrganizationPopup from '../ChangeOrganizationPopup/index'
+
 import { formatPhone, price } from '../../../../../functions/filters'
+
 
 export default {
   name: 'menu-component',
   components: {
+    ChangeOrganizationPopup,
     RightInfoPanelComponent
   },
   data: () => ({
@@ -15,6 +20,7 @@ export default {
     openLeftMenu: false,
     openSubMenuBackground: false,
     isOpenRightPanel: false,
+    showChangeOrganizationPopup: false,
     menu: [
       {
         name: 'Главная',
@@ -116,10 +122,12 @@ export default {
     },
     signOut () {
       this.$store.dispatch('auth/signOut', { api: this.$api })
+    },
+    onChangeOrganization () {
+      this.showChangeOrganizationPopup = true
     }
   },
   mounted () {
-    // console.log(this['user/getManagerInfo'])
     if (this.isDesktop) {
       this.openSubMenuBackground = true
       this.menu[0].isOpen = true
