@@ -13,7 +13,7 @@ const state = {
     { id: '9154749993013188872', value: 'Перевод денежных средств', form: 'money_transfer', requestName: 'request' },
     { id: '9154749993013188897', value: 'Ошибочный платеж', form: 'erroneous_payment', requestName: 'request' },
     { id: '9154749993013188885', value: 'Заказать документ', form: 'order_a_document', requestName: 'request' },
-    { id: '9154749993013188894', value: 'Общие вопросы', form: 'general_issues', requestName: 'request' },
+    { id: '9154749993013188903', value: 'Общие вопросы', form: 'general_issues', requestName: 'request' },
     { id: '9156211040213279417', value: 'Технические вопросы', form: 'technical_issues', requestName: 'problem' }
   ],
   [LIST_TECHNICAL_REQUEST_THEME]: [

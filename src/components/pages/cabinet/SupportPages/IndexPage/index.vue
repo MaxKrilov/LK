@@ -31,16 +31,22 @@
                 span.title {{ headTitle.name }}
                 span.icon
                   er-icon(name="funnel")
-          .b-request__tbody
-            transition-group(name="flip-list")
+          er-preloader(:active="loadingRequest" icon icon-type="2")
+            .b-request__tbody
               request-item-component(
-                v-for="requestItem in listRequestComputed"
+                v-for="requestItem in listRequestComputedByPagination"
                 v-bind="requestItem"
                 :key="requestItem.ticketId"
                 @cancel="() => { requestItem.cancelledWhen = requestItem.modifiedWhen = Number(new Date()) }"
               )
-            .b-request__tbody--empty(v-if="listRequestComputed.length === 0")
-              | У вас нет {{ isActiveFilterRequest(getTypeFilterRequestActive) ? 'активных' : '' }} заявок
+              .b-request__tbody--empty(v-if="listRequestComputed.length === 0")
+                | У вас нет {{ isActiveFilterRequest(getTypeFilterRequestActive) ? 'активных' : '' }} заявок
+          .b-request__pagination(v-if="listRequestComputed.length > getVisibleRequest")
+              er-pagination(
+                v-model="currentPage"
+                :length="getLengthPagination"
+                :total-visible="getTotalVisiblePagination"
+              )
           .b-request__create
             create-request-component
     contact-info-component

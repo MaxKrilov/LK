@@ -42,7 +42,7 @@ export default {
       ])
     },
     onChange (e) {
-      this.fileName = e.target.files[0].name
+      this.fileName = e?.target?.files[0]?.name
       toBase64(e.target.files[0])
         .then(result => {
           this.$emit('file-append', result)

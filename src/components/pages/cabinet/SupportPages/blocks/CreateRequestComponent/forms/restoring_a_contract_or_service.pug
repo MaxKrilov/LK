@@ -1,6 +1,6 @@
 //- Восстановление договора или услуги
 include ./_mixins
-er-form(ref="form")
+er-form(ref="restoring_a_contract_or_service")
   er-row
     er-flex(xs12)
       er-row
@@ -12,26 +12,28 @@ er-form(ref="form")
           .agreement
             | {{ agreementNumber }}
           .toggle.ml-auto
-            er-toggle(view="radio-check", v-model="isWholeContract")
-              template(slot="append-outer")
-                span.toggle-caption
-                  | Весь договор
-        er-flex.mb-32(xs12)
-          er-select(
-            :items="getAddressList"
-            v-model="address"
-            placeholder="Адрес"
-            is-show-required-label
-            :disabled="isWholeContract"
-          )
-        er-flex.mb-32(xs12)
-          er-select(
-            :items="listService"
-            v-model="services"
-            placeholder="Услуга"
-            is-show-required-label
-            :disabled="isWholeContract"
-          )
+            er-toggle(view="radio-check", v-model="isWholeContract" label="Весь договор")
+        er-flex(xs12)
+          er-slide-up-down(:active="!isWholeContract")
+            er-row
+              er-flex.mb-32(xs12)
+                er-select(
+                  :items="getAddressList"
+                  v-model="address"
+                  placeholder="Адрес"
+                  is-show-required-label
+                  :disabled="isWholeContract"
+                  :rules="isWholeContract ? [v => true] : [v => !!Object.keys(v).length || 'Поле обязательно к заполнению']"
+                )
+              er-flex.mb-32(xs12)
+                er-select(
+                  :items="listService"
+                  v-model="services"
+                  placeholder="Услуга"
+                  is-show-required-label
+                  :disabled="isWholeContract"
+                  :rules="isWholeContract ? [v => true] : [v => !!v.length || 'Поле обязательно к заполнению']"
+                )
         er-flex.mb-32.create-request-component__date-picker(xs12 sm6 r-offset-sm6)
           er-date-picker(
             v-model="recoverFrom"

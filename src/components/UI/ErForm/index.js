@@ -12,6 +12,9 @@ export default {
       this.inputs.push(input)
     },
     unregister (input) {
+      const found = this.inputs.find(i => i._uid === input._uid)
+      if (!found) return
+      this.inputs = this.inputs.filter(i => i._uid !== found._uid)
     },
     validate () {
       const errors = this.inputs.filter(input => !input.validate()).length
