@@ -44,6 +44,10 @@ interface iRequestTechnicalTheme {
   requestName: string
 }
 
+interface iErForm extends HTMLFormElement {
+  validate: () => boolean
+}
+
 // @ts-ignore
 @Component({
   computed: {
@@ -100,7 +104,7 @@ export default class CreateRequestComponent extends Vue {
   service: standardSelectItem = {}
   internetProtocol = ''
   // Termination of a contract or service
-  terminateFrom = ''
+  terminateFrom = new Date()
   // Technocal issues
   technicalRequestTheme: iRequestTechnicalTheme | any = {}
   // ===== LISTS =====
@@ -180,13 +184,15 @@ export default class CreateRequestComponent extends Vue {
     const _val = val.replace(/[\D]+/, '')
     const findingValue = this.getListContact.find((item: iContactListItem) => item.phone?.value === _val)
     if (findingValue !== undefined && findingValue.firstName && findingValue.name) {
-      this.name = `${findingValue.firstName} ${findingValue.name}`
+      this.name = findingValue.name
     }
   }
 
   @Watch('address')
   onAddressChange (val: iListAddressItem) {
     this.loadingService = true
+    this.services = []
+    this.service = {}
     this.$store.dispatch(`request/${GET_SERVICES_BY_LOCATION}`, {
       api: this.$api,
       locationId: val.id
@@ -198,6 +204,14 @@ export default class CreateRequestComponent extends Vue {
         }))
         this.loadingService = false
       })
+  }
+
+  @Watch('isWholeContract')
+  onIsWholeContract (val: boolean) {
+    if (val) {
+      this.services = []
+      this.address = {}
+    }
   }
 
   closeForm () {
@@ -217,8 +231,7 @@ export default class CreateRequestComponent extends Vue {
   }
 
   createRequest () {
-    // @ts-ignore
-    if (!this.$refs.form.validate()) return
+    if (!(this.$refs[this.requestTheme?.form || 'form'] as iErForm).validate()) return
     this.loadingCreating = true
     // Наименование проблемы
     const requestName = this.requestTheme?.requestName
@@ -391,7 +404,7 @@ export default class CreateRequestComponent extends Vue {
     this.sumPayment = ''
     this.service = {}
     this.internetProtocol = ''
-    this.terminateFrom = ''
+    this.terminateFrom = new Date()
     this.technicalRequestTheme = ''
   }
 }

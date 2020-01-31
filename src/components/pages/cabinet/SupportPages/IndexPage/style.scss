@@ -211,6 +211,9 @@
         @extend %body-font;
       }
     }
+    &__pagination {
+      padding: 0 32px 32px;
+    }
   }
 }
 

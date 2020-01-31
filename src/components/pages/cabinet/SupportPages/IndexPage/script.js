@@ -14,6 +14,9 @@ const TYPE_FILTER_REQUEST_ACTIVE = 'active'
 const SORT_ASC = 'asc'
 const SORT_DESC = 'desc'
 
+const VISIBLE_REQUEST = 6
+const TOTAL_VISIBLE_PAGINATION = 7
+
 @Component({
   components: {
     CardInstructionsComponent,
@@ -32,7 +35,8 @@ const SORT_DESC = 'desc'
     }),
     ...mapState({
       listCity: state => state.request.listRequest?.cities || [],
-      vListRequest: state => state.request.listRequest?.request || []
+      vListRequest: state => state.request.listRequest?.request || [],
+      loadingRequest: state => state.loading.loadingRequest
     })
   }
 })
@@ -71,9 +75,19 @@ export default class SupportIndexPage extends Vue {
 
   listRequest = []
 
+  currentPage = 1
+
   @Watch('vListRequest')
   onVListRequestChange (val) {
     this.setListRequest(val)
+  }
+
+  get getLengthPagination () {
+    return Math.ceil(this.listRequestComputed.length / VISIBLE_REQUEST)
+  }
+
+  get getTotalVisiblePagination () {
+    return TOTAL_VISIBLE_PAGINATION
   }
 
   get getListShowRequestByCity () {
@@ -101,6 +115,10 @@ export default class SupportIndexPage extends Vue {
     return this.city.length === 0
       ? filteredByActive
       : filteredByActive.filter(item => this.getListShowRequestByCity.includes(item.ticketId))
+  }
+
+  get listRequestComputedByPagination () {
+    return this.listRequestComputed.slice((this.currentPage - 1) * VISIBLE_REQUEST, this.currentPage * VISIBLE_REQUEST - 1)
   }
 
   /**
@@ -139,6 +157,9 @@ export default class SupportIndexPage extends Vue {
   }
   get getListNameCity () {
     return Object.keys(this.listCity)
+  }
+  get getVisibleRequest () {
+    return VISIBLE_REQUEST
   }
 
   /**

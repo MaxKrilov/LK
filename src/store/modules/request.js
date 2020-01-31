@@ -36,6 +36,7 @@ const actions = {
           requestName: 'all',
           clientId: toms
         })
+        .setBranch('web-bss')
         .query('/problem/management/list')
       commit(GET_REQUEST_SUCCESS, result)
       return result
@@ -87,7 +88,7 @@ const actions = {
     data.customerAccount = clientId
     data.requestName = requestName
     data.location = location
-    data.channelOfNotification = 'VIBER'
+    data.channelOfNotification = CHANNEL_OF_NOTIFICATION_VIBER
     data.description = description
     data.customerContact = customerContact
     data.category = requestName.match(/request/i)
