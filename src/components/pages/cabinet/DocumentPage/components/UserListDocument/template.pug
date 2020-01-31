@@ -1,10 +1,10 @@
 common-document(
-  :class="{'er-document--signed': document.signed}"
+  :class="{'er-document--signed': documentIsSigned}"
 ).er-document--userlist.er-document--big-doc
   template(v-slot:header)
-    .er-document__title(v-if="document.signed") Список пользователей
+    .er-document__title(v-if="documentIsSigned") Список пользователей
     div(v-else)
-      .er-document__title Список пользователей
+      .er-document__title {{ document.type.name }}
       .er-document__title--upload(@click="") Загрузить список пользователей
 
     .question-button(
@@ -20,26 +20,26 @@ common-document(
       @close="onCloseQuestion()"
     )
 
-    .er-document__subtitle(v-if="document.signed")
+    .er-document__subtitle(v-if="documentIsSigned")
       .er-document__update-label
         | Обновить с
       .er-document__update-period
-        .date {{ $moment(document.updatePeriodFrom).format("DD.MM") }}-{{ $moment(document.updatePeriodTo).format("DD.MM") }}
-          span.date__year .{{ $moment(document.updatePeriodTo).format("YYYY") }}
+        .date {{ document.updatePeriodFrom|formatDate("DD.MM") }}-{{ document.updatePeriodTo|formatDate("DD.MM") }}
+          span.date__year .{{ document.updatePeriodTo|formatDate("YYYY") }}
 
   template(v-slot:body)
-    .just-wrap(v-if="document.signed")
+    .just-wrap(v-if="documentIsSigned")
       .er-document__text.d-sm--none
-        span.caption1 Вы обязаны обновлять каждый квартал список пользователей во исполнение требований
-        a(href="#").link Правил оказания услуг связи по передаче данных
+        div.caption1 Вы обязаны обновлять каждый квартал список пользователей во исполнение требований
+          a(href="#").link Правил оказания услуг связи по передаче данных
 
     .er-document__text(v-else)
-      span.caption1 Вы обязаны предоставить список пользователей во исполнение требований
-      a(href="#").link Правил оказания услуг связи по передаче данных
+      div.caption1 Вы обязаны предоставить список пользователей во исполнение требований
+        a(href="#").link Правил оказания услуг связи по передаче данных
 
   template(v-slot:footer)
-    .signed(v-if="document.signed")
-      er-attach(:url="document.file")
+    .signed(v-if="documentIsSigned")
+      er-attach(:url="document.fileName")
       er-button(:color="'blue'") Обновить
     .not-signed(v-else)
       .er-document__download-template

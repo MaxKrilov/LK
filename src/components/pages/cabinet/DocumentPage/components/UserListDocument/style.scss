@@ -106,6 +106,7 @@ $er-hint-width: 24px;
 
       @include min-breakpoint('md') {
         @include color-white(1);
+        margin-right: 0;
       }
     }
 
@@ -227,12 +228,11 @@ $er-hint-width: 24px;
 
   #{$pre}__update-period {
     @include color-black(.8);
-    font: 17px/22px $fedra-demi;
+    @extend %h4;
     letter-spacing: -0.5px;
 
     @include min-breakpoint('md') {
       @include color-white(.8);
-      font: 13px/16px $fedra-demi;
       display: inline;
 
       &::before { // вставляем пробел, что-бы не сливаться с предыдущим текстом

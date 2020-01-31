@@ -8,7 +8,8 @@ export default {
       type: String,
       default: 'gray',
       validator: value => ['yellow', 'blue', 'green', 'gray', 'red', 'white'].includes(value)
-    }
+    },
+    document: Object
   },
   components: {
     ErDocumentCorner
