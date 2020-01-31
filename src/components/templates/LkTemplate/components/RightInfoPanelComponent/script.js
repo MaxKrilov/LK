@@ -28,6 +28,9 @@ export default {
     selectPersonalAccount () {
       // todo Реализовать логику
       this.isOpenPersonalAccountDetail = false
+    },
+    onChangeOrg () {
+      this.$emit('change-org')
     }
   }
 }

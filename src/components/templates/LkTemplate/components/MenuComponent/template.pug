@@ -59,7 +59,7 @@ div(:class="`${pre}`")
           :close-on-content-click="false",
           transition="slide-y-transition",
           nudge-left="26"
-          )
+        )
           template(v-slot:activator="{ on }")
             er-preloader(:active="menuComponentBillingAccount")
               a.link--dashed--yellow(href="#", v-on="on", @click.prevent="")
@@ -70,6 +70,8 @@ div(:class="`${pre}`")
                 | Организация
               div.organization.mb-32
                 | {{ legalName }}
+                .change-org-button(@click="onChangeOrganization") Выбрать другую организацию
+
               div.caption-choise.mb-16
                 | Выберите лицевой счёт
               template(
@@ -92,6 +94,7 @@ div(:class="`${pre}`")
               div.profile
                 er-icon.mr-8(name="profile")
                 router-link(to="/lk/profile") Профиль
+
     div(:class="[`${pre}__top__balance`, `${pre}__top__link--desktop`, { 'autopay': balanceInfo.autoPay }]")
       div.icon.mr-8
         er-icon(name="wallet_auto")
@@ -99,6 +102,7 @@ div(:class="`${pre}`")
         div.info
           a(href="#").link--solid--yellow {{ balanceInfo.balance | price }}
           span.caption(:class="{ 'autopay': balanceInfo.autoPay }") Автоплатеж
+
     div(:class="`${pre}__top__manager ${pre}__top__link--desktop`")
       div.icon.mr-8
         er-icon(name="manager")
@@ -125,6 +129,7 @@ div(:class="`${pre}`")
               div.support
                 er-icon.mr-8(name="service")
                 router-link(to="/lk/support") Поддержка
+
     div.ml-auto(:class="`${pre}__top__chat ${pre}__top__badge`", data-count="15")
       er-icon(name="chat")
     div(:class="`${pre}__top__notification ${pre}__top__badge`", data-count="25")
@@ -134,4 +139,13 @@ div(:class="`${pre}`")
     div(:class="`${pre}__top__profile--mobile`", @click="toggleRightPanel")
       er-icon(name="profile")
     div(:class="`${pre}__top__loader`")
-  right-info-panel-component(v-model="isOpenRightPanel")
+
+  right-info-panel-component(
+    @change-org="onChangeOrganization"
+    v-model="isOpenRightPanel"
+  )
+
+  change-organization-popup(
+    :active="showChangeOrganizationPopup"
+    @close="showChangeOrganizationPopup=false"
+  )
