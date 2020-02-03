@@ -6,12 +6,13 @@ import ErTimePickerRange from '@/components/blocks/ErTimePickerRange'
 import ErTextareaWithFile from '@/components/blocks/ErTextareaWithFile'
 import ErDadataSelect from '@/components/blocks/ErDadataSelect'
 import ErActivationModal from '@/components/blocks/ErActivationModal/index.vue'
-import { SCREEN_WIDTH } from "@/store/actions/variables"
-import { BREAKPOINT_XL } from "@/constants/breakpoint"
+import { SCREEN_WIDTH } from '@/store/actions/variables'
+import { BREAKPOINT_XL } from '@/constants/breakpoint'
 import { getFirstElement } from '@/functions/helper'
 import { CREATE_REQUEST, GET_SERVICES_BY_LOCATION } from '@/store/actions/request'
 import { API } from '@/functions/api'
-import { GET_LIST_SERVICE_BY_ADDRESS } from '@/store/actions/user'
+
+import moment from 'moment'
 
 interface standardSelectItem {
   id?: string | number,
@@ -92,7 +93,7 @@ export default class CreateRequestComponent extends Vue {
   secondPersonalAccount = ''
   sumTransfer = ''
   // Transfer point or service
-  street = ''
+  street: any = ''
   // Suspension of a contract or service
   stoppedFrom = new Date()
   // Erroneous payment
@@ -131,12 +132,8 @@ export default class CreateRequestComponent extends Vue {
     switch (this.requestTheme?.form) {
       case 'renewal_of_the_contract':
         return `${this.publicPath}documents/zayavlenie_na_pereoformlenie.docx`
-      case 'suspension_of_a_contract_or_service':
+      case 'change_of_details':
         return `${this.publicPath}documents/zayavlenie_na_priostanovlenie.docx`
-      case 'termination_of_a_contract_or_service':
-        return `${this.publicPath}documents/zayavlenie_na_rastorzhenie_dogovora.docx`
-      case 'restoring_a_contract_or_service':
-        return `${this.publicPath}documents/zayavlenie_na_vozobnovlenie_dogovora_uslugi.docx`
       default:
         return ''
     }
@@ -155,7 +152,7 @@ export default class CreateRequestComponent extends Vue {
   ]
 
   requiredRuleArray = [
-    (v: any[]) => Array.isArray(v) && v.length !== 0 || 'Поле обязательно к заполнению'
+    (v: any[]) => (Array.isArray(v) && v.length) !== 0 || 'Поле обязательно к заполнению'
   ]
 
   @Watch('requestTheme')
@@ -298,7 +295,7 @@ export default class CreateRequestComponent extends Vue {
         Адрес: ${this.address.value};
       `
     const address = `Адрес: ${this.address.value}`
-    const services = `Услуги: ${this.services}`
+    const services = `Услуги: ${this.services.map((item: standardSelectItem) => item.value)}`
     // @ts-ignore
     const service = `Услуга: ${this.service.value}`
     switch (this.requestTheme?.form) {
@@ -312,7 +309,7 @@ export default class CreateRequestComponent extends Vue {
       case 'restoring_a_contract_or_service':
         return `
           ${comment};
-          Восстановить с: ${this.recoverFrom};
+          Восстановить с: ${moment(this.recoverFrom).format('LL')};
           ${agreementOrServices};
           ${phone};
           ${name}.`
@@ -321,7 +318,7 @@ export default class CreateRequestComponent extends Vue {
           ${comment};
           ${address};
           ${services};
-          Адрес куда перенести: ${this.street};
+          Адрес куда перенести: ${this.street.value};
           ${phone};
           ${name}.`
       case 'change_of_internet_protocol':
@@ -341,14 +338,14 @@ export default class CreateRequestComponent extends Vue {
       case 'suspension_of_a_contract_or_service':
         return `
           ${comment};
-          Приостановить с ${this.stoppedFrom};
+          Приостановить с ${moment(this.stoppedFrom).format('LL')};
           ${agreementOrServices};
           ${phone};
           ${name}.`
       case 'termination_of_a_contract_or_service':
         return `
           ${comment};
-          Расторгнуть с ${this.terminateFrom};
+          Расторгнуть с ${moment(this.terminateFrom).format('LL')};
           ${agreementOrServices};
           ${phone};
           ${name}.`
@@ -357,7 +354,7 @@ export default class CreateRequestComponent extends Vue {
           ${comment};
           Плательщик: ${this.payer};
           Номер платежного поручения: ${this.paymentOrderNumber};
-          Дата платежа: ${this.datePayment};
+          Дата платежа: ${moment(this.datePayment).format('LL')};
           Сумма платежа: ${this.sumPayment};
           ${phone};
           ${name}.`

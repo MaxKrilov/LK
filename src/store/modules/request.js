@@ -36,7 +36,6 @@ const actions = {
           requestName: 'all',
           clientId: toms
         })
-        .setBranch('web-bss')
         .query('/problem/management/list')
       commit(GET_REQUEST_SUCCESS, result)
       return result

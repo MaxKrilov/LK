@@ -71,6 +71,10 @@ export default class RequestItemComponent extends Vue {
    * Дата/время отмены
    */
   @Prop([String, Number]) cancelledWhen
+  /**
+   * Список файлов
+   */
+  @Prop({ type: Array, default: () => ([]) }) listFile
   /** @type {boolean} */
   isOpenDetail = false
   /** @type {boolean} */
@@ -98,13 +102,13 @@ export default class RequestItemComponent extends Vue {
       return { id: 'solved', name: 'Решена' }
     }
     if (this.onHoldWhen) {
-      return { id: 'hold', name: 'В ожидании' }
+      return { id: 'hold', name: 'В доработке' }
     }
     if (this.inProgressWhen) {
       return { id: 'progress', name: 'В работе' }
     }
     if (this.createdWhen) {
-      return { id: 'created', name: 'Создана' }
+      return { id: 'created', name: 'Новая' }
     }
     return { id: '', name: '' }
   }
@@ -121,10 +125,10 @@ export default class RequestItemComponent extends Vue {
     return {
       'created': 'Спасибо за Ваше обращение. Заявка создана, в ближайшее время будет принята в работу.',
       'progress': 'Специалисты занимаются решением Вашей заявки.',
-      'hold': 'Для решения заявки требуется получить дополнительную информацию от Клиента.',
+      'hold': 'Для решения заявки требуются дополнительные работы.',
       'solved': 'Работы по заявке выполнены. Ожидается подтверждение от Клиента решения заявки.',
       'resolved': 'Спасибо за Ваше обращение. Работы по заявке выполнены.',
-      'cancel': 'Заявка отменена пользователем'
+      'cancel': 'Заявка отменена по желанию Клиента.'
     }
   }
   get getHistoryArray () {
@@ -134,7 +138,7 @@ export default class RequestItemComponent extends Vue {
       this.solvedWhen && { id: 'solved', name: 'Решена', text: this.getTextStatus.solved, time: this.solvedWhen },
       this.onHoldWhen && { id: 'hold', name: 'В ожидании', text: this.getTextStatus.hold, time: this.onHoldWhen },
       this.inProgressWhen && { id: 'progress', name: 'В работе', text: this.getTextStatus.progress, time: this.inProgressWhen },
-      this.createdWhen && { id: 'created', name: 'Создана', text: this.getTextStatus.created, time: this.createdWhen }
+      this.createdWhen && { id: 'created', name: 'Новая', text: this.getTextStatus.created, time: this.createdWhen }
     ].filter(item => item)
   }
   get getDetailInfoMobile () {

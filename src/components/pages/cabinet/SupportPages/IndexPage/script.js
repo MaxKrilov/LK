@@ -51,7 +51,7 @@ export default class SupportIndexPage extends Vue {
    * Тип заявок (для фильтрации)
    * @type {string}
    */
-  typeFilterRequest = TYPE_FILTER_REQUEST_ALL
+  typeFilterRequest = TYPE_FILTER_REQUEST_ACTIVE
   /**
    * Список заголовков таблицы с заявками
    * @type {Array<{id: <string>, name: <string>}>}
@@ -217,6 +217,7 @@ export default class SupportIndexPage extends Vue {
       result.cancelledWhen = item.cancelled_when ? Number(item.cancelled_when) : undefined
       result.type = item.type
       result.status = item.status
+      result.listFile = item.attachmentIds
       return result
     })
   }
