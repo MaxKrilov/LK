@@ -35,6 +35,15 @@
                     | {{ item.caption }}
                   .request-item-detail__value
                     | {{ item.value }}
+              .request-item-detail__row(v-if="listFile.length !== 0")
+                .request-item-detail__detail
+                  .request-item-detail__caption
+                    | Список файлов
+                  .request-item-detail__value(
+                    v-for="(item, index) in listFile"
+                    :key="index"
+                  )
+                    a(href="#") {{ item.file_name }}
           template(v-if="getLabelStatus.id === 'created'")
             .request-item-detail__note-closed
               er-icon(name="warning")
@@ -84,6 +93,14 @@
                   | {{ item.caption }}
                 .request-item-detail__value
                   | {{ item.value }}
+              template(v-if="listFile.length !== 0")
+                .request-item-detail__caption
+                  | Список файлов
+                .request-item-detail__value(
+                  v-for="(item, index) in listFile"
+                  :key="index"
+                )
+                  a(href="#") {{ item.file_name }}
             .request-item-detail__history
               .request-item-detail__history-row(v-for="historyItem in getHistoryArray", :key="historyItem.id")
                 .request-item-detail__history-text
