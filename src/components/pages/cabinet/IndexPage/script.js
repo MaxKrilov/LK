@@ -47,7 +47,8 @@ export default {
       menuComponentBalance: 'loading/menuComponentBalance',
       loadingDocuments: 'loading/loadingDocuments',
       loadingRequest: 'loading/loadingRequest',
-      loadingPromisedPayment: 'loading/loadingPromisedPayment'
+      loadingPromisedPayment: 'loading/loadingPromisedPayment',
+      getCountRequestInWork: 'request/getCountRequestInWork'
     }),
 
     isEmptyListProduct () {

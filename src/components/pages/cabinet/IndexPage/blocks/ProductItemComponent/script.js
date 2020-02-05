@@ -1,21 +1,17 @@
-import { Vue, Component } from 'vue-property-decorator'
+import { Vue, Component, Watch } from 'vue-property-decorator'
 import { price } from '../../../../../../functions/filters'
-import { GET_LIST_ADDRESS_BY_SERVICES, GET_LIST_SERVICE_BY_ADDRESS } from '../../../../../../store/actions/user'
+import { GET_LIST_SERVICE_BY_ADDRESS, GET_LIST_ADDRESS_BY_SERVICES } from '../../../../../../store/actions/user'
 
 @Component({
   props: {
-    icon: {
-      type: String,
-      default: 'geolocation'
-    },
     title: String,
+    price: [Number, String],
+    addressId: [Number, String],
     sortBy: {
       type: String,
       default: 'service',
       validator: val => ['service', 'office'].includes(val)
     },
-    price: [String, Number],
-    addressId: [Number, String],
     productType: String
   },
   filters: {
@@ -23,18 +19,18 @@ import { GET_LIST_ADDRESS_BY_SERVICES, GET_LIST_SERVICE_BY_ADDRESS } from '../..
   }
 })
 export default class ProductItemComponent extends Vue {
-  shadowIcon = {
-    shadowColor: 'rgba(0, 0, 0, 0.08)',
-    shadowOffset: {
-      x: '-4px',
-      y: '4px'
-    },
-    shadowRadius: '4px'
-  }
   isOpen = false
+  isLoading = true
+
   services = []
   address = []
-  isLoading = true
+
+  @Watch('isOpen')
+  async onIsOpenChange (val) {
+    if (val && this.isLoading) {
+      await this.loadServices()
+    }
+  }
 
   get getFormatListService () {
     return this.services.map(item => ({
@@ -52,17 +48,14 @@ export default class ProductItemComponent extends Vue {
     }))
   }
 
-  get subArray () {
-    return this.sortBy === 'office'
-      ? this.getFormatListService
-      : this.getFormatListAddress
+  get getListDetail () {
+    return this.sortBy === 'service'
+      ? this.getFormatListAddress
+      : this.getFormatListService
   }
 
-  async toggleDetail () {
+  toggleDetail () {
     this.isOpen = !this.isOpen
-    if (this.isLoading) {
-      await this.loadServices()
-    }
   }
 
   async loadServices () {

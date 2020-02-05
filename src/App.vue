@@ -28,6 +28,19 @@ export default {
   data: () => ({
     model: 1
   }),
+  watch: {
+    async menuComponentBillingAccount (val) {
+      this.$store.commit(`loading/menuComponentBalance`, true)
+      this.$store.commit(`loading/loadingPromisedPayment`, true)
+      this.$store.commit(`loading/indexPageProductByAddress`, true)
+      this.$store.dispatch(`user/${GET_PAYMENT_INFO}`, { api: this.$api })
+      this.$store.dispatch(`user/${GET_PROMISED_PAYMENT_INFO}`, { api: this.$api })
+      this.$store.dispatch(`user/${GET_LIST_PRODUCT_BY_ADDRESS}`, { api: this.$api })
+        .then(() => {
+          this.$store.dispatch(`user/${GET_LIST_PRODUCT_BY_SERVICE}`, { api: this.$api })
+        })
+    }
+  },
   async created () {
     if (process.env.VUE_APP_USE_SSO_AUTH !== 'no') {
       if (!this.refreshedToken.isFetching && !this.serverErrorMessage) {
@@ -72,7 +85,13 @@ export default {
   methods: {},
   computed: {
     ...mapGetters('auth', ['user', 'hasAccess']),
-    ...mapState('auth', ['error', 'isFetching', 'isFetched', 'refreshedToken'])
+    ...mapState({
+      error: state => state.auth.error,
+      isFetching: state => state.auth.isFetching,
+      isFetched: state => state.auth.isFetched,
+      refreshedToken: state => state.auth.refreshedToken,
+      menuComponentBillingAccount: state => state.loading.menuComponentBillingAccount
+    })
   }
 }
 </script>

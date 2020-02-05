@@ -38,72 +38,164 @@
     }
   }
   &__fast-links {
-    @include media-query((
-      padding-right: (lg: 16px !important)
-    ));
-    a {
+    @include min-breakpoint('lg') {
+      padding-right: 16px !important;
+    }
+  }
+  &__fast-link {
+    display: block;
+    width: 100%;
+    height: 128px;
+    border-radius: 12px;
+    background: linear-gradient(to top right, map_get($gray, '26') 28.65%, map_get($shades, 'white') 90.63%);
+    position: relative;
+    overflow: hidden;
+    text-decoration: none;
+    padding: 1px;
+    box-shadow: 0 2px 12px rgba(map_get($shades, 'black'), 0.1),
+                0 2px 2px rgba(map_get($shades, 'black'), 0.05);
+    @include min-breakpoint('md') {
+      height: 144px;
+    }
+    @include min-breakpoint('lg') {
+      height: 168px;
+    }
+    @include min-breakpoint('xl') {
+      height: 160px;
+    }
+    .content {
+      width: 100%;
+      height: 100%;
       display: flex;
       flex-direction: column;
       padding: 17px;
-      text-decoration: none;
-      height: 128px;
-      position: relative;
-      overflow: hidden;
-      @include media-query((
-        padding: (sm: 24px),
-        height: (md: 144px, lg: 168px, xl: 160px)
-      ));
-      .title {
+      background: map_get($gray, '9');
+      border-radius: inherit;
+      transition: background 0.15s ease-in-out;
+      @include min-breakpoint('sm') {
+        padding: 24px;
+      }
+    }
+    .title {
+      @extend %h4;
+      font-weight: 600;
+      @include color-black(0.8);
+      transition: color 0.15s ease-in-out;
+    }
+
+    .footer {
+      .caption {
+        @extend %caption2;
+        transition: color 0.15s ease-in-out;
+      }
+      .value {
+        font: 13px/18px $fedra-demi;
+        color: map_get($green, 'base');
+        text-decoration: underline;
+        font-weight: 600;
+        transition: color 0.15s ease-in-out;
+        @include min-breakpoint('xl') {
+          font-size: 16px;
+          line-height: 20px;
+          letter-spacing: -2px;
+        }
+      }
+      .icon {
+        color: map_get($yellow, 'base');
+        transition: color 0.15s ease-in-out;
+        svg {
+          transition: all 0.15s ease-in-out;
+        }
+      }
+      .promised-payment-left {
+        font: 22px/32px $fedra-book;
+        letter-spacing: -1px;
+
+        span {
+          &:nth-child(1) {
+            color: rgba(map_get($shades, 'black'), 0.8);
+          }
+
+          &:nth-child(2) {
+            color: rgba(map_get($shades, 'black'), 0.6);
+          }
+
+          &:nth-child(3) {
+            color: rgba(map_get($shades, 'black'), 0.4);
+          }
+        }
+
+        &__line {
+          width: 100%;
+          height: 4px;
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          background: linear-gradient(to right, map_get($red, 'base') 0%, map_get($yellow, 'base') 50%, map_get($green, 'base') 100%);
+        }
+
+        &__passed {
+          height: 100%;
+          position: absolute;
+          right: 0;
+          background: map_get($gray, '27');
+        }
+      }
+    }
+
+    .promised-payment-left {
+      font: 22px/32px $fedra-book;
+      letter-spacing: -1px;
+
+      span {
+        &:nth-child(1) {
+          color: rgba(map_get($shades, 'black'), 0.8);
+        }
+
+        &:nth-child(2) {
+          color: rgba(map_get($shades, 'black'), 0.6);
+        }
+
+        &:nth-child(3) {
+          color: rgba(map_get($shades, 'black'), 0.4);
+        }
+      }
+
+      &__line {
         width: 100%;
-        font: 15px/20px $fedra-book;
-        letter-spacing: -0.35px;
-        color: rgba(map_get($shades, 'black'), 0.8);
-        @include media-query((
-                font-size: (md: 18px),
-                line-height: (md: 30px),
-        ));
+        height: 4px;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        background: linear-gradient(to right, map_get($red, 'base') 0%, map_get($yellow, 'base') 50%, map_get($green, 'base') 100%);
+      }
+
+      &__passed {
+        height: 100%;
+        position: absolute;
+        right: 0;
+        background: map_get($gray, '27');
+      }
+    }
+    &:hover {
+      .content {
+        background: radial-gradient(50% 50% at 50% 50%, map_get($yellow, 'base') 55.5%, map_get($yellow, 'other-4') 100%);
+      }
+      .title {
+        @include color-black(1);
+      }
+      .caption {
+        @include color-black(0.5);
       }
       .footer {
         .value {
-          font: 13px/18px $fedra-demi;
-          color: map_get($green, 'base');
-          text-decoration: underline;
-          @include media-query((
-                  font-size: (xl: 16px),
-                  line-height: (xl: 20px),
-                  letter-spacing: (xl: -2px)
-          ))
+          color: map_get($shades, 'white');
         }
         .icon {
-          color: map_get($yellow, 'base');
-        }
-        .promised-payment-left {
-          font: 22px/32px $fedra-book;
-          letter-spacing: -1px;
-          span {
-            &:nth-child(1) {
-              color: rgba(map_get($shades, 'black'), 0.8);
-            }
-            &:nth-child(2) {
-              color: rgba(map_get($shades, 'black'), 0.6);
-            }
-            &:nth-child(3) {
-              color: rgba(map_get($shades, 'black'), 0.4);
-            }
-          }
-          &__line {
-            width: 100%;
-            height: 4px;
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            background: linear-gradient(to right, map_get($red, 'base') 0%, map_get($yellow, 'base') 50%, map_get($green, 'base') 100%);
-          }
-          &__passed {
-            height: 100%;
-            position: absolute;
-            right: 0;
-            background: map_get($gray, '27');
+          color: rgba(map_get($shades, 'white'), 0.5);
+          svg {
+            transform: scale(3);
+            filter: drop-shadow(-4px 4px 4px rgba(map_get($shades, 'black'), 0.08));
           }
         }
       }

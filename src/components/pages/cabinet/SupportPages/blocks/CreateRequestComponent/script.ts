@@ -1,6 +1,6 @@
 import { Vue, Component, Watch } from 'vue-property-decorator'
 import { mapState, mapGetters } from 'vuex'
-import { LIST_REQUEST_THEME, LIST_TECHNICAL_REQUEST_THEME } from '@/store/actions/dictionary'
+import { LIST_COMPLAINT_THEME, LIST_REQUEST_THEME, LIST_TECHNICAL_REQUEST_THEME } from '@/store/actions/dictionary';
 import ErPhoneSelect from '@/components/blocks/ErPhoneSelect'
 import ErTimePickerRange from '@/components/blocks/ErTimePickerRange'
 import ErTextareaWithFile from '@/components/blocks/ErTextareaWithFile'
@@ -22,6 +22,10 @@ interface standardSelectItem {
 interface iListContactMethodsItem extends standardSelectItem {}
 
 interface iListAddressItem extends standardSelectItem {}
+
+interface iItemService extends standardSelectItem {
+  typeAuth?: string
+}
 
 interface iContactListItem {
   id?: string | number,
@@ -56,6 +60,7 @@ interface iErForm extends HTMLFormElement {
       clientInfo: (state: any) => state.user.clientInfo,
       listRequestTheme: (state: any) => state.dictionary[LIST_REQUEST_THEME],
       listTechnicalRequestTheme: (state: any) => state.dictionary[LIST_TECHNICAL_REQUEST_THEME],
+      listComplaintRequestTheme: (state: any) => state.dictionary[LIST_COMPLAINT_THEME],
       screenWidth: (state: any) => state.variables[SCREEN_WIDTH]
     }),
     ...mapGetters('user', ['getAddressList', 'getListContact', 'agreementNumber'])
@@ -102,21 +107,26 @@ export default class CreateRequestComponent extends Vue {
   datePayment = new Date()
   sumPayment = ''
   // Change of Internet Protocol
-  service: standardSelectItem = {}
+  service: iItemService = {}
   internetProtocol = ''
   // Termination of a contract or service
   terminateFrom = new Date()
   // Technocal issues
   technicalRequestTheme: iRequestTechnicalTheme | any = {}
+  // complaint
+  complaintTheme: iRequestTechnicalTheme | any = {}
+  email: string = ''
+  post: string = ''
   // ===== LISTS =====
   listRequestTheme!: iRequestTheme[]
   listTechnicalRequestTheme!: iRequestTechnicalTheme[]
+  listComplaintRequestTheme!: iRequestTechnicalTheme[]
   getAddressList!: iListAddressItem[]
   getListContact!: iContactListItem[]
 
   loadingService: boolean = false
 
-  listService: standardSelectItem[] = []
+  listService: iItemService[] = []
   clientInfo!: any
 
   ticketName = ''
@@ -132,10 +142,6 @@ export default class CreateRequestComponent extends Vue {
     switch (this.requestTheme?.form) {
       case 'renewal_of_the_contract':
         return `${this.publicPath}documents/zayavlenie_na_pereoformlenie.docx`
-      case 'change_of_details':
-        return `${this.publicPath}documents/zayavlenie_na_priostanovlenie.docx`
-      default:
-        return ''
     }
   }
 
@@ -192,12 +198,14 @@ export default class CreateRequestComponent extends Vue {
     this.service = {}
     this.$store.dispatch(`request/${GET_SERVICES_BY_LOCATION}`, {
       api: this.$api,
-      locationId: val.id
+      // @ts-ignore
+      locationId: val.locationId
     })
       .then(response => {
-        this.listService = response.map((item: any) => ({
+        this.listService = response.filter((item: any) => item?.offer?.isRoot).map((item: any) => ({
           id: item.id,
-          value: item.name
+          value: item.name,
+          typeAuth: item.chars['Тип авторизации']
         }))
         this.loadingService = false
       })
@@ -245,13 +253,12 @@ export default class CreateRequestComponent extends Vue {
       customerContactId = customerContact.id
       phoneId = customerContact.phone.id
     } else {
-      customerContact = this.getListContact.find((item: iContactListItem) => item.isLPR)
+      customerContact = this.getListContact.find((item: iContactListItem) => item.isLPR) || getFirstElement(this.getListContact)
       if (customerContact !== undefined) {
         customerContactId = customerContact.id
         phoneId = customerContact.phone.id
       }
     }
-    const emailAddress = getFirstElement(this.getListContact.map((item: iContactListItem) => item.email?.id).filter(item => item))
 
     this.$store.dispatch(`request/${CREATE_REQUEST}`, {
       requestName,
@@ -264,7 +271,8 @@ export default class CreateRequestComponent extends Vue {
       problemTheme: this.technicalRequestTheme.id,
       service: this.service.id,
       file: this.file,
-      emailAddress
+      complaintTheme: this.complaintTheme.id
+      // emailAddress
     })
       .then((answer: boolean | string) => {
         if (typeof answer === 'string' && answer !== '') {
@@ -281,6 +289,7 @@ export default class CreateRequestComponent extends Vue {
       })
       .finally(() => {
         this.loadingCreating = false
+        this.$scrollTo('.support-page')
       })
   }
 
@@ -378,6 +387,15 @@ export default class CreateRequestComponent extends Vue {
           ${service};
           ${phone};
           ${name}.`
+      case 'complaint':
+        return `
+          ${comment};
+          ${address};
+          ${phone};
+          Адрес электронной почты: ${this.email};
+          ${name};
+          Должность: ${this.post}
+        `
     }
   }
 

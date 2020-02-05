@@ -111,7 +111,8 @@ const getters = {
   getAddressList (state) {
     return state.clientInfo?.customerLocations?.map(item => ({
       value: item.fullAddress,
-      id: item.address.id
+      id: item.address.id,
+      locationId: item.id
     })) || []
   },
   getBillingAccountsGroupByContract (state) {
@@ -217,6 +218,9 @@ const actions = {
       .catch(error => {
         logError(error)
         commit(ERROR_MODAL, true, { root: true })
+      })
+      .finally(() => {
+        commit('loading/loadingDocuments', false, { root: true })
       })
   },
   /**
