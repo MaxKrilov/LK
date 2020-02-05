@@ -29,7 +29,7 @@ export default {
     model: 1
   }),
   watch: {
-    async menuComponentBillingAccount (val) {
+    menuComponentBillingAccount () {
       this.$store.commit(`loading/menuComponentBalance`, true)
       this.$store.commit(`loading/loadingPromisedPayment`, true)
       this.$store.commit(`loading/indexPageProductByAddress`, true)

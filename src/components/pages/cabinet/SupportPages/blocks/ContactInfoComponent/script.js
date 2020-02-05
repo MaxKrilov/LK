@@ -143,7 +143,7 @@ export default class ContactInfoComponent extends Vue {
       requestName,
       location,
       description,
-      type,
+      complaintTheme: type,
       customerContact: customerContactId,
       phoneNumber: phoneId,
       emailAddress,

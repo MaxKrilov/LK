@@ -39,7 +39,6 @@ const actions = {
           requestName: 'all',
           clientId: toms
         })
-        .setBranch('web-bss')
         .query('/problem/management/list')
       commit(GET_REQUEST_SUCCESS, result)
       return true
@@ -153,7 +152,6 @@ const actions = {
     try {
       const result = await api
         .setData(data)
-        .setBranch('web-bss')
         .query('/problem/management/info')
       commit(CREATE_REQUEST_SUCCESS, result)
       return name

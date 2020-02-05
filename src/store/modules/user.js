@@ -349,7 +349,6 @@ const actions = {
     try {
       const result = await api
         .setWithCredentials()
-        .setBranch('web-16308')
         .setData({
           id: activeBillingAccount,
           clientId: toms
