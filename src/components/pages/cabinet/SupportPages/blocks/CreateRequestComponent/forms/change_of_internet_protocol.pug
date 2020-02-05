@@ -16,13 +16,13 @@ er-form(ref="change_of_internet_protocol")
             is-show-required-label
             :rules="requiredRule"
           )
-        er-flex.mb-32.create-request-component__internet-protocol(xs12 sm6 r-offset-sm6)
+        er-flex.mb-32.create-request-component__internet-protocol(xs12 sm6 r-offset-sm6 v-if="Object.keys(service).length !== 0 && service.typeAuth")
           .caption Ваш протокол
           .value.d--flex.align-items-center
-            .left.mr-12 PPPoE
+            .left.mr-12 {{ service.typeAuth }}
             .arrow
               img(:src="require('@/assets/images/green_arrow.svg')")
-            .right.ml-12 Сменить на IPoE
+            .right.ml-12 Сменить на {{ service.typeAuth.match(/pppoe/ig) ? 'IPoE' : 'PPPoE' }}
         er-flex.mb-32(xs12 sm6)
           +phoneNumber
         er-flex.mb-32(xs12 sm6)

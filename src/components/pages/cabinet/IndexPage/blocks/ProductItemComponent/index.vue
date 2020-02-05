@@ -1,53 +1,50 @@
 <template lang="pug">
-  .product-item-component
-    .product-item-component__card
-      .product-item-component__card__content
-        .icon
-          er-icon(:name="icon" :shadow="shadowIcon")
-        .info
-          .title
-            | {{ title }}
-            .toggle--desktop(@click="toggleDetail" :class="{ 'open': isOpen }")
-              er-icon(name="corner_down")
-              a {{ isOpen ? 'Свернуть' : 'Развернуть' }}
-          .price
-            .caption
-              | Абонентская плата
-            .price-group
-              .value
-                | {{ price | price }}
-              .unit
-                | &nbsp;₽/месяц
-        .toggle--mobile(@click="toggleDetail" :class="{ 'open': isOpen }")
-          er-icon(name="corner_down")
-    er-slide-up-down(:active="isOpen")
-      .product-item-component__card-detail
-        .product-item-component__card-detail__item
-          template(v-if="isLoading")
-            .loading
-              img(:src="require('@/assets/images/preloaders/2.svg')")
-          template(v-else)
-            template(v-for="service in subArray")
-              .title-row
-                .icon
-                  er-icon(name="internet")
-                .title
-                  | {{ service.title }}
-                .toggle--mobile
-                  er-icon(name="corner_down")
-              .detail-row
-                .tariff
-                  .caption
-                    | Тариф
-                  .name
-                    a(href="#") {{ service.offerName }}
-                .price
-                  .caption
-                    | Абонентская плата
+    .product-item-component
+      .product-item-component__card(:class="{ open: isOpen }")
+        .content.d--flex.pb-20
+          .icon
+              er-icon(name="geolocation")
+          .info.d--flex.flex-column.mt-20.flex-sm-row.mt-md-20.align-items-md-center.mt-xl-24
+              .title.mb-8
+                  | {{ title }}
+                  .toggle--desktop
+                      button(@click="toggleDetail")
+                        er-icon(name="corner_down")
+                        span {{ isOpen ? 'Свернуть' : 'Развернуть' }}
+              .price.ml-sm-auto
+                  .caption.mb-4.mb-md-0
+                      | Абонентская плата
                   .value
-                    | {{ service.price | price }}
-                  .unit
-                    | ₽/месяц
+                      span {{ price | price }}
+                      | &nbsp;₽/месяц
+          .toggle--mobile.mt-16.ml-auto
+              button(@click="toggleDetail")
+                er-icon(name="corner_down")
+      .product-item-component__detail
+        er-slide-up-down(:active="isOpen")
+            .content
+                template(v-if="isLoading")
+                    .item.loading
+                        img(:src="require('@/assets/images/preloaders/2.svg')")
+                template(v-else)
+                    .item.d--flex(v-for="(item, index) in getListDetail" :key="index")
+                        .icon.mr-8
+                            er-icon(name="internet")
+                        .info.d--flex.flex-column.flex-sm-row
+                            .d--flex.flex-column.flex-xl-row
+                                .title.mb-16
+                                    | {{ item.title }}
+                                .offer-name.ml-16.mb-16.ml-sm-0.mx-xl-auto
+                                    .caption
+                                        | Тариф
+                                    .value
+                                        a(href="#") {{ item.offerName }}
+                            .price.ml-sm-auto
+                                .caption
+                                    | Абонентская плата
+                                .value
+                                    span {{ item.price | price }}
+                                    | &nbsp;₽/месяц
 </template>
 
 <script lang="js" src="./script.js"></script>

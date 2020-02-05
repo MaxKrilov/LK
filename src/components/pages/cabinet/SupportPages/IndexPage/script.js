@@ -82,6 +82,11 @@ export default class SupportIndexPage extends Vue {
     this.setListRequest(val)
   }
 
+  @Watch('currentPage')
+  onCurrentPageChange () {
+    this.$scrollTo('.support-page')
+  }
+
   get getLengthPagination () {
     return Math.ceil(this.listRequestComputed.length / VISIBLE_REQUEST)
   }

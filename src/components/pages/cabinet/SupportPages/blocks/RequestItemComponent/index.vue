@@ -17,7 +17,7 @@
                 .request-item-detail__number
                   | №&nbsp;
                   span.number
-                    | {{ ticketName }}
+                    | {{ ticketName | ticketName }}
                 .request-item-detail__status(:class="getLabelStatus.id")
                   span {{ getLabelStatus.name }}
               .request-item-detail__row
@@ -30,7 +30,7 @@
                   span.caption Обновлена:&nbsp;
                   +dateNTime()
               .request-item-detail__row(v-for="item in getDetailInfoMobile", :key="item.caption")
-                .request-item-detail__detail
+                .request-item-detail__detail(v-if="item.value")
                   .request-item-detail__caption
                     | {{ item.caption }}
                   .request-item-detail__value
@@ -62,7 +62,7 @@
                   .title.mr-8
                     | История заявки&nbsp;
                   .number
-                    | №&nbsp;{{ ticketName }}
+                    | №&nbsp;{{ ticketName | ticketName }}
                   a.close(@click.prevent="toggleHistoryMobile")
                     er-icon(name="close")
                 .request-item-detail__body
@@ -87,12 +87,13 @@
               .request-item-detail__caption
                 | Номер заявки&nbsp;
               .request-item-detail__value.ticket-id
-                | {{ ticketName }}
+                | {{ ticketName | ticketName }}
               template(v-for="item in getDetailInfoDesktop")
-                .request-item-detail__caption
-                  | {{ item.caption }}
-                .request-item-detail__value
-                  | {{ item.value }}
+                template(v-if="item.value")
+                  .request-item-detail__caption
+                    | {{ item.caption }}
+                  .request-item-detail__value
+                    | {{ item.value }}
               template(v-if="listFile.length !== 0")
                 .request-item-detail__caption
                   | Список файлов
@@ -127,7 +128,7 @@
         .request-item-component__ticket-id
           | №&nbsp;
           span.number
-            | {{ ticketName }}
+            | {{ ticketName | ticketName }}
           span.ticket-type
             | {{ ticketType | localisationTicketType }}
         .request-item-component__address--desktop
@@ -165,7 +166,7 @@
     er-activation-modal(
       type="success"
       v-model="isSuccessCancel"
-      :title="`Заявка № ${ ticketName } успешно отменена`"
+      :title="`Заявка № ${ ticketName | ticketName } успешно отменена`"
       :is-show-action-button="false"
       cancel-button-text="Спасибо"
     )

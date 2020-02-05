@@ -10,6 +10,7 @@ import Directives from './directives'
 import moment from 'moment'
 // @ts-ignore
 import Vuebar from 'vuebar'
+import VueScrollTo from 'vue-scrollto'
 
 // Подключение стилей
 import './assets/scss/main.scss'
@@ -46,6 +47,9 @@ Vue.prototype.$moment.locale('ru')
 
 // Кастомный скроллбар
 Vue.use(Vuebar)
+
+// Прокрутка с анимацией
+Vue.use(VueScrollTo)
 
 // На старых браузерах - редирект с предложением обновить
 

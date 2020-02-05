@@ -85,6 +85,7 @@ div(:class="`${pre}`")
                   v-for="account in accounts"
                   :key="account.billingAccountId"
                   :class="{ 'active': activeBillingAccountId === account.billingAccountId }"
+                  @click="onChangeBillingAccount(account.billingAccountId, account.accountNumber)"
                 )
                   div.caption
                     | Лицевой счет

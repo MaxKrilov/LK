@@ -1,7 +1,7 @@
 div(:class="`${pre}`").main-content.main-content--padding.main-content--top-menu-fix
   er-preloader(:active="loadingClientInfo")
     h4(:class="`${pre}__organisation-name`")
-      | {{ clientName || 'ООО «Шуруповерт-Холдинг», Пермский филиал' }}
+      | {{ clientName || 'Неизвестная организация' }}
   h1.fonts--demi(:class="`${pre}__welcome-title`")
     | Добро пожаловать в личный кабинет
   div(:class="`${pre}__balance--mobile`")
@@ -13,73 +13,74 @@ div(:class="`${pre}`").main-content.main-content--padding.main-content--top-menu
           er-icon(name="wallet_auto")
         a.link--solid--yellow.fonts--demi.rub {{ balanceInfo.balance || '0.0' }}
         span(v-if="balanceInfo.autoPay") Автоплатёж
+  er-container
+    | Здесь сторис
   er-container.mb-48(full)
     er-row(no-gutters)
-      er-flex(xs12, lg6, xl5, :class="`${pre}__fast-links`")
-        er-row(no-gutters)
-          er-flex.mb-16.pr-8(xs6)
-            er-card
-              er-preloader(:active="loadingDocuments" icon)
-                router-link(to="/")
-                  div.title
+      er-flex(xs12 :class="`${pre}__fast-links`")
+        er-row()
+          er-flex.mb-16.pr-8(xs6 xl3)
+            er-preloader(:active="loadingDocuments" icon)
+              router-link.index-page__fast-link(to="/lk/documents")
+                .content
+                  .title
                     | Мои документы
-                  div.footer.d--flex.align-items-end.mt-auto
-                    div.new
-                      div.caption.mb-4
+                  .footer.d--flex.align-items-end.mt-auto
+                    .new
+                      .caption.mb-4
                         | Новые
-                      div.value
+                      .value
                         | 1
-                    div.icon.ml-auto
+                    .icon.ml-auto
                       er-icon(name="doc")
-          er-flex.mb-16.pl-8(xs6)
-            er-card
-              er-preloader(:active="loadingRequest" icon)
-                router-link(to="/")
-                  div.title
+          er-flex.mb-16.pr-8(xs6 xl3)
+            er-preloader(:active="loadingRequest" icon)
+              router-link.index-page__fast-link(to="/lk/support")
+                .content
+                  .title
                     | Оставить заявку
-                  div.footer.d--flex.align-items-end.mt-auto
-                    div.new
-                      div.caption.mb-4
+                  .footer.d--flex.align-items-end.mt-auto
+                    .new(v-if="getCountRequestInWork")
+                      .caption.mb-4
                         | В работе
-                      div.value
-                        | 1
-                    div.icon.ml-auto
+                      .value
+                        | {{ getCountRequestInWork }}
+                    .icon.ml-auto
                       er-icon(name="lifebuoy")
-          er-flex.mb-16.pr-8(xs6)
-            er-card
-              er-preloader(:active="loadingPromisedPayment" icon)
-                router-link(to="/")
-                  div.title
+          er-flex.mb-16.pr-8(xs6 xl3)
+            er-preloader(:active="loadingPromisedPayment" icon)
+              router-link.index-page__fast-link(to="/")
+                .content
+                  .title
                     | Обещанный платёж
-                  div.footer.d--flex.align-items-end.mt-auto
-                    template(v-if="true")
-                      div.new
-                        div.caption.mb-4
+                  .footer.d--flex.align-items-end.mt-auto
+                    template(v-if="false")
+                      .new
+                        .caption.mb-4
                           | Осталось:
-                        div.promised-payment-left
+                        .promised-payment-left
                           span 03
                           span :12
                           span :60
-                      div.promised-payment-left__line
-                        div.promised-payment-left__passed(:style="{ width: '25%' }")
+                      .promised-payment-left__line
+                        .promised-payment-left__passed(:style="{ width: '25%' }")
                     template(v-else)
-                      div.icon.ml-auto
-                        er-icon(name="rouble")
-          er-flex.mb-16.pl-8(xs6)
-            er-card
-              router-link(to="/")
-                div.title
-                  | Счёт на оплату
-                div.footer.d--flex.align-items-end.mt-auto
-                  div.new
-                    div.caption.mb-4
-                      | Новый:
-                    div.value
-                      | 1
-                  div.icon.ml-auto
-                    er-icon(name="rouble")
-      er-flex(xs12, lg6, xl7)
-        er-carousel(:data="getCarouselItem")
+                      .icon.ml-auto
+                        er-icon(name="trast_pay")
+          er-flex.mb-16(xs6 xl3)
+            er-preloader(:active="false" icon)
+              router-link.index-page__fast-link(to="/")
+                .content
+                  .title
+                    | Счёт на оплату
+                  .footer.d--flex.align-items-end.mt-auto
+                    .new
+                      .caption.mb-4
+                        | Новый
+                      .value
+                        | 1
+                    .icon.ml-auto
+                      er-icon(name="rouble")
   h2(:class="`${pre}__service__title`")
     | Подключенные услуги
   div.mb-24(:class="`${pre}__filters`")
@@ -128,7 +129,7 @@ div(:class="`${pre}`").main-content.main-content--padding.main-content--top-menu
         | Нет подключённых продуктов
   template(v-else)
     template(v-if="modelSortService === 'service'")
-      product-item-component(
+      product-item-component.mb-4(
         v-for="product in listProductByService"
         :key="product.code"
         :title="product.name"
@@ -137,7 +138,7 @@ div(:class="`${pre}`").main-content.main-content--padding.main-content--top-menu
         sort-by="service"
       )
     template(v-else)
-      product-item-component(
+      product-item-component.mb-4(
         v-for="product in listProductByAddress"
         :key="product.id"
         :title="product.address"

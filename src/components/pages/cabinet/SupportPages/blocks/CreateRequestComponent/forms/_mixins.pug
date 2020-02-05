@@ -39,7 +39,7 @@ mixin appeal(label)
 mixin footer
   er-flex.create-request-component__personal-data.mb-24(xs12)
     | Нажимая на кнопку вы соглашаетесь &nbsp;
-    a(href="#") на обработку данных
+    a(href="https://domru.ru/policy.pdf" target="_blank") на обработку данных
   er-flex.mb-8.mb-sm-0(xs12 md4)
     er-button(pre-icon="send", @click="createRequest" :loading="loadingCreating")
       | Отправить заявку
@@ -48,17 +48,19 @@ mixin footer
       | Отменить
 
 mixin footerFile
+  er-flex.create-request-component__personal-data.mb-24(xs12)
+    | Нажимая на кнопку вы соглашаетесь &nbsp;
+    a(href="https://domru.ru/policy.pdf" target="_blank") на обработку данных
   er-flex.create-request-component__download-statement.mb-32(xs12)
-    | Чтобы отправить эту заявку вам нужно заполнить и подписать&nbsp;
+    | Для более оперативного решения Вашего вопроса, просьба приложить заполненное и подписанное&nbsp;
     a.link--solid--yellow(:href="getLinkDeclaration") заявление
   er-flex.create-request-component__requirements-for-file.mb-24(xs12)
     | Размер файла не должен превышать 2Мб. Формат: JPG, PNG, PDF
   er-flex.mb-8.mb-sm-0(xs12 md4)
-    er-button(pre-icon="husks")
-      input.create-request-component__file-input(type="file")
-      | Прикрепить файл
+    er-button(pre-icon="send", @click="createRequest" :loading="loadingCreating")
+      | Отправить заявку
   er-flex(xs12 md4)
-    er-button(flat @click="closeForm")
+    er-button(flat @click="() => { isOpenFormDesktop = false }")
       | Отменить
 
 mixin address

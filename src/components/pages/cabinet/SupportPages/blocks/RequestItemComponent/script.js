@@ -15,7 +15,8 @@ const localisationTicketType = val => val.match(/Problem/ig)
     ErActivationModal
   },
   filters: {
-    localisationTicketType
+    localisationTicketType,
+    ticketName: val => val.split(' ').slice(0, 2).join(' ')
   }
 })
 export default class RequestItemComponent extends Vue {
@@ -136,7 +137,7 @@ export default class RequestItemComponent extends Vue {
       this.cancelledWhen && { id: 'cancel', name: 'Отменена', text: this.getTextStatus.cancel, time: this.cancelledWhen },
       this.resolvedWhen && { id: 'resolved', name: 'Закрыта', text: this.getTextStatus.resolved, time: this.resolvedWhen },
       this.solvedWhen && { id: 'solved', name: 'Решена', text: this.getTextStatus.solved, time: this.solvedWhen },
-      this.onHoldWhen && { id: 'hold', name: 'В ожидании', text: this.getTextStatus.hold, time: this.onHoldWhen },
+      this.onHoldWhen && { id: 'hold', name: 'В доработке', text: this.getTextStatus.hold, time: this.onHoldWhen },
       this.inProgressWhen && { id: 'progress', name: 'В работе', text: this.getTextStatus.progress, time: this.inProgressWhen },
       this.createdWhen && { id: 'created', name: 'Новая', text: this.getTextStatus.created, time: this.createdWhen }
     ].filter(item => item)

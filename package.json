@@ -24,6 +24,7 @@
     "vue-highlight-words": "^1.2.0",
     "vue-property-decorator": "^8.3.0",
     "vue-router": "^3.0.3",
+    "vue-scrollto": "^2.17.1",
     "vuebar": "0.0.20",
     "vuex": "^3.1.1",
     "vuex-persistedstate": "^2.5.4"
@@ -72,7 +73,10 @@
     },
     "overrides": [
       {
-        "files": ["**/*.ts", "**/*.tsx"],
+        "files": [
+          "**/*.ts",
+          "**/*.tsx"
+        ],
         "env": {
           "node": true
         },

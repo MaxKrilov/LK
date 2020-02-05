@@ -7,6 +7,7 @@ import RightInfoPanelComponent from '../RightInfoPanelComponent/index.vue'
 import ChangeOrganizationPopup from '../ChangeOrganizationPopup/index'
 
 import { formatPhone, price } from '../../../../../functions/filters'
+import { SET_ACTIVE_BILLING_ACCOUNT, SET_ACTIVE_BILLING_ACCOUNT_NUMBER } from '../../../../../store/actions/user'
 
 
 export default {
@@ -125,6 +126,13 @@ export default {
     },
     onChangeOrganization () {
       this.showChangeOrganizationPopup = true
+    },
+    onChangeBillingAccount (billingAccountId, accountNumber) {
+      // Устанавливаем загрузку для отслеживания
+      this.$store.commit('loading/menuComponentBillingAccount', true)
+      this.$store.commit(`user/${SET_ACTIVE_BILLING_ACCOUNT}`, billingAccountId)
+      this.$store.commit(`user/${SET_ACTIVE_BILLING_ACCOUNT_NUMBER}`, accountNumber)
+      this.$store.commit('loading/menuComponentBillingAccount', false)
     }
   },
   mounted () {

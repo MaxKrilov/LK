@@ -25,3 +25,5 @@ mixin listForm
     include ./forms/renewal_of_the_contract
   div(v-if="requestTheme.form === 'technical_issues'" key="technical_issues")
     include ./forms/technical_issues
+  div(v-if="requestTheme.form === 'complaint'" key="complaint")
+    include ./forms/complaint

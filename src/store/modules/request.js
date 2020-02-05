@@ -10,21 +10,24 @@ import {
 } from '../actions/request'
 import { ERROR_MODAL } from '../actions/variables'
 import { TYPE_ARRAY } from '../../constants/type_request'
-import { isPSI } from '../../functions/helper'
 
 const CANCELLATION_REASON = '9150410012013966885'
-const REQUEST_REASON = '9154749926213188767'
-const COMPLAINT_REASON = '9154785597113204772'
-const PROBLEM_REASON = '9154786970013205616'
+const REQUEST_REASON = '9156211041213279417'
+const COMPLAINT_REASON = '9156160182613264494'
+const PROBLEM_REASON = '9156211040213279417'
 
 const PROBLEM_REASON_THIRD = '9154741760013186143'
 
 const CHANNEL_OF_NOTIFICATION_VIBER = '9130635331813922067'
-const CHANNEL_OF_NOTIFICATION_CERTIFICATION_LETTER = '9149207479613731216'
-const CHANNEL_OF_NOTIFICATION_EMAIL = '9130635331813922068'
 
 const state = {
   listRequest: {}
+}
+
+const getters = {
+  getCountRequestInWork (state) {
+    return state.listRequest?.request?.filter(item => item.status.match(/в работе/ig)).length || 0
+  }
 }
 
 const actions = {
@@ -36,11 +39,13 @@ const actions = {
           requestName: 'all',
           clientId: toms
         })
+        .setBranch('web-bss')
         .query('/problem/management/list')
       commit(GET_REQUEST_SUCCESS, result)
-      return result
+      return true
     } catch (error) {
       commit(ERROR_MODAL, true, { root: true })
+      return false
       // todo Логирование
     } finally {
       commit('loading/loadingRequest', false, { root: true })
@@ -79,7 +84,8 @@ const actions = {
     complainantEmail,
     problemTheme,
     service,
-    file
+    file,
+    complaintTheme
   }) => {
     const data = {}
     const { toms: clientId } = rootGetters['auth/user']
@@ -97,7 +103,9 @@ const actions = {
         : COMPLAINT_REASON
     data.type = requestName.match(/problem/i)
       ? problemTheme
-      : type
+      : requestName.match(/complaint/i)
+        ? complaintTheme
+        : type
     data.phoneNumber = phoneNumber
     if (emailAddress) {
       data.emailAddress = emailAddress
@@ -122,12 +130,12 @@ const actions = {
         .setType(TYPE_ARRAY)
         .query('/problem/management/create')
       if (result && result.hasOwnProperty('ticket_id')) {
-        const info = await dispatch(GET_REQUEST_BY_ID, { api, id: result.ticket_id, requestName, name: result.ticket_name })
+        await dispatch(GET_REQUEST, { api })
         if (file) {
           const fileInfo = await dispatch(ATTACH_FILE, { api, id: result.ticket_id })
-          return fileInfo ? info : false
+          return fileInfo ? result.ticket_name : false
         }
-        return info
+        return result.ticket_name
       } else {
         return false
       }
@@ -145,6 +153,7 @@ const actions = {
     try {
       const result = await api
         .setData(data)
+        .setBranch('web-bss')
         .query('/problem/management/info')
       commit(CREATE_REQUEST_SUCCESS, result)
       return name
@@ -200,6 +209,7 @@ const mutations = {
 export default {
   namespaced: true,
   state,
+  getters,
   mutations,
   actions
 }
