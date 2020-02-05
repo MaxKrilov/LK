@@ -37,7 +37,8 @@ export default {
     },
     name: String,
     checked: Boolean,
-    disabled: Boolean
+    disabled: Boolean,
+    label: String
   },
   computed: {
     classes () {
@@ -53,8 +54,10 @@ export default {
       }
       if (this.type === 'checkbox' && Array.isArray(this.modelValue)) {
         return ~this.modelValue.indexOf(this.value)
+      } else if (this.type === 'checkbox') {
+        return !!this.modelValue
       }
-      return !!this.modelValue
+      return this.modelValue === this.value
     }
   },
   watch: {
@@ -90,7 +93,10 @@ export default {
       }, [
         this.view === 'switch' && this.generateSwitch(),
         this.view === 'radio' && this.generateRadio(),
-        this.view === 'radio-check' && this.generateRadioCheck()
+        this.view === 'radio-check' && this.generateRadioCheck(),
+        this.label && this.$createElement('div', {
+          staticClass: `${this.pre}__label-text`
+        }, [this.label])
       ])
     },
     generateSwitch () {

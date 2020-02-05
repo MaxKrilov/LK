@@ -1,4 +1,13 @@
 
+.change-org-button {
+    margin-top: $padding-x2;
+    @extend %button-font;
+    @extend %link-color;
+    cursor: pointer;
+    border-bottom: 1px solid;
+    display: block;
+  }
+
 .menu-component {
   position: fixed;
   z-index: map_get($z-index, 'left-menu');

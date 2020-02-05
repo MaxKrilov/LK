@@ -10,8 +10,8 @@ import {
   GET_LIST_SERVICE_BY_ADDRESS,
   GET_MANAGER_INFO,
   GET_MANAGER_INFO_SUCCESS,
-  GET_UNSIGNED_DOCUMENTS,
-  GET_UNSIGNED_DOCUMENTS_SUCCESS,
+  GET_DOCUMENTS,
+  GET_DOCUMENTS_SUCCESS,
   SET_ACTIVE_BILLING_ACCOUNT,
   GET_LIST_ADDRESS_BY_SERVICES,
   GET_PAYMENT_INFO,
@@ -20,13 +20,27 @@ import {
   GET_PROMISED_PAYMENT_INFO
 } from '../actions/user'
 import { ERROR_MODAL } from '../actions/variables'
+import { logError } from '@/functions/logging'
+import { eachArray } from '../../functions/helper'
+import {
+  isContractDocument,
+  isBlankDocument,
+  isUserListDocument,
+  isReportDocument
+} from '@/functions/document'
 
 const ACCOUNT_MANAGER_ID = '9134601279613203712'
+const INN_ID = '9148328342013670726'
+const KPP_ID = '9154340518713221693'
+const OGRN_ID = '9154340419713221073'
 
 const state = {
-  clientInfo: {},
+  clientInfo: {
+    fullAddress: {}
+  },
   personalManager: {},
-  countUnsignedDocuments: [],
+  countUnsignedDocuments: 0,
+  documents: [],
   listBillingAccount: [],
   activeBillingAccount: '',
   activeBillingAccountNumber: '',
@@ -36,15 +50,70 @@ const state = {
 }
 
 const getters = {
+  getClientInfo (state) {
+    return {
+      name: state.clientInfo?.legalName,
+      inn: state.clientInfo?.extendedMap?.[INN_ID]?.singleValue?.attributeValue,
+      kpp: state.clientInfo?.extendedMap?.[KPP_ID]?.singleValue?.attributeValue,
+      ogrn: state.clientInfo?.extendedMap?.[OGRN_ID]?.singleValue?.attributeValue,
+      address: state.clientInfo?.fullLegalAddress
+    }
+  },
   getManagerInfo (state) {
     return {
-      name: `${state.personalManager?.surname} ${state.personalManager?.name} ${state.personalManager?.middle_name}`,
-      phone: state.personalManager?.phone?.replace(/[^\d]+/g, ''),
+      name: state.personalManager?.surname && state.personalManager?.name && state.personalManager?.middle_name
+        ? `${state.personalManager.surname} ${state.personalManager.name} ${state.personalManager.middle_name}`
+        : 'Нет закреплённого менеджера',
+      phone: state.personalManager?.phone?.replace(/[^\d]+/g, '') || '78003339000',
       email: state.personalManager?.email
     }
   },
+  getListContact (state) {
+    return state.clientInfo?.contacts?.map(item => {
+      const result = {}
+      result.id = item.id
+      result.firstName = item.firstName
+      result.name = item.name
+      eachArray(item.contactMethods || [], _item => {
+        if (_item['@type'].match(/phone/i)) {
+          result.phone = {
+            id: _item.id,
+            value: _item.value.replace(/[\D]+/g, '')
+          }
+        } else if (_item['@type'].match(/email/i)) {
+          result.email = {
+            id: _item.id,
+            value: _item.value
+          }
+        }
+      })
+      result.isLPR = !!item.roles.filter(item => item.role.name.match(/decision maker/ig) || item.role.name.match(/лпр/ig)).length
+      return result
+    }) || []
+  },
   getCountUnsignedDocuments (state) {
-    return state.countUnsignedDocuments.length
+    return state.countUnsignedDocuments
+  },
+  getReportDocuments: state => state.documents.filter(el => {
+    return isReportDocument(el)
+  }),
+  getContractDocuments: state => state.documents.filter(el => {
+    return isContractDocument(el) || isBlankDocument(el) || isUserListDocument(el)
+  }),
+  getPhoneList (state) {
+    return state.clientInfo?.contactMethods?.filter(item => item['@type'] === 'PhoneNumber')
+      .map(item => item.name.replace(/[\D]+/g, '')) || []
+  },
+  getEmailList (state) {
+    return state.clientInfo?.contactMethods?.filter(item => item['@type'] === 'Email')
+      .map(item => item.name) || []
+  },
+  getAddressList (state) {
+    return state.clientInfo?.customerLocations?.map(item => ({
+      value: item.fullAddress,
+      id: item.address.id,
+      locationId: item.id
+    })) || []
   },
   getBillingAccountsGroupByContract (state) {
     return state.listBillingAccount.reduce((result, item) => {
@@ -79,11 +148,14 @@ const getters = {
       name: item.offeringCategory.name,
       price: item.amount.value
     }))
+  },
+  agreementNumber (state) {
+    return state.listBillingAccount.find(item => item.billingAccountId === state.activeBillingAccount)?.contractNumber
   }
 }
 
 const actions = {
-  [GET_CLIENT_INFO]: async ({ commit, rootState, rootGetters }, { api }) => {
+  [GET_CLIENT_INFO]: async ({ dispatch, commit, rootState, rootGetters }, { api }) => {
     const { toms } = rootGetters['auth/user']
     try {
       const result = await api
@@ -123,22 +195,33 @@ const actions = {
       }
     }
   },
-  [GET_UNSIGNED_DOCUMENTS]: async ({ commit, rootState, rootGetters }, { api }) => {
-    const { toms } = rootGetters['auth/user']
-    try {
-      const result = await api
-        .setWithCredentials()
-        .setData({
-          clientId: toms
-        })
-        .query('/customer/management/fileinfo')
-      commit(GET_UNSIGNED_DOCUMENTS_SUCCESS, result)
-    } catch (error) {
-      commit(ERROR_MODAL, true, { root: true })
-      // todo Логирование
-    } finally {
-      commit('loading/loadingDocuments', false, { root: true })
+  [GET_DOCUMENTS]: async ({ commit, rootState, rootGetters }, { api }) => {
+    let toms
+
+    if (process.env.VUE_APP_DOCUMENT_TEST_USER_ID !== undefined) {
+      toms = process.env.VUE_APP_DOCUMENT_TEST_USER_ID
+      console.info(`used VUE_APP_DOCUMENT_TEST_USER_ID=${toms}`)
+    } else {
+      toms = rootGetters['auth/user']['toms']
     }
+
+    return api
+      .setWithCredentials()
+      .setBranch('master')
+      .setData({
+        clientId: toms
+      })
+      .query('/customer/management/fileinfo')
+      .then((data) => {
+        commit(GET_DOCUMENTS_SUCCESS, data)
+      })
+      .catch(error => {
+        logError(error)
+        commit(ERROR_MODAL, true, { root: true })
+      })
+      .finally(() => {
+        commit('loading/loadingDocuments', false, { root: true })
+      })
   },
   /**
    * Получение списка лицевых счетов
@@ -163,6 +246,7 @@ const actions = {
         commit(SET_ACTIVE_BILLING_ACCOUNT, result[0].billingAccountId)
         commit(SET_ACTIVE_BILLING_ACCOUNT_NUMBER, result[0].accountNumber)
       }
+      return Array.isArray(result) && result.length !== 0
     } catch (error) {
       commit(ERROR_MODAL, true, { root: true })
       // todo Логирование
@@ -265,7 +349,6 @@ const actions = {
     try {
       const result = await api
         .setWithCredentials()
-        .setBranch('web-16308')
         .setData({
           id: activeBillingAccount,
           clientId: toms
@@ -283,13 +366,14 @@ const actions = {
 
 const mutations = {
   [GET_CLIENT_INFO_SUCCESS]: (state, payload) => {
-    state.clientInfo = payload
+    state.clientInfo = { ...state.clientInfo, ...payload }
   },
   [GET_MANAGER_INFO_SUCCESS]: (state, payload) => {
     state.personalManager = payload
   },
-  [GET_UNSIGNED_DOCUMENTS_SUCCESS]: (state, payload) => {
-    state.countUnsignedDocuments = payload
+  [GET_DOCUMENTS_SUCCESS]: (state, payload) => {
+    state.documents = payload
+    state.countUnsignedDocuments = payload.length
   },
   [GET_LIST_BILLING_ACCOUNT_SUCCESS]: (state, payload) => {
     state.listBillingAccount = payload

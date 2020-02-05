@@ -1,11 +1,33 @@
 import { Vue, Component, Prop } from 'vue-property-decorator'
+import { CANCEL_REQUEST } from '../../../../../../store/actions/request'
+import ErActivationModal from '../../../../../blocks/ErActivationModal/index'
 
-@Component
+const localisationTicketType = val => val.match(/Problem/ig)
+  ? 'Инцидент'
+  : val.match(/Complaint/ig)
+    ? 'Претензия'
+    : val.match(/Request/ig)
+      ? 'Запрос на обслуживание'
+      : 'Другое'
+
+@Component({
+  components: {
+    ErActivationModal
+  },
+  filters: {
+    localisationTicketType,
+    ticketName: val => val.split(' ').slice(0, 2).join(' ')
+  }
+})
 export default class RequestItemComponent extends Vue {
   /**
    * Номер заявки
    */
   @Prop([String, Number]) ticketId
+  /**
+   * Имя заявки
+   */
+  @Prop(String) ticketName
   /**
    * Тип заявки
    */
@@ -21,7 +43,7 @@ export default class RequestItemComponent extends Vue {
   /**
    * Тип проблемы
    */
-  @Prop(String) category
+  @Prop(String) type
   /**
    * Дата/время изменения
    */
@@ -46,16 +68,34 @@ export default class RequestItemComponent extends Vue {
    * Дата/время закрытия
    */
   @Prop([String, Number]) resolvedWhen
+  /**
+   * Дата/время отмены
+   */
+  @Prop([String, Number]) cancelledWhen
+  /**
+   * Список файлов
+   */
+  @Prop({ type: Array, default: () => ([]) }) listFile
   /** @type {boolean} */
   isOpenDetail = false
   /** @type {boolean} */
   isOpenHistory = false
+  /** @type {boolean} */
+  isOpenCancel = false
+  /** @type {string} */
+  reasonOfCancel = ''
+  isSuccessCancel = false
+  resultDialogError = false
+  loadingCancel = false
 
   /**
    * Получение метки-статуса
    * @return {{name: string, id: string}}
    */
   get getLabelStatus () {
+    if (this.cancelledWhen) {
+      return { id: 'cancel', name: 'Отменена' }
+    }
     if (this.resolvedWhen) {
       return { id: 'resolved', name: 'Закрыта' }
     }
@@ -63,13 +103,13 @@ export default class RequestItemComponent extends Vue {
       return { id: 'solved', name: 'Решена' }
     }
     if (this.onHoldWhen) {
-      return { id: 'hold', name: 'В ожидании' }
+      return { id: 'hold', name: 'В доработке' }
     }
     if (this.inProgressWhen) {
       return { id: 'progress', name: 'В работе' }
     }
     if (this.createdWhen) {
-      return { id: 'created', name: 'Создана' }
+      return { id: 'created', name: 'Новая' }
     }
     return { id: '', name: '' }
   }
@@ -86,32 +126,34 @@ export default class RequestItemComponent extends Vue {
     return {
       'created': 'Спасибо за Ваше обращение. Заявка создана, в ближайшее время будет принята в работу.',
       'progress': 'Специалисты занимаются решением Вашей заявки.',
-      'hold': 'Для решения заявки требуется получить дополнительную информацию от Клиента.',
+      'hold': 'Для решения заявки требуются дополнительные работы.',
       'solved': 'Работы по заявке выполнены. Ожидается подтверждение от Клиента решения заявки.',
-      'resolved': 'Спасибо за Ваше обращение. Работы по заявке выполнены.'
+      'resolved': 'Спасибо за Ваше обращение. Работы по заявке выполнены.',
+      'cancel': 'Заявка отменена по желанию Клиента.'
     }
   }
   get getHistoryArray () {
     return [
+      this.cancelledWhen && { id: 'cancel', name: 'Отменена', text: this.getTextStatus.cancel, time: this.cancelledWhen },
       this.resolvedWhen && { id: 'resolved', name: 'Закрыта', text: this.getTextStatus.resolved, time: this.resolvedWhen },
       this.solvedWhen && { id: 'solved', name: 'Решена', text: this.getTextStatus.solved, time: this.solvedWhen },
-      this.onHoldWhen && { id: 'hold', name: 'В ожидании', text: this.getTextStatus.hold, time: this.onHoldWhen },
+      this.onHoldWhen && { id: 'hold', name: 'В доработке', text: this.getTextStatus.hold, time: this.onHoldWhen },
       this.inProgressWhen && { id: 'progress', name: 'В работе', text: this.getTextStatus.progress, time: this.inProgressWhen },
-      this.createdWhen && { id: 'created', name: 'Создана', text: this.getTextStatus.created, time: this.createdWhen }
+      this.createdWhen && { id: 'created', name: 'Новая', text: this.getTextStatus.created, time: this.createdWhen }
     ].filter(item => item)
   }
   get getDetailInfoMobile () {
     return [
-      { caption: 'Тип заявки', value: this.ticketType },
-      { caption: 'Тип проблемы', value: this.category },
+      { caption: 'Тип заявки', value: localisationTicketType(this.ticketType) },
+      { caption: 'Тип проблемы', value: this.type },
       { caption: 'Продукт', value: this.affectedProduct },
       { caption: 'Статус', value: this.getTextStatus[this.getLabelStatus.id] }
     ]
   }
   get getDetailInfoDesktop () {
     return [
-      { caption: 'Тип заявки', value: this.ticketType },
-      { caption: 'Тип проблемы', value: this.category },
+      { caption: 'Тип заявки', value: localisationTicketType(this.ticketType) },
+      { caption: 'Тип проблемы', value: this.type },
       { caption: 'Продукт', value: this.affectedProduct },
       { caption: 'Адрес подключения', value: this.location }
     ]
@@ -125,5 +167,40 @@ export default class RequestItemComponent extends Vue {
   }
   toggleHistoryMobile () {
     this.isOpenHistory = !this.isOpenHistory
+  }
+  openCancelDialog () {
+    this.isOpenCancel = true
+  }
+  closeCancelDialog () {
+    this.isOpenCancel = false
+  }
+  closeSuccessCancel () {
+    this.isSuccessCancel = false
+  }
+  async cancelRequest () {
+    if (!this.$refs.cancel_form.validate()) {
+      return false
+    }
+    this.loadingCancel = true
+    this.$store.dispatch(`request/${CANCEL_REQUEST}`, {
+      api: this.$api,
+      requestId: this.ticketId,
+      description: this.reasonOfCancel
+    })
+      .then(result => {
+        if (result) {
+          this.closeCancelDialog()
+          this.isSuccessCancel = true
+          this.$emit('cancel')
+        } else {
+          this.resultDialogError = true
+        }
+      })
+      .catch(() => {
+        this.resultDialogError = true
+      })
+      .finally(() => {
+        this.loadingCancel = false
+      })
   }
 }

@@ -64,3 +64,25 @@
     transform: translateY(100%);
   }
 }
+
+.fade-transition {
+  &-enter-active,
+  &-leave-active {
+    transition: opacity 500ms;
+  }
+  &-enter,
+  &-leave-to {
+    opacity: 0;
+  }
+}
+
+.dialog-transition {
+  &-enter, &-leave-to {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+
+  &-enter-to, &-leave {
+    opacity: 1;
+  }
+}

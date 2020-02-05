@@ -55,6 +55,13 @@
         }
       }
     }
+    &--comma {
+      white-space: nowrap;
+      overflow: hidden;
+      position: relative;
+      text-overflow: ellipsis;
+      @extend %body-font;
+    }
     input {
       flex: 1 1;
     }
@@ -101,7 +108,7 @@
       &.er-text-field,
       &.er-textarea {
         &--active {
-          transform: scale(0.85) translateY(-40px);
+          transform: scale(0.85) translateY(-45px);
         }
       }
     }
@@ -217,5 +224,8 @@
     &.show {
       transform: translateY(0);
     }
+  }
+  &__loading {
+    @include color-black(0.2)
   }
 }

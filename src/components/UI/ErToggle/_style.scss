@@ -7,6 +7,8 @@
       > label {
         cursor: pointer;
         position: relative;
+        display: flex;
+        align-items: center;
       }
     }
   }
@@ -209,5 +211,13 @@
         color: map_get($red, 'base');
       }
     }
+  }
+  &__label-text {
+    @extend %button-font;
+    display: inline-block;
+    margin-left: 4px;
+    @include color-black(0.5);
+    border-bottom: 1px dashed;
+    user-select: none;
   }
 }

@@ -10,6 +10,9 @@ div(:class="[`${pre}`, { open: value }]")
     | Организация
   div.organisation.pl-32
     | ООО «Шуруповерт-Холдинг», Пермский филиал
+    .change-org-button(
+      @click="onChangeOrg"
+    ) Выбрать другую организацию
   er-slide-up-down(:active="!isOpenPersonalAccountDetail")
     div.caption.pl-32.mb-8
       | Лицевой счёт №

@@ -16,19 +16,23 @@ div(:class="`${pre}`")
     er-container.full.container--no-padding.document
       er-row
         er-flex.lg4.md6.sm6.xs12.d--flex(
-          v-for="document in contractDocuments"
+          v-for="document in allContractDocuments"
           :key="document.number"
         )
           blank-document(
-            v-if="document.type==DOCUMENT_TYPES['BLANK']"
+            v-if="isBlankDocument(document)"
             :document="document"
           )
           user-list-document(
-            v-if="document.type==DOCUMENT_TYPES['USERS']"
+            v-else-if="isUserListDocument(document)"
             :document="document"
           )
           contract-document(
-            v-if="document.type==DOCUMENT_TYPES['CONTRACT']"
+            v-else-if="isContractDocument(document)"
+            :document="document"
+          )
+          other-document(
+            v-else
             :document="document"
           )
 
@@ -48,9 +52,9 @@ div(:class="`${pre}`")
 
   .document-page__list.main-content.main-content--h-padding
     er-container.full.container--no-padding.document
-      er-row(v-if="reportDocuments.length")
+      er-row(v-if="allReportDocuments.length")
         er-flex.lg4.md6.sm6.xs12.d--flex(
-          v-for="report in reportDocuments"
+          v-for="report in allReportDocuments"
           :key="report.number"
         )
           report-document(

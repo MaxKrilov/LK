@@ -1,0 +1,17 @@
+common-document(
+  :class="{'er-document--signed': documentIsSigned}"
+).er-document--contract.er-document--big-doc
+  template(v-slot:header)
+    .er-document__title {{ documentName }}
+    a(:href="document.file").er-document__link.er-document__subtitle
+      | Текст документа
+    er-icon(name="doc")
+
+  template(v-slot:body)
+    .document-date.caption2
+      | от {{ document.creationDate|formatDate("DD.MM.YY") }}
+
+    template(v-if="document.filePath")
+
+  template(v-slot:footer)
+    er-attach(:url="document.fileName")

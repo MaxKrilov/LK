@@ -4,7 +4,11 @@ import './_style.scss'
 @Component({
   props: {
     active: Boolean,
-    icon: Boolean
+    icon: Boolean,
+    iconType: {
+      type: String,
+      default: '3'
+    }
   }
 })
 export default class ErPreloader extends Vue {
@@ -21,7 +25,7 @@ export default class ErPreloader extends Vue {
         }, [
           h('img', {
             attrs: {
-              src: require('@/assets/images/preloaders/3.svg')
+              src: require(`@/assets/images/preloaders/${this.iconType}.svg`)
             }
           })
         ])

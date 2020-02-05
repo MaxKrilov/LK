@@ -50,7 +50,7 @@ export default {
     format: {
       type: String,
       default: '24hr',
-      valdator: val => ['ampm', '24hr'].includes(val)
+      validator: val => ['ampm', '24hr'].includes(val)
     },
     min: String,
     max: String,
@@ -312,7 +312,7 @@ export default {
     genPickerBody () {
       return this.$createElement('div', {
         staticClass: 'er-time-picker-clock__container',
-        key: this.selecting
+        // key: this.selecting
       }, [
         !this.ampmInTitle && this.isAmPm && this.genClockAmPm(),
         this.genClock()

@@ -1,93 +1,100 @@
-$i: $min-indentation;
+$i: 0;
 
-@while $i <= $max-indentation {
-  .m {
-    &t-#{$i} {
-      margin: { top: #{$i}px !important; };
+@each $breakpoint, $width in $grid-breakpoint {
+  @media screen and (min-width: $width) {
+    $infix: if($breakpoint == xs, unquote(''), -#{$breakpoint});
+    @while $i <= $max-indentation {
+      .m {
+        &t#{$infix}-#{$i} {
+          margin: { top: #{$i}px !important; };
+        }
+        &r#{$infix}-#{$i} {
+          margin: { right: #{$i}px !important; };
+        }
+        &b#{$infix}-#{$i} {
+          margin: { bottom: #{$i}px !important; };
+        }
+        &l#{$infix}-#{$i} {
+          margin: { left: #{$i}px !important; };
+        }
+        &x#{$infix}-#{$i} {
+          margin: {
+            left: #{$i}px !important;
+            right: #{$i}px !important;
+          };
+        }
+        &y#{$infix}-#{$i} {
+          margin: {
+            top: #{$i}px !important;
+            bottom: #{$i}px !important;
+          };
+        }
+        &a#{$infix}-#{$i} {
+          margin: #{$i}px !important;
+        }
+      }
+      .p {
+        &t#{$infix}-#{$i} {
+          padding: { top: #{$i}px !important; };
+        }
+        &r#{$infix}-#{$i} {
+          padding: { right: #{$i}px !important; };
+        }
+        &b#{$infix}-#{$i} {
+          padding: { bottom: #{$i}px !important; };
+        }
+        &l#{$infix}-#{$i} {
+          padding: { left: #{$i}px !important; };
+        }
+        &x#{$infix}-#{$i} {
+          padding: {
+            left: #{$i}px !important;
+            right: #{$i}px !important;
+          };
+        }
+        &y#{$infix}-#{$i} {
+          padding: {
+            top: #{$i}px !important;
+            bottom: #{$i}px !important;
+          };
+        }
+        &a#{$infix}-#{$i} {
+          padding: #{$i}px !important;
+        }
+      }
+      $i: $i + 4;
     }
-    &r-#{$i} {
-      margin: { right: #{$i}px !important; };
-    }
-    &b-#{$i} {
-      margin: { bottom: #{$i}px !important; };
-    }
-    &l-#{$i} {
-      margin: { left: #{$i}px !important; };
-    }
-    &x-#{$i} {
-      margin: {
-        left: #{$i}px !important;
-        right: #{$i}px !important;
-      };
-    }
-    &y-#{$i} {
-      margin: {
-        top: #{$i}px !important;
-        bottom: #{$i}px !important;
-      };
-    }
-    &a-#{$i} {
-      margin: #{$i}px !important;
-    }
-  }
-  .p {
-    &t-#{$i} {
-      padding: { top: #{$i}px !important; };
-    }
-    &r-#{$i} {
-      padding: { right: #{$i}px !important; };
-    }
-    &b-#{$i} {
-      padding: { bottom: #{$i}px !important; };
-    }
-    &l-#{$i} {
-      padding: { left: #{$i}px !important; };
-    }
-    &x-#{$i} {
-      padding: {
-        left: #{$i}px !important;
-        right: #{$i}px !important;
-      };
-    }
-    &y-#{$i} {
-      padding: {
-        top: #{$i}px !important;
-        bottom: #{$i}px !important;
-      };
-    }
-    &a-#{$i} {
-      padding: #{$i}px !important;
-    }
-  }
-  $i: $i + 4;
-}
 
-.m {
-  &t-auto {
-    margin: { top: auto !important; };
-  }
-  &r-auto {
-    margin: { right: auto !important; };
-  }
-  &b-auto {
-    margin: { bottom: auto !important; };
-  }
-  &l-auto {
-    margin: { left: auto !important; };
-  }
-  &x-auto {
-    margin: {
-      left: auto !important;
-      right: auto !important;
-    };
-  }
-  &y-auto {
-    margin: {
-      top: auto !important;
-      bottom: auto !important;
-    };
-  }
-  &a-auto {
-    margin: auto !important;
+    $i: 0;
+
+    .m {
+      &t#{$infix}-auto {
+        margin: { top: auto !important; };
+      }
+      &r#{$infix}-auto {
+        margin: { right: auto !important; };
+      }
+      &b#{$infix}-auto {
+        margin: { bottom: auto !important; };
+      }
+      &l#{$infix}-auto {
+        margin: { left: auto !important; };
+      }
+      &x#{$infix}-auto {
+        margin: {
+          left: auto !important;
+          right: auto !important;
+        };
+      }
+      &y#{$infix}-auto {
+        margin: {
+          top: auto !important;
+          bottom: auto !important;
+        };
+      }
+      &a#{$infix}-auto {
+        margin: auto !important;
+      }
+    }
   }
 }

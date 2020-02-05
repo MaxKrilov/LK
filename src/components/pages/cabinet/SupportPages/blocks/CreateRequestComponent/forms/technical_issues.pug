@@ -1,0 +1,35 @@
+//- Технические вопросы
+include ./_mixins
+er-form(ref="technical_issues")
+  er-row
+    er-flex(xs12)
+      er-row
+        er-flex.mb-32(xs12)
+          +listRequestTheme
+        er-flex.mb-32(xs12)
+          er-select(
+            :items="listTechnicalRequestTheme"
+            v-model="technicalRequestTheme"
+            placeholder="Тип проблемы"
+            is-show-required-label
+            :rules="requiredRule"
+          )
+        er-flex.mb-32(xs12)
+          +address
+        er-flex.mb-32(xs12)
+          er-select(
+            :items="listService"
+            v-model="service"
+            placeholder="Услуга"
+            is-show-required-label
+            :rules="requiredRule"
+          )
+        er-flex.mb-32(xs12 sm6)
+          +phoneNumber
+        er-flex.mb-32(xs12 sm6)
+          +timePickerRange
+        er-flex.mb-32(xs12)
+          +name
+        er-flex.mb-32(xs12)
+          +appeal("Здесь Вы можете указать дополнительную информацию по заявке")
+    +footer

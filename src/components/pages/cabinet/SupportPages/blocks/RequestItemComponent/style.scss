@@ -56,6 +56,10 @@
     background-color: map_get($green, 'base');
     @include color-white(0.8)
   }
+  &.cancel > span {
+    background-color: map_get($red, 'base');
+    @include color-white(0.8)
+  }
 }
 .request-item-component {
   padding: 16px 32px;
@@ -236,6 +240,47 @@
         max-width: calc(20% - 20px);
         flex-basis: calc(20% - 20px);
       }
+    }
+  }
+  &__cancel-request-dialog,
+  &__cancel-request-dialog-success {
+    width: 100%;
+    background: linear-gradient(to top, map_get($gray, '26') 28.65%, map_get($shades, 'white') 90.63%);
+    padding: 1px;
+    border-radius: 12px;
+    height: 467px;
+    .content {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      height: 100%;
+      border-radius: inherit;
+      background-color: map_get($shades, 'white');
+      padding: 24px;
+    }
+    .icon {
+      color: map_get($yellow, 'base');
+      margin-bottom: 16px;
+      svg {
+        width: 64px;
+      }
+    }
+    .title {
+      @extend %h3;
+      margin-bottom: 32px;
+      max-width: 361px;
+      width: 100%;
+    }
+    .actions {
+      margin-top: auto;
+      > * {
+        padding: 0;
+      }
+    }
+  }
+  &__cancel-request-dialog-success {
+    .icon {
+      color: map_get($green, 'base');
     }
   }
 }
@@ -471,6 +516,11 @@
             font: 18px/23px $fedra-demi;
             letter-spacing: -1px;
           }
+          a {
+            color: inherit;
+            text-decoration: none;
+            border-bottom: 1px dashed;
+          }
         }
         &__toggle {
           @include color-black(0.5);
@@ -551,6 +601,9 @@
           }
           &.solved {
             background-color: map_get($green, 'base');
+          }
+          &.cancel {
+            background-color: map_get($red, 'base');
           }
         }
         .updated {

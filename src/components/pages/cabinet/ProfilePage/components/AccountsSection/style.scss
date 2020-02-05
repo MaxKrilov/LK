@@ -102,13 +102,6 @@
     }
     .er-icon {
       opacity: 0.3;
-      @include media-query((
-        margin-right: (
-          md: 5px,
-          lg: 20px,
-          xl: 15px
-        )
-      ));
       svg {
         width: 16px;
       }
@@ -130,11 +123,6 @@
         @include media-query((
           margin-top: (md: 0, lg: 0)
         ));
-        & > div {
-          @include media-query((
-            margin-right: (xs: 26px, sm: 6px)
-          ))
-        }
       }
     }
   }
@@ -298,6 +286,10 @@
           cursor: pointer;
 
           &__filter--active {
+            background-color: map_get($shades, 'transparent');
+            & > .er-button__content {
+              background-color: map_get($yellow, 'base');
+            }
             color: map_get($gray, '7');
           }
 
@@ -309,7 +301,6 @@
           }
 
           &:active {
-            color: map_get($yellow, 'base');
             & svg {
               color: map_get($yellow, 'base');
             }

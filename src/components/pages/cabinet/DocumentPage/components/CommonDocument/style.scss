@@ -177,6 +177,10 @@ $pre: '.er-document';
       padding-top: 0;
     }
 
+    @include min-breakpoint('xl') {
+      padding-left: $padding-x8;
+    }
+
     @include max-breakpoint('sm') {
       #{$pre}__link {
         display: none;
@@ -243,7 +247,7 @@ $pre: '.er-document';
 
   &__text {
     .caption1 {
-      opacity: .8;
+      @include color-black(.8);
     }
 
     a {
@@ -283,6 +287,14 @@ $pre: '.er-document';
         top: $padding-x6;
         left: $padding-x6;
         right: $padding-x6;
+      }
+    }
+
+    @include min-breakpoint('xl') {
+      padding: {
+        top: $padding-x8;
+        left: $padding-x8;
+        right: $padding-x8;
       }
     }
   }
@@ -347,6 +359,14 @@ $pre: '.er-document';
         bottom: $padding-x6;
       }
     }
+
+    @include min-breakpoint('xl') {
+      padding: {
+        left: $padding-x8;
+        right: $padding-x8;
+        bottom: $padding-x8;
+      }
+    }
   }
 
   &__signed-text {
@@ -393,6 +413,11 @@ $pre: '.er-document';
 
   .er-attach {
     text-align: left;
+    display: inline;
+
+    a {
+      display: inline;
+    }
 
     @include min-breakpoint('md') {
       text-align: center;

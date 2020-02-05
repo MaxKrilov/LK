@@ -1,13 +1,19 @@
 import { eachArray } from '@/functions/helper'
 import { mapState, mapGetters } from 'vuex'
 import { BREAKPOINT_XL } from '@/constants/breakpoint'
-import RightInfoPanelComponent from '../RightInfoPanelComponent/index.vue'
 import { SCREEN_WIDTH } from '../../../../../store/actions/variables'
+
+import RightInfoPanelComponent from '../RightInfoPanelComponent/index.vue'
+import ChangeOrganizationPopup from '../ChangeOrganizationPopup/index'
+
 import { formatPhone, price } from '../../../../../functions/filters'
+import { SET_ACTIVE_BILLING_ACCOUNT, SET_ACTIVE_BILLING_ACCOUNT_NUMBER } from '../../../../../store/actions/user'
+
 
 export default {
   name: 'menu-component',
   components: {
+    ChangeOrganizationPopup,
     RightInfoPanelComponent
   },
   data: () => ({
@@ -15,6 +21,7 @@ export default {
     openLeftMenu: false,
     openSubMenuBackground: false,
     isOpenRightPanel: false,
+    showChangeOrganizationPopup: false,
     menu: [
       {
         name: 'Главная',
@@ -116,10 +123,19 @@ export default {
     },
     signOut () {
       this.$store.dispatch('auth/signOut', { api: this.$api })
+    },
+    onChangeOrganization () {
+      this.showChangeOrganizationPopup = true
+    },
+    onChangeBillingAccount (billingAccountId, accountNumber) {
+      // Устанавливаем загрузку для отслеживания
+      this.$store.commit('loading/menuComponentBillingAccount', true)
+      this.$store.commit(`user/${SET_ACTIVE_BILLING_ACCOUNT}`, billingAccountId)
+      this.$store.commit(`user/${SET_ACTIVE_BILLING_ACCOUNT_NUMBER}`, accountNumber)
+      this.$store.commit('loading/menuComponentBillingAccount', false)
     }
   },
   mounted () {
-    // console.log(this['user/getManagerInfo'])
     if (this.isDesktop) {
       this.openSubMenuBackground = true
       this.menu[0].isOpen = true

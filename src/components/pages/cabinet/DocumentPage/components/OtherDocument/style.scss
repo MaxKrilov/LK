@@ -1,0 +1,124 @@
+$pre: '.er-document';
+
+#{$pre} {
+  &:hover {
+    #{$pre}__header {
+      background: map_get($shades, 'transparent');
+
+      @include min-breakpoint('md') {
+        background-color: map_get($yellow, 'base');
+      }
+    }
+  }
+
+  &#{$pre}--signed {
+    background: map_get($document-colors, 'green-gradient');
+
+    #{$pre}__title {
+      @include color-white(1);
+    }
+
+    #{$pre}__subtitle {
+      color: map_get($shades, 'white');
+    }
+
+    #{$pre}__header {
+      background-color: map_get($shades, 'transparent');
+
+      @include min-breakpoint('md') {
+        background-color: map_get($document-colors, 'green-header');
+      }
+
+      .er-icon {
+        display: none;
+      }
+    }
+
+    @include min-breakpoint('md') {
+      background: map_get($shades, 'white');
+    }
+
+    .document-number__number {
+      @include color-white(.8);
+
+      @include min-breakpoint('md') {
+        @include color-black(.8);
+      }
+    }
+
+    .document-date {
+      @include max-breakpoint('md') {
+        @include color-white(.8);
+      }
+    }
+  }
+
+  #{$pre}__header {
+    .er-icon {
+      display: block;
+      position: absolute;
+      right: 0;
+
+      color: map_get($blue, 'base');
+
+      @include min-breakpoint('md') {
+        display: none;
+      }
+    }
+
+    @include min-breakpoint('md') {
+      background-color: map_get($document-colors, 'gray-header');
+    }
+  }
+
+  #{$pre}__subtitle {
+    display: none;
+
+    @include min-breakpoint('md') {
+      display: inherit;
+    }
+  }
+
+  #{$pre}__footer {
+    .buttons {
+      display: flex;
+      flex-direction: row-reverse;
+      justify-content: space-between;
+
+      @include min-breakpoint('md') {
+        flex-direction: column;
+      }
+    }
+
+    .er-button {
+      // здесь используется max-breakpoint(), потому что проще
+      // перезаписать стили для кнопок только для определённых точек останова
+      @include max-breakpoint('md') {
+        background: none;
+        box-shadow: none;
+        border-radius: 0;
+        margin: 0;
+        height: auto;
+        display: inline-block;
+        width: initial;
+        border-bottom: 1px dashed;
+
+        &--decline { // кнопка "Отклонить"
+          @include color-black(.5);
+        }
+
+        &--accept { // кнопка "Принять"
+          color: map_get($blue, 'base')
+        }
+
+        .er-icon {
+          display: none;
+        }
+      }
+    }
+  }
+
+  @include min-breakpoint('md') {
+    background: map_get($shades, 'white');
+  }
+}

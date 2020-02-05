@@ -38,6 +38,7 @@ export default {
         staticClass: `${this.m_pre}__${ref}`,
         on: {
           click: e => {
+            if (this.disabled) return
             e.preventDefault()
             e.stopPropagation()
             this.$emit(`click:${ref}`, e)

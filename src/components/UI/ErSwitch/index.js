@@ -1,62 +1,58 @@
+import { Vue, Component } from 'vue-property-decorator'
 import './_style.scss'
 
-export default {
-  name: 'er-switch',
-  data: () => ({
-    pre: 'er-switch'
-  }),
+@Component({
   props: {
     labels: {
       type: Array,
-      required: true
+      default: () => ([])
     },
-    name: {
-      type: String,
-      required: true
-    },
-    id: {
-      type: String,
-      default: function () {
-        return `er-switch__${this._uid}`
-      }
-    },
+    name: String,
     value: null
-  },
-  methods: {
-    toggle (event) {
-      this.$emit('input', event.target.value)
-    }
-  },
+  }
+})
+export default class ErSwitch extends Vue {
+  get computedTranslateX () {
+    return this.computedIndexChecked * 100
+  }
+  get computedWidthSelection () {
+    return `calc(${100 / (this.labels.length || 1)}% - 3px)`
+  }
+  get computedIndexChecked () {
+    return this.labels.findIndex(item => item.value === this.value) || 0
+  }
   render (h) {
     return (
-      <ul class={this.pre}>
+      <div class="er-switch">
+        <span
+          class="er-switch__selection"
+          style={{
+            width: this.computedWidthSelection,
+            transform: `translateX(${this.computedTranslateX}%)`
+          }}
+        />
         {
-          this.labels.map(label => (
-            <li class={`${this.pre}__item`}>
+          this.labels.map((item, index) => (
+            <label key={index}>
               <input
                 type="radio"
-                value={label.value}
-                id={`${this.id}--${label.value}`}
                 name={this.name}
-                vOn:change={this.toggle}
-                checked={this.value === label.value}
-                class={`${this.pre}__input`}
+                checked={this.value === item.value}
+                onChange={() => this.onChange(item.value)}
               />
-              <label
-                for={`${this.id}--${label.value}`}
-                class={`${this.pre}__label`}
-              >
-                <span class={`${this.pre}__toggle__wrapper`}>
-                  <span class={`${this.pre}__toggle`}>
-                    <er-icon name="ok" />
-                  </span>
+              <span class="er-switch__toggle--outer">
+                <span class="er-switch__toggle--inner">
+                  <er-icon name={'ok'}/>
                 </span>
-                {label.label}
-              </label>
-            </li>
+              </span>
+              <span class="er-switch__text">{item.label}</span>
+            </label>
           ))
         }
-      </ul>
+      </div>
     )
+  }
+  onChange (value) {
+    this.$emit('input', value)
   }
 }

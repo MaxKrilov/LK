@@ -49,13 +49,14 @@ export const defaultDialogProps = {
     },
     notFoundText: {
       type: String,
-      default: 'Ничего не найдено (；⌣̀_⌣́)'
+      default: 'Ничего не найдено'
     },
     deep: {
       type: Number,
       default: 1,
       validator: val => val === 1 || val === 2
-    }
+    },
+    loading: Boolean
   },
   computed: {
     ...mapState({
@@ -152,6 +153,9 @@ export default class ErSelect extends mixins(ErTextField) {
   }
 
   onClick () {
+    if (this.disabled) {
+      return
+    }
     ErTextField.methods.onClick.call(this)
     this.isMenuActive = true
     this.multiselectStartValue = this.value
@@ -181,11 +185,13 @@ export default class ErSelect extends mixins(ErTextField) {
   }
 
   generateCommaSelection () {
-    return this.$createElement('div', {
-      staticClass: 'er-select__selections--comma'
-    }, [
-      this.getText(this.value)
-    ])
+    if (this.value) {
+      return this.$createElement('div', {
+        staticClass: 'er-select__selections--comma'
+      }, [
+        this.getText(this.value)
+      ])
+    }
   }
 
   generateMultipleSelection () {
@@ -248,16 +254,30 @@ export default class ErSelect extends mixins(ErTextField) {
   }
 
   generateToggleIcon () {
-    return this.$createElement('div', {
-      staticClass: 'er-select__toggle',
-      class: {
-        'rotate': this.isMenuActive
-      }
-    }, [
-      this.generateSlot('inner', 'append', [
-        this.generateIcon('corner_down')
+    return this.loading
+      ? this.$createElement('div', {
+        staticClass: 'er-select__loading'
+      }, [
+        this.generateSlot('inner', 'append', [
+          this.$createElement('er-progress-circular', {
+            props: {
+              indeterminate: true,
+              width: 2,
+              size: 16
+            }
+          })
+        ])
       ])
-    ])
+      : this.$createElement('div', {
+        staticClass: 'er-select__toggle',
+        class: {
+          'rotate': this.isMenuActive
+        }
+      }, [
+        this.generateSlot('inner', 'append', [
+          this.generateIcon('corner_down')
+        ])
+      ])
   }
 
   generateClearIcon () {
@@ -445,7 +465,6 @@ export default class ErSelect extends mixins(ErTextField) {
   generateItem (item, i) {
     const content = []
     const isActive = this.isActiveItem(item)
-
     if (this.$scopedSlots['item']) {
       content.push(this.$scopedSlots['item']({ item }))
     } else {

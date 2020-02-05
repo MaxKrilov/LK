@@ -1,5 +1,8 @@
 import ErFilterGroup from '../ErFilterGroup'
 
+const ALL_DOCUMENTS = 'all'
+const NOT_SIGNED_DOCUMENTS = 'notSigned'
+
 export default {
   components: {
     ErFilterGroup
@@ -8,15 +11,15 @@ export default {
     filterTypes: {
       type: Object,
       default: () => ({
-        1: 'Все',
-        2: 'На подпись'
+        [ALL_DOCUMENTS]: 'Все',
+        [NOT_SIGNED_DOCUMENTS]: 'На подпись'
       })
     }
   },
   data () {
     return {
       isFiltersVisible: false,
-      contractFilterType: 1
+      contractFilterType: ALL_DOCUMENTS
     }
   },
   methods: {

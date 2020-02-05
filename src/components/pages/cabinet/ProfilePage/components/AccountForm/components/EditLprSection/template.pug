@@ -17,29 +17,38 @@ div(:class="`${pre}`")
         div(v-if="isXS || isSM")
           h3(
             :class="`${pre}__fields-container__group-title`") Сотрудник
-        div
+        div(:class="`${pre}__fields-container__input-block`")
+          div(v-if="isLastNameChanged" :class="`${pre}__changed`")
+            er-icon(:class="`${pre}__changed-icon`" name="ok")
+            span(:class="`${pre}__changed-text`") Изменен
           er-text-field(
             :class="`${pre}__fields-container__group-field`"
             label="Фамилия"
-            :isShowLabelRequired="isAdding"
+            isShowLabelRequired
             v-model="value.lastName"
             isShowSuccess
             :rules="fullNameRule")
-        div
+        div(:class="`${pre}__fields-container__input-block`")
+          div(v-if="isFirstNameChanged" :class="`${pre}__changed`")
+            er-icon(:class="`${pre}__changed-icon`" name="ok")
+            span(:class="`${pre}__changed-text`") Изменен
           er-text-field(
             :class="`${pre}__fields-container__group-field`"
             name="inputFirstName"
             label="Имя"
-            :isShowLabelRequired="isAdding"
+            isShowLabelRequired
             v-model="value.firstName"
             isShowSuccess
             :rules="fullNameRule")
-        div
+        div(:class="`${pre}__fields-container__input-block`")
+          div(v-if="isMiddleNameChanged" :class="`${pre}__changed`")
+            er-icon(:class="`${pre}__changed-icon`" name="ok")
+            span(:class="`${pre}__changed-text`") Изменен
           er-text-field(
             :class="`${pre}__fields-container__group-field`"
             name="inputMiddleName"
             label="Отчество"
-            :isShowLabelRequired="isAdding"
+            isShowLabelRequired
             v-model="value.middleName"
             isShowSuccess
             :rules="fullNameRule")
@@ -54,15 +63,20 @@ div(:class="`${pre}`")
               xs11)
               span(@click="handleToggle")
                   | Создать контакт с аналогичными данными
-        div(v-if="isMD && !isSM")
+        div(
+          v-if="isMD && !isSM"
+          :class="`${pre}__fields-container__input-block`")
           h3(:class="`${pre}__fields-container__group-title`")
             | Роль учетной записи
+          div(v-if="isRoleChanged" :class="`${pre}__changed`")
+            er-icon(:class="`${pre}__changed-icon`" name="ok")
+            span(:class="`${pre}__changed-text`") Изменен
           er-select(
             :class="`${pre}__fields-container__group-field`"
             placeholder="Добавьте роль"
             v-model="value.role"
             track-id="code"
-            :isShowLabelRequired="isAdding"
+            isShowLabelRequired
             :items="value.roles"
             readonly
             :disabled="isLPR"
@@ -81,28 +95,34 @@ div(:class="`${pre}`")
             md12
             lg6
             :class="`${pre}__fields-container__group-login`")
-            div
-              h3(:class="`${pre}__fields-container__group-title`")
+            h3(:class="`${pre}__fields-container__group-title`")
                 | Учетная&nbsp;запись&nbsp;(логин)
+            div(:class="`${pre}__fields-container__input-block`")
+              div(v-if="isPhoneChanged" :class="`${pre}__changed`")
+                er-icon(:class="`${pre}__changed-icon`" name="ok")
+                span(:class="`${pre}__changed-text`") Изменен
               er-text-field(
                 :class="`${pre}__fields-container__group-field`"
                 name="inputPhoneNumber"
                 label="Введите номер телефона"
                 mask="phone"
                 v-model="value.phoneNumber"
-                :isShowLabelRequired="isAdding"
+                isShowLabelRequired
                 isShowSuccess
                 ref="phone"
                 :disabled="!isLPR && !isAdding"
                 :rules="phoneRule")
-            div
+            div(:class="`${pre}__fields-container__input-block`")
+              div(v-if="isEmailChanged" :class="`${pre}__changed`")
+                er-icon(:class="`${pre}__changed-icon`" name="ok")
+                span(:class="`${pre}__changed-text`") Изменен
               er-text-field(
                 :class="`${pre}__fields-container__group-field`"
                 name="inputEmail"
                 label="Введите электронную почту"
                 type="email"
                 v-model="value.email"
-                :isShowLabelRequired="isAdding"
+                isShowLabelRequired
                 isShowSuccess
                 ref="email"
                 :disabled="!isLPR && !isAdding"
@@ -113,15 +133,18 @@ div(:class="`${pre}`")
             md12
             lg6
             :class="`${pre}__fields-container__group-role`")
-            div
-              h3(:class="`${pre}__fields-container__group-title`")
+            h3(:class="`${pre}__fields-container__group-title`")
                 | Роль учетной записи
+            div(:class="`${pre}__fields-container__input-block`")
+              div(v-if="isRoleChanged" :class="`${pre}__changed`")
+                er-icon(:class="`${pre}__changed-icon`" name="ok")
+                span(:class="`${pre}__changed-text`") Изменен
               er-select(
                 :class="`${pre}__fields-container__group-field`"
                 placeholder="Добавьте роль"
                 v-model="value.role"
                 track-id="code"
-                :isShowLabelRequired="isAdding"
+                isShowLabelRequired
                 :items="value.roles"
                 readonly
                 :disabled="isLPR"
@@ -137,28 +160,34 @@ div(:class="`${pre}`")
         md6
         lg8
         :class="`${pre}__fields-container__group`")
-        div
-          h3(:class="`${pre}__fields-container__group-title`")
+        h3(:class="`${pre}__fields-container__group-title`")
             | Учетная запись (логин)
+        div(:class="`${pre}__fields-container__input-block`")
+          div(v-if="isPhoneChanged" :class="`${pre}__changed`")
+            er-icon(:class="`${pre}__changed-icon`" name="ok")
+            span(:class="`${pre}__changed-text`") Изменен
           er-text-field(
             :class="`${pre}__fields-container__group-field`"
             name="inputPhoneNumber"
             label="Введите номер телефона"
             mask="phone"
             v-model="value.phoneNumber"
-            :isShowLabelRequired="isAdding"
+            isShowLabelRequired
             isShowSuccess
             ref="phone"
             :disabled="!isLPR && !isAdding"
             :rules="phoneRule")
-        div
+        div(:class="`${pre}__fields-container__input-block`")
+          div(v-if="isEmailChanged" :class="`${pre}__changed`")
+            er-icon(:class="`${pre}__changed-icon`" name="ok")
+            span(:class="`${pre}__changed-text`") Изменен
           er-text-field(
             :class="`${pre}__fields-container__group-field`"
             name="inputEmail"
             label="Введите электронную почту"
             type="email"
             v-model="value.email"
-            :isShowLabelRequired="isAdding"
+            isShowLabelRequired
             isShowSuccess
             ref="email"
             :disabled="!isLPR && !isAdding"
@@ -182,15 +211,18 @@ div(:class="`${pre}`")
         v-if="isSM || isXS"
         xs12
         sm12)
-        div
-          h3(:class="`${pre}__fields-container__group-title`")
+        h3(:class="`${pre}__fields-container__group-title`")
             | Роль учетной записи
+        div(:class="`${pre}__fields-container__input-block`")
+          div(v-if="isRoleChanged" :class="`${pre}__changed`")
+            er-icon(:class="`${pre}__changed-icon`" name="ok")
+            span(:class="`${pre}__changed-text`") Изменен
           er-select(
             :class="`${pre}__fields-container__group-field`"
             placeholder="Добавьте роль"
             v-model="value.role"
             track-id="code"
-            :isShowLabelRequired="isAdding"
+            isShowLabelRequired
             :items="value.roles"
             readonly
             :disabled="isLPR"

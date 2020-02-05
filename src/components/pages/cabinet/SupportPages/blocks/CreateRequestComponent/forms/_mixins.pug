@@ -1,0 +1,73 @@
+mixin listRequestTheme
+  er-select(
+    :items="listRequestTheme"
+    v-model="requestTheme"
+    placeholder="Тема обращения"
+    is-show-required-label
+  )
+
+mixin phoneNumber
+  er-phone-select(
+    :items="getPhoneList"
+    v-model="phoneNumber"
+    placeholder="Телефон"
+    is-show-required-label
+    :rules="requiredRule"
+  )
+
+mixin timePickerRange
+  //- er-time-picker-range(v-model="time")
+
+mixin name
+  er-text-field(
+    label="Как к Вам обращаться?"
+    is-show-required-label
+    v-model="name"
+    :rules="requiredRule"
+  )
+
+mixin appeal(label)
+  er-textarea-with-file(
+    auto-height
+    is-show-required-label
+    label= label
+    v-model="comment"
+    :rules="requiredRule"
+    @file-append="e => { file = e }"
+  )
+
+mixin footer
+  er-flex.create-request-component__personal-data.mb-24(xs12)
+    | Нажимая на кнопку вы соглашаетесь &nbsp;
+    a(href="https://domru.ru/policy.pdf" target="_blank") на обработку данных
+  er-flex.mb-8.mb-sm-0(xs12 md4)
+    er-button(pre-icon="send", @click="createRequest" :loading="loadingCreating")
+      | Отправить заявку
+  er-flex(xs12 md4)
+    er-button(flat @click="() => { isOpenFormDesktop = false }")
+      | Отменить
+
+mixin footerFile
+  er-flex.create-request-component__personal-data.mb-24(xs12)
+    | Нажимая на кнопку вы соглашаетесь &nbsp;
+    a(href="https://domru.ru/policy.pdf" target="_blank") на обработку данных
+  er-flex.create-request-component__download-statement.mb-32(xs12)
+    | Для более оперативного решения Вашего вопроса, просьба приложить заполненное и подписанное&nbsp;
+    a.link--solid--yellow(:href="getLinkDeclaration") заявление
+  er-flex.create-request-component__requirements-for-file.mb-24(xs12)
+    | Размер файла не должен превышать 2Мб. Формат: JPG, PNG, PDF
+  er-flex.mb-8.mb-sm-0(xs12 md4)
+    er-button(pre-icon="send", @click="createRequest" :loading="loadingCreating")
+      | Отправить заявку
+  er-flex(xs12 md4)
+    er-button(flat @click="() => { isOpenFormDesktop = false }")
+      | Отменить
+
+mixin address
+  er-select(
+    :items="getAddressList"
+    v-model="address"
+    placeholder="Адрес"
+    is-show-required-label
+    :rules="requiredRule"
+  )

@@ -19,7 +19,7 @@
               @click="() => { setFilterRequest(getTypeFilterRequestAll) }"
               ) Все
           er-flex(xs12 sm6 order-sm order-sm1)
-            er-select(:items="listCity2", placeholder="Город", v-model="city", :deep="2")
+            er-select(:items="getListNameCity", placeholder="Город", v-model="city")
         .b-request__body
           .b-request__thead
             .b-request__thead-item(
@@ -31,12 +31,25 @@
                 span.title {{ headTitle.name }}
                 span.icon
                   er-icon(name="funnel")
-          .b-request__tbody
-            request-item-component(
-              v-for="requestItem in listRequest"
-              v-bind="requestItem"
-              :key="requestItem.ticketId"
-            )
+          er-preloader(:active="loadingRequest" icon icon-type="2")
+            .b-request__tbody
+              request-item-component(
+                v-for="requestItem in listRequestComputedByPagination"
+                v-bind="requestItem"
+                :key="requestItem.ticketId"
+                @cancel="() => { requestItem.cancelledWhen = requestItem.modifiedWhen = Number(new Date()) }"
+              )
+              .b-request__tbody--empty(v-if="listRequestComputed.length === 0")
+                | У вас нет {{ isActiveFilterRequest(getTypeFilterRequestActive) ? 'активных' : '' }} заявок
+          .b-request__pagination(v-if="listRequestComputed.length > getVisibleRequest")
+              er-pagination(
+                v-model="currentPage"
+                :length="getLengthPagination"
+                :total-visible="getTotalVisiblePagination"
+              )
+          .b-request__create
+            create-request-component
+    contact-info-component
 </template>
 
 <script src="./script.js"></script>

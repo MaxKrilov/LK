@@ -70,7 +70,7 @@ export default {
     })
 
     this.sectionLprData.roles = copyObject(this.roles)
-    this.sectionAccessRightsData = copyObject(this.systems)
+    this.sectionAccessRightsData = copyObject(this.filterAccess())
 
     if (this.isUpdate) {
       this.sectionLprData.lastName = this.lastName
@@ -114,6 +114,10 @@ export default {
       'changeMessage'
     ]),
     // Helpers
+    getPhoneNumberWithoutCode (phone) {
+      if (phone.startsWith('+')) return toDefaultPhoneNumber(phone).substring(1)
+      else return phone
+    },
     getCorrectedPhoneNumber (phone) {
       return phone.length < 11 ? '7' + phone : phone
     },
@@ -137,7 +141,7 @@ export default {
         .map(item => item.id)
     },
     async reset () {
-      this.setConfirmModalVisibility({ isOpen: false, isFetching: false })
+      this.setConfirmModalVisibility({ isOpen: false, isFetching: false, message: '' })
       this.isPhoneExistsError = false
       this.isEmailExistsError = false
       this.isSuccess = false
@@ -158,6 +162,16 @@ export default {
     },
     setPhoneError () {
 
+    },
+    filterAccess () {
+      const shownAccesses = ['lkb2b', 'dmp-kc']
+      let filtered = {}
+      Object.entries(this.systems).forEach(([key, value]) => {
+        if (shownAccesses.includes(key)) {
+          filtered[key] = value
+        }
+      })
+      return filtered
     },
     // Api
     async createAccount (formData, formAccessRightsData) {
@@ -329,7 +343,7 @@ export default {
           if (this.isUpdate && !this.isLPR) {
             if (this.snapshot.user.email !== formData.email ||
               this.snapshot.user.phoneNumber !== formData.phoneNumber) {
-              this.setConfirmModalVisibility({ isOpen: true })
+              this.setConfirmModalVisibility({ isOpen: true, message: 'Вы действительно хотите изменить логин для входа в личный кабинет?' })
             } else {
               const correctedPhoneNumber = this.getCorrectedPhoneNumber(formData.phoneNumber)
               await this.updateAccount(formData, formAccessRightsData)
@@ -339,9 +353,14 @@ export default {
               this.onSuccess(this.updatedSuccessText, this.userPostId)
             }
           } else if (this.isUpdate && this.isLPR) {
-            if (this.snapshot.user.email !== formData.email ||
-              this.snapshot.user.phoneNumber !== formData.phoneNumber) {
-              this.setConfirmModalVisibility({ isOpen: true })
+            const loginChanged = this.snapshot.user.email !== formData.email || this.snapshot.user.phoneNumber !== formData.phoneNumber
+            const accessRemoved = formAccessRightsData.length === 0
+            if (accessRemoved && loginChanged) {
+              this.setConfirmModalVisibility({ isOpen: true, message: 'Вы действительно хотите изменить логин для доступа в личный кабинет и убрать права доступа к порталам?' })
+            } else if (accessRemoved) {
+              this.setConfirmModalVisibility({ isOpen: true, message: 'Для данной учетной записи не установлены права доступа. Продолжить сохранение?' })
+            } else if (loginChanged) {
+              this.setConfirmModalVisibility({ isOpen: true, message: 'Вы действительно хотите изменить логин для входа в личный кабинет?' })
             } else {
               await this.updateAccount(formData, formAccessRightsData)
               this.updateUserInfo({ ...formData, phone: toDefaultPhoneNumber(formData.phoneNumber) })
@@ -432,13 +451,49 @@ export default {
         .map(key => key !== 'roles' ? (formData[key]) : undefined)
         .filter(item => item !== undefined)
         .filter(item => !item)
-      return data.length === 0
+      const isFullPhone = this.getPhoneNumberWithoutCode(formData.phoneNumber).length === 10
+      
+      return data.length === 0 && isFullPhone
     },
     isChanged () {
       const { formData, formAccessRightsData } = this.getFormData()
-      const data = { user: formData, accessRights: formAccessRightsData }
-
+      const data = {
+        user: {
+          ...formData,
+          phoneNumber: this.getPhoneNumberWithoutCode(formData.phoneNumber)
+        },
+        accessRights: formAccessRightsData
+      }
+      if (data.user.role && data.user.role.id) data.user.role.id = data.user.role.id.toString()
       return JSON.stringify(this.snapshot) !== JSON.stringify(data)
+    },
+    isLastNameChanged () {
+      const { formData } = this.getFormData()
+      return this.snapshot.user && (formData.lastName !== this.snapshot.user.lastName)
+    },
+    isFirstNameChanged () {
+      const { formData } = this.getFormData()
+      return this.snapshot.user && (formData.firstName !== this.snapshot.user.firstName)
+    },
+    isMiddleNameChanged () {
+      const { formData } = this.getFormData()
+      return this.snapshot.user && (formData.middleName !== this.snapshot.user.middleName)
+    },
+    isPhoneChanged () {
+      const { formData } = this.getFormData()
+      const formatedPhone = this.getPhoneNumberWithoutCode(formData.phoneNumber)
+      return this.snapshot.user && (formatedPhone !== this.snapshot.user.phoneNumber)
+    },
+    isEmailChanged () {
+      const { formData } = this.getFormData()
+      return this.snapshot.user && (formData.email !== this.snapshot.user.email)
+    },
+    isRoleChanged () {
+      const { formData } = this.getFormData()
+      return this.snapshot.user && this.snapshot.user.role ? formData.role.code !== this.snapshot.user.role.code : Boolean(formData.role)
+    },
+    isCorrectPhone () {
+      return false
     }
   }
 }

@@ -155,6 +155,7 @@ export default {
       }
     },
     onClick (e) {
+      if (this.disabled) return
       if (!this.hasFocus) {
         this.$refs.input.focus()
       }

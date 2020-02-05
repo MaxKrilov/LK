@@ -1,0 +1,116 @@
+mixin personalManager
+  .name.pl-24.mb-8.mb-lg-16.pl-lg-0
+    | {{ getManagerInfo.name }}
+  .phone.pl-24.pl-lg-0
+    .caption.mb-4
+      | Телефон:
+    .value.mb-8.mb-lg-16
+      a(:href="`tel:${getManagerInfo.phone}`") {{ getManagerInfo.phone | formatPhone }}
+  .mail.pl-24.pl-lg-0
+    .caption.mb-4
+      | Почта:
+    .value.mb-16.mb-lg-32
+      a(:href="`mailto:${getManagerInfo.email}`") {{ getManagerInfo.email }}
+  .to-director
+    .description.pl-24.mb-24.pl-lg-0.mb-lg-32
+      | Чтобы предложить идею, поблагодарить или оставить претензию вы можете:
+    .button
+      er-button(@click="openToDirector")
+        | Написать директору
+
+mixin contactsPhone
+  .b-contact-info__contacts
+    .b-contact-info__contact
+      .caption.mb-4
+        | Федеральный телефон поддержки:
+      .value.mb-8
+        a(href="tel:78003339000") +7 800 333 9000
+    .b-contact-info__contact
+      .caption.mb-4
+        | Телефон поддержки г. Санкт-Петербург:
+      .value
+        a(href="tel:78123539070") +7 (812) 353 9070
+
+mixin addresses
+  .b-contact-info__addresses
+    .b-contact-info__address
+      .caption.mb-4
+        | Центральный офис:
+      .value.mb-8
+        a(href="#") АО «ЭР-Телеком Холдинг» 614000, г. Пермь, Шоссе Космонавтов 111, к1
+    .b-contact-info__address
+      .caption.mb-4
+        | Офис г. Санкт-Петербург:
+      .value
+        a(href="#") БЦ «Петровский форт» пр-т Финляндский, 4А
+
+mixin toDirectorForm(name)
+  er-form(ref=name)
+    er-row
+      er-flex(xs12)
+        er-row
+          er-flex.mb-32(xs12)
+            er-select(
+              v-model="modelDirectorTheme"
+              :items="listComplaint"
+              placeholder="Тема обращения"
+              is-show-required-label
+              :rules="requiredRule"
+            )
+          er-flex.mb-32(xs12)
+            er-select(
+              v-model="modelDirectorAddress"
+              :items="getAddressList"
+              placeholder="Адрес"
+              is-show-required-label
+              :rules="requiredRule"
+            )
+          er-flex.mb-32(xs12)
+            er-phone-select(
+              v-model="modelDirectorPhone"
+              :items="getPhoneList"
+              placeholder="Телефон"
+              is-show-required-label
+              :rules="requiredRule"
+            )
+      er-flex(xs12)
+        er-row
+          er-flex.mb-32(xs12)
+            er-select(
+              v-model="modelDirectorEmail"
+              :items="getEmailList"
+              placeholder="E-mail"
+              is-show-required-label
+              :rules="requiredRule"
+            )
+          er-flex.mb-32(xs12)
+            er-text-field(
+              v-model="modelDirectorName"
+              label="Как к Вам обращаться"
+              is-show-required-label
+              :rules="requiredRule"
+            )
+          er-flex.mb-32(xs12)
+            er-text-field(
+              v-model="modelDirectorPost"
+              label="Ваша должность"
+              is-show-required-label
+              :rules="requiredRule"
+            )
+      er-flex.mb-24(xs12)
+        er-textarea-with-file(
+          v-model="modelDirectorComment"
+          label="Обращение"
+          is-show-label-required
+          auto-height
+          :rules="requiredRule"
+        )
+      er-flex.create-request-component__personal-data.mb-24(xs12)
+        | Нажимая на кнопку вы соглашаетесь &nbsp;
+        a(href="#") на обработку данных
+      er-flex.mb-8.mb-sm-0(xs12 md4)
+        er-button(pre-icon="send" @click="writeToDirector" :loading="loadingCreating")
+          | Отправить заявку
+      er-flex(xs12 md4)
+        er-button(flat @click="closeToDirector")
+          | Отменить
