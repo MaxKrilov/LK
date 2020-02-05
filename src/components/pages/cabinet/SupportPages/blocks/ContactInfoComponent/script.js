@@ -70,6 +70,15 @@ export default class ContactInfoComponent extends Vue {
     }
   }
 
+  @Watch('modelDirectorPhone')
+  onModelDirectorPhoneChange (val) {
+    const _val = val.replace(/[\D]+/, '')
+    const findingValue = this.getListContact.find(item => item.phone?.value === _val)
+    if (findingValue !== undefined && findingValue.firstName && findingValue.name) {
+      this.modelDirectorName = findingValue.name
+    }
+  }
+
   get getPhoneList () {
     return this.getListContact.map(item => item.phone?.value)
   }
