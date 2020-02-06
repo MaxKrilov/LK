@@ -114,7 +114,7 @@ export default class CreateRequestComponent extends Vue {
   // Technocal issues
   technicalRequestTheme: iRequestTechnicalTheme | any = {}
   // complaint
-  complaintTheme: iRequestTechnicalTheme | any = {}
+  complaintTheme: string = '9156211043213279417'
   email: string = ''
   post: string = ''
   // ===== LISTS =====
@@ -271,7 +271,7 @@ export default class CreateRequestComponent extends Vue {
       problemTheme: this.technicalRequestTheme.id,
       service: this.service.id,
       file: this.file,
-      complaintTheme: this.complaintTheme.id
+      complaintTheme: this.complaintTheme
       // emailAddress
     })
       .then((answer: boolean | string) => {
@@ -364,14 +364,14 @@ export default class CreateRequestComponent extends Vue {
           Плательщик: ${this.payer};
           Номер платежного поручения: ${this.paymentOrderNumber};
           Дата платежа: ${moment(this.datePayment).format('LL')};
-          Сумма платежа: ${this.sumPayment};
+          Сумма платежа: ${this.sumPayment.replace('₽', 'руб.')};
           ${phone};
           ${name}.`
       case 'money_transfer':
         return `
           ${comment};
           Перевести с л/с ${this.firstPersonalAccount} на л/с ${this.secondPersonalAccount};
-          Сумма перевода: ${this.sumTransfer};
+          Сумма перевода: ${this.sumTransfer.replace('₽', 'руб.')};
           ${phone};
           ${name}.`
       case 'renewal_of_the_contract':
