@@ -248,7 +248,7 @@ export default class CreateRequestComponent extends Vue {
     const type = this.requestTheme?.id
     // Идентификатор контакта кастомера
     let customerContact = this.getListContact.find((item: iContactListItem) => item.phone?.value === this.phoneNumber.replace(/[\D]+/g, ''))
-    let customerContactId, phoneId
+    let customerContactId, phoneId, complainantPhone
     if (customerContact !== undefined) {
       customerContactId = customerContact.id
       phoneId = customerContact.phone.id
@@ -257,6 +257,7 @@ export default class CreateRequestComponent extends Vue {
       if (customerContact !== undefined) {
         customerContactId = customerContact.id
         phoneId = customerContact.phone.id
+        complainantPhone = this.phoneNumber
       }
     }
 
@@ -271,7 +272,9 @@ export default class CreateRequestComponent extends Vue {
       problemTheme: this.technicalRequestTheme.id,
       service: this.service.id,
       file: this.file,
-      complaintTheme: this.complaintTheme
+      complaintTheme: this.complaintTheme,
+      complainantPhone,
+      complainantContactName: complainantPhone ? this.name : undefined
       // emailAddress
     })
       .then((answer: boolean | string) => {
