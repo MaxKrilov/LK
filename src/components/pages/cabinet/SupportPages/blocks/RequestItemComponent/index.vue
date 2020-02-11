@@ -50,7 +50,7 @@
               span Заявку можно отменить только до  момента принятия её в работу
             .request-item-detail__action
               er-button(@click="openCancelDialog")
-                | Закрыть заявку
+                | Отменить заявку
           template(v-else)
             er-dialog(fullscreen, v-model="isOpenHistory" transition="dialog-bottom-transition")
               template(v-slot:activator="{ on }")
@@ -120,7 +120,7 @@
               span Заявку можно отменить только до  момента принятия её в работу
             .request-item-detail__action
               er-button(@click="openCancelDialog")
-                | Закрыть заявку
+                | Отменить заявку
     .request-item-component(v-if="!isOpenDetail" @dblclick="toggleDetail")
       .request-item-component__row.top.d--flex
         .request-item-component__toggle--mobile

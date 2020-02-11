@@ -24,6 +24,7 @@ mixin name
     is-show-required-label
     v-model="name"
     :rules="requiredRule"
+    :readonly="isReadonlyName"
   )
 
 mixin appeal(label)
