@@ -10,7 +10,7 @@ er-form(ref="change_of_internet_protocol")
           +address
         er-flex.mb-32(xs12)
           er-select(
-            :items="listService"
+            :items="listServiceComputed"
             v-model="service"
             placeholder="Услуга"
             is-show-required-label

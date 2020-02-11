@@ -45,8 +45,11 @@
     }
   }
   &.hold > span {
-    background-color: map_get($yellow, 'base');
-    @include color-black(0.8)
+    // todo Переделать после того, как бизнес отойдёт после Новогодних праздников
+    //background-color: map_get($yellow, 'base');
+    //@include color-black(0.8);
+    background-color: map_get($blue, 'base');
+    @include color-white(0.8)
   }
   &.progress > span {
     background-color: map_get($blue, 'base');
@@ -594,7 +597,9 @@
             background-color: map_get($gray, '4');
           }
           &.hold {
-            background-color: map_get($yellow, 'base');
+            // todo Переделать после того, как бизнес отойдёт после Новогодних праздников
+            //background-color: map_get($yellow, 'base');
+            background-color: map_get($blue, 'base');
           }
           &.progress {
             background-color: map_get($blue, 'base');

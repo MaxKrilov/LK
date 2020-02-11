@@ -1,12 +1,12 @@
 <template lang="pug">
   div.app(data-app="true")
     div.app__content
-      //-template(v-if="isFetching")
+      template(v-if="isFetching")
         | Проверяем авторизацию
-      //-template(v-else-if="!hasAccess")
+      template(v-else-if="!hasAccess")
         | Доступ закрыт
-      //-template(v-else)
-      router-view
+      template(v-else)
+        router-view
 </template>
 
 <script>
@@ -29,16 +29,18 @@ export default {
     model: 1
   }),
   watch: {
-    menuComponentBillingAccount () {
-      this.$store.commit(`loading/menuComponentBalance`, true)
-      this.$store.commit(`loading/loadingPromisedPayment`, true)
-      this.$store.commit(`loading/indexPageProductByAddress`, true)
-      this.$store.dispatch(`user/${GET_PAYMENT_INFO}`, { api: this.$api })
-      this.$store.dispatch(`user/${GET_PROMISED_PAYMENT_INFO}`, { api: this.$api })
-      this.$store.dispatch(`user/${GET_LIST_PRODUCT_BY_ADDRESS}`, { api: this.$api })
-        .then(() => {
-          this.$store.dispatch(`user/${GET_LIST_PRODUCT_BY_SERVICE}`, { api: this.$api })
-        })
+    rebootBillingAccount (val) {
+      if (!val) {
+        this.$store.commit(`loading/menuComponentBalance`, true)
+        // this.$store.commit(`loading/loadingPromisedPayment`, true) todo убрать комментарий
+        this.$store.commit(`loading/indexPageProductByAddress`, true)
+        this.$store.dispatch(`user/${GET_PAYMENT_INFO}`, { api: this.$api })
+        // this.$store.dispatch(`user/${GET_PROMISED_PAYMENT_INFO}`, { api: this.$api }) todo убрать комментарий
+        this.$store.dispatch(`user/${GET_LIST_PRODUCT_BY_ADDRESS}`, { api: this.$api })
+          .then(() => {
+            this.$store.dispatch(`user/${GET_LIST_PRODUCT_BY_SERVICE}`, { api: this.$api })
+          })
+      }
     }
   },
   async created () {
@@ -90,7 +92,7 @@ export default {
       isFetching: state => state.auth.isFetching,
       isFetched: state => state.auth.isFetched,
       refreshedToken: state => state.auth.refreshedToken,
-      menuComponentBillingAccount: state => state.loading.menuComponentBillingAccount
+      rebootBillingAccount: state => state.loading.rebootBillingAccount
     })
   }
 }

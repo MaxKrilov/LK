@@ -6,7 +6,9 @@ const state = {
   menuComponentManager: true,
   loadingDocuments: true,
   loadingRequest: true,
-  loadingPromisedPayment: true
+  loadingPromisedPayment: true,
+
+  rebootBillingAccount: false
 }
 const getters = {
   indexPageProductByAddress: state => state.indexPageProductByAddress,
@@ -42,6 +44,9 @@ const mutations = {
   },
   loadingPromisedPayment (state, payload) {
     state.loadingPromisedPayment = payload
+  },
+  rebootBillingAccount (state, payload) {
+    state.rebootBillingAccount = payload
   }
 }
 

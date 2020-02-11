@@ -2,8 +2,10 @@ import './style.scss'
 
 import Component, { mixins } from 'vue-class-component'
 import ErSelect from '../../UI/ErSelect'
-import { PATTERN_FORMAT_PHONE, PATTERN_RUSSIAN_PHONE_GLOBAL } from '../../../constants/regexp'
 import Inputmask from 'inputmask'
+
+const PATTERN_RUSSIAN_PHONE_GLOBAL = /^((\s|8|\+7)(-?|\s?))?\(?\d{3}\)?(-?|\s?)?\d{1}-?\d{1}-?\d{1}-?\d{1}-?\d{1}-?\d{1}-?\d{1}/g
+const PATTERN_FORMAT_PHONE = /^([\d]{1})([\d]{3})([\d]{3})([\d]{2})([\d]{2})/
 
 @Component
 export default class ErPhoneSelect extends mixins(ErSelect) {

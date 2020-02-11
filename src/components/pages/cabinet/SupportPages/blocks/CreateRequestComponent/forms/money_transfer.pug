@@ -7,7 +7,8 @@ er-form(ref='money_transfer')
         er-flex.mb-32(xs12)
           +listRequestTheme
         er-flex.mb-32(xs12 sm6)
-          er-text-field(
+          er-select(
+            :items="listBillingAccount"
             v-model="firstPersonalAccount"
             placeholder="С лицевого счета"
             is-show-required-label

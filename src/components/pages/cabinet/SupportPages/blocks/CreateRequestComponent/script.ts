@@ -61,7 +61,8 @@ interface iErForm extends HTMLFormElement {
       listRequestTheme: (state: any) => state.dictionary[LIST_REQUEST_THEME],
       listTechnicalRequestTheme: (state: any) => state.dictionary[LIST_TECHNICAL_REQUEST_THEME],
       listComplaintRequestTheme: (state: any) => state.dictionary[LIST_COMPLAINT_THEME],
-      screenWidth: (state: any) => state.variables[SCREEN_WIDTH]
+      screenWidth: (state: any) => state.variables[SCREEN_WIDTH],
+      listBillingAccount: (state: any) => state.user.listBillingAccount.map((item: any) => item.accountNumber)
     }),
     ...mapGetters('user', ['getAddressList', 'getListContact', 'agreementNumber'])
   },
@@ -114,7 +115,7 @@ export default class CreateRequestComponent extends Vue {
   // Technocal issues
   technicalRequestTheme: iRequestTechnicalTheme | any = {}
   // complaint
-  complaintTheme: iRequestTechnicalTheme | any = {}
+  complaintTheme: string = '9156211043213279417'
   email: string = ''
   post: string = ''
   // ===== LISTS =====
@@ -123,6 +124,7 @@ export default class CreateRequestComponent extends Vue {
   listComplaintRequestTheme!: iRequestTechnicalTheme[]
   getAddressList!: iListAddressItem[]
   getListContact!: iContactListItem[]
+  listBillingAccount!: string[]
 
   loadingService: boolean = false
 
@@ -137,6 +139,10 @@ export default class CreateRequestComponent extends Vue {
   loadingCreating = false
 
   file = ''
+
+  get isReadonlyName () {
+    return this.getPhoneList.includes(this.phoneNumber.replace(/[\D]+/g, ''))
+  }
 
   get getLinkDeclaration () {
     switch (this.requestTheme?.form) {
@@ -160,6 +166,10 @@ export default class CreateRequestComponent extends Vue {
   requiredRuleArray = [
     (v: any[]) => (Array.isArray(v) && v.length) !== 0 || 'Поле обязательно к заполнению'
   ]
+
+  get listServiceComputed () {
+    return this.listService.filter((item: iItemService) => !!item.typeAuth)
+  }
 
   @Watch('requestTheme')
   onRequestThemeChange () {
@@ -204,7 +214,7 @@ export default class CreateRequestComponent extends Vue {
       .then(response => {
         this.listService = response.filter((item: any) => item?.offer?.isRoot).map((item: any) => ({
           id: item.id,
-          value: item.name,
+          value: item.chars['Имя в счете'] || item.name,
           typeAuth: item.chars['Тип авторизации']
         }))
         this.loadingService = false
@@ -248,7 +258,7 @@ export default class CreateRequestComponent extends Vue {
     const type = this.requestTheme?.id
     // Идентификатор контакта кастомера
     let customerContact = this.getListContact.find((item: iContactListItem) => item.phone?.value === this.phoneNumber.replace(/[\D]+/g, ''))
-    let customerContactId, phoneId
+    let customerContactId, phoneId, complainantPhone
     if (customerContact !== undefined) {
       customerContactId = customerContact.id
       phoneId = customerContact.phone.id
@@ -257,6 +267,7 @@ export default class CreateRequestComponent extends Vue {
       if (customerContact !== undefined) {
         customerContactId = customerContact.id
         phoneId = customerContact.phone.id
+        complainantPhone = this.phoneNumber.replace(/[\D]+/g, '')
       }
     }
 
@@ -271,7 +282,9 @@ export default class CreateRequestComponent extends Vue {
       problemTheme: this.technicalRequestTheme.id,
       service: this.service.id,
       file: this.file,
-      complaintTheme: this.complaintTheme.id
+      complaintTheme: this.complaintTheme,
+      complainantPhone,
+      complainantContactName: complainantPhone ? this.name : undefined
       // emailAddress
     })
       .then((answer: boolean | string) => {
@@ -299,10 +312,8 @@ export default class CreateRequestComponent extends Vue {
     const name = `Как обращаться к клиенту: ${this.name}`
     const agreementOrServices = this.isWholeContract
       ? `Номер договора: ${this.agreementNumber}`
-      : `
-        Услуги: ${this.services};
-        Адрес: ${this.address.value};
-      `
+      : `Услуги: ${this.services.map((item: standardSelectItem) => item.value)};
+        Адрес: ${this.address.value}`
     const address = `Адрес: ${this.address.value}`
     const services = `Услуги: ${this.services.map((item: standardSelectItem) => item.value)}`
     // @ts-ignore
@@ -364,14 +375,14 @@ export default class CreateRequestComponent extends Vue {
           Плательщик: ${this.payer};
           Номер платежного поручения: ${this.paymentOrderNumber};
           Дата платежа: ${moment(this.datePayment).format('LL')};
-          Сумма платежа: ${this.sumPayment};
+          Сумма платежа: ${this.sumPayment.replace('₽', 'руб.')};
           ${phone};
           ${name}.`
       case 'money_transfer':
         return `
           ${comment};
           Перевести с л/с ${this.firstPersonalAccount} на л/с ${this.secondPersonalAccount};
-          Сумма перевода: ${this.sumTransfer};
+          Сумма перевода: ${this.sumTransfer.replace('₽', 'руб.')};
           ${phone};
           ${name}.`
       case 'renewal_of_the_contract':
