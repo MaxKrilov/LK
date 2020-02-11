@@ -217,7 +217,8 @@ export default class SupportIndexPage extends Vue {
       result.createdWhen = item.created_when ? Number(item.created_when) : undefined
       result.inProgressWhen = item.in_progress_when ? Number(item.in_progress_when) : undefined
       result.onHoldWhen = item.on_hold_when ? Number(item.on_hold_when) : undefined
-      result.resolvedWhen = item.closed_when ? Number(item.closed_when) : undefined
+      result.resolvedWhen = item.resolved_when ? Number(item.resolved_when) : undefined
+      result.closedWhen = item.closed_when ? Number(item.closed_when) : undefined
       result.modifiedWhen = item.modified_when ? Number(item.modified_when) : undefined
       result.cancelledWhen = item.cancelled_when ? Number(item.cancelled_when) : undefined
       result.type = item.type
