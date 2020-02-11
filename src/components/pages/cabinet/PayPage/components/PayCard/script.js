@@ -1,13 +1,9 @@
 import { mapGetters } from 'vuex'
 import { SCREEN_WIDTH } from '@/store/actions/variables'
-import SaveCard from '../SaveCard/index.vue'
 
 
 export default {
   name: 'pay-card',
-  components: {
-    SaveCard
-  },
   props: ['empty'],
   data: () => ({
     pre: 'pay-card',
