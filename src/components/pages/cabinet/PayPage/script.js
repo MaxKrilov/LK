@@ -1,9 +1,10 @@
 import ButtonPay from './components/ButtonPay/index.vue'
 import InfoScore from './components/InfoScore/index.vue'
 import ActionMonth from './components/ActionMonth/index.vue'
+import PaymentsOn from './components/PaymentsOn/index.vue'
 import HistoryPay from './HistoryPay/index.vue'
 import PromisePay from './PromisePay/index.vue'
-import { mapGetters } from 'vuex'
+import { mapGetters, mapState } from 'vuex'
 import { SCREEN_WIDTH } from '@/store/actions/variables'
 
 export default {
@@ -13,7 +14,8 @@ export default {
     InfoScore,
     ActionMonth,
     HistoryPay,
-    PromisePay
+    PromisePay,
+    PaymentsOn
   },
   data: () => ({
     pre: 'pay-page',
@@ -55,7 +57,27 @@ export default {
     }
   }),
   computed: {
-    ...mapGetters([SCREEN_WIDTH])
+    ...mapGetters([SCREEN_WIDTH]),
+    ...mapState({
+      clientInfo: state => state.user.clientInfo,
+      legalName: state => state.user.clientInfo.legalName,
+      activeBillingAccountId: state => state.user.activeBillingAccount,
+      activeBillingAccountNumber: state => state.user.activeBillingAccountNumber,
+      balanceInfo: state => state.user.paymentInfo
+    }),
+
+/*
+    ...mapState({
+      clientInfo: state => state.user.clientInfo
+    }),
+*/
+/*
+    listEmail () {
+      return this.clientInfo?.contacts?.map(
+        item => item.contactMethods.filter(
+          _item => _item['@type'].match(/email/ig)).value) || []
+    }
+*/
   },
   watch: {
     SCREEN_WIDTH () {
@@ -66,6 +88,14 @@ export default {
     this.changeWidth()
   },
   methods: {
+    aa () {
+      console.log('clientInfo -> ', this.clientInfo)
+      console.log('legalName -> ', this.legalName)
+      console.log('activeBillingAccountId -> ', this.activeBillingAccountId)
+      console.log('activeBillingAccountNumber -> ',this.activeBillingAccountNumber)
+      console.log('balanceInfo -> ',this.balanceInfo)
+      this.$store.dispatch('payments/payment', { api: this.$api, billingAccount: this.activeBillingAccountId })
+    },
     history () {
       this.$router.push('/history-pay')
     },

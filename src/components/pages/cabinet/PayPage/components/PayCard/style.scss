@@ -206,6 +206,7 @@
     height: 161px;
     margin: 0 auto;
     top: 162px;
+    z-index: 1;
     transform: rotate(-90deg);
     @include media-query((
       position: (

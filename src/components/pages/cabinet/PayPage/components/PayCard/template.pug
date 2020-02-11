@@ -1,9 +1,13 @@
 // Pay Card
 
 er-container(full :class="`${pre}__container`")
-  div(style="margin-left: 500px")
+  div(style="left: 390px; position: absolute; z-index: 100; font-size: 14px")
+    //| t - {{visButtTop}} o{{op1}}<br/>
+    //| b - {{visButtBott}} i{{index}}<br/>
+    | l - {{empty}}
+
   div(:class="`${pre}__indicators`")
-    div(:class="`${pre}__indicators__disable`")
+    //div(:class="`${pre}__indicators__disable`")
     div(
       :class="`${pre}__indicators__line`"
       :style="'top: ' + moveInd + 'px'"
@@ -11,24 +15,24 @@ er-container(full :class="`${pre}__container`")
     div(
       v-for="i in 3"
       :class="`${pre}__indicators__circle`"
-      @click="moveDown"
+      @click="move('Down')"
     )
     div(
       v-for="i in 3"
       :class="`${pre}__indicators__circle__down`"
-      @click="moveUp"
+      @click="move('Up')"
     )
 
   div(
     :class="`${pre}__card-butt__lateral-left`"
     v-if="visButtLeft"
   )
-    div(:class="`${pre}__card-butt__card-height`" @click="moveDown")
+    div(:class="`${pre}__card-butt__card-height`" @click="move('Down')")
   div(
     :class="`${pre}__card-butt__lateral-right${rightNext}`"
     v-if="visButtRight"
   )
-    div(:class="`${pre}__card-butt__card-height`" @click="moveUp")
+    div(:class="`${pre}__card-butt__card-height`" @click="move('Up')")
 
   // общий сдвиг
   er-row.no-gutters(
@@ -82,8 +86,8 @@ er-container(full :class="`${pre}__container`")
               :style="'opacity: ' + op1"
             )
               div(
-              :class="`${pre}__card-butt__left`"
-              @click="moveUp"
+                :class="`${pre}__card-butt__left`"
+                @click="move('Up')"
               )
                 div(:class="`${pre}__logo`")
                   img(src="@/assets/images/paycard/mir-butt-1200.png")
@@ -96,10 +100,10 @@ er-container(full :class="`${pre}__container`")
                     view="radio-check"
                     v-model="selected"
                     :class="`${pre}__auto-pay__ertoogle`"
-                    )
+                  )
                     div(:class="`${pre}__auto-pay__title`")
                       | Автоплатеж
-          er-flex(id="bgg" style="height: 0")
+          er-flex(style="height: 0")
             er-card(
               :class="`${pre}__card__bg`"
               :style="'transform: translate(' + leftMove[0] + 'px, ' +  topBg[0] + 'px)'"
@@ -108,45 +112,65 @@ er-container(full :class="`${pre}__container`")
                 div(:class="`${pre}__card-height`")
                   div(:class="`${pre}__card__bg__strip`")
 
-      // карта МИР
+      // карта МИР - компонент
+      //SaveCard(
+      //  @down="moveDown"
+      //)
+
+      // карты v-for
       er-flex(
         :class="`${pre}__card-pos`"
-       :style="'margin-right: ' + delta[1] + 'px'"
+        :style="'margin-right: ' + delta[idx+1] + 'px'"
+        v-for="(card, idx) in cards"
       )
+        //| {{empt}} / {{empt[index - 1]}} / {{index}}
         er-row(no-gutters)
           er-flex
             div(
               :class="`${pre}__card-butt ${pre}__card-butt__top`"
-              v-if="visButtTop[0]"
+              v-if="visButtTop[idx]"
               :style="'opacity: ' + op1"
             )
               div(
                 :class="`${pre}__card-butt__left`"
-                @click="moveDown"
+                @click="move('Down')"
               )
                 div(:class="`${pre}__logo ${pre}__logo__top`")
-                  img(src="@/assets/images/paycard/new-butt-1200.png")
+                  img(:src="card.butttopimg")
+
+                h2(:class="`${pre}__logo__top-h2`" v-if="true")
+                  | {{ numbutttop }}
+
+                div(:class="`${pre}__auto-pay__next`" @click.stop v-if="false")
+                  er-toggle(
+                  type="checkbox"
+                  view="radio-check"
+                  v-model="selected"
+                  :class="`${pre}__auto-pay__ertoogle`"
+                  )
+                  div(:class="`${pre}__auto-pay__title`")
+                    | Автоплатеж
 
             er-card(
-              :class="`${pre}__card`"
+            :class="`${pre}__card`"
             )
               div(:class="`${pre}__card-height`")
                 div(:class="`${pre}__logo__card`")
-                  img(src="@/assets/images/paycard/mir-1200.png")
+                  img(:src="card.cardimg")
                   div(:class="`${pre}__card-title__label`")
                     | Номер карты:
                   div.d--flex
                     h2(:class="`${pre}__card-title__next`")
-                      | 5402 &nbsp; 33
+                      | {{ num1 }} &nbsp; {{ num2 }}
                     img(
-                      src="@/assets/images/paycard/card-circle-1200.png"
-                      :class="`${pre}__card-title__circle`"
+                    src="@/assets/images/paycard/card-circle-1200.png"
+                    :class="`${pre}__card-title__circle`"
                     )
                     h2(:class="`${pre}__card-title__next`")
-                      | 2365
+                      | {{ num3 }}
                   img(
-                    :class="`${pre}__card__img-bg`"
-                    src="@/assets/images/paycard/mir-bg-1200.png"
+                  :class="`${pre}__card__img-bg`"
+                  :src="card.cardbgimg"
                   )
                 div(:class="`${pre}__card-title__autopay`")
                   er-icon(name="ok" :class="`${pre}__card-title__autopay__icon`")
@@ -162,26 +186,25 @@ er-container(full :class="`${pre}__container`")
 
             div(
               :class="`${pre}__card-butt ${pre}__card-butt__bottom`"
-              v-if="visButtBott[1]"
-            :style="'opacity: ' + op1"
-
+              v-if="visButtBott[idx + 1] && index < cards.length "
+              :style="'opacity: ' + op1"
             )
               div(
-              :class="`${pre}__card-butt__left`"
-              @click="moveUp"
+                :class="`${pre}__card-butt__left`"
+                @click="move('Up')"
               )
                 div(:class="`${pre}__logo`")
-                  img(src="@/assets/images/paycard/visa-butt-1200.png")
+                  img(:src="card.buttbottimg")
                 h2(:class="`${pre}__logo__bottom__next`")
-                  | 9876
+                  | {{ numbuttbott }}
 
-          er-flex(id="bgg1" style="height: 0")
+          er-flex(style="height: 0")
             er-card(
               :class="`${pre}__card__bg`"
-              :style="'transform: translate(' + leftMove[1] + 'px, ' +  topBg[1] + 'px)'"
+              :style="'transform: translate(' + leftMove[idx + 1] + 'px, ' +  topBg[idx + 1] + 'px)'"
             )
               div(:class="`${pre}__card__bg__content__next`")
-                div(:class="`${pre}__card-height`")
+                div(:class="`${pre}__card-height`" v-if="empty")
                   div(:class="`${pre}__card__bg__strip__next`")
                   div(:class="`${pre}__cvc`")
                     div.mr-4(:class="`${pre}__cvc__label`")
@@ -190,89 +213,11 @@ er-container(full :class="`${pre}__container`")
                       | CVC/CVV
                     div(:class="`${pre}__cvc__value`")
                       er-text-field(
-                        :value="cvc"
+                        v-model="cvc[idx]"
                         mask="9   9   9"
+                        @blur="changeCVC",
                       )
-
-      // карта VISA
-      er-flex(
-        :class="`${pre}__card-pos`"
-      :style="'margin-right: ' + delta[2] + 'px'"
-      )
-        er-row(no-gutters)
-          er-flex
-            div(
-              :class="`${pre}__card-butt ${pre}__card-butt__top`"
-              v-if="visButtTop[1]"
-              :style="'opacity: ' + op1"
-            )
-              div(
-              :class="`${pre}__card-butt__left`"
-              @click="moveDown"
-              )
-                div(:class="`${pre}__logo ${pre}__logo__top__next`")
-                  img(src="@/assets/images/paycard/mir-butt-1200.png")
-                h2(:class="`${pre}__logo__top-h2`")
-                  | 2365
-                div(:class="`${pre}__auto-pay__next`" @click.stop)
-                  er-toggle(
-                  type="checkbox"
-                  view="radio-check"
-                  v-model="selected"
-                  :class="`${pre}__auto-pay__ertoogle`"
-                  )
-                  div(:class="`${pre}__auto-pay__title`")
-                    | Автоплатеж
-
-            er-card(
-              :class="`${pre}__card`"
-            )
-              div(:class="`${pre}__card-height`")
-                div(:class="`${pre}__logo__card`")
-                  img(src="@/assets/images/paycard/visa-1200.png")
-                  div.caption(:class="`${pre}__card-title__label`")
-                    | Номер карты:
-                  div.d--flex
-                    h2(:class="`${pre}__card-title__next`")
-                      | 5402 &nbsp; 33
-                    img(
-                    src="@/assets/images/paycard/card-circle-1200.png"
-                    :class="`${pre}__card-title__circle`"
-                    )
-                    h2(:class="`${pre}__card-title__next`")
-                      | 9876
-                  img(
-                  :class="`${pre}__card__img-bg`"
-                  src="@/assets/images/paycard/visa-bg-1200.png"
-                  )
-                div(:class="`${pre}__card-title__delete`")
-                  .er-attach(:class="`${pre}__card-title__delete__icon`")
-                    er-icon(name="trashbox")
-                    a.caption.link--dashed--black(
-                    @click="delConfirm"
-                    :class="`${pre}__card-title__delete__text`"
-                    ) Удалить
-
-            div(
-              :class="`${pre}__card-butt ${pre}__card-butt__bottom`"
-              v-if="visButtBott[2]"
-              :style="'opacity: ' + op1"
-            )
-              div(
-              :class="`${pre}__card-butt__left`"
-              @click="moveUp"
-              )
-                div(:class="`${pre}__logo`")
-                  img(src="@/assets/images/paycard/mc-butt-1200.png")
-                h2(:class="`${pre}__logo__bottom__next`")
-                  | 2365
-          er-flex(style="height: 0")
-            er-card(
-              :class="`${pre}__card__bg`"
-              :style="'transform: translate(' + leftMove[2] + 'px, ' +  topBg[2] + 'px)'"
-            )
-              div(:class="`${pre}__card__bg__content__next`")
-                div(:class="`${pre}__card-height ${pre}__card__bg__empty`")
+                div(:class="`${pre}__card-height ${pre}__card__bg__empty`" v-else)
                   div(:class="`${pre}__card__bg__strip__next ${pre}__card__bg__strip__next__empty`")
                   div(:class="`${pre}__cvc ${pre}__cvc__empty`")
                     div.mr-4(:class="`${pre}__cvc__label ${pre}__cvc__label__empty`")
@@ -281,79 +226,259 @@ er-container(full :class="`${pre}__container`")
                       | CVC/CVV
                     div(:class="`${pre}__cvc__value`")
                       er-text-field(
-                        :value="cvc"
+                        v-model="cvc[idx]"
                         mask="9   9   9"
+                        @blur="changeCVC",
                       )
 
-      // карта МС
-      er-flex(
-        :class="`${pre}__card-pos`"
-        :style="'margin-right: ' + delta[3] + 'px'"
-      )
-        er-row(no-gutters)
-          er-flex
-            div(
-              :class="`${pre}__card-butt ${pre}__card-butt__top`"
-              v-if="visButtTop[2]"
-              :style="'opacity: ' + op1"
-            )
-              div(
-              :class="`${pre}__card-butt__left`"
-              @click="moveDown"
-              )
-                div(:class="`${pre}__logo ${pre}__logo__top__next`")
-                  img(src="@/assets/images/paycard/visa-butt-1200.png")
-                h2(:class="`${pre}__logo__top-h2`")
-                  | 9876
-
-            er-card(
-            :class="`${pre}__card`"
-            )
-              div(:class="`${pre}__card-height`")
-                div(:class="`${pre}__logo__card`")
-                  img(src="@/assets/images/paycard/mc-1200.png")
-                  div.caption(:class="`${pre}__card-title__label`")
-                    | Номер карты:
-                  div.d--flex
-                    h2(:class="`${pre}__card-title__next`")
-                      | 5402 &nbsp; 33
-                    img(
-                    src="@/assets/images/paycard/card-circle-1200.png"
-                    :class="`${pre}__card-title__circle`"
-                    )
-                    h2(:class="`${pre}__card-title__next`")
-                      | 9876
-                  img(
-                    :class="`${pre}__card__img-bg`"
-                    src="@/assets/images/paycard/mc-bg-1200.png"
-                    style="margin-top: -7px; margin-left: 77px"
-                  )
-                div(:class="`${pre}__card-title__delete`")
-                  .er-attach(:class="`${pre}__card-title__delete__icon`")
-                    er-icon(name="trashbox")
-                    a.caption.link--dashed--black(
-                    @click="delConfirm"
-                    :class="`${pre}__card-title__delete__text`"
-                    ) Удалить
-
-          er-flex(style="height: 0")
-            er-card(
-            :class="`${pre}__card__bg`"
-            :style="'transform: translate(' + leftMove[3] + 'px, ' +  topBg[3] + 'px)'"
-            )
-              div(:class="`${pre}__card__bg__content__next`")
-                div(:class="`${pre}__card-height`")
-                  div(:class="`${pre}__card__bg__strip__next`")
-                  div(:class="`${pre}__cvc`")
-                    div.mr-4(:class="`${pre}__cvc__label`")
-                      | Введите
-                    div(:class="`${pre}__cvc__label`")
-                      | CVC/CVV
-                    div(:class="`${pre}__cvc__value`")
-                      er-text-field(
-                      :value="cvc"
-                      mask="9   9   9"
-                      )
+      //// карта МИР
+      //er-flex(
+      //  :class="`${pre}__card-pos`"
+      // :style="'margin-right: ' + delta[1] + 'px'"
+      //)
+      //  er-row(no-gutters)
+      //    er-flex
+      //      div(
+      //        :class="`${pre}__card-butt ${pre}__card-butt__top`"
+      //        v-if="visButtTop[0]"
+      //        :style="'opacity: ' + op1"
+      //      )
+      //        div(
+      //          :class="`${pre}__card-butt__left`"
+      //          @click="moveDown"
+      //        )
+      //          div(:class="`${pre}__logo ${pre}__logo__top`")
+      //            img(src="@/assets/images/paycard/new-butt-1200.png")
+      //
+      //      er-card(
+      //        :class="`${pre}__card`"
+      //      )
+      //        div(:class="`${pre}__card-height`")
+      //          div(:class="`${pre}__logo__card`")
+      //            img(src="@/assets/images/paycard/mir-1200.png")
+      //            div(:class="`${pre}__card-title__label`")
+      //              | Номер карты:
+      //            div.d--flex
+      //              h2(:class="`${pre}__card-title__next`")
+      //                | 5402 &nbsp; 33
+      //              img(
+      //                src="@/assets/images/paycard/card-circle-1200.png"
+      //                :class="`${pre}__card-title__circle`"
+      //              )
+      //              h2(:class="`${pre}__card-title__next`")
+      //                | 2365
+      //            img(
+      //              :class="`${pre}__card__img-bg`"
+      //              src="@/assets/images/paycard/mir-bg-1200.png"
+      //            )
+      //          div(:class="`${pre}__card-title__autopay`")
+      //            er-icon(name="ok" :class="`${pre}__card-title__autopay__icon`")
+      //            span(:class="`${pre}__card-title__autopay__span`")
+      //              | Автоплатеж
+      //          div(:class="`${pre}__card-title__delete`")
+      //            .er-attach(:class="`${pre}__card-title__delete__icon`")
+      //              er-icon(name="trashbox")
+      //              a.link--dashed--black(
+      //                @click="delConfirm"
+      //                :class="`${pre}__card-title__delete__text`"
+      //              ) Удалить
+      //
+      //      div(
+      //        :class="`${pre}__card-butt ${pre}__card-butt__bottom`"
+      //        v-if="visButtBott[1]"
+      //      :style="'opacity: ' + op1"
+      //
+      //      )
+      //        div(
+      //        :class="`${pre}__card-butt__left`"
+      //        @click="moveUp"
+      //        )
+      //          div(:class="`${pre}__logo`")
+      //            img(src="@/assets/images/paycard/visa-butt-1200.png")
+      //          h2(:class="`${pre}__logo__bottom__next`")
+      //            | 9876
+      //
+      //    er-flex(id="bgg1" style="height: 0")
+      //      er-card(
+      //        :class="`${pre}__card__bg`"
+      //        :style="'transform: translate(' + leftMove[1] + 'px, ' +  topBg[1] + 'px)'"
+      //      )
+      //        div(:class="`${pre}__card__bg__content__next`")
+      //          div(:class="`${pre}__card-height`")
+      //            div(:class="`${pre}__card__bg__strip__next`")
+      //            div(:class="`${pre}__cvc`")
+      //              div.mr-4(:class="`${pre}__cvc__label`")
+      //                | Введите
+      //              div(:class="`${pre}__cvc__label`")
+      //                | CVC/CVV
+      //              div(:class="`${pre}__cvc__value`")
+      //                er-text-field(
+      //                  :value="cvc"
+      //                  mask="9   9   9"
+      //                )
+      //
+      //
+      //// карта VISA
+      //er-flex(
+      //  :class="`${pre}__card-pos`"
+      //:style="'margin-right: ' + delta[2] + 'px'"
+      //)
+      //  er-row(no-gutters)
+      //    er-flex
+      //      div(
+      //        :class="`${pre}__card-butt ${pre}__card-butt__top`"
+      //        v-if="visButtTop[1]"
+      //        :style="'opacity: ' + op1"
+      //      )
+      //        div(
+      //        :class="`${pre}__card-butt__left`"
+      //        @click="moveDown"
+      //        )
+      //          div(:class="`${pre}__logo ${pre}__logo__top__next`")
+      //            img(src="@/assets/images/paycard/mir-butt-1200.png")
+      //          h2(:class="`${pre}__logo__top-h2`")
+      //            | 2365
+      //          div(:class="`${pre}__auto-pay__next`" @click.stop)
+      //            er-toggle(
+      //            type="checkbox"
+      //            view="radio-check"
+      //            v-model="selected"
+      //            :class="`${pre}__auto-pay__ertoogle`"
+      //            )
+      //            div(:class="`${pre}__auto-pay__title`")
+      //              | Автоплатеж
+      //
+      //      er-card(
+      //        :class="`${pre}__card`"
+      //      )
+      //        div(:class="`${pre}__card-height`")
+      //          div(:class="`${pre}__logo__card`")
+      //            img(src="@/assets/images/paycard/visa-1200.png")
+      //            div.caption(:class="`${pre}__card-title__label`")
+      //              | Номер карты:
+      //            div.d--flex
+      //              h2(:class="`${pre}__card-title__next`")
+      //                | 5402 &nbsp; 33
+      //              img(
+      //              src="@/assets/images/paycard/card-circle-1200.png"
+      //              :class="`${pre}__card-title__circle`"
+      //              )
+      //              h2(:class="`${pre}__card-title__next`")
+      //                | 9876
+      //            img(
+      //            :class="`${pre}__card__img-bg`"
+      //            src="@/assets/images/paycard/visa-bg-1200.png"
+      //            )
+      //          div(:class="`${pre}__card-title__delete`")
+      //            .er-attach(:class="`${pre}__card-title__delete__icon`")
+      //              er-icon(name="trashbox")
+      //              a.caption.link--dashed--black(
+      //              @click="delConfirm"
+      //              :class="`${pre}__card-title__delete__text`"
+      //              ) Удалить
+      //
+      //      div(
+      //        :class="`${pre}__card-butt ${pre}__card-butt__bottom`"
+      //        v-if="visButtBott[2]"
+      //        :style="'opacity: ' + op1"
+      //      )
+      //        div(
+      //        :class="`${pre}__card-butt__left`"
+      //        @click="moveUp"
+      //        )
+      //          div(:class="`${pre}__logo`")
+      //            img(src="@/assets/images/paycard/mc-butt-1200.png")
+      //          h2(:class="`${pre}__logo__bottom__next`")
+      //            | 2365
+      //    er-flex(style="height: 0")
+      //      er-card(
+      //        :class="`${pre}__card__bg`"
+      //        :style="'transform: translate(' + leftMove[2] + 'px, ' +  topBg[2] + 'px)'"
+      //      )
+      //        div(:class="`${pre}__card__bg__content__next`")
+      //          div(:class="`${pre}__card-height ${pre}__card__bg__empty`")
+      //            div(:class="`${pre}__card__bg__strip__next ${pre}__card__bg__strip__next__empty`")
+      //            div(:class="`${pre}__cvc ${pre}__cvc__empty`")
+      //              div.mr-4(:class="`${pre}__cvc__label ${pre}__cvc__label__empty`")
+      //                | Не введен
+      //              div(:class="`${pre}__cvc__label ${pre}__cvc__label__empty`")
+      //                | CVC/CVV
+      //              div(:class="`${pre}__cvc__value`")
+      //                er-text-field(
+      //                  :value="cvc"
+      //                  mask="9   9   9"
+      //                )
+      //
+      //// карта МС
+      //er-flex(
+      //  :class="`${pre}__card-pos`"
+      //  :style="'margin-right: ' + delta[3] + 'px'"
+      //)
+      //  er-row(no-gutters)
+      //    er-flex
+      //      div(
+      //        :class="`${pre}__card-butt ${pre}__card-butt__top`"
+      //        v-if="visButtTop[2]"
+      //        :style="'opacity: ' + op1"
+      //      )
+      //        div(
+      //        :class="`${pre}__card-butt__left`"
+      //        @click="moveDown"
+      //        )
+      //          div(:class="`${pre}__logo ${pre}__logo__top__next`")
+      //            img(src="@/assets/images/paycard/visa-butt-1200.png")
+      //          h2(:class="`${pre}__logo__top-h2`")
+      //            | 9876
+      //
+      //      er-card(
+      //      :class="`${pre}__card`"
+      //      )
+      //        div(:class="`${pre}__card-height`")
+      //          div(:class="`${pre}__logo__card`")
+      //            img(src="@/assets/images/paycard/mc-1200.png")
+      //            div.caption(:class="`${pre}__card-title__label`")
+      //              | Номер карты:
+      //            div.d--flex
+      //              h2(:class="`${pre}__card-title__next`")
+      //                | 5402 &nbsp; 33
+      //              img(
+      //              src="@/assets/images/paycard/card-circle-1200.png"
+      //              :class="`${pre}__card-title__circle`"
+      //              )
+      //              h2(:class="`${pre}__card-title__next`")
+      //                | 9876
+      //            img(
+      //              :class="`${pre}__card__img-bg`"
+      //              src="@/assets/images/paycard/mc-bg-1200.png"
+      //              style="margin-top: -7px; margin-left: 77px"
+      //            )
+      //          div(:class="`${pre}__card-title__delete`")
+      //            .er-attach(:class="`${pre}__card-title__delete__icon`")
+      //              er-icon(name="trashbox")
+      //              a.caption.link--dashed--black(
+      //              @click="delConfirm"
+      //              :class="`${pre}__card-title__delete__text`"
+      //              ) Удалить
+      //
+      //    er-flex(style="height: 0")
+      //      er-card(
+      //      :class="`${pre}__card__bg`"
+      //      :style="'transform: translate(' + leftMove[3] + 'px, ' +  topBg[3] + 'px)'"
+      //      )
+      //        div(:class="`${pre}__card__bg__content__next`")
+      //          div(:class="`${pre}__card-height`")
+      //            div(:class="`${pre}__card__bg__strip__next`")
+      //            div(:class="`${pre}__cvc`")
+      //              div.mr-4(:class="`${pre}__cvc__label`")
+      //                | Введите
+      //              div(:class="`${pre}__cvc__label`")
+      //                | CVC/CVV
+      //              div(:class="`${pre}__cvc__value`")
+      //                er-text-field(
+      //                :value="cvc"
+      //                mask="9   9   9"
+      //                )
+      //
 
   div(
     :class="`${pre}__card__deleted`"

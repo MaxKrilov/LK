@@ -31,7 +31,8 @@ div(:class="`${pre}`").main-content.main-content--h-padding
             order-lg1
             :class="`${pre}__sum__pos`"
           )
-            h4(:class="`${pre}__sum__title`") Сумма оплаты
+            h4(:class="`${pre}__sum__title`")
+              | Сумма оплаты {{getCurrentNumCard}} - {{cvc}}
             div(:class="`${pre}__sum__input ${pre}__sum__input${borderSum}`")
               er-text-field(
                 v-model="sumPay"
@@ -66,6 +67,10 @@ div(:class="`${pre}`").main-content.main-content--h-padding
                   )
 
             div(:class="`${pre}__sum__button`")
+              //er-button(
+              //@click="aa"
+              //) Проверка
+              //
               er-button(
                 width="100%",
                 @click="paymentConfirm"
@@ -73,8 +78,8 @@ div(:class="`${pre}`").main-content.main-content--h-padding
             div(:class="`${pre}__sum__text`")
               | Нажимая на кнопку, Вы принимаете&ensp;
               a(
-              href="https://console.ertelecom.ru/files/upload/d/1/0/d108447fbf9c5d88c2801d14a6e76725.pdf",
-              target="_blank"
+                href="https://console.ertelecom.ru/files/upload/d/1/0/d108447fbf9c5d88c2801d14a6e76725.pdf",
+                target="_blank"
               ) условия оплаты и безопасности
 
           er-flex(
@@ -86,12 +91,14 @@ div(:class="`${pre}`").main-content.main-content--h-padding
             :class="`${pre}__sum__move-card`"
           )
             PayCard(
+              :empty="empty"
               @openDelConfirm="openDelConfirm"
               @openRemcard="openRemcard"
+              @clearEmpty="clearEmpty"
             )
 
-    PaymentsOn(v-if="!visInfo && success" @try="tryAgain")
-    PaymentsOff(v-if="!visInfo && !success" @try="tryAgain")
+    //PaymentsOn(v-if="!visInfo && success" @try="tryAgain")
+    //PaymentsOff(v-if="!visInfo && !success" @try="tryAgain")
 
     div(:class="`${pre}__check`" v-if="visInfo")#get-check
       div(:class="`${pre}__check__decoration`")

@@ -15,10 +15,13 @@ div.main-content.main-content--h-padding.main-content--top-menu-fix.main-content
     div.mb-8.d--flex.align-items-start(:class="`${pre}__back-arr`")
       div(:class="`${pre}__back-main-xs ${pre}__back-arr__left`")
         er-icon(name="corner_down")
-      h1.fonts--demi(:class="`${pre}__welcome-title`")
+      h1.fonts--demi(:class="`${pre}__welcome-title`" @click="aa" style="cursor: pointer")
         | Платежи и начисления
 
     er-container(:class="`${pre}__container`")
+      //div
+      //  | {{clientInfo}}
+
       InfoScore
       ButtonPay(timer="true")
       er-flex(xs12)

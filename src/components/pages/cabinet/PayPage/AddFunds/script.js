@@ -14,7 +14,8 @@ export default {
   },
   data: () => ({
     pre: 'add-funds',
-    sumPay: '',
+    empty: true,
+    sumPay: '100',
     screenW: '320',
     bottom: 'bottom',
     valSelect: 'Январь',
@@ -56,7 +57,7 @@ export default {
       'konstantinopolsky1@company.ru',
       'konstant'
     ],
-    currentEmail: '',
+    currentEmail: 'konstantinopolsky@company.ru',
     changeWidth () {
       this.direct = this[SCREEN_WIDTH] < 960 ? 'row' : 'column'
       this.visButtConf = this[SCREEN_WIDTH] < 1200
@@ -69,8 +70,12 @@ export default {
   }),
   computed: {
     ...mapGetters([SCREEN_WIDTH]),
+    ...mapGetters({
+      getCurrentNumCard: 'payments/getCurrentNumCard',
+      cvc: 'payments/getCVC'
+    }),
     ...mapState({
-      clientInfo: state => state.user.clientInfo
+      activeBillingAccountId: state => state.user.activeBillingAccount,
     }),
   },
   mounted () {
@@ -79,7 +84,13 @@ export default {
   watch: {
     SCREEN_WIDTH () {
       this.changeWidth()
+    },
+/*
+    empty () {
+      console.log(1)
+      return this.empty
     }
+*/
   },
   methods: {
     selectEmail (item) {
@@ -148,6 +159,9 @@ export default {
       }
       this.openConfirmAutoPay = true
     },
+    clearEmpty () {
+      this.empty = true
+    },
     paymentConfirm () {
       if (this.sumPay === '') {
         this.visEmptySum = true
@@ -163,10 +177,20 @@ export default {
         this.visEmptyEmail = false
         this.borderCheck = ''
       }
+      // alert(this.cvc)
+      console.log('this.cvc ->',this.cvc)
+      console.log(' ->',this.cvc[this.getCurrentNumCard],this.getCurrentNumCard)
       if (this.currentEmail !== '' &&
         this.sumPay !== '' &&
         this.currentEmail.match(this.valEmail)
-      ) this.openConfirmPay = true
+      ) {
+        if (this.getCurrentNumCard === 0){
+          this.openConfirmPay = true
+        } else {
+          this.openConfirmPay = this.cvc[this.getCurrentNumCard - 1].length === 3
+          this.empty = (this.cvc[this.getCurrentNumCard - 1].length === 3)
+        }
+      }
     },
     checkConfirm () {
       this.openConfirmCheck = true
@@ -189,6 +213,18 @@ export default {
       this.$emit('update')
     },
     paymentsOn () {
+      // alert(this.activeBillingAccountId)
+      const payload = {
+        value: '10000',
+        billingAccount: this.activeBillingAccountId,
+        save: '1',
+        email: 'konstantinopolsky@company.ru',
+        returnUrl: location.href + '/payments-on'
+      }
+      console.log(payload)
+      this.$store.dispatch('payments/payment', { api: this.$api, payload: payload })
+      // location.href = 'https://3dsec.sberbank.ru/payment/merchants/domru/payment_ru.html?mdOrder=bcf91834-67e4-7a82-ba85-85d300000590'
+      // this.$store.dispatch('payments/payment', { api: this.$api, billingAccount: this.activeBillingAccountId })
       this.openConfirmPay = false
       this.visInfo = false
       this.success = true
@@ -208,6 +244,13 @@ export default {
     remcardButtRight () {
       this.openConfirmDataCard = false
       this.$emit('update2')
+    },
+    aa () {
+      // this.empty = (this.cvc.length === 3)
+      // alert(this.cvc[this.getCurrentNumCard])
+      // console.log(this.cvc[this.getCurrentNumCard].length)
+      console.log('activeBillingAccountId -> ', this.activeBillingAccountId)
+      this.$store.dispatch('payments/listCard', { api: this.$api, billingAccount: this.activeBillingAccountId })
     }
   }
 }

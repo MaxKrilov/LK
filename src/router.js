@@ -27,6 +27,9 @@ import SupportIndexPage from './components/pages/cabinet/SupportPages/IndexPage/
 // Страница платежи
 import PayPage from './components/pages/cabinet/PayPage/index'
 
+// Успешный платеж
+import PaymentsOn from './components/pages/cabinet/PayPage/components/PaymentsOn/index'
+
 // Страница обещанный платеж
 import PromisePay from './components/pages/cabinet/PayPage/PromisePay/index'
 
@@ -96,6 +99,10 @@ const router = new Router({
         {
           path: '/promise-pay',
           component: PromisePay
+        },
+        {
+          path: '/payments-on',
+          component: PaymentsOn
         },
         {
           path: '/history-pay',

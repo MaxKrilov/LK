@@ -248,6 +248,13 @@
       }
     }
     &__move-card {
+
+      /*
+      z-index: 100 !important;
+      position: absolute !important;
+      background: aqua !important;
+      */
+
       max-width: 519px;
       height: 307px;
       overflow: hidden;
@@ -264,7 +271,7 @@
         ),
         height: (
           sm: 313px,
-          md: 383px
+          md: 1383px
         ),
       ));
     }
@@ -808,6 +815,7 @@
         ),
         justify-content: (
           sm: end,
+          md: start
         ),
       ));
     }
