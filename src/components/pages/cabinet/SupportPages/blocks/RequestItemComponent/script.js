@@ -61,11 +61,11 @@ export default class RequestItemComponent extends Vue {
    */
   @Prop([String, Number]) onHoldWhen
   /**
-   * Дата/время решения
-   */
-  @Prop([String, Number]) solvedWhen
-  /**
    * Дата/время закрытия
+   */
+  @Prop([String, Number]) closedWhen
+  /**
+   * Дата/время решения
    */
   @Prop([String, Number]) resolvedWhen
   /**
@@ -93,22 +93,22 @@ export default class RequestItemComponent extends Vue {
    * @return {{name: string, id: string}}
    */
   get getLabelStatus () {
-    if (this.cancelledWhen === this.modifiedWhen) {
+    if (this.cancelledWhen) {
       return { id: 'cancel', name: 'Отменена' }
     }
-    if (this.resolvedWhen === this.modifiedWhen) {
+    if (this.closedWhen) {
       return { id: 'resolved', name: 'Закрыта' }
     }
-    if (this.solvedWhen === this.modifiedWhen) {
+    if (this.resolvedWhen) {
       return { id: 'solved', name: 'Решена' }
     }
-    if (this.onHoldWhen === this.modifiedWhen) {
+    if (this.onHoldWhen) {
       return { id: 'hold', name: 'В работе' } // todo Переделать после того, как бизнес отойдёт после Новогодних праздников
     }
-    if (this.inProgressWhen === this.modifiedWhen) {
+    if (this.inProgressWhen) {
       return { id: 'progress', name: 'В работе' }
     }
-    if (this.createdWhen === this.modifiedWhen) {
+    if (this.createdWhen) {
       return { id: 'created', name: 'Новая' }
     }
     return { id: '', name: '' }
@@ -136,8 +136,8 @@ export default class RequestItemComponent extends Vue {
   get getHistoryArray () {
     return [
       this.cancelledWhen && { id: 'cancel', name: 'Отменена', text: this.getTextStatus.cancel, time: this.cancelledWhen },
-      this.resolvedWhen && { id: 'resolved', name: 'Закрыта', text: this.getTextStatus.resolved, time: this.resolvedWhen },
-      this.solvedWhen && { id: 'solved', name: 'Решена', text: this.getTextStatus.solved, time: this.solvedWhen },
+      this.closedWhen && { id: 'resolved', name: 'Закрыта', text: this.getTextStatus.resolved, time: this.closedWhen },
+      this.resolvedWhen && { id: 'solved', name: 'Решена', text: this.getTextStatus.solved, time: this.resolvedWhen },
       // this.onHoldWhen && { id: 'hold', name: 'В доработке', text: this.getTextStatus.hold, time: this.onHoldWhen },
       this.onHoldWhen && { id: 'hold', name: 'В работе', text: this.getTextStatus.hold, time: this.onHoldWhen }, // todo Переделать после того, как бизнес отойдёт после Новогодних праздников
       this.inProgressWhen && { id: 'progress', name: 'В работе', text: this.getTextStatus.progress, time: this.inProgressWhen },
