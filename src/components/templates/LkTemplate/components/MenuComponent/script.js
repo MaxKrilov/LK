@@ -129,10 +129,12 @@ export default {
     },
     onChangeBillingAccount (billingAccountId, accountNumber) {
       // Устанавливаем загрузку для отслеживания
-      this.$store.commit('loading/menuComponentBillingAccount', true)
+      this.$store.commit('loading/rebootBillingAccount', true)
       this.$store.commit(`user/${SET_ACTIVE_BILLING_ACCOUNT}`, billingAccountId)
       this.$store.commit(`user/${SET_ACTIVE_BILLING_ACCOUNT_NUMBER}`, accountNumber)
-      this.$store.commit('loading/menuComponentBillingAccount', false)
+      this.$nextTick(() => {
+        this.$store.commit('loading/rebootBillingAccount', false)
+      })
     }
   },
   mounted () {

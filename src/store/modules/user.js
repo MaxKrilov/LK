@@ -207,7 +207,6 @@ const actions = {
 
     return api
       .setWithCredentials()
-      .setBranch('master')
       .setData({
         clientId: toms
       })
