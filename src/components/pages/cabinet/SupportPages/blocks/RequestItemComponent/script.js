@@ -93,22 +93,22 @@ export default class RequestItemComponent extends Vue {
    * @return {{name: string, id: string}}
    */
   get getLabelStatus () {
-    if (this.cancelledWhen) {
+    if (this.cancelledWhen === this.modifiedWhen) {
       return { id: 'cancel', name: 'Отменена' }
     }
-    if (this.resolvedWhen) {
+    if (this.resolvedWhen === this.modifiedWhen) {
       return { id: 'resolved', name: 'Закрыта' }
     }
-    if (this.solvedWhen) {
+    if (this.solvedWhen === this.modifiedWhen) {
       return { id: 'solved', name: 'Решена' }
     }
-    if (this.onHoldWhen) {
-      return { id: 'hold', name: 'В доработке' }
+    if (this.onHoldWhen === this.modifiedWhen) {
+      return { id: 'hold', name: 'В работе' } // todo Переделать после того, как бизнес отойдёт после Новогодних праздников
     }
-    if (this.inProgressWhen) {
+    if (this.inProgressWhen === this.modifiedWhen) {
       return { id: 'progress', name: 'В работе' }
     }
-    if (this.createdWhen) {
+    if (this.createdWhen === this.modifiedWhen) {
       return { id: 'created', name: 'Новая' }
     }
     return { id: '', name: '' }
@@ -126,7 +126,8 @@ export default class RequestItemComponent extends Vue {
     return {
       'created': 'Спасибо за Ваше обращение. Заявка создана, в ближайшее время будет принята в работу.',
       'progress': 'Специалисты занимаются решением Вашей заявки.',
-      'hold': 'Для решения заявки требуются дополнительные работы.',
+      // 'hold': 'Для решения заявки требуются дополнительные работы.',
+      'hold': 'Специалисты занимаются решением Вашей заявки.', // todo Переделать после того, как бизнес отойдёт после Новогодних праздников
       'solved': 'Работы по заявке выполнены. Ожидается подтверждение от Клиента решения заявки.',
       'resolved': 'Спасибо за Ваше обращение. Работы по заявке выполнены.',
       'cancel': 'Заявка отменена по желанию Клиента.'
@@ -137,7 +138,8 @@ export default class RequestItemComponent extends Vue {
       this.cancelledWhen && { id: 'cancel', name: 'Отменена', text: this.getTextStatus.cancel, time: this.cancelledWhen },
       this.resolvedWhen && { id: 'resolved', name: 'Закрыта', text: this.getTextStatus.resolved, time: this.resolvedWhen },
       this.solvedWhen && { id: 'solved', name: 'Решена', text: this.getTextStatus.solved, time: this.solvedWhen },
-      this.onHoldWhen && { id: 'hold', name: 'В доработке', text: this.getTextStatus.hold, time: this.onHoldWhen },
+      // this.onHoldWhen && { id: 'hold', name: 'В доработке', text: this.getTextStatus.hold, time: this.onHoldWhen },
+      this.onHoldWhen && { id: 'hold', name: 'В работе', text: this.getTextStatus.hold, time: this.onHoldWhen }, // todo Переделать после того, как бизнес отойдёт после Новогодних праздников
       this.inProgressWhen && { id: 'progress', name: 'В работе', text: this.getTextStatus.progress, time: this.inProgressWhen },
       this.createdWhen && { id: 'created', name: 'Новая', text: this.getTextStatus.created, time: this.createdWhen }
     ].filter(item => item)
