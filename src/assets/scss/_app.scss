@@ -95,3 +95,10 @@ $color-of-dragger: map_get($yellow, 'base');
 .overflow-y-hidden {
   overflow-y: hidden;
 }
+
+.error-block {
+  width: 100%;
+  padding: 16px;
+  border: 1px solid map_get($shades, 'black');
+  overflow: auto;
+}

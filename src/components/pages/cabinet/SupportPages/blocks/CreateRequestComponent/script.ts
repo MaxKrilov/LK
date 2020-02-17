@@ -1,6 +1,6 @@
 import { Vue, Component, Watch } from 'vue-property-decorator'
 import { mapState, mapGetters } from 'vuex'
-import { LIST_COMPLAINT_THEME, LIST_REQUEST_THEME, LIST_TECHNICAL_REQUEST_THEME } from '@/store/actions/dictionary';
+import { LIST_COMPLAINT_THEME, LIST_REQUEST_THEME, LIST_TECHNICAL_REQUEST_THEME } from '@/store/actions/dictionary'
 import ErPhoneSelect from '@/components/blocks/ErPhoneSelect'
 import ErTimePickerRange from '@/components/blocks/ErTimePickerRange'
 import ErTextareaWithFile from '@/components/blocks/ErTextareaWithFile'

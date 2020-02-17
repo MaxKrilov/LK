@@ -226,6 +226,8 @@ $pre: '.er-document';
     @include color-black(.7);
     margin-top: $padding-x2;
     display: inline-block;
+    cursor: pointer;
+    user-select: none;
   }
 
   &__corner {
