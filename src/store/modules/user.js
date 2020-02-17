@@ -61,6 +61,7 @@ const getters = {
   },
   getManagerInfo (state) {
     return {
+      // eslint-disable-next-line camelcase
       name: state.personalManager?.surname && state.personalManager?.name && state.personalManager?.middle_name
         ? `${state.personalManager.surname} ${state.personalManager.name} ${state.personalManager.middle_name}`
         : 'Нет закреплённого менеджера',
@@ -346,7 +347,7 @@ const actions = {
     const activeBillingAccount = getters.getActiveBillingAccount
     const { toms } = rootGetters['auth/user']
     try {
-      const result = await api
+      await api
         .setWithCredentials()
         .setData({
           id: activeBillingAccount,
@@ -372,6 +373,28 @@ const mutations = {
   },
   [GET_DOCUMENTS_SUCCESS]: (state, payload) => {
     state.documents = payload
+    // todo Заглушка!!! Убрать после 14-го февраля
+    state.documents.push({
+      fileName: 'Ссылки из писем ERT_3.docx',
+      verifying: 'Нет',
+      contractStatus: 'Готов для клиента',
+      filePath: '022020/9156442789813519492',
+      signedWithDigitalSignature: 'Да',
+      contractNumber: '000000000761',
+      creationDate: 1581501964000,
+      type: {
+        name: 'Договор',
+        id: '9154452676313182640'
+      },
+      relatedTo: {
+        name: '5907000000000761',
+        id: '9156442777613519214'
+      },
+      bucket: 'signed-docs',
+      modifiedWhen: 1581501964000,
+      id: '9156442782013519000',
+      visibleInSSP: 'Да'
+    })
     state.countUnsignedDocuments = payload.length
   },
   [GET_LIST_BILLING_ACCOUNT_SUCCESS]: (state, payload) => {

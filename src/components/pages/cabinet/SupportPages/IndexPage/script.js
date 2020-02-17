@@ -4,7 +4,6 @@ import SlideUpDownWithTitleComponent from '../blocks/SlideUpDownWithTitleCompone
 import RequestItemComponent from '../blocks/RequestItemComponent/index'
 import CreateRequestComponent from '../blocks/CreateRequestComponent/index'
 import ContactInfoComponent from '../blocks/ContactInfoComponent/index'
-import { GET_REQUEST } from '../../../../../store/actions/request'
 import { mapState, mapGetters } from 'vuex'
 import { formatPhone } from '../../../../../functions/filters'
 

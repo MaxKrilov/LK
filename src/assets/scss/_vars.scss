@@ -87,3 +87,5 @@ $main-content-width: (
   'xl': 900px,
   'lg': 100%
 );
+
+$border-gradient: linear-gradient(to top right, map_get($gray, '26') 28.65%, map_get($shades, 'white') 90.63%)
