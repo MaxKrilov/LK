@@ -5,19 +5,26 @@ export default {
   data: () => ({
     pre: 'payments-on'
   }),
-  created: {
-    status () {
-      this.$store.dispatch('payments/status', { cvc: this.cvc[this.index - 1] })
-    }
+  created () {
+    this.$store.dispatch('payments/status', { api: this.$api, billingAccount: this.activeBillingAccountId })
   },
   computed: {
     ...mapState({
       activeBillingAccountId: state => state.user.activeBillingAccount,
     }),
+    ...mapGetters({
+      pay_status: 'payments/getPayStatus',
+    }),
+    mounted () {
+      console.log('<-->',this.pay_status)
+    }
   },
   methods: {
-    tryAgain () {
-      this.$emit('try')
-    }
+    addfunds () {
+      this.$router.push('/add-funds')
+    },
+    paypage () {
+      this.$router.push('/lk/payments')
+    },
   }
 }

@@ -2,80 +2,300 @@
   position: relative;
   background: map_get($gray, '3');
   z-index: 2;
-  left: -300px;
-  top: 47px;
-  min-height: 381px;
-  &__container {
-    width: 100% !important;
-    margin-left: 300px !important;
-    margin-top: -43px;
+  //left: -300px;
+  //top: 47px;
+  min-height: 474px;
+  &__on {
+    &__container {
+      width: 100% !important;
+      //margin-left: 300px !important;
+      //margin-top: -43px;
+    }
+    &__icon-height svg {
+      position: absolute;
+      width: 64px !important;
+      left: 0;
+      top: 0;
+      color: map_get($green, 'base');
+      @include media-query((
+        width: (
+          md: 80px !important,
+          xl: 128px !important,
+        ),
+      ));
+    }
+    &__pos {
+      position: relative;
+      margin-left: 30px;
+      top: 0;
+      @include media-query((
+        margin-left: (md: -10px),
+        top: (md: 16px),
+      ));
+    }
+    &__info {
+      color: map_get($green, 'base');
+      position: absolute;
+      font-family: $fedra-demi;
+      &__icon svg {
+        width: 16px !important;
+        margin-right: 5px;
+      }
+      &__span {
+        font-family: $fedra-demi !important;
+        color: map_get($green, 'base') !important;
+      }
+    }
+    &__butt {
+      position: relative;
+      top: 36px;
+      left: -55px;
+      max-width: 127% !important;
+      width: 360px !important;
+      @include media-query((
+        max-width: (sm: 100% !important),
+        width: (
+          sm: 241px !important
+        ),
+        left: (
+          sm: -81px,
+          xl: -179px
+        ),
+        top: (
+          sm: 86px,
+          xl: 61px,
+        ),
+      ));
+    }
+    &__email {
+      font: 13px/18px $fedra-book;
+      color: rgba(map_get($shades, 'black'), 0.8);
+      letter-spacing: -0.25px;
+      @include media-query((
+        font-size: (
+          md: 14px,
+        ),
+        line-height: (
+          md: 19px,
+        ),
+        letter-spacing: (
+          md: -1px
+        )
+      ))
+
+    }
+  }
+  &__off {
+    /*
+    @include media-query((
+      min-height: (
+        sm: 247px,
+        xl: 444px !important
+      ),
+    ));
+    */
+    &__container {
+      width: 100% !important;
+      //margin-left: 300px !important;
+      //margin-top: -43px;
+    }
+    &__icon-height svg {
+      position: absolute;
+      width: 64px !important;
+      left: 0;
+      top: 0;
+      color: map_get($red, 'base');
+      @include media-query((
+        width: (
+          md: 80px !important,
+          xl: 128px !important,
+        ),
+      ));
+    }
+    &__pos {
+      position: relative;
+      margin-left: 30px;
+      top: 0;
+      @include media-query((
+        margin-left: (md: -10px),
+        top: (md: 16px),
+      ));
+    }
+    &__info {
+      color: map_get($red, 'base');
+      position: absolute;
+      font-family: $fedra-demi;
+      &__icon svg {
+        width: 16px !important;
+        margin-right: 5px;
+      }
+      &__span {
+        font-family: $fedra-demi !important;
+        color: map_get($red, 'base') !important;
+      }
+    }
+    &__butt {
+      &__left {
+        position: relative;
+        top: -51px;
+        left: 10px;
+        max-width: 127% !important;
+        width: 360px !important;
+        @include media-query((
+          max-width: (sm: 100% !important),
+          width: (sm: 179px !important),
+          left: (
+            sm: -81px
+          ),
+          top: (sm: 86px),
+        ));
+      }
+      &__right {
+        top: -30px;
+        left: 35px;
+        @include media-query((
+          left: (
+            sm: 109px,
+            md: 202px,
+            xl: -402px
+          ),
+          top: (
+            sm: 50px,
+            xl: 93px
+          ),
+        ));
+      }
+      &__text {
+        font: 16px/20px $fedra-demi !important;
+        color: rgba(map_get($shades, 'black'), 0.8) !important;
+        letter-spacing: -0.5px;
+        margin-top: 6px;
+        margin-bottom: 9px;
+      }
+      &__icon svg {
+        width: 32px !important;
+        color: map_get($yellow, 'base');
+        margin-right: 16px;
+      }
+      &__container {
+        position: relative;
+        left: 0;
+        top: 124px;
+        padding-left: 0 !important;
+        @include media-query((
+          left: (
+            sm: 81px,
+          ),
+          top: (
+            sm: 0,
+            lg: 6px,
+            xl: 40px
+          ),
+        ));
+      }
+    }
+  }
+
+  &__back-main {
+    display: none;
+    &__text {
+      text-decoration: none;
+    }
+    @include media-query((
+      margin-top: (
+        xl: 11px
+      ),
+      margin-bottom: (lg: 14px),
+      display: (xl: block),
+      padding-right: (lg: 16px !important)
+    ));
+  }
+  &__container-main {
+    padding: 0 !important;
+    margin-left: 0;
+    margin-bottom: -7px; //
+    @include media-query((
+      margin-top: (
+        xs: -14px,
+        sm: -25px,
+        md: 71px !important,
+        lg: -21px,
+        xl: -23px,
+      ),
+      margin-left: (
+        sm: 0,
+        md: 0,
+        lg: 0,
+      ),
+      margin-bottom: (
+        sm: -7px,
+      ),
+      max-width: (
+        xs: 480px !important,
+        sm: 640px !important,
+        md: 960px !important,
+        lg: 1200px !important,
+      ),
+      width: (xl: 108%)
+    ));
   }
   &__icon-height svg {
-    position: absolute;
-    width: 64px !important;
-    left: 0;
-    top: 0;
-    color: map_get($gray, 'base');
-    @include media-query((
-      width: (
-        md: 80px !important,
-      ),
-    ));
+    height: 16px;
+    margin-left: -7px;
   }
-  &__pos {
+  &__back-arr {
     position: relative;
-    margin-left: 30px;
-    top: 0;
+    margin-left: -4px;
+    margin-bottom: 31px;
     @include media-query((
-      margin-left: (md: -10px),
-      top: (md: 16px),
+      top: (
+        lg: 12px,
+        xl: 0
+      ),
+      margin-left: (
+        sm: -6px,
+        md: -10px,
+        lg: -17px,
+        xl: 0px,
+      ),
+      padding-left: (
+        xl: 0px,
+      )
     ));
   }
-  &__info {
-    color: map_get($green, 'base');
-    position: absolute;
-    font-family: $fedra-demi;
-    &__icon svg{
-      width: 16px !important;
-      margin-right: 5px;
+  &__back-main-xs svg {
+    display: block;
+    height: 12px;
+    cursor: pointer;
+    margin-top: 25px;
+    color: rgba(map_get($yellow, 'base'), 0.8);
+    &__text {
+      text-decoration: none;
     }
-    &__span {
-      font-family: $fedra-demi !important;
-      color: map_get($green, 'base') !important;
-    }
-  }
-  &__butt {
-    position: relative;
-    top: 36px;
-    left: -55px;
-    max-width: 127% !important;
-    width: 360px !important;
     @include media-query((
-      max-width: (sm: 100% !important),
+      display: (xl: none),
+      margin-top: (
+        md: 27px,
+      ),
+    ));
+  }
+  &__welcome-title {
+    width: 256px;
+    margin-bottom: 22px;
+    margin-top: 15px;
+    letter-spacing: -1px;
+    @include media-query((
+      margin-top: (
+        xl: 0,
+      ),
       width: (
-        sm: 241px !important
+        sm: 456px
       ),
-      left: (
-        sm: -81px
-      ),
-      top: (sm: 86px),
-    ));
-  }
-  &__email {
-    font: 13px/18px $fedra-book;
-    color: rgba(map_get($shades, 'black'), 0.8);
-    letter-spacing: -0.25px;
-    @include media-query((
-      font-size: (
-        md: 14px,
-      ),
-      line-height: (
-        md: 19px,
-      ),
-      letter-spacing: (
-        md: -1px
+      margin-bottom: (
+        sm: 24px,
+        lg: 37px,
+        xl: 28px
       )
     ))
-
   }
 }

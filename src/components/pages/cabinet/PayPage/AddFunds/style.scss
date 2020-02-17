@@ -193,7 +193,7 @@
         border: 1px solid map_get($red, 'base') !important;
       }
     }
-    &__remember {
+    &__on-autopay {
       margin-top: 20px;
       display: flex;
       align-items: center;
@@ -203,6 +203,16 @@
           lg: 13px,
         ),
       ));
+      &__over {
+        background: map_get($gray, '13');
+        position: absolute;
+        left: -4px;
+        top: 156px;
+        height: 37px;
+        width: 274px;
+        z-index: 1;
+        cursor: pointer;
+      }
     }
     &__button {
       width: 288px;
@@ -354,7 +364,17 @@
         letter-spacing: (
           md: normal
         )
-      ))
+      ));
+      &__over {
+        background: transparent;
+        position: absolute;
+        left: 0;
+        top: 156px;
+        height: 24px;
+        width: 49px;
+        z-index: 1;
+        cursor: pointer;
+      }
     }
     &__empty {
       margin-left: 184px;

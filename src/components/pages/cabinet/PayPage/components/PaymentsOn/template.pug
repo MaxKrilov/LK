@@ -1,34 +1,88 @@
 // Payments On
 
-div.main-content.main-content--h-padding.main-content--top-menu-fix.main-content--top-padding(:class="`${pre}`")
-  er-container(full :class="`${pre}__container`")
+div(:class="`${pre}`").main-content.main-content--h-padding
+  div.main-content--top-padding(:class="`${pre}__back-main`")
+  div(:class="`${pre}__container-main`").main-content--top-menu-fix
+    div.caption(:class="`${pre}__back-main`")
+      div.ml-auto
+        er-icon(name="arrow_l" :class="`${pre}__icon-height`")
+        a.caption2(
+        href="#"
+        :class="`${pre}__back-main__text`"
+        @click="paypage"
+        )
+          | Назад в платежи и начисления
+
+    div.d--flex.align-items-start(:class="`${pre}__back-arr`")
+      div(:class="`${pre}__back-main-xs`" @click="paypage")
+        er-icon(name="left")
+      h1.fonts--demi(:class="`${pre}__welcome-title`")
+        | Пополнить счет
+
+  er-container(full :class="`${pre}__on__container`" v-if="pay_status === 2")
     er-row.justify-content-between.no-gutters
       er-flex(xs2 )
         div
-          er-icon(name="circle_ok" :class="`${pre}__icon-height`")
+          er-icon(name="circle_ok" :class="`${pre}__on__icon-height`")
       er-flex(xs10)
-        div(:class="`${pre}__pos`")
+        div(:class="`${pre}__on__pos`")
           h2.mb-4(style="")
             | Оплата прошла успешно
-          div(:class="`${pre}__info`")
-            er-icon(name="ok" :class="`${pre}__info__icon`")
-            span.caption(:class="`${pre}__info__span`")
+          div(:class="`${pre}__on__info`")
+            er-icon(name="ok" :class="`${pre}__on__info__icon`")
+            span.caption(:class="`${pre}__on__info__span`")
               | Включен автоплатёж
-          div.mt-20(:class="`${pre}__info`")
-            er-icon(name="ok" :class="`${pre}__info__icon`")
-            span.caption(:class="`${pre}__info__span`")
+          div.mt-20(:class="`${pre}__on__info`")
+            er-icon(name="ok" :class="`${pre}__on__info__icon`")
+            span.caption(:class="`${pre}__on__info__span`")
               | Карта сохранена
           div.mt-64
             h4.mb-4
               | Чек отправлен
             div.caption2.mb-4
               | на электронную почту:
-            h4(:class="`${pre}__email`")
+            h4(:class="`${pre}__on__email`")
               | konstantinopolsky@company.ru
 
-        er-flex.no-gutters(xs12 :class="`${pre}__butt`")
+        er-flex.no-gutters(xs12 :class="`${pre}__on__butt`")
           er-button(
             type="submit"
-            @click="tryAgain"
+            @click="addfunds"
           )
             | В платежи
+
+  er-container(full :class="`${pre}__off__container`" v-else)
+    er-row.justify-content-between.no-gutters
+      er-flex(xs2 )
+        div(:class="`${pre}__off__container`")
+          er-icon(name="cancel" :class="`${pre}__off__icon-height`")
+      er-flex(xs10)
+        div(:class="`${pre}__off__pos`")
+          h2.mb-4(style="")
+            | Оплата не прошла
+          div(:class="`${pre}__off__info`")
+            er-icon(name="close" :class="`${pre}__off__info__icon`")
+            span.caption(:class="`${pre}__off__info__span`")
+              | Автоплатёж не включен
+          div.mt-20(:class="`${pre}__off__info`")
+            er-icon(name="close" :class="`${pre}__off__info__icon`")
+            span.caption(:class="`${pre}__off__info__span`")
+              | Карта не сохранена
+
+    er-container(:class="`${pre}__off__butt__container`")
+      er-row.no-gutters.justify-content-between
+        er-flex.no-gutters(xs12 sm6 lg3 xl3 :class="`${pre}__off__butt__left`")
+          er-button(
+          type="submit"
+          @click="addfunds"
+          )
+            | Попробовать снова
+
+        er-flex.no-gutters(xs12 sm6 lg9 xl3 offset-xs1 :class="`${pre}__off__butt__right`")
+          .er-attach(:class="`${pre}__off__butt__icon`")
+            er-icon(name="chat")
+            a.link--dashed--black(
+            @click="addfunds"
+            :class="`${pre}__off__butt__text`"
+            ) Спросить в чате
+

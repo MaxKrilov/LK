@@ -14,6 +14,7 @@ export default {
   },
   data: () => ({
     pre: 'add-funds',
+    // visAutoPay: 0,
     empty: true,
     sumPay: '100',
     screenW: '320',
@@ -23,6 +24,7 @@ export default {
     widthContainer: '108% !important',
     openConfirmPay: false,
     openConfirmAutoPay: false,
+    visConfirmAutoPay: false,
     openConfirmCheck: false,
     openConfirmDel: false,
     openConfirmDataCard: false,
@@ -76,9 +78,33 @@ export default {
     }),
     ...mapState({
       activeBillingAccountId: state => state.user.activeBillingAccount,
+      bindingId: state => state.payments.bindingId,
+      visAutoPay: state => state.payments.visAutoPay
     }),
   },
+  created ()  {
+/*
+    const payload = {
+      billingAccount: this.activeBillingAccountId,
+      card_img: this.card_img
+    }
+*/
+    // const billingAccount = this.$store.getters('user/getActiveBillingAccount')
+    // alert(activeBillingAccountId)
+    // this.$store.dispatch('payments/listCard', { api: this.$api, billingAccount: billingAccount })
+
+/*
+    ...mapState({
+        cards: state => state.payments.listCard,
+    })
+*/
+    // ...mapState({
+    //   activeBillingAccountId: state => state.user.activeBillingAccount,
+    // })
+
+  },
   mounted () {
+    // alert(this.activeBillingAccountId)
     this.changeWidth()
   },
   watch: {
@@ -103,37 +129,78 @@ export default {
         this.borderCheck = ''
       }
     },
+
     autopay () {
-      this.checkAutoPay = this.selected ? 'Подключить автоплатёж' : 'Автоплатёж'
+      this.payAutoTextConfirm()
+      /*
+          // this.over = 'n'
+     /*
+           this.checkAutoPay = this.selected ? 'Подключить автоплатёж' : 'Автоплатёж'
+           if (this.selected) {
+             this.textOnAutopay = this.autopayOn
+           } else {
+             this.textOnAutopay = this.autopayOff
+           }
+     */
+    },
+    payAuto () {
+/*
+      // const activate = this.selected ? 1 : 0
+      const payload = {
+        billingAccount: this.activeBillingAccountId,
+        bindingId: this.bindingId,
+        activate: this.selected ? 1 : 0, //activate,
+      }
+      this.$store.dispatch('payments/autoPay', { api: this.$api, payload: payload })
+*/
       if (this.selected) {
-        this.textOnAutopay = this.autopayOn
-      } else {
+        this.buttLeft = 'Отключить'
+        this.buttRight = 'Отменить'
         this.textOnAutopay = this.autopayOff
+      } else {
+        this.buttLeft = 'Отменить'
+        this.buttRight = 'Подключить'
+        this.textOnAutopay = this.autopayOn
       }
     },
     payAutoTextConfirm () {
-      if (this.selected) {
-        this.checkAutoPay = 'Подключить автоплатёж'
-        this.selected = false
-        this.textOnAutopay = this.autopayOn
-      } else {
-        this.checkAutoPay = 'Автоплатёж'
-        this.selected = true
-        this.textOnAutopay = this.autopayOff
-      }
+      this.openConfirmAutoPay = true
+      this.payAuto()
+      this.visConfirmAutoPay = true
     },
+    payAutoConfirm () {
+      this.openConfirmAutoPay = true
+      this.payAuto()
+      this.visConfirmAutoPay = false
+    },
+
+    payAutoRequest (act) {
+      // const activate = this.selected ? 1 : 0
+      const payload = {
+        billingAccount: this.activeBillingAccountId,
+        bindingId: this.bindingId,
+        activate: act //this.selected ? 1 : 0, //activate,
+      }
+      this.$store.dispatch('payments/autoPay', { api: this.$api, payload: payload })
+    },
+
     autopayButtRight () {
       this.checkAutoPay = 'Автоплатёж'
+      this.payAutoRequest (this.getCurrentNumCard)
       this.selected = true
+      // this.visAutoPay = this.getCurrentNumCard
       this.openConfirmAutoPay = false
     },
     autopayButtLeft () {
+      this.payAutoRequest (0)
       if (this.selected) {
         this.checkAutoPay = 'Подключить автоплатёж'
         this.selected = false
       }
+      // this.visAutoPay = 0
       this.openConfirmAutoPay = false
     },
+
     paypage () {
       this.$router.push('/lk/payments')
     },
@@ -146,18 +213,6 @@ export default {
     },
     topOperation (payload) {
       this.visFilter = payload ? '__vis-filter' : ''
-    },
-    payAutoConfirm () {
-      if (this.selected) {
-        this.buttLeft = 'Отключить'
-        this.buttRight = 'Не отключать'
-        this.textOnAutopay = this.autopayOff
-      } else {
-        this.buttLeft = 'Нет, спасибо'
-        this.buttRight = 'Подключить'
-        this.textOnAutopay = this.autopayOn
-      }
-      this.openConfirmAutoPay = true
     },
     clearEmpty () {
       this.empty = true
@@ -213,21 +268,35 @@ export default {
       this.$emit('update')
     },
     paymentsOn () {
-      // alert(this.activeBillingAccountId)
-      const payload = {
-        value: '10000',
-        billingAccount: this.activeBillingAccountId,
-        save: '1',
-        email: 'konstantinopolsky@company.ru',
-        returnUrl: location.href + '/payments-on'
+      alert(this.getCurrentNumCard)
+      if (this.getCurrentNumCard === 0) {
+        var payload = {
+          value: '10000',
+          billingAccount: this.activeBillingAccountId,
+          save: '1',
+          email: 'konstantinopolsky@company.ru',
+          returnUrl: location.href + '/payments-on'
+        }
+          // this.$store.dispatch('payments/payment', { api: this.$api, payload: payload })
+      // }
+      } else {
+        var payload = {
+          value: '10000',
+          billingAccount: this.activeBillingAccountId,
+          save: '1',
+          email: 'konstantinopolsky@company.ru',
+          returnUrl: location.href + '/payments-on'
+        }
       }
-      console.log(payload)
+      alert(2)
+      console.log('!!!->', payload)
       this.$store.dispatch('payments/payment', { api: this.$api, payload: payload })
       // location.href = 'https://3dsec.sberbank.ru/payment/merchants/domru/payment_ru.html?mdOrder=bcf91834-67e4-7a82-ba85-85d300000590'
       // this.$store.dispatch('payments/payment', { api: this.$api, billingAccount: this.activeBillingAccountId })
       this.openConfirmPay = false
       this.visInfo = false
       this.success = true
+      this.$router.push({ path: '/payments-on' })
     },
     paymentsOff () {
       this.openConfirmPay = false
@@ -245,6 +314,7 @@ export default {
       this.openConfirmDataCard = false
       this.$emit('update2')
     },
+/*
     aa () {
       // this.empty = (this.cvc.length === 3)
       // alert(this.cvc[this.getCurrentNumCard])
@@ -252,5 +322,6 @@ export default {
       console.log('activeBillingAccountId -> ', this.activeBillingAccountId)
       this.$store.dispatch('payments/listCard', { api: this.$api, billingAccount: this.activeBillingAccountId })
     }
+*/
   }
 }

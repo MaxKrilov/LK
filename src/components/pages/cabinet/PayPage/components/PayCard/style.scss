@@ -98,6 +98,12 @@
       @extend .pay-card__auto-pay;
       top: 53px;
       left: 346px;
+      @include media-query((
+        top: (
+          //md: 13px,
+          xl: 30px,
+        ),
+      ));
     }
     &__ertoogle {
       position: relative;

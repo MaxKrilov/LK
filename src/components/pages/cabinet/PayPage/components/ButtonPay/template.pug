@@ -7,7 +7,7 @@ er-row(no-gutters)
         er-card(:class="`${pre}__card-shadow`")
           div(:class="`${pre}__card-height`")
             router-link(to="/add-funds" :class="`${pre}__card-shadow`")
-              h4(:class="`${pre}__card-title`")
+              h4(:class="`${pre}__card-title`" @click="aa")
                 | Оплата картой
                 div.new
                   div.mb-4

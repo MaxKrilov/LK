@@ -32,7 +32,7 @@ div(:class="`${pre}`").main-content.main-content--h-padding
             :class="`${pre}__sum__pos`"
           )
             h4(:class="`${pre}__sum__title`")
-              | Сумма оплаты {{getCurrentNumCard}} - {{cvc}}
+              | Сумма оплаты {{selected}} : num={{getCurrentNumCard}} - visaut={{visAutoPay}}
             div(:class="`${pre}__sum__input ${pre}__sum__input${borderSum}`")
               er-text-field(
                 v-model="sumPay"
@@ -43,11 +43,18 @@ div(:class="`${pre}`").main-content.main-content--h-padding
             div(:class="`${pre}__sum__empty`" v-if="visEmptySum")
               | Поле не заполнено
 
-            div(:class="`${pre}__sum__remember`")
+            div(:class="`${pre}__sum__on-autopay`")
+              div(
+                :class="`${pre}__sum__on-autopay__over`"
+                v-if="!(getCurrentNumCard !== 0 && (getCurrentNumCard === visAutoPay || visAutoPay === 0))"
+              )
+              div(
+                @click="autopay"
+                :class="`${pre}__sum__autopay__over`"
+              )
               span
                 er-toggle(
                   v-model="selected"
-                  @click="autopay"
                 )
               span.mb-4(
                 :class="`${pre}__sum__autopay`"
@@ -67,10 +74,6 @@ div(:class="`${pre}`").main-content.main-content--h-padding
                   )
 
             div(:class="`${pre}__sum__button`")
-              //er-button(
-              //@click="aa"
-              //) Проверка
-              //
               er-button(
                 width="100%",
                 @click="paymentConfirm"
@@ -92,6 +95,7 @@ div(:class="`${pre}`").main-content.main-content--h-padding
           )
             PayCard(
               :empty="empty"
+              :activeBillingAccountId="activeBillingAccountId"
               @openDelConfirm="openDelConfirm"
               @openRemcard="openRemcard"
               @clearEmpty="clearEmpty"
@@ -208,7 +212,7 @@ div(:class="`${pre}`").main-content.main-content--h-padding
             er-button.align-items-center(
               type="submit"
               flat=true
-              @click="paymentsOff"
+              @click="closeConfirm"
               v-if="!visButtConf"
             ) Отменить
 
@@ -273,7 +277,18 @@ div(:class="`${pre}`").main-content.main-content--h-padding
       :class="`${pre}__left`"
     )
     div(:class="`${pre}__confirm`" v-if="openConfirmAutoPay")
-      div(:class="`${pre}__confirm__content`")
+      div(:class="`${pre}__confirm__content`" v-if="visConfirmAutoPay")
+        div(:class="`${pre}__confirm__content__size`")
+          er-icon(name="question" :class="`${pre}__confirm__icon-height`")
+        div(:class="`${pre}__confirm__content__pos`")
+          h4
+            div(v-if="selected") Вы уверены, что хотите отключить автоплатеж на карте:
+            div(v-else) Вы уверены, что хотите подключить автоплатеж на карту:
+
+          div.d--flex
+          h3
+            | МИР, 5402 33 ** **** 2365
+      div(:class="`${pre}__confirm__content`" v-else)
         er-container(:class="`${pre}__confirm__header`")
           er-row.no-gutters.mb-24.d--flex.justify-content-between
             er-flex.mb-60(xs12 sm4)
@@ -293,21 +308,67 @@ div(:class="`${pre}`").main-content.main-content--h-padding
         er-icon(name="close")
 
       er-container(full :class="`${pre}__confirm__container-button`")
+        er-row.justify-content-start.no-gutters(v-if="visConfirmAutoPay")
+          er-flex.pr-28(xs3 xl6 v-if="selected")
+            er-button(
+              type="submit"
+              @click="autopayButtRight"
+              v-if="!visButtConf"
+            ) Отменить
+          er-flex.pr-28(xs3 xl6 v-else)
+            er-button(
+            type="submit"
+            @click="autopayButtRight"
+            v-if="!visButtConf"
+            ) Подключить
+
+          er-flex.pr-24.pl-4(xs3 xl6 v-if="selected")
+            er-button.align-items-center(
+              type="submit"
+              flat=true
+              @click="autopayButtLeft"
+              v-if="!visButtConf"
+            ) Отключить
+          er-flex.pr-24.pl-4(xs3 xl6 v-else)
+            er-button.align-items-center(
+              type="submit"
+              flat=true
+              @click="autopayButtLeft"
+              v-if="!visButtConf"
+            ) Отменить
+
         er-row.no-gutters(:class="`${pre}__confirm__butt`")
-          er-flex(xs7 sm4 xl6)
+          er-flex(xs7 sm4 xl6 v-if="selected")
             div(:class="`${pre}__confirm__no__pay`")
               a(
                 @click="autopayButtLeft"
                 :class="`${pre}__confirm__no__text`"
                 v-if="visButtConf"
               ) {{ buttLeft }}
-          er-flex(xs5 sm3 md4 xl6)
+          er-flex(xs7 sm4 xl6 v-else)
+            div(:class="`${pre}__confirm__no__pay`")
+              a(
+              @click="autopayButtLeft"
+              :class="`${pre}__confirm__no__text`"
+              v-if="visButtConf"
+              ) {{ buttLeft }}
+
+          er-flex(xs5 sm3 md4 xl6 v-if="selected")
             div(:class="`${pre}__confirm__yes__pay`")
               a(
                 @click="autopayButtRight"
                 :class="`${pre}__confirm__yes__text`"
                 v-if="visButtConf"
               ) {{ buttRight }}
+          er-flex(xs5 sm3 md4 xl6 v-else)
+            div(:class="`${pre}__confirm__yes__pay`")
+              a(
+              @click="autopayButtRight"
+              :class="`${pre}__confirm__yes__text`"
+              v-if="visButtConf"
+              ) {{ buttRight }}
+
+
 
     // Удалить карту
     er-overlay(
@@ -324,6 +385,8 @@ div(:class="`${pre}`").main-content.main-content--h-padding
             | Вы уверены, что хотите удалить карту ?
           h3
             | МИР, 5402 33 ** **** 2365
+      div.caption
+        | Произошла ошибка. Карта не удалена. Попробуйте позже.
 
       div(
       :class="`${pre}__confirm__close`"

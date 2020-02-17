@@ -23,7 +23,10 @@ div.main-content.main-content--h-padding.main-content--top-menu-fix.main-content
       //  | {{clientInfo}}
 
       InfoScore
-      ButtonPay(timer="true")
+      ButtonPay(
+        timer="true"
+        :billingAccount="activeBillingAccountId"
+      )
       er-flex(xs12)
         h2(:class="`${pre}__service__title`")
           | Последние операции
