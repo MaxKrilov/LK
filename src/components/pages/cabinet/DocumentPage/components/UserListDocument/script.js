@@ -28,6 +28,16 @@ export default {
       } else {
         return 'upload-userlist-dialog'
       }
+    },
+    isUpdated () {
+      const modifiedWhen = this.document.modifiedWhen
+      const today = new Date()
+      return today - modifiedWhen < 1000 * 3600 * 24 * 90
+    },
+    dateOfUpdate () {
+      const modifiedWhen = this.document.modifiedWhen
+      const dateOfUpdate = modifiedWhen + 1000 * 3600 * 24 * 90
+      return this.$moment(dateOfUpdate).format('LL')
     }
   },
   methods: {
