@@ -471,15 +471,17 @@ $pre: '.er-document';
   flex-direction: row;
 
   &__number {
-    @extend %h3;
+    @extend %body-font; // todo вернуть на h3
     @include color-black(1);
+    font-family: $fedra-demi;
   }
 
   &__sign {
-    @extend %h3;
+    @extend %body-font;  // todo вернуть на h3
     padding-right: $padding-x2;
     @include color-black(.5);
     display: none;
+    font-family: $fedra-demi;
 
     @include min-breakpoint('md') {
       display: inherit;
