@@ -16,6 +16,9 @@ export default {
     },
     documentIsNotSigned () {
       return this.document.signedWithDigitalSignature === DOCUMENT.DIGITAL_SIGNATURE.IS_NOT_SIGNED
+    },
+    documentIsVerifying () {
+      return this.document.verifying === DOCUMENT.IS_VERIFYING.IS_VERIFYING
     }
   }
 }

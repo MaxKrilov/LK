@@ -413,6 +413,40 @@ $pre: '.er-document';
     }
   }
 
+  &__verifying-text {
+    @extend %h4;
+    color: map_get($yellow, 'base');
+    text-align: right;
+    .question--desktop {
+      display: none;
+      margin-right: $padding-x4;
+      @include min-breakpoint('md') {
+        display: inline-block;
+        > svg {
+          width: 39px;
+        }
+      }
+      @include min-breakpoint('xl') {
+        > svg {
+          width: 45px;
+        }
+      }
+    }
+    .question--mobile {
+      margin-right: $padding-x2;
+      svg {
+        width: $padding-x4;
+      }
+      @include min-breakpoint('md') {
+        display: none;
+      }
+    }
+    @include min-breakpoint('md') {
+      text-align: left;
+      @include color(map_get($yellow, 'base'), 1);
+    }
+  }
+
   .er-attach {
     text-align: left;
     display: inline;

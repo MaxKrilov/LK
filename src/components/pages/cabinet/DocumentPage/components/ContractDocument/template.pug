@@ -31,6 +31,12 @@ common-document(
         er-icon(name="circle_ok").circle-ok-icon
         er-icon(name="ok").ok-icon
         | Подписан
+    //- Документ на проверке у менеджера
+    div(v-else-if="documentIsVerifying")
+      .er-document__verifying-text
+        er-icon(name="question").question--desktop
+        er-icon(name="question").question--mobile
+        | На проверке
     //- Документ может быть подписан ЭЦП (signedWithDigitalSignature === 'Yes' && status === 'Готов для клиента')
     .buttons(v-else-if="contractIsReady && documentIsSigned")
       er-button(

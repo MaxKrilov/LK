@@ -4,6 +4,11 @@ const DIGITAL_SIGNATURE = {
   IS_NOT_SIGNED: 'Нет'
 }
 
+const IS_VERIFYING = {
+  IS_VERIFYING: 'Да',
+  IS_NOT_VERIFYING: 'Нет'
+}
+
 const CONTRACT = {
   IS_ACTIVE: 'Активный',
   IS_READY: 'Готов для клиента',
@@ -77,6 +82,7 @@ const TYPES = {
 
 export {
   DIGITAL_SIGNATURE,
+  IS_VERIFYING,
   ALL_TYPES,
   CONTRACT,
   TYPES
