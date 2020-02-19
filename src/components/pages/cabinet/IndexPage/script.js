@@ -48,7 +48,8 @@ export default {
       loadingDocuments: 'loading/loadingDocuments',
       loadingRequest: 'loading/loadingRequest',
       loadingPromisedPayment: 'loading/loadingPromisedPayment',
-      getCountRequestInWork: 'request/getCountRequestInWork'
+      getCountRequestInWork: 'request/getCountRequestInWork',
+      getCountUnsignedDocument: 'user/getCountUnsignedDocument'
     }),
 
     isEmptyListProduct () {

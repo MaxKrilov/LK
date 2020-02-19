@@ -92,15 +92,15 @@ const getters = {
       return result
     }) || []
   },
-  getCountUnsignedDocuments (state) {
-    return state.countUnsignedDocuments
-  },
   getReportDocuments: state => state.documents.filter(el => {
     return isReportDocument(el)
   }),
   getContractDocuments: state => state.documents.filter(el => {
     return isContractDocument(el) || isBlankDocument(el) || isUserListDocument(el)
   }),
+  getCountUnsignedDocument (state) {
+    return state.documents.filter(item => item?.contractStatus?.match(/Готов для клиента/i)).length
+  },
   getPhoneList (state) {
     return state.clientInfo?.contactMethods?.filter(item => item['@type'] === 'PhoneNumber')
       .map(item => item.name.replace(/[\D]+/g, '')) || []

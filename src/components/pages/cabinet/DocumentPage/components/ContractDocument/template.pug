@@ -19,7 +19,10 @@ common-document(
   template(v-slot:body)
     .document-number
       .document-number__sign №
-      .document-number__number {{ document.relatedTo.name }}
+      er-tooltip(top)
+        template(v-slot:activator="{ on }")
+          .document-number__number(v-on="on") {{ document.relatedTo.name }}
+        .document-number__number--tooltip {{ document.relatedTo.name }}
 
     .document-date.caption2
       | от {{ document.modifiedWhen | formatDate("DD.MM.YY") }}
