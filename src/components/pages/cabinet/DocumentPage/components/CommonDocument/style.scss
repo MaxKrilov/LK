@@ -471,13 +471,32 @@ $pre: '.er-document';
   flex-direction: row;
 
   &__number {
-    @extend %body-font; // todo вернуть на h3
-    @include color-black(1);
-    font-family: $fedra-demi;
+    &,
+    &--tooltip {
+      @extend %h4;
+      @include color-black(1);
+      font-family: $fedra-demi;
+      position: relative;
+      cursor: default;
+    }
+  }
+
+  &__number {
+    overflow: hidden;
+    &::after {
+      content: ' ';
+      display: block;
+      position: absolute;
+      top: 0;
+      right: -12px;
+      width: 77px;
+      height: 100%;
+      background: linear-gradient(270deg, map_get($gray, '9') 22.83%, rgba(map_get($gray, '9'), 0) 96.75%);
+    }
   }
 
   &__sign {
-    @extend %body-font;  // todo вернуть на h3
+    @extend %h4;
     padding-right: $padding-x2;
     @include color-black(.5);
     display: none;
