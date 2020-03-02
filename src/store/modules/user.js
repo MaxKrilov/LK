@@ -88,7 +88,7 @@ const getters = {
           }
         }
       })
-      result.isLPR = !!item.roles.filter(item => item.role.name.match(/decision maker/ig) || item.role.name.match(/лпр/ig)).length
+      result.isLPR = !!item.roles?.filter(item => item.role.name.match(/decision maker/ig) || item.role.name.match(/лпр/ig))?.length || false
       return result
     }) || []
   },
