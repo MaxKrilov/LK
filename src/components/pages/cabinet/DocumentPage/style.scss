@@ -123,62 +123,6 @@ $document-padding: 16px;
 
   }
 
-  &__list-certificate {
-    width: 100%;
-    height: 85vh;
-    background: $border-gradient;
-    padding: 1px;
-    @include min-breakpoint('md') {
-      height: 432px;
-    }
-    .content {
-      width: 100%;
-      height: 100%;
-      background-color: map_get($shades, 'white');
-      border-radius: inherit;
-      padding: 24px;
-      position: relative;
-      display: flex;
-      flex-direction: column;
-    }
-    .icon {
-      color: map_get($yellow, 'base');
-      margin-bottom: 16px;
-      svg {
-        width: 64px;
-      }
-    }
-    .close {
-      position: absolute;
-      top: 24px;
-      right: 24px;
-      button {
-        border: none;
-        outline: none;
-        background-color: map_get($shades, 'transparent');
-        cursor: pointer;
-      }
-      i {
-        @include color-black(0.2);
-      }
-      svg {
-        width: 16px;
-      }
-    }
-    .title {
-      @extend %h3;
-      margin-bottom: 8px;
-    }
-    .description {
-      @extend %body-font;
-      margin-bottom: 16px;
-    }
-    .actions {
-      > * {
-        width: 100%;
-      }
-    }
-  }
   &__success-signed {
     a {
       display: block;

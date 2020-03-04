@@ -137,7 +137,7 @@ export default class ErSelect extends mixins(ErTextField) {
     if (typeof item === 'string') {
       return item
     }
-    return item[this.label]
+    return item ? item[this.label] : ''
   }
 
   isActiveItem (item) {

@@ -1,7 +1,7 @@
 div(:class="`${pre}`")
   .main-content.main-content--top-menu-fix.main-content--h-padding.main-content--top-padding
     er-page-header(
-      linkText="Назад к документам"
+      linkText="Назад на главную"
       title="Документы"
       backlink="/lk"
     )
@@ -10,52 +10,77 @@ div(:class="`${pre}`")
     h2.document-page__title Контрактные документы
 
   .wide-content
-    er-contract-filter
+    er-contract-filter(
+      :filter-types="contractFilterTypes"
+      :filter-type="contractFilterTypesModel"
+      :period="contractPeriod"
+      :list-type="getContractType"
+      :type="contractType"
+      @change-filter-type="e => { contractFilterTypesModel = e }"
+      @change-period="e => { contractPeriod = e }"
+      @change-type="e => { contractType = e }"
+    )
 
   .document-page__list.main-content.main-content--h-padding
     er-container.full.container--no-padding.document
-      er-row
+      er-row(v-if="computedAllContractDocuments.length !== 0")
         er-flex.lg4.md6.sm6.xs12.d--flex(
-          v-for="document in allContractDocuments"
+          v-for="document in computedAllContractDocuments"
           :key="document.number"
         )
           blank-document(
             v-if="isBlankDocument(document)"
             :document="document"
           )
-          user-list-document(
-            v-else-if="isUserListDocument(document)"
-            :document="document"
-          )
+          //-user-list-document(
+          //-  v-else-if="isUserListDocument(document)"
+          //-  :document="document"
+          //- )
           contract-document(
             v-else-if="isContractDocument(document)"
             :document="document"
-            @sign="getListCertificate"
+            @signing:digital="digitalSigning"
+            @signing:manual="manualSigning"
           )
           other-document(
             v-else
             :document="document"
           )
+      er-row(v-else)
+        er-flex.document-page__empty-list
+          er-icon(name="no")
+          .empty-list-message.text-color-black08
+            | По указанным критериям
+            br
+            | документов не
+            br
+            | найдено
 
   .main-content.main-content--h-padding
     h2.document-page__title Отчётные документы
 
   .wide-content
-    er-report-filter
+    er-report-filter(
+      :period="reportPeriod"
+      :types="getReportFilterItems"
+      :type="reportType"
+      @change-period="e => { reportPeriod = e }"
+      @change-type="e => { reportType = Object.assign({}, e) }"
+    )
 
   .wide-content
-    er-month-select(
-      :from="0"
-      :count="3"
-      :selected="1"
-      @change="onChangeMonth"
-    )
+    //- er-month-select(
+    //-  :from="0"
+    //-  :count="3"
+    //-  :selected="1"
+    //-  @change="onChangeMonth"
+    //- )
 
   .document-page__list.main-content.main-content--h-padding
     er-container.full.container--no-padding.document
       er-row(v-if="allReportDocuments.length")
         er-flex.lg4.md6.sm6.xs12.d--flex(
-          v-for="report in allReportDocuments"
+          v-for="report in computedAllReportDocuments"
           :key="report.number"
         )
           report-document(
@@ -70,69 +95,30 @@ div(:class="`${pre}`")
           )
 
       er-row(v-else)
-        er-flex.document-page__empty-list
-          er-icon(name="no")
-          .empty-list-message.text-color-black08
-            | За указанный период
-            br
-            | документов не
-            br
-            | найдено
+        er-flex.lg4.md6.sm6.d--flex
+          button-document(
+            caption="Заказать другой документ"
+            @click="onOrderDocumentClick()"
+          )
 
   er-document-actions(
     :active="hasSelectedReports"
-    :emails="emails"
+    :emails="listEmail"
     :count="reportSelectedCount"
   )
 
-  er-dialog(
-    v-model="isShowDialogChooseCertificate"
-    :max-width="getMaxWidthDialog"
-  )
-    .document-page__list-certificate
-      .content
-        .icon
-          er-icon(name="doc_edit")
-        .close
-          button
-            er-icon(name="close")
-        .title
-          | Подписать документ
-        .description
-          | Для подписания документа ЭЦП выберите сертификат
-        .list
-          er-form(ref="certificate_form")
-            er-select(
-              :items="listCertificate"
-              v-model="selectedCertificate"
-              readonly
-              :rules="[ v => !!v || 'Выберите сертификат' ]"
-            )
-        .actions.mt-auto.d--flex.flex-column-reverse.flex-sm-row
-          .action.pr-sm-8
-            er-button(flat @click="() => { isShowDialogChooseCertificate = false }") Отменить
-          .action.mb-8.mb-sm-0.pl-sm-8
-            er-button(@click="() => signDocument()" :loading="loadingSigningDocument") Подписать
+  manual-signing-document(
+    v-model="isManualSigning"
+    :link="signingDocument.link"
+    :filename="signingDocument.fileName"
+    :related-to="signingDocument.relatedTo ? signingDocument.relatedTo.id : undefined"
+    :type="signingDocument.type ? signingDocument.type.id : undefined",
+    :id="signingDocument.id"
+    @success="successSigned"
+    )
 
-  er-activation-modal(
-    type="success",
-    title="Документ успешно подписан"
-    :is-show-action-button="false"
-    cancel-button-text="Спасибо",
-    v-model="isShowDialogSuccessSigned"
+  digital-signing-document(
+    v-model="isDigitalSigning"
+    :signing-document="signingDocument"
+    @success="successSigned"
   )
-    template(slot="description")
-      | Вы можете скачать документ<br>
-      a.d--inline-block.link--solid--black-yellow(:href="linkToDownload" download="file.pdf") Скачать
-
-  er-activation-modal(
-    type="error",
-    title="Возникла ошибка при подписании документа"
-    :is-show-action-button="false"
-    cancel-button-text="Закрыть",
-    v-model="isShowDialogErrorSigned"
-  )
-    template(slot="description")
-      | Текст ошибки:
-      .error-block
-        code {{ errorText }}

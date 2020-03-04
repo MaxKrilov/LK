@@ -4,10 +4,10 @@ er-filter-container(
 ).er-report-filter
   div(
     slot="selected-filters"
+    @click="onShowFilters()"
   ).er-report-filter__current
-    span.er-filter-container__active-filter(
-      @click="onShowFilters()"
-    ) Все
+    span.er-filter-container__active-filter.mr-16 {{ internalType.value }}
+    span.er-filter-container__active-filter {{ getFormatPeriod }}
 
   div(slot="title")
     | Отчётные документы
@@ -16,24 +16,17 @@ er-filter-container(
     .er-report-filter__list.main-content.main-content--h-padding
       er-container.full.container--no-padding
         er-row.ordered-items
-          er-flex.xs12.sm6.lg3
+          er-flex.xs12.sm6.lg4
             er-filter-group(title="Период").er-report-filter__period
               er-date-picker(
-                v-model="selectedPeriod"
-                :value="selectedPeriod"
+                v-model="internalPeriod"
+                disabled-date="future"
               )
-          er-flex.xs12.sm6.md5.lg3
+          er-flex.xs12.sm6.md5.lg4
             er-filter-group(title="Тип документа")
               er-select(
-                :items="['Счёт-фактура', 'Другой']"
-                placeholder="Тип документа"
-                v-model="selectedDocumentType"
+                :items="types"
+                v-model="internalType"
               )
-          er-flex.sm12.md11.lg5
-            er-filter-group(title="Поиск").filter-search
-              er-text-field(
-                label="Поиск"
-                appendInnerIcon="lens"
-              )
-          er-flex.md1.lg1.d--flex
+          er-flex.md1.lg1.d--flex.ml-auto
             er-filter-close(@click="isFiltersVisible=false")

@@ -3,7 +3,16 @@ common-document(
 ).er-document--contract.er-document--big-doc
   template(v-slot:header)
     .er-document__title {{ document.type.name }}
-    er-document-viewer(link-to-document="http://www.africau.edu/images/default/sample.pdf")
+    er-document-viewer(
+      :bucket="document.bucket"
+      :file-name="document.fileName"
+      :file-path="document.filePath"
+      :is-digital-signing="contractIsReady && documentIsSigned"
+      :is-manual-signing="contractIsReady && documentIsNotSigned"
+      v-model="isOpenViewer"
+      @signing:manual="manualSigning"
+      @signing:digital="digitalSigning"
+      )
       template(v-slot:activator="{ on }")
         a(:href="document.file" v-on="on").er-document__link.er-document__subtitle
           | Текст документа
@@ -45,7 +54,7 @@ common-document(
       er-button(
         :color="'blue'"
         pre-icon="key"
-        @click="signWithDigitalSignature"
+        @click="() => { digitalSigning() }"
       ).er-button--accept
         | Подписать ЭЦП
       er-button(
@@ -57,6 +66,7 @@ common-document(
       er-button.er-button--accept(
         color="blue"
         pre-icon="doc_edit"
+        @click="() => { manualSigning() }"
       )
         | Подписать
       er-button(

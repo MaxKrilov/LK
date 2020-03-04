@@ -372,7 +372,7 @@ const mutations = {
     state.personalManager = payload
   },
   [GET_DOCUMENTS_SUCCESS]: (state, payload) => {
-    state.documents = payload.filter(item => item.visibleInSSP === 'Да')
+    state.documents = payload.filter(item => item.visibleInSSP !== 'Нет')
     state.countUnsignedDocuments = payload.length
   },
   [GET_LIST_BILLING_ACCOUNT_SUCCESS]: (state, payload) => {

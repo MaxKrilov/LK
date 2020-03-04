@@ -30,6 +30,10 @@ $pre: '.er-document';
       opacity: 1;
     }
 
+    .er-document__header {
+      background: map-get($shades, 'transparent') !important;
+    }
+
     #{$pre}__footer {
       .er-icon {
         @include color-white(.4);
@@ -39,7 +43,7 @@ $pre: '.er-document';
   }
 
   #{$pre}__header {
-    background-color: map_get($shades, 'transparent');
+    background-color: map_get($shades, 'transparent') !important;
 
     padding-top: $padding-x4;
 

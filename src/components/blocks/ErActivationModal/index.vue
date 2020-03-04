@@ -24,7 +24,7 @@
                 button(@click="closeDialog")
                   | {{ cancelButtonText }}
               .er-activation-modal__action.confirm.ml-sm-32(v-if="isShowActionButton")
-                button
+                button(@click="confirmDialog")
                   | {{ actionButtonText }}
             .er-activation-modal__actions--desktop
               .er-activation-modal__action--cancel

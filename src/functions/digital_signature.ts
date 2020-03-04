@@ -56,7 +56,7 @@ export default class DigitalSignature {
    * @param {CADESPluginAsync} cadesplugin
    * @return {Promise<boolean | Array<{ id: string, value: string, version: number, thumbprint: string, subjectName: string, serialNumber: string, issuerName: string, validFromDate: string, validToDate: string }>>}
    */
-  public static async getCertificatesList (cadesplugin: CADESPluginAsync): Promise<boolean | iCertificate[]> {
+  public static async getCertificatesList (cadesplugin: CADESPluginAsync): Promise<iCertificate[]> {
     let store
     try {
       store = await cadesplugin.CreateObjectAsync('CAPICOM.Store')
