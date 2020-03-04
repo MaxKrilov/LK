@@ -144,6 +144,7 @@ div(:class="`${pre}`").main-content.main-content--h-padding
       buttRightText="Спасибо"
       @closeConfirm="closeConfirm"
       @buttRight="closeConfirm"
+    @input="closeConfirm"
     )
 
     // Пополнение
@@ -158,6 +159,7 @@ div(:class="`${pre}`").main-content.main-content--h-padding
       buttText="Оплатить"
       @closeConfirm="closeConfirm"
       @buttLeft="paymentsOn"
+      @input="closeConfirm"
     )
 
     // Запомнить карту
@@ -173,6 +175,7 @@ div(:class="`${pre}`").main-content.main-content--h-padding
       @closeConfirm="closeConfirm"
       @buttLeft="remcardButtLeft"
       @buttRight="remcardButtRight"
+      @input="closeConfirm"
     )
 
     // Автоплатеж
@@ -186,6 +189,7 @@ div(:class="`${pre}`").main-content.main-content--h-padding
       buttText="Отключить"
       @closeConfirm="closeConfirm"
       @buttLeft="autopayButtLeft"
+    @input="closeConfirm"
     )
     Confirm( v-if="!isAutoPay && openConfirmAutoPay"
       :vis="openConfirmAutoPay"
@@ -197,6 +201,7 @@ div(:class="`${pre}`").main-content.main-content--h-padding
       buttText="Подключить"
       @closeConfirm="closeConfirm"
       @buttLeft="autopayButtRight"
+    @input="closeConfirm"
     )
     Hint( v-if="isAutoPay && visConfirmAutoPay"
       :vis="visConfirmAutoPay"
@@ -210,6 +215,7 @@ div(:class="`${pre}`").main-content.main-content--h-padding
       @closeConfirm="closeConfirm"
       @buttLeft="autopayButtRight"
       @buttRight="autopayButtLeft"
+    @input="closeConfirm"
     )
     Hint( v-if="!isAutoPay && visConfirmAutoPay"
       :vis="visConfirmAutoPay"
@@ -223,6 +229,7 @@ div(:class="`${pre}`").main-content.main-content--h-padding
       @closeConfirm="closeConfirm"
       @buttLeft="closeConfirm"
       @buttRight="autopayButtRight"
+    @input="closeConfirm"
     )
 
     // Удалить карту
@@ -236,4 +243,5 @@ div(:class="`${pre}`").main-content.main-content--h-padding
       buttText="Удалить"
       @closeConfirm="closeConfirm"
       @buttLeft="delCard"
+    @input="closeConfirm"
     )
