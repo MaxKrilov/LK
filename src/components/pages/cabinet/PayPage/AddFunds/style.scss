@@ -204,14 +204,24 @@
         ),
       ));
       &__over {
-        background: map_get($gray, '13');
+        background: map_get($gray, '3');
         position: absolute;
         left: -4px;
-        top: 156px;
-        height: 37px;
-        width: 274px;
+        top: 84px;
+        height: 57px;
+        width: 291px;
         z-index: 1;
         cursor: pointer;
+        @include media-query((
+          top: (
+            sm: 70px,
+            md: 152px
+          ),
+          background: (
+            lg: map_get($gray, '13'),
+          ),
+        ));
+
       }
     }
     &__button {
@@ -281,7 +291,7 @@
         ),
         height: (
           sm: 313px,
-          md: 1383px
+          md: 383px
         ),
       ));
     }
@@ -368,12 +378,25 @@
       &__over {
         background: transparent;
         position: absolute;
-        left: 0;
-        top: 156px;
+        left: 30px;
+        top: 103px;
         height: 24px;
         width: 49px;
         z-index: 1;
         cursor: pointer;
+        @include media-query((
+          left: (
+            sm: 38px,
+            md: 22px,
+            lg: 0px,
+          ),
+          top: (
+            sm: 76px,
+            md: 164px,
+            lg: 156px,
+            xl: 165px,
+          ),
+        ));
       }
     }
     &__empty {
@@ -599,10 +622,13 @@
       position: absolute;
       left: 24px;
       top: 26px;
-      width: 264px;
+      width: 240px;
       @include media-query((
         left: (xl: 32px),
-        width: (sm: 380px),
+        width: (
+          sm: 340px,
+          xl: 470px
+        ),
       ));
       &__size {
         margin-bottom: 57px;
@@ -658,6 +684,7 @@
         padding: (
           sm: 0 10px 0 31px !important,
           md: 0 10px 0 32px !important,
+          lg: 0 10px 0 115px !important,
         ),
       ));
       &__remcard {
@@ -916,6 +943,35 @@
     }
     &__header {
       padding-left: 0 !important;
+    }
+    &__err-del {
+      position: absolute;
+      font-family: $fedra-demi !important;
+      color: rgba(map_get($red, 'base'), 1) !important;
+      width: 500px;
+      left: 32px;
+      top: 172px;
+    }
+    &__err-autopay {
+      @extend .add-funds__confirm__err-del;
+      left: 0;
+      top: 70px;
+      @include media-query((
+        width: (
+          //sm: -49px,
+          lg: 340px,
+        ),
+        top: (
+          lg: 90px
+        ),
+      ));
+
+    }
+    &__err-autopay-hint {
+      @extend .add-funds__confirm__err-del;
+      left: 0;
+      top: 236px;
+      width: 347px;
     }
   }
 }

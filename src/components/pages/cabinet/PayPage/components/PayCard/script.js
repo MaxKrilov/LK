@@ -1,65 +1,21 @@
 import { mapGetters, mapState } from 'vuex'
 import { SCREEN_WIDTH } from '@/store/actions/variables'
 
-
 export default {
   name: 'pay-card',
-  props: ['empty', 'activeBillingAccountId'],
+  props: ['empty', 'visAutoPay'],
   data: () => ({
     pre: 'pay-card',
-    empt: false,
     cvc: ['', '', ''],
     index: 0,
-/*
-    card_img: [
-      {
-        id: 0,
-        name: 'mir',
-        num: '2',
-        butttopimg: require('@/assets/images/paycard/new-butt-1200.png'),
-        cardimg: require('@/assets/images/paycard/mir-1200.png'),
-        cardbgimg: require('@/assets/images/paycard/mir-bg-1200.png'),
-        buttbottimg: require('@/assets/images/paycard/visa-butt-1200.png'),
-      },
-      {
-        id: 1,
-        name: 'visa',
-        num: '4',
-        butttopimg: require('@/assets/images/paycard/mir-butt-1200.png'),
-        cardimg: require('@/assets/images/paycard/visa-1200.png'),
-        cardbgimg: require('@/assets/images/paycard/visa-bg-1200.png'),
-        buttbottimg: require('@/assets/images/paycard/mc-butt-1200.png'),
-      },
-      {
-        id: 2,
-        name: 'mc',
-        num: '5',
-        butttopimg: require('@/assets/images/paycard/visa-butt-1200.png'),
-        cardimg: require('@/assets/images/paycard/mc-1200.png'),
-        cardbgimg: require('@/assets/images/paycard/mc-bg-1200.png'),
-        buttbottimg: require('@/assets/images/paycard/mc-butt-1200.png'),
-      },
-    ],
-*/
-/*
-    // butttopimg: require('@/assets/images/paycard/new-butt-1200.png'),
-    // cardimg: require('@/assets/images/paycard/mir-1200.png'),
-    // buttbottimg: require('@/assets/images/paycard/visa-butt-1200.png'),
-    // cardbgimg: require('@/assets/images/paycard/mir-bg-1200.png'),
-*/
-    // num1: '5402',
-    // num2: '33',
-    // num3: '2365',
-    selected: true,
-    selected1: true,
+    hasAutoPay: true, // todo-er должен ли работать чекбокс?
     topMove: 0,
     rightMove: 0,
     leftMove: [],
     topBg: [],
-    visButtTop: [false, false, false],
-    visButtBott: [true, false, false],
+    isButtTop: [false, false, false],
+    isButtBott: [true, false, false],
     moveInd: 0,
-    visCardDel: false,
     textDataCard: `Данные карты вы заполняете 
     на следующем шаге. 
     В целях вашей безопасности 
@@ -69,40 +25,84 @@ export default {
     Если вы запомните карту, в следующий раз 
     можно будет ввести только CVC`,
     openConfirmDel: false,
-    direct: 'row',
-    visButtLeft: false,
-    visButtRight: true,
+    isButtLeft: false,
+    isButtRight: true,
     rightNext: '',
     delta: [],
-    op1: 0,
+    valOpacity: 0,
     bgDeleteLeft: 0,
     bgDeleteWidth: 0,
     deleteLeft: 0,
     buttbottimg0: '',
-    numbuttbott0: '',
-    changeWidth () {
-      // console.log('VV - ',this.cards[0].name)
-      this.buttbottimg0 = require("@/assets/images/paycard/" + this.cards[0].name + "-butt-1200.png")
-      this.numbuttbott0 = this.cards[0].maskedPan.slice(-4)
-      /*
-      const payload = {
-        billingAccount: this.activeBillingAccountId,
-        card_img: this.card_img
+    numbuttbott0: ''
+  }),
+  created () {
+    this.$parent.$on('updateCardDel', this.cardDel)
+    this.$parent.$on('updateButtLeft', this.updateSelectLeft)
+    this.$parent.$on('updateButtRight', this.updateSelectRight)
+    if (this.activeBillingAccountId !== '') {
+      this.$store.dispatch('payments/listCard', {
+        api: this.$api,
+        billingAccount: this.activeBillingAccountId
+      })
+    }
+  },
+  mounted () {
+    this.changeWidth()
+  },
+  watch: {
+    SCREEN_WIDTH () {
+      this.changeWidth()
+    },
+    activeBillingAccountId () {
+      if (this.activeBillingAccountId !== '') {
+        this.$store.dispatch('payments/listCard', {
+          api: this.$api,
+          billingAccount: this.activeBillingAccountId
+        })
       }
-      this.$store.dispatch('payments/listCard', { api: this.$api, payload: payload })
-*/
-
-      // console.log('card_img -> ', this.card_img)
-      // console.log('cardList -> ', this.listCard)
-      // this.cards = this.listCard
-      // console.log('cards -> ', this.cards)
-
-      this.direct = this[SCREEN_WIDTH] >= 640 ? 'column' : 'row'
+    },
+    cards () {
+      if (this.cards.length !== 0) {
+        this.changeWidth()
+        this.buttbottimg0 = require('@/assets/images/paycard/' + this.cards[0].name + '-butt-1200.png')
+        this.numbuttbott0 = this.cards[0].maskedPan.slice(-4)
+      }
+    },
+    delCard () {
+      this.$store.dispatch('payments/listCard', {
+        api: this.$api,
+        billingAccount: this.activeBillingAccountId
+      })
+      if (this.delCard) {
+        this.openConfirmDel = false
+        setTimeout(() => {
+          window.location = window.location.href
+          this.$store.dispatch('payments/hideDelCard')
+        }, 3000)
+      } else {
+        this.openConfirmDel = true
+      }
+    }
+  },
+  computed: {
+    ...mapGetters([SCREEN_WIDTH]),
+    ...mapState({
+      activeBillingAccountId: state => state.user.activeBillingAccount,
+      cards: state => state.payments.listCard,
+      delCard: state => state.payments.delCard,
+      numCard: state => state.payments.numCard,
+      errDelCard: state => state.payments.errDelCard,
+      sel_save: state => state.payments.save
+    })
+  },
+  methods: {
+    changeWidth () {
       if (this[SCREEN_WIDTH] >= 640) {
         this.delta = [0, 0, 0, 0]
         this.leftMove = [0, -128, -128, -128]
         this.topBg = [0, 0, 0, 0]
-        this.op1 = 1
+        this.valOpacity = 1
       } else {
         let rbutt1, delta1, scrwidth
         if (this[SCREEN_WIDTH] < 480) {
@@ -121,51 +121,12 @@ export default {
           rbutt1 = 128 + scrwidth * 0.55
         }
         this.delta = [delta1, 0, 0, 0]
-        this.leftMove = [rbutt1, 10, 10, 10] // bg
+        this.leftMove = [rbutt1, 10, 10, 10]
         this.topBg = [this[SCREEN_WIDTH] < 480 ? 66 : 0, -9, -9, -9]
       }
-    }
-  }),
-  created () {
-    this.$parent.$on('update', this.cardDel)
-    this.$parent.$on('update1', this.updateSelectL)
-    this.$parent.$on('update2', this.updateSelectR)
-    // console.log('cardList -> ', this.listCard)
-    // this.cards = this.listCard
-    // console.log('cards -> ', this.cards)
-
-  },
-/*
-  beforeMount: {
-    ...mapState({
-      cards: state => state.payments.listCard,
-    }),
-  },
-*/
-  mounted () {
-    this.changeWidth()
-  },
-  watch: {
-    SCREEN_WIDTH () {
-      this.changeWidth()
     },
-  },
-  computed: {
-    ...mapGetters([SCREEN_WIDTH]),
-    ...mapGetters({delCard: 'payments/getDelCard'}),
-    ...mapState({
-      cards: state => state.payments.listCard,
-      delCard: state => state.payments.delCard,
-      visAutoPay: state => state.payments.visAutoPay,
-      numCard: state => state.payments.numCard,
-
-      // activeBillingAccountId: state => state.user.activeBillingAccount,
-    }),
-  },
-  methods: {
     move (direct) {
       if (direct === 'Up') {
-        // Up
         if (this.index < 3) {
           if (this[SCREEN_WIDTH] >= 640) {
             this.topMove -= this.topMove === 0 ? 233 : 273
@@ -173,7 +134,7 @@ export default {
             this.leftMove[this.index + 1] += 128
             this.topBg[this.index] -= 10
             this.topBg[this.index + 1] += 10
-            this.op1 = 1
+            this.valOpacity = 1
           } else {
             let ll1, ll2, delta0, delta1, bg1, scrwidth
             if (this[SCREEN_WIDTH] < 480) {
@@ -205,22 +166,16 @@ export default {
               this.topBg[this.index + 1] += 66
             }
           }
-          for (let i = 0; i < this.visButtTop.length; i++) {
-            this.visButtTop[i] = false
-            this.visButtBott[i] = false
+          for (let i = 0; i < this.isButtTop.length; i++) {
+            this.isButtTop[i] = false
+            this.isButtBott[i] = false
           }
-          this.visButtTop[this.index] = true
-          this.visButtBott[this.index + 1] = true
+          this.isButtTop[this.index] = true
+          this.isButtBott[this.index + 1] = true
           this.moveInd += 16
           this.index++
-          // this.$store.dispatch('payments/changeCurrentNumCard', {num: this.index})
-          // this.visCardDel = false
-          // this.rightNext = (this.index > 0) ? '__next' : ''
-          // this.visButtLeft = (this.index > 0)
-          // this.visButtRight = (this.index < 3)
         }
       } else {
-        // Down
         if (this.index > 0) {
           if (this[SCREEN_WIDTH] >= 640) {
             this.topMove += this.topMove === -233 ? 233 : 273
@@ -260,70 +215,54 @@ export default {
               this.topBg[this.index] -= 66
             }
           }
-          for (let i = 0; i < this.visButtTop.length; i++) {
-            this.visButtTop[i] = false
-            this.visButtBott[i] = false
+          for (let i = 0; i < this.isButtTop.length; i++) {
+            this.isButtTop[i] = false
+            this.isButtBott[i] = false
           }
-          this.visButtTop[this.index - 2] = true
-          this.visButtBott[this.index - 1] = true
+          this.isButtTop[this.index - 2] = true
+          this.isButtBott[this.index - 1] = true
           this.moveInd -= 16
           this.index--
-          // this.$store.dispatch('payments/changeCurrentNumCard', { num: this.index })
-          // this.visCardDel = false
-          // this.rightNext = (this.index > 0) ? '__next' : ''
-          // this.visButtLeft = (this.index > 0)
-          // this.visButtRight = (this.index < 3)
         }
       }
       this.$store.dispatch('payments/changeCurrentNumCard', { num: this.index })
-      // this.visCardDel = false
       this.rightNext = (this.index > 0) ? '__next' : ''
-      this.visButtLeft = (this.index > 0)
-      this.visButtRight = (this.index < 3)
+      this.isButtLeft = (this.index > 0)
+      this.isButtRight = (this.index < 3)
 
       this.cvc = ['', '', '']
       this.$store.dispatch('payments/clearCVC')
+
       this.$emit('clearEmpty')
-
-      // this.cvc = this.$store.getters['payments/getCVC']
-
-      this.empty = true
-      // alert(this.empty)
     },
     delConfirm () {
       this.$emit('openDelConfirm')
       this.openConfirmDel = true
     },
     cardDel () {
-      // this.visCardDel = true
-      this.$store.dispatch('payments/delCard', { api: this.$api })
-      // this.delCard = this.$store.getters('payments/getDelCard')
-      // alert(this.delCard)
-      setTimeout(() => {
-        this.$store.dispatch('payments/delCard1')
-        // запрос на обновление списка карт
-      }, 3000);
+      const payload = {
+        billingAccount: this.activeBillingAccountId,
+        bindingId: this.cards[this.numCard - 1].bindingId
+      }
+      this.$store.dispatch('payments/delCard', { api: this.$api, payload: payload })
     },
     openRemcard () {
       this.$emit('openRemcard')
     },
-    updateSelectL () {
-      this.selected1 = false
+    updateSelectLeft () {
+      this.$store.dispatch('payments/changeSave', { save: 0 })
     },
-    updateSelectR () {
-      this.selected1 = true
+    updateSelectRight () {
+      this.$store.dispatch('payments/changeSave', { save: 1 })
+    },
+    save () {
+      this.$store.dispatch('payments/changeSave', { save: !this.sel_save })
     },
     changeCVC () {
-      // console.log(this.cvc[this.index - 1],' i->',this.index)
-      // alert(this.cvc[this.index - 1].length === 3)
-      // alert(this.empt[0])
-      // console.log(this.cvc[this.index - 1],' i->',this.index)
-      // console.log('empt->',this.empt[this.index - 1],this.empt)
-
       this.cvc[this.index - 1] = this.cvc[this.index - 1].replace(/\s+/g, '')
-      this.empty = this.cvc[this.index - 1].length === 3
-      this.$store.dispatch('payments/changeCVC', { cvc: this.cvc[this.index - 1] })
-      // this.cvc1 = this.$store.getters['payments/getCVC']
-    },
+      if (this.cvc[this.index - 1].length === 3) {
+        this.$store.dispatch('payments/changeCVC', { cvc: this.cvc[this.index - 1] })
+      }
+    }
   }
 }

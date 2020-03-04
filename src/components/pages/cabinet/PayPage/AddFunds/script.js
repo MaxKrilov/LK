@@ -1,6 +1,7 @@
 import PayCard from '../components/PayCard/index.vue'
 import PaymentsOn from '../components/PaymentsOn/index.vue'
-import PaymentsOff from '../components/PaymentsOff/index.vue'
+import Confirm from '../components/Confirm/index.vue'
+import Hint from '../components/Hint/index.vue'
 import { mapGetters, mapState } from 'vuex'
 import { SCREEN_WIDTH } from '@/store/actions/variables'
 import { PATTERN_EMAIL } from '@/constants/regexp'
@@ -10,18 +11,16 @@ export default {
   components: {
     PayCard,
     PaymentsOn,
-    PaymentsOff,
+    Confirm,
+    Hint
   },
   data: () => ({
     pre: 'add-funds',
-    // visAutoPay: 0,
+    nameCard: '',
     empty: true,
-    sumPay: '100',
-    screenW: '320',
-    bottom: 'bottom',
-    valSelect: 'Январь',
-    visFilter: '__vis-filter',
-    widthContainer: '108% !important',
+    sumPay: '100000,50',
+    sumPayInteger: '',
+    sumPayDecimal: '',
     openConfirmPay: false,
     openConfirmAutoPay: false,
     visConfirmAutoPay: false,
@@ -40,218 +39,168 @@ export default {
     об оплате услуг. Для получения чека 
     введите электронную почту.`,
     autopayOff: 'При отключении автоплатежа вам необходимо самостоятельно пополнять баланс на сумму равной ежемесячной абонентской плате до 1 числа отчетного месяца. Денежные средства будут списаны с 20 по последнее число месяца, предшествующего отчетному (например авансовый платеж за апрель будет списан с 20 по 31 марта).',
-    autopayOn: 'При подключении автоплатежа вы соглашаетесь на автоматическое списание суммы равной ежемесячной абонентской плате. Денежные средства будут списаны с 20 по последнее число месяца, предшествующего отчетному (например авансовый платеж за апрель будет списан с 20 по 31 марта).',
-    textOnAutopay: '',
-    visInfo: true,
-    success: false,
+    autopayOn: 'Автоплатеж может быть активирован только на одной карте. Если вы активируете на этой карте он будет снят с другой. При подключении автоплатежа вы соглашаетесь на автоматическое списание суммы равной ежемесячной абонентской плате. Денежные средства будут списаны с 20 по последнее число месяца, предшествующего отчетному (например авансовый платеж за апрель будет списан с 20 по 31 марта).',
+    textAutopay: '',
     direct: 'row',
-    selected: false,
-    visButtConf: false,
+    isAutoPay: false,
     borderSum: '',
     borderCheck: '',
-    selected2: '',
-    visEmptySum: false,
-    visEmptyEmail: false,
+    isEmptySum: false,
+    isEmptyEmail: false,
     valEmail: PATTERN_EMAIL,
     checkAutoPay: 'Подключить автоплатёж',
+    selEmail: '',
+    // todo-er вставить реальные данные
     emails: [
       'konstantinopolsky@company.ru',
       'konstantinopolsky1@company.ru',
       'konstant'
     ],
-    currentEmail: 'konstantinopolsky@company.ru',
-    changeWidth () {
-      this.direct = this[SCREEN_WIDTH] < 960 ? 'row' : 'column'
-      this.visButtConf = this[SCREEN_WIDTH] < 1200
-      if (this.selected) {
-        this.textOnAutopay = this.autopayOff
-      } else {
-        this.textOnAutopay = this.autopayOn
-      }
-    }
+    currentEmail: 'konstantinopolsky@company.ru'
   }),
   computed: {
     ...mapGetters([SCREEN_WIDTH]),
-    ...mapGetters({
-      getCurrentNumCard: 'payments/getCurrentNumCard',
-      cvc: 'payments/getCVC'
-    }),
     ...mapState({
       activeBillingAccountId: state => state.user.activeBillingAccount,
       bindingId: state => state.payments.bindingId,
-      visAutoPay: state => state.payments.visAutoPay
-    }),
-  },
-  created ()  {
-/*
-    const payload = {
-      billingAccount: this.activeBillingAccountId,
-      card_img: this.card_img
-    }
-*/
-    // const billingAccount = this.$store.getters('user/getActiveBillingAccount')
-    // alert(activeBillingAccountId)
-    // this.$store.dispatch('payments/listCard', { api: this.$api, billingAccount: billingAccount })
-
-/*
-    ...mapState({
-        cards: state => state.payments.listCard,
+      visAutoPay: state => state.payments.visAutoPay,
+      listCard: state => state.payments.listCard,
+      errDelCard: state => state.payments.errDelCard,
+      errDelAutoPay: state => state.payments.errAutoPay,
+      selSave: state => state.payments.save,
+      cvc: state => state.payments.cvc,
+      numCard: state => state.payments.numCard
     })
-*/
-    // ...mapState({
-    //   activeBillingAccountId: state => state.user.activeBillingAccount,
-    // })
-
   },
   mounted () {
-    // alert(this.activeBillingAccountId)
     this.changeWidth()
   },
   watch: {
     SCREEN_WIDTH () {
       this.changeWidth()
     },
-/*
-    empty () {
-      console.log(1)
-      return this.empty
+    visAutoPay () {
+      if (this.isAutoPay) {
+        this.openConfirmAutoPay = this.errDelAutoPay
+        this.visConfirmAutoPay = this.errDelAutoPay
+        if (!this.errDelAutoPay && this.visAutoPay === 0) {
+          this.checkAutoPay = 'Подключить автоплатёж'
+          this.isAutoPay = false
+        }
+      } else {
+        this.openConfirmAutoPay = this.errDelAutoPay
+        this.visConfirmAutoPay = this.errDelAutoPay
+        if (!this.errDelAutoPay && this.visAutoPay !== 0) {
+          this.checkAutoPay = 'Автоплатёж'
+          this.isAutoPay = true
+        }
+      }
     }
-*/
   },
   methods: {
+    changeWidth () {
+      this.direct = this[SCREEN_WIDTH] < 960 ? 'row' : 'column'
+      if (this.isAutoPay) {
+        this.textAutopay = this.autopayOff
+      } else {
+        this.textAutopay = this.autopayOn
+      }
+    },
     selectEmail (item) {
       this.currentEmail = item
       if (this.currentEmail === '' || !this.currentEmail.match(this.valEmail)) {
-        this.visEmptyEmail = true
+        this.isEmptyEmail = true
         this.borderCheck = '__border'
       } else {
-        this.visEmptyEmail = false
+        this.isEmptyEmail = false
         this.borderCheck = ''
       }
     },
-
-    autopay () {
+    autoPay () {
       this.payAutoTextConfirm()
-      /*
-          // this.over = 'n'
-     /*
-           this.checkAutoPay = this.selected ? 'Подключить автоплатёж' : 'Автоплатёж'
-           if (this.selected) {
-             this.textOnAutopay = this.autopayOn
-           } else {
-             this.textOnAutopay = this.autopayOff
-           }
-     */
     },
     payAuto () {
-/*
-      // const activate = this.selected ? 1 : 0
-      const payload = {
-        billingAccount: this.activeBillingAccountId,
-        bindingId: this.bindingId,
-        activate: this.selected ? 1 : 0, //activate,
-      }
-      this.$store.dispatch('payments/autoPay', { api: this.$api, payload: payload })
-*/
-      if (this.selected) {
+      if (this.isAutoPay) {
         this.buttLeft = 'Отключить'
         this.buttRight = 'Отменить'
-        this.textOnAutopay = this.autopayOff
+        this.textAutopay = this.autopayOff
       } else {
         this.buttLeft = 'Отменить'
         this.buttRight = 'Подключить'
-        this.textOnAutopay = this.autopayOn
+        this.textAutopay = this.autopayOn
       }
+      this.nameCards()
     },
     payAutoTextConfirm () {
       this.openConfirmAutoPay = true
       this.payAuto()
-      this.visConfirmAutoPay = true
     },
     payAutoConfirm () {
-      this.openConfirmAutoPay = true
       this.payAuto()
-      this.visConfirmAutoPay = false
+      this.visConfirmAutoPay = true
     },
-
     payAutoRequest (act) {
-      // const activate = this.selected ? 1 : 0
       const payload = {
         billingAccount: this.activeBillingAccountId,
-        bindingId: this.bindingId,
-        activate: act //this.selected ? 1 : 0, //activate,
+        bindingId: this.listCard[this.numCard - 1].bindingId,
+        activate: act
       }
       this.$store.dispatch('payments/autoPay', { api: this.$api, payload: payload })
     },
-
     autopayButtRight () {
-      this.checkAutoPay = 'Автоплатёж'
-      this.payAutoRequest (this.getCurrentNumCard)
-      this.selected = true
-      // this.visAutoPay = this.getCurrentNumCard
-      this.openConfirmAutoPay = false
+      this.payAutoRequest(this.numCard)
     },
     autopayButtLeft () {
-      this.payAutoRequest (0)
-      if (this.selected) {
-        this.checkAutoPay = 'Подключить автоплатёж'
-        this.selected = false
-      }
-      // this.visAutoPay = 0
-      this.openConfirmAutoPay = false
+      this.payAutoRequest(0)
     },
-
     paypage () {
       this.$router.push('/lk/payments')
-    },
-    typeFind (select) {
-      if (select === 'По услуге') {
-        this.valSelect = 'Январь'
-      } else {
-        this.valSelect = 'Адрес'
-      }
-    },
-    topOperation (payload) {
-      this.visFilter = payload ? '__vis-filter' : ''
     },
     clearEmpty () {
       this.empty = true
     },
     paymentConfirm () {
       if (this.sumPay === '') {
-        this.visEmptySum = true
+        this.isEmptySum = true
         this.borderSum = '__border'
       } else {
-        this.visEmptySum = false
+        this.isEmptySum = false
         this.borderSum = ''
+        this.sumPayInteger = this.sumPay.substr(0, this.sumPay.indexOf(','))
+        this.sumPayDecimal = this.sumPay.slice(-2)
       }
       if (this.currentEmail === '' || !this.currentEmail.match(this.valEmail)) {
-        this.visEmptyEmail = true
+        this.isEmptyEmail = true
         this.borderCheck = '__border'
       } else {
-        this.visEmptyEmail = false
+        this.isEmptyEmail = false
         this.borderCheck = ''
       }
-      // alert(this.cvc)
-      console.log('this.cvc ->',this.cvc)
-      console.log(' ->',this.cvc[this.getCurrentNumCard],this.getCurrentNumCard)
       if (this.currentEmail !== '' &&
         this.sumPay !== '' &&
         this.currentEmail.match(this.valEmail)
       ) {
-        if (this.getCurrentNumCard === 0){
+        if (this.numCard === 0) {
           this.openConfirmPay = true
         } else {
-          this.openConfirmPay = this.cvc[this.getCurrentNumCard - 1].length === 3
-          this.empty = (this.cvc[this.getCurrentNumCard - 1].length === 3)
+          this.openConfirmPay = this.cvc[this.numCard - 1].length === 3
+          this.empty = (this.cvc[this.numCard - 1].length === 3)
         }
+      }
+      this.nameCards()
+    },
+    nameCards () {
+      if (this.numCard > 0) {
+        const num = this.listCard[this.numCard - 1].maskedPan
+        const name = this.listCard[this.numCard - 1].nameRU
+        const num1 = num.slice(0, 4)
+        const num2 = num.slice(4, 6)
+        const num3 = num.slice(8, 12)
+        this.nameCard = `${name}, ${num1} ${num2} ** **** ${num3}`
       }
     },
     checkConfirm () {
       this.openConfirmCheck = true
-    },
-    openDelConfirm () {
-      this.openConfirmDel = true
     },
     openRemcard () {
       this.openConfirmDataCard = true
@@ -261,67 +210,55 @@ export default {
       this.openConfirmDel = false
       this.openConfirmAutoPay = false
       this.openConfirmDataCard = false
+      this.visConfirmAutoPay = false
       this.openConfirmCheck = false
     },
+    openDelConfirm () {
+      this.openConfirmDel = true
+      this.nameCards()
+    },
     delCard () {
-      this.openConfirmDel = false
-      this.$emit('update')
+      this.$emit('updateCardDel')
+      if (!this.errDelCard) {
+        this.openConfirmDel = false
+      }
     },
     paymentsOn () {
-      alert(this.getCurrentNumCard)
-      if (this.getCurrentNumCard === 0) {
-        var payload = {
-          value: '10000',
+      let sumPay = +this.sumPay.replace(',', '.')
+      let selSave = Number(this.selSave)
+      let payload
+      if (this.numCard === 0) {
+        payload = {
+          value: sumPay,
           billingAccount: this.activeBillingAccountId,
-          save: '1',
-          email: 'konstantinopolsky@company.ru',
+          save: selSave,
+          email: this.currentEmail,
           returnUrl: location.href + '/payments-on'
         }
-          // this.$store.dispatch('payments/payment', { api: this.$api, payload: payload })
-      // }
+        this.$store.dispatch('payments/payment', { api: this.$api, payload: payload })
       } else {
-        var payload = {
-          value: '10000',
+        payload = {
           billingAccount: this.activeBillingAccountId,
-          save: '1',
-          email: 'konstantinopolsky@company.ru',
+          bindingId: this.listCard[this.numCard - 1].bindingId,
+          value: sumPay,
+          email: this.currentEmail,
+          cvv: this.cvc[this.numCard - 1],
           returnUrl: location.href + '/payments-on'
         }
+        this.$store.dispatch('payments/bindpay', { api: this.$api, payload: payload })
       }
-      alert(2)
-      console.log('!!!->', payload)
-      this.$store.dispatch('payments/payment', { api: this.$api, payload: payload })
-      // location.href = 'https://3dsec.sberbank.ru/payment/merchants/domru/payment_ru.html?mdOrder=bcf91834-67e4-7a82-ba85-85d300000590'
-      // this.$store.dispatch('payments/payment', { api: this.$api, billingAccount: this.activeBillingAccountId })
       this.openConfirmPay = false
-      this.visInfo = false
-      this.success = true
-      this.$router.push({ path: '/payments-on' })
     },
     paymentsOff () {
       this.openConfirmPay = false
-      this.visInfo = false
-      this.success = false
-    },
-    tryAgain () {
-      this.visInfo = true
     },
     remcardButtLeft () {
       this.openConfirmDataCard = false
-      this.$emit('update1')
+      this.$emit('updateButtLeft')
     },
     remcardButtRight () {
       this.openConfirmDataCard = false
-      this.$emit('update2')
-    },
-/*
-    aa () {
-      // this.empty = (this.cvc.length === 3)
-      // alert(this.cvc[this.getCurrentNumCard])
-      // console.log(this.cvc[this.getCurrentNumCard].length)
-      console.log('activeBillingAccountId -> ', this.activeBillingAccountId)
-      this.$store.dispatch('payments/listCard', { api: this.$api, billingAccount: this.activeBillingAccountId })
+      this.$emit('updateButtRight')
     }
-*/
   }
 }

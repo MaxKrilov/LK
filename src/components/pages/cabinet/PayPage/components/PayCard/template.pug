@@ -1,16 +1,10 @@
 // Pay Card
 
 er-container(full :class="`${pre}__container`")
-  div(style="left: 390px; position: absolute; z-index: 100; font-size: 14px")
-    //| t - {{visButtTop}} o{{op1}}<br/>
-    | visAutoPay - {{visAutoPay}}<br/>
-    | numCard - {{numCard}}
-
   div(
     :class="`${pre}__indicators`"
     v-if="cards.length > 0"
   )
-    //div(:class="`${pre}__indicators__disable`")
     div(
       :class="`${pre}__indicators__line`"
       :style="'top: ' + moveInd + 'px'"
@@ -28,12 +22,12 @@ er-container(full :class="`${pre}__container`")
 
   div(
     :class="`${pre}__card-butt__lateral-left`"
-    v-if="visButtLeft"
+    v-if="isButtLeft"
   )
     div(:class="`${pre}__card-butt__card-height`" @click="move('Down')")
   div(
     :class="`${pre}__card-butt__lateral-right${rightNext}`"
-    v-if="visButtRight"
+    v-if="isButtRight"
   )
     div(:class="`${pre}__card-butt__card-height`" @click="move('Up')")
 
@@ -42,7 +36,7 @@ er-container(full :class="`${pre}__container`")
     :class="`${pre}__move`"
     :style="'transform: translate(' + rightMove + 'px, ' + topMove + 'px)'"
   )
-    div(:class="`${pre}__card-row ${direct}`")
+    div(:class="`${pre}__card-row ${pre}__card-row__direct`")
       // Новая карта
       er-flex(
         :class="`${pre}__card-pos`"
@@ -62,15 +56,19 @@ er-container(full :class="`${pre}__container`")
                   h3(:class="`${pre}__card-title`")
                     | Оплата новой картой
                   div(:class="`${pre}__remcard`")
+                    div(
+                      :class="`${pre}__remcard__over`"
+                      @click="save"
+                    )
                     er-toggle(
                       type="checkbox"
                       view="radio-check"
-                      v-model="selected1"
+                      v-model="sel_save"
                       :class="`${pre}__remcard__ertoogle`"
                     )
                     .er-attach
                       a.link--dashed--black(
-                        @click="selected1 = !selected1"
+                        @click="save"
                         :class="`${pre}__remcard__text`"
                       ) Запомнить карту
                     er-hint(:class="`${pre}__remcard__hint`").ml-8
@@ -79,22 +77,20 @@ er-container(full :class="`${pre}__container`")
                       | {{ textDataCard }}
                     div(@click="openRemcard")
                       er-icon(
-                      name="question"
-                      :class="`${pre}__remcard__confirm`"
+                        name="question"
+                        :class="`${pre}__remcard__confirm`"
                       )
 
             div(
+              v-if="isButtBott[0] && cards.length > 0"
               :class="`${pre}__card-butt ${pre}__card-butt__bottom ${pre}__card-butt__bottom__first`"
-              v-if="visButtBott[0] && cards.length > 0"
-              :style="'opacity: ' + op1"
+              :style="'opacity: ' + valOpacity"
             )
               div(
                 :class="`${pre}__card-butt__left`"
                 @click="move('Up')"
               )
                 div(:class="`${pre}__logo`")
-                  //img(src="@/assets/images/paycard/" + "visa" + "-butt-1200.png")
-                  //| {{cards}}
                   img(:src="buttbottimg0")
                   h2(:class="`${pre}__logo__bottom`")
                     | {{ numbuttbott0 }}
@@ -103,17 +99,18 @@ er-container(full :class="`${pre}__container`")
                     @click.stop
                     v-if="visAutoPay === 1"
                   )
+                    // todo-er должен ли работать чекбокс?
                     er-toggle(
                     type="checkbox"
                     view="radio-check"
-                    v-model="selected"
+                    v-model="hasAutoPay"
                     :class="`${pre}__auto-pay__ertoogle`"
                   )
                     div(:class="`${pre}__auto-pay__title`")
                       | Автоплатеж
 
           er-flex(style="height: 0")
-            er-card(
+            er-card(id="bgg"
               :class="`${pre}__card__bg`"
               :style="'transform: translate(' + leftMove[0] + 'px, ' +  topBg[0] + 'px)'"
             )
@@ -126,13 +123,14 @@ er-container(full :class="`${pre}__container`")
         :class="`${pre}__card-pos`"
         :style="'margin-right: ' + delta[idx+1] + 'px'"
         v-for="(card, idx) in cards"
+        :key="card.bindingId"
       )
         er-row(no-gutters)
           er-flex
             div(
               :class="`${pre}__card-butt ${pre}__card-butt__top`"
-              v-if="visButtTop[idx]"
-              :style="'opacity: ' + op1"
+              v-if="isButtTop[idx]"
+              :style="'opacity: ' + valOpacity"
             )
               div(
                 :class="`${pre}__card-butt__left`"
@@ -147,7 +145,7 @@ er-container(full :class="`${pre}__container`")
                 div(
                   :class="`${pre}__auto-pay__next`"
                   @click.stop
-                  v-if="visAutoPay === numCard - 1"
+                  v-if="visAutoPay === numCard - 1 && numCard !== 1"
                 )
                   er-toggle(
                     type="checkbox"
@@ -193,8 +191,8 @@ er-container(full :class="`${pre}__container`")
 
             div(
               :class="`${pre}__card-butt ${pre}__card-butt__bottom`"
-              v-if="visButtBott[idx + 1] && index < cards.length "
-              :style="'opacity: ' + op1"
+              v-if="isButtBott[idx + 1] && index < cards.length "
+              :style="'opacity: ' + valOpacity"
             )
               div(
                 :class="`${pre}__card-butt__left`"
@@ -205,20 +203,19 @@ er-container(full :class="`${pre}__container`")
                 h2(:class="`${pre}__logo__bottom__next`")
                   | {{ card.numbuttbott }}
                 div(
-                :class="`${pre}__auto-pay__next`"
-                @click.stop
-                v-if="visAutoPay === numCard + 1"
+                  :class="`${pre}__auto-pay__next`"
+                  @click.stop
+                  v-if="visAutoPay === numCard + 1"
                 )
                   //
                   er-toggle(
-                  type="checkbox"
-                  view="radio-check"
-                  v-model="selected"
-                  :class="`${pre}__auto-pay__ertoogle`"
+                    type="checkbox"
+                    view="radio-check"
+                    v-model="selected"
+                    :class="`${pre}__auto-pay__ertoogle`"
                   )
                   div(:class="`${pre}__auto-pay__title`")
                     | Автоплатеж
-
 
           er-flex(style="height: 0")
             er-card(
@@ -276,3 +273,4 @@ er-container(full :class="`${pre}__container`")
             )
               div(:class="`${pre}__card__deleted__bg__content`")
                 div(:class="`${pre}__card__deleted__bg__strip`")
+

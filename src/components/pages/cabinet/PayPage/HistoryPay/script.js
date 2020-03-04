@@ -13,17 +13,7 @@ export default {
     pre: 'history-pay',
     valSelect: 'Январь',
     visFilter: '__vis-filter',
-    widthContainer: '108%',
-    changeWidth () {
-      let width
-      if (this[SCREEN_WIDTH] <= 800) width = '108'
-      if (this[SCREEN_WIDTH] > 800 && this[SCREEN_WIDTH] < 900) width = '107'
-      if (this[SCREEN_WIDTH] >= 900 && this[SCREEN_WIDTH] < 960) width = '106'
-      if (this[SCREEN_WIDTH] >= 960) width = '100'
-      if (this[SCREEN_WIDTH] >= 1200) width = '104'
-      if (this[SCREEN_WIDTH] >= 1400) width = '111'
-      this.widthContainer = `${width}%`
-    }
+    widthContainer: '108%'
   }),
   computed: {
     ...mapGetters([SCREEN_WIDTH])
@@ -37,6 +27,16 @@ export default {
     }
   },
   methods: {
+    changeWidth () {
+      let width
+      if (this[SCREEN_WIDTH] <= 800) width = '108'
+      if (this[SCREEN_WIDTH] > 800 && this[SCREEN_WIDTH] < 900) width = '107'
+      if (this[SCREEN_WIDTH] >= 900 && this[SCREEN_WIDTH] < 960) width = '106'
+      if (this[SCREEN_WIDTH] >= 960) width = '100'
+      if (this[SCREEN_WIDTH] >= 1200) width = '104'
+      if (this[SCREEN_WIDTH] >= 1400) width = '111'
+      this.widthContainer = `${width}%`
+    },
     typeFind (select) {
       if (select === 'По услуге') {
         this.valSelect = 'Январь'

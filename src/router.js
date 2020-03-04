@@ -45,8 +45,9 @@ import DigitalProductsIndexPage from './components/pages/digital-products/IndexP
 // Создание клиента (для DMP)
 import DMPFormPage from './components/pages/dmp-form/index'
 
-import OATSPromoPage from './components/pages/oats/promo/index'
 import OATSMainPage from './components/pages/oats/index'
+import OATSPromoPage from './components/pages/oats/promo/index'
+
 // Страницы с ошибками
 import OldBrowserPage from './components/pages/errors/old-browsers'
 
@@ -88,31 +89,30 @@ const router = new Router({
           ]
         },
         {
-          name: 'documents',
-          path: 'documents/',
-          component: DocumentPage
-        },
-        {
           path: 'payments',
           component: PayPage
+        },
+        {
+          name: 'add-funds',
+          path: '/add-funds',
+          component: AddFunds,
+        },
+        {
+          path: '/add-funds/payments-on',
+          component: PaymentsOn
         },
         {
           path: '/promise-pay',
           component: PromisePay
         },
         {
-          path: '/payments-on',
-          component: PaymentsOn
-        },
-        {
           path: '/history-pay',
           component: HistoryPay
         },
         {
-          name: 'add-funds',
-          // path: '/',
-          path: '/add-funds',
-          component: AddFunds
+          name: 'documents',
+          path: 'documents/',
+          component: DocumentPage
         },
         {
           name: 'documents.order',
@@ -129,12 +129,12 @@ const router = new Router({
           component: DigitalProductsIndexPage
         },
         {
-          path: 'oats/promo',
-          component: OATSPromoPage
-        },
-        {
           path: 'oats',
           component: OATSMainPage
+        },
+        {
+          path: 'oats/promo',
+          component: OATSPromoPage
         },
         {
           path: 'support',

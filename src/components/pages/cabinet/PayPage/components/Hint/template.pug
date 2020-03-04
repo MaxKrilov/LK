@@ -1,0 +1,34 @@
+// Hint
+
+er-dialog(v-model="internalVisible" persistent)
+  div(:class="`${pre}`")
+    div(:class="`${pre}__content`")
+      er-container(:class="`${pre}__header`")
+        er-row.no-gutters.mb-24.d--flex.justify-content-between
+          er-flex.mb-60(xs12 sm4)
+            er-icon(name="question" :class="`${pre}__icon-height`")
+          er-flex(xs12 sm8)
+            h3(:class="`${pre}__text__title${styletitle}`") {{title}}
+            div(:class="`${pre}__text__header`") {{description}}
+      div(:class="`${pre}__text`") {{subText}}
+      div.caption(:class="`${pre}__err`" v-if="hasErr")
+        div {{err}}
+
+    div(
+      :class="`${pre}__close`"
+      @click="closeConfirm"
+    )
+      er-icon(name="close")
+
+    div(:class="`${pre}__container-button`")
+      span(:class="`${pre}__no`")
+        a(
+          @click="buttLeft"
+          :class="`${pre}__no__text`"
+        ) {{buttLeftText}}
+      span(:class="`${pre}__yes${styletitle}`")
+        a(
+          @click="buttRight"
+          :class="`${pre}__yes__text`"
+        ) {{buttRightText}}
+

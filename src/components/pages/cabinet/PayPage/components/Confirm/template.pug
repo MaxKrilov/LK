@@ -1,0 +1,52 @@
+// Confirm
+
+er-dialog(v-model="internalVisible" persistent)
+  div(:class="`${pre}`")
+    div(:class="`${pre}__content`")
+      div(:class="`${pre}__content__size`")
+        er-icon(name="question" :class="`${pre}__icon-height`")
+      div(:class="`${pre}__content__pos`")
+        h4 {{ title }}
+        h3(v-if="err !== ''") {{ subText }}
+        div(v-else)
+          div
+            span.h3 {{ sumPayInteger }}
+            span.h3(:class="`${pre}__decimal`") ,{{ sumPayDecimal }}
+            span.rub(:class="`${pre}__currency`")
+          h4(v-if="numCard !== 0") сохраненной картой:
+          h3(v-if="numCard !== 0") {{ subText }}
+
+    div.caption(:class="`${pre}__err`" v-if="hasErr && err !== ''")
+      | {{err}}
+
+    div(
+      :class="`${pre}__close`"
+      @click="closeConfirm"
+    )
+      er-icon(name="close")
+
+    er-container(full :class="`${pre}__container-button`")
+      div(:class="`${pre}__butt__xl`")
+        er-flex.pr-28(xs6 )
+          er-button(
+            type="submit"
+            @click="buttAct"
+          ) {{buttText}}
+        er-flex.pr-24.pl-4(xs6)
+          er-button.align-items-center(
+            type="submit"
+            flat=true
+            @click="closeConfirm"
+          ) Отменить
+
+      div(:class="`${pre}__butt`")
+        er-flex(sm3 md4 offset-sm4 xl6)
+          a(
+            @click="closeConfirm"
+            :class="`${pre}__no__text`"
+          ) Отменить
+        er-flex(sm4 md4 xl6)
+          a(
+            @click="buttAct"
+            :class="`${pre}__yes__text`"
+          ) {{buttText}}

@@ -267,7 +267,7 @@
   &__move {
     position: absolute;
     top: -48px;
-    left: 8px;
+    left: -8px;
     transition: 0.5s;
     @include media-query((
       transition: (
@@ -359,6 +359,15 @@
         top: (md: 0),
         margin-left: (md: 4px !important),
       ));
+    }
+    &__over {
+      background: transparent;
+      position: absolute;
+      top: -4px;
+      height: 24px;
+      width: 27px;
+      z-index: 1;
+      cursor: pointer;
     }
   }
   &__card-title {
@@ -472,6 +481,7 @@
     }
   }
   &__card-row {
+    display: flex;
     flex-wrap: nowrap !important;
     @include media-query((
       flex-wrap: (
@@ -485,6 +495,12 @@
         md: 0
       )
     ));
+    &__direct {
+      flex-direction: row;
+      @include media-query((
+        flex-direction: (md: column)
+      ));
+    }
   }
   &__card {
     position: relative;
@@ -589,8 +605,9 @@
           md: 91px
         ),
         left: (
-          md: 9px !important,
-          xl: -7px !important,
+          md: 5px !important,
+          lg: -7px !important,
+          xl: -15px !important,
         ),
         width: (md: 500px !important),
       ));
@@ -631,18 +648,28 @@
         }
       }
       &__bg {
-        position: absolute;
-        top: 73px;
-        left: 38px;
+        position: absolute !important;
+        top: 57px !important;
+        //left: 38px !important;
         z-index: -1;
-        display: block;
         max-height: 160px;
         width: 256px !important;
         background: map_get($gray, '4') !important;
         box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1), 0 4px 6px rgba(0, 0, 0, 0.05) !important;
         @include media-query((
-          display: (md: none),
-          top: (sm: 31px),
+          top: (
+            sm: 17px !important,
+            xl: 17px !important,
+          ),
+          left: (
+            md: 121px !important,
+          ),
+          max-height: (
+            sm: 208px,
+          ),
+          width: (
+            md: 336px !important,
+          ),
         ));
         &__strip {
           position: absolute;
