@@ -1,4 +1,6 @@
 import CommonDocument from '../CommonDocument'
+import ErDocumentViewer from '../../../../../blocks/ErDocumentViewer'
+import { TYPE_REPORT } from '@/constants/document'
 
 export default {
   props: {
@@ -6,11 +8,18 @@ export default {
   },
   data () {
     return {
-      selected: false
+      selected: false,
+      isOpenViewer: false
+    }
+  },
+  filters: {
+    typeName: val => {
+      return TYPE_REPORT.find(item => item.id === val)?.value || 'Неизвестный документ'
     }
   },
   components: {
-    CommonDocument
+    CommonDocument,
+    ErDocumentViewer
   },
   methods: {
     onSelect (val) {

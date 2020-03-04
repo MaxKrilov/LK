@@ -13,6 +13,7 @@
 import { mapGetters, mapState } from 'vuex'
 import { SCREEN_WIDTH } from './store/actions/variables'
 import { getScreenWidth } from './functions/helper'
+import axios from 'axios'
 
 import {
   GET_CLIENT_INFO,
@@ -45,6 +46,14 @@ export default {
   },
   async created () {
     if (process.env.VUE_APP_USE_SSO_AUTH !== 'no') {
+      axios.interceptors.response.use(response => response, err => {
+        return new Promise((resolve, reject) => {
+          if (err && err.response && [403, 401].includes(err.response.status)) {
+            this.$store.dispatch('auth/signOut', { api: this.$api })
+          }
+          reject(err)
+        })
+      })
       if (!this.refreshedToken.isFetching && !this.serverErrorMessage) {
         this.$store.dispatch('auth/checkAuth', { api: this.$api })
           .then(() => {

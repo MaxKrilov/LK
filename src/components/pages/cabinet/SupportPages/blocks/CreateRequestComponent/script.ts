@@ -171,6 +171,10 @@ export default class CreateRequestComponent extends Vue {
     return this.listService.filter((item: iItemService) => !!item.typeAuth)
   }
 
+  get computedTicketName () {
+    return this.ticketName.split(' ').slice(0, 2).join(' ')
+  }
+
   @Watch('requestTheme')
   onRequestThemeChange () {
     this.reset()
@@ -432,5 +436,15 @@ export default class CreateRequestComponent extends Vue {
     this.internetProtocol = ''
     this.terminateFrom = new Date()
     this.technicalRequestTheme = ''
+  }
+
+  mounted () {
+    if (this.$route.query && this.$route.query.open && this.$route.query.open === 'document') {
+      (this as any)[this.screenWidth <= BREAKPOINT_XL ? 'isOpenForm' : 'isOpenFormDesktop'] = true
+      this.requestTheme = this.listRequestTheme.find((item: iRequestTheme) => item.form === 'order_a_document')!
+      this.$nextTick(() => {
+        this.screenWidth >= BREAKPOINT_XL && this.$scrollTo('.create-request-component')
+      })
+    }
   }
 }
