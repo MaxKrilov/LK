@@ -13,6 +13,7 @@ import dictionary from './modules/dictionary'
 import user from './modules/user'
 import request from './modules/request'
 import loading from './modules/loading'
+import internet from './modules/internet'
 import documents from './modules/documents'
 
 const debug = process.env.NODE_ENV !== 'production'
@@ -32,6 +33,7 @@ export default new Vuex.Store({
     user,
     request,
     loading,
+    internet,
     documents
   },
   strict: debug,

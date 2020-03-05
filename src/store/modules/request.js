@@ -40,6 +40,7 @@ const actions = {
           requestName: 'all',
           clientId: toms
         })
+        .setBranch('web-bss')
         .query('/problem/management/list')
       commit(GET_REQUEST_SUCCESS, result)
       return true
@@ -165,12 +166,19 @@ const actions = {
       return false
     }
   },
-  [GET_SERVICES_BY_LOCATION]: async ({ rootGetters, commit, dispatch }, { api, locationId }) => {
+  [GET_SERVICES_BY_LOCATION]: async ({ rootGetters, commit, dispatch }, { api, locationId, parentId }) => {
     const { toms: clientId } = rootGetters['auth/user']
+    const data = {}
+    data.clientId = clientId
+    if (locationId) {
+      data.locationId = locationId
+    }
+    if (parentId) {
+      data.parentId = parentId
+    }
     try {
       return await api
         .setData({ clientId, locationId })
-        .query('/customer/product/client')
     } catch (e) {
       return []
     }

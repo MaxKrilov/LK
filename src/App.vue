@@ -92,6 +92,19 @@ export default {
     window.addEventListener('orientationchange', () => {
       this.$store.commit(SCREEN_WIDTH, getScreenWidth())
     })
+    console.log('%c ВНИМАНИЕ!', 'font-size: 28px; color: #E31E24')
+    console.log(
+      '%c Данная опция браузера предназначена для разработчиков! Пожалуйста, не вводите здесь что-либо для обеспечения безопасности вашего аккаунта!',
+      'font-size: 12px;'
+    )
+    console.log(
+      '%c Если вы обнаружили какую-то уязвимость или недоработку, то, пожалуйста, сообщите о ней нам',
+      'font-size: 12px;'
+    )
+    console.log(
+      '%c Считаете, что можете сделать лучше? Тогда скорее отправляйте нам своё резюме на http://job.ertelecom.ru/ :)',
+      'font-size: 10px'
+    )
   },
   methods: {},
   computed: {

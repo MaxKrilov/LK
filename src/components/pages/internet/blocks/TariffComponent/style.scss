@@ -1,0 +1,190 @@
+.tariff-component {
+  width: calc(100% + 64px);
+  margin: 0 -32px;
+  padding: 1px;
+  background: linear-gradient(to top right, map_get($gray, '26') 28.65%, map_get($shades, 'white') 90.63%);
+  border-radius: 12px;
+  @include min-breakpoint('md') {
+    width: 100%;
+    margin: 0;
+  }
+  .content {
+    width: 100%;
+    height: 100%;
+    border-radius: inherit;
+    background-color: map_get($gray, '9');
+    display: grid;
+    grid-template-rows: auto auto auto auto auto;
+    grid-template-columns: auto auto;
+    padding: 40px 32px 30px;
+    @include min-breakpoint('md') {
+      padding-left: 24px;
+      padding-right: 24px;
+    }
+    @include min-breakpoint('lg') {
+      grid-template-columns: auto auto auto;
+    }
+    @include min-breakpoint('xl') {
+      padding-left: 32px;
+      padding-right: 32px;
+    }
+  }
+  &__tariff-name {
+    margin-bottom: 24px;
+    grid-column-start: 1;
+    grid-column-end: 3;
+    @include min-breakpoint('sm') {
+      grid-column-end: 2;
+    }
+    @include min-breakpoint('lg') {
+      grid-column-end: 3;
+    }
+    .activation-date {
+      @extend %caption2;
+      @include color-black(0.3);
+      margin-bottom: 4px;
+      span {
+        @include color-black(0.5);
+      }
+    }
+    .name {
+      @extend %h2;
+    }
+  }
+  &__speed,
+  &__limit {
+    margin-bottom: 32px;
+    .chart {
+      margin-bottom: 16px;
+    }
+    .chart svg {
+      width: 104px;
+      user-select: none;
+      @include min-breakpoint('md') {
+        width: 128px;
+      }
+      @include min-breakpoint('xl') {
+        width: 144px;
+      }
+    }
+    .title {
+      @extend %h4;
+      @include color-black(0.8);
+      margin-bottom: 8px;
+    }
+    .button button {
+      background-color: map_get($shades, 'transparent');
+      border: none;
+      outline: none;
+      @extend %button-font;
+      color: map_get($blue, 'base');
+      border-bottom: 1px dashed;
+    }
+  }
+  &__speed {
+    grid-column-start: 1;
+    grid-column-end: 2;
+    padding-right: 16px;
+    svg text.top {
+      @extend %h2;
+      fill: rgba(map_get($shades, 'black'), 0.8);
+    }
+    svg text.bottom {
+      @extend %caption2;
+      fill: rgba(map_get($shades, 'black'), 0.3);
+    }
+  }
+  &__limit {
+    grid-column-start: 2;
+    grid-column-end: 3;
+    padding-left: 16px;
+    svg text.top {
+      @extend %h2;
+      fill: rgba(map_get($shades, 'black'), 0.8);
+    }
+    svg text.bottom {
+      @extend %h4;
+      fill: rgba(map_get($shades, 'black'), 0.5);
+    }
+    svg text.bottom tspan {
+      @extend %caption2;
+      fill: rgba(map_get($shades, 'black'), 0.3);
+    }
+  }
+  &__turbo-activation {
+    grid-column-start: 1;
+    grid-column-end: 3;
+    margin-bottom: 32px;
+    @include min-breakpoint('sm') {
+      grid-row-start: 1;
+      grid-row-end: 2;
+      grid-column-start: 2;
+      grid-column-end: 3;
+    }
+    @include min-breakpoint('lg') {
+      grid-row-start: 2;
+      grid-row-end: 3;
+      grid-column-start: 3;
+      grid-column-end: 4;
+    }
+    .er-button .er-button__icon--prev {
+      position: absolute;
+      left: 8px;
+      @include color-white(1)
+    }
+  }
+  &__price,
+  &__turbo-price {
+    margin-bottom: 24px;
+    .caption {
+      @extend %caption2;
+      @include color-black(0.3);
+      margin-bottom: 4px;
+    }
+    .price {
+      @extend %caption2;
+      @include color-black(0.5);
+    }
+    .price span {
+      @extend %h2;
+      @include color-black(0.8);
+    }
+  }
+  &__price {
+    grid-column-start: 1;
+    grid-column-end: 2;
+    padding-right: 16px;
+  }
+  &__turbo-price {
+    grid-column-start: 2;
+    grid-column-end: 3;
+    padding-left: 16px;
+  }
+  &__settings {
+    grid-column-start: 1;
+    grid-column-end: 3;
+    padding-top: 24px;
+    border-top: 1px solid rgba(map_get($shades, 'black'), 0.2);
+    @include min-breakpoint('lg') {
+      border-top: none;
+      grid-row-start: 1;
+      grid-row-end: 2;
+      grid-column-start: 3;
+      grid-column-end: 4;
+      padding-top: 0;
+      margin-bottom: 24px;
+    }
+    i {
+      color: map_get($yellow, 'base');
+      margin-right: 8px;
+    }
+    button {
+      background-color: map_get($shades, 'transparent');
+      border: none;
+      outline: none;
+      @extend %body-font;
+      @include color-black(0.5);
+      border-bottom: 1px dashed;
+    }
+  }
+}
