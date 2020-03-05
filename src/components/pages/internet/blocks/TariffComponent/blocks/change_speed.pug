@@ -1,0 +1,39 @@
+er-dialog(
+  :fullscreen="isFullDialog"
+  :transition="getTransitionDialog"
+  v-model="isOpenDialogChangeSpeed"
+  :max-width="390"
+  persistent
+)
+  template(v-slot:activator="{ on }")
+    button(v-on="openChangeSpeed(on)")
+      | Изменить
+  .tariff-component__change-speed--mobile
+    .head.d--flex.align-items-center.px-16.justify-content-between
+      .title Изменить скорость
+      button(@click="closeDialogChangeSpeed")
+        er-icon(name="close")
+    .body
+      .speed
+        speed-component
+      .price
+        .after-change
+          .caption
+            | Абонентская плата
+          .value
+            span 35 000
+            | ₽/месяц
+        .current.mb-32
+          .caption
+            | Текущая абонентская плата
+          .value
+            span 27 500
+            | ₽/месяц
+      .actions.pb-32.d--flex.flex-column.flex-sm-row
+        .action.mb-8.mb-sm0.mr-sm16
+          er-button(color="blue")
+            | Изменить
+        .action
+          er-button(flat @click="closeDialogChangeSpeed")
+            | Отмена
+
