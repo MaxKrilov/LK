@@ -8,7 +8,7 @@ er-dialog(v-model="internalVisible")
           er-flex.mb-60(xs12 sm4)
             er-icon(name="question" :class="`${pre}__icon-height`")
           er-flex(xs12 sm8)
-            h3(:class="`${pre}__text__title${styletitle}`") {{title}}
+            h3(:class="`${pre}__text__title${styleTitle}`") {{title}}
             div(:class="`${pre}__text__header`") {{description}}
       div(:class="`${pre}__text`") {{subText}}
       div.caption(:class="`${pre}__err`" v-if="hasErr")
@@ -26,7 +26,7 @@ er-dialog(v-model="internalVisible")
           @click="buttLeft"
           :class="`${pre}__no__text`"
         ) {{buttLeftText}}
-      span(:class="`${pre}__yes${styletitle}`")
+      span(:class="`${pre}__yes${styleTitle}`")
         a(
           @click="buttRight"
           :class="`${pre}__yes__text`"

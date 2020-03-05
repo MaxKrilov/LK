@@ -32,17 +32,6 @@
       lg: 16px,
     ),
   ));
-  &__check {
-    @extend .hint;
-    margin: 63px auto;
-    @include media-query((
-      margin: (
-        sm: 73px auto,
-        md: 221px auto,
-        lg: 258px auto,
-      ),
-    ));
-  }
   &__content {
     position: absolute;
     left: 24px;
@@ -55,40 +44,6 @@
         xl: 470px
       ),
     ));
-    &__size {
-      margin-bottom: 57px;
-      @include media-query((
-        margin-bottom: (
-        sm: 48px,
-        md: 57px
-        ),
-      ));
-    }
-    &__text {
-      @include media-query((
-        left: (
-          sm: 22px
-        ),
-        top: (
-          sm: 8px
-        ),
-      ));
-    }
-    &__pos {
-      @include media-query((
-        position: (
-          sm: relative,
-        ),
-        top: (
-          sm: -63px,
-          md: 0,
-        ),
-        left: (
-          sm: 71px,
-          md: 0,
-        ),
-      ));
-    }
   }
   &__icon-height svg {
     position: absolute;
@@ -97,36 +52,6 @@
     top: 0;
     color: map_get($yellow, 'base');
   }
-  /*
-  &__container-button {
-    position: absolute;
-    padding: 0 24px 0 24px !important;
-    bottom: 32px;
-    width: 90%;
-    @include media-query((
-      width: (
-        sm: 100%,
-      ),
-      padding: (
-        sm: 0 10px 0 31px !important,
-        md: 0 10px 0 32px !important,
-        lg: 0 10px 0 115px !important,
-      ),
-    ));
-    &__remcard {
-      @extend .hint__container-button;
-      padding: 0 24px 0 24px !important;
-      @include media-query((
-        width: (
-          sm: 100%,
-        ),
-        padding: (
-          sm: 0 10px 0 131px !important,
-        ),
-      ));
-    }
-  }
-  */
   &__close svg {
     display: block;
     opacity: 0.2;
@@ -139,162 +64,6 @@
       display: (xl: block),
     ));
   }
-  &__decimal {
-    opacity: .3;
-  }
-  &__currency {
-    margin-top: 6px;
-    margin-left: 4px;
-    opacity: .3;
-  }
-  /*
-  &__no {
-    cursor: pointer;
-    &__remcard {
-      position: relative;
-      cursor: pointer;
-      @include media-query((
-        left: (
-          sm: 10px,
-          md: 30px,
-        ),
-      ));
-    }
-    &__payment {
-      cursor: pointer;
-      @include media-query((
-        margin-left: (
-          sm: 4px,
-          md: -11px,
-        ),
-      ));
-    }
-    &__del {
-      cursor: pointer;
-      @include media-query((
-        margin-left: (
-          sm: 41px,
-          md: 21px
-        ),
-      ));
-    }
-    &__pay {
-      cursor: pointer;
-      @include media-query((
-        margin-left: (
-          sm: 1px,
-          md: 7px,
-        ),
-      ));
-    }
-    &__text {
-      font: 13px/120% $fedra-demi;
-      letter-spacing: 0.35px;
-      color: map_get($shades, 'black');
-      border-bottom: 1px dashed map_get($green, 'base');
-      opacity: 0.3;
-      @include media-query((
-        font-size: (
-          md: 14px,
-          xxl: 20px
-        ),
-        line-height: (
-          md: 17px,
-          xxl: 26px
-        ),
-        letter-spacing: (
-          md: normal
-        ),
-      ));
-    }
-  }
-  &__yes {
-    cursor: pointer;
-    &__payment {
-      cursor: pointer;
-      margin-left: -5px;
-      @include media-query((
-        margin-left: (
-          sm: 1px,
-          md: 4px,
-        ),
-      ));
-    }
-    &__remcard {
-      cursor: pointer;
-      margin-left: 24px;
-      @include media-query((
-        margin-left: (
-          sm: 3px,
-          md: 39px,
-        ),
-      ));
-    }
-    &__del {
-      cursor: pointer;
-      margin-left: 4px;
-      @include media-query((
-        margin-left: (
-          sm: 25px,
-          md: 22px,
-        ),
-      ));
-    }
-    &__pay {
-      cursor: pointer;
-      margin-left: 14px;
-      @include media-query((
-        margin-left: (
-          sm: -17px,
-          md: 12px,
-        ),
-      ));
-    }
-    &__check {
-      cursor: pointer;
-      margin-left: 8px;
-      @include media-query((
-        margin-left: (
-          sm: 4px,
-          md: 9px,
-        ),
-      ));
-    }
-    &__text {
-      font: 13px/120% $fedra-demi;
-      letter-spacing: 0.35px;
-      color: map_get($green, 'base');
-      border-bottom: 1px dashed map_get($green, 'base');
-      @include media-query((
-        font-size: (
-          md: 14px,
-          xxl: 20px
-        ),
-        line-height: (
-          md: 17px,
-          xxl: 26px
-        ),
-        letter-spacing: (
-          md: normal
-        ),
-      ));
-    }
-  }
-  &__butt {
-    justify-content: space-between;
-    position: relative;
-    @include media-query((
-      left: (
-        sm: 21px,
-        md: 52px
-      ),
-      justify-content: (
-        sm: end,
-        md: start
-      ),
-    ));
-  }
-  */
   &__text {
     font: 13px/18px $fedra-book;
     letter-spacing: 0.25px;
@@ -373,60 +142,15 @@
           ),
         ));
       }
-      &__remcard {
-        @include media-query((
-          position: ( sm: relative),
-          left: (
-            sm: -49px,
-            md: -45px,
-          ),
-          top: (md: 18px),
-        ));
-      }
     }
   }
   &__header {
     padding-left: 0 !important;
   }
-  /*
-  &__err-del {
-    position: absolute;
-    font-family: $fedra-demi !important;
-    color: rgba(map_get($red, 'base'), 1) !important;
-    width: 500px;
-    left: 32px;
-    top: 172px;
-  }
-  */
-  /*
-  &__err-autopay {
-    @extend .hint__err-del;
-    left: 0;
-    top: 70px;
-    @include media-query((
-      width: (
-        //sm: -49px,
-        lg: 340px,
-      ),
-      top: (
-        lg: 90px
-      ),
-    ));
-
-  }
-  */
   &__err {
-    //@extend .hint__err-del;
     position: absolute;
     font-family: $fedra-demi !important;
     color: rgba(map_get($red, 'base'), 1) !important;
-    /*
-    width: 500px;
-    left: 32px;
-    top: 172px;
-    */
-
-    //left: 0;
     top: 350px;
     width: 242px;
     @include media-query((
@@ -445,9 +169,7 @@
         xl: 33px
       ),
     ));
-
   }
-
   &__container-button {
     position: absolute;
     text-align: right;
@@ -511,7 +233,6 @@
       ));
     }
   }
-
 }
 .er-hint__message {
   max-width: 410px !important;

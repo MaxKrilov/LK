@@ -144,7 +144,7 @@ div(:class="`${pre}`").main-content.main-content--h-padding
       buttRightText="Спасибо"
       @closeConfirm="closeConfirm"
       @buttRight="closeConfirm"
-    @input="closeConfirm"
+      @input="closeConfirm"
     )
 
     // Пополнение
@@ -189,7 +189,7 @@ div(:class="`${pre}`").main-content.main-content--h-padding
       buttText="Отключить"
       @closeConfirm="closeConfirm"
       @buttLeft="autopayButtLeft"
-    @input="closeConfirm"
+      @input="closeConfirm"
     )
     Confirm( v-if="!isAutoPay && openConfirmAutoPay"
       :vis="openConfirmAutoPay"
@@ -201,7 +201,7 @@ div(:class="`${pre}`").main-content.main-content--h-padding
       buttText="Подключить"
       @closeConfirm="closeConfirm"
       @buttLeft="autopayButtRight"
-    @input="closeConfirm"
+      @input="closeConfirm"
     )
     Hint( v-if="isAutoPay && visConfirmAutoPay"
       :vis="visConfirmAutoPay"
@@ -213,9 +213,9 @@ div(:class="`${pre}`").main-content.main-content--h-padding
       buttLeftText="Отменить"
       buttRightText="Отключить"
       @closeConfirm="closeConfirm"
-      @buttLeft="autopayButtRight"
-      @buttRight="autopayButtLeft"
-    @input="closeConfirm"
+      @buttLeft="closeConfirm"
+      @buttRight="payAutoTextConfHint"
+      @input="closeConfirm"
     )
     Hint( v-if="!isAutoPay && visConfirmAutoPay"
       :vis="visConfirmAutoPay"
@@ -228,8 +228,8 @@ div(:class="`${pre}`").main-content.main-content--h-padding
       buttRightText="Подключить"
       @closeConfirm="closeConfirm"
       @buttLeft="closeConfirm"
-      @buttRight="autopayButtRight"
-    @input="closeConfirm"
+      @buttRight="payAutoTextConfHint"
+      @input="closeConfirm"
     )
 
     // Удалить карту
@@ -243,5 +243,5 @@ div(:class="`${pre}`").main-content.main-content--h-padding
       buttText="Удалить"
       @closeConfirm="closeConfirm"
       @buttLeft="delCard"
-    @input="closeConfirm"
+      @input="closeConfirm"
     )

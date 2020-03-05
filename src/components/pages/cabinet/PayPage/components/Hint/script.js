@@ -12,10 +12,10 @@ export default {
   ],
   data: () => ({
     pre: 'hint',
-    styletitle: ''
+    styleTitle: ''
   }),
   mounted () {
-    this.styletitle = this.buttLeftText === 'Отменить' ? '' : '__one-row'
+    this.styleTitle = this.buttLeftText === 'Отменить' ? '' : '__one-row'
   },
   computed: {
     internalVisible: {

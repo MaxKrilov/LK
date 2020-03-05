@@ -18,7 +18,7 @@ export default {
     pre: 'add-funds',
     nameCard: '',
     empty: true,
-    sumPay: '100000,50',
+    sumPay: '',
     sumPayInteger: '',
     sumPayDecimal: '',
     openConfirmPay: false,
@@ -56,7 +56,7 @@ export default {
       'konstantinopolsky1@company.ru',
       'konstant'
     ],
-    currentEmail: 'konstantinopolsky@company.ru'
+    currentEmail: ''
   }),
   computed: {
     ...mapGetters([SCREEN_WIDTH]),
@@ -153,6 +153,10 @@ export default {
     autopayButtLeft () {
       this.payAutoRequest(0)
     },
+    payAutoTextConfHint () {
+      this.closeConfirm()
+      this.payAutoTextConfirm()
+    },
     paypage () {
       this.$router.push('/lk/payments')
     },
@@ -224,7 +228,8 @@ export default {
       }
     },
     paymentsOn () {
-      let sumPay = +this.sumPay.replace(',', '.')
+      let sumPay = this.sumPay.replace( /\s/g, "")
+      sumPay = sumPay.replace(',', '.')
       let selSave = Number(this.selSave)
       let payload
       if (this.numCard === 0) {
