@@ -50,13 +50,8 @@ export default {
     valEmail: PATTERN_EMAIL,
     checkAutoPay: 'Подключить автоплатёж',
     selEmail: '',
-    // todo-er вставить реальные данные
-    emails: [
-      'konstantinopolsky@company.ru',
-      'konstantinopolsky1@company.ru',
-      'konstant'
-    ],
-    currentEmail: 'konstantinopolsky@company.ru'
+    emails: [],
+    currentEmail: ''
   }),
   computed: {
     ...mapGetters([SCREEN_WIDTH]),
@@ -71,14 +66,7 @@ export default {
       cvc: state => state.payments.cvc,
       numCard: state => state.payments.numCard,
       clientInfo: state => state.user.clientInfo
-    }),
-    listEmail () {
-      const listEmail = this.clientInfo?.contacts?.map(
-        item => item.contactMethods.filter(
-          _item => _item['@type'].match(/email/ig)).value
-      ) || []
-      return listEmail
-    }
+    })
   },
   mounted () {
     this.changeWidth()
@@ -103,12 +91,18 @@ export default {
           this.isAutoPay = true
         }
       }
+    },
+    clientInfo () {
+      let emailList = this.clientInfo?.contactMethods?.filter(
+        _item => _item['@type'].match(/email/ig)
+      )
+      this.emails = emailList.map(
+        item => item.name.split(', ')[0]
+      ) || []
     }
   },
   methods: {
     changeWidth () {
-      console.log('>>1', this.clientInfo)
-      console.log('>>3', this.listEmail)
       this.direct = this[SCREEN_WIDTH] < 960 ? 'row' : 'column'
       if (this.isAutoPay) {
         this.textAutopay = this.autopayOff
