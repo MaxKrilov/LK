@@ -70,6 +70,7 @@ export default {
   },
   mounted () {
     this.changeWidth()
+    this.listEmail()
   },
   watch: {
     SCREEN_WIDTH () {
@@ -93,16 +94,22 @@ export default {
       }
     },
     clientInfo () {
-      let emailList = this.clientInfo?.contactMethods?.filter(
-        _item => _item['@type'].match(/email/ig)
-      )
-      this.emails = emailList.map(
-        item => item.name.split(', ')[0]
-      ) || []
+      this.listEmail()
     }
   },
   methods: {
+    listEmail () {
+      let emailList = this.clientInfo?.contactMethods?.filter(
+        _item => _item['@type'].match(/email/ig)
+      )
+      if (emailList) {
+        this.emails = emailList.map(
+          item => item.name.split(', ')[0]
+        ) || []
+      }
+    },
     changeWidth () {
+      // todo-er перенести в css
       this.direct = this[SCREEN_WIDTH] < 960 ? 'row' : 'column'
       if (this.isAutoPay) {
         this.textAutopay = this.autopayOff

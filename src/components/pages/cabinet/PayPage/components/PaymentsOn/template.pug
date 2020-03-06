@@ -30,20 +30,20 @@ div.main-content.main-content--h-padding(
         )
       div(:class="`${pre}__status__pos`")
         h2.mb-4 Оплата прошла успешно
-        div(:class="`${pre}__status__info ${pre}__${color}`")
-          er-icon(name="ok" :class="`${pre}__status__info__icon`")
-          span.caption(:class="`${pre}__status__info__span ${pre}__${color}`")
-            | Включен автоплатёж
-        div.mt-20(:class="`${pre}__status__info ${pre}__${color}`")
-          er-icon(name="ok" :class="`${pre}__status__info__icon`")
-          span.caption(:class="`${pre}__status__info__span ${pre}__${color}`")
-            | Карта сохранена
+        // todo-er Временно отключили (разбираемся...)
+        //div(:class="`${pre}__status__info ${pre}__${color}`")
+        //  er-icon(name="ok" :class="`${pre}__status__info__icon`")
+        //  span.caption(:class="`${pre}__status__info__span ${pre}__${color}`")
+        //    | Включен автоплатёж
+        //div.mt-20(:class="`${pre}__status__info ${pre}__${color}`")
+        //  er-icon(name="ok" :class="`${pre}__status__info__icon`")
+        //  span.caption(:class="`${pre}__status__info__span ${pre}__${color}`")
+        //    | Карта сохранена
         div.mt-64
           h4.mb-4 Чек отправлен
           div.caption2.mb-4 на электронную почту:
-          // todo-er вставить реальный email
           h4(:class="`${pre}__status__email`")
-            | konstantinopolsky@company.ru
+            | {{email}}
 
     div(:class="`${pre}__status__butt`")
       er-button(
@@ -62,14 +62,15 @@ div.main-content.main-content--h-padding(
       div(:class="`${pre}__status__pos`")
         h2.mb-4(style="")
           | {{ infoPay }}
-        div(:class="`${pre}__status__info ${pre}__${color}`" v-if="pay")
-          er-icon(name="close" :class="`${pre}__status__info__icon`")
-          span.caption(:class="`${pre}__status__info__span ${pre}__${color}`")
-            | Автоплатёж не включен
-        div.mt-20(:class="`${pre}__status__info ${pre}__${color}`" v-if="pay")
-          er-icon(name="close" :class="`${pre}__status__info__icon`")
-          span.caption(:class="`${pre}__status__info__span ${pre}__${color}`")
-            | Карта не сохранена
+        // todo-er Временно отключили (разбираемся...)
+        //div(:class="`${pre}__status__info ${pre}__${color}`" v-if="pay")
+        //  er-icon(name="close" :class="`${pre}__status__info__icon`")
+        //  span.caption(:class="`${pre}__status__info__span ${pre}__${color}`")
+        //    | Автоплатёж не включен
+        //div.mt-20(:class="`${pre}__status__info ${pre}__${color}`" v-if="pay")
+        //  er-icon(name="close" :class="`${pre}__status__info__icon`")
+        //  span.caption(:class="`${pre}__status__info__span ${pre}__${color}`")
+        //    | Карта не сохранена
 
       er-container(:class="`${pre}__off__butt__container`" v-if="pay")
         er-row.no-gutters.justify-content-between

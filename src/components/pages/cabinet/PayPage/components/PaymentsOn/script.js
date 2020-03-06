@@ -7,6 +7,7 @@ export default {
     isStatus: null,
     color: '',
     height: '',
+    email: '',
     infoPay: 'Идет проверка статуса платежа...',
     pay: false
   }),
@@ -31,6 +32,7 @@ export default {
         this.height = '__height'
         this.infoPay = 'Оплата не прошла'
       }
+      this.email = localStorage.getItem('email')
       return this.statusPay
     }
   },

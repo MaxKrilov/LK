@@ -78,7 +78,8 @@ const actions = {
           payload
         )
         .query('/acquiring/card/pay')
-      commit('payment', result)
+      const resultArr = [result, payload.email]
+      commit('payment', resultArr)
 
       return result
     } catch (e) {
@@ -201,7 +202,8 @@ const mutations = {
     state.bindingId = result.bindingId
   },
   payment: (state, result) => {
-    location.href = result.pay_url
+    localStorage.setItem('email', result[1])
+    location.href = result[0].pay_url
   },
   autoPay: (state, result) => {
     state.visAutoPay = result[1] === 0 ? 0 : state.numCard
