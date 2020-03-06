@@ -1,4 +1,4 @@
-div(:class="`${pre}`")
+div (:class="`${pre}`")
   er-overlay(v-model="openLeftMenu", :z-index="6")
   er-overlay(v-model="isOpenRightPanel", :z-index="6")
   div(:class="[`${pre}__left`, { 'open': openLeftMenu || isDesktop }]")
