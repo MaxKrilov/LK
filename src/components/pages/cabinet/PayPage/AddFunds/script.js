@@ -18,7 +18,7 @@ export default {
     pre: 'add-funds',
     nameCard: '',
     empty: true,
-    sumPay: '1500000,00',
+    sumPay: '',
     sumPayInteger: '',
     sumPayDecimal: '',
     openConfirmPay: false,
