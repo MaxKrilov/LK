@@ -1,21 +1,35 @@
 .pay-page {
-  width: 100%;
+  position: relative;
+  left: -17px;
+  @include media-query((
+    left: (
+      sm: -24px,
+      md: 0,
+      xl: 24px
+    ),
+    padding-right: (
+      sm: 20px !important,
+      md: 24px !important
+    )
+  ));
   &__container-main {
     min-width: 320px;
-    margin-left: -16px;
+    //margin-left: -16px;
+    margin-top: -14px;
     @include media-query((
       margin-top: (
-        xs: -14px,
         sm: -17px,
         md: -26px,
         lg: -23px,
         xl: -23px,
       ),
+      /*
       margin-left: (
         sm: -24px,
         md: 0,
         xxl: 18px
       )
+      */
     ));
   }
   &__container {
@@ -31,25 +45,37 @@
     ));
   }
   &__container-operation {
-    padding: 0 !important;
+    padding: 0;
     position: relative;
     margin-top: -48px;
+    left: 0;
+    width: 107%;
     @include media-query((
       left: (
-        xs: 0,
         md: -24px,
-        lg: 0px,
-        xl: 0px,
-        xxl: 0px
+        lg: 0px
       ),
+      width: (
+        sm: 110%,
+        md: 109%,
+        lg: 100%,
+      )
     ));
   }
   &__container-button {
-    padding-right: 0 !important;
+    padding-right: 16px;
+    padding-left: 16px;
     position: relative;
+    left: 0;
+    width: 102%;
     @include media-query((
       padding-left: (
-        lg: 0 !important
+        sm: 25px,
+        lg: 0
+      ),
+      padding-right: (
+        sm: 25px,
+        lg: 0
       ),
       height: (
         xs: 88px,
@@ -57,13 +83,14 @@
         md: 46px,
         ),
       left: (
-        xs: 0,
-        sm: -12px,
-        md: -24px,
-        lg: 0px,
-        xl: 0px,
-        xxl: 0px
+        md: 10px,
+        lg: 0
       ),
+      width: (
+        sm: 100%,
+        md: 96%,
+        lg: 100%,
+      )
     ));
   }
   &__info {
@@ -331,19 +358,6 @@
     }
   }
   &__button-group {
-    padding-left: 3.5vw;
-    @include media-query((
-      margin: (
-        xs: -8px auto 0 auto !important,
-        sm: -8px 24px 0 0 !important,
-        md: 22px 4vw -21px 8px !important,
-        lg: 17px 0 -33px 0 !important,
-        xl: 15px 0 0 0 !important,
-      ),
-      padding-left: (
-        md: 0
-      ),
-    ));
     &__history {
       @include media-query((
         margin-bottom: (
@@ -371,17 +385,14 @@
   &__download-icon svg {
     position: absolute;
     height: 16px;
-    top: 14px;
+    top: 1px;
     left: 16px;
     z-index: 1;
     color: rgba(map_get($shades, 'black'), 0.3);
     @include media-query((
       left: (
-        sm: 24px !important,
+        sm: 16px !important,
         md: 10px !important,
-        lg: 24px !important,
-        xl: 30px !important,
-        xxl: 72px !important,
       )
     ));
   }

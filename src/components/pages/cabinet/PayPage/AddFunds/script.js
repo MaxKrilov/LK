@@ -18,7 +18,7 @@ export default {
     pre: 'add-funds',
     nameCard: '',
     empty: true,
-    sumPay: '',
+    sumPay: '1500000,00',
     sumPayInteger: '',
     sumPayDecimal: '',
     openConfirmPay: false,
@@ -56,7 +56,7 @@ export default {
       'konstantinopolsky1@company.ru',
       'konstant'
     ],
-    currentEmail: ''
+    currentEmail: 'konstantinopolsky@company.ru'
   }),
   computed: {
     ...mapGetters([SCREEN_WIDTH]),
@@ -69,8 +69,16 @@ export default {
       errDelAutoPay: state => state.payments.errAutoPay,
       selSave: state => state.payments.save,
       cvc: state => state.payments.cvc,
-      numCard: state => state.payments.numCard
-    })
+      numCard: state => state.payments.numCard,
+      clientInfo: state => state.user.clientInfo
+    }),
+    listEmail () {
+      const listEmail = this.clientInfo?.contacts?.map(
+        item => item.contactMethods.filter(
+          _item => _item['@type'].match(/email/ig)).value
+      ) || []
+      return listEmail
+    }
   },
   mounted () {
     this.changeWidth()
@@ -99,6 +107,8 @@ export default {
   },
   methods: {
     changeWidth () {
+      console.log('>>1', this.clientInfo)
+      console.log('>>3', this.listEmail)
       this.direct = this[SCREEN_WIDTH] < 960 ? 'row' : 'column'
       if (this.isAutoPay) {
         this.textAutopay = this.autopayOff
@@ -228,7 +238,7 @@ export default {
       }
     },
     paymentsOn () {
-      let sumPay = this.sumPay.replace( /\s/g, "")
+      let sumPay = this.sumPay.replace(/\s/g, '')
       sumPay = sumPay.replace(',', '.')
       let selSave = Number(this.selSave)
       let payload

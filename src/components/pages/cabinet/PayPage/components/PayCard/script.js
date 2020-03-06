@@ -97,6 +97,15 @@ export default {
     })
   },
   methods: {
+    scroll (e) {
+      e.preventDefault()
+      e.stopPropagation()
+      if (e.deltaY > 0) {
+        if (this.index < this.cards.length) this.move('Up')
+      } else {
+        this.move('Down')
+      }
+    },
     changeWidth () {
       if (this[SCREEN_WIDTH] >= 640) {
         this.delta = [0, 0, 0, 0]
@@ -127,7 +136,7 @@ export default {
     },
     move (direct) {
       if (direct === 'Up') {
-        if (this.index < 3) {
+        if (this.index < this.cards.length) {
           if (this[SCREEN_WIDTH] >= 640) {
             this.topMove -= this.topMove === 0 ? 233 : 273
             this.leftMove[this.index] -= 128

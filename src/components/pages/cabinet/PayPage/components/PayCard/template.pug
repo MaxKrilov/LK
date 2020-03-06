@@ -1,6 +1,10 @@
 // Pay Card
 
-er-container(full :class="`${pre}__container`")
+er-container(
+  full
+  :class="`${pre}__container`"
+  @wheel ="scroll"
+)
   div(
     :class="`${pre}__indicators`"
     v-if="cards.length > 0"
