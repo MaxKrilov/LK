@@ -3,7 +3,7 @@ import {
   GET_DATA_FOR_INTERNET_SUCCESS,
   GET_DATA_FOR_INTERNET_ERROR
 } from '../actions/internet'
-import { TYPE_ARRAY } from '../../constants/type_request'
+// import { TYPE_ARRAY } from '../../constants/type_request'
 import { ERROR_MODAL } from '../actions/variables'
 
 const state = {
@@ -23,7 +23,7 @@ const getters = {
 
 const actions = {
   [GET_DATA_FOR_INTERNET]: async ({ commit, dispatch, rootGetters }, { api, parentId }) => {
-    const include = getters.getRequestParams()
+    // const include = getters.getRequestParams()
     const { toms: clientId } = rootGetters['auth/user']
     const id = clientId
     try {
