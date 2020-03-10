@@ -598,6 +598,6 @@ export function dataURLtoFile (dataurl, fileName) {
 }
 
 export function generateFilePath (id, fileName) {
-  const date = Number(new Date())
+  // const date = Number(new Date())
   return `${moment().format('MMYYYY')}/${id}`
 }

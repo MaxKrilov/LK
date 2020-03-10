@@ -2,7 +2,7 @@ import { Vue, Component } from 'vue-property-decorator'
 import * as d3 from 'd3'
 import { eachArray, getLastElement } from '@/functions/helper'
 // @ts-ignore
-import { Selection, BaseType, ContainerElement } from '@types/d3-selection'
+import { Selection, ContainerElement } from '@types/d3-selection'
 
 const WIDTH_SVG = 319
 const HEIGHT_SVG = 317
@@ -566,7 +566,7 @@ export default class SpeedComponent extends Vue {
       d3.selectAll(`#${this.id} .scale-tick`)
         .style('stroke', addedColor)
       d3.selectAll(`#${this.id} .scale-numbers`)
-        .filter((d: any, i: number) => d.data > currentSpeed && d.data !== lastAvailableSpeedVal)
+        .filter((d: any) => d.data > currentSpeed && d.data !== lastAvailableSpeedVal)
         .style('fill', addedColor)
     }
     if (isTurboActivation) {
@@ -685,12 +685,12 @@ export default class SpeedComponent extends Vue {
           .container(function () {
             return this.parentNode
           })
-          .on('start', function (d: any, i: number) {
+          .on('start', function () {
             if (d3.event.cancelable) {
               d3.event.preventDefault()
             }
           })
-          .on('drag', function (d: any) {
+          .on('drag', function () {
             if (!d3.event.cancelable) {
               return
               // console.log(d3.event)

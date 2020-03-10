@@ -10,6 +10,7 @@ import { SCREEN_WIDTH } from '@/store/actions/variables'
 import { BREAKPOINT_XL } from '@/constants/breakpoint'
 import { getFirstElement } from '@/functions/helper'
 import { CREATE_REQUEST, GET_SERVICES_BY_LOCATION } from '@/store/actions/request'
+// eslint disabled
 import { API } from '@/functions/api'
 
 import moment from 'moment'
@@ -301,7 +302,7 @@ export default class CreateRequestComponent extends Vue {
           this.resultDialogError = true
         }
       })
-      .catch((e: any) => {
+      .catch(() => {
         this.resultDialogError = true
       })
       .finally(() => {

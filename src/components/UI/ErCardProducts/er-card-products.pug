@@ -1,0 +1,42 @@
+div(:class="`${pre}`")
+  div(
+    :class="[{ stopped: stopped, active: isOpen }, `${pre}__point-item`]",
+    @click="isOpen = !isOpen"
+    )
+    div(:class="`${pre}__point-content`")
+      div(:class="`${pre}__point-icon`")
+        er-icon(class="icon" :name="icon")
+      div(:class="`${pre}__point-wrapper`")
+        div(:class="`${pre}__title-block`")
+          div(:class="`${pre}__point-name`")
+            slot
+          div(:class="`${pre}__switcher`")
+            er-icon(name="corner_down" :class="['icon', {'arrow-up': isOpen}]")
+            div(:class="[`${pre}__service-count`, {[`${pre}__service-count_active`]: isOpen }]")
+              span(class="wide")
+                template(v-if="isOpen")
+                  | Свернуть
+                template(v-else-if="stopped")
+                  | Подробно
+                template(v-else)
+                  slot(name="count-connection")
+                    | Подробно
+        template(v-if="!stopped")
+          div(:class="`${pre}__data-wrap`")
+            div(:class="`${pre}__activate-date`")
+              div(class="title")
+                  | Дата активации:
+              div(:class="`${pre}__h4`") {{ date }}
+            div(:class="`${pre}__price`")
+              div(class="title") Абонентская плата
+              div(:class="`${pre}__price-content`")
+                span(:class="`${pre}__h4`") {{ price }}
+                span(:class="`${pre}__units`") &nbsp;₽/месяц
+        template(v-else)
+          div(:class="`${pre}__stopped-block`")
+            er-icon(name="no_enter" :class="['icon']")
+            div Приостановлена
+      div(:class="`${pre}__active-line`")
+  er-slide-up-down(:active="isOpen" :duration="200")
+    div(:class="[`${pre}__slider`, { [`${pre}__slider_active`]: isOpen }]")
+      slot(name="slider-content")
