@@ -9,17 +9,18 @@ er-container(
     :class="`${pre}__indicators`"
     v-if="cards.length > 0"
   )
+    div(:class="`${pre}__indicators__disable`")
     div(
       :class="`${pre}__indicators__line`"
-      :style="'top: ' + moveInd + 'px'"
+      :style="'top: ' + moveInd + 'px; height: ' + heightInd + 'px'"
     )
     div(
-      v-for="i in 3"
+      v-for="i in numInd"
       :class="`${pre}__indicators__circle`"
       @click="move('Down')"
     )
     div(
-      v-for="i in 3"
+      v-for="i in numInd"
       :class="`${pre}__indicators__circle__down`"
       @click="move('Up')"
     )
@@ -55,7 +56,7 @@ er-container(
                 div(:class="`${pre}__logo`")
                   img(
                     src="@/assets/images/logo.png"
-                    :class="`${pre}__logo__img1`"
+                    :class="`${pre}__logo__imglogo`"
                   )
                   h3(:class="`${pre}__card-title`")
                     | Оплата новой картой
@@ -75,7 +76,7 @@ er-container(
                         @click="save"
                         :class="`${pre}__remcard__text`"
                       ) Запомнить карту
-                    er-hint(:class="`${pre}__remcard__hint`").ml-8
+                    er-hint.ml-8(:class="`${pre}__remcard__hint`")
                       h3.mb-8
                         | Запомнить карту
                       | {{ textDataCard }}
@@ -103,7 +104,6 @@ er-container(
                     @click.stop
                     v-if="visAutoPay === 1"
                   )
-                    // todo-er должен ли работать чекбокс?
                     er-toggle(
                     type="checkbox"
                     view="radio-check"
@@ -113,7 +113,7 @@ er-container(
                     div(:class="`${pre}__auto-pay__title`")
                       | Автоплатеж
 
-          er-flex(style="height: 0")
+          er-flex(:class="`${pre}__height`")
             er-card(id="bgg"
               :class="`${pre}__card__bg`"
               :style="'transform: translate(' + leftMove[0] + 'px, ' +  topBg[0] + 'px)'"
@@ -154,7 +154,7 @@ er-container(
                   er-toggle(
                     type="checkbox"
                     view="radio-check"
-                    v-model="selected"
+                    v-model="hasAutoPay"
                     :class="`${pre}__auto-pay__ertoogle`"
                   )
                   div(:class="`${pre}__auto-pay__title`")
@@ -211,17 +211,16 @@ er-container(
                   @click.stop
                   v-if="visAutoPay === numCard + 1"
                 )
-                  //
                   er-toggle(
                     type="checkbox"
                     view="radio-check"
-                    v-model="selected"
+                    v-model="hasAutoPay"
                     :class="`${pre}__auto-pay__ertoogle`"
                   )
                   div(:class="`${pre}__auto-pay__title`")
                     | Автоплатеж
 
-          er-flex(style="height: 0")
+          er-flex(:class="`${pre}__height`")
             er-card(
               :class="`${pre}__card__bg`"
               :style="'transform: translate(' + leftMove[idx + 1] + 'px, ' +  topBg[idx + 1] + 'px)'"

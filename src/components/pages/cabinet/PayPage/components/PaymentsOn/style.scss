@@ -2,8 +2,6 @@
   position: relative;
   background: map_get($gray, '3');
   z-index: 2;
-  //left: -300px;
-  //top: 47px;
   min-height: 395px;
   @include media-query((
     min-height: (
@@ -33,8 +31,6 @@
     &__container {
       width: 100% !important;
       position: relative;
-      //margin-left: 300px !important;
-      //margin-top: -43px;
     }
     &__icon {
       display: inline-block;
@@ -47,17 +43,13 @@
         height: (
           sm: 101px,
           md: 165px,
-          //lg: 454px,
-          //xl: 505px,
         ),
       ));
-
     }
     &__icon-height svg {
       width: 64px !important;
       left: 0;
       top: 0;
-      //color: map_get($green, 'base');
       @include media-query((
         width: (
           md: 80px !important,
@@ -66,7 +58,6 @@
         ),
       ));
     }
-
     &__pos {
       display: inline-block;
       position: absolute;
@@ -83,7 +74,6 @@
       ));
     }
     &__info {
-      //color: map_get($green, 'base');
       position: absolute;
       font-family: $fedra-demi;
       &__icon svg {
@@ -92,13 +82,11 @@
       }
       &__span {
         font-family: $fedra-demi !important;
-        //color: map_get($green, 'base') !important;
       }
     }
     &__butt {
       position: relative;
       top: 36px;
-      //left: -55px;
       max-width: 127% !important;
       width: 288px !important;
       @include media-query((
@@ -107,12 +95,6 @@
           sm: 208px !important,
           md: 205px !important,
         ),
-        /*
-        left: (
-          sm: -81px,
-          xl: -179px
-        ),
-        */
         top: (
           sm: 86px,
           md: 59px,
@@ -135,161 +117,80 @@
           md: -1px
         )
       ))
-
     }
   }
-  &__off {
-    /*
-    @include media-query((
-      min-height: (
-        sm: 247px,
-        xl: 444px !important
-      ),
-    ));
-    */
-    /*
+  &__butt {
+    position: relative;
+    &__left {
+      position: relative;
+      top: -51px;
+      left: 10px;
+      max-width: 127% !important;
+      width: 360px !important;
+      @include media-query((
+        max-width: (sm: 100% !important),
+        width: (sm: 179px !important),
+        left: (
+          sm: -81px
+        ),
+        top: (sm: 86px),
+      ));
+    }
+    &__right {
+      top: -30px;
+      left: 35px;
+      @include media-query((
+        left: (
+          sm: 109px,
+          md: 202px,
+          xl: -402px
+        ),
+        top: (
+          sm: 50px,
+          xl: 93px
+        ),
+      ));
+    }
+    &__text {
+      font: 14px/17px $fedra-demi !important;
+      color: rgba(map_get($shades, 'black'), 0.8) !important;
+      margin-top: 6px;
+      margin-bottom: 9px;
+      @include media-query((
+        font-size: (
+          md: 14px,
+        ),
+        line-height: (
+          md: 19px,
+        ),
+        letter-spacing: (
+          md: -1px
+        )
+      ))
+    }
+    &__icon svg {
+      width: 32px !important;
+      color: map_get($yellow, 'base');
+      margin-right: 16px;
+    }
     &__container {
-      width: 100% !important;
       position: relative;
-      //margin-left: 300px !important;
-      //margin-top: -43px;
-    }
-    &__icon {
-      display: inline-block;
-      position: absolute;
-    }
-    &__row {
-      position: relative;
-      height: 177px;
-      @include media-query((
-        height: (
-          sm: 101px,
-          md: 165px,
-          //lg: 454px,
-          //xl: 505px,
-        ),
-      ));
-
-    }
-    &__icon-height svg {
-      //position: absolute;
-      width: 64px !important;
       left: 0;
-      top: 0;
-      color: map_get($red, 'base');
+      top: 156px;
+      padding-left: 0 !important;
       @include media-query((
-        width: (
-          md: 80px !important,
-          lg: 96px !important,
-          xl: 128px !important,
+        left: (
+          sm: 81px,
+        ),
+        top: (
+          sm: 18px,
+          md: 50px,
+          lg: 52px,
+          xl: 82px
         ),
       ));
-    }
-    &__pos {
-      display: inline-block;
-      position: absolute;
-      margin-left: 30px;
-      top: 0;
-      @include media-query((
-        margin-left: (
-          sm: 78px,
-          md: 96px,
-          lg: 115px,
-          xl: 145px
-        ),
-        top: (md: 16px),
-      ));
-    }
-    &__info {
-      color: map_get($red, 'base');
-      position: absolute;
-      font-family: $fedra-demi;
-      &__icon svg {
-        width: 16px !important;
-        margin-right: 5px;
-      }
-      &__span {
-        font-family: $fedra-demi !important;
-        color: map_get($red, 'base') !important;
-      }
-    }
-    */
-    &__butt {
-      position: relative;
-      &__left {
-        position: relative;
-        top: -51px;
-        left: 10px;
-        max-width: 127% !important;
-        width: 360px !important;
-        @include media-query((
-          max-width: (sm: 100% !important),
-          width: (sm: 179px !important),
-          left: (
-            sm: -81px
-          ),
-          top: (sm: 86px),
-        ));
-      }
-      &__right {
-        top: -30px;
-        left: 35px;
-        @include media-query((
-          left: (
-            sm: 109px,
-            md: 202px,
-            xl: -402px
-          ),
-          top: (
-            sm: 50px,
-            xl: 93px
-          ),
-        ));
-      }
-      &__text {
-        font: 14px/17px $fedra-demi !important;
-        color: rgba(map_get($shades, 'black'), 0.8) !important;
-        //letter-spacing: -0.5px;
-        margin-top: 6px;
-        margin-bottom: 9px;
-        @include media-query((
-          font-size: (
-            md: 14px,
-          ),
-          line-height: (
-            md: 19px,
-          ),
-          letter-spacing: (
-            md: -1px
-          )
-        ))
-
-      }
-      &__icon svg {
-        width: 32px !important;
-        color: map_get($yellow, 'base');
-        margin-right: 16px;
-      }
-      &__container {
-        position: relative;
-        left: 0;
-        top: 156px;
-        padding-left: 0 !important;
-        @include media-query((
-          left: (
-            sm: 81px,
-          ),
-          top: (
-            sm: 18px,
-            md: 50px,
-            lg: 52px,
-            xl: 82px
-          ),
-        ));
-      }
     }
   }
-
   &__back-main {
     display: none;
     &__text {
@@ -307,17 +208,8 @@
   &__container-main {
     padding: 0 !important;
     margin-left: 0;
-    margin-bottom: -7px; //
+    margin-bottom: -7px;
     @include media-query((
-      /*
-      margin-top: (
-        xs: -14px,
-        sm: -25px,
-        md: 47px,
-        lg: -21px,
-        xl: -23px,
-      ),
-      */
       margin-left: (
         sm: 0,
         md: 0,
@@ -353,10 +245,10 @@
         sm: -6px,
         md: -10px,
         lg: -17px,
-        xl: 0px,
+        xl: 0,
       ),
       padding-left: (
-        xl: 0px,
+        xl: 0,
       ),
       margin-bottom: (
         md: 58px,

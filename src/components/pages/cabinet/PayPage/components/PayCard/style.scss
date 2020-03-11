@@ -100,7 +100,6 @@
       left: 346px;
       @include media-query((
         top: (
-          //md: 13px,
           xl: 30px,
         ),
       ));
@@ -280,7 +279,7 @@
         md: 26px,
         xl: 11px
       )
-  ));
+    ));
   }
   &__container {
     padding-left: 0 !important;
@@ -487,9 +486,6 @@
       flex-wrap: (
         md: wrap !important
       ),
-      margin-left: (
-        md: -9px !important,
-      ),
       padding-left: (
         xs: 30px,
         md: 0
@@ -590,19 +586,17 @@
     &__deleted {
       position: relative;
       background: map_get($gray, '13');
-      margin: -18px 0 0 0;
-      padding: 15px 0 0 0;
-      top: -159px;
-      z-index: 18;
+      padding-top: 15px;
+      top: -177px;
       height: 248px;
       width: 279px;
       @include media-query((
         height: (
           sm: 236px,
-          md: 248px
+          md: 387px
         ),
         top: (
-          md: 91px
+          md: 0
         ),
         left: (
           md: 5px !important,
@@ -610,6 +604,11 @@
           xl: -15px !important,
         ),
         width: (md: 500px !important),
+        padding-top: (
+          md: 77px,
+          lg: 77px,
+          xl: 106px
+        )
       ));
       &__size {
         height: 160px;
@@ -650,7 +649,6 @@
       &__bg {
         position: absolute !important;
         top: 57px !important;
-        //left: 38px !important;
         z-index: -1;
         max-height: 160px;
         width: 256px !important;
@@ -697,7 +695,7 @@
     position: relative;
     top: 24px;
     left: 24px;
-    &__img1 {
+    &__imglogo {
       width: 48px !important;
       @include media-query((
         width: (md: 64px !important),
@@ -724,9 +722,11 @@
     }
     &__top {
       top: 51px;
+      /*
       &__next {
         top: 44px;
       }
+      */
     }
     &__top-h2 {
       top: 10px;
@@ -741,6 +741,9 @@
         top: -10px;
       }
     }
+  }
+  &__height {
+    height: 0
   }
 }
 .er-hint__message {

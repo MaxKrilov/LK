@@ -6,15 +6,17 @@ export default {
   props: ['empty', 'visAutoPay'],
   data: () => ({
     pre: 'pay-card',
-    cvc: ['', '', ''],
+    numInd: null,
+    heightInd: null,
+    cvc: [],
     index: 0,
-    hasAutoPay: true, // todo-er должен ли работать чекбокс?
+    hasAutoPay: true,
     topMove: 0,
     rightMove: 0,
     leftMove: [],
     topBg: [],
-    isButtTop: [false, false, false],
-    isButtBott: [true, false, false],
+    isButtTop: [],
+    isButtBott: [],
     moveInd: 0,
     textDataCard: `Данные карты вы заполняете 
     на следующем шаге. 
@@ -67,20 +69,36 @@ export default {
         this.changeWidth()
         this.buttbottimg0 = require('@/assets/images/paycard/' + this.cards[0].name + '-butt-1200.png')
         this.numbuttbott0 = this.cards[0].maskedPan.slice(-4)
+        let autopay
+        for (let i = 0; i < this.cards.length; i++) {
+          if (this.cards[i].autopay === 1) {
+            autopay = i + 1
+            const payload = {
+              billingAccount: this.activeBillingAccountId,
+              bindingId: this.cards[i].bindingId,
+              activate: 1,
+              load: autopay
+            }
+            this.$store.dispatch('payments/autoPay', { api: this.$api, payload: payload })
+          }
+        }
       }
     },
     delCard () {
-      this.$store.dispatch('payments/listCard', {
-        api: this.$api,
-        billingAccount: this.activeBillingAccountId
-      })
       if (this.delCard) {
+        this.$store.dispatch('payments/listCard', {
+          api: this.$api,
+          billingAccount: this.activeBillingAccountId
+        })
         this.openConfirmDel = false
         setTimeout(() => {
-          window.location = window.location.href
+          this.changeWidth()
+          this.topMove = 0
+          this.right = 0
           this.$store.dispatch('payments/hideDelCard')
         }, 3000)
       } else {
+        this.index = 0
         this.openConfirmDel = true
       }
     }
@@ -103,40 +121,54 @@ export default {
       if (e.deltaY > 0) {
         if (this.index < this.cards.length) this.move('Up')
       } else {
-        this.move('Down')
+        if (this.index > 0) this.move('Down')
       }
     },
+    arrFill (len, valOne, val) {
+      let array = [len + 1]
+      for (let i = 0; i < len + 1; i++) {
+        array[i] = i === 0 ? valOne : val
+      }
+      return array
+    },
     changeWidth () {
+      const len = this.cards.length
+      this.numInd = len
+      this.heightInd = 65 + ((len - 1) * 16)
+      this.isButtTop = this.arrFill(len - 1, false, false)
+      this.isButtBott = this.arrFill(len - 1, true, false)
+      this.cvc = this.arrFill(len - 1, '', '')
       if (this[SCREEN_WIDTH] >= 640) {
-        this.delta = [0, 0, 0, 0]
-        this.leftMove = [0, -128, -128, -128]
-        this.topBg = [0, 0, 0, 0]
+        this.delta = this.arrFill(len, 0, 0)
+        this.leftMove = this.arrFill(len, 0, -128)
+        this.topBg = this.arrFill(len, 0, 0)
         this.valOpacity = 1
       } else {
-        let rbutt1, delta1, scrwidth
+        let posBgOne, deltaOne, scrwidth
         if (this[SCREEN_WIDTH] < 480) {
           scrwidth = this[SCREEN_WIDTH] - 320
           this.bgDeleteLeft = 9 + scrwidth * 0.75
           this.bgDeleteWidth = 270 + scrwidth * 0.82
           this.deleteLeft = 14 + scrwidth * 0.088
-          delta1 = 24 + scrwidth * 0.8
-          rbutt1 = 8 + scrwidth * 0.74
+          deltaOne = 24 + scrwidth * 0.8
+          posBgOne = 8 + scrwidth * 0.74
         } else {
           scrwidth = this[SCREEN_WIDTH] - 480
           this.bgDeleteLeft = 128 + scrwidth * 0.48
           this.bgDeleteWidth = 400 + scrwidth * 0.56
           this.deleteLeft = 28 + scrwidth * 0.22
-          delta1 = 151 + scrwidth * 0.91
-          rbutt1 = 128 + scrwidth * 0.55
+          deltaOne = 151 + scrwidth * 0.91
+          posBgOne = 128 + scrwidth * 0.55
         }
-        this.delta = [delta1, 0, 0, 0]
-        this.leftMove = [rbutt1, 10, 10, 10]
-        this.topBg = [this[SCREEN_WIDTH] < 480 ? 66 : 0, -9, -9, -9]
+        this.delta = this.arrFill(len, deltaOne, 0)
+        this.leftMove = this.arrFill(len, posBgOne, 10)
+        this.topBg = this.arrFill(len, this[SCREEN_WIDTH] < 480 ? 66 : 0, -9)
       }
     },
     move (direct) {
+      const len = this.cards.length
       if (direct === 'Up') {
-        if (this.index < this.cards.length) {
+        if (this.index < len) {
           if (this[SCREEN_WIDTH] >= 640) {
             this.topMove -= this.topMove === 0 ? 233 : 273
             this.leftMove[this.index] -= 128
@@ -145,28 +177,27 @@ export default {
             this.topBg[this.index + 1] += 10
             this.valOpacity = 1
           } else {
-            let ll1, ll2, delta0, delta1, bg1, scrwidth
+            let shiftOne, shiftNext, deltaOne, deltaNext, posBgNext, scrwidth
             if (this[SCREEN_WIDTH] < 480) {
               scrwidth = this[SCREEN_WIDTH] - 320
-              ll1 = 264 - scrwidth * 0.05
-              ll2 = 272 + scrwidth * 0.045
-              delta0 = 16 + scrwidth * 0.05
-              delta1 = 16 + scrwidth * 0.85
-              bg1 = 8 + scrwidth * 0.75
+              shiftOne = 264 - scrwidth * 0.05
+              shiftNext = 272 + scrwidth * 0.045
+              deltaOne = 16 + scrwidth * 0.05
+              deltaNext = 16 + scrwidth * 0.85
+              posBgNext = 8 + scrwidth * 0.75
             } else {
               scrwidth = this[SCREEN_WIDTH] - 480
-              ll1 = 256 - (this[SCREEN_WIDTH] * 0.15 - 72)
-              ll2 = 280 + scrwidth * 0.075
-              delta0 = 24 + scrwidth * 0.1
-              delta1 = 151 + scrwidth * 0.52
-              bg1 = 128 + scrwidth * 0.41
+              shiftOne = 256 - (this[SCREEN_WIDTH] * 0.15 - 72)
+              shiftNext = 280 + scrwidth * 0.075
+              deltaOne = 24 + scrwidth * 0.1
+              deltaNext = 151 + scrwidth * 0.52
+              posBgNext = 128 + scrwidth * 0.41
             }
-            this.rightMove -= this.index === 0 ? ll1 : ll2
-            this.delta[this.index] = delta0
-            this.delta[this.index + 1] = delta1
-            this.leftMove[this.index + 1] = bg1
+            this.rightMove -= this.index === 0 ? shiftOne : shiftNext
+            this.delta[this.index] = deltaOne
+            this.delta[this.index + 1] = deltaNext
+            this.leftMove[this.index + 1] = posBgNext
             this.leftMove[this.index] = -10
-
             if (this[SCREEN_WIDTH] >= 480) {
               this.topBg[this.index] -= 16
               this.topBg[this.index + 1] += 16
@@ -175,12 +206,10 @@ export default {
               this.topBg[this.index + 1] += 66
             }
           }
-          for (let i = 0; i < this.isButtTop.length; i++) {
-            this.isButtTop[i] = false
-            this.isButtBott[i] = false
-          }
+          this.isButtTop = this.arrFill(len - 1, false, false)
+          this.isButtBott = this.arrFill(len - 1, false, false)
           this.isButtTop[this.index] = true
-          this.isButtBott[this.index + 1] = true
+          if (this.index < len) this.isButtBott[this.index + 1] = true
           this.moveInd += 16
           this.index++
         }
@@ -193,29 +222,28 @@ export default {
             this.topBg[this.index - 1] += 10
             this.topBg[this.index] -= 10
           } else {
-            let ll1, ll2, delta0, delta1, bg1, scrwidth, k0
+            let shiftOne, shiftNext, deltaOne, deltaNext, posBgNext, scrwidth, kscr
             if (this[SCREEN_WIDTH] < 480) {
               scrwidth = this[SCREEN_WIDTH] - 320
-              ll1 = 264 - scrwidth * 0.05
-              ll2 = 272 + scrwidth * 0.045
-              delta0 = 16 + scrwidth * 0.05
-              delta1 = 16 + scrwidth * 0.85
-              bg1 = 8 + scrwidth * 0.75
+              shiftOne = 264 - scrwidth * 0.05
+              shiftNext = 272 + scrwidth * 0.045
+              deltaOne = 16 + scrwidth * 0.05
+              deltaNext = 16 + scrwidth * 0.85
+              posBgNext = 8 + scrwidth * 0.75
             } else {
               scrwidth = this[SCREEN_WIDTH] - 480
-              ll1 = 256 - (this[SCREEN_WIDTH] * 0.15 - 72)
-              ll2 = 280 + scrwidth * 0.075
-              delta0 = 24 + scrwidth * 0.1
-              k0 = this.index === 1 ? [0.91, 0.55] : [0.52, 0.41]
-              delta1 = 151 + scrwidth * k0[0]
-              bg1 = 128 + scrwidth * k0[1]
+              shiftOne = 256 - (this[SCREEN_WIDTH] * 0.15 - 72)
+              shiftNext = 280 + scrwidth * 0.075
+              deltaOne = 24 + scrwidth * 0.1
+              kscr = this.index === 1 ? [0.91, 0.55] : [0.52, 0.41]
+              deltaNext = 151 + scrwidth * kscr[0]
+              posBgNext = 128 + scrwidth * kscr[1]
             }
-            this.rightMove += this.index === 1 ? ll1 : ll2
-            this.delta[this.index - 1] = delta1
-            this.delta[this.index] = delta0
-            this.leftMove[this.index - 1] = bg1
+            this.rightMove += this.index === 1 ? shiftOne : shiftNext
+            this.delta[this.index - 1] = deltaNext
+            this.delta[this.index] = deltaOne
+            this.leftMove[this.index - 1] = posBgNext
             this.leftMove[this.index] = 10
-
             if (this[SCREEN_WIDTH] >= 480) {
               this.topBg[this.index - 1] += 16
               this.topBg[this.index] -= 16
@@ -224,11 +252,9 @@ export default {
               this.topBg[this.index] -= 66
             }
           }
-          for (let i = 0; i < this.isButtTop.length; i++) {
-            this.isButtTop[i] = false
-            this.isButtBott[i] = false
-          }
-          this.isButtTop[this.index - 2] = true
+          this.isButtTop = this.arrFill(len - 1, false, false)
+          this.isButtBott = this.arrFill(len - 1, false, false)
+          if (this.index > 1) this.isButtTop[this.index - 2] = true
           this.isButtBott[this.index - 1] = true
           this.moveInd -= 16
           this.index--
@@ -238,10 +264,8 @@ export default {
       this.rightNext = (this.index > 0) ? '__next' : ''
       this.isButtLeft = (this.index > 0)
       this.isButtRight = (this.index < 3)
-
-      this.cvc = ['', '', '']
+      this.cvc = this.arrFill(len - 1, '', '')
       this.$store.dispatch('payments/clearCVC')
-
       this.$emit('clearEmpty')
     },
     delConfirm () {

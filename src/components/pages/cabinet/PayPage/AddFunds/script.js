@@ -18,7 +18,7 @@ export default {
     pre: 'add-funds',
     nameCard: '',
     empty: true,
-    sumPay: '',
+    sumPay: '4444,23',
     sumPayInteger: '',
     sumPayDecimal: '',
     openConfirmPay: false,
@@ -42,7 +42,6 @@ export default {
     autopayOn: 'Автоплатеж может быть активирован только на одной карте. Если вы активируете на этой карте он будет снят с другой. При подключении автоплатежа вы соглашаетесь на автоматическое списание суммы равной ежемесячной абонентской плате. Денежные средства будут списаны с 20 по последнее число месяца, предшествующего отчетному (например авансовый платеж за апрель будет списан с 20 по 31 марта).',
     textAutopay: '',
     direct: 'row',
-    isAutoPay: false,
     borderSum: '',
     borderCheck: '',
     isEmptySum: false,
@@ -51,7 +50,7 @@ export default {
     checkAutoPay: 'Подключить автоплатёж',
     selEmail: '',
     emails: [],
-    currentEmail: ''
+    currentEmail: 'epic@mail.com'
   }),
   computed: {
     ...mapGetters([SCREEN_WIDTH]),
@@ -77,19 +76,19 @@ export default {
       this.changeWidth()
     },
     visAutoPay () {
-      if (this.isAutoPay) {
+      if (this.visAutoPay) {
         this.openConfirmAutoPay = this.errDelAutoPay
         this.visConfirmAutoPay = this.errDelAutoPay
         if (!this.errDelAutoPay && this.visAutoPay === 0) {
           this.checkAutoPay = 'Подключить автоплатёж'
-          this.isAutoPay = false
+          this.visAutoPay = false
         }
       } else {
         this.openConfirmAutoPay = this.errDelAutoPay
         this.visConfirmAutoPay = this.errDelAutoPay
         if (!this.errDelAutoPay && this.visAutoPay !== 0) {
           this.checkAutoPay = 'Автоплатёж'
-          this.isAutoPay = true
+          this.visAutoPay = true
         }
       }
     },
@@ -111,7 +110,8 @@ export default {
     changeWidth () {
       // todo-er перенести в css
       this.direct = this[SCREEN_WIDTH] < 960 ? 'row' : 'column'
-      if (this.isAutoPay) {
+
+      if (this.visAutoPay) {
         this.textAutopay = this.autopayOff
       } else {
         this.textAutopay = this.autopayOn
@@ -131,7 +131,7 @@ export default {
       this.payAutoTextConfirm()
     },
     payAuto () {
-      if (this.isAutoPay) {
+      if (this.visAutoPay) {
         this.buttLeft = 'Отключить'
         this.buttRight = 'Отменить'
         this.textAutopay = this.autopayOff
@@ -154,12 +154,13 @@ export default {
       const payload = {
         billingAccount: this.activeBillingAccountId,
         bindingId: this.listCard[this.numCard - 1].bindingId,
-        activate: act
+        activate: act,
+        load: 0
       }
       this.$store.dispatch('payments/autoPay', { api: this.$api, payload: payload })
     },
     autopayButtRight () {
-      this.payAutoRequest(this.numCard)
+      this.payAutoRequest(1)
     },
     autopayButtLeft () {
       this.payAutoRequest(0)
@@ -253,12 +254,13 @@ export default {
         }
         this.$store.dispatch('payments/payment', { api: this.$api, payload: payload })
       } else {
+        const cvv = this.numCard === 0 ? this.cvc[0] : this.cvc[this.numCard - 1]
         payload = {
           billingAccount: this.activeBillingAccountId,
           bindingId: this.listCard[this.numCard - 1].bindingId,
           value: sumPay,
           email: this.currentEmail,
-          cvv: this.cvc[this.numCard - 1],
+          cvv: cvv,
           returnUrl: location.href + '/payments-on'
         }
         this.$store.dispatch('payments/bindpay', { api: this.$api, payload: payload })

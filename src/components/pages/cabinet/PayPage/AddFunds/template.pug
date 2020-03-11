@@ -2,7 +2,7 @@
 
 div(:class="`${pre}`").main-content.main-content--h-padding
   div.main-content--top-padding(:class="`${pre}__back-main`")
-  div(:class="`${pre}__container-main`").main-content--top-menu-fix
+  div.main-content--top-menu-fix(:class="`${pre}__container-main`")
     div.caption(:class="`${pre}__back-main`")
       div.ml-auto
         er-icon(name="arrow_l" :class="`${pre}__icon-height`")
@@ -54,7 +54,7 @@ div(:class="`${pre}`").main-content.main-content--h-padding
               )
               span
                 er-toggle(
-                  v-model="isAutoPay"
+                  v-model="visAutoPay"
                 )
               span.mb-4(
                 :class="`${pre}__sum__autopay`"
@@ -121,7 +121,6 @@ div(:class="`${pre}`").main-content.main-content--h-padding
           div.caption(:class="`${pre}__check__input`")
             | на электронную почту:
           div(:class="`${pre}__check__input__over`")
-          // todo-er Подправить, когда добавится возможность ввода email
           er-select(
             :placeholder="currentEmail",
             :items="emails",
@@ -179,7 +178,7 @@ div(:class="`${pre}`").main-content.main-content--h-padding
     )
 
     // Автоплатеж
-    Confirm( v-if="isAutoPay && openConfirmAutoPay"
+    Confirm( v-if="visAutoPay && openConfirmAutoPay"
       :vis="openConfirmAutoPay"
       title="Вы уверены, что хотите отключить автоплатеж на карте:"
       :subText="nameCard"
@@ -191,7 +190,7 @@ div(:class="`${pre}`").main-content.main-content--h-padding
       @buttLeft="autopayButtLeft"
       @input="closeConfirm"
     )
-    Confirm( v-if="!isAutoPay && openConfirmAutoPay"
+    Confirm( v-if="!visAutoPay && openConfirmAutoPay"
       :vis="openConfirmAutoPay"
       title="Вы уверены, что хотите подключить автоплатеж на карту:"
       :subText="nameCard"
@@ -203,7 +202,7 @@ div(:class="`${pre}`").main-content.main-content--h-padding
       @buttLeft="autopayButtRight"
       @input="closeConfirm"
     )
-    Hint( v-if="isAutoPay && visConfirmAutoPay"
+    Hint( v-if="visAutoPay && visConfirmAutoPay"
       :vis="visConfirmAutoPay"
       title="Автоплатёж"
       description="— это бесплатный сервис."
@@ -217,7 +216,7 @@ div(:class="`${pre}`").main-content.main-content--h-padding
       @buttRight="payAutoTextConfHint"
       @input="closeConfirm"
     )
-    Hint( v-if="!isAutoPay && visConfirmAutoPay"
+    Hint( v-if="!visAutoPay && visConfirmAutoPay"
       :vis="visConfirmAutoPay"
       title="Автоплатёж"
       description="— это бесплатный сервис."

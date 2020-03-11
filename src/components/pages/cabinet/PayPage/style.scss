@@ -14,7 +14,6 @@
   ));
   &__container-main {
     min-width: 320px;
-    //margin-left: -16px;
     margin-top: -14px;
     @include media-query((
       margin-top: (
@@ -23,13 +22,6 @@
         lg: -23px,
         xl: -23px,
       ),
-      /*
-      margin-left: (
-        sm: -24px,
-        md: 0,
-        xxl: 18px
-      )
-      */
     ));
   }
   &__container {
@@ -372,7 +364,7 @@
     }
     &__load {
       position: absolute !important;
-      right: 0px;
+      right: 0;
       top: -10px;
       @include media-query((
         top: (sm: 0),

@@ -4,7 +4,7 @@ const state = {
   numCard: 0,
   save: 0,
   delCard: false,
-  cvc: ['', '', ''],
+  cvc: [],
   listCard: [],
   // todo-er дорисовать карту МАЭСТРО (согласовать с дизайнером)
   card_img: [
@@ -51,9 +51,7 @@ const state = {
   errDelCard: false,
   bindingId: ''
 }
-
 const getters = {}
-
 const actions = {
   changeSave: ({ commit }, { save }) => {
     commit('changeSave', save)
@@ -68,9 +66,9 @@ const actions = {
     commit('changeCurrentNumCard', num)
   },
   hideDelCard: async ({ commit }) => {
-    commit('delCard1', false)
+    commit('hideDelCard')
   },
-  payment: async ({ commit, dispatch, state }, { api, payload }) => {
+  payment: async ({ commit }, { api, payload }) => {
     try {
       const result = await api
         .setWithCredentials()
@@ -86,7 +84,7 @@ const actions = {
       commit(ERROR_MODAL, true, { root: true })
     }
   },
-  bindpay: async ({ commit, dispatch, state }, { api, payload }) => {
+  bindpay: async ({ commit }, { api, payload }) => {
     try {
       const result = await api
         .setWithCredentials()
@@ -94,16 +92,19 @@ const actions = {
           payload
         )
         .query('/acquiring/card/bindpay')
-      // todo-er Отладка - убрать, когда починят запрос
-      // console.log(result)
-      commit('payment', result)
-
+      const resultArr = [
+        result,
+        payload.email,
+        payload.returnUrl,
+        payload.billingAccount
+      ]
+      commit('bindpay', resultArr)
       return result
     } catch (e) {
       commit(ERROR_MODAL, true, { root: true })
     }
   },
-  autoPay: async ({ commit, dispatch, state }, { api, payload }) => {
+  autoPay: async ({ commit }, { api, payload }) => {
     try {
       let result = await api
         .setWithCredentials()
@@ -112,14 +113,19 @@ const actions = {
         )
         .query('/acquiring/card/autopay')
 
-      result = [result, payload.activate]
-      commit('autoPay', result)
+      if (payload.load === 0) {
+        result = [result, payload.activate]
+        commit('autoPay', result)
+      } else {
+        const resultArr = [result, payload.load]
+        commit('loadAutoPay', resultArr)
+      }
       return result
     } catch (e) {
       commit('autoPayErr')
     }
   },
-  status: async ({ commit, dispatch, state }, { api, payload }) => {
+  status: async ({ commit }, { api, payload }) => {
     try {
       const result = await api
         .setWithCredentials()
@@ -134,7 +140,7 @@ const actions = {
       commit(ERROR_MODAL, true, { root: true })
     }
   },
-  listCard: async ({ commit, dispatch, state }, { api, billingAccount }) => {
+  listCard: async ({ commit }, { api, billingAccount }) => {
     try {
       let result = await api
         .setWithCredentials()
@@ -142,8 +148,7 @@ const actions = {
           billingAccount: billingAccount
         })
         .query('/acquiring/card/list')
-
-      let cards0 = result.map(function (item) {
+      let cards = result.map(function (item) {
         state.card_img.forEach(value => {
           if (item.maskedPan[0] === value.num) {
             item = Object.assign(item, value)
@@ -151,36 +156,34 @@ const actions = {
         })
         return item
       })
-
-      cards0.forEach((value, idx) => {
-        value.num1 = cards0[idx].maskedPan.slice(0, 4)
-        value.num2 = cards0[idx].maskedPan.slice(4, 6)
-        value.num3 = cards0[idx].maskedPan.slice(-4)
-        if (idx > 0 && idx < cards0.length - 1) {
-          value.butttopimg = require('@/assets/images/paycard/' + cards0[idx - 1].name + '-butt-1200.png')
-          value.buttbottimg = require('@/assets/images/paycard/' + cards0[idx + 1].name + '-butt-1200.png')
-          value.numbutttop = cards0[idx - 1].maskedPan.slice(-4)
-          value.numbuttbott = cards0[idx + 1].maskedPan.slice(-4)
+      cards.forEach((value, idx) => {
+        value.num1 = cards[idx].maskedPan.slice(0, 4)
+        value.num2 = cards[idx].maskedPan.slice(4, 6)
+        value.num3 = cards[idx].maskedPan.slice(-4)
+        if (idx > 0 && idx < cards.length - 1) {
+          value.butttopimg = require('@/assets/images/paycard/' + cards[idx - 1].name + '-butt-1200.png')
+          value.buttbottimg = require('@/assets/images/paycard/' + cards[idx + 1].name + '-butt-1200.png')
+          value.numbutttop = cards[idx - 1].maskedPan.slice(-4)
+          value.numbuttbott = cards[idx + 1].maskedPan.slice(-4)
         } else {
-          if (idx === cards0.length - 1 && idx !== 0) {
-            value.butttopimg = require('@/assets/images/paycard/' + cards0[idx - 1].name + '-butt-1200.png')
-            value.numbutttop = cards0[idx - 1].maskedPan.slice(-4)
+          if (idx === cards.length - 1 && idx !== 0) {
+            value.butttopimg = require('@/assets/images/paycard/' + cards[idx - 1].name + '-butt-1200.png')
+            value.numbutttop = cards[idx - 1].maskedPan.slice(-4)
           } else {
             value.butttopimg = require('@/assets/images/paycard/new-butt-1200.png')
-            const idx1 = cards0.length > 1 ? idx + 1 : idx
-            value.buttbottimg = require('@/assets/images/paycard/' + cards0[idx1].name + '-butt-1200.png')
-            value.numbuttbott = cards0[idx1].maskedPan.slice(-4)
+            const idxOne = cards.length > 1 ? idx + 1 : idx
+            value.buttbottimg = require('@/assets/images/paycard/' + cards[idxOne].name + '-butt-1200.png')
+            value.numbuttbott = cards[idxOne].maskedPan.slice(-4)
           }
         }
       })
-
-      commit('listCard', cards0)
+      commit('listCard', cards)
       return result
     } catch (e) {
       commit(ERROR_MODAL, true, { root: true })
     }
   },
-  delCard: async ({ commit, dispatch, state }, { api, payload }) => {
+  delCard: async ({ commit }, { api, payload }) => {
     try {
       const result = await api
         .setWithCredentials()
@@ -205,15 +208,24 @@ const mutations = {
     localStorage.setItem('email', result[1])
     location.href = result[0].pay_url
   },
+  bindpay: (state, result) => {
+    localStorage.setItem('email', result[1])
+    location.href = `${result[2]}?transaction=${result[0]
+      .transactionId}&billing_account=${result[3]}`
+  },
   autoPay: (state, result) => {
     state.visAutoPay = result[1] === 0 ? 0 : state.numCard
+    state.errAutoPay = false
+  },
+  loadAutoPay: (state, result) => {
+    state.visAutoPay = result[0].result === 0 ? 0 : result[1]
     state.errAutoPay = false
   },
   autoPayErr: () => {
     state.errAutoPay = true
   },
-  hideDelCard: (state, result) => {
-    state.delCard = result
+  hideDelCard: (state) => {
+    state.delCard = false
     state.numCard = 0
   },
   delCard: (state, result) => {
@@ -230,7 +242,10 @@ const mutations = {
     state.cvc[state.numCard - 1] = cvc
   },
   clearCVC: (state) => {
-    state.cvc = ['', '', '']
+    let len = state.listCard.length
+    let cvc = [len + 1]
+    for (let i = 0; i < len; i++) { cvc[i] = '' }
+    state.cvc = cvc
   },
   changeCurrentNumCard: (state, num) => {
     state.numCard = num

@@ -4,7 +4,7 @@ div.main-content.main-content--h-padding(
   :class="`${pre}${height}`"
 )
   div.main-content--top-padding(:class="`${pre}__back-main`")
-  div(:class="`${pre}__container-main`").main-content--top-menu-fix
+  div.main-content--top-menu-fix(:class="`${pre}__container-main`")
     div.caption(:class="`${pre}__back-main`")
       div.ml-auto
         er-icon(name="arrow_l" :class="`${pre}__icon-height`")
@@ -72,20 +72,20 @@ div.main-content.main-content--h-padding(
         //  span.caption(:class="`${pre}__status__info__span ${pre}__${color}`")
         //    | Карта не сохранена
 
-      er-container(:class="`${pre}__off__butt__container`" v-if="pay")
+      er-container(:class="`${pre}__butt__container`" v-if="pay")
         er-row.no-gutters.justify-content-between
-          er-flex.no-gutters(xs12 sm6 lg3 xl3 :class="`${pre}__off__butt__left`")
+          er-flex.no-gutters(xs12 sm6 lg3 xl3 :class="`${pre}__butt__left`")
             er-button(
               type="submit"
               @click="addfunds"
             )
               | Попробовать снова
 
-          er-flex.no-gutters(xs12 sm6 lg9 xl3 offset-xs1 :class="`${pre}__off__butt__right`")
-            .er-attach(:class="`${pre}__off__butt__icon`")
+          er-flex.no-gutters(xs12 sm6 lg9 xl3 offset-xs1 :class="`${pre}__butt__right`")
+            .er-attach(:class="`${pre}__butt__icon`")
               er-icon(name="chat")
               a.link--dashed--black(
                 @click="addfunds"
-                :class="`${pre}__off__butt__text`"
+                :class="`${pre}__butt__text`"
               ) Спросить в чате
 
