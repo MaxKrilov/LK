@@ -49,7 +49,7 @@ export default {
       axios.interceptors.response.use(response => response, err => {
         return new Promise((resolve, reject) => {
           if (err && err.response && [403, 401].includes(err.response.status)) {
-            this.$store.dispatch('auth/signOut', { api: this.$api })
+            this.$store.dispatch('auth/signIn', { api: this.$api })
           }
           reject(err)
         })
