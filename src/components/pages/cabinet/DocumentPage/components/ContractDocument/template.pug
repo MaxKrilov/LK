@@ -2,39 +2,30 @@ common-document(
   :class="{'er-document--signed': contractIsSigned}"
 ).er-document--contract.er-document--big-doc
   template(v-slot:header)
-    .er-document__title {{ document.type.name }}
+    .er-document__title {{ computedTypeName }}
     er-document-viewer(
-      :bucket="document.bucket"
-      :file-name="document.fileName"
-      :file-path="document.filePath"
-      :is-digital-signing="contractIsReady && documentIsSigned"
-      :is-manual-signing="contractIsReady && documentIsNotSigned"
+      :list-document="computedListDocumentForViewer"
+      :is-digital-signing="!documentIsVerifying && contractIsReady && documentIsSigned"
+      :is-manual-signing="!documentIsVerifying && contractIsReady && documentIsNotSigned"
       v-model="isOpenViewer"
       @signing:manual="manualSigning"
       @signing:digital="digitalSigning"
+      ref="viewer"
       )
       template(v-slot:activator="{ on }")
         a(:href="document.file" v-on="on").er-document__link.er-document__subtitle
-          | Текст документа
-      template(v-slot:footer)
-        .er-document__modal--viewer
-          .er-document__modal--viewer__subscribe.ml-auto
-            er-button(color="blue" pre-icon="key")
-              | Подписать ЭЦП
+          | Текст {{ isSingleDocument ? 'документа' : 'документов' }}
 
 
     er-icon(name="doc")
 
   template(v-slot:body)
     .document-number
-      .document-number__sign №
-      er-tooltip(top)
-        template(v-slot:activator="{ on }")
-          .document-number__number(v-on="on") {{ document.relatedTo.name }}
-        .document-number__number--tooltip {{ document.relatedTo.name }}
+      .document-number__sign По договору №
+      .document-number__number {{ computedRelatedToName }}
 
     .document-date.caption2
-      | от {{ document.modifiedWhen | formatDate("DD.MM.YY") }}
+      | от {{ computedModifiedWhen | formatDate("DD.MM.YY") }}
 
   template(v-slot:footer)
     //- Документ подписан
@@ -49,6 +40,11 @@ common-document(
         er-icon(name="question").question--desktop
         er-icon(name="question").question--mobile
         | На проверке
+    div(v-else-if="documentIsCancel")
+      .er-document__cancelled-text
+        er-icon(name="cancel").cancelled--desktop
+        er-icon(name="cancel").cancelled--mobile
+        | Отменён
     //- Документ может быть подписан ЭЦП (signedWithDigitalSignature === 'Yes' && status === 'Готов для клиента')
     .buttons(v-else-if="contractIsReady && documentIsSigned")
       er-button(
@@ -59,6 +55,7 @@ common-document(
         | Подписать ЭЦП
       er-button(
         :color="'gray'"
+        @click="() => { cancelSigningConfirm() }"
       ).er-button--decline
         | Отказаться
     //- документ может быть подписан только вручную (signedWithDigitalSignature === 'No' && status === 'Готов для клиента')
@@ -71,5 +68,28 @@ common-document(
         | Подписать
       er-button(
         :color="'gray'"
+        @click="() => { cancelSigningConfirm() }"
       ).er-button--decline
         | Отказаться
+    template(v-if="contractIsReady")
+      er-activation-modal(
+        v-model="isOpenConfirm"
+        type="question"
+        title="Вы уверены, что хотите отказаться от подписания документа (-ов)?"
+        action-button-text="Отказаться"
+        @confirm="cancelSigning"
+      )
+      er-activation-modal(
+        v-model="isCancelSuccess"
+        type="success"
+        title="Отказ от подписания документов выполнен успешно!"
+        :is-show-action-button="false"
+        cancel-button-text="Понятно"
+      )
+      er-activation-modal(
+        v-model="isCancelError"
+        type="error"
+        title="Произошла ошибка! Повторите попытку позже"
+        :is-show-action-button="false"
+        cancel-button-text="Понятно"
+      )

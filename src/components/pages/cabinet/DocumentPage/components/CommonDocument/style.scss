@@ -448,6 +448,41 @@ $pre: '.er-document';
     }
   }
 
+  &__cancelled-text {
+    @extend %h4;
+    color: map_get($red, 'base');
+    text-align: right;
+    user-select: none;
+    .cancelled--desktop {
+      display: none;
+      margin-right: $padding-x4;
+      @include min-breakpoint('md') {
+        display: inline-block;
+        > svg {
+          width: 39px;
+        }
+      }
+      @include min-breakpoint('xl') {
+        > svg {
+          width: 45px;
+        }
+      }
+    }
+    .cancelled--mobile {
+      margin-right: $padding-x2;
+      svg {
+        width: $padding-x4;
+      }
+      @include min-breakpoint('md') {
+        display: none;
+      }
+    }
+    @include min-breakpoint('md') {
+      text-align: left;
+      @include color(map_get($red, 'base'), 1);
+    }
+  }
+
   .er-attach {
     text-align: left;
     display: inline;
@@ -469,7 +504,8 @@ $pre: '.er-document';
 
 .document-number {
   display: flex;
-  flex-direction: row;
+  //flex-direction: row;
+  flex-direction: column;
 
   &__number {
     &,
@@ -484,16 +520,6 @@ $pre: '.er-document';
 
   &__number {
     overflow: hidden;
-    &::after {
-      content: ' ';
-      display: block;
-      position: absolute;
-      top: 0;
-      right: -12px;
-      width: 77px;
-      height: 100%;
-      background: linear-gradient(270deg, map_get($gray, '9') 22.83%, rgba(map_get($gray, '9'), 0) 96.75%);
-    }
   }
 
   &__sign {

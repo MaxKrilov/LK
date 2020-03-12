@@ -23,9 +23,7 @@ common-document(
 
   template(v-slot:footer)
     er-document-viewer(
-      :bucket="document.bucket"
-      :file-name="document.fileName"
-      :file-path="document.filePath"
+      :listDocument="documentForViewer"
       v-model="isOpenViewer"
     )
       template(v-slot:activator="{ on }")

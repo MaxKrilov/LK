@@ -1,8 +1,6 @@
 import Vue from 'vue'
 import Component from 'vue-class-component'
-import iFile from '@/functions/file'
-import { ATTACH_SIGNED_DOCUMENT, CHANGE_CONTRACT_STATUS, UPLOAD_FILE } from '@/store/actions/documents'
-// eslint-disable-next-line no-unused-vars
+import { ATTACH_SIGNED_DOCUMENT, UPLOAD_FILE } from '@/store/actions/documents'
 import { API } from '@/functions/api'
 import ErActivationModal from '@/components/blocks/ErActivationModal/index.vue'
 import moment from 'moment'
@@ -13,7 +11,7 @@ import moment from 'moment'
   },
   props: {
     value: Boolean,
-    link: String,
+    data: String,
     filename: String,
     relatedTo: String,
     type: String,
@@ -27,7 +25,7 @@ export default class ManualSigningDocument extends Vue {
     input_file: HTMLInputElement
   }
   readonly value!: boolean
-  readonly link!: string
+  readonly data!: string
   readonly filename!: string
   readonly relatedTo!: string
   readonly type!: string
@@ -54,7 +52,15 @@ export default class ManualSigningDocument extends Vue {
   }
 
   downloadFile () {
-    this.link && iFile.downloadFileByURL(this.link, this.filename)
+    const tempLink = document.createElement('a')
+    tempLink.style.display = 'none'
+    tempLink.href = this.data
+    tempLink.setAttribute('download', this.filename)
+    document.body.appendChild(tempLink)
+    tempLink.click()
+    setTimeout(function () {
+      document.body.removeChild(tempLink)
+    }, 0)
   }
 
   addDocument (e: Event) {
@@ -113,12 +119,8 @@ export default class ManualSigningDocument extends Vue {
           filePath: _filePath
         })
           // Меняем статус
-          .then((response: boolean) => {
-            if (!response) {
-              this.errorHandler()
-              return false
-            }
-            this.$store.dispatch(`documents/${CHANGE_CONTRACT_STATUS}`, {
+          .then(() => {
+            this.$store.dispatch(`fileinfo/changeContractStatus`, {
               api: this.$api,
               contractId: this.relatedTo,
               status: 1

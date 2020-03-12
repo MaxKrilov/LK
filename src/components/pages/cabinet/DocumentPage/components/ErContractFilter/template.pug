@@ -34,15 +34,9 @@ er-filter-container(
                   label(:for="'id-filter-type-' + idx").er-toggle__custom-label
                     | {{ title }}
 
-          er-flex.xs12.sm6.md5.lg3
+          er-flex.r-offset-sm6.r-offset-md0.md5.lg4
             er-filter-group(title="Период")
               er-date-picker(v-model="internalPeriod" disabled-date="future")
-          er-flex.xs12.sm6.md5.lg3
-            er-filter-group(title="Тип документа")
-              er-select(
-                :items="listType"
-                v-model="internalType"
-              )
 
           er-flex.md1.lg3.d--flex.align-items-center
             er-filter-close(@click="isFiltersVisible=false")

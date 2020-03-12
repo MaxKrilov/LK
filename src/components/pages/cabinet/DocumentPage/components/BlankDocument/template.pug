@@ -6,7 +6,7 @@ common-document(:color="'gray'").er-document--big-doc.er-document--blank
   template(v-slot:body)
     .document-number
       h4.document-number__sign №
-      h3.document-number__number {{ document.number }}
+      h3.document-number__number {{ computedDocumentNumber }}
 
     .document-date.caption2
       | от {{ $moment(document.date).format("DD.MM.YY") }}

@@ -21,6 +21,20 @@ export default {
     CommonDocument,
     ErDocumentViewer
   },
+  computed: {
+    documentForViewer () {
+      return [{
+        id: this.document.id,
+        bucket: this.document.bucket,
+        fileName: this.document.fileName,
+        filePath: this.document.filePath,
+        type: {
+          id: this.document.type.id,
+          name: this.document.type.name
+        }
+      }]
+    }
+  },
   methods: {
     onSelect (val) {
       if (val) {

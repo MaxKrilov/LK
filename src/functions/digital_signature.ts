@@ -186,11 +186,10 @@ export default class DigitalSignature {
     const signer = await cadesplugin.CreateObjectAsync('CAdESCOM.CPSigner')
     await signer.propset_Certificate(certificate)
     const signedData = await cadesplugin.CreateObjectAsync('CAdESCOM.CadesSignedData')
-    await signedData.propset_ContentEncoding(cadesplugin.CADESCOM_BASE64_TO_BINARY)
     await signedData.propset_Content(dataToSign)
     let signedMessage = ''
     try {
-      signedMessage = await signedData.SignCades(signer, cadesplugin.CADESCOM_CADES_BES, true)
+      signedMessage = await signedData.SignCades(signer, cadesplugin.CADESCOM_CADES_BES)
     } catch (error) {
       throw new Error(cadesplugin.getLastError(error))
     }

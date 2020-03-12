@@ -165,7 +165,7 @@ const actions = {
     }
   },
 
-  signOut: async ({ commit, rootState }, { api }) => {
+  signOut: async ({ commit, rootState }, { api, isRefreshExpired }) => {
     try {
       const { accessToken } = rootState.auth
       const result = await api

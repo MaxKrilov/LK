@@ -179,6 +179,7 @@ const actions = {
     try {
       return await api
         .setData({ clientId, locationId })
+        .query('/customer/product/client')
     } catch (e) {
       return []
     }

@@ -68,14 +68,6 @@ div(:class="`${pre}`")
       @change-type="e => { reportType = Object.assign({}, e) }"
     )
 
-  .wide-content
-    //- er-month-select(
-    //-  :from="0"
-    //-  :count="3"
-    //-  :selected="1"
-    //-  @change="onChangeMonth"
-    //- )
-
   .document-page__list.main-content.main-content--h-padding
     er-container.full.container--no-padding.document
       er-row(v-if="allReportDocuments.length")
@@ -109,7 +101,7 @@ div(:class="`${pre}`")
 
   manual-signing-document(
     v-model="isManualSigning"
-    :link="signingDocument.link"
+    :data="signingDocument.data"
     :filename="signingDocument.fileName"
     :related-to="signingDocument.relatedTo ? signingDocument.relatedTo.id : undefined"
     :type="signingDocument.type ? signingDocument.type.id : undefined",

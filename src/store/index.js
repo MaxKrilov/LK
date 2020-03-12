@@ -15,6 +15,7 @@ import request from './modules/request'
 import loading from './modules/loading'
 import internet from './modules/internet'
 import documents from './modules/documents'
+import fileinfo from './modules/fileinfo'
 
 const debug = process.env.NODE_ENV !== 'production'
 
@@ -34,7 +35,8 @@ export default new Vuex.Store({
     request,
     loading,
     internet,
-    documents
+    documents,
+    fileinfo
   },
   strict: debug,
   plugins: [createPersistedState({

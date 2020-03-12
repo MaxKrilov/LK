@@ -116,6 +116,10 @@ $pre: '.er-document';
         }
       }
     }
+
+    .er-activation-modal {
+      display: none;
+    }
   }
 
   @include min-breakpoint('md') {
