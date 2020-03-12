@@ -1,8 +1,6 @@
-
-
-function logError(error) {
+function logError (error) {
   // TODO: реализовать журналирование не только в консоль
-  console.error(error);
+  console.error(error)
 }
 
 export {

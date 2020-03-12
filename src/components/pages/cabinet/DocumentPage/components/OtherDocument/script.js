@@ -5,9 +5,7 @@ import DocumentMixin from '@/mixins/ErDocumentMixin'
 export default {
   mixins: [DocumentMixin],
   props: {
-    'document': {
-      type: Object
-    }
+    'document': Array
   },
   data: () => ({
     DOCUMENT
@@ -17,7 +15,17 @@ export default {
   },
   computed: {
     documentName () {
-      return DOCUMENT.ALL_TYPES[this.document.type.id] || this.document.type.name
+      if (Array.isArray(this.document) && this.document.length === 1) {
+        const { id: typeId, name: typeName } = this.getFirstElement.type
+        return DOCUMENT.ALL_TYPES[typeId] || typeName
+      }
+      return 'Комплект документов'
+    },
+    computedModifiedWhen () {
+      return this.$moment(this.getFirstElement.modifiedWhen).format('DD.MM.YY')
+    },
+    computedRelatedTo () {
+      return this.getFirstElement.relatedTo.name
     }
   }
 }

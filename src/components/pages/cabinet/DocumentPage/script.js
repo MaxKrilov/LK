@@ -23,7 +23,7 @@ import { isBlankDocument, isContractDocument, isUserListDocument } from '@/funct
 import * as DOCUMENT from '@/constants/document'
 import { SCREEN_WIDTH } from '../../../../store/actions/variables'
 import { BREAKPOINT_MD } from '../../../../constants/breakpoint'
-import { lengthVar } from '../../../../functions/helper'
+import { getFirstElement, lengthVar } from '../../../../functions/helper'
 import { GET_DOCUMENTS } from '../../../../store/actions/user'
 
 const CADESPLUGIN_PATH = `${process.env.BASE_URL}static_js/cadesplugin.js`
@@ -96,14 +96,11 @@ export default {
       documents: state => state.user.documents,
       screenWidth: state => state.variables[SCREEN_WIDTH]
     }),
-    ...mapGetters(
-      'user',
-      {
-        allContractDocuments: 'getContractDocuments',
-        allReportDocuments: 'getReportDocuments',
-        listContact: 'getListContact'
-      }
-    ),
+    ...mapGetters({
+      allContractDocuments: 'fileinfo/getListContractDocument',
+      allReportDocuments: 'fileinfo/getListReportDocument',
+      listContact: 'user/getListContact'
+    }),
     hasSelectedReports () {
       return this.reportSelectedCount > 0
     },
@@ -114,17 +111,13 @@ export default {
       let allContractDocuments = this.allContractDocuments
       // Тип документа: Все или только на подпись
       if (this.contractFilterTypesModel !== ALL_DOCUMENTS) {
-        allContractDocuments = allContractDocuments.filter(document => document.contractStatus === DOCUMENT.CONTRACT.IS_READY)
+        allContractDocuments = allContractDocuments.filter(document => getFirstElement(document)?.contractStatus?.toLowerCase() === DOCUMENT.CONTRACT.IS_READY.toLowerCase())
       }
       // Если установлен период
       if (Array.isArray(this.contractPeriod) && lengthVar(this.contractPeriod) !== 0) {
         allContractDocuments = allContractDocuments.filter(document => {
-          return document.modifiedWhen > this.contractPeriod[0] && document.modifiedWhen < this.contractPeriod[1]
+          return getFirstElement(document)?.modifiedWhen > this.contractPeriod[0] && getFirstElement(document).modifiedWhen < this.contractPeriod[1]
         })
-      }
-      // Второй тип
-      if (this.contractType?.id !== '-1') {
-        allContractDocuments = allContractDocuments.filter(item => item?.type?.id === this.contractType?.id)
       }
       return allContractDocuments
     },
@@ -145,12 +138,13 @@ export default {
       // Период
       if (Array.isArray(this.reportPeriod) && lengthVar(this.reportPeriod) === 2) {
         const [from, to] = this.reportPeriod
-        allReportDocuments = allReportDocuments.filter(item => (item.modifiedWhen >= from) && (item.modifiedWhen <= to))
+        allReportDocuments = allReportDocuments.filter(item =>
+          (item?.modifiedWhen >= from) && (item?.modifiedWhen <= to))
       }
       return allReportDocuments
     },
     listEmail () {
-      return this.listContact.map(item => item.email.value).filter(item => !!item)
+      return this.listContact.map(item => item?.email?.value).filter(item => !!item)
     },
     getContractType () {
       const typeContract = DOCUMENT.TYPE_CONTRACT
@@ -179,11 +173,11 @@ export default {
     isBlankDocument,
     isUserListDocument,
     manualSigning (e) {
-      this.signingDocument = Object.assign({}, e)
+      this.signingDocument = e
       this.isManualSigning = true
     },
     digitalSigning (e) {
-      this.signingDocument = Object.assign({}, e)
+      this.signingDocument = e
       this.isDigitalSigning = true
     },
     successSigned () {
@@ -191,6 +185,7 @@ export default {
     }
   },
   async mounted () {
+    this.$store.dispatch('fileinfo/downloadDocuments', { api: this.$api })
     const script = document.createElement('script')
     script.setAttribute('src', CADESPLUGIN_PATH)
     script.setAttribute('id', 'cadesplugin-script')

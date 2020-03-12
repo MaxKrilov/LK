@@ -17,6 +17,10 @@
     }
     .title {
       @extend %h3;
+      white-space: nowrap;
+    }
+    .type {
+      width: 100%;
     }
     .actions button {
       background-color: map-get($shades, 'transparent');
@@ -33,9 +37,19 @@
     flex: 1 1 auto;
     display: flex;
     flex-direction: column;
-    iframe {
+    div:not(.no-download) {
       flex: 1 1 auto;
-      border: none;
+      display: flex;
+      flex-direction: column;
+      embed {
+        flex: 1 1 auto;
+        border: none;
+      }
+    }
+    .no-download {
+      margin: 0 auto;
+      padding: 16px 0;
+      @extend %h2;
     }
   }
 }

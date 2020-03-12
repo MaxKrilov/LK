@@ -35,7 +35,7 @@ common-document(
 
   template(v-slot:footer)
     .signed(v-if="documentIsSigned")
-      er-attach(:url="document.fileName")
+      //er-attach(:url="document.fileName")
       er-button(:color="'blue'") Обновить
     .not-signed(v-else)
       .er-document__download-template

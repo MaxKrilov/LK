@@ -49,7 +49,7 @@ export default {
       loadingRequest: 'loading/loadingRequest',
       loadingPromisedPayment: 'loading/loadingPromisedPayment',
       getCountRequestInWork: 'request/getCountRequestInWork',
-      getCountUnsignedDocument: 'user/getCountUnsignedDocument'
+      getCountUnsignedDocument: 'fileinfo/getCountUnsignedDocument'
     }),
 
     isEmptyListProduct () {

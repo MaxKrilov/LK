@@ -51,6 +51,10 @@ export default {
           if (err && err.response && [403, 401].includes(err.response.status)) {
             this.$store.dispatch('auth/signIn', { api: this.$api })
           }
+          // if (err) {
+          //   console.info(err)
+          //   debugger
+          // }
           reject(err)
         })
       })
@@ -62,7 +66,7 @@ export default {
                 if (Object.keys(clientInfo).length !== 0) {
                   this.$store.dispatch(`user/${GET_MANAGER_INFO}`, { api: this.$api })
                   this.$store.dispatch(`request/${GET_REQUEST}`, { api: this.$api })
-                  this.$store.dispatch(`user/${GET_DOCUMENTS}`, { api: this.$api })
+                  this.$store.dispatch(`fileinfo/downloadListDocument`, { api: this.$api })
                   this.$store.dispatch(`user/${GET_LIST_BILLING_ACCOUNT}`, { api: this.$api })
                     .then(isValid => {
                       if (isValid) {

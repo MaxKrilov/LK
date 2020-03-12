@@ -1,5 +1,5 @@
 /* eslint-disable */
-import axios, { AxiosRequestConfig, Method } from 'axios'
+import axios, { AxiosRequestConfig, Method, ResponseType } from 'axios'
 import { TYPE_OBJECT, TYPE_ARRAY, TYPE_JSON, TYPE_FILE } from '@/constants/type_request'
 import { eachArray, eachObject, isCombat, wrapHttps } from '@/functions/helper'
 import { BACKEND_COMBAT, BACKEND_TESTING } from '@/constants/url'
@@ -14,6 +14,7 @@ export class API {
   private _method: Method = 'POST'
   private _data: any = null
   private _withCredentials: boolean = false
+  private _responseType: ResponseType = 'json'
 
   private _token: string = ''
 
@@ -76,6 +77,7 @@ export class API {
     this._method = 'POST'
     this._data = null
     this._withCredentials = false
+    this._responseType = 'json'
   }
 
   private _getToken = () => {
@@ -114,6 +116,11 @@ export class API {
     return this
   }
 
+  public setResponseType = (type: ResponseType) => {
+    this._responseType = type
+    return this
+  }
+
   public query = (query: string): Promise<any> => {
     if (process.env.VUE_APP_USE_SSO_AUTH === 'no') {
       return new Promise(() => {})
@@ -146,6 +153,7 @@ export class API {
     }
     config = Object.assign(config, {
       method: this._method,
+      responseType: this._responseType,
       data,
       url: API._getUrl(query, this._branch),
       withCredentials: this._withCredentials
@@ -153,6 +161,10 @@ export class API {
     return new Promise((resolve, reject) => {
       axios(config)
         .then(response => {
+          // Ошибка TBAPI (возвращается 200-ка)
+          if (response.data.businessErrorCode) {
+            reject(`Error of TBAPI: ${response.data.businessErrorCode}`)
+          }
           resolve(response.data)
         })
         .catch(error => {

@@ -22,7 +22,9 @@ interface standardSelectItem {
 
 interface iListContactMethodsItem extends standardSelectItem {}
 
-interface iListAddressItem extends standardSelectItem {}
+interface iListAddressItem extends standardSelectItem {
+  locationId?: string | number
+}
 
 interface iItemService extends standardSelectItem {
   typeAuth?: string
@@ -208,15 +210,16 @@ export default class CreateRequestComponent extends Vue {
 
   @Watch('address')
   onAddressChange (val: iListAddressItem) {
+    if (!val.locationId) return
     this.loadingService = true
     this.services = []
     this.service = {}
     this.$store.dispatch(`request/${GET_SERVICES_BY_LOCATION}`, {
       api: this.$api,
-      // @ts-ignore
       locationId: val.locationId
     })
       .then(response => {
+        console.log(response)
         this.listService = response.filter((item: any) => item?.offer?.isRoot).map((item: any) => ({
           id: item.id,
           value: item.chars['Имя в счете'] || item.name,

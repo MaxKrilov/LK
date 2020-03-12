@@ -1,51 +1,176 @@
-import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
-import { DOWNLOAD_FILE } from '@/store/actions/documents'
-import File from '@/functions/file'
+import Vue from 'vue'
+import Component from 'vue-class-component'
+import { Watch } from 'vue-property-decorator'
+import { API } from '@/functions/api'
+import * as Document from '@/constants/document'
+const _mime = require('mime-types')
 
-@Component
+interface IDocumentForDownload {
+  id: string | number
+  bucket: string
+  fileName: string
+  filePath: string
+  type: {
+    id: string | number
+    name: string
+  }
+}
+
+/**
+ * Просмотрщик документов
+ * Подписываем именно договор!
+ */
+
+@Component({
+  props: {
+    value: Boolean,
+    listDocument: {
+      type: Array,
+      default: () => ([])
+    },
+    isManualSigning: Boolean,
+    isDigitalSigning: Boolean
+  }
+})
 export default class ErDocumentViewer extends Vue {
-  @Prop(Boolean) readonly value!: boolean
-  @Prop(String) readonly bucket!: string
-  @Prop(String) readonly fileName!: string
-  @Prop(String) readonly filePath!: string
-  /**
-   * Возможность подписать документ вручную
-   */
-  @Prop(Boolean) readonly isManualSigning!: boolean
-  /**
-   * Возможность подписать документ с помощью ЭЦП
-   */
-  @Prop(Boolean) readonly isDigitalSigning!: boolean
-
-  link: string = ''
-
-  get internalValue (): boolean {
+  $refs!: {
+    modal: HTMLElement
+  }
+  $api!: API
+  // Props
+  readonly value!: boolean
+  readonly listDocument!: IDocumentForDownload[]
+  readonly isManualSigning!: boolean
+  readonly isDigitalSigning!: boolean
+  // Data
+  listFile: Map<string, string> = new Map<string, string>()
+  currentDocument: IDocumentForDownload = this.listDocument[0]
+  currentDocumentFile: string = ''
+  currentType: { id: string | number, name: string, documentId: string | number } = this.computedListType[0]
+  // Computed
+  get computedListType () {
+    return this.listDocument.map(item => ({
+      ...item.type,
+      documentId: item.id
+    }))
+  }
+  get isExistsFile () {
+    return !!this.currentDocumentFile
+  }
+  // Proxy
+  get internalValue () {
     return this.value
   }
-
   set internalValue (val: boolean) {
     this.$emit('input', val)
   }
-
-  get computedLink (): string | undefined {
-    return this.link !== '' ? `https://docs.google.com/viewer?url=${this.link}&embedded=true` : undefined
-  }
-
+  // Watchers
   @Watch('internalValue')
-  onInternalValueChange (val: boolean) {
-    val && this.link === '' && this.downloadFileFromStorage()
+  onInternalValueChanged (val: boolean) {
+    if (val && this.listFile.size === 0) this.downloadFile(this.listDocument[0])
   }
-
-  async downloadFileFromStorage () {
-    this.link = await this.$store.dispatch(`documents/${DOWNLOAD_FILE}`, {
-      vm: this,
-      bucket: this.bucket,
-      key: this.filePath
+  @Watch('currentType')
+  async onCurrentTypeChanged (val: any) {
+    const _document = this.listDocument.find(item => String(item.id) === String(val.documentId))!
+    const changeEmbed = () => {
+      const oldEmbed: HTMLEmbedElement | null = this.$refs.modal.querySelector('embed')
+      if (oldEmbed) {
+        const parentNode = oldEmbed.parentNode!
+        const newEmbed = document.createElement('embed')
+        newEmbed.setAttribute('src', this.currentDocumentFile as string)
+        parentNode.replaceChild(newEmbed, oldEmbed)
+      }
+    }
+    // Проверяем - загружали ли ранее документ
+    if (this.listFile.has(val.documentId)) {
+      this.currentDocumentFile = this.listFile.get(val.documentId)!
+      this.currentDocument = _document
+      changeEmbed()
+    } else {
+      this.downloadFile(_document)
+        .then((result: string) => {
+          this.currentDocument = _document
+          if (result !== '') {
+            changeEmbed()
+          }
+        })
+    }
+  }
+  // Methods
+  downloadFile (downloadDocument: IDocumentForDownload) {
+    return new Promise<string>((resolve) => {
+      this.$store.dispatch('fileinfo/downloadFile', {
+        api: this.$api,
+        bucket: downloadDocument.bucket,
+        key: downloadDocument.filePath
+      })
+        .then(response => {
+          if (
+            (typeof response === 'boolean' && !response) ||
+            (response instanceof Blob && response.size === 0)
+          ) {
+            this.currentDocumentFile = ''
+            resolve('')
+          } else if (response instanceof Blob) {
+            if (!this.listFile.has(downloadDocument.id.toString())) {
+              this.__toBase64(response, downloadDocument.fileName)
+                .then(base64File => {
+                  this.listFile.set(
+                    downloadDocument.id.toString(),
+                    base64File
+                  )
+                  this.currentDocumentFile = base64File
+                  resolve(base64File)
+                })
+            }
+          }
+        })
     })
   }
-
-  downloadFile () {
-    File.downloadFileByURL(this.link, this.fileName)
+  downloadFileOnDevice () {
+    const tempLink = document.createElement('a')
+    tempLink.style.display = 'none'
+    tempLink.href = this.currentDocumentFile as string
+    tempLink.setAttribute('download', this.currentDocument.fileName)
+    document.body.appendChild(tempLink)
+    tempLink.click()
+    setTimeout(function () {
+      document.body.removeChild(tempLink)
+    }, 0)
+  }
+  __toBase64 (file: Blob, fileName: string) {
+    const mime = _mime.lookup(fileName)
+    const reader = new FileReader()
+    return new Promise<string>((resolve) => {
+      reader.readAsDataURL(file)
+      reader.onload = () => {
+        const result = (reader.result as string)
+          .replace(
+            'application/octet-stream',
+            mime
+          )
+        resolve(result)
+      }
+    })
+  }
+  // Методы для подписания
+  __signing (eventName: string) {
+    let documentForSignature = this.listDocument.find(item => String(item.type.id) === Document.CONTRACT_ID)
+    documentForSignature = documentForSignature || this.listDocument[0]
+    if (!this.listFile.has(String(documentForSignature.id))) {
+      this.downloadFile(documentForSignature)
+        .then(data => {
+          this.$emit(eventName, {
+            id: documentForSignature!.id,
+            data
+          })
+        })
+    } else {
+      this.$emit(eventName, {
+        id: documentForSignature!.id,
+        data: this.listFile.get(String(documentForSignature!.id))
+      })
+    }
   }
 
   /**
@@ -53,7 +178,7 @@ export default class ErDocumentViewer extends Vue {
    */
   manualSigning () {
     this.internalValue = false
-    this.$emit('signing:manual', this.link)
+    this.__signing('signing:manual')
   }
 
   /**
@@ -61,6 +186,76 @@ export default class ErDocumentViewer extends Vue {
    */
   digitalSigning () {
     this.internalValue = false
-    this.$emit('signing:digital', this.link)
+    this.__signing('signing:digital')
   }
 }
+
+// import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
+// import { DOWNLOAD_FILE } from '@/store/actions/documents'
+// import File from '@/functions/file'
+// // import '@/node_modules/pdf'
+//
+// @Component
+// export default class ErDocumentViewer extends Vue {
+//   @Prop(Boolean) readonly value!: boolean
+//   @Prop(String) readonly bucket!: string
+//   @Prop(String) readonly fileName!: string
+//   @Prop(String) readonly filePath!: string
+//   /**
+//    * Возможность подписать документ вручную
+//    */
+//   @Prop(Boolean) readonly isManualSigning!: boolean
+//   /**
+//    * Возможность подписать документ с помощью ЭЦП
+//    */
+//   @Prop(Boolean) readonly isDigitalSigning!: boolean
+//
+//   file: string = ''
+//
+//   link: string = ''
+//
+//   get internalValue (): boolean {
+//     return this.value
+//   }
+//
+//   set internalValue (val: boolean) {
+//     this.$emit('input', val)
+//   }
+//
+//   get computedLink (): string | undefined {
+//     return this.link !== '' ? `https://docs.google.com/viewer?url=${this.link}&embedded=true` : undefined
+//   }
+//
+//   @Watch('internalValue')
+//   onInternalValueChange (val: boolean) {
+//     val && this.link === '' && this.downloadFileFromStorage()
+//   }
+//
+//   async downloadFileFromStorage () {
+//     this.file = await this.$store.dispatch(`documents/${DOWNLOAD_FILE}`, {
+//       vm: this,
+//       bucket: this.bucket,
+//       key: this.filePath
+//     })
+//   }
+//
+//   downloadFile () {
+//     File.downloadFileByURL(this.link, this.fileName)
+//   }
+//
+//   /**
+//    * Ручное подписание
+//    */
+//   manualSigning () {
+//     this.internalValue = false
+//     this.$emit('signing:manual', this.link)
+//   }
+//
+//   /**
+//    *  Подписание с помощью ЭЦП
+//    */
+//   digitalSigning () {
+//     this.internalValue = false
+//     this.$emit('signing:digital', this.link)
+//   }
+// }

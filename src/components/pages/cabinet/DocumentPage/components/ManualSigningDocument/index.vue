@@ -9,7 +9,7 @@
           .icon
             er-icon(name="doc_edit")
           .close
-            button
+            button(@click="internalValue = false")
               er-icon(name="close")
           .title
             | Подписать документ

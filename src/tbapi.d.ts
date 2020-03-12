@@ -1,5 +1,4 @@
 export interface DocumentInterface {
-  link: string
   fileName: string
   relatedTo: {
     name: string
@@ -21,4 +20,8 @@ export interface DocumentInterface {
     name: string
     id: string | number
   }
+}
+
+export interface IDocumentObject {
+  [key: string]: DocumentInterface[]
 }
