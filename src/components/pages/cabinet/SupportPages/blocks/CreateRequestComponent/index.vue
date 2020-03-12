@@ -43,7 +43,7 @@
     er-activation-modal(
       type="success"
       v-model="resultDialogSuccess"
-      :title="`Ваша заявка № ${ticketName} сформирована и отправлена`"
+      :title="`Ваша заявка № ${computedTicketName} сформирована и отправлена`"
       :is-show-action-button="false"
       cancel-button-text="Спасибо"
     )

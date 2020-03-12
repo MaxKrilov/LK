@@ -16,11 +16,16 @@ common-document(
 
   div(slot="body")
     h3.er-document__content-sm {{ document.number }}
-    h3.er-document__content Счёт-фактура
+    h3.er-document__content {{ document.type.id | typeName }}
 
     .document-date.caption2
       | от {{ $moment(document.date).format("DD.MM.YY") }}
 
   template(v-slot:footer)
-    er-button.not-show-sm Подробнее
-    er-button(:color="'gray'").no-shadow.show-only-sm Открыть
+    er-document-viewer(
+      :listDocument="documentForViewer"
+      v-model="isOpenViewer"
+    )
+      template(v-slot:activator="{ on }")
+        er-button.not-show-sm(v-on="on") Подробнее
+        er-button(:color="'gray'" v-on="on").no-shadow.show-only-sm Открыть

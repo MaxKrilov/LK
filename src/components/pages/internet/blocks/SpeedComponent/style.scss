@@ -1,0 +1,33 @@
+.speed-component {
+  svg {
+    width: 240px;
+    .filter {
+      stroke-width: 5;
+      stroke-linejoin: round;
+    }
+    .main-text {
+      user-select: none;
+      .number {
+        @extend %h1;
+        fill: rgba(map_get($shades, 'black'), 0.8);
+      }
+      .unit {
+        @extend %caption1;
+        fill: rgba(map_get($shades, 'black'), 0.5);
+      }
+    }
+    .speed-toggle {
+      cursor: pointer;
+    }
+    .main-cursor {
+      cursor: pointer;
+    }
+    .scale-numbers {
+      font: 14px/16px $fedra-demi;
+      font-weight: 600;
+      text-anchor: middle;
+      user-select: none;
+      fill: rgba(map_get($shades, 'black'), 0.2);
+    }
+  }
+}

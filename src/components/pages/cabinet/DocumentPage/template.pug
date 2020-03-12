@@ -1,7 +1,7 @@
 div(:class="`${pre}`")
   .main-content.main-content--top-menu-fix.main-content--h-padding.main-content--top-padding
     er-page-header(
-      linkText="Назад к документам"
+      linkText="Назад на главную"
       title="Документы"
       backlink="/lk"
     )
@@ -10,51 +10,69 @@ div(:class="`${pre}`")
     h2.document-page__title Контрактные документы
 
   .wide-content
-    er-contract-filter
+    er-contract-filter(
+      :filter-types="contractFilterTypes"
+      :filter-type="contractFilterTypesModel"
+      :period="contractPeriod"
+      :list-type="getContractType"
+      :type="contractType"
+      @change-filter-type="e => { contractFilterTypesModel = e }"
+      @change-period="e => { contractPeriod = e }"
+      @change-type="e => { contractType = e }"
+    )
 
   .document-page__list.main-content.main-content--h-padding
     er-container.full.container--no-padding.document
-      er-row
+      er-row(v-if="computedAllContractDocuments.length !== 0")
         er-flex.lg4.md6.sm6.xs12.d--flex(
-          v-for="document in allContractDocuments"
+          v-for="document in computedAllContractDocuments"
           :key="document.number"
         )
           blank-document(
             v-if="isBlankDocument(document)"
             :document="document"
           )
-          user-list-document(
-            v-else-if="isUserListDocument(document)"
-            :document="document"
-          )
+          //-user-list-document(
+          //-  v-else-if="isUserListDocument(document)"
+          //-  :document="document"
+          //- )
           contract-document(
             v-else-if="isContractDocument(document)"
             :document="document"
+            @signing:digital="digitalSigning"
+            @signing:manual="manualSigning"
           )
           other-document(
             v-else
             :document="document"
           )
+      er-row(v-else)
+        er-flex.document-page__empty-list
+          er-icon(name="no")
+          .empty-list-message.text-color-black08
+            | По указанным критериям
+            br
+            | документов не
+            br
+            | найдено
 
   .main-content.main-content--h-padding
     h2.document-page__title Отчётные документы
 
   .wide-content
-    er-report-filter
-
-  .wide-content
-    er-month-select(
-      :from="0"
-      :count="3"
-      :selected="1"
-      @change="onChangeMonth"
+    er-report-filter(
+      :period="reportPeriod"
+      :types="getReportFilterItems"
+      :type="reportType"
+      @change-period="e => { reportPeriod = e }"
+      @change-type="e => { reportType = Object.assign({}, e) }"
     )
 
   .document-page__list.main-content.main-content--h-padding
     er-container.full.container--no-padding.document
       er-row(v-if="allReportDocuments.length")
         er-flex.lg4.md6.sm6.xs12.d--flex(
-          v-for="report in allReportDocuments"
+          v-for="report in computedAllReportDocuments"
           :key="report.number"
         )
           report-document(
@@ -69,17 +87,30 @@ div(:class="`${pre}`")
           )
 
       er-row(v-else)
-        er-flex.document-page__empty-list
-          er-icon(name="no")
-          .empty-list-message.text-color-black08
-            | За указанный период
-            br
-            | документов не
-            br
-            | найдено
+        er-flex.lg4.md6.sm6.d--flex
+          button-document(
+            caption="Заказать другой документ"
+            @click="onOrderDocumentClick()"
+          )
 
   er-document-actions(
     :active="hasSelectedReports"
-    :emails="emails"
+    :emails="listEmail"
     :count="reportSelectedCount"
+  )
+
+  manual-signing-document(
+    v-model="isManualSigning"
+    :data="signingDocument.data"
+    :filename="signingDocument.fileName"
+    :related-to="signingDocument.relatedTo ? signingDocument.relatedTo.id : undefined"
+    :type="signingDocument.type ? signingDocument.type.id : undefined",
+    :id="signingDocument.id"
+    @success="successSigned"
+    )
+
+  digital-signing-document(
+    v-model="isDigitalSigning"
+    :signing-document="signingDocument"
+    @success="successSigned"
   )

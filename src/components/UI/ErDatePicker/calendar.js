@@ -2,18 +2,11 @@ import { daysOfWeek, months } from '../../../functions/helper'
 import Mixin from './mixin'
 
 const transformDate = date => {
-  return new Date(
-    '2020',
-    '01',
-    '01'
-  )
-/*
-  return new Date(
+  return date ? new Date(
     date.getFullYear(),
     date.getMonth(),
     date.getDate()
-  )
-*/
+  ) : new Date()
 }
 
 export default {

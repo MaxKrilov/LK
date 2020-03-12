@@ -1,0 +1,37 @@
+er-dialog(
+  :fullscreen="isFullDialog"
+  :transition="getTransitionDialog"
+  :max-width="390"
+  persistent
+  v-model="isOpenDialogChangeLimit"
+)
+  template(v-slot:activator="{ on }")
+    button(v-on="openChangeLimit(on)")
+      | Изменить
+  .tariff-component__change-limit--modal
+    .tariff-component__change-limit--modal__head.d--flex.align-items-center.px-16.mb-32
+      .title Изменить порог трафика
+      button(@click="closeDialogChangeLimit")
+        er-icon(name="close")
+    .tariff-component__change-limit--modal__body.px-16
+      .description.mb-40
+        | Вы можете купить пакет трафика, либо отменить его. При отмене порога изменится тариф «Базовый Лимит» на «Базовый Безлимит»
+      .control-limit.d--flex.mb-24
+        .text-field.pr-8
+          er-number-field(v-model="limitTraffic" :min-value="0")
+        .cancel-limit.pl-8
+          er-button
+            | Отменить порог
+      .price.mb-32
+        .caption.mb-4 Стоимость пакета
+        .value
+          span 7 500&nbsp;
+          | ₽
+      .actions.d--flex.flex-column.flex-sm-row
+        .action.mb-8.mb-sm0.mr-sm8
+          er-button(color="blue")
+            | Изменить
+        .action.ml-sm8
+          er-button(flat @click="closeDialogChangeLimit")
+            | Отмена
+

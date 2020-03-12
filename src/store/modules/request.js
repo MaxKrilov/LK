@@ -10,6 +10,7 @@ import {
 } from '../actions/request'
 import { ERROR_MODAL } from '../actions/variables'
 import { TYPE_ARRAY } from '../../constants/type_request'
+import { UPLOAD_FILE } from '../actions/documents'
 
 const CANCELLATION_REASON = '9150410012013966885'
 const REQUEST_REASON = '9156211041213279417'
@@ -74,7 +75,6 @@ const actions = {
     location,
     description,
     customerContact,
-    category,
     type,
     phoneNumber,
     emailAddress,
@@ -131,8 +131,14 @@ const actions = {
       if (result && result.hasOwnProperty('ticket_id')) {
         await dispatch(GET_REQUEST, { api })
         if (file) {
-          const fileInfo = await dispatch(ATTACH_FILE, { api, id: result.ticket_id })
-          return fileInfo ? result.ticket_name : false
+          // const fileInfo = await dispatch(ATTACH_FILE, { api, id: result.ticket_id })
+          // return fileInfo ? result.ticket_name : false
+          dispatch(`documents/${UPLOAD_FILE}`, {
+            api,
+            file,
+            bucket: 'customer-docs'
+          }, { root: true })
+          return result.ticket_name
         }
         return result.ticket_name
       } else {
@@ -159,13 +165,20 @@ const actions = {
       return false
     }
   },
-  [GET_SERVICES_BY_LOCATION]: async ({ rootGetters, commit, dispatch }, { api, locationId }) => {
+  [GET_SERVICES_BY_LOCATION]: async ({ rootGetters, commit, dispatch }, { api, locationId, parentId }) => {
     const { toms: clientId } = rootGetters['auth/user']
+    const data = {}
+    data.clientId = clientId
+    if (locationId) {
+      data.locationId = locationId
+    }
+    if (parentId) {
+      data.parentId = parentId
+    }
     try {
-      const result = await api
+      return await api
         .setData({ clientId, locationId })
         .query('/customer/product/client')
-      return result
     } catch (e) {
       return []
     }
@@ -185,6 +198,7 @@ const actions = {
       filePath
     }
     try {
+      // eslint-disable-next-line no-unused-vars
       const result = api
         .setData(data)
         .query('/problem/management/attache-file')

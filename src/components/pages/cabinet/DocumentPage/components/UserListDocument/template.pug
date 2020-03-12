@@ -1,11 +1,8 @@
 common-document(
-  :class="{'er-document--signed': documentIsSigned}"
+  :class="{'er-document--signed': isUpdated, 'er-document--expired': !isUpdated}"
 ).er-document--userlist.er-document--big-doc
   template(v-slot:header)
-    .er-document__title(v-if="documentIsSigned") Список пользователей
-    div(v-else)
-      .er-document__title {{ document.type.name }}
-      .er-document__title--upload(@click="") Загрузить список пользователей
+    .er-document__title Список пользователей
 
     .question-button(
       @click="onClickQuestion()"
@@ -22,10 +19,9 @@ common-document(
 
     .er-document__subtitle(v-if="documentIsSigned")
       .er-document__update-label
-        | Обновить с
+        | Обновить после
       .er-document__update-period
-        .date {{ document.updatePeriodFrom|formatDate("DD.MM") }}-{{ document.updatePeriodTo|formatDate("DD.MM") }}
-          span.date__year .{{ document.updatePeriodTo|formatDate("YYYY") }}
+        .date {{ dateOfUpdate }}
 
   template(v-slot:body)
     .just-wrap(v-if="documentIsSigned")
@@ -39,7 +35,7 @@ common-document(
 
   template(v-slot:footer)
     .signed(v-if="documentIsSigned")
-      er-attach(:url="document.fileName")
+      //er-attach(:url="document.fileName")
       er-button(:color="'blue'") Обновить
     .not-signed(v-else)
       .er-document__download-template

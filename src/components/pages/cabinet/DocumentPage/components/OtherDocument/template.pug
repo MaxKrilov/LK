@@ -8,10 +8,16 @@ common-document(
     er-icon(name="doc")
 
   template(v-slot:body)
+    .document-number
+      .document-number__sign №
+      er-tooltip(top)
+        template(v-slot:activator="{ on }")
+          .document-number__number(v-on="on") {{ computedRelatedTo }}
+        .document-number__number--tooltip {{ computedRelatedTo }}
     .document-date.caption2
-      | от {{ document.creationDate|formatDate("DD.MM.YY") }}
+      | от {{ computedModifiedWhen }}
 
     template(v-if="document.filePath")
 
   template(v-slot:footer)
-    er-attach(:url="document.fileName")
+    //er-attach(:url="document.fileName")

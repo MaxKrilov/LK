@@ -43,18 +43,18 @@ export default {
     },
     onChange (e) {
       this.fileName = e?.target?.files[0]?.name
-      toBase64(e.target.files[0])
-        .then(result => {
-          this.$emit('file-append', result)
-        })
-      // todo Сделать нужную обработку файла после того, как будет известно, в каком формате будем отправлять файл
+      this.$emit('file-append', e.target.files[0])
+      // toBase64(e.target.files[0])
+      //   .then(result => {
+      //     this.$emit('file-append', result)
+      //   })
     }
   }
 }
 
-const toBase64 = file => new Promise((resolve, reject) => {
-  const reader = new FileReader()
-  reader.readAsDataURL(file)
-  reader.onload = () => resolve(reader.result)
-  reader.onerror = error => reject(error)
-})
+// const toBase64 = file => new Promise((resolve, reject) => {
+//   const reader = new FileReader()
+//   reader.readAsBinaryString(file)
+//   reader.onload = () => resolve(reader.result)
+//   reader.onerror = error => reject(error)
+// })

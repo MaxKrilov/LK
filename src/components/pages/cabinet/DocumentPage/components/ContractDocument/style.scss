@@ -116,9 +116,28 @@ $pre: '.er-document';
         }
       }
     }
+
+    .er-activation-modal {
+      display: none;
+    }
   }
 
   @include min-breakpoint('md') {
     background: map_get($shades, 'white');
+  }
+}
+
+#{$pre}__modal--viewer {
+  > * {
+    width: 100%;
+    @include min-breakpoint('sm') {
+      max-width: 208px;
+    }
+    .er-button {
+      .er-button__icon--prev {
+        position: absolute;
+        left: 8px;
+      }
+    }
   }
 }

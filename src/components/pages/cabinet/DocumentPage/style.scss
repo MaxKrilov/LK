@@ -122,6 +122,12 @@ $document-padding: 16px;
     }
 
   }
+
+  &__success-signed {
+    a {
+      display: block;
+    }
+  }
 }
 
 .page-title {

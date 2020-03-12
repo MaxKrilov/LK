@@ -1,0 +1,14 @@
+.er-number-field {
+  > .er-text-field
+  > .er-input__control
+  > .er-input__slot {
+    > .er-input__prepend-inner {
+      cursor: pointer;
+    }
+    > .er-text-field__slot > input {
+      @extend %h3;
+      text-align: center;
+      user-select: none;
+    }
+  }
+}

@@ -1,6 +1,6 @@
 import { Vue, Component, Watch } from 'vue-property-decorator'
 import { mapState, mapGetters } from 'vuex'
-import { LIST_COMPLAINT_THEME, LIST_REQUEST_THEME, LIST_TECHNICAL_REQUEST_THEME } from '@/store/actions/dictionary';
+import { LIST_COMPLAINT_THEME, LIST_REQUEST_THEME, LIST_TECHNICAL_REQUEST_THEME } from '@/store/actions/dictionary'
 import ErPhoneSelect from '@/components/blocks/ErPhoneSelect'
 import ErTimePickerRange from '@/components/blocks/ErTimePickerRange'
 import ErTextareaWithFile from '@/components/blocks/ErTextareaWithFile'
@@ -10,6 +10,7 @@ import { SCREEN_WIDTH } from '@/store/actions/variables'
 import { BREAKPOINT_XL } from '@/constants/breakpoint'
 import { getFirstElement } from '@/functions/helper'
 import { CREATE_REQUEST, GET_SERVICES_BY_LOCATION } from '@/store/actions/request'
+// eslint disabled
 import { API } from '@/functions/api'
 
 import moment from 'moment'
@@ -21,7 +22,9 @@ interface standardSelectItem {
 
 interface iListContactMethodsItem extends standardSelectItem {}
 
-interface iListAddressItem extends standardSelectItem {}
+interface iListAddressItem extends standardSelectItem {
+  locationId?: string | number
+}
 
 interface iItemService extends standardSelectItem {
   typeAuth?: string
@@ -171,6 +174,10 @@ export default class CreateRequestComponent extends Vue {
     return this.listService.filter((item: iItemService) => !!item.typeAuth)
   }
 
+  get computedTicketName () {
+    return this.ticketName.split(' ').slice(0, 2).join(' ')
+  }
+
   @Watch('requestTheme')
   onRequestThemeChange () {
     this.reset()
@@ -203,15 +210,16 @@ export default class CreateRequestComponent extends Vue {
 
   @Watch('address')
   onAddressChange (val: iListAddressItem) {
+    if (!val.locationId) return
     this.loadingService = true
     this.services = []
     this.service = {}
     this.$store.dispatch(`request/${GET_SERVICES_BY_LOCATION}`, {
       api: this.$api,
-      // @ts-ignore
       locationId: val.locationId
     })
       .then(response => {
+        console.log(response)
         this.listService = response.filter((item: any) => item?.offer?.isRoot).map((item: any) => ({
           id: item.id,
           value: item.chars['Имя в счете'] || item.name,
@@ -297,7 +305,7 @@ export default class CreateRequestComponent extends Vue {
           this.resultDialogError = true
         }
       })
-      .catch((e: any) => {
+      .catch(() => {
         this.resultDialogError = true
       })
       .finally(() => {
@@ -432,5 +440,15 @@ export default class CreateRequestComponent extends Vue {
     this.internetProtocol = ''
     this.terminateFrom = new Date()
     this.technicalRequestTheme = ''
+  }
+
+  mounted () {
+    if (this.$route.query && this.$route.query.open && this.$route.query.open === 'document') {
+      (this as any)[this.screenWidth <= BREAKPOINT_XL ? 'isOpenForm' : 'isOpenFormDesktop'] = true
+      this.requestTheme = this.listRequestTheme.find((item: iRequestTheme) => item.form === 'order_a_document')!
+      this.$nextTick(() => {
+        this.screenWidth >= BREAKPOINT_XL && this.$scrollTo('.create-request-component')
+      })
+    }
   }
 }

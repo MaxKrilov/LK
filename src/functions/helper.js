@@ -4,6 +4,7 @@ import { ENDPOINTS_API } from '../constants/endpoints'
 import { BREAKPOINT_XL, BREAKPOINT_MD } from '@/constants/breakpoint'
 import { Cookie } from './storage'
 import Vue from 'vue'
+import moment from 'moment'
 
 /**
  * Функция, изменяет горизонтальную позицию скролла
@@ -582,4 +583,21 @@ export function createSimpleComponent (c, el = 'div', name) {
 
 export function isPSI () {
   return location.origin.match(/master2/ig)
+}
+
+export function dataURLtoFile (dataurl, fileName) {
+  // const arr = dataurl.split(',')
+  // const mime = arr[0].match(/:(.*?);/)[1]
+  const bstr = atob(dataurl)
+  let n = bstr.length
+  const u8arr = new Uint8Array(n)
+  while (n--) {
+    u8arr[n] = bstr.charCodeAt(n)
+  }
+  return new File([u8arr], fileName)
+}
+
+export function generateFilePath (id, fileName) {
+  // const date = Number(new Date())
+  return `${moment().format('MMYYYY')}/${id}`
 }

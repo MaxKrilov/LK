@@ -13,6 +13,7 @@
 import { mapGetters, mapState } from 'vuex'
 import { SCREEN_WIDTH } from './store/actions/variables'
 import { getScreenWidth } from './functions/helper'
+import axios from 'axios'
 
 import {
   GET_CLIENT_INFO,
@@ -45,6 +46,18 @@ export default {
   },
   async created () {
     if (process.env.VUE_APP_USE_SSO_AUTH !== 'no') {
+      axios.interceptors.response.use(response => response, err => {
+        return new Promise((resolve, reject) => {
+          if (err && err.response && [403, 401].includes(err.response.status)) {
+            this.$store.dispatch('auth/signIn', { api: this.$api })
+          }
+          // if (err) {
+          //   console.info(err)
+          //   debugger
+          // }
+          reject(err)
+        })
+      })
       if (!this.refreshedToken.isFetching && !this.serverErrorMessage) {
         this.$store.dispatch('auth/checkAuth', { api: this.$api })
           .then(() => {
@@ -53,7 +66,7 @@ export default {
                 if (Object.keys(clientInfo).length !== 0) {
                   this.$store.dispatch(`user/${GET_MANAGER_INFO}`, { api: this.$api })
                   this.$store.dispatch(`request/${GET_REQUEST}`, { api: this.$api })
-                  this.$store.dispatch(`user/${GET_DOCUMENTS}`, { api: this.$api })
+                  this.$store.dispatch(`fileinfo/downloadListDocument`, { api: this.$api })
                   this.$store.dispatch(`user/${GET_LIST_BILLING_ACCOUNT}`, { api: this.$api })
                     .then(isValid => {
                       if (isValid) {
@@ -83,6 +96,19 @@ export default {
     window.addEventListener('orientationchange', () => {
       this.$store.commit(SCREEN_WIDTH, getScreenWidth())
     })
+    console.log('%c ВНИМАНИЕ!', 'font-size: 28px; color: #E31E24')
+    console.log(
+      '%c Данная опция браузера предназначена для разработчиков! Пожалуйста, не вводите здесь что-либо для обеспечения безопасности вашего аккаунта!',
+      'font-size: 12px;'
+    )
+    console.log(
+      '%c Если вы обнаружили какую-то уязвимость или недоработку, то, пожалуйста, сообщите о ней нам',
+      'font-size: 12px;'
+    )
+    console.log(
+      '%c Считаете, что можете сделать лучше? Тогда скорее отправляйте нам своё резюме на http://job.ertelecom.ru/ :)',
+      'font-size: 10px'
+    )
   },
   methods: {},
   computed: {

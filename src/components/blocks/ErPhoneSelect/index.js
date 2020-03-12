@@ -13,7 +13,7 @@ export default class ErPhoneSelect extends mixins(ErSelect) {
     const text = ErSelect.options.methods.getText.call(this, item)
     return text
       .replace(/[\D]+/g, '')
-      .replace(PATTERN_FORMAT_PHONE, '+7 ($2) $3-$4-$5')
+      .replace(PATTERN_RUSSIAN_PHONE_GLOBAL, '+7 ($2) $3-$4-$5')
   }
   generateSearchMobile () {
     // Дублирование кода, так как не получается установить mask
@@ -56,7 +56,7 @@ export default class ErPhoneSelect extends mixins(ErSelect) {
       staticClass: 'er-select__item',
       on: {
         click: e => {
-          if (this.internalSearch.match(PATTERN_RUSSIAN_PHONE_GLOBAL)) {
+          if (this.internalSearch.match(PATTERN_FORMAT_PHONE)) {
             this.$emit('input', this.internalSearch)
             this.isMenuActive = false
             this.hasFocus = false

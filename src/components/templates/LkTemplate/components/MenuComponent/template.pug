@@ -36,7 +36,6 @@ div (:class="`${pre}`")
             )
             | {{ menuItem.name }}
           router-link(
-            to="/lk/support"
             v-for="(subItem, subIndex) in menuItem.subitem",
             :class="`${pre}__left__body-item__sub-item`",
             :key="subIndex"

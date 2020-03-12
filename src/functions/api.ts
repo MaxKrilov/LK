@@ -1,6 +1,6 @@
 /* eslint-disable */
-import axios, { AxiosRequestConfig, Method } from 'axios'
-import { TYPE_OBJECT, TYPE_ARRAY, TYPE_JSON } from '@/constants/type_request'
+import axios, { AxiosRequestConfig, Method, ResponseType } from 'axios'
+import { TYPE_OBJECT, TYPE_ARRAY, TYPE_JSON, TYPE_FILE } from '@/constants/type_request'
 import { eachArray, eachObject, isCombat, wrapHttps } from '@/functions/helper'
 import { BACKEND_COMBAT, BACKEND_TESTING } from '@/constants/url'
 import { API_DADATA } from '@/store/actions/api'
@@ -14,6 +14,7 @@ export class API {
   private _method: Method = 'POST'
   private _data: any = null
   private _withCredentials: boolean = false
+  private _responseType: ResponseType = 'json'
 
   private _token: string = ''
 
@@ -60,12 +61,23 @@ export class API {
     return dataResult
   }
 
+  private _transformDataForFile = (): any => {
+    const fd = new FormData
+    eachObject(this._data, (value: any, key: string) => {
+      fd.append(key, value)
+    })
+    const _token = this._getToken()
+    !!_token && (fd.append('_token', _token))
+    return fd
+  }
+
   private _reset = () => {
     this._branch = BASE_BRANCH
     this._type = TYPE_OBJECT
     this._method = 'POST'
     this._data = null
     this._withCredentials = false
+    this._responseType = 'json'
   }
 
   private _getToken = () => {
@@ -82,8 +94,8 @@ export class API {
   }
 
   public setType = (type: string): API => {
-    if (![TYPE_OBJECT, TYPE_ARRAY, TYPE_JSON].includes(type)) {
-      throw new Error('Type must be object, array or json')
+    if (![TYPE_OBJECT, TYPE_ARRAY, TYPE_JSON, TYPE_FILE].includes(type)) {
+      throw new Error('Type must be object, array, json, file')
     }
     this._type = type
     return this
@@ -104,6 +116,11 @@ export class API {
     return this
   }
 
+  public setResponseType = (type: ResponseType) => {
+    this._responseType = type
+    return this
+  }
+
   public query = (query: string): Promise<any> => {
     if (process.env.VUE_APP_USE_SSO_AUTH === 'no') {
       return new Promise(() => {})
@@ -116,6 +133,9 @@ export class API {
     if ([TYPE_ARRAY, TYPE_OBJECT].includes(this._type)) {
       config.headers = { 'content-type': 'application/x-www-form-urlencoded' }
     }
+    if (this._type === TYPE_FILE) {
+      config.headers = { 'content-type': 'multipart/form-data' }
+    }
     let data
     switch (this._type) {
       case TYPE_OBJECT:
@@ -127,9 +147,13 @@ export class API {
       case TYPE_JSON:
         data = this._transformDataForJson()
         break
+      case TYPE_FILE:
+        data = this._transformDataForFile()
+        break
     }
     config = Object.assign(config, {
       method: this._method,
+      responseType: this._responseType,
       data,
       url: API._getUrl(query, this._branch),
       withCredentials: this._withCredentials
@@ -137,6 +161,10 @@ export class API {
     return new Promise((resolve, reject) => {
       axios(config)
         .then(response => {
+          // Ошибка TBAPI (возвращается 200-ка)
+          if (response.data.businessErrorCode) {
+            reject(`Error of TBAPI: ${response.data.businessErrorCode}`)
+          }
           resolve(response.data)
         })
         .catch(error => {

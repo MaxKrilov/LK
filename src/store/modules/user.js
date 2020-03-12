@@ -61,6 +61,7 @@ const getters = {
   },
   getManagerInfo (state) {
     return {
+      // eslint-disable-next-line camelcase
       name: state.personalManager?.surname && state.personalManager?.name && state.personalManager?.middle_name
         ? `${state.personalManager.surname} ${state.personalManager.name} ${state.personalManager.middle_name}`
         : 'Нет закреплённого менеджера',
@@ -87,12 +88,9 @@ const getters = {
           }
         }
       })
-      result.isLPR = !!item.roles.filter(item => item.role.name.match(/decision maker/ig) || item.role.name.match(/лпр/ig)).length
+      result.isLPR = !!item.roles?.filter(item => item.role.name.match(/decision maker/ig) || item.role.name.match(/лпр/ig))?.length || false
       return result
     }) || []
-  },
-  getCountUnsignedDocuments (state) {
-    return state.countUnsignedDocuments
   },
   getReportDocuments: state => state.documents.filter(el => {
     return isReportDocument(el)
@@ -100,6 +98,9 @@ const getters = {
   getContractDocuments: state => state.documents.filter(el => {
     return isContractDocument(el) || isBlankDocument(el) || isUserListDocument(el)
   }),
+  getCountUnsignedDocument (state) {
+    return state.documents.filter(item => item?.contractStatus?.match(/Готов для клиента/i)).length
+  },
   getPhoneList (state) {
     return state.clientInfo?.contactMethods?.filter(item => item['@type'] === 'PhoneNumber')
       .map(item => item.name.replace(/[\D]+/g, '')) || []
@@ -346,7 +347,7 @@ const actions = {
     const activeBillingAccount = getters.getActiveBillingAccount
     const { toms } = rootGetters['auth/user']
     try {
-      const result = await api
+      await api
         .setWithCredentials()
         .setData({
           id: activeBillingAccount,
@@ -371,7 +372,7 @@ const mutations = {
     state.personalManager = payload
   },
   [GET_DOCUMENTS_SUCCESS]: (state, payload) => {
-    state.documents = payload
+    state.documents = payload.filter(item => item.visibleInSSP !== 'Нет')
     state.countUnsignedDocuments = payload.length
   },
   [GET_LIST_BILLING_ACCOUNT_SUCCESS]: (state, payload) => {

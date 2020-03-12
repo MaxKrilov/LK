@@ -170,3 +170,9 @@
   font-size: 14px;
   line-height: 120%;
 }
+
+%transparent-button {
+  border: none;
+  outline: none;
+  background-color: map_get($shades, 'transparent');
+}

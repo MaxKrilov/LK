@@ -26,11 +26,11 @@ div(:class="`${pre}`").main-content.main-content--padding.main-content--top-menu
                   .title
                     | Мои документы
                   .footer.d--flex.align-items-end.mt-auto
-                    .new
+                    .new(v-if="getCountUnsignedDocument !== 0")
                       .caption.mb-4
                         | Новые
                       .value
-                        | 1
+                        | {{ getCountUnsignedDocument }}
                     .icon.ml-auto
                       er-icon(name="doc")
           er-flex.mb-16.pr-8(xs6 xl3)

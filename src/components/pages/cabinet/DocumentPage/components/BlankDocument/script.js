@@ -1,12 +1,17 @@
 import CommonDocument from '../CommonDocument'
+import DocumentMixin from '@/mixins/ErDocumentMixin'
 
 export default {
   props: {
-    'document': {
-      type: Object
+    document: Object
+  },
+  computed: {
+    computedDocumentNumber () {
+      return this.getFirstElement.number
     }
   },
   components: {
-    CommonDocument
+    CommonDocument,
+    DocumentMixin
   }
 }

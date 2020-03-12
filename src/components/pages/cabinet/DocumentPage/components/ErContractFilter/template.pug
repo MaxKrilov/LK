@@ -1,13 +1,15 @@
 er-filter-container(
   :active="isFiltersVisible"
-  @click-outside="onCloseFilters"
+  @click-outside="() => { isFiltersVisible = false }"
 ).er-contract-filter
   div(
     slot="selected-filters"
+    @click="onShowFilters"
   ).er-contract-filter__current
-    span.er-filter-container__active-filter(
-      @click="onShowFilters"
-    ) {{ filterTypes[contractFilterType] }}
+    span.er-filter-container__active-filter.mr-16
+      | {{ filterTypes[internalFilterType] }}
+    span.er-filter-container__active-filter
+      | {{ getFormatPeriod }}
 
   div(slot="title")
     | Контрактные документы
@@ -16,7 +18,7 @@ er-filter-container(
     .er-contract-filter__list.main-content.main-content--h-padding
       er-container.full.container--no-padding
         er-row
-          er-flex.xs12.sm8.r-offset-sm4.r-offset-md0.md6.lg4
+          er-flex.xs12.sm8.r-offset-sm4.r-offset-md0.md5.lg3
             er-filter-group(title="Тип документа").er-contract-filter--doc-type
               .er-contract-filter__list-items
                 .er-contract-filter__item(v-for="(title, idx) in filterTypes")
@@ -26,15 +28,15 @@ er-filter-container(
                     name="contract-filter-type"
                     :value="idx"
                     :id="'id-filter-type-' + idx"
-                    :modelValue="contractFilterType"
-                    v-model="contractFilterType"
+                    :modelValue="internalFilterType"
+                    v-model="internalFilterType"
                   )
                   label(:for="'id-filter-type-' + idx").er-toggle__custom-label
                     | {{ title }}
 
-          er-flex.xs12.sm6.r-offset-sm6.r-offset-md0.md5.lg4
+          er-flex.r-offset-sm6.r-offset-md0.md5.lg4
             er-filter-group(title="Период")
-              er-date-picker
+              er-date-picker(v-model="internalPeriod" disabled-date="future")
 
-          er-flex.md1.lg4.d--flex.align-items-center
+          er-flex.md1.lg3.d--flex.align-items-center
             er-filter-close(@click="isFiltersVisible=false")
