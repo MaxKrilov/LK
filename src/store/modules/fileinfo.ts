@@ -87,25 +87,18 @@ const actions = {
   changeContractStatus (context: ActionContext<IState, any>, payload: { api: API, contractId: string, status: number | string }) {
     const { toms: clientId } = context.rootGetters['auth/user']
     return new Promise<boolean>((resolve, reject) => {
-      payload.api
-        .setWithCredentials()
-        .setData({
-          clientId,
-          contractId: payload.contractId,
-          status: payload.status
-        })
-        .query('/order/contract/edit')
-        .then(() => { resolve(true) })
-        .catch((err: AxiosError) => {
-          // todo Костыль! Следует переделать перед продом
-          if (err.response &&
-            [400, 500].includes(err.response.status) &&
-            err.response.data.message.match(/Заказ не может быть отправлен в исполнение автоматически/ig)) {
-            resolve(true)
-          } else {
-            resolve(false)
-          }
-        })
+      setTimeout(() => {
+        payload.api
+          .setWithCredentials()
+          .setData({
+            clientId,
+            contractId: payload.contractId,
+            status: payload.status
+          })
+          .query('/order/contract/edit')
+          .then(() => { resolve(true) })
+          .catch(() => reject(false))
+      }, 2000)
     })
   }
 }
