@@ -13,9 +13,7 @@
   z-index: map_get($z-index, 'left-menu');
 
   &__left {
-    position: absolute;
-    background: red;
-    z-index: 7;
+    position: fixed;
     top: 0;
     left: 0;
     width: 100%;

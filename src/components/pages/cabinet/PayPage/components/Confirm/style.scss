@@ -1,15 +1,10 @@
 .confirm {
-  position: fixed;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
+  position: relative;
   width: 288px;
   height: 480px;
   background: map_get($shades, 'white');
   box-shadow: -8px 8px 16px rgba(0, 0, 0, 0.04), 0px 8px 24px rgba(0, 0, 0, 0.06);
   border-radius: 12px;
-  z-index: 13;
   margin: 65px auto;
   @include media-query((
     margin: (

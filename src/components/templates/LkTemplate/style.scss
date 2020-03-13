@@ -1,14 +1,13 @@
 .lk-template {
   background: map_get($gray, '3');
-  //min-height: 100vh;        <--- чтобы было правильное расстояние до футера
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
   overflow-x: hidden;
 
   &__content {
     width: 100%;
-    //max-width: 1208px;
-    max-width: 1440px;
+    max-width: 1208px;
     padding: 89px 16px 0;
     @include media-query((
       padding: (

@@ -30,72 +30,54 @@ export default {
       const disabled = e.target.dataset.disabled
       if (disabled) return
       let lastDayOfPeriod
-      let datename = `${period}-й квартал`
       switch (period) {
         case FIRST_QUARTER:
           lastDayOfPeriod = new Date(this.monitoredYear, 2, 31)
-          let yearname = lastDayOfPeriod.getFullYear().toString().slice(-2)
           this.$emit('input', [
             new Date(this.monitoredYear, 0, 1),
-            lastDayOfPeriod < this.currentDate ? lastDayOfPeriod : this.currentDate,
-            datename, yearname
+            lastDayOfPeriod < this.currentDate ? lastDayOfPeriod : this.currentDate
           ])
           break
         case SECOND_QUARTER:
           lastDayOfPeriod = new Date(this.monitoredYear, 5, 30)
-          yearname = lastDayOfPeriod.getFullYear().toString().slice(-2)
           this.$emit('input', [
             new Date(this.monitoredYear, 3, 1),
-            lastDayOfPeriod < this.currentDate ? lastDayOfPeriod : this.currentDate,
-            datename, yearname
+            lastDayOfPeriod < this.currentDate ? lastDayOfPeriod : this.currentDate
           ])
           break
         case THIRD_QUARTER:
           lastDayOfPeriod = new Date(this.monitoredYear, 8, 30)
-          yearname = lastDayOfPeriod.getFullYear().toString().slice(-2)
           this.$emit('input', [
             new Date(this.monitoredYear, 6, 1),
-            lastDayOfPeriod < this.currentDate ? lastDayOfPeriod : this.currentDate,
-            datename, yearname
+            lastDayOfPeriod < this.currentDate ? lastDayOfPeriod : this.currentDate
           ])
           break
         case FOURTH_QUARTER:
           lastDayOfPeriod = new Date(this.monitoredYear, 11, 31)
-          yearname = lastDayOfPeriod.getFullYear().toString().slice(-2)
           this.$emit('input', [
             new Date(this.monitoredYear, 9, 1),
-            lastDayOfPeriod < this.currentDate ? lastDayOfPeriod : this.currentDate,
-            datename, yearname
+            lastDayOfPeriod < this.currentDate ? lastDayOfPeriod : this.currentDate
           ])
           break
         case FIRST_HALF_YEAR:
           lastDayOfPeriod = new Date(this.monitoredYear, 5, 30)
-          yearname = lastDayOfPeriod.getFullYear().toString().slice(-2)
-          datename = '1-е полугодие'
           this.$emit('input', [
             new Date(this.monitoredYear, 0, 1),
-            lastDayOfPeriod < this.currentDate ? lastDayOfPeriod : this.currentDate,
-            datename, yearname
+            lastDayOfPeriod < this.currentDate ? lastDayOfPeriod : this.currentDate
           ])
           break
         case SECOND_HALF_YEAR:
           lastDayOfPeriod = new Date(this.monitoredYear, 11, 31)
-          yearname = lastDayOfPeriod.getFullYear().toString().slice(-2)
-          datename = '2-е полугодие'
           this.$emit('input', [
             new Date(this.monitoredYear, 6, 1),
-            lastDayOfPeriod < this.currentDate ? lastDayOfPeriod : this.currentDate,
-            datename, yearname
+            lastDayOfPeriod < this.currentDate ? lastDayOfPeriod : this.currentDate
           ])
           break
         case YEAR:
           lastDayOfPeriod = new Date(this.monitoredYear, 11, 31)
-          yearname = lastDayOfPeriod.getFullYear().toString().slice(-2)
-          datename = 'За год'
           this.$emit('input', [
             new Date(this.monitoredYear, 0, 1),
-            lastDayOfPeriod < this.currentDate ? lastDayOfPeriod : this.currentDate,
-            datename, yearname
+            lastDayOfPeriod < this.currentDate ? lastDayOfPeriod : this.currentDate
           ])
           break
       }

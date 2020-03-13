@@ -14,12 +14,11 @@ export default {
     isMobile: false,
     tag: 'er-menu', // todo change on er-menu
     isOpenDialog: false,
-    typeOfCalendar: 'report',
-    result: '1-й квартал  2019',
+    typeOfCalendar: 'calendar',
     /**
      * @param {Date}
      */
-    internalValue: ['2019-01-01', '2019-03-31'] // null
+    internalValue: null
   }),
   props: {
     value: null,
@@ -34,23 +33,19 @@ export default {
     },
     format: {
       type: String,
-      default: 'DD.MM.YY'
+      default: 'DD.MM.YYYY'
     },
-    isShowRequiredLabel: Boolean,
-    periodInfo: String
-  },
-  mounted () {
-    this.result = this.periodInfo
+    isShowRequiredLabel: Boolean
   },
   computed: {
     valueForTextInput () {
-      return !this.value || this._.isEmpty(this.value)
-        ? ''
-        : this.result[0] === 'u'
-          ? this._.isArray(this.value)
-            ? `${this.$moment(this._.head(this.value)).format(this.format)}${this.separator}${this.$moment(this._.last(this.value)).format(this.format)}`
-            : this.$moment(this.value).format('DD MMM YYYY')
-          : this.result
+      return this._.isArray(this.value)
+        ? this._.isEmpty(this.value)
+          ? ''
+          : `${this.$moment(this._.head(this.value)).format(this.format)}${this.separator}${this.$moment(this._.last(this.value)).format(this.format)}`
+        : !this.value
+          ? ''
+          : this.$moment(this.value).format(this.format)
     }
   },
   watch: {
@@ -64,9 +59,13 @@ export default {
       }
     },
     isOpenDialog (val) {
-      val && (!this.value || this._.isEmpty(this.value)) && (
-        this.internalValue = this._.isArray(this.value) ? [ new Date(), new Date() ] : new Date()
-      )
+      if (val) {
+        if (this._.isArray(this.value) && this._.isEmpty(this.value)) {
+          this.internalValue = [ new Date(), new Date() ]
+        } else if (!this._.isArray(this.value) && !this.value) {
+          this.internalValue = new Date()
+        }
+      }
     }
   },
   methods: {
@@ -87,21 +86,7 @@ export default {
     generateTextSlider () {
       return this.$createElement('div', {
         staticClass: `${this.pre}__head__slider`
-      },
-      [
-        this._.isArray(this.internalValue) && this.$createElement('div',
-          { staticClass: `${this.pre}__head__slider-item` },
-          [
-            this.$createElement('a', {
-              attrs: {
-                'data-type': 'report'
-              },
-              on: {
-                click: this.onChangeTypeCalendar
-              }
-            }, 'Отчетный период')
-          ]
-        ),
+      }, [
         this.$createElement('div',
           { staticClass: `${this.pre}__head__slider-item` },
           [
@@ -113,6 +98,19 @@ export default {
                 click: this.onChangeTypeCalendar
               }
             }, 'Произвольный период')
+          ]
+        ),
+        this._.isArray(this.internalValue) && this.$createElement('div',
+          { staticClass: `${this.pre}__head__slider-item` },
+          [
+            this.$createElement('a', {
+              attrs: {
+                'data-type': 'report'
+              },
+              on: {
+                click: this.onChangeTypeCalendar
+              }
+            }, 'Отчетный период')
           ]
         )
       ])
@@ -129,8 +127,8 @@ export default {
     },
     generateHeadTitle () {
       return this.$createElement('div', {
-        staticClass: `${this.pre}__head__title`
-      }, this.typeOfCalendar === 'calendar'
+          staticClass: `${this.pre}__head__title`
+        }, this.typeOfCalendar === 'calendar'
         ? this.generateHeadTitleForCalendar()
         : this.generateHeadTitleForReport()
       )
@@ -146,11 +144,14 @@ export default {
     },
     generateHeadTitleForReport () {
       let number, period, year
-      year = '2019'
-      const dayBegin = '1'
-      const dayEnd = '20'
-      const monthBegin = '01'
-      const monthEnd = '03'
+      if (this._.head(this.internalValue).getFullYear() !== this._.last(this.internalValue).getFullYear()) {
+        return this.generateHeadTitleForCalendar()
+      }
+      year = this._.head(this.internalValue).getFullYear()
+      const dayBegin = this._.head(this.internalValue).getDate()
+      const dayEnd = this._.last(this.internalValue).getDate()
+      const monthBegin = this._.head(this.internalValue).getMonth()
+      const monthEnd = this._.last(this.internalValue).getMonth()
       if (dayBegin !== 1) {
         return this.generateHeadTitleForCalendar()
       }
@@ -208,13 +209,7 @@ export default {
               disabledDate: this.disabledDate
             },
             on: {
-              input: (e) => {
-                this.$emit('datename', e[2])
-                this.$emit('yearname', e[3])
-                this.result = `${e[2]}  20${e[3]}`
-                const e1 = [e[0], e[1]]
-                this.internalValue = e1
-              }
+              input: e => { this.internalValue = e }
             }
           })
         ]),
@@ -256,6 +251,7 @@ export default {
   created () {
     this.isMobile = getScreenWidth() < 640
     this.isMobile && (this.tag = 'er-dialog')
+    this.internalValue = this.value
   },
   render (h) {
     const scopedSlots = {
