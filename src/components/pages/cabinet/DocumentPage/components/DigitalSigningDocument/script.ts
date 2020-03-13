@@ -151,7 +151,7 @@ export default class DigitalSigningDocument extends Vue {
       return false
     }
     // Прикрепляем вложение
-    const _attachResult = await this.$store.dispatch(`documents/${ATTACH_SIGNED_DOCUMENT}`, {
+    await this.$store.dispatch(`documents/${ATTACH_SIGNED_DOCUMENT}`, {
       api: this.$api,
       id: this.signingDocument.id,
       fileName: this.signingDocument.fileName,
