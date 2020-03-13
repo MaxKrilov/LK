@@ -1,4 +1,4 @@
-import { Vue, Component, Prop } from 'vue-property-decorator'
+import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
 import { CANCEL_REQUEST } from '../../../../../../store/actions/request'
 import ErActivationModal from '../../../../../blocks/ErActivationModal/index'
 
@@ -103,7 +103,7 @@ export default class RequestItemComponent extends Vue {
       return { id: 'solved', name: 'Решена' }
     }
     if (this.onHoldWhen) {
-      return { id: 'hold', name: 'В работе' } // todo Переделать после того, как бизнес отойдёт после Новогодних праздников
+      return { id: 'hold', name: 'В работе' }
     }
     if (this.inProgressWhen) {
       return { id: 'progress', name: 'В работе' }
@@ -190,13 +190,8 @@ export default class RequestItemComponent extends Vue {
       description: this.reasonOfCancel
     })
       .then(result => {
-        if (result) {
-          this.closeCancelDialog()
-          this.isSuccessCancel = true
-          this.$emit('cancel')
-        } else {
-          this.resultDialogError = true
-        }
+        this.closeCancelDialog()
+        this.isSuccessCancel = true
       })
       .catch(() => {
         this.resultDialogError = true
@@ -204,5 +199,9 @@ export default class RequestItemComponent extends Vue {
       .finally(() => {
         this.loadingCancel = false
       })
+  }
+  @Watch('isSuccessCancel')
+  onIsSuccessCancelChanged (val) {
+    !val && this.$emit('cancel')
   }
 }

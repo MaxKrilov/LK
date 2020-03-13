@@ -50,10 +50,6 @@ export default {
           if (err && err.response && [403, 401].includes(err.response.status)) {
             this.$store.dispatch('auth/signIn', { api: this.$api })
           }
-          // if (err) {
-          //   console.info(err)
-          //   debugger
-          // }
           reject(err)
         })
       })
