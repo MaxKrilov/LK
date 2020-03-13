@@ -41,6 +41,7 @@ export default class PromoPage extends Vue {
       description: 'Квалифицированные специалисты будут сопровождать вас от первого контакта. Персональный менеджер по документообороту всегда предоставит актуальную информацию о состоянии счета и потреблении услуги, обеспечит своевременное получение всех необходимых документов по договору.'
     }
   ]
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   render (h: CreateElement): VNode {
     return (
       <div class={['main-content', 'main-content--padding', 'main-content--top-menu-fix']}>

@@ -34,6 +34,11 @@ common-document(
         er-icon(name="circle_ok").circle-ok-icon
         er-icon(name="ok").ok-icon
         | Подписан
+    //- Документ Активен
+    div(v-if="documentIsActive")
+      er-icon(name="circle_ok").circle-ok-icon
+      er-icon(name="ok").ok-icon
+        | Активный
     //- Документ на проверке у менеджера
     div(v-else-if="documentIsVerifying")
       .er-document__verifying-text

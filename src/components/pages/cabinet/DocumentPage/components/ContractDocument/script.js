@@ -76,6 +76,9 @@ export default {
     },
     documentIsCancel () {
       return (this.getContractOrSupplementary || this.getFirstElement).contractStatus?.toLowerCase() === DOCUMENT.CONTRACT.IS_CANCEL.toLowerCase()
+    },
+    documentIsActive () {
+      return !!(this.getContractOrSupplementary || this.getFirstElement).contractStatus?.toLowerCase() === DOCUMENT.CONTRACT.IS_ACTIVE.toLowerCase()
     }
   },
   methods: {

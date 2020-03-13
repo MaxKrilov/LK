@@ -219,7 +219,6 @@ export default class CreateRequestComponent extends Vue {
       locationId: val.locationId
     })
       .then(response => {
-        console.log(response)
         this.listService = response.filter((item: any) => item?.offer?.isRoot).map((item: any) => ({
           id: item.id,
           value: item.chars['Имя в счете'] || item.name,
