@@ -1,7 +1,6 @@
 // History-pay
-
-div.main-content.main-content--h-padding.main-content--top-menu-fix(:class="`${pre}`")
-  div.main-content--top-padding(:class="`${pre}__back-main1`")
+div.main-content.main-content--h-padding.main-content--top-menu-fix.main-content--top-padding(:class="`${pre}`")
+  //div.main-content--top-padding(:class="`${pre}__back-main1`")
   div(:class="`${pre}__container-main`")
     div.caption(:class="`${pre}__back-main`")
       div.ml-auto
@@ -24,7 +23,6 @@ div.main-content.main-content--h-padding.main-content--top-menu-fix(:class="`${p
 
     er-container.mb-24(full
       :class="`${pre}__container-operation ${pre}__container-operation${visFilter}`"
-      :style="'width: ' + widthContainer"
     )
       ActionMonth(:month="valSelect" page="history")
 

@@ -26,7 +26,7 @@
     & .operations__icon {
       background: linear-gradient(360deg, map_get($gray, '4') 0%, rgba(226, 226, 226, 0) 170.74%);
       & svg {
-        color: map_get($gray, '31');
+        color: map_get($gray, '37');
       }
     }
   }
@@ -38,6 +38,14 @@
     border-radius: inherit;
     border-right: 4px solid map_get($shades, 'transparent');
     display: flex;
+    margin-left: 24px;
+    @include media-query((
+      margin-left: (
+        sm: 0,
+        //lg: 12px
+      ),
+    ));
+
   }
   &__date {
     position: absolute;
@@ -80,6 +88,7 @@
   &__icon {
     background: map_get($gray, '4');
     margin: 1px 0 0 0;
+    margin-left: -24px;
     &__address {
       background: map_get($gray, '4');
       @include media-query((
@@ -247,7 +256,7 @@
     }
   }
   &__icon__yellow svg {
-      color: map_get($yellow, 'other-7');
+      color: map_get($yellow, 'other-10');
   }
   &__wrapper {
     display: flex;

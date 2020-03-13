@@ -119,8 +119,8 @@
   }
   &__card-shadow:hover {
     border-radius: 12px;
-    background: map_get($yellow, 'other-8');
-    box-shadow: -4px 5px 32px map_get($yellow, 'other-5') !important;
+    background: map_get($yellow, 'other-11');
+    box-shadow: -4px 5px 32px map_get($yellow, 'other-8') !important;
   }
   &__fast-links {
     a {
@@ -168,7 +168,7 @@
       .button-pay {
         &__card-icon {
           position: relative;
-          color: map_get($yellow, 'other-6') !important;
+          color: map_get($yellow, 'other-9') !important;
           @include media-query((
             left: (
               xs: 58px,
@@ -311,8 +311,7 @@
     left: 6px;
     overflow: hidden;
     background: map_get($gray, '9');
-    border-bottom-left-radius: 36px;
-    border-bottom-right-radius: 36px;
+    border-radius: 0 0 36px 36px;
     @include media-query((
       width: (
         md: 96%,

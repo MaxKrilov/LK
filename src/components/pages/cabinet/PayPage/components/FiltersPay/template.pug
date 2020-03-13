@@ -140,7 +140,8 @@ div(:class="`${pre}`")
       @click="moveMonth('left')"
       v-if="visArr"
     )
-      er-icon(name="left_big")
+      er-icon(name="corner_down" :class="`${pre}__left_big`")
+
     div(:class="`${pre}__months-filter1`")
       div(
         :style="'margin-left: ' + margLeft"
@@ -162,4 +163,5 @@ div(:class="`${pre}`")
       @click="moveMonth('right')"
       v-if="visArr"
     )
-      er-icon(name="right_big")
+      er-icon(name="corner_down" :class="`${pre}__right_big`")
+

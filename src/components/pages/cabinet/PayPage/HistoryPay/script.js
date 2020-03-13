@@ -13,8 +13,9 @@ export default {
     pre: 'history-pay',
     valSelect: 'Январь',
     visFilter: '__vis-filter',
-    widthContainer: '108%'
+    // widthContainer: '108%'
   }),
+/*
   computed: {
     ...mapGetters([SCREEN_WIDTH])
   },
@@ -26,7 +27,9 @@ export default {
       this.changeWidth()
     }
   },
+*/
   methods: {
+/*
     changeWidth () {
       let width
       if (this[SCREEN_WIDTH] <= 800) width = '108'
@@ -37,6 +40,7 @@ export default {
       if (this[SCREEN_WIDTH] >= 1400) width = '111'
       this.widthContainer = `${width}%`
     },
+*/
     typeFind (select) {
       if (select === 'По услуге') {
         this.valSelect = 'Январь'

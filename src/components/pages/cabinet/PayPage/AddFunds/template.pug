@@ -22,7 +22,8 @@ div(:class="`${pre}`").main-content.main-content--h-padding
     div(:class="`${pre}__main`")
       div(:class="`${pre}__line`")
       div(:class="`${pre}__sum`")
-        div.d--flex(:class="`${pre}__sum__left ${direct}`")
+        //div.d--flex(:class="`${pre}__sum__left ${direct}`" id="bgg1")
+        div.d--flex(:class="`${pre}__sum__left ${pre}__sum__left__direct`" id="bgg")
           er-flex.mb-16.pr-8(
             xs12
             md7
@@ -124,7 +125,7 @@ div(:class="`${pre}`").main-content.main-content--h-padding
           er-select(
             :placeholder="currentEmail",
             :items="emails",
-            v-model="selEmail"
+            v-model="selectedEmail"
             @input="selectEmail"
             :class="`${pre}__check__input__select`"
           )

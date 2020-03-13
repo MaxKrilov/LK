@@ -18,7 +18,7 @@ export default {
     pre: 'add-funds',
     nameCard: '',
     empty: true,
-    sumPay: '4444,23',
+    sumPay: '',
     sumPayInteger: '',
     sumPayDecimal: '',
     openConfirmPay: false,
@@ -46,11 +46,11 @@ export default {
     borderCheck: '',
     isEmptySum: false,
     isEmptyEmail: false,
-    valEmail: PATTERN_EMAIL,
+    regexEmail: PATTERN_EMAIL,
     checkAutoPay: 'Подключить автоплатёж',
-    selEmail: '',
+    selectedEmail: '',
     emails: [],
-    currentEmail: 'epic@mail.com'
+    currentEmail: ''
   }),
   computed: {
     ...mapGetters([SCREEN_WIDTH]),
@@ -76,16 +76,14 @@ export default {
       this.changeWidth()
     },
     visAutoPay () {
+      this.openConfirmAutoPay = this.errDelAutoPay
+      this.visConfirmAutoPay = this.errDelAutoPay
       if (this.visAutoPay) {
-        this.openConfirmAutoPay = this.errDelAutoPay
-        this.visConfirmAutoPay = this.errDelAutoPay
         if (!this.errDelAutoPay && this.visAutoPay === 0) {
           this.checkAutoPay = 'Подключить автоплатёж'
           this.visAutoPay = false
         }
       } else {
-        this.openConfirmAutoPay = this.errDelAutoPay
-        this.visConfirmAutoPay = this.errDelAutoPay
         if (!this.errDelAutoPay && this.visAutoPay !== 0) {
           this.checkAutoPay = 'Автоплатёж'
           this.visAutoPay = true
@@ -108,9 +106,6 @@ export default {
       }
     },
     changeWidth () {
-      // todo-er перенести в css
-      this.direct = this[SCREEN_WIDTH] < 960 ? 'row' : 'column'
-
       if (this.visAutoPay) {
         this.textAutopay = this.autopayOff
       } else {
@@ -119,7 +114,7 @@ export default {
     },
     selectEmail (item) {
       this.currentEmail = item
-      if (this.currentEmail === '' || !this.currentEmail.match(this.valEmail)) {
+      if (this.currentEmail === '' || !this.currentEmail.match(this.regexEmail)) {
         this.isEmptyEmail = true
         this.borderCheck = '__border'
       } else {
@@ -185,7 +180,7 @@ export default {
         this.sumPayInteger = this.sumPay.substr(0, this.sumPay.indexOf(','))
         this.sumPayDecimal = this.sumPay.slice(-2)
       }
-      if (this.currentEmail === '' || !this.currentEmail.match(this.valEmail)) {
+      if (this.currentEmail === '' || !this.currentEmail.match(this.regexEmail)) {
         this.isEmptyEmail = true
         this.borderCheck = '__border'
       } else {
@@ -194,7 +189,7 @@ export default {
       }
       if (this.currentEmail !== '' &&
         this.sumPay !== '' &&
-        this.currentEmail.match(this.valEmail)
+        this.currentEmail.match(this.regexEmail)
       ) {
         if (this.numCard === 0) {
           this.openConfirmPay = true

@@ -27,7 +27,7 @@
       padding: (
         md:  0 30px 0 26px,
         lg:  0 36px 0 32px,
-        xl:  0 40px 0 316px,
+        xl:  0 40px 0 337px,
       ),
     ));
     &__relative {
@@ -586,7 +586,7 @@
     z-index: 1;
     & svg {
       color: map_get($gray, '32');
-      width: 13px !important;
+      width: 24px !important;
       &:hover {
         color: map_get($yellow, 'base');
       }
@@ -616,6 +616,12 @@
     margin-top: 0;
     display: inline-block;
     height: 40px;
+  }
+  &__left_big {
+    transform: rotate(90deg)
+  }
+  &__right_big {
+    transform: rotate(-90deg)
   }
 }
 .er-text-field {

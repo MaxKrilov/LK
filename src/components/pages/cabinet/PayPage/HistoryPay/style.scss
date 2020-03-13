@@ -1,5 +1,6 @@
 .history-pay {
-  width: 100%;
+  //position: relative;
+  //left: -17px;
   &__container-main {
     min-width: 320px;
     margin-left: -16px;
@@ -16,6 +17,7 @@
         sm: -24px,
         md: 0,
         lg: 0,
+        xl: 20px
       ),
     ));
   }
@@ -43,9 +45,7 @@
       left: (
         sm: 0,
         md: -24px,
-        lg: 0px,
-        xl: 0px,
-        xxl: 0px
+        lg: 0px
       ),
     ));
     &__vis-filter {

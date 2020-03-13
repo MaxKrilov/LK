@@ -365,7 +365,7 @@
         )
       ));
       &__over {
-        background: transparent;
+        background: map-get($shades, 'transparent');
         position: absolute;
         left: 30px;
         top: 103px;
@@ -416,6 +416,11 @@
           xl: 5px !important,
         )
       ));
+      &__direct {
+        flex-wrap: wrap;
+        margin-right: -15px;
+        margin-left: -15px;
+      }
     }
   }
   &__check {

@@ -19,7 +19,6 @@ export default {
     /**
      * @param {Date}
      */
-    // internalValue: null
     internalValue: ['2019-01-01', '2019-03-31'] // null
   }),
   props: {

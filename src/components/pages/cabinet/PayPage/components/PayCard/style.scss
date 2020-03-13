@@ -552,7 +552,7 @@
         top: 24px;
         &__next {
           @extend .pay-card__card__bg__strip;
-          background: map_get($yellow, 'other-9');
+          background: map_get($yellow, 'other-12');
           transform: matrix(1, 0, 0, -1, 0, 0);
           &__empty {
             background: map_get($shades, 'black');
