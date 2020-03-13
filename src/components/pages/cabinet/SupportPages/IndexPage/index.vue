@@ -37,7 +37,7 @@
                 v-for="requestItem in listRequestComputedByPagination"
                 v-bind="requestItem"
                 :key="requestItem.ticketId"
-                @cancel="() => { requestItem.cancelledWhen = requestItem.modifiedWhen = Number(new Date()) }"
+                @cancel="() => { cancellRequest(requestItem) }"
               )
               .b-request__tbody--empty(v-if="listRequestComputed.length === 0")
                 | У вас нет {{ isActiveFilterRequest(getTypeFilterRequestActive) ? 'активных' : '' }} заявок

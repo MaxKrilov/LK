@@ -166,7 +166,7 @@
     er-activation-modal(
       type="success"
       v-model="isSuccessCancel"
-      :title="`Заявка № ${ ticketName | ticketName } успешно отменена`"
+      :title="`Заявка успешно отменена`"
       :is-show-action-button="false"
       cancel-button-text="Спасибо"
     )
