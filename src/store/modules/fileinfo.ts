@@ -96,7 +96,16 @@ const actions = {
         })
         .query('/order/contract/edit')
         .then(() => { resolve(true) })
-        .catch(() => reject(false))
+        .catch((err: AxiosError) => {
+          // todo Костыль! Следует переделать перед продом
+          if (err.response &&
+            [400, 500].includes(err.response.status) &&
+            err.response.data.message.match(/Заказ не может быть отправлен в исполнение автоматически/ig)) {
+            resolve(true)
+          } else {
+            resolve(false)
+          }
+        })
     })
   }
 }
