@@ -1,42 +1,15 @@
 .confirm {
-  position: relative;
-  width: 288px;
-  height: 480px;
-  background: map_get($shades, 'white');
-  box-shadow: -8px 8px 16px rgba(0, 0, 0, 0.04), 0px 8px 24px rgba(0, 0, 0, 0.06);
-  border-radius: 12px;
-  margin: 65px auto;
-  @include media-query((
-    margin: (
-      sm: 16px auto,
-      md: 221px auto,
-      lg: 258px auto,
-      xl: 214px auto,
-    ),
-    height: (
-      sm: 288px,
-      md: 353px,
-      xl: 416px,
-    ),
-    width: (
-      sm: 448px,
-      md: 384px,
-      xl: 544px,
-    ),
-    top: (
-      lg: 16px,
-    ),
-  ));
   &__content {
-    position: absolute;
-    left: 24px;
-    top: 26px;
-    width: 240px;
+    width: 100%;
+    background-color: map_get($shades, 'white');
+    position: relative;
+    padding: 24px 24px 0 24px;
+    height: 480px;
     @include media-query((
-      left: (xl: 32px),
-      width: (
-        sm: 340px,
-        xl: 470px
+      height: (
+        sm: 288px,
+        md: 353px,
+        xl: 416px,
       ),
     ));
     &__size {
@@ -48,74 +21,96 @@
         ),
       ));
     }
-    &__text {
-      @include media-query((
-        left: (
-          sm: 22px
-        ),
-        top: (
-          sm: 8px
-        ),
-      ));
-    }
     &__pos {
+      position: relative;
+      left: 0;
+      top: -47px;
+      width: 100%;
       @include media-query((
-        position: (
-          sm: relative,
+        width: (
+          sm: 75%,
+          md: 100%,
         ),
         top: (
-          sm: -63px,
-          md: 0,
+          sm: -106px,
+          md: -48px,
         ),
         left: (
-          sm: 71px,
-          md: 0,
+          sm: 75px,
+          md: 0px,
+          lg: 0px
         ),
       ));
     }
   }
   &__icon-height svg {
-    position: absolute;
+    position: relative;
     width: 64px !important;
-    left: 0;
-    top: 0;
     color: map_get($yellow, 'base');
   }
   &__container-button {
     position: absolute;
-    padding: 0 24px 0 24px !important;
-    bottom: 32px;
-    width: 90%;
+    bottom: 26px;
+    width: 83%;
+  }
+  &__close {
+    position: absolute;
+    right: 0;
+    & svg {
+      display: block;
+      opacity: 0.2;
+      width: 16px !important;
+      position: relative;
+      right: 24px;
+      cursor: pointer;
+      @include media-query((
+        display: (xl: block),
+      ));
+    }
+  }
+  &__integer {
+    display: none;
     @include media-query((
-      width: (
-        sm: 100%,
-      ),
-      padding: (
-        sm: 0 10px 0 115px !important,
-        md: 0 29px 0 62px !important,
-        lg: 0 10px 0 24px !important,
-      ),
+      display: (sm: inline-block)
     ));
   }
-  &__close svg {
-    display: block;
-    opacity: 0.2;
-    width: 16px !important;
-    position: absolute;
-    right: 29px;
-    top: 29px;
-    cursor: pointer;
+  &__integer-row {
+    display: inline-block;
     @include media-query((
-      display: (xl: block),
+      display: (sm: none)
     ));
   }
   &__decimal {
     opacity: .3;
+    display: none;
+    @include media-query((
+      display: (sm: inline-block)
+    ));
+  }
+  &__decimal-row {
+    opacity: .3;
+    display: inline-block;
+    @include media-query((
+      display: (sm: none)
+    ));
   }
   &__currency {
     margin-top: 6px;
     margin-left: 4px;
     opacity: .3;
+    display: none;
+    @include media-query((
+      display: (sm: inline-block)
+    ));
+  }
+  &__currency-row {
+    margin-top: 6px;
+    margin-left: 4px;
+    opacity: .3;
+    display: inline-block;
+    @include media-query((
+      display: (sm: none)
+    ));
   }
   &__no-text {
     cursor: pointer;
@@ -172,6 +167,9 @@
       ),
       text-align: (sm: end),
       display: (xl: none !important),
+      left: (
+        sm: 12px
+      )
     ));
     &__xl {
       display: none !important;
@@ -179,84 +177,6 @@
         display: (xl: flex !important),
       ));
     }
-  }
-  &__text {
-    font: 13px/18px $fedra-book;
-    letter-spacing: 0.25px;
-    color: rgba(map_get($gray, '8'), 0.8);
-    width: 240px;
-    @include media-query((
-      width: (
-        sm: 340px,
-        md: 336px
-      ),
-      position: ( sm: relative),
-      top: (
-        sm: -72px,
-        md: -26px,
-      ),
-      left: (
-        sm: 73px,
-        md: 0,
-      ),
-      font-size: (
-          md: 14px,
-          xxl: 20px
-        ),
-      line-height: (
-        md: 19px,
-        xxl: 26px
-      ),
-      letter-spacing: (
-        md: normal
-      )
-    ));
-    &__header {
-      @extend .confirm__text;
-      @include media-query((
-        width: (sm: 240px !important),
-        position: ( sm: relative),
-        top: (
-          sm: -20px,
-          md: 10px
-        ),
-        left: (
-          sm: 54px,
-          md: -49px
-        ),
-        font-size: (
-          md: 14px,
-          xxl: 20px
-        ),
-        line-height: (
-          md: 17px,
-          xxl: 26px
-        ),
-        letter-spacing: (
-          md: nornal
-        )
-      ));
-    }
-    &__title {
-      @include media-query((
-        position: ( sm: relative),
-        left: (sm: -48px),
-        top: (md: 6px),
-      ));
-      &__remcard {
-        @include media-query((
-          position: ( sm: relative),
-          left: (
-            sm: -49px,
-            md: -45px,
-          ),
-          top: (md: 18px),
-        ));
-      }
-    }
-  }
-  &__header {
-    padding-left: 0 !important;
   }
   &__err {
     position: absolute;
@@ -282,4 +202,13 @@
       ),
     ));
   }
+}
+.er-dialog {
+  @include media-query((
+    max-width: (
+      sm: 448px,
+      md: 384px,
+      xl: 544px,
+    ),
+  ));
 }

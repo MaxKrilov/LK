@@ -132,21 +132,6 @@ div(:class="`${pre}`").main-content.main-content--h-padding
         div(:class="`${pre}__check__empty`" v-if="isEmptyEmail")
           | Поле заполнено не верно
 
-    // Чек
-    Hint( v-if="openConfirmCheck"
-      :vis="openConfirmCheck"
-      title="Отправить чек"
-      description=""
-      :subText="textCheck"
-      hasErr=""
-      err=""
-      buttLeftText=""
-      buttRightText="Спасибо"
-      @closeConfirm="closeConfirm"
-      @buttRight="closeConfirm"
-      @input="closeConfirm"
-    )
-
     // Пополнение
     Confirm( v-if="openConfirmPay"
       :vis="openConfirmPay"
@@ -162,19 +147,17 @@ div(:class="`${pre}`").main-content.main-content--h-padding
       @input="closeConfirm"
     )
 
-    // Запомнить карту
-    Hint( v-if="openConfirmDataCard"
-      :vis="openConfirmDataCard"
-      title="Данные карты"
-      description=""
-      :subText="textRemcard"
-      hasErr=""
-      err=""
-      buttLeftText="Не сохранять"
-      buttRightText="Запомнить карту"
+    // Удалить карту
+    Confirm(
+      :vis="openConfirmDel"
+      title="Вы уверены, что хотите удалить карту ?"
+      :subText="nameCard"
+      :hasErr="errDelCard"
+      err="Произошла ошибка. Карта не удалена. Попробуйте позже."
+      :buttLeft="delCard"
+      buttText="Удалить"
       @closeConfirm="closeConfirm"
-      @buttLeft="remcardButtLeft"
-      @buttRight="remcardButtRight"
+      @buttLeft="delCard"
       @input="closeConfirm"
     )
 
@@ -203,6 +186,38 @@ div(:class="`${pre}`").main-content.main-content--h-padding
       @buttLeft="autopayButtRight"
       @input="closeConfirm"
     )
+
+    // Чек
+    Hint( v-if="openConfirmCheck"
+      :vis="openConfirmCheck"
+      title="Отправить чек"
+      description=""
+      :subText="textCheck"
+      hasErr=""
+      err=""
+      buttLeftText=""
+      buttRightText="Спасибо"
+      @closeConfirm="closeConfirm"
+      @buttRight="closeConfirm"
+      @input="closeConfirm"
+    )
+
+    // Запомнить карту
+    Hint( v-if="openConfirmDataCard"
+      :vis="openConfirmDataCard"
+      title="Данные карты"
+      description=""
+      :subText="textRemcard"
+      hasErr=""
+      err=""
+      buttLeftText="Не сохранять"
+      buttRightText="Запомнить карту"
+      @closeConfirm="closeConfirm"
+      @buttLeft="remcardButtLeft"
+      @buttRight="remcardButtRight"
+      @input="closeConfirm"
+    )
+
     Hint( v-if="visAutoPay && visConfirmAutoPay"
       :vis="visConfirmAutoPay"
       title="Автоплатёж"
@@ -229,19 +244,5 @@ div(:class="`${pre}`").main-content.main-content--h-padding
       @closeConfirm="closeConfirm"
       @buttLeft="closeConfirm"
       @buttRight="payAutoTextConfHint"
-      @input="closeConfirm"
-    )
-
-    // Удалить карту
-    Confirm(
-      :vis="openConfirmDel"
-      title="Вы уверены, что хотите удалить карту ?"
-      :subText="nameCard"
-      :hasErr="errDelCard"
-      err="Произошла ошибка. Карта не удалена. Попробуйте позже."
-      :buttLeft="delCard"
-      buttText="Удалить"
-      @closeConfirm="closeConfirm"
-      @buttLeft="delCard"
       @input="closeConfirm"
     )
