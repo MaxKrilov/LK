@@ -224,7 +224,7 @@
       position: ( sm: relative),
       top: (
         sm: -51px,
-        md: -55px,
+        md: -18px,
       ),
       left: (
         sm: 71px,
@@ -262,10 +262,13 @@
       left: 0;
       top: -12px;
       @include media-query((
-        width: (sm: 198px),
+        width: (
+          sm: 198px,
+          md: 225px
+        ),
         top: (
           sm: -63px,
-          md: -80px
+          md: -43px
         ),
         left: (
           sm: 171px,
@@ -298,7 +301,7 @@
         ),
         top: (
           sm: -44px,
-          md: -83px
+          md: -47px
         ),
       ));
       &__one-row {

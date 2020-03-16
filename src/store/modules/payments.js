@@ -151,27 +151,6 @@ const actions = {
           billingAccount: billingAccount
         })
         .query('/acquiring/card/list')
-      // todo-er временно для отладки
-      result = [
-          {
-            "bindingId":"41",
-            "maskedPan": "411111**1111",
-            "expiryDate": "201912",
-            "gateId": 1
-          },
-          {
-            "bindingId":"42",
-            "maskedPan": "211111**1111",
-            "expiryDate": "201912",
-            "gateId": 0
-          },
-          {
-            "bindingId":"43",
-            "maskedPan": "511111**1111",
-            "expiryDate": "201912",
-            "gateId": 2
-          }
-        ]
 
         let cards = result.map(function (item) {
         state.card_img.forEach(value => {
