@@ -87,16 +87,18 @@ const actions = {
   changeContractStatus (context: ActionContext<IState, any>, payload: { api: API, contractId: string, status: number | string }) {
     const { toms: clientId } = context.rootGetters['auth/user']
     return new Promise<boolean>((resolve, reject) => {
-      payload.api
-        .setWithCredentials()
-        .setData({
-          clientId,
-          contractId: payload.contractId,
-          status: payload.status
-        })
-        .query('/order/contract/edit')
-        .then(() => { resolve(true) })
-        .catch(() => reject(false))
+      setTimeout(() => {
+        payload.api
+          .setWithCredentials()
+          .setData({
+            clientId,
+            contractId: payload.contractId,
+            status: payload.status
+          })
+          .query('/order/contract/edit')
+          .then(() => { resolve(true) })
+          .catch(() => reject(false))
+      }, 2000)
     })
   }
 }
