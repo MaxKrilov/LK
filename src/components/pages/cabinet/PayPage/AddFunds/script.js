@@ -1,7 +1,6 @@
 import PayCard from '../components/PayCard/index.vue'
 import PaymentsOn from '../components/PaymentsOn/index.vue'
 import Confirm from '../components/Confirm/index.vue'
-import Hint from '../components/Hint/index.vue'
 import { mapGetters, mapState } from 'vuex'
 import { SCREEN_WIDTH } from '@/store/actions/variables'
 import { PATTERN_EMAIL } from '@/constants/regexp'
@@ -11,8 +10,7 @@ export default {
   components: {
     PayCard,
     PaymentsOn,
-    Confirm,
-    Hint
+    Confirm
   },
   data: () => ({
     pre: 'add-funds',
@@ -223,6 +221,7 @@ export default {
       this.openConfirmDataCard = false
       this.visConfirmAutoPay = false
       this.openConfirmCheck = false
+      this.$store.dispatch('payments/clearErr')
     },
     openDelConfirm () {
       this.openConfirmDel = true

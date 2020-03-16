@@ -7,10 +7,10 @@ er-dialog(v-model="internalVisible")
       @click="closeConfirm"
     )
       er-icon(name="close")
-
     div(:class="`${pre}__content__size`")
       er-icon(name="question" :class="`${pre}__icon-height`")
-    div(:class="`${pre}__content__pos`")
+
+    div(:class="`${pre}__content__pos`" v-if="hint")
       h4 {{ title }}
         span.h3.ml-8(
           :class="`${pre}__integer-row`"
@@ -32,6 +32,12 @@ er-dialog(v-model="internalVisible")
         h4(v-if="numCard !== 0") сохраненной картой:
         h3(v-if="numCard !== 0") {{ subText }}
 
+    div(:class="`${pre}__header`" v-else)
+      h3(:class="`${pre}__text__title${styleTitle}`") {{title}}
+      div(:class="`${pre}__text__header`") {{description}}
+      div(:class="`${pre}__text${styleTitle}`") {{subText}}
+
+
     div.caption(:class="`${pre}__err`" v-if="hasErr && err !== ''")
       | {{err}}
 
@@ -40,23 +46,23 @@ er-dialog(v-model="internalVisible")
         er-flex.pr-28(xl7)
           er-button(
             type="submit"
-            @click="buttAct"
-          ) {{buttText}}
+            flat=true
+            @click="buttLeft"
+          ) {{buttLeftText}}
         er-flex.pr-24.pl-4(xl6)
           er-button.align-items-center(
             type="submit"
-            flat=true
-            @click="closeConfirm"
-          ) Отменить
+            @click="buttRight"
+          ) {{buttRightText}}
 
       div(:class="`${pre}__butt`")
-        er-flex(sm9 md8 xl5)
-          a(
-            @click="closeConfirm"
-            :class="`${pre}__no-text`"
-          ) Отменить
-        er-flex(sm3 md4 xl6)
-          a(
-            @click="buttAct"
-            :class="`${pre}__yes-text`"
-          ) {{buttText}}
+        //er-flex(sm9 md8 xl5)
+        a.mr-16(
+          @click="buttLeft"
+          :class="`${pre}__no-text`"
+        ) {{buttLeftText}}
+        //er-flex(sm3 md4 xl6)
+        a.ml-16(
+          @click="buttRight"
+          :class="`${pre}__yes-text`"
+        ) {{buttRightText}}

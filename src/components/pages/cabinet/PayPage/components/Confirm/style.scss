@@ -113,14 +113,17 @@
     ));
   }
   &__no-text {
+    display: inline-block;
     cursor: pointer;
     font: 13px/120% $fedra-demi;
     letter-spacing: 0.35px;
     color: map_get($shades, 'black');
     border-bottom: 1px dashed map_get($green, 'base');
     opacity: 0.3;
+    /*
     margin-left: -15px;
     text-align: left;
+    */
     @include media-query((
       font-size: (
         md: 14px,
@@ -136,6 +139,7 @@
     ));
   }
   &__yes-text {
+    display: inline-block;
     cursor: pointer;
     font: 13px/120% $fedra-demi;
     letter-spacing: 0.35px;
@@ -157,15 +161,19 @@
   }
   &__butt {
     display: flex !important;
-    justify-content: space-between;
+    justify-content: end;
     position: relative;
+    /*
     text-align: center;
+    */
     @include media-query((
+      /*
       justify-content: (
         sm: space-around,
         md: space-between,
       ),
       text-align: (sm: end),
+      */
       display: (xl: none !important),
       left: (
         sm: 12px
@@ -202,9 +210,131 @@
       ),
     ));
   }
+  &__text {
+    position: relative;
+    font: 13px/18px $fedra-book;
+    letter-spacing: 0.25px;
+    color: rgba(map_get($gray, '8'), 0.8);
+    width: 100%;
+    @include media-query((
+      width: (
+        sm: 310px,
+        md: 336px
+      ),
+      position: ( sm: relative),
+      top: (
+        sm: -51px,
+        md: -55px,
+      ),
+      left: (
+        sm: 71px,
+        md: 0,
+      ),
+      font-size: (
+        md: 14px,
+        xxl: 20px
+      ),
+      line-height: (
+        md: 19px,
+        xxl: 26px
+      ),
+      letter-spacing: (
+        md: normal
+      )
+    ));
+    &__one-row {
+      @extend .confirm__text;
+      @include media-query((
+        width: (sm: 312px),
+        left: (
+          sm: 71px,
+          md: 0
+        ),
+        top: (
+          sm: -71px,
+          md: 0
+        ),
+      ));
+    }
+    &__header {
+      @extend .confirm__text;
+      position: relative;
+      left: 0;
+      top: -12px;
+      @include media-query((
+        width: (sm: 198px),
+        top: (
+          sm: -63px,
+          md: -80px
+        ),
+        left: (
+          sm: 171px,
+          md: 77px
+        ),
+        font-size: (
+          md: 14px,
+          xxl: 20px
+        ),
+        line-height: (
+          md: 17px,
+          xxl: 26px
+        ),
+        letter-spacing: (
+          md: nornal
+        )
+      ));
+    }
+    &__title {
+      position: relative;
+      left: 0;
+      top: -12px;
+      @include media-query((
+        width: (
+          sm: 100px
+        ),
+        left: (
+          sm: 71px,
+          md: 78px
+        ),
+        top: (
+          sm: -44px,
+          md: -83px
+        ),
+      ));
+      &__one-row {
+        @extend .confirm__text__title;
+        @include media-query((
+          width: (
+            sm: 290px,
+            md: 244px
+          ),
+          left: (
+            sm: 71px,
+            md: 78px
+          ),
+          top: (
+            sm: -83px,
+            md: -33px
+          ),
+        ));
+      }
+    }
+  }
+  &__header {
+    margin-top: -33px;
+    @include media-query((
+      margin-top: (
+        sm: -70px,
+        //md: 78px
+      ),
+    ));
+
+  }
 }
 .er-dialog {
+  margin: 16px !important;
   @include media-query((
+    margin: (sm: 24px !important),
     max-width: (
       sm: 448px,
       md: 384px,

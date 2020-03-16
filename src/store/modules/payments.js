@@ -62,6 +62,9 @@ const actions = {
   clearCVC: ({ commit }) => {
     commit('clearCVC')
   },
+  clearErr: ({ commit }) => {
+    commit('clearErr')
+  },
   changeCurrentNumCard: ({ commit }, { num }) => {
     commit('changeCurrentNumCard', num)
   },
@@ -148,7 +151,29 @@ const actions = {
           billingAccount: billingAccount
         })
         .query('/acquiring/card/list')
-      let cards = result.map(function (item) {
+      // todo-er временно для отладки
+      result = [
+          {
+            "bindingId":"41",
+            "maskedPan": "411111**1111",
+            "expiryDate": "201912",
+            "gateId": 1
+          },
+          {
+            "bindingId":"42",
+            "maskedPan": "211111**1111",
+            "expiryDate": "201912",
+            "gateId": 0
+          },
+          {
+            "bindingId":"43",
+            "maskedPan": "511111**1111",
+            "expiryDate": "201912",
+            "gateId": 2
+          }
+        ]
+
+        let cards = result.map(function (item) {
         state.card_img.forEach(value => {
           if (item.maskedPan[0] === value.num) {
             item = Object.assign(item, value)
@@ -246,6 +271,10 @@ const mutations = {
     let cvc = [len + 1]
     for (let i = 0; i < len; i++) { cvc[i] = '' }
     state.cvc = cvc
+  },
+  clearErr: (state) => {
+    state.errAutoPay = false
+    state.errDelCard = false
   },
   changeCurrentNumCard: (state, num) => {
     state.numCard = num
