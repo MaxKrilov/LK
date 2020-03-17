@@ -209,6 +209,17 @@ export default {
             suffix: ' ₽',
             rightAlign: false
           }
+        case 'moneynorub':
+          mask = 'currency'
+          data = {
+            groupSeparator: ' ',
+            radixPoint: ',',
+            autoGroup: true,
+            digits: 2,
+            prefix: '',
+            suffix: '',
+            rightAlign: false
+          }
       }
       data['jitMasking'] = true;
       (new Inputmask(mask, data)).mask(this.$refs.input)

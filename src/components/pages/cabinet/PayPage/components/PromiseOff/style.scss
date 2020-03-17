@@ -1,0 +1,146 @@
+.promise-off {
+  position: relative;
+  background: map_get($gray, '3');
+  z-index: 2;
+  left: -300px;
+  top: 47px;
+  min-height: 409px;
+  @include media-query((
+    min-height: (
+      sm: 331px,
+      md: 379px,
+      lg: 366px,
+      xl: 387px
+    ),
+  ));
+  &__container {
+    width: 100% !important;
+    margin-left: 300px !important;
+    margin-top: -43px;
+    padding-left: 0 !important;
+    @include media-query((
+      margin-top: (
+        md: -48px,
+        lg: -52px,
+        xl: -30px,
+      ),
+    ));
+    &__width {
+      @include media-query((
+        max-width: (
+          sm: 68px !important,
+          md: 90px !important,
+          lg: 93px !important,
+          xl: 132px !important,
+        ),
+        margin-top: (
+          sm: 0,
+          md: 14px,
+          xl: 16px
+        ),
+      ))
+    }
+  }
+  &__content {
+    margin-top: 78px;
+    @include media-query((
+      margin-left: (
+        sm: 11px,
+        md: 6px,
+        lg: 22px,
+        //xl: 16px
+      ),
+      margin-top: (
+        sm: 0,
+        md: 14px,
+        lg: 0,
+        xl: 11px
+      ),
+    ))
+
+  }
+  &__icon-height svg {
+    position: absolute;
+    width: 64px !important;
+    left: 0;
+    top: 0;
+    color: map_get($red, 'base');
+    @include media-query((
+      width: (
+        md: 80px !important,
+        lg: 96px !important,
+        xl: 128px !important,
+      ),
+      top: (
+        md: -7px,
+        lg: -11px,
+      ),
+    ));
+  }
+  &__value {
+    font: 13px/18px $fedra-book;
+    letter-spacing: 0.25px;
+    color: rgba(map_get($shades, 'black'), 0.8);
+    margin-top: 4px;
+    @include media-query((
+      font-size: (
+        md: 14px,
+        xl: 16px
+      ),
+      line-height: (
+        md: 19px,
+        xl: 21px
+      ),
+      letter-spacing: (
+        md: normal,
+        xl: -0.5px
+      )
+    ))
+  }
+  &__label {
+    font: 10px/120% $fedra-demi;
+    color: rgba(map_get($shades, 'black'), 0.3);
+    letter-spacing: 0.5px;
+    margin-top: 8px;
+    @include media-query((
+      font-size: (
+        md: 12px,
+      ),
+      line-height: (
+        md: 16px,
+      ),
+      letter-spacing: (
+        md: normal,
+      )
+    ));
+    &__manager {
+      @extend .promise-off__label;
+      margin-bottom: 3px;
+    }
+  }
+  &__butt {
+    &__container {
+      position: relative;
+      left: 0;
+      top: 33px;
+      width: 288px !important;
+      padding-left: 0 !important;
+      padding-right: 0 !important;
+      margin-left: 0 !important;
+      @include media-query((
+        width: (
+          sm: 208px !important,
+          md: 237px !important,
+        ),
+        left: (
+          sm: 0,
+        ),
+        top: (
+          sm: 32px,
+          md: 42px,
+          lg: 42px
+        ),
+      ));
+    }
+  }
+}

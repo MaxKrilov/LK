@@ -1,0 +1,79 @@
+// Operations
+
+er-row(no-gutters)
+  div(:class="`${pre}`" :style="'height: ' + heightOperation")
+    div(:class="`${pre}__content`", @click="active_internet")
+      div(
+        :class="`${pre}__icon-yellow${address} ${pre}__icon__${iconBg}`"
+        v-if="visYellow"
+      )
+        er-icon(:name="item.icon")
+
+        div(v-if="month !=='Адрес'")
+          div.mb-8.d--flex.align-items-center(:class="`${pre}__date`")
+            span
+              h4(:class="`${pre}__date__dm`")
+                | {{ item.date }}
+            span
+              h4(:class="`${pre}__date__yy`")
+                | {{ item.year }}
+          div(:class="`${pre}__time`")
+            | {{ item.time }}
+
+      div(:class="`${pre}__icon${address}`"
+        v-else
+      )
+        er-icon(:name="item.icon")
+
+        div(v-if="month !=='Адрес'")
+          div.mb-8.d--flex.align-items-center(:class="`${pre}__date`")
+            span
+              h4(:class="`${pre}__date__dm`")
+                | {{ item.date }}
+            span
+              h4(:class="`${pre}__date__yy`")
+                | {{ item.year }}
+          div(:class="`${pre}__time`")
+            | {{ item.time }}
+
+      div(:class="`${pre}__wrapper ${pre}__wrapper__${wrapper}`")
+        div.d--flex.justify-content-between(:class="`${pre}__info`")
+          h4(:class="`${pre}__title`" :style="'margin-top: ' + topTitle")
+            | {{ item.title }}
+            div(
+            v-if="item.link"
+            :class="`${pre}__toggle--desktop`"
+            )
+              er-icon(:name= "arr_direct")
+              a {{ item.descr }}
+            div(
+            v-else
+            :class="`${pre}__message`",
+            )
+              | {{ item.descr }}
+          div(:class="`${pre}__price`" :style="'top: ' + topPrice")
+            div.mb-8.d--flex.align-items-center
+              h2(:class="`${pre}__price__value ${pre}__price__value__${color}`")
+                | {{ item.value }}&nbsp;
+              div.body.rub.mt-8(:class="`${pre}__price__unit`")
+
+        div(:class="`${pre}__toggle--mobile`" :style="'margin-top: ' + topToggle")
+          er-icon(:name= "arr_direct")
+
+  er-slide-up-down(
+    :class="`${pre}__list${address}`"
+    :active="tmpActive_internet"
+  )
+    div.mb-8(v-if="month !=='Адрес'")
+      ListAddress(index=0, :month="month")
+      ListAddress(index=1, :month="month")
+    div.mb-24(v-else)
+      ListAddress(index=2, :month="month")
+      ListAddress(index=3, :month="month")
+      ListAddress(index=4, :month="month")
+      ListAddress(index=5, :month="month")
+
+
+
+
+

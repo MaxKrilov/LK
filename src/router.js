@@ -24,6 +24,21 @@ import SupportTemplate from './components/templates/SupportTemplate'
 // Главная поддержки
 import SupportIndexPage from './components/pages/cabinet/SupportPages/IndexPage/index'
 
+// Страница платежи
+import PayPage from './components/pages/cabinet/PayPage/index'
+
+// Успешный платеж
+import PaymentsOn from './components/pages/cabinet/PayPage/components/PaymentsOn/index'
+
+// Страница обещанный платеж
+import PromisePay from './components/pages/cabinet/PayPage/PromisePay/index'
+
+// Страница история платежей
+import HistoryPay from './components/pages/cabinet/PayPage/HistoryPay/index'
+
+// Страница пополнения счета
+import AddFunds from './components/pages/cabinet/PayPage/AddFunds/index'
+
 // Цифровые продукты (от DMP)
 import DigitalProductsIndexPage from './components/pages/digital-products/IndexPage/index'
 
@@ -40,8 +55,9 @@ import ReverceZonesPage from '@/components/pages/internet/ReverceZonesPage/index
 // Создание клиента (для DMP)
 import DMPFormPage from './components/pages/dmp-form/index'
 
-import OATSPromoPage from './components/pages/oats/promo/index'
 import OATSMainPage from './components/pages/oats/index'
+import OATSPromoPage from './components/pages/oats/promo/index'
+
 // Страницы с ошибками
 import OldBrowserPage from './components/pages/errors/old-browsers'
 
@@ -83,6 +99,27 @@ const router = new Router({
           ]
         },
         {
+          path: 'payments',
+          component: PayPage
+        },
+        {
+          name: 'add-funds',
+          path: 'add-funds',
+          component: AddFunds,
+        },
+        {
+          path: 'add-funds/payments-on',
+          component: PaymentsOn
+        },
+        {
+          path: 'promise-pay',
+          component: PromisePay
+        },
+        {
+          path: 'history-pay',
+          component: HistoryPay
+        },
+        {
           name: 'documents',
           path: 'documents/',
           component: DocumentPage
@@ -102,12 +139,12 @@ const router = new Router({
           component: DigitalProductsIndexPage
         },
         {
-          path: 'oats/promo',
-          component: OATSPromoPage
-        },
-        {
           path: 'oats',
           component: OATSMainPage
+        },
+        {
+          path: 'oats/promo',
+          component: OATSPromoPage
         },
         {
           path: 'support',

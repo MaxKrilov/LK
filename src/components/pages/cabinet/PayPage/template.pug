@@ -1,0 +1,45 @@
+// pay-page
+
+div.main-content.main-content--h-padding.main-content--top-menu-fix.main-content--top-padding(:class="`${pre}`")
+  div(:class="`${pre}__container-main`")
+    div.caption(:class="`${pre}__back-main`")
+      div.ml-auto
+        er-icon(name="arrow_l" :class="`${pre}__icon-height`")
+        a.caption(
+          href="#"
+          :class="`${pre}__back-main__text`"
+          @click="main"
+        ) Назад на главную
+
+    div.mb-8.d--flex.align-items-start(:class="`${pre}__back-arr`")
+      div(:class="`${pre}__back-main-xs ${pre}__back-arr__left`")
+        er-icon(name="corner_down")
+      h1.fonts--demi(:class="`${pre}__welcome-title`")
+        | Платежи и начисления
+
+    div(:class="`${pre}__container`")
+      InfoScore
+      ButtonPay(timer="true")
+      er-flex(xs12)
+        h2(:class="`${pre}__service__title`")
+          | Последние операции
+
+    div.mb-24(:class="`${pre}__container-operation`")
+      ActionMonth(month="Январь" page="pay")
+
+      div.mt-24.mb-24(:class="`${pre}__container-button`")
+        er-row.justify-content-between(no-gutters)
+          er-flex(xs11 sm6 md4 lg3 )
+            er-button(
+              type="submit",
+              flat=true,
+              @click="history"
+              :class="`${pre}__button-group__history`"
+            )
+              | История платежей
+          er-flex(xs11 sm6 md5 lg3 style="position: relative")
+            er-button.align-items-center(type="submit" :class="`${pre}__button-group__load`")
+              | Скачать PDF
+              er-icon(name="download" :class="`${pre}__download-icon`")
+
+

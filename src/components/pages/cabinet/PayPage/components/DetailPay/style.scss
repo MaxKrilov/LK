@@ -1,0 +1,102 @@
+.detail-pay {
+  &__item {
+    background: map_get($gray, '2');
+    padding-top: 20px;
+    padding-bottom: 2px;
+    @include media-query((
+      padding-top: (
+        xs: 12px,
+        md: 18px,
+        lg: 23px
+      ),
+      line-height: (md: 22px),
+      letter-spacing: (md: -1px)
+    ))
+  }
+  &__title {
+    padding-right: 34px;
+    font: 13px/18px $fedra-book !important;
+    letter-spacing: 0.25px !important;
+    color: rgba(map_get($shades, 'black'), 0.8);
+    @include media-query((
+      padding-right: (
+        sm: 45px
+      ),
+      font-size: (
+        md: 14px !important,
+        lg: 14px !important,
+        xl: 16px !important,
+      ),
+      line-height: (
+        md: 19px !important,
+        lg: 19px !important,
+        xl: 21px !important
+      ),
+      letter-spacing: (md: -1px),
+    ));
+    &__value {
+      font: 15px/20px $fedra-book;
+      letter-spacing: -1px;
+      color: rgba(map_get($shades, 'black'), 0.5);
+      margin-right: 4px;
+      @include media-query((
+        font-size: (
+          md: 18px,
+          xxl: 20px
+        ),
+        line-height: (
+          md: 23px,
+          xxl: 26px
+        ),
+        letter-spacing: (
+          md: -1px
+        )
+      ))
+    }
+    &__unit {
+      font: 13px/18px $fedra-book;
+      color: rgba(map_get($shades, 'black'), 0.3);
+      margin: 2px 32px 0 -2px;
+      @include media-query((
+        font-size: (
+          md: 14px,
+          xl: 16px,
+        ),
+        line-height: (
+          md: 19px,
+          xl: 21px,
+        )
+      ))
+    }
+  }
+  &__subtitle-row {
+    align-items: center;
+    margin-top: 0;
+    margin-bottom: 10px;
+    padding: 0 26px 0px 30px;
+    height: 35px;
+    @include media-query((
+      padding: (
+        sm: 0 42px 0 30px,
+        md: 0 33px 0 65px,
+        lg: 0px 41px 0px 72px,
+        xl: 0px 38px 0px 76px
+      ),
+      margin-bottom: (
+        sm: 2px
+      )
+    ));
+    &__address {
+      @extend .detail-pay__subtitle-row;
+      padding-left: 105px !important;
+      @include media-query((
+        padding-left: (
+          sm: 30px !important,
+          md: 111px !important,
+          lg: 171px !important,
+          xl: 175px !important
+        ),
+      ));
+    }
+  }
+}

@@ -1,0 +1,27 @@
+// Action Month
+
+div
+  div.d--flex.align-items-center(
+    :class="`${pre}__service__date`"
+    v-if="page === 'pay'"
+  )
+    div.mr-8(:class="`${pre}__service__date__dm`")
+      | {{month}}
+    div(:class="`${pre}__service__date__yy`")
+      | '{{year}}
+  div(:class="`${pre}__height${height}`")
+  er-row(no-gutters)
+    er-flex.mb-16(xs12 v-if="month !=='Адрес'")
+      Operations(index=0, :month="month")
+      Operations(index=1, :month="month")
+      Operations(index=2, :month="month")
+      Operations(index=3, :month="month")
+      Operations(index=4, :month="month")
+
+    er-flex.mb-16(xs12 v-else)
+      Operations(index=5, :month="month")
+      Operations(index=6, :month="month")
+      Operations(index=7, :month="month")
+      Operations(index=8, :month="month")
+      Operations(index=9, :month="month")
+

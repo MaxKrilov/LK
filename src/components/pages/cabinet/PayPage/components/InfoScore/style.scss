@@ -1,0 +1,182 @@
+.info-score {
+  &__container {
+    padding: 0 !important;
+    @include media-query((
+      max-width: (
+        xs: 480px !important,
+        sm: 640px !important,
+        md: 960px !important,
+        lg: 1200px !important,
+      )
+    ));
+  }
+  &__info {
+    &__block1 {
+      @include media-query((
+        margin-left: (
+          sm: 25px !important,
+          md: 0 !important
+        ),
+      ));
+    }
+    &__block2 {
+      @include media-query((
+        margin-left: (
+          sm: 40px !important,
+          md: -20px !important,
+          lg: 0px !important,
+          xl: -18px !important,
+          xxl: 0px !important
+        ),
+      ));
+    }
+    &__block3 {
+      @include media-query((
+        margin-top: (
+          sm: -13px !important,
+          md: 0px !important,
+        ),
+      ));
+    }
+    &__block2-1 {
+      @include media-query((
+        padding-left: (
+          xl: 18px !important,
+          xxl: 23px !important
+        ),
+      ));
+    }
+    &__bottom {
+      @include media-query((
+        margin-top: (
+          xs: -7px,
+          sm: -7px,
+          md: 12px,
+          lg: -2px,
+          xl: 11px,
+          xxl: 15px,
+        ),
+        margin-bottom: (
+          sm: 22px !important,
+          md: 13px !important,
+          lg: 17px !important,
+          xl: 16px !important,
+        ),
+        max-width: (
+          md: 640px !important,
+          lg: 800px !important,
+          xl: 860px !important,
+          xxl: 953px !important,
+        )
+      ));
+    }
+  }
+  &__info-subtext {
+    @include media-query((
+      margin-bottom: (
+        xs: 8px,
+        sm: 13px,
+        md: 0
+      ),
+    ));
+  }
+  &__balance-score {
+    font: 10px $fedra-demi !important;
+    line-height: 12px;
+    letter-spacing: 0.5px;
+    color: rgba(map_get($shades, 'black'), 0.5);
+    @include media-query((
+      font-size: (
+        md: 12px !important,
+        lg: 13px !important,
+        xl: 14px !important
+      ),
+      line-height: (
+        md: 16px !important,
+        xl: 19px !important
+      ),
+      letter-spacing: (md: 1)
+    ));
+    &__vis {
+      display: none;
+      @include media-query((
+        display: (sm: block),
+      ));
+    }
+    &__block {
+      @include media-query((
+        margin-left: (
+          xxl: 87px !important
+        )
+      ));
+    }
+    &__data {
+      color: rgba(map_get($shades, 'black'), 0.8);
+      @include media-query((
+        font-size: (
+          sm: 13px !important,
+          md: 24px !important,
+          lg: 26px !important,
+          xl: 28px !important,
+          xxl: 30px !important
+        ),
+        line-height: (
+          sm: 18px !important,
+          md: 38px !important,
+          lg: 32px !important,
+          xl: 38px !important
+        ),
+        letter-spacing: (
+          sm: 0.25px,
+          md: -1px
+        ),
+        margin-top: (
+          sm: -17px !important,
+          md: 0 !important,
+        ),
+        margin-left: (
+          sm: -40px !important,
+          md: 8px !important,
+        )
+      ));
+    }
+    &__calendar {
+      display: none;
+      @include media-query((
+        display: (md: block)
+      ));
+    }
+    &__dop {
+      display: block;
+      @include media-query((
+        display: (sm: none)
+      ));
+    }
+    &__subtitle {
+      font: 12px/16px $fedra-demi;
+      color: map_get($red, 'base') !important;
+      opacity: 1;
+      letter-spacing: 0.5px;
+      @include media-query((
+        font-size: (md: 12px !important),
+        line-height: (md: 16px !important),
+        letter-spacing: (
+          sm: normal
+        )
+      ));
+    }
+    &__currency {
+      font: 14px $fedra-book;
+      opacity: 0.5;
+      @include media-query((
+        font-size: (
+          xl: 16px !important,
+        ),
+      ))
+    }
+    &__line {
+      cursor: pointer;
+      border-bottom: 2px solid map_get($yellow, 'base');
+    }
+  }
+}

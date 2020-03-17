@@ -1,0 +1,91 @@
+// Payments On
+
+div.main-content.main-content--h-padding(
+  :class="`${pre}${height}`"
+)
+  div.main-content--top-padding(:class="`${pre}__back-main`")
+  div.main-content--top-menu-fix(:class="`${pre}__container-main`")
+    div.caption(:class="`${pre}__back-main`")
+      div.ml-auto
+        er-icon(name="arrow_l" :class="`${pre}__icon-height`")
+        a.caption2(
+        href="#"
+        :class="`${pre}__back-main__text`"
+        @click="paypage"
+        )
+          | Назад в платежи и начисления
+
+    div.d--flex.align-items-start(:class="`${pre}__back-arr`")
+      div(:class="`${pre}__back-main-xs`" @click="paypage")
+        er-icon(name="left")
+      h1.fonts--demi(:class="`${pre}__welcome-title`")
+        | Пополнить счет
+
+  div(:class="`${pre}__status__container`" v-if="isStatus")
+    div(:class="`${pre}__status__row`")
+      div(:class="`${pre}__status__icon`")
+        er-icon(
+          name="circle_ok"
+          :class="`${pre}__status__icon-height ${pre}__${color}`"
+        )
+      div(:class="`${pre}__status__pos`")
+        h2.mb-4 Оплата прошла успешно
+        // todo-er Временно отключили (разбираемся...)
+        //div(:class="`${pre}__status__info ${pre}__${color}`")
+        //  er-icon(name="ok" :class="`${pre}__status__info__icon`")
+        //  span.caption(:class="`${pre}__status__info__span ${pre}__${color}`")
+        //    | Включен автоплатёж
+        //div.mt-20(:class="`${pre}__status__info ${pre}__${color}`")
+        //  er-icon(name="ok" :class="`${pre}__status__info__icon`")
+        //  span.caption(:class="`${pre}__status__info__span ${pre}__${color}`")
+        //    | Карта сохранена
+        div.mt-64
+          h4.mb-4 Чек отправлен
+          div.caption2.mb-4 на электронную почту:
+          h4(:class="`${pre}__status__email`")
+            | {{email}}
+
+    div(:class="`${pre}__status__butt`")
+      er-button(
+        type="submit"
+        @click="addfunds"
+      ) В платежи
+
+  div(:class="`${pre}__status__container`" v-else)
+    div(:class="`${pre}__status__row`")
+      div(:class="`${pre}__status__icon`")
+        er-icon(
+          v-if="pay"
+          name="cancel"
+          :class="`${pre}__status__icon-height ${pre}__${color}` "
+        )
+      div(:class="`${pre}__status__pos`")
+        h2.mb-4(style="")
+          | {{ infoPay }}
+        // todo-er Временно отключили (разбираемся...)
+        //div(:class="`${pre}__status__info ${pre}__${color}`" v-if="pay")
+        //  er-icon(name="close" :class="`${pre}__status__info__icon`")
+        //  span.caption(:class="`${pre}__status__info__span ${pre}__${color}`")
+        //    | Автоплатёж не включен
+        //div.mt-20(:class="`${pre}__status__info ${pre}__${color}`" v-if="pay")
+        //  er-icon(name="close" :class="`${pre}__status__info__icon`")
+        //  span.caption(:class="`${pre}__status__info__span ${pre}__${color}`")
+        //    | Карта не сохранена
+
+      er-container(:class="`${pre}__butt__container`" v-if="pay")
+        er-row.no-gutters.justify-content-between
+          er-flex.no-gutters(xs12 sm6 lg3 xl3 :class="`${pre}__butt__left`")
+            er-button(
+              type="submit"
+              @click="addfunds"
+            )
+              | Попробовать снова
+
+          er-flex.no-gutters(xs12 sm6 lg9 xl3 offset-xs1 :class="`${pre}__butt__right`")
+            .er-attach(:class="`${pre}__butt__icon`")
+              er-icon(name="chat")
+              a.link--dashed--black(
+                @click="addfunds"
+                :class="`${pre}__butt__text`"
+              ) Спросить в чате
+
