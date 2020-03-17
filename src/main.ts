@@ -11,6 +11,8 @@ import moment from 'moment'
 // @ts-ignore
 import Vuebar from 'vuebar'
 import VueScrollTo from 'vue-scrollto'
+// @ts-ignore
+import iFrameResize from 'iframe-resizer/js/iframeResizer'
 
 // Подключение стилей
 import './assets/scss/main.scss'
@@ -31,6 +33,12 @@ eachArray(requireComponent.keys(), (fileName: string) => {
 // Регистрация директив
 eachObject(Directives, (config: DirectiveOptions | DirectiveFunction, directiveName: string) => {
   Vue.directive(directiveName, config)
+})
+
+Vue.directive('resize', {
+  bind: function (el, { value = {} }) {
+    el.addEventListener('load', () => iFrameResize(value, el))
+  }
 })
 
 // Регистрация общих фильтров
