@@ -262,6 +262,10 @@
           color: rgba(map_get($shades, 'black'), 0.2);
         }
         .info {
+          .manager-link {
+            white-space: normal;
+          }
+          white-space: nowrap;
           span {
             margin: { bottom: 2px };
           }
