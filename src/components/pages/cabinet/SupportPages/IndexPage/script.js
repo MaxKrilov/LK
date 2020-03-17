@@ -233,6 +233,9 @@ export default class SupportIndexPage extends Vue {
       this.listRequest[index].cancelledWhen = this.listRequest[index].modifiedWhen = Number(new Date())
     }
   }
+  cancellRequest (requestItem) {
+    requestItem.cancelledWhen = requestItem.modifiedWhen = Number(new Date())
+  }
   async created () {
     this.setListRequest(this.vListRequest)
   }

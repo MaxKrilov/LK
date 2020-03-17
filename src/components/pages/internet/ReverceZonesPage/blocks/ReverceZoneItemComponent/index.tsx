@@ -37,6 +37,7 @@ export default Vue.extend({
       }, 1000)
     }
   },
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   render (h: CreateElement): VNode {
     return (
       <div class={['reverce-zone-item-component', { 'deleted': this.isDeleted }]}>

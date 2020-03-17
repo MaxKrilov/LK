@@ -162,7 +162,7 @@ export class API {
       axios(config)
         .then(response => {
           // Ошибка TBAPI (возвращается 200-ка)
-          if (response.data.businessErrorCode) {
+          if (response.data && response.data.businessErrorCode) {
             reject(`Error of TBAPI: ${response.data.businessErrorCode}`)
           }
           resolve(response.data)

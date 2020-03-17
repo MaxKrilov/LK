@@ -10,5 +10,13 @@
     background: map_get($gray, '9');
     border-radius: inherit;
     overflow: hidden;
+    transition: $primary-transition;
+    &:hover {
+      background: map_get($shades, 'white');
+    }
+  }
+  .disabled {
+    background: map_get($gray, '3');
+    pointer-events: none;
   }
 }

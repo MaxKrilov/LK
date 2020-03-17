@@ -2,12 +2,23 @@ import './_style.scss'
 
 export default {
   name: 'er-card',
+  props: {
+    /**
+     * Делает карточку неактивной
+     */
+    disabled: Boolean
+  },
   render (h) {
     return h('div', {
       staticClass: 'er-card'
     }, [
       h('div', {
-        staticClass: 'er-card__content'
+        class: [
+          'er-card__content',
+          {
+            disabled: this.disabled
+          }
+        ]
       }, [
         this.$slots.default
       ])

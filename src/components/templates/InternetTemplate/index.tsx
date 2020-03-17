@@ -60,6 +60,7 @@ export default class InternetTemplate extends Vue {
     this.activePoint = getFirstElement(this.listPoint) || null
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   render (h: CreateElement): VNode {
     return (
       <div class={['internet-template', 'main-content--top-menu-fix']}>

@@ -4,8 +4,8 @@ import Component, { mixins } from 'vue-class-component'
 import ErSelect from '../../UI/ErSelect'
 import Inputmask from 'inputmask'
 
-const PATTERN_RUSSIAN_PHONE_GLOBAL = /^((\s|8|\+7)(-?|\s?))?\(?\d{3}\)?(-?|\s?)?\d{1}-?\d{1}-?\d{1}-?\d{1}-?\d{1}-?\d{1}-?\d{1}/g
-const PATTERN_FORMAT_PHONE = /^([\d]{1})([\d]{3})([\d]{3})([\d]{2})([\d]{2})/
+// const PATTERN_RUSSIAN_PHONE_GLOBAL = /^((\s|8|\+7|)(-?|\s?))?\(?\d{3}\)?(-?|\s?)?\d{1}-?\d{1}-?\d{1}-?\d{1}-?\d{1}-?\d{1}-?\d{1}/g
+const PATTERN_FORMAT_PHONE = /^([\d]{1})([\d]{3})([\d]{3})([\d]{2})([\d]{2})/g
 
 @Component
 export default class ErPhoneSelect extends mixins(ErSelect) {
@@ -13,7 +13,7 @@ export default class ErPhoneSelect extends mixins(ErSelect) {
     const text = ErSelect.options.methods.getText.call(this, item)
     return text
       .replace(/[\D]+/g, '')
-      .replace(PATTERN_RUSSIAN_PHONE_GLOBAL, '+7 ($2) $3-$4-$5')
+      .replace(PATTERN_FORMAT_PHONE, '+7 ($2) $3-$4-$5')
   }
   generateSearchMobile () {
     // Дублирование кода, так как не получается установить mask
@@ -56,7 +56,7 @@ export default class ErPhoneSelect extends mixins(ErSelect) {
       staticClass: 'er-select__item',
       on: {
         click: e => {
-          if (this.internalSearch.match(PATTERN_FORMAT_PHONE)) {
+          if (this.internalSearch.replace(/[\D]+/g, '').match(PATTERN_FORMAT_PHONE)) {
             this.$emit('input', this.internalSearch)
             this.isMenuActive = false
             this.hasFocus = false

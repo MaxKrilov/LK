@@ -18,8 +18,7 @@ import axios from 'axios'
 import {
   GET_CLIENT_INFO,
   GET_LIST_BILLING_ACCOUNT, GET_LIST_PRODUCT_BY_ADDRESS, GET_LIST_PRODUCT_BY_SERVICE,
-  GET_MANAGER_INFO, GET_PAYMENT_INFO, GET_PROMISED_PAYMENT_INFO,
-  GET_DOCUMENTS
+  GET_MANAGER_INFO, GET_PAYMENT_INFO, GET_PROMISED_PAYMENT_INFO
 } from '@/store/actions/user'
 
 import { GET_REQUEST } from '@/store/actions/request'
@@ -51,10 +50,6 @@ export default {
           if (err && err.response && [403, 401].includes(err.response.status)) {
             this.$store.dispatch('auth/signIn', { api: this.$api })
           }
-          // if (err) {
-          //   console.info(err)
-          //   debugger
-          // }
           reject(err)
         })
       })

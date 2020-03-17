@@ -1,4 +1,4 @@
-import { Vue, Component, Watch } from 'vue-property-decorator'
+import { Component, Watch } from 'vue-property-decorator'
 import ErSelect from '../../UI/ErSelect'
 import { mapState } from 'vuex'
 import { API_DADATA } from '../../../store/actions/api'
