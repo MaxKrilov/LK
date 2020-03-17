@@ -110,8 +110,8 @@ div(:class="`${pre}`")
         er-menu(offset-y, min-width="238", max-width="338", transition="slide-y-transition", nudge-left="21")
           template(v-slot:activator="{ on }")
             er-preloader(:active="menuComponentManager")
-              a.link--dashed--yellow(href="#", v-on="on", @click.prevent="")
-                | Ваш персональный менеджер
+              a.link--dashed--yellow.manager-link(href="#", v-on="on", @click.prevent="")
+                | Персональный менеджер
           div.manager(:class="`${pre}__top__dropdown`")
             div(:class="`${pre}__top__dropdown__content`")
               div.caption.mb-4

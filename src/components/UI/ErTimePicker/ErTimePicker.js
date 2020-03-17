@@ -311,7 +311,7 @@ export default {
     },
     genPickerBody () {
       return this.$createElement('div', {
-        staticClass: 'er-time-picker-clock__container',
+        staticClass: 'er-time-picker-clock__container'
         // key: this.selecting
       }, [
         !this.ampmInTitle && this.isAmPm && this.genClockAmPm(),

@@ -170,6 +170,7 @@
     margin-left: 32px;
     text-align: right;
     display: none;
+    min-width: 80px;
     @include color-black(0.8);
     @include media-query(
       (

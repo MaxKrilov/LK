@@ -25,6 +25,7 @@ div(:class="`${pre}`")
           div(:class="`${pre}__data-wrap`")
             div(:class="`${pre}__activate-date`")
               div(class="title")
+                slot(name="date-title")
                   | Дата активации:
               div(:class="`${pre}__h4`") {{ date }}
             div(:class="`${pre}__price`")
