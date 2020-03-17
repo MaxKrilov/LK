@@ -104,19 +104,19 @@ const router = new Router({
         },
         {
           name: 'add-funds',
-          path: '/add-funds',
+          path: 'add-funds',
           component: AddFunds,
         },
         {
-          path: '/add-funds/payments-on',
+          path: 'add-funds/payments-on',
           component: PaymentsOn
         },
         {
-          path: '/promise-pay',
+          path: 'promise-pay',
           component: PromisePay
         },
         {
-          path: '/history-pay',
+          path: 'history-pay',
           component: HistoryPay
         },
         {

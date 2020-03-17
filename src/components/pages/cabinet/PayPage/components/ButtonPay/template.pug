@@ -6,7 +6,7 @@ er-row(no-gutters)
       er-flex.mb-16(xs6 lg3 :class="`${pre}__card-scale ${pre}__card-scale__left`")
         er-card(:class="`${pre}__card-shadow`")
           div(:class="`${pre}__card-height`")
-            router-link(to="/add-funds" :class="`${pre}__card-shadow`")
+            router-link(to="add-funds" :class="`${pre}__card-shadow`")
               h4(:class="`${pre}__card-title`")
                 | Оплата картой
                 div.new
@@ -23,7 +23,7 @@ er-row(no-gutters)
       er-flex.mb-16(xs6 lg3 :class="`${pre}__card-scale ${pre}__card-scale__right-top`")
         er-card(:class="`${pre}__card-shadow`")
           div(:class="`${pre}__card-height`")
-            router-link(to="/add-funds")
+            router-link(to="add-funds")
               h4(:class="`${pre}__card-title`")
                 | Счет на оплату
               div.d--flex.align-items-end.mt-auto
@@ -33,7 +33,7 @@ er-row(no-gutters)
       er-flex.mb-16(xs6 lg3 :class="`${pre}__card-scale ${pre}__card-scale__left`")
         er-card(:class="`${pre}__card-shadow`")
           div(:class="`${pre}__card-height`")
-            router-link(to="/promise-pay")
+            router-link(to="promise-pay")
               h4(:class="`${pre}__card-title__promise`")
                 | Обещанный платёж
               div.d--flex.align-items-end.mt-auto(v-if="!timer")

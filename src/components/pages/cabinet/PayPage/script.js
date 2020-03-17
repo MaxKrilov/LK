@@ -20,7 +20,7 @@ export default {
   }),
   methods: {
     history () {
-      this.$router.push('/history-pay')
+      this.$router.push('history-pay')
     },
     main () {
       this.$router.push('/')
