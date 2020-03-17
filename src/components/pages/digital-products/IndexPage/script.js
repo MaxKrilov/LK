@@ -5,7 +5,8 @@ export default {
   name: 'digital-products-index-page',
   data: () => ({
     pre: 'digital-products-index-page',
-    link: 'https://service-portal-dmp-int2.nonprod.cloud-bss.loc/products?'
+    // link: 'https://service-portal-dmp-int2.nonprod.cloud-bss.loc/products?'
+    link: 'https://service-portal-dmp-uat1.nonprod.cloud-bss.loc/products?'
   }),
   beforeRouteEnter (to, from, next) {
     next(vm => {
