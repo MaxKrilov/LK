@@ -105,7 +105,7 @@ const router = new Router({
         {
           name: 'add-funds',
           path: 'add-funds',
-          component: AddFunds,
+          component: AddFunds
         },
         {
           path: 'add-funds/payments-on',
