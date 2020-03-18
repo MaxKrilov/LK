@@ -36,12 +36,12 @@ export default {
     internalVisible: {
       get () { return this.vis },
       set (val) { this.$emit('input', val) }
-    },
+    }
   },
   watch: {
     isHint () {
       this.hint = Boolean(this.isHint)
-    },
+    }
   },
   mounted () {
     this.styleTitle = this.buttLeftText === 'Отменить' ? '' : '__one-row'
