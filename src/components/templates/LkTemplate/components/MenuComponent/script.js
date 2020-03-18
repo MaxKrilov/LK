@@ -43,6 +43,10 @@ export default {
           {
             name: 'Поддержка',
             url: '/lk/support'
+          },
+          {
+            name: 'Цифровые продукты',
+            url: '/lk/digital-products'
           }
         ]
       },
