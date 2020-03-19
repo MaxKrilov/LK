@@ -4,7 +4,7 @@
       template(v-if="isFetching")
         | Проверяем авторизацию
       template(v-else-if="!hasAccess")
-        | Доступ закрыт
+        not-access-page
       template(v-else)
         router-view
 </template>
@@ -14,6 +14,7 @@ import { mapGetters, mapState } from 'vuex'
 import { SCREEN_WIDTH } from './store/actions/variables'
 import { getScreenWidth } from './functions/helper'
 import axios from 'axios'
+import NotAccessPage from './components/pages/errors/not-access'
 
 import {
   GET_CLIENT_INFO,
@@ -25,6 +26,9 @@ import { GET_REQUEST } from '@/store/actions/request'
 
 export default {
   name: 'app',
+  components: {
+    NotAccessPage
+  },
   data: () => ({
     model: 1
   }),
