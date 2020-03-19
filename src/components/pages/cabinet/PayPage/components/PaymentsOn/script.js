@@ -58,7 +58,7 @@ export default {
       }
     },
     addfunds () {
-      this.$router.push('/add-funds')
+      this.$router.push('/lk/add-funds')
     },
     paypage () {
       this.$router.push('/lk/payments')
