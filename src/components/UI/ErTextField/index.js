@@ -59,7 +59,7 @@ export default {
     }
   },
   methods: {
-    blur (e) {
+    blur () {
       window.requestAnimationFrame(() => {
         this.$refs.input && this.$refs.input.blur()
       })
@@ -194,6 +194,7 @@ export default {
         return false
       }
       let data = {}
+      data['jitMasking'] = true
       switch (mask) {
         case 'phone':
           mask = '+7 (999) 999-99-99'
@@ -209,6 +210,7 @@ export default {
             suffix: ' ₽',
             rightAlign: false
           }
+          break
         case 'moneynorub':
           mask = 'currency'
           data = {
@@ -218,10 +220,10 @@ export default {
             digits: 2,
             prefix: '',
             suffix: '',
-            rightAlign: false
+            rightAlign: false,
+            jitMasking: false
           }
       }
-      data['jitMasking'] = true;
       (new Inputmask(mask, data)).mask(this.$refs.input)
     }
   },
