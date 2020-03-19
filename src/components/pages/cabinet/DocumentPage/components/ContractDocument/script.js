@@ -57,10 +57,12 @@ export default {
       return undefined
     },
     contractIsSigned () {
-      return !!(this.getContractOrSupplementary || this.getFirstElement).contractStatus?.match(new RegExp(DOCUMENT.CONTRACT.IS_SIGNED), 'i')
+      return !!(this.getContractOrSupplementary || this.getFirstElement).contractStatus?.match(new RegExp(DOCUMENT.CONTRACT.IS_SIGNED), 'i') &&
+        (this.getContractOrSupplementary?.letterOfGuarantee?.toLowerCase() !== 'yes')
     },
     contractIsReady () {
-      return (this.getContractOrSupplementary || this.getFirstElement).contractStatus?.toLowerCase() === DOCUMENT.CONTRACT.IS_READY.toLowerCase()
+      return ((this.getContractOrSupplementary || this.getFirstElement).contractStatus?.toLowerCase() === DOCUMENT.CONTRACT.IS_READY.toLowerCase()) ||
+        (this.getContractOrSupplementary?.letterOfGuarantee?.toLowerCase() === 'yes')
     },
     documentIsVerifying () {
       return this.contractIsReady &&
@@ -78,7 +80,7 @@ export default {
       return (this.getContractOrSupplementary || this.getFirstElement).contractStatus?.toLowerCase() === DOCUMENT.CONTRACT.IS_CANCEL.toLowerCase()
     },
     documentIsActive () {
-      return !!((this.getContractOrSupplementary || this.getFirstElement).contractStatus?.toLowerCase() === DOCUMENT.CONTRACT.IS_ACTIVE.toLowerCase())
+      return ((this.getContractOrSupplementary || this.getFirstElement).contractStatus?.toLowerCase() === DOCUMENT.CONTRACT.IS_ACTIVE.toLowerCase())
     }
   },
   methods: {

@@ -12,11 +12,15 @@ export default {
     pay: false
   }),
   created () {
-    const q = window.location.search.replace('?', '')
+    // const q = window.location.search.replace('?', '')
     const payload = {
-      transaction: q.substr(q.indexOf('transaction') + 12, 11),
-      billingAccount: q.substr(q.indexOf('billing_account') + 16, 19)
+      transaction: this.$route.query.transaction,
+      billingAccount: this.$route.query.billing_account
     }
+    // const payload = {
+    //   transaction: q.substr(q.indexOf('transaction') + 12, 11),
+    //   billingAccount: q.substr(q.indexOf('billing_account') + 16, 19)
+    // }
     this.$store.dispatch('payments/status', { api: this.$api, payload: payload })
   },
   watch: {
