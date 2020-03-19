@@ -152,7 +152,7 @@ const actions = {
         })
         .query('/acquiring/card/list')
 
-        let cards = result.map(function (item) {
+      let cards = result.map(function (item) {
         state.card_img.forEach(value => {
           if (item.maskedPan[0] === value.num) {
             item = Object.assign(item, value)
