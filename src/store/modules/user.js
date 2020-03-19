@@ -134,6 +134,9 @@ const getters = {
   getActiveBillingAccount (state) {
     return state.activeBillingAccount
   },
+  getActiveBillingAccountNumber (state) {
+    return state.activeBillingAccountNumber
+  },
   getListProductByAddress (state) {
     return state.listProductByAddress.map(item => ({
       id: item.id,
