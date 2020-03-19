@@ -106,7 +106,7 @@ export default {
   computed: {
     ...mapGetters([SCREEN_WIDTH]),
     ...mapState({
-      activeBillingAccountId: state => state.user.activeBillingAccount,
+      activeBillingAccountId: state => state.user.activeBillingAccountNumber,
       cards: state => state.payments.listCard,
       delCard: state => state.payments.delCard,
       numCard: state => state.payments.numCard,
