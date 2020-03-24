@@ -64,7 +64,7 @@ Deploy dev:
         - mkdir -p --verbose ${PROJECT_DIR}/config
         - mkdir -p ${LOG_DIR}/${PROJECT_DIR_SUFFIX}/
 
-        - consul-template -once -config config/consul-template.conf
+        - if $(consul-template -once -config config/consul-template.conf); then :; else rm ${PROJECT_DIR}/config/site.cfg && nginx_test_failed > /dev/null 2>&1; fi
     except:
         - tags
     tags:
