@@ -7,6 +7,7 @@ import { logError } from '@/functions/logging'
 import { getFirstElement } from '@/functions/helper'
 import { CONTRACT, GROUP_CONTRACT } from '@/constants/document'
 import { isReportDocument, isContractDocument, isUserListDocument, isBlankDocument } from '@/functions/document'
+import { TYPE_FILE } from '@/constants/type_request'
 
 interface IState {
   listDocument: (DocumentInterface[])[],
@@ -99,6 +100,21 @@ const actions = {
           .then(() => { resolve(true) })
           .catch(() => reject(false))
       }, 2000)
+    })
+  },
+  uploadFile (context: ActionContext<IState, any>, { api, bucket, file, filePath }: { api: API, bucket: string, file: File, filePath: string }) {
+    return new Promise<boolean>((resolve, reject) => {
+      api
+        .setWithCredentials()
+        .setType(TYPE_FILE)
+        .setData({
+          bucket,
+          file,
+          key: filePath
+        })
+        .query('/docs/s3/set')
+        .then(() => resolve(true))
+        .catch(() => reject(false))
     })
   }
 }

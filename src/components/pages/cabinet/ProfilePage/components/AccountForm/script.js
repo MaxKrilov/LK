@@ -164,7 +164,7 @@ export default {
 
     },
     filterAccess () {
-      const shownAccesses = ['lkb2b', 'dmp-kc']
+      const shownAccesses = ['lkb2b', 'dmp-kc-sit']
       let filtered = {}
       Object.entries(this.systems).forEach(([key, value]) => {
         if (shownAccesses.includes(key)) {
