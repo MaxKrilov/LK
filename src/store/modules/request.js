@@ -11,6 +11,7 @@ import {
 import { ERROR_MODAL } from '../actions/variables'
 import { TYPE_ARRAY } from '../../constants/type_request'
 import { UPLOAD_FILE } from '../actions/documents'
+import moment from 'moment'
 
 const CANCELLATION_REASON = '9150410012013966885'
 const REQUEST_REASON = '9156211041213279417'
@@ -122,29 +123,44 @@ const actions = {
       data.element = PROBLEM_REASON_THIRD
       data.affectedProduct = [service]
     }
-
     try {
+      // Создаём заявку
       const result = await api
         .setData(data)
         .setType(TYPE_ARRAY)
         .query('/problem/management/create')
       if (result && result.hasOwnProperty('ticket_id')) {
-        await dispatch(GET_REQUEST, { api })
         if (file) {
-          // const fileInfo = await dispatch(ATTACH_FILE, { api, id: result.ticket_id })
-          // return fileInfo ? result.ticket_name : false
-          dispatch(`documents/${UPLOAD_FILE}`, {
+          // Прикрепляем файл к заявке
+          const filePath = `${moment().format('MMYYYY')}/${result.ticket_id}`
+          const resultUpload = await dispatch(`fileinfo/uploadFile`, {
             api,
+            bucket: 'customer-docs',
             file,
-            bucket: 'customer-docs'
+            filePath
           }, { root: true })
+          if (!resultUpload) {
+            return false
+          }
+          const resultAttach = await dispatch(ATTACH_FILE, {
+            api,
+            id: result.ticket_id,
+            fileName: file.name,
+            bucket: 'customer-docs',
+            filePath
+          })
+          if (resultAttach) {
+            return result.ticket_name
+          } else {
+            return false
+          }
+        } else {
           return result.ticket_name
         }
-        return result.ticket_name
       } else {
         return false
       }
-    } catch (error) {
+    } catch (err) {
       return false
     }
   },
@@ -199,7 +215,7 @@ const actions = {
     }
     try {
       // eslint-disable-next-line no-unused-vars
-      const result = api
+      const result = await api
         .setData(data)
         .query('/problem/management/attache-file')
       return true

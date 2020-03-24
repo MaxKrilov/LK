@@ -9,7 +9,7 @@ import ErActivationModal from '@/components/blocks/ErActivationModal/index.vue'
 import { SCREEN_WIDTH } from '@/store/actions/variables'
 import { BREAKPOINT_XL } from '@/constants/breakpoint'
 import { getFirstElement } from '@/functions/helper'
-import { CREATE_REQUEST, GET_SERVICES_BY_LOCATION } from '@/store/actions/request'
+import { CREATE_REQUEST, GET_REQUEST, GET_SERVICES_BY_LOCATION } from '@/store/actions/request'
 // eslint disabled
 import { API } from '@/functions/api'
 
@@ -301,6 +301,9 @@ export default class CreateRequestComponent extends Vue {
           this.resultDialogSuccess = true
           this.closeForm()
           this.reset()
+          setTimeout(() => {
+            this.$store.dispatch(`request/${GET_REQUEST}`, { api: this.$api })
+          })
         } else {
           this.resultDialogError = true
         }
