@@ -1,0 +1,54 @@
+.er-table-filter {
+  outline: none;
+  display: inline-flex;
+  align-items: center;
+  .icon {
+    display: block;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background-color: map-get($shades, 'transparent');
+    line-height: 24px;
+    text-align: center;
+    margin-right: 4px;
+    transition: background-color $primary-transition;
+    i {
+      vertical-align: middle;
+    }
+    svg {
+      width: 16px;
+      @include color-black(0.2);
+      transition: transform, color $primary-transition;
+    }
+  }
+  .title {
+    @extend %caption2-font;
+    @include color-black(0.3);
+    transition: color $primary-transition;
+    text-decoration: underline;
+    text-decoration-style: dashed;
+    white-space: nowrap;
+  }
+  &:hover {
+    .icon svg,
+    .title {
+      @include color-black(0.5);
+    }
+  }
+  &.sort {
+    .icon {
+      background-color: map-get($yellow, 'base');
+      svg {
+        @include color-black(1);
+      }
+    }
+    .title {
+      @include color-black(0.5);
+    }
+  }
+  &.sort.desc {
+    .icon svg {
+      transform: rotate(180deg);
+    }
+  }
+}

@@ -138,16 +138,17 @@ const getters = {
     return state.activeBillingAccountNumber
   },
   getListProductByAddress (state) {
-    return state.listProductByAddress.map(item => ({
-      id: item.id,
-      address: item.fulladdress,
-      addressId: item.address.id,
-      price: Number(item.amount.value),
-      currency: item.amount.currency.name
-    }))
+    return state.listProductByAddress && Array.isArray(state.listProductByAddress)
+      ? state.listProductByAddress.map(item => ({
+        id: item.id,
+        address: item.fulladdress,
+        addressId: item.address.id,
+        price: Number(item.amount.value),
+        currency: item.amount.currency.name
+      })) : []
   },
   getListProductByService (state) {
-    return state.listProductByService.map(item => ({
+    return state.listProductByService?.map(item => ({
       code: item.offeringCategory.code,
       name: item.offeringCategory.name,
       price: item.amount.value

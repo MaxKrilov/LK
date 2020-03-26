@@ -6,7 +6,7 @@
       .count
         | Подключено 3 сервиса
     .services-component__list.d--flex.flex-wrap
-      a.services-component__service(v-for="service in list", :key="list.name", href="#")
+      a.services-component__service(v-for="service in listService", :key="list.name", href="#")
         .services-component__item(:class="{ 'on': service.isOn }")
           .content
             .icon

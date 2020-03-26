@@ -51,6 +51,8 @@ import PromoPageInternet from '@/components/pages/internet/PromoPage/index'
 import IndexPageInternet from '@/components/pages/internet/IndexPage/index'
 // Обратные зоны
 import ReverceZonesPage from '@/components/pages/internet/ReverceZonesPage/index'
+// Статистика
+import StatisticInternetPage from '@/components/pages/internet/StatisticPage/index'
 
 // Создание клиента (для DMP)
 import DMPFormPage from './components/pages/dmp-form/index'
@@ -176,6 +178,13 @@ const router = new Router({
               component: ReverceZonesPage,
               meta: {
                 name: 'Обратные зоны'
+              }
+            },
+            {
+              path: 'statistic',
+              component: StatisticInternetPage,
+              meta: {
+                name: 'Статистика'
               }
             }
           ]

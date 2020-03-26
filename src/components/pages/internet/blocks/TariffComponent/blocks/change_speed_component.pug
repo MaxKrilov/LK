@@ -1,0 +1,27 @@
+speed-component.mb-24.mb-lg-0(
+	:current-speed="computedCurrentSpeed"
+	:list-available-speed="computedListAvailableSpeedIncrease"
+	ref="speed-component"
+	@change="onChainingSpeed"
+)
+div.ml-lg-64
+	.info-block.d--flex.justify-content-between.mb-16.flex-lg-column
+		.price.mb-lg-16
+			.caption.mb-4
+				| Абонентская плата
+			.value
+				span {{ internetPriceAfterChange | price }}
+				| &nbsp;{{ computedCurrencyCode }}/месяц
+		.current-price
+			.caption.mb-4
+				| Текущая абонентская плата
+			.value.mb-lg-32
+				span {{ computedCurrentPrice | price }}
+				| &nbsp;{{ computedCurrencyCode }}/месяц
+	.actions-block.d--flex.flex-column.flex-sm-row.flex-lg-column
+		.action.mb-8.mr-sm-8.mb-sm-0.mb-lg-8
+			er-button(color="blue")
+				| Изменить
+		.action.ml-sm-0
+			er-button(flat @click="closeFormChainingSpeed")
+				| Отмена

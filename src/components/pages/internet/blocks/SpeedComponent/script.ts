@@ -1,59 +1,67 @@
-import { Vue, Component } from 'vue-property-decorator'
+import Vue from 'vue'
+import Component from 'vue-class-component'
 import * as d3 from 'd3'
-import { eachArray, getLastElement } from '@/functions/helper'
-// @ts-ignore
-import { Selection, ContainerElement } from '@types/d3-selection'
+import { getLastElement } from '@/functions/helper'
 
-const WIDTH_SVG = 319
-const HEIGHT_SVG = 317
-const MARGIN = {
-  top: 45,
-  left: 45,
-  bottom: 40,
-  right: 36
-}
 const STROKE_WIDTH = 40
 const END_PIE_ANGLE = 5.757
 
-interface iLabelItem {
-  data: number,
-  index: number,
-  value: number,
-  startAngle: number,
-  endAngle: number,
-  padAngle: number
-}
-
-@Component({
+// eslint-disable-next-line no-use-before-define
+@Component<InstanceType<typeof SpeedComponent>>({
   props: {
-    id: {
+    currentSpeed: {
+      type: [String, Number],
+      default: 0
+    },
+    listAvailableSpeed: {
+      type: Array,
+      default: () => ([])
+    },
+    currentPrice: {
+      type: Number,
+      default: 0
+    },
+    currencyCode: {
       type: String,
-      default: function () {
-        // @ts-ignore
-        return `speed-component__${this._uid}`
-      }
+      default: ''
     }
   }
 })
 export default class SpeedComponent extends Vue {
-  chartLayer: any
-  pieG: any
-  chartHeight: number | undefined
-  id!: string
+  // Props
+  readonly currentSpeed!: string | number
+  readonly listAvailableSpeed!: any[]
+  // Data
+  chartHeight = 0
+  strokeWidth = STROKE_WIDTH
+  endPieAngel = END_PIE_ANGLE
+  chartLayer: d3.Selection<SVGGElement, unknown, HTMLElement, any> | null = null
+  pieG: d3.Selection<SVGGElement, unknown, HTMLElement, any> | null = null
+  // Computed
+  get computedId () {
+    return `er-speed-component--${(this as any)._uid}`
+  }
+  // Methods
   init () {
-    const svg = d3.select(`#${this.id}`)
-      .append('svg')
-      .attr('xmlns', 'http://www.w3.org/2000/svg')
-      .attr('xmlns:xlink', 'http://www.w3.org/1999/xlink')
-      .attr('viewBox', `0 0 ${WIDTH_SVG} ${HEIGHT_SVG}`)
-    const chartWidth = WIDTH_SVG - (MARGIN.left + MARGIN.right)
-    this.chartHeight = HEIGHT_SVG - (MARGIN.top + MARGIN.bottom)
+    const svg = d3.select(`#${this.computedId}`)
+    const width = Number(svg.attr('width'))
+    const height = Number(svg.attr('height'))
+    const margin = {
+      top: 45,
+      left: 45,
+      bottom: 40,
+      right: 36
+    }
+    const chartWidth = width - (margin.left + margin.right)
+    this.chartHeight = height - (margin.top + margin.bottom)
     const translateCenter = `translate(${chartWidth / 2}, ${this.chartHeight / 2})`
+    // Поле диаграммы
     this.chartLayer = svg.append('g')
-      .attr('transform', `translate(${MARGIN.left}, ${MARGIN.top})`)
+      .attr('transform', `translate(${margin.left}, ${margin.top})`)
     this.pieG = this.chartLayer.append('g')
       .attr('transform', translateCenter)
       .classed('main-field', true)
+    // Поле для текста по центру
     const mainText = this.chartLayer
       .append('g')
       .attr('transform', translateCenter)
@@ -73,7 +81,7 @@ export default class SpeedComponent extends Vue {
     mainText.append('g')
       .classed('speed-toggle', true)
       .classed('speed-toggle--up', true)
-      .append('rect')
+      .append('rect') // для того, чтобы задать области размер 32на32
       .attr('x', -17)
       .attr('y', -64)
       .attr('width', 32)
@@ -82,222 +90,184 @@ export default class SpeedComponent extends Vue {
     mainText.select('.speed-toggle--up')
       .append('path')
       .attr('d', 'M11.9999 3.4144L22.2928 13.7073L23.707 12.293L11.9999 0.585938L0.292803 12.293L1.707 13.7073L11.9999 3.4144Z')
-      .attr('stroke', '#FFDD00')
+      .attr('stroke', '#000')
       .attr('stroke-width', 2)
       .attr('transform', 'translate(-11, -55)')
       .style('fill', 'none')
     mainText.append('g')
       .classed('speed-toggle', true)
       .classed('speed-toggle--down', true)
-      .append('rect')
+      .append('rect') // для того, чтобы задать области размер 32на32
       .attr('x', -14)
       .attr('y', 28)
       .attr('width', 32)
       .attr('height', 32)
       .attr('fill', 'transparent')
+
     mainText.select('.speed-toggle--down')
       .append('path')
-      .attr('d', 'M12.0006 10.5856L1.70767 0.292703L0.293457 1.707L12.0006 13.4141L23.7077 1.707L22.2935 0.292703L12.0006 10.5856Z')
-      .attr('stroke', '#FFDD00')
+      .attr('d', 'M12.0001 10.5856L1.70718 0.292703L0.292969 1.707L12.0001 13.4141L23.7072 1.707L22.293 0.292703L12.0001 10.5856Z')
+      .attr('stroke', '#000')
       .attr('stroke-width', 2)
+      // .attr('transform', 'translate(7, 50)')
       .attr('transform', 'translate(-11, 45)')
       .style('fill', 'none')
-    // Полузунок
-    const mainCursorField = this.chartLayer.append('g')
+
+    // Курсор
+    /* const mainCursorField = this.chartLayer.append('g')
       .attr('transform', translateCenter)
     const mainCursor = mainCursorField.append('g')
       .classed('main-cursor', true)
-    const cursorPosition = [8, -this.chartHeight / 2 - 6]
-    const mainCursorBlock = mainCursor.append('g')
-      .attr('transform', `translate(${cursorPosition}), rotate(90)`)
-    mainCursorBlock.append('path')
+    // 8 - половина ширины курсора, -4 - чтобы хвостик был за шкалой
+    const cursorPosition = [8, -this.chartHeight / 2 - 4]
+    mainCursor
+      .append('path')
+      .attr('id', 'main-cursor')
+      .attr('transform', 'translate(' + cursorPosition + '), rotate(90)')
+      .attr(
+        'd',
+        'M4.35161 18.1777C4.2205 16.49 4.12563 14.7933 4.06769 13.0884C4.02255 11.7602 0 11.0898 0 9.08984C0 7.08984 4.02255 6.41812 4.06769 5.08984C4.12563 3.38497 4.2205 1.68825 4.35161 0.000534058L44.2314 3.0987C44.0782 5.07162 43.9998 7.06925 43.9998 9.08913C43.9998 11.109 44.0782 13.1066 44.2314 15.0796L4.35161 18.1777Z'
+      )
       .attr('fill-rule', 'evenodd')
-      .attr('clip-rule', 'evenodd')
-      .attr('d', 'M7.52212 0.00581863L46.1422 2.94413C47.2519 3.02856 48.0678 4.00078 47.9955 5.10004C47.8892 6.71721 47.835 8.35098 47.835 9.99999C47.835 11.649 47.8892 13.2828 47.9955 14.8999C48.0678 15.9992 47.2519 16.9714 46.1422 17.0559L7.52213 19.9942C6.42461 20.0777 5.45682 19.2522 5.37817 18.1364C5.28994 16.8846 5.22193 15.628 5.17443 14.367C5.14934 14.3598 5.12135 14.3522 5.0902 14.3443C4.89941 14.2955 4.67411 14.2529 4.38823 14.1989L4.32451 14.1869C4.02265 14.1298 3.67183 14.0621 3.31516 13.9697C2.61497 13.7883 1.7773 13.485 1.11289 12.8522C0.410152 12.1829 8.32989e-07 11.2417 7.24497e-07 10.0007C6.16004e-07 8.7597 0.410148 7.81851 1.11279 7.14912C1.77712 6.51623 2.61472 6.21265 3.31492 6.03109C3.67158 5.9386 4.02239 5.87083 4.32425 5.81366L4.388 5.80159C4.67387 5.74751 4.89916 5.70489 5.08996 5.65604C5.12121 5.64804 5.14927 5.64039 5.17442 5.63318C5.22192 4.3721 5.28993 3.11547 5.37816 1.86362C5.45681 0.747765 6.42461 -0.0776813 7.52212 0.00581863Z')
-    mainCursorBlock.append('path')
-      .attr('fill-rule', 'evenodd')
-      .attr('clip-rule', 'evenodd')
-      .attr('d', 'M7.44661 18.9903C6.89668 19.0321 6.41616 18.6189 6.37716 18.0656C6.28178 16.7125 6.21025 15.3537 6.16292 13.9896C6.11694 12.6647 1.0015 13.991 1.0015 10.0012C1.0015 6.01137 6.11694 7.33626 6.16292 6.01137C6.21025 4.6473 6.28178 3.28847 6.37716 1.93531C6.41615 1.38202 6.89669 0.968846 7.44661 1.01069L46.0667 3.949C46.6198 3.99108 47.0329 4.47731 46.9963 5.03402C46.8885 6.6733 46.8335 8.32924 46.8335 10.0005C46.8335 11.6717 46.8885 13.3276 46.9963 14.9669C47.0329 15.5236 46.6198 16.0098 46.0667 16.0519L7.44661 18.9903Z')
-    mainCursorBlock.append('path')
-      .attr('d', 'M14 14V14C13.4477 14 13 13.5523 13 13L13 7C13 6.44772 13.4477 6 14 6V6L14 14Z')
-    mainCursorBlock.append('path')
-      .attr('d', 'M14 14V14C14.5523 14 15 13.5523 15 13L15 7C15 6.44772 14.5523 6 14 6V6L14 14Z')
-    mainCursorBlock.append('path')
-      .attr('d', 'M20 14V14C19.4477 14 19 13.5523 19 13L19 7C19 6.44772 19.4477 6 20 6V6L20 14Z')
-    mainCursorBlock.append('path')
-      .attr('d', 'M20 14V14C20.5523 14 21 13.5523 21 13L21 7C21 6.44772 20.5523 6 20 6V6L20 14Z')
-    mainCursorBlock.append('path')
-      .attr('d', 'M26 14V14C25.4477 14 25 13.5523 25 13L25 7C25 6.44772 25.4477 6 26 6V6L26 14Z')
-    mainCursorBlock.append('path')
-      .attr('d', 'M26 14V14C26.5523 14 27 13.5523 27 13L27 7C27 6.44772 26.5523 6 26 6V6L26 14Z')
+      .attr('clip-rule', 'evenodd') */
     const defs = svg.append('defs')
-    // ============================
-    //        Жёлтый ползунок
-    // ============================
-    const yellowRadialGradient = defs.append('radialGradient')
-      .attr('id', `${this.id}__yellow_radial_gradient`)
-      .attr('cx', 0)
-      .attr('cy', 0)
-      .attr('r', 1)
-      .attr('gradientUnits', 'userSpaceOnUse')
-      .attr('gradientTransform', 'translate(28.1564 3.01803) rotate(102.515) scale(11.7499 31.7738)')
-    yellowRadialGradient.append('stop')
-      .attr('offset', 0.495979)
-      .attr('stop-color', '#FFE856')
-    yellowRadialGradient.append('stop')
-      .attr('offset', 0.776042)
-      .attr('stop-color', '#FFDD00')
-    yellowRadialGradient.append('stop')
-      .attr('offset', 1)
-      .attr('stop-color', '#FCD300')
-    // ============================
-    //        Зелёный ползунок
-    // ============================
-    const greenLinearGradient = defs.append('linearGradient')
-      .attr('id', `${this.id}__green_linear_gradient`)
-      .attr('x1', 33)
-      .attr('y1', 19)
-      .attr('x2', 35.2445)
-      .attr('y2', 3.03438)
-      .attr('gradientUnits', 'userSpaceOnUse')
-    greenLinearGradient.append('stop')
-      .attr('stop-color', '#549C1F')
-    greenLinearGradient.append('stop')
-      .attr('offset', 0.52433)
-      .attr('stop-color', '#56AB14')
-    greenLinearGradient.append('stop')
-      .attr('offset', 0.685454)
-      .attr('stop-color', '#69BE28')
-    greenLinearGradient.append('stop')
-      .attr('offset', 1)
-      .attr('stop-color', '#94DF5A')
-    // ============================
-    //        Синий ползунок
-    // ============================
-    const blueLinearGradient = defs.append('linearGradient')
-      .attr('id', `${this.id}__blue_linear_gradient`)
-      .attr('x1', 38)
-      .attr('y1', 3.5)
-      .attr('x2', 36.9824)
-      .attr('y2', 19.5306)
-      .attr('gradientUnits', 'userSpaceOnUse')
-    blueLinearGradient.append('stop')
-      .attr('stop-color', '#7DA2E9')
-    blueLinearGradient.append('stop')
-      .attr('offset', 0.419644)
-      .attr('stop-color', '#6789CA')
-    blueLinearGradient.append('stop')
-      .attr('offset', 1)
-      .attr('stop-color', '#4467A9')
-    // ============================
-    //        Ховеры на ползунки
-    // ============================
-    const listFilterHover = [
-      {
-        id: `${this.id}__yellow_filter_hover`,
-        first: '0 0 0 0 1 0 0 0 0 0.866667 0 0 0 0 0 0 0 0 1 0',
-        second: '0 0 0 0 1 0 0 0 0 0.968627 0 0 0 0 0.74902 0 0 0 1 0'
-      },
-      {
-        id: `${this.id}__green_filter_hover`,
-        first: '0 0 0 0 0.43555 0 0 0 0 0.958333 0 0 0 0 0.0399306 0 0 0 1 0',
-        second: '0 0 0 0 0.739103 0 0 0 0 1 0 0 0 0 0.541667 0 0 0 1 0'
-      },
-      {
-        id: `${this.id}__green_filter_hover`,
-        first: '0 0 0 0 0.294118 0 0 0 0 0.533333 0 0 0 0 1 0 0 0 1 0',
-        second: '0 0 0 0 0.77819 0 0 0 0 0.852881 0 0 0 0 1 0 0 0 1 0'
-      }
-    ]
-    eachArray(listFilterHover, (item: any) => {
-      const filter = defs.append('filter')
-        .attr('id', item.id)
-        .attr('x', -20)
-        .attr('y', -20)
-        .attr('width', 96)
-        .attr('height', 64)
-        .attr('filterUnits', 'userSpaceOnUse')
-        .attr('color-interpolation-filters', 'sRGB')
-      filter.append('feFlood')
-        .attr('flood-opacity', 0)
-        .attr('result', 'BackgroundImageFix')
-      filter.append('feColorMatrix')
-        .attr('in', 'SourceAlpha')
-        .attr('type', 'matrix')
-        .attr('values', '0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0')
-      filter.append('feOffset')
-      filter.append('feGaussianBlur')
-        .attr('stdDeviation', 8)
-      filter.append('feColorMatrix')
-        .attr('type', 'matrix')
-        .attr('values', item.first)
-      filter.append('feBlend')
-        .attr('mode', 'normal')
-        .attr('in2', 'BackgroundImageFix')
-        .attr('result', 'effect1_dropShadow')
-      filter.append('feColorMatrix')
-        .attr('in', 'SourceAlpha')
-        .attr('type', 'matrix')
-        .attr('values', '0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0')
-      filter.append('feOffset')
-      filter.append('feGaussianBlur')
-        .attr('stdDeviation', 2)
-      filter.append('feColorMatrix')
-        .attr('type', 'matrix')
-        .attr('values', item.second)
-      filter.append('feBlend')
-        .attr('mode', 'normal')
-        .attr('in2', 'effect1_dropShadow')
-        .attr('result', 'effect2_dropShadow')
-      filter.append('feBlend')
-        .attr('mode', 'normal')
-        .attr('in', 'SourceGraphic')
-        .attr('in2', 'effect2_dropShadow')
-        .attr('result', 'shape')
-    })
-    // ============================
-    //    Фильтр для обводки
-    // ============================
-    const grayStroke = defs.append('filter')
-      .attr('id', `${this.id}__gray_stroke`)
-      // .attr('filterUnits', 'userSpaceOnUse')
+    const filter0 = defs.append('filter')
+      .attr('id', 'filter0')
       .attr('color-interpolation-filters', 'sRGB')
-    grayStroke.append('feFlood')
+    filter0.append('feFlood')
       .attr('flood-opacity', 0)
       .attr('result', 'BackgroundImageFix')
-    grayStroke.append('feBlend')
+    filter0.append('feBlend')
       .attr('mode', 'normal')
       .attr('in', 'SourceGraphic')
       .attr('in2', 'BackgroundImageFix')
       .attr('result', 'shape')
-    grayStroke.append('feColorMatrix')
+    filter0.append('feColorMatrix')
       .attr('in', 'SourceAlpha')
       .attr('type', 'matrix')
       .attr('values', '0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0')
       .attr('result', 'hardAlpha')
-    grayStroke.append('feOffset')
+    filter0.append('feOffset')
       .attr('dx', -2)
       .attr('dy', 2)
-    grayStroke.append('feGaussianBlur')
+    filter0.append('feGaussianBlur')
       .attr('stdDeviation', 4)
-    grayStroke.append('feComposite')
+    filter0.append('feComposite')
       .attr('in2', 'hardAlpha')
       .attr('operator', 'arithmetic')
       .attr('k2', '-1')
       .attr('k3', '1')
-    grayStroke.append('feColorMatrix')
+    filter0.append('feColorMatrix')
       .attr('type', 'matrix')
       .attr('values', '0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.08 0')
-    grayStroke.append('feBlend')
+    filter0.append('feBlend')
       .attr('mode', 'normal')
       .attr('in2', 'shape')
       .attr('result', 'effect1_innerShadow')
+    // Ховер-фильтр для зеленого ползунка
+    const filter1 = defs.append('filter')
+      .attr('id', 'filter1')
+      .attr('color-interpolation-filters', 'sRGB')
+      .attr('width', 80)
+      .attr('height', 80)
+    filter1.append('feFlood')
+      .attr('flood-opacity', 0)
+      .attr('result', 'BackgroundImageFix')
+    filter1.append('feColorMatrix')
+      .attr('in', 'SourceAlpha')
+      .attr('type', 'matrix')
+      .attr('values', '0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0')
+    filter1.append('feOffset')
+      .attr('dy', 4)
+    filter1.append('feGaussianBlur')
+      .attr('stdDeviation', 8)
+    filter1.append('feColorMatrix')
+      .attr('type', 'matrix')
+      .attr('values', '0 0 0 0 0.657205 0 0 0 0 1 0 0 0 0 0.31441 0 0 0 1 0')
+    filter1.append('feBlend')
+      .attr('mode', 'normal')
+      .attr('in2', 'BackgroundImageFix')
+      .attr('result', 'effect1_dropShadow')
+    filter1.append('feBlend')
+      .attr('mode', 'normal')
+      .attr('in', 'SourceGraphic')
+      .attr('in2', 'effect1_dropShadow')
+      .attr('result', 'shape')
+    // Ховер-фильтр для желтого ползунка
+    const filter2 = defs
+      .append('filter')
+      .attr('id', 'filter2')
+      .attr('color-interpolation-filters', 'sRGB')
+      .attr('filterUnits', 'userSpaceOnUse')
+      .attr('width', 80)
+      .attr('height', 80)
+    filter2
+      .append('feFlood')
+      .attr('flood-opacity', 0)
+      .attr('result', 'BackgroundImageFix')
+    filter2
+      .append('feColorMatrix')
+      .attr('in', 'SourceAlpha')
+      .attr('type', 'matrix')
+      .attr('values', '0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0')
+    filter2.append('feOffset').attr('dy', 4)
+    filter2.append('feGaussianBlur').attr('stdDeviation', 8)
+    filter2
+      .append('feColorMatrix')
+      .attr('type', 'matrix')
+      .attr('values', '0 0 0 0 1 0 0 0 0 0.903348 0 0 0 0 0.275109 0 0 0 1 0')
+    filter2
+      .append('feBlend')
+      .attr('mode', 'normal')
+      .attr('in2', 'BackgroundImageFix')
+      .attr('result', 'effect1_dropShadow')
+    filter2
+      .append('feBlend')
+      .attr('mode', 'normal')
+      .attr('in', 'SourceGraphic')
+      .attr('in2', 'effect1_dropShadow')
+      .attr('result', 'shape')
+    const filter3 = defs
+      .append('filter')
+      .attr('id', 'filter3')
+      .attr('color-interpolation-filters', 'sRGB')
+      .attr('filterUnits', 'userSpaceOnUse')
+      .attr('x', -32)
+      .attr('y', -32)
+      .attr('width', 110)
+      .attr('height', 110)
+    filter3
+      .append('feFlood')
+      .attr('flood-opacity', 0)
+      .attr('result', 'BackgroundImageFix')
+    filter3
+      .append('feColorMatrix')
+      .attr('in', 'SourceAlpha')
+      .attr('type', 'matrix')
+      .attr('values', '0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0')
+    filter3.append('feOffset').attr('dy', 4)
+    filter3.append('feGaussianBlur').attr('stdDeviation', 8)
+    filter3
+      .append('feColorMatrix')
+      .attr('type', 'matrix')
+      .attr('values', '0 0 0 0 0.344978 0 0 0 0 0.724891 0 0 0 0 1 0 0 0 1 0')
+    filter3
+      .append('feBlend')
+      .attr('mode', 'normal')
+      .attr('in2', 'BackgroundImageFix')
+      .attr('result', 'effect1_dropShadow')
+    filter3
+      .append('feBlend')
+      .attr('mode', 'normal')
+      .attr('in', 'SourceGraphic')
+      .attr('in2', 'effect1_dropShadow')
+      .attr('result', 'shape')
     // Градиент для синей дуги
     const gradientBlue = defs
       .append('radialGradient')
       .attr('gradientUnits', 'userSpaceOnUse')
-      .attr('xlink:href', `#${this.id}__positionGradient`)
-      .attr('id', `${this.id}__gradientBlue`)
+      .attr('xlink:href', '#positionGradient')
+      .attr('id', 'gradientBlue')
     gradientBlue.append('stop').attr('stop-color', '#4265A8')
     gradientBlue
       .append('stop')
@@ -311,8 +281,8 @@ export default class SpeedComponent extends Vue {
     const gradientGreen = defs
       .append('radialGradient')
       .attr('gradientUnits', 'userSpaceOnUse')
-      .attr('xlink:href', `#${this.id}__positionGradient`)
-      .attr('id', `${this.id}__gradientGreen`)
+      .attr('xlink:href', '#positionGradient')
+      .attr('id', 'gradientGreen')
     gradientGreen.append('stop').attr('stop-color', '#58A21F')
     gradientGreen
       .append('stop')
@@ -326,8 +296,8 @@ export default class SpeedComponent extends Vue {
     const gradientYellow = defs
       .append('radialGradient')
       .attr('gradientUnits', 'userSpaceOnUse')
-      .attr('xlink:href', `#${this.id}__positionGradient`)
-      .attr('id', `${this.id}__gradientYellow`)
+      .attr('xlink:href', '#positionGradient')
+      .attr('id', 'gradientYellow')
     gradientYellow.append('stop').attr('stop-color', '#F4BE01')
     gradientYellow
       .append('stop')
@@ -338,77 +308,73 @@ export default class SpeedComponent extends Vue {
       .attr('offset', '1')
       .attr('stop-color', '#FFDD00')
     defs.append('radialGradient')
-      .attr('id', `#${this.id}__positionGradient`)
+      .attr('id', 'positionGradient')
       .attr('cx', 0)
       .attr('r', 65)
-      .attr('cy', -this.chartHeight / 2 + STROKE_WIDTH / 2)
-    this.drawChart()
+      .attr('cy', -this.chartHeight / 2 + this.strokeWidth / 2)
+    this.draw()
   }
-  drawChart () {
-    let isSpeedChanged: boolean = false
-    const isTurboActivation: boolean = false
-    const currentSpeed: number = 5
-    const listAvailableSpeed: number[] = [5, 10, 30, 50, 100]
-    const isOnTurbo: boolean = false
-    const speedTurboActivated: number = 0
-    const speedInterval: number = 10
-    const endPieAngle: number = END_PIE_ANGLE
-    const arcRadius: number = (this.chartHeight || 0) / 2
-    const lastAvailableSpeed: number = getLastElement(listAvailableSpeed)
-    const lastAvailableSpeedVal: number = lastAvailableSpeed + speedInterval
-    const fullScale: number = 1
-    const curretSpeedScale: number = currentSpeed / lastAvailableSpeedVal
-    const addedSpeed: number = isTurboActivation
+
+  draw () {
+    let isTariffChaining = false
+    const isTurboActivation = false // todo props
+    const currentSpeed = Number(this.currentSpeed)
+    const listSpeed = this.listAvailableSpeed.map(speed => speed.speed) // todo Для бонуса ускорения другие скорости
+    listSpeed.unshift(currentSpeed)
+    const isOnTurbo = false // todo props
+    const turboSpeedActivated = 0 // todo props
+    const speedInterval = 10
+    const endPieAngle = this.endPieAngel
+    const arcRadius = this.chartHeight / 2
+    const lastAvailableSpeed = getLastElement(listSpeed)
+    const lastAvailableSpeedVal = lastAvailableSpeed + speedInterval
+    const fullScale = 1
+    const currentSpeedScale = currentSpeed / lastAvailableSpeedVal
+    const addedSpeed = isTurboActivation
       ? lastAvailableSpeed
       : isOnTurbo
-        ? speedTurboActivated
+        ? turboSpeedActivated
         : currentSpeed
     const addedSpeedModel = {
       value: addedSpeed,
-      get index () {
-        return listAvailableSpeed.indexOf(this.value)
+      get index (): number {
+        return listSpeed.indexOf(this.value)
       },
-      get angle () {
+      get angle (): number {
         return this.value / lastAvailableSpeedVal
       },
-      get () {
+      get: function () {
         return this.value
       },
-      set (val: number) {
+      set: function (val: number) {
         this.value = val
       }
     }
     if (addedSpeed !== currentSpeed) {
-      this.$emit('change', {
-        isChanged: true,
-        speed: addedSpeed
-      })
+      this.$emit('change', { isChanged: true, speed: addedSpeed })
     }
     const ticks = d3.ticks(0, lastAvailableSpeedVal, 99)
-    const mainGradient = `url(#${this.id}__gradientYellow)`
-    const addedColor = isTurboActivation || isOnTurbo
-      ? '#69BE28'
-      : '#6688C9'
-    const addedGradient = isTurboActivation || isOnTurbo
-      ? `url(#${this.id}__gradientGreen)`
-      : `url(#${this.id}__gradientBlue)`
+    const mainGradient = 'url(#gradientYellow)'
+    const addedColor = isTurboActivation || isOnTurbo ? '#69BE28' : '#6688C9'
+    const addedGradient = (isTurboActivation || isOnTurbo)
+      ? 'url(#gradientGreen)'
+      : 'url(#gradientBlue)'
     const bgColor = '#F3F3F3'
-    const colors = [
-      bgColor,
-      addedGradient,
-      mainGradient
-    ]
+    const colors = [bgColor, addedGradient, mainGradient]
     const slowAnimationSpeed = 600
-    function tweenText (newVal: any) {
+    // Функция для смены текста
+    function tweenText (newVal: number) {
       return function () {
         // @ts-ignore
-        const self: any = this
-        const i = d3.interpolateRound(newVal, newVal)
-        return function (t: any) {
+        const self = this
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const i = (q: number) => newVal
+        return function (t: number) {
           self.textContent = i(t)
         }
       }
     }
+    // Функция анимации дуги
     function arcTween (d: any, i: any, el: any, start: any) {
       const startVal = start || 0
       i = d3.interpolateNumber(startVal, d)
@@ -417,7 +383,8 @@ export default class SpeedComponent extends Vue {
         return speedArc(d)
       }
     }
-    function cursorTween (d: any, i: any, el: any, start: any) {
+    // Функция анимации курсора
+    /* function cursorTween (d: any, i: any, el: any, start: any) {
       const startVal = start || 0
       i = d3.interpolateNumber(startVal, d)
       return function (t: any) {
@@ -425,50 +392,62 @@ export default class SpeedComponent extends Vue {
         return `rotate(${d * endPieAngle * 180 / Math.PI})`
       }
     }
+    // Функция отрисовки ползунка
     function setCursorPosition () {
       return `rotate(${addedSpeedModel.angle * endPieAngle * 180 / Math.PI})`
     }
+    // Функция перемещения тени за ползунком
     function setShadowPosition () {
       return `rotate(${addedSpeedModel.angle * endPieAngle * 180 / Math.PI})`
-    }
-    const speedBlock = this.pieG
+    } */
+    // Дуги для вывода скорости
+    const speedBlock = this.pieG!
       .selectAll('.my-arc')
-      .data([fullScale, addedSpeedModel.angle, curretSpeedScale])
+      .data([fullScale, addedSpeedModel.angle, currentSpeedScale])
       .enter()
       .append('g')
       .classed('my-arc', true)
     const speedArc = d3
       .arc()
       .startAngle(0)
-      .endAngle((d: any) => d * endPieAngle)
-      .innerRadius(arcRadius - STROKE_WIDTH)
+      .endAngle(function (d: any) {
+        return d * endPieAngle
+      })
+      .innerRadius(arcRadius - this.strokeWidth)
       .outerRadius(arcRadius)
     speedBlock
       .append('path')
       .attr('fill', 'none')
-      .attr('id', (d: number, i: number) => `${this.id}__arc-${i}`)
+      .attr('id', function (d: any, i: number) {
+        return 'arc-' + i
+      })
       .transition()
       .delay(20)
       .duration(slowAnimationSpeed)
       .ease(d3.easePolyOut)
+      // @ts-ignore
       .attrTween('d', arcTween)
-      .style('fill', (d: number, i: number) => colors[i])
-      .attr('filter', `url(#${this.id}__gray_stroke)`)
+      .style('fill', function (d: any, i: number) {
+        return colors[i]
+      })
+      .attr('filter', 'url(#filter0)')
+    // Рисуем шкалу с делениями
     const speedArcs = d3
       .pie()
       .startAngle(0)
       .endAngle(endPieAngle + 0.036)
       .sort(null)
       .value(1)(ticks)
-    const speedBlockGroup = this.pieG.append('g')
-    const listSpeedBlock = speedBlockGroup
+    const speedBlockGroup = this.pieG!.append('g')
+    const _speedBlock = speedBlockGroup
       .selectAll('.speed-arc')
       .data(speedArcs)
-    const speedNewBlock = listSpeedBlock
+    const speedNewBlock = _speedBlock
       .enter()
       .append('g')
       .classed('speed-arc', true)
-    d3.select(`#${this.id}__arc-2`)
+    d3.select(`#${this.computedId}`)
+      .select('#arc-2')
       .attr('stroke', '#FBFBFB')
       .attr('stroke-width', 1)
     const label = speedNewBlock.append('g')
@@ -477,84 +456,76 @@ export default class SpeedComponent extends Vue {
       .attr('x1', 0)
       .attr('y1', 9)
       .attr('x2', 0)
-      .attr('y2', (d: iLabelItem) => d.data % 10 === 0 ? 0 : 6)
-      .attr('transform', (d: iLabelItem) => {
-        const translateX = (arcRadius + 14) * Math.sin(d.startAngle)
-        const translateY = (arcRadius + 14) * -Math.cos(d.startAngle)
-        const rotate = d.startAngle * 180 / Math.PI
-        return `translate(${[translateX, translateY]}), rotate(${rotate})`
-      })
+      .attr('y2', (d: any) => d.data % 10 === 0 ? 0 : 6)
+      .attr('transform', (d: any) =>
+        `translate(${(arcRadius + 14) * Math.sin(d.startAngle)}, ${(arcRadius + 14) * -Math.cos(d.startAngle)}), rotate(${d.startAngle * 180 / Math.PI})`
+      )
       .attr('stroke', 'rgba(0, 0, 0, 0.17)')
       .attr('stroke-width', 2)
-      .classed('scale-tick', (d: iLabelItem) => d.data % 10 === 0 && d.data > currentSpeed && d.data !== lastAvailableSpeedVal)
+      .classed('scale-tick', (d: any) => d.data % 10 === 0 && d.data > currentSpeed && d.data !== lastAvailableSpeedVal)
     label
-      .filter((d: iLabelItem) => listAvailableSpeed.includes(d.data) || d.data === 0 || d.data === lastAvailableSpeedVal ? d : false)
+      .filter(d => listSpeed.includes(d.data) || d.data === 0 || d.data === lastAvailableSpeedVal)
       .append('text')
       .attr('dx', 0)
       .attr('dy', 5)
-      .attr('transform', (d: iLabelItem) => {
-        const translateX = (arcRadius + 30) * Math.sin(d.startAngle)
-        const translateY = (arcRadius + 30) * -Math.cos(d.startAngle)
-        return `translate(${[translateX, translateY]})`
-      })
+      .attr('transform', d => `translate(${(arcRadius + 30) * Math.sin(d.startAngle)}, ${(arcRadius + 30) * -Math.cos(d.startAngle)})`)
       .classed('scale-numbers', true)
-      .text((d: iLabelItem) => d.data === lastAvailableSpeedVal ? 'max' : d.data)
-    const mainTextSelection = d3.select(`#${this.id} .main-text .number`)
+      .text(d => d.data === lastAvailableSpeedVal ? 'max' : String(d.data))
+    const mainTextSelection = d3.select(`#${this.computedId}`)
+      .select('.main-text .number')
     mainTextSelection
       .transition()
       .ease(d3.easePolyOut)
       .tween('text', tweenText(addedSpeedModel.get()))
-    const mainCursorSelection = d3.select(`#${this.id} .main-cursor`)
+    /* const mainCursorSelection = d3.select(`#${this.computedId}`)
+      .select('.main-cursor')
     mainCursorSelection.data([addedSpeedModel.angle])
-      .attr('transform', setCursorPosition)
-      .classed('hidden', isOnTurbo)
-    const cursorShadow = d3.select(`#${this.id}__positionGradient`)
-    cursorShadow.attr('gradientTransform', setShadowPosition)
-    const isMsEdge: boolean = /Edge/.test(navigator.userAgent)
-    // @ts-ignore
-    let cursorShadowYellow: Selection<any, any, any, any>
-    // @ts-ignore
-    let cursorShadowBlue: Selection<any, any, any, any>
-    // @ts-ignore
-    let cursorShadowGreen: Selection<any, any, any, any>
-    if (isMsEdge) {
-      cursorShadowYellow = d3.select(`#${this.id}__gradientYellow`)
-      cursorShadowBlue = d3.select(`#${this.id}__gradientBlue`)
-      cursorShadowGreen = d3.select(`#${this.id}__gradientGreen`)
-    }
-    let startPoint: number = addedSpeedModel.angle
-
-    const setScaleAnimation = () => {
-      setCursorNewPosition(startPoint)
-      setArcAnimation(startPoint)
-      startPoint = addedSpeedModel.angle
+    mainCursorSelection.attr('transform', setCursorPosition)
+    mainCursorSelection.classed('hidden', isOnTurbo) */
+    /* const cursorShadow = d3.select(`#${this.computedId}`)
+      .select('#positionGradient')
+    cursorShadow.attr('gradientTransform', setShadowPosition) */
+    // const isMSEdge = /Edge/.test(navigator.userAgent)
+    /* let cursorShadow1
+    let cursorShadow2
+    let cursorShadow3
+    if (isMSEdge) {
+      cursorShadow1 = d3.select(`#${this.computedId}`).select('#gradientYellow')
+      cursorShadow2 = d3.select(`#${this.computedId}`).select('#gradientBlue')
+      cursorShadow3 = d3.select(`#${this.computedId}`).select('#gradientGreen')
+    } */
+    let startPoint = addedSpeedModel.angle
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    function setCursorNewPosition (pos: number) {
+      /* mainCursorSelection
+        .datum(addedSpeedModel.angle)
+        .transition()
+        .ease(d3.easePolyOut)
+        .attrTween('transform', (d: any, i: number) => cursorTween(d, i, this, pos)) */
+      /* cursorShadow.attr('gradientTransform', setShadowPosition)
+      if (isMSEdge) {
+        cursorShadow1.attr('gradientTransform', setShadowPosition)
+        cursorShadow2.attr('gradientTransform', setShadowPosition)
+        cursorShadow3.attr('gradientTransform', setShadowPosition)
+      } */
     }
     const setArcAnimation = (pos: number) => {
-      d3.select(`#${this.id}__arc-1`)
+      d3.select(`#${this.computedId}`).select('#arc-1')
         .datum(addedSpeedModel.angle)
         .transition()
         .ease(d3.easePolyOut)
         // @ts-ignore
-        .attrTween('d', function (d: any, i: number) {
+        .attrTween('d', function (d, i) {
           return arcTween(d, i, this, pos)
         })
     }
-    const setCursorNewPosition = (pos: any) => {
-      mainCursorSelection
-        .datum(addedSpeedModel.angle)
-        .transition()
-        .ease(d3.easePolyOut)
-        .attrTween('transform', function (d: any, i: number) {
-          return cursorTween(d, i, this, pos)
-        })
-      cursorShadow.attr('gradientTransform', setShadowPosition)
-      if (isMsEdge) {
-        cursorShadowYellow.attr('gradientTransform', setShadowPosition)
-        cursorShadowBlue.attr('gradientTransform', setShadowPosition)
-        cursorShadowGreen.attr('gradientTransform', setShadowPosition)
-      }
+    function setScaleAnimation () {
+      const oldPoint = startPoint
+      setCursorNewPosition(oldPoint)
+      setArcAnimation(oldPoint)
+      startPoint = addedSpeedModel.angle
     }
-    const setCenterTarifValue = () => {
+    function setCenterSpeedValue () {
       mainTextSelection
         .transition()
         .delay(20)
@@ -562,155 +533,94 @@ export default class SpeedComponent extends Vue {
         .ease(d3.easePolyOut)
         .tween('text', tweenText(addedSpeedModel.value))
     }
-    const setScaleNumbersColor = () => {
-      d3.selectAll(`#${this.id} .scale-tick`)
+    const setScaleNumbersColors = () => {
+      d3.select(`#${this.computedId}`)
+        .selectAll('.scale-tick')
         .style('stroke', addedColor)
-      d3.selectAll(`#${this.id} .scale-numbers`)
+      d3.select(`#${this.computedId}`)
+        .selectAll('.scale-numbers')
         .filter((d: any) => d.data > currentSpeed && d.data !== lastAvailableSpeedVal)
         .style('fill', addedColor)
     }
     if (isTurboActivation) {
-      setScaleNumbersColor()
+      setScaleNumbersColors()
     }
-    const setCursorStyle = () => {
-      const addedCursorColor = isTurboActivation ? '#72D02B' : '#5F91EF'
-      const mainCursorColor = addedSpeedModel.get() === currentSpeed ? '#FFE225' : addedCursorColor
-      const addedHoverFilter = isTurboActivation ? `url(#${this.id}__green_filter_hover)` : `url(#${this.id}__blue_filter_hover)`
-      const mainHoverFilter = addedSpeedModel.get() === currentSpeed ? `url(#${this.id}__yellow_filter_hover)` : addedHoverFilter
-      mainCursorSelection
-        .classed('active', isSpeedChanged || isTurboActivation)
-        .selectAll('path')
-        .attr('fill', mainCursorColor)
-        .on('mouseenter mousedown', function () {
-          d3.select(this).attr('filter', mainHoverFilter)
-        })
-        .on('mouseleave', function () {
-          d3.select(this).attr('filter', false)
-        })
+    function setCursorStyle () {
+      // todo Реализация после того, как у пользователя будет возможность выбрать любую скорость
     }
-    setCursorStyle()
     const getFinalSpeed = (speed: number) => {
-      let bisectR = d3.bisectRight(listAvailableSpeed, speed)
-      let bisectL = d3.bisectLeft(listAvailableSpeed, speed)
-      if (bisectR >= listAvailableSpeed.length) {
-        bisectR = listAvailableSpeed.length - 1
+      let bisect
+      let bisectR = d3.bisectRight(listSpeed, speed)
+      let bisectL = d3.bisectLeft(listSpeed, speed)
+      if (bisectL <= listSpeed.indexOf(currentSpeed)) {
+        bisectR = listSpeed.indexOf(currentSpeed)
       }
-      if (bisectL <= listAvailableSpeed.indexOf(currentSpeed)) {
-        bisectR = listAvailableSpeed.indexOf(currentSpeed)
-      }
-      return listAvailableSpeed[bisectR]
+      bisect = bisectR
+      return listSpeed[bisect]
     }
     const getSpeedFromAngle = (coords: number[]) => {
       let angle = Math.atan2(coords[1], coords[0]) + Math.PI / 2
-      if (angle < 0) {
-        angle = 2 * Math.PI + angle
-      }
-      if (angle > endPieAngle) {
-        angle = endPieAngle
-      }
+      if (angle < 0) angle = 2 * Math.PI + angle
+      if (angle > endPieAngle) angle = endPieAngle
       return (angle / endPieAngle) * lastAvailableSpeedVal
     }
-    const setTarifSpeed = (speed: number) => {
-      if (speed < currentSpeed) {
-        speed = currentSpeed
-      } else if (speed > listAvailableSpeed[listAvailableSpeed.length - 1]) {
-        speed = listAvailableSpeed[listAvailableSpeed.length - 1]
-      }
+    const setSpeed = (speed: number) => {
+      if (speed < currentSpeed) speed = currentSpeed
+      else if (speed > getLastElement(listSpeed)) speed = getLastElement(listSpeed)
       addedSpeedModel.set(speed)
       setScaleAnimation()
-      setCenterTarifValue()
-      isSpeedChanged = speed !== currentSpeed
-      this.$emit('change', { isChanged: speed !== currentSpeed, speed })
+      setCenterSpeedValue()
+      isTariffChaining = speed !== currentSpeed
+      this.$emit('change', { isChanged: isTariffChaining, speed })
       setCursorStyle()
-      if (isSpeedChanged) {
-        setScaleNumbersColor()
-      }
+      isTariffChaining && setScaleNumbersColors()
     }
-
-    d3.select(`#${this.id} .speed-toggle--up`).on('click', () => {
-      if (isOnTurbo) return
-      let currentSpeedIndex = addedSpeedModel.index
-      if (currentSpeedIndex < listAvailableSpeed.length - 1) {
-        currentSpeedIndex++
-        setTarifSpeed(listAvailableSpeed[currentSpeedIndex])
-        setCursorStyle()
-      }
-    })
-
-    d3.select(`#${this.id} .speed-toggle--down`).on('click', () => {
-      if (isOnTurbo) return
-      let currentSpeedIndex = addedSpeedModel.index
-      if (currentSpeedIndex > listAvailableSpeed.indexOf(currentSpeed)) {
-        currentSpeedIndex--
-        setTarifSpeed(listAvailableSpeed[currentSpeedIndex])
-        if (currentSpeedIndex === listAvailableSpeed.indexOf(currentSpeed)) {
-          setCursorStyle()
+    d3.select(`#${this.computedId}`).select('.speed-toggle--up')
+      .on('click', () => {
+        if (isOnTurbo) return
+        let currentSpeedIndex = addedSpeedModel.index
+        if (currentSpeedIndex < listSpeed.length - 1) {
+          currentSpeedIndex++
+          setSpeed(listSpeed[currentSpeedIndex])
         }
-      }
-    })
-
-    d3.select(`#${this.id} .scale-numbers`).on('click', () => {
-      if (isOnTurbo) return
-      let currentSpeedIndex = addedSpeedModel.index
-      if (currentSpeedIndex > listAvailableSpeed.indexOf(currentSpeed)) {
-        currentSpeedIndex--
-        setTarifSpeed(listAvailableSpeed[currentSpeedIndex])
-        if (currentSpeedIndex === listAvailableSpeed.indexOf(currentSpeed)) {
-          setCursorStyle()
+      })
+    d3.select(`#${this.computedId}`).select('.speed-toggle--down')
+      .on('click', () => {
+        if (isOnTurbo) return
+        let currentSpeedIndex = addedSpeedModel.index
+        if (currentSpeedIndex > listSpeed.indexOf(currentSpeed)) {
+          currentSpeedIndex--
+          setSpeed(listSpeed[currentSpeedIndex])
+          currentSpeedIndex === listSpeed.indexOf(currentSpeed) && setCursorStyle()
         }
-      }
-    })
-
-    d3.select(`#${this.id}__arc-0`).on('click', () => {
-      if (isOnTurbo) return
-      const coords = d3.mouse(<ContainerElement>document.querySelector('.main-field'))
-      const speed = getFinalSpeed(getSpeedFromAngle(coords))
-      setTarifSpeed(speed)
-    })
-
-    d3.select(`#${this.id}__arc-1`).on('click', () => {
-      if (isOnTurbo) return
-      const coords = d3.mouse(<ContainerElement>document.querySelector('.main-field'))
-      const speed = getFinalSpeed(getSpeedFromAngle(coords))
-      setTarifSpeed(speed)
-    });
-
-    (function () {
-      if (isOnTurbo) return
-      let speed: number
-      mainCursorSelection.call(
-        d3
-          .drag()
-          // @ts-ignore
-          .container(function () {
-            return this.parentNode
-          })
-          .on('start', function () {
-            if (d3.event.cancelable) {
-              d3.event.preventDefault()
-            }
-          })
-          .on('drag', function () {
-            if (!d3.event.cancelable) {
-              return
-              // console.log(d3.event)
-              // d3.event.preventDefault()
-            }
-            let coords = []
-            coords[0] = d3.event.x
-            coords[1] = d3.event.y
-            speed = getSpeedFromAngle(coords)
-            setTarifSpeed(speed)
-          })
-          .on('end', () => {
-            speed = getFinalSpeed(speed)
-            setTarifSpeed(speed)
-            mainCursorSelection.on('drag', null)
-          })
-      )
-    })()
-  }
-  mounted () {
-    this.init()
+      })
+    d3.select(`#${this.computedId}`).select('.scale-numbers')
+      .on('click', () => {
+        if (isOnTurbo) return
+        let currentSpeedIndex = addedSpeedModel.index
+        if (currentSpeedIndex > listSpeed.indexOf(currentSpeed)) {
+          currentSpeedIndex--
+          setSpeed(listSpeed[currentSpeedIndex])
+          currentSpeedIndex === listSpeed.indexOf(currentSpeed) && setCursorStyle()
+        }
+      })
+    d3.select(`#${this.computedId}`).select('#arc-0')
+      .on('click', () => {
+        if (isOnTurbo) return
+        const coords = d3
+          .mouse(document.querySelector(`#${this.computedId}`)!.querySelector('.main-field')! as d3.ContainerElement)
+        let speed = getSpeedFromAngle(coords)
+        speed = getFinalSpeed(speed)
+        setSpeed(speed)
+      })
+    d3.select(`#${this.computedId}`).select('#arc-1')
+      .on('click', () => {
+        if (isOnTurbo) return
+        const coords = d3
+          .mouse(document.querySelector(`#${this.computedId}`)!.querySelector('.main-field')! as d3.ContainerElement)
+        let speed = getSpeedFromAngle(coords)
+        speed = getFinalSpeed(speed)
+        setSpeed(speed)
+      })
   }
 }

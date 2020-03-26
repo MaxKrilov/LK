@@ -1,0 +1,65 @@
+@import "../../_mixins";
+
+.internet-statistic-component {
+  &__content {
+    display: flex;
+    justify-content: space-between;
+    > * {
+      width: 100%;
+      padding: 8px;
+      @extend %body-font;
+    }
+    > .ip {
+      @include ip;
+      .start {
+        display: block;
+        @extend %caption2-font;
+        @include color-black(0.5);
+        margin-bottom: 4px;
+        @include min-breakpoint('md') {
+          display: none;
+        }
+      }
+      .ip {
+        @extend %body-font;
+        @include color-black(0.8);
+      }
+    }
+    > .start,
+    > .end,
+    > .period {
+      @include color-black(0.8);
+      span.date {
+        @include color-black(0.5);
+      }
+    }
+    > .start {
+      @include start;
+    }
+    > .end {
+      @include end;
+    }
+    > .period {
+      @include period;
+    }
+    > .time-session {
+      @include time-session;
+      white-space: nowrap;
+      .days {
+        @include color-black(0.5);
+      }
+      .time {
+        @include color-black(0.8);
+      }
+    }
+    > .volume {
+      @include volume;
+      @include color-black(0.5);
+      span { @include color-black(0.8) }
+    }
+    > .type {
+      @include type;
+      @include color-black(0.8);
+    }
+  }
+}
