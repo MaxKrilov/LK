@@ -1,0 +1,63 @@
+div(:class="`${pre}`")
+  div(
+    :class="[{ stopped: item.stopped, active: isOpen, configure: item.status === 'configure', cancel: item.status === 'cancel' }, `${pre}__point-item`]",
+    @click="isOpen = !isOpen"
+    )
+    div(:class="[`${pre}__point-content`, {open: isOpen}]")
+      div(:class="`${pre}__point-icon`")
+        template(v-if="item.status === 'cancel'")
+          er-icon(class="icon" name="cancel")
+        template(v-else)
+          er-icon(class="icon" name="geolocation")
+      div(:class="`${pre}__point-wrapper`")
+        div(:class="`${pre}__title-block`")
+          div(:class="`${pre}__addres`") {{item.addres}}
+          div(:class="`${pre}__switcher`")
+            template(v-if="item.status === 'cancel'")
+              div(class="restore") Заявка отправлена
+            template(v-else-if="item.status === 'configure'")
+              div(class="restore") Настроить фильтрацию
+            template(v-else)
+              er-icon(name="corner_down" :class="['icon', {'arrow-up': isOpen}]")
+              div(:class="[`${pre}__service-count`, {[`${pre}__service-count_active`]: isOpen }]")
+                span(class="wide") {{isOpen ? 'Свернуть' : 'Подробно'}}
+
+        template(v-if="item.stopped")
+          div(:class="`${pre}__stopped-block`")
+            er-icon(name="no_enter")
+            span(class="text") Приостановлена
+        template(v-else)
+          div(:class="`${pre}__activate-date`")
+            div(class="title")
+              | Дата активации:
+            div(:class="`${pre}__h4`")  {{item.date}}
+        div(:class="`${pre}__price`" v-if="!item.stopped")
+          div(class="title") Абонентская плата
+          div(:class="`${pre}__h4`") {{item.abon}}
+            span(class="units")  ₽/месяц
+
+      div(:class="`${pre}__active-line`")
+
+  er-slide-up-down(:active="isOpen" :duration="200")
+    div(:class="[`${pre}__slider`, { point__slider_active: isOpen }]")
+      div(:class="`${pre}__slider-content`")
+        div(:class="`${pre}__tariff`")
+          er-icon(class="icon" name="filter")
+          div(:class="`${pre}__caption2`") Тариф:
+          div(:class="`${pre}__h4`") Бизнес
+        div(:class="`${pre}__login`")
+          er-icon(class="icon" name="profile")
+          div(:class="`${pre}__caption2`") Логин:
+          div() v342198707
+        div(:class="`${pre}__ip`")
+          er-icon(class="icon" name="ip")
+          div() IP адреса:
+          div()
+            div 10.10.100.13/24
+            div 10.10.100.15/24
+            div 10.10.100.14/24
+
+      div(:class="`${pre}__buttons`")
+        er-button(color="yellow") Настроить фильтрацию
+        er-button() Отключить фильтрацию
+

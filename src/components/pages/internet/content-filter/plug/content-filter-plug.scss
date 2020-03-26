@@ -1,0 +1,278 @@
+.content-filter-plug-page {
+  &__tariffs {
+    @include min-breakpoint("md") {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: stretch;
+    }
+  }
+  &__tariff-name {
+    @extend %h3;
+  }
+  &__card-wrapper {
+    @include min-breakpoint("md") {
+      flex-basis: 50%;
+      padding-bottom: 16px;
+      &:nth-child(odd) {
+        padding-right: 8px;
+      }
+      &:nth-child(even) {
+        padding-left: 8px;
+      }
+    }
+    @include min-breakpoint("lg") {
+      flex-basis: 33%;
+      padding-bottom: 16px;
+      &:nth-child(3n + 1) {
+        padding-right: 16px;
+        padding-left: 0;
+      }
+      &:nth-child(3n + 2) {
+        padding-left: 8px;
+        padding-right: 8px;
+      }
+      &:nth-child(3n + 3) {
+        padding-right: 0;
+        padding-left: 16px;
+      }
+    }
+    @include min-breakpoint("xl") {
+      &:nth-child(3n + 1) {
+        padding-right: 20px;
+        padding-left: 0;
+      }
+      &:nth-child(3n + 2) {
+        padding-left: 12px;
+        padding-right: 12px;
+      }
+      &:nth-child(3n + 3) {
+        padding-right: 0;
+        padding-left: 20px;
+      }
+    }
+  }
+  &__card {
+    transition: $primary-transition;
+    background-color: map-get($gray, "9");
+    border-radius: 12px 12px 0 0;
+    margin-bottom: 16px;
+    // height: 100%;
+    @include min-breakpoint("md") {
+      margin-bottom: 0;
+    }
+    .er-card__content {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+    &:hover {
+      background-color: map-get($shades, "white");
+      .content-filter-plug-page__head {
+        background-color: map-get($yellow, "base");
+      }
+      .er-button {
+        background-color: map-get($yellow, "base");
+      }
+    }
+  }
+  &__head {
+    background-color: map-get($gray, "4");
+    border-radius: 12px 12px 0 0;
+    padding: 16px;
+    position: relative;
+    overflow: hidden;
+    transition: $primary-transition;
+    @include min-breakpoint("md") {
+      padding: 24px;
+    }
+    .er-icon {
+      opacity: 0.5;
+      position: absolute;
+      right: -20px;
+      bottom: -25px;
+      svg {
+        width: 86px;
+        color: map-get($shades, "white");
+      }
+    }
+  }
+  &__card-content {
+    padding: 16px;
+    @include min-breakpoint("lg") {
+      padding: 32px 16px;
+      // height: 100%;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+    @include min-breakpoint("md") {
+      padding: 24px 16px;
+    }
+    @include min-breakpoint("xl") {
+      padding: 32px 16px;
+    }
+  }
+  &__description {
+    padding-bottom: 16px;
+    @include min-breakpoint("sm") {
+      padding-bottom: 24px;
+    }
+    @include min-breakpoint("md") {
+      min-height: 210px;
+    }
+    @include min-breakpoint("lg") {
+      padding-bottom: 32px;
+      margin-bottom: auto;
+    }
+  }
+  &__price {
+    padding-bottom: 24px;
+    @include min-breakpoint("lg") {
+      padding-bottom: 32px;
+    }
+  }
+  &__caption2 {
+    @extend %caption2;
+  }
+  &__caption {
+    @extend %caption1;
+  }
+  &__tariffs-detail {
+    .active {
+      background-color: map-get($shades, 'white');
+      transition: $primary-transition;
+    }
+  }
+  &__title-wrapper {
+    @include min-breakpoint("sm") {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+  }
+  &__filters-wrapper {
+    @include max-breakpoint("sm") {
+      margin-top: 20px;
+    }
+    display: flex;
+  }
+  &__filter {
+    grid-area: filter;
+    display: flex;
+    align-items: center;
+    &:first-child {
+      padding-right: 16px;
+      @include min-breakpoint("md") {
+        padding-right: 32px;
+      }
+    }
+    .text {
+      @extend %caption1;
+      margin-left: 8px;
+      border-bottom: 1px dashed map-get($shades, "black");
+    }
+  }
+  &__cell {
+    @extend %h3;
+    padding-top: 40px;
+    padding-bottom: 8px;
+    width: 100%;
+    padding-left: 16px;
+    .er-icon svg {
+      width: 16px;
+    }
+  }
+  &__row {
+    @include min-breakpoint("sm") {
+      padding-left: 8px;
+    }
+    @include min-breakpoint("lg") {
+      padding-left: 16px;
+    }
+    @include min-breakpoint("xl") {
+      padding-left: 8px;
+    }
+    @include min-breakpoint('xxl') {
+      padding-left: 16px;
+    }
+    &:first-child {
+      .content-filter-plug-page__cell {
+        border-radius: 12px 12px 0 0;
+      }
+    }
+    &:last-child {
+      .content-filter-plug-page__cell {
+        border-radius: 0 0 12px 12px;
+      }
+    }
+    position: relative;
+    display: flex;
+    justify-content: space-evenly;
+  }
+  &__row-title {
+    top: 0;
+    pointer-events: none;
+    left: 0;
+    width: 100%;
+    position: absolute;
+    padding-top: 8px;
+    padding-left: 16px;
+    padding-bottom: 8px;
+    background-color: rgba($color: #000000, $alpha: 0.05);
+    @extend %caption1;
+    @include min-breakpoint("sm") {
+      padding-left: 24px;
+    }
+    @include min-breakpoint("lg") {
+      padding-left: 32px;
+    }
+    @include min-breakpoint("xl") {
+      padding-left: 24px;
+    }
+    @include min-breakpoint('xxl') {
+      padding-left: 32px;
+    }
+  }
+  &__icon-ok {
+    svg {
+      color: map-get($green, "base");
+    }
+  }
+  &__icon-not {
+    svg {
+      color: map-get($gray, "5");
+    }
+  }
+
+  &__buttons-wrapper {
+    &_hidden {
+      opacity: 0;
+    }
+    background-color: map-get($gray, "9");
+    width: 100%;
+    opacity: 1;
+    transition: $primary-transition;
+    padding-top: 8px;
+    display: none;
+    .content-filter-plug-page__cell {
+      padding-top: 0;
+    }
+    @include max-breakpoint("md") {
+      position: fixed;
+      bottom: 0;
+      display: flex;
+    }
+  }
+  &__button {
+    text-align: center;
+    padding-left: 8px;
+    padding-right: 8px;
+    @include min-breakpoint("sm") {
+      padding-left: 16px;
+      padding-right: 16px;
+    }
+    @include min-breakpoint("md") {
+      padding-bottom: 16px;
+    }
+  }
+}

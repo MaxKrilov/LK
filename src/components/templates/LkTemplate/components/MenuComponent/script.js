@@ -62,7 +62,7 @@ export default {
           },
           {
             name: 'Контент-фильтрация',
-            url: '/lk/filter'
+            url: '/lk/internet/content-filter/plug'
           },
           {
             name: 'Скорость',

@@ -58,6 +58,12 @@ import StatisticInternetPage from '@/components/pages/internet/StatisticPage/ind
 import DMPFormPage from './components/pages/dmp-form/index'
 
 import OATSMainPage from './components/pages/oats/index'
+
+// Интернет Контент-фильтрация
+import ContentFilterPromoPage from './components/pages/internet/content-filter/promo/index'
+import ContentFilterPlugPage from './components/pages/internet/content-filter/plug/index'
+import ContentFilterMainPage from './components/pages/internet/content-filter/index'
+// import OATSMainPage from './components/pages/oats/index'
 import OATSPromoPage from './components/pages/oats/promo/index'
 
 // Страницы с ошибками
@@ -157,6 +163,18 @@ const router = new Router({
               component: SupportIndexPage
             }
           ]
+        },
+        {
+          path: 'internet/content-filter/promo',
+          component: ContentFilterPromoPage
+        },
+        {
+          path: 'internet/content-filter/plug',
+          component: ContentFilterPlugPage
+        },
+        {
+          path: 'internet/content-filter',
+          component: ContentFilterMainPage
         },
         {
           path: 'internet',
