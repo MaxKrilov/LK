@@ -1,0 +1,20 @@
+div(:class="`${pre}`").main-content.main-content--padding.main-content--top-menu-fix
+  er-page-header(title="Подключить защиту от DDoS атак")
+
+  div(:class="`${pre}__check-ip-title`") Выберите IP-адреса для защиты
+  div(v-for="ip in ips" :class="`${pre}__ip-item`")
+    er-toggle(view="radio-check")
+    span(:class="`${pre}__ip-text`") {{ ip }}
+
+  h3(:class="`${pre}__duration-title`") Выберите период защиты
+  div(:class="`${pre}__duration`")
+    er-date-picker(placeholder="период")
+    er-toggle(view="radio-check" label="Бессрочно" :class="`${pre}__duration-check`")
+  div(:class="`${pre}__cost-title`") Стоимость выбраной защиты:
+  div(:class="`${pre}__cost-wrapper`")
+    span(:class="`${pre}__cost`") 9000
+    span(:class="`${pre}__unit`") ₽
+  div(:class="`${pre}__buttons`")
+    er-button(color="blue" :class="`${pre}__connect-button`") Подключить Защиту от DDoS атак
+    er-button(flat :class="`${pre}__cancel-button`") Отменить
+

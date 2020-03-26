@@ -1,0 +1,420 @@
+.point-ddos {
+
+  &__caption1 {
+    @extend %caption1;
+  }
+  &__caption2 {
+    @extend %caption2;
+    white-space: nowrap;
+  }
+  &__h4 {
+    @extend %h4
+  }
+  &__points {
+    margin: 0 -8px;
+    margin-bottom: $padding-x10;
+    @include media-query(
+      (
+        margin: (
+          sm: 0 -8px,
+          md: 0 0px
+        ),
+        margin-bottom: (
+          sm: $padding-x10,
+          md: $padding-x12
+        )
+      )
+    );
+  }
+  &__point-content {
+    background: map_get($gray, "9");
+    display: flex;
+    overflow: hidden;
+    transition: 0.15s ease-in;
+    border-radius: inherit;
+    .title {
+      @extend %caption2;
+      white-space: nowrap;
+    }
+  }
+  &__active-line {
+    width: 20px;
+    opacity: 0;
+    background-color: map_get($yellow, "base");
+    margin-right: -4px;
+    @include min-breakpoint("md") {
+      width: 8px;
+    }
+  }
+  &__point-item {
+    cursor: pointer;
+    overflow: hidden;
+    margin-bottom: $padding-x1;
+    border-radius: 12px;
+    box-shadow: 0 12px 16px rgba(map_get($shades, 'black'), 0), 0 2px 12px rgba(map_get($shades, 'black'), 0.1),
+      0 2px 2px rgba(map_get($shades, 'black'), 0.05);
+    transition: 0.15s ease-in;
+    background: linear-gradient(
+      to top,
+      map_get($gray, "26") 28.65%,
+      map_get($shades, "white") 90.63%
+    );
+    padding: 1px;
+  }
+  .active {
+    position: relative;
+    .point-ddos__active-line {
+      opacity: 1;
+    }
+    .point-ddos__point-icon {
+      .icon {
+        svg {
+          color: map-get($yellow, "base");
+        }
+      }
+    }
+  }
+  &__point-item:hover:not(.stopped) {
+      position: relative;
+      box-shadow: 0 12px 16px rgba(map_get($shades, 'black'), 0.1), 0 12px 16px rgba(map_get($shades, 'black'), 0),
+        0 2px 2px rgba(map_get($shades, 'black'), 0);
+      background: map_get($shades, "white");
+
+      .point-ddos__point-content {
+        background: map_get($shades, "white");
+      }
+      .point-ddos__point-icon {
+        .icon {
+          svg {
+            color: map_get($yellow, "base");
+          }
+        }
+      }
+      .point-ddos__point-name {
+        @include color-black();
+      }
+      .title {
+        @include color-black(0.5);
+      }
+      .point-ddos__abon {
+        @include color-black();
+      }
+      .point-ddos__activate-date {
+        @include color-black();
+      }
+      .point-ddos__switcher {
+        .icon {
+          @include color-black(0.5);
+        }
+      }
+      .point-ddos__service-count {
+        @include color-black(0.5);
+      }
+    }
+
+  .stopped {
+    background: map_get($gray, "3");
+    .point-ddos__point-content {
+      background: map_get($gray, "3");
+    }
+    .point-ddos__point-icon {
+      .icon {
+        svg {
+          @include color-black(0.1);
+        }
+      }
+    }
+    .point-ddos__point-name {
+      @include color-black(0.3);
+    }
+    .point-ddos__data-wrap {
+      h4 {
+        @include color-black(0.5);
+      }
+      .units {
+        @include color-black(0.3);
+      }
+    }
+    .title {
+      @extend %caption2;
+      @include color-black(0.2);
+    }
+  }
+  &__point-icon {
+    margin-left: -35px;
+    display: flex;
+    align-items: center;
+    @include min-breakpoint("lg") {
+      margin-left: -23px;
+    }
+    .icon {
+      svg {
+        @include color-black(0.2);
+        width: 96px;
+      }
+    }
+  }
+  &__point-name {
+    @include color-black(0.8);
+  }
+  &__data-wrap {
+    display: flex;
+    justify-content: flex-end;
+    @include media-query(
+      (
+        padding-left: (
+          sm: 40px,
+          md: 0
+        ),
+      )
+    );
+    @include max-breakpoint("sm") {
+      padding-top: 8px;
+    }
+  }
+  &__activate-date {
+    margin-right: 32px;
+    margin-left: 32px;
+    text-align: right;
+    display: none;
+    @include color-black(0.8);
+    @include media-query(
+      (
+        display: (
+          md: block
+        ),
+        margin-right: (
+          lg: 48px
+        )
+      )
+    );
+    .title {
+      @extend %caption2;
+    }
+  }
+  &__price {
+    @include color-black(0.8);
+    text-align: right;
+    @include max-breakpoint("sm") {
+      text-align: left;
+    }
+
+    .title {
+      @extend %caption2;
+    }
+    .units {
+      @extend %caption1;
+      @include color-black(0.5);
+    }
+  }
+  &__point-wrapper {
+    display: flex;
+    width: 100%;
+    padding-right:$padding-x3;
+    padding-top: $padding-x6;
+    padding-bottom: $padding-x4;
+    justify-content: space-between;
+    align-items: center;
+    padding-left: 5px;
+    @include max-breakpoint("sm") {
+      flex-direction: column;
+      align-items: flex-start;
+      position: relative;
+    }
+    @include media-query(
+      (
+        padding-left: (
+          sm: 15px,
+          md: 19px
+        ),
+        padding-bottom: (
+          md: $padding-x6
+        ),
+        padding-right: (
+          sm: $padding-x6,
+          lg: $padding-x8
+        )
+      )
+    );
+  }
+  &__stopped-block {
+    @include color-black(0.8);
+    display: flex;
+    align-items: center;
+    @extend %caption1;
+    @include max-breakpoint("md") {
+      padding-top: 8px;
+    }
+    .icon {
+       padding-right: 10px;
+      @include min-breakpoint("md") {
+        padding-right: 16px;
+      }
+    }
+
+  }
+  &__units {
+    @extend %caption1;
+    @include color-black(0.5);
+    white-space: nowrap;
+  }
+  &__switcher {
+    display: inline-flex;
+    align-items: center;
+    padding-top: 4px;
+    @include max-breakpoint("sm") {
+      position: absolute;
+      right: 20px;
+      bottom: 20px;
+      padding-top: 0;
+    }
+    .icon {
+      @include media-query(
+        (
+          padding-right: (
+            md: 12px
+          )
+        )
+      );
+      svg {
+        transition: $primary-transition;
+        width: 16px;
+      }
+      @include color-black(0.2);
+    }
+    .arrow-up {
+      svg {
+        transform: rotate(180deg);
+      }
+      @include color-black(0.5);
+    }
+  }
+  &__service-count {
+    @include color-black(0.3);
+    @extend %caption2;
+    @include max-breakpoint("sm") {
+      display: none;
+    }
+    border-bottom: 1px dashed;
+    white-space: nowrap;
+    .wide {
+      @include media-query(
+        (
+          display: (
+            md: inline-block
+          )
+        )
+      );
+    }
+  }
+  &__service-count_active {
+    @include color-black(0.5);
+  }
+  .point-ddos__slider_active {
+    margin-bottom: $padding-x1;
+  }
+  &__slider {
+    margin: 0 10px;
+    padding-left: $padding-x4;
+    padding-right: $padding-x4;
+    padding-bottom: $padding-x8;
+    background: map_get($gray, "2");
+    @include media-query(
+        (
+          padding-left: (
+            sm: $padding-x6,
+            md: $padding-x8
+          ),
+          padding-right: (
+            sm: $padding-x6
+          ),
+          padding-top: (
+            mb: 10px
+          ),
+          padding-bottom: (
+            xl: $padding-x10
+          ),
+          margin: (
+            md: 0
+          ),
+          margin-top: (
+            md: -10px
+          ),
+          border-radius: (
+            md: 0 0 20px 20px
+          )
+        )
+      );
+
+    .date-wrapper {
+      display: flex;
+      padding-bottom: $padding-x4;
+      padding-top: $padding-x6;
+      @include min-breakpoint("md") {
+        padding-top: $padding-x8;
+      }
+      .er-icon {
+        padding-right: 16px;
+        svg {
+          width: 32px;
+          @include color-black(0.2)
+        }
+      }
+    }
+    .ips-wrapper {
+      display: flex;
+      .er-icon {
+        padding-right: 16px;
+        svg {
+          width: 32px;
+          @include color-black(0.2)
+        }
+      }
+    }
+  }
+
+  &__buttons {
+    width: 100%;
+    padding-top: $padding-x6;
+    display: flex;
+    flex-direction: column;
+    @include min-breakpoint("sm") {
+      flex-direction: row;
+    }
+    @include min-breakpoint("lg") {
+      padding-top: $padding-x8;
+    }
+    @include max-breakpoint("lg") {
+      .er-button:first-child {
+        margin-bottom: $padding-x2;
+      }
+    }
+    .er-button:first-child {
+      @include media-query(
+      (
+        margin-right: (
+          sm: 24px,
+          xl: 32px
+        )
+      )
+    );
+    }
+    .er-button {
+      @include color-black(0.8);
+      i {
+        padding-left: 4px;
+        @include color-black(0.2);
+        svg {
+          width: $padding-x8;
+        }
+      }
+      @include media-query(
+      (
+        width: (
+          lg: 256px
+        )
+      )
+    );
+    }
+  }
+}

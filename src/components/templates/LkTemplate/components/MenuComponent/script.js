@@ -67,6 +67,10 @@ export default {
           {
             name: 'Скорость',
             url: '/lk/speed'
+          },
+          {
+            name: 'Защита от DDoS атак',
+            url: '/lk/internet/ddos/'
           }
         ]
       },
