@@ -1,0 +1,92 @@
+div
+  div.main-content.main-content--padding.main-content--top-menu-fix
+    er-page-header(title="Подключить контент-фильтрацию")
+    div(:class="`${pre}__title-wrapper`")
+      h3.title Выберите тариф
+      div(:class="`${pre}__filters-wrapper`")
+        div(:class="`${pre}__filter`")
+          div
+            er-toggle(view="radio-check" v-model="detail" value="sdsdsds")
+          span.text Подробно
+        div(:class="`${pre}__filter`" v-if="detail")
+          div
+            er-toggle(view="radio-check" v-model="isShowDifferent")
+          span.text Схожие параметры
+
+  template(v-if="detail")
+    div(:class="[`${pre}__tariffs-detail`, 'main-content']")
+      div(v-for="item in transformTariffs" :class="`${pre}__row`")
+        div(:class="`${pre}__row-title`")
+          | {{ item.propertyName }}
+        div(v-for="(cell, index) in item.property"
+          :class="[{active: index === hoveredColumn}, `${pre}__cell` ]"
+          @mouseover="mouseover(index)"
+          @mouseleave="mouseleave(index)")
+          template(v-if="cell === true")
+            er-icon(name="ok" :class="`${pre}__icon-ok`")
+          template(v-else-if="cell === false")
+            er-icon(name="close" :class="`${pre}__icon-not`")
+          template(v-else)
+            | {{ cell }}
+      div(:class="[`${pre}__row`, `${pre}__buttons-wrapper`, {'content-filter-plug-page__buttons-wrapper_hidden': hideButtons} ]" ref="buttons")
+        div(v-for="(cell, index) in tariffs"
+          :class="[`${pre}__button`, `${pre}__cell` ]"
+          @mouseover="mouseover(index)"
+          @mouseleave="mouseleave(index)")
+          //- | {{ cell.id }}
+          er-button(color="blue") Выбрать
+      div(:class="[`${pre}__row`]" ref="sbuttons")
+        div(v-for="(cell, index) in tariffs"
+          :class="[{active: index === hoveredColumn}, `${pre}__button`, `${pre}__cell` ]"
+          @mouseover="mouseover(index)"
+          @mouseleave="mouseleave(index)")
+          //- | {{ cell.id }}
+          er-button(color="blue") Выбрать
+
+
+
+  div.main-content.main-content--padding
+    template(v-if="!detail")
+      div(:class="`${pre}__tariffs`")
+        div(:class="`${pre}__card-wrapper`")
+          er-card(:class="`${pre}__card`")
+            div(:class="`${pre}__head`")
+              div(:class="`${pre}__caption`") Тариф:
+              div(:class="`${pre}__tariff-name`") Школа
+              er-icon(name="cloud_telephone")
+            div(:class="`${pre}__card-content`")
+              div(:class="`${pre}__description`") Тариф для учебных заведений и школ. Одним из преимуществ «Поддержка белого списка для школ», согласно которому будет открыт доступ только до ресурсов образовательных учреждений. Сайты школ, ВУЗов, библиотек и т.д.
+              div
+                div(:class="`${pre}__caption2`") Абонентская плата:
+                div(:class="`${pre}__price`")
+                  span.h3 450 &nbsp;
+                  span(:class="`${pre}__caption`") ₽/мес. с НДС
+                er-button(:color="'blue'") Выбрать
+        div(:class="`${pre}__card-wrapper`")
+          er-card(:class="`${pre}__card`")
+            div(:class="`${pre}__head`")
+              div(:class="`${pre}__caption`") Тариф:
+              div(:class="`${pre}__tariff-name`") Бизнес
+              er-icon(name="cloud_telephone")
+            div(:class="`${pre}__card-content`")
+              div(:class="`${pre}__description`") Стандартный Тариф для бизнеса. Позволяет сделать то и другое и может ещё и третье
+              div
+                div(:class="`${pre}__caption2`") Абонентская плата:
+                div(:class="`${pre}__price`")
+                  span.h3 450 &nbsp;
+                  span(:class="`${pre}__caption`") ₽/мес. с НДС
+                er-button(:color="'blue'") Выбрать
+        div(:class="`${pre}__card-wrapper`")
+          er-card(:class="`${pre}__card`")
+            div(:class="`${pre}__head`")
+              div(:class="`${pre}__caption`") Тариф:
+              div(:class="`${pre}__tariff-name`") Бизнес+
+              er-icon(name="cloud_telephone")
+            div(:class="`${pre}__card-content`")
+              div(:class="`${pre}__description`") Расширенный Тариф для бизнеса. Позволяет сделать то и другое и может ещё и третье четвертое и пятое
+              div
+                div(:class="`${pre}__caption2`") Абонентская плата:
+                div(:class="`${pre}__price`")
+                  span.h3 450 &nbsp;
+                  span(:class="`${pre}__caption`") ₽/мес. с НДС
+                er-button(:color="'blue'") Выбрать
