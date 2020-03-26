@@ -334,14 +334,14 @@
 
   }
 }
-.er-dialog {
-  margin: 16px !important;
-  @include media-query((
-    margin: (sm: 24px !important),
-    max-width: (
-      sm: 448px,
-      md: 384px,
-      xl: 544px,
-    ),
-  ));
-}
+//.er-dialog {
+//  margin: 16px !important;
+//  @include media-query((
+//    margin: (sm: 24px !important),
+//    max-width: (
+//      sm: 448px,
+//      md: 384px,
+//      xl: 544px,
+//    ),
+//  ));
+//}
