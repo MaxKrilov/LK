@@ -9,7 +9,7 @@ import ErActivationModal from '@/components/blocks/ErActivationModal/index.vue'
 import { SCREEN_WIDTH } from '@/store/actions/variables'
 import { BREAKPOINT_XL } from '@/constants/breakpoint'
 import { getFirstElement } from '@/functions/helper'
-import { CREATE_REQUEST, GET_SERVICES_BY_LOCATION } from '@/store/actions/request'
+import { CREATE_REQUEST, GET_REQUEST, GET_SERVICES_BY_LOCATION } from '@/store/actions/request'
 /* eslint-disable no-used-vars */
 import { API } from '@/functions/api'
 
