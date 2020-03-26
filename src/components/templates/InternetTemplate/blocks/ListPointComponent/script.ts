@@ -25,6 +25,10 @@ export default class ListPointComponent extends Vue {
     return this.value?.fulladdress
   }
 
+  get getIsLoadingListPoint (): boolean {
+    return this.$parent && (this.$parent as any).isLoadingListPoint
+  }
+
   setActivePoint (point: iPointItem) {
     this.$emit('input', point)
     this.isOpenModal = false

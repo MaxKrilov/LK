@@ -4,17 +4,20 @@
       .title
         | Итого по услуге
       .price.ml-auto
-        span 37 500&nbsp;
-        | ₽/месяц
+        span {{ totalSummary | price }}&nbsp;
+        | {{ currency }}
       .toggle.ml-8
         er-icon(name="corner_down")
     er-slide-up-down(:active="isOpenList")
       .price-services-component__detail
-        .price-services-component__detail-item.d--flex.align-items-center
-          .name Тариф «Бизнес драйв 2»
+        .price-services-component__detail-item.d--flex.align-items-center(
+          v-for="service in priceOfServices"
+          :key="service.name"
+        )
+          .name {{ service.name }}
           .price.ml-auto
-            span 27 500&nbsp;
-            | ₽/месяц
+            span {{ service.price | price }}&nbsp;
+            | {{ service.currency }}
 </template>
 
 <script lang="ts" src="./script.ts"></script>

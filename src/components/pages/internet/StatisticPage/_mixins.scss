@@ -1,0 +1,84 @@
+// Миксины флексов
+
+$flex-basis-sm: (70% / 3);
+$flex-basis-lg: (100% / 6);
+
+@mixin ip {
+  flex-basis: 40%;
+  @include min-breakpoint('sm') {
+    flex-basis: 30%;
+  }
+  @include min-breakpoint('md') {
+    flex-basis: 25%;
+  }
+  @include min-breakpoint('lg') {
+    flex-basis: $flex-basis-lg;
+  }
+}
+
+@mixin start {
+  display: none;
+  @include min-breakpoint('lg') {
+    display: block;
+    flex-basis: $flex-basis-lg;
+  }
+}
+
+@mixin end {
+  display: none;
+  @include min-breakpoint('lg') {
+    display: block;
+    flex-basis: $flex-basis-lg;
+  }
+}
+
+@mixin period {
+  display: none;
+  @include min-breakpoint('md') {
+    display: block;
+    flex-basis: 25%;
+  }
+  @include min-breakpoint('lg') {
+    display: none;
+  }
+}
+
+@mixin time-session {
+  display: none;
+  @include min-breakpoint('sm') {
+    display: block;
+    flex-basis: $flex-basis-sm;
+  }
+  @include min-breakpoint('md') {
+    flex-basis: 25%;
+  }
+  @include min-breakpoint('lg') {
+    flex-basis: $flex-basis-lg;
+  }
+}
+
+@mixin volume {
+  flex-basis: 30%;
+  @include min-breakpoint('sm') {
+    flex-basis: $flex-basis-sm;
+  }
+  @include min-breakpoint('md') {
+    flex-basis: 25%;
+  }
+  @include min-breakpoint('lg') {
+    flex-basis: $flex-basis-lg;
+  }
+}
+
+@mixin type {
+  flex-basis: 30%;
+  @include min-breakpoint('sm') {
+    flex-basis: $flex-basis-sm;
+  }
+  @include min-breakpoint('md') {
+    flex-basis: 25%;
+  }
+  @include min-breakpoint('lg') {
+    flex-basis: $flex-basis-lg;
+  }
+}

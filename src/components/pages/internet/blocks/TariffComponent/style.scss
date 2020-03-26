@@ -4,9 +4,55 @@
   padding: 1px;
   background: linear-gradient(to top right, map_get($gray, '26') 28.65%, map_get($shades, 'white') 90.63%);
   border-radius: 12px;
+  position: relative;
   @include min-breakpoint('md') {
     width: 100%;
     margin: 0;
+  }
+  .change-speed-component {
+    opacity: 0;
+    pointer-events: none;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    padding: 24px 32px;
+
+    &.visible {
+      opacity: 1;
+      pointer-events: auto;
+      z-index: 1;
+    }
+
+    .er-speed-component {
+      align-self: center;
+    }
+
+    .info-block {
+      .price .caption,
+      .current-price .caption {
+        @extend %caption2;
+        @include color-black(0.8);
+      }
+
+      .price .value,
+      .current-price .value {
+        @extend %caption2;
+        @include color-black(0.5);
+
+        span {
+          @extend %h2;
+          @include color-black(0.8);
+        }
+      }
+    }
+
+    .actions-block {
+      .action {
+        width: 100%;
+      }
+    }
   }
   .content {
     width: 100%;
@@ -17,6 +63,10 @@
     grid-template-rows: auto auto auto auto auto;
     grid-template-columns: auto auto;
     padding: 40px 32px 30px;
+    &.blur {
+      filter: blur(15px);
+      pointer-events: none;
+    }
     @include min-breakpoint('md') {
       padding-left: 24px;
       padding-right: 24px;

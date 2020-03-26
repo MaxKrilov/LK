@@ -16,6 +16,7 @@ import loading from './modules/loading'
 import internet from './modules/internet'
 import documents from './modules/documents'
 import fileinfo from './modules/fileinfo'
+import productnservices from './modules/productnservices'
 import payments from './modules/payments'
 
 const debug = process.env.NODE_ENV !== 'production'
@@ -38,6 +39,7 @@ export default new Vuex.Store({
     internet,
     documents,
     fileinfo,
+    productnservices,
     payments
   },
   strict: debug,

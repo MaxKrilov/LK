@@ -1,0 +1,89 @@
+@import "mixins";
+
+.statistic-internet-page {
+  &__filter {
+    > * {
+      width: 100%;
+    }
+  }
+  &__tariff {
+    .caption {
+      @extend %caption2-font;
+      color: rgba(map-get($gray, '8'), 0.3);
+    }
+    .value {
+      @extend %h4;
+      @include color-black(0.8)
+    }
+  }
+  &__traffic {
+    .caption {
+      @extend %caption2-font;
+      color: rgba(map-get($gray, '8'), 0.3);
+    }
+    .value {
+      @extend %caption1-font;
+      @include color-black(0.5);
+      span {
+        @extend %h4;
+        @include color-black(0.8);
+        margin-right: 4px;
+      }
+    }
+  }
+  &__head {
+    width: 100%;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    > * {
+      width: 100%;
+    }
+    .filter--ip {
+      height: 100%;
+      @include ip;
+      input {
+        width: 100%;
+        height: 100%;
+        outline: none;
+        border: 1px dashed rgba(map-get($shades, 'black'), 0.2);
+        border-radius: 8px;
+        padding: 0 8px;
+        transition: $primary-transition;
+        @extend %body-font;
+        @include color-black(0.8);
+        &::placeholder {
+          @include color-black(0.2);
+          @extend %caption2;
+        }
+        &:hover {
+          background-color: map-get($shades, 'white');
+          border-color: map-get($shades, 'black');
+        }
+        &:focus {
+          background-color: map-get($shades, 'white');
+          border-color: map-get($yellow, 'base');
+        }
+      }
+    }
+    .filter--start {
+      @include start;
+    }
+    .filter--end {
+      @include end;
+    }
+    .filter--period {
+      @include period;
+    }
+    .filter--time-session {
+      @include time-session;
+    }
+    .filter--volume {
+      @include volume;
+    }
+    .filter--type {
+      @include type;
+    }
+  }
+}

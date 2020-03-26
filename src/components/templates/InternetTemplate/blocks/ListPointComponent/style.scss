@@ -26,6 +26,21 @@
         padding: 0 32px;
         display: flex;
         align-items: center;
+        &.preloader img {
+          margin: 0 auto;
+        }
+        &.not-found {
+          display: flex;
+          align-items: center;
+          @extend %body-font;
+          @include color-black(0.3);
+          i {
+            margin-right: 8px;
+          }
+          svg {
+            width: 24px;
+          }
+        }
         @include min-breakpoint('sm') {
           padding: 0 24px;
         }
@@ -177,6 +192,20 @@
         user-select: none;
         border-radius: 12px;
         transition: $primary-transition;
+        &.preloader,
+        &.not-found {
+          .content {
+            display: flex;
+            align-items: center;
+          }
+        }
+        &.preloader img {
+          margin: 0 auto;
+        }
+        &.not-found {
+          @extend %body-font;
+          @include color-black(0.3);
+        }
         .content {
           display: flex;
           border-radius: inherit;
@@ -246,7 +275,9 @@
             }
           }
         }
-        &.active {
+        &.active,
+        &.preloader,
+        &.not-found {
           background: linear-gradient(to top, map_get($gray, '26') 28.65%, map_get($shades, 'white') 90.63%);
           box-shadow:
               0 2px 12px rgba(map_get($shades, 'black'), 0.1),

@@ -1,18 +1,20 @@
 <template lang="pug">
   .tariff-component
-    .content
+    .change-speed-component.d--flex.flex-column.flex-lg-row.align-items-lg-center.justify-content-lg-center(:class="{ visible: isBlur }")
+      include ./blocks/change_speed_component
+    .content(:class="{ blur: isBlur }")
       .tariff-component__tariff-name
         .activation-date
           | Тариф активен с:&nbsp;
-          span 08.08.2018
+          span {{ computedActualStartDate }}
         .name
-          | Базовый лимит
+          | {{ computedOriginalName }}
       .tariff-component__speed
         .chart
         .title
           | Скорость соединения
         .button
-          button
+          button(@click="openFormChangingSpeed")
             | Изменить
       .tariff-component__limit
         .chart
@@ -28,8 +30,8 @@
         .caption
           | Абонентская плата
         .price
-          span 27 500
-          | &nbsp;₽/месяц
+          span {{ computedCurrentPrice | price }}
+          | &nbsp;{{ computedCurrencyCode }}/месяц
       .tariff-component__turbo-price
         .caption
           | Турбо-режим

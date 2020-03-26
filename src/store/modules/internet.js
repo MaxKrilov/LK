@@ -29,7 +29,6 @@ const actions = {
     try {
       const result = await api
         .setWithCredentials()
-        .setBranch('web-bss')
         // .setType(TYPE_ARRAY)
         .setData({ clientId, id, parentId })
         .query('/customer/product/client')
