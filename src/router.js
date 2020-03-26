@@ -42,6 +42,10 @@ import AddFunds from './components/pages/cabinet/PayPage/AddFunds/index'
 // Цифровые продукты (от DMP)
 import DigitalProductsIndexPage from './components/pages/digital-products/IndexPage/index'
 
+// DDoS
+import DDoSPage from '@/components/pages/internet/ddos/index'
+import DDoSPromoPage from '@/components/pages/internet/ddos/promo/index'
+import DDoSPlugPage from '@/components/pages/internet/ddos/plug/index'
 // Интернет
 // Шаблон Интернета
 import InternetTemplate from '@/components/templates/InternetTemplate'
@@ -206,6 +210,18 @@ const router = new Router({
               }
             }
           ]
+        },
+        {
+          path: 'internet/ddos/plug',
+          component: DDoSPlugPage
+        },
+        {
+          path: 'internet/ddos',
+          component: DDoSPage
+        },
+        {
+          path: 'internet/ddos/promo',
+          component: DDoSPromoPage
         }
       ]
     },

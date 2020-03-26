@@ -1,0 +1,36 @@
+div(:class="`${pre} main-content main-content--top-menu-fix`")
+  er-page-header(title="Защита от DDoS атак")
+  div(:class="`${pre}__points`")
+    er-card-products(v-for="(item, index) in data" :key="index" :stopped="item.stopped" :price="item.abon" :date="item.date")
+      | {{ item.name}}
+      template(#count-connection)
+        | Подключено {{ index }} IP-адресов
+      template(#slider-content)
+        div(:class="`${pre}__slider`")
+          div(:class="`${pre}__slider__date-wrapper`")
+            er-icon(name="time")
+            div(class="date")
+              div(:class="`${pre}__caption2`") Период защиты:
+              div {{ item.date }}
+          div(:class="`${pre}__slider__ips-wrapper`")
+            er-icon(name="ip")
+            div
+              div(:class="`${pre}__caption2`") IP адреса:
+              div 10.95.217.183
+
+        div(:class="`${pre}__slider-buttons`")
+          er-button(color="yellow")
+            div(class="content-text") Настроить защиту
+
+          er-button(flat)
+            div(class="content-text") Отключить защиту
+
+    div(:class="`${pre}__total`")
+      div(:class="`${pre}__h4`") Итого:
+      div(class="price")
+        div(:class="`${pre}__h4`") 8300
+        span(class="units") &nbsp₽/месяц
+  .button
+    er-button(color="blue" @click="$router.push('/lk/internet/ddos/plug')") Подключить Защиту от DDoS атак
+
+

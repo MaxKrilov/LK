@@ -1,0 +1,137 @@
+
+$pre: '.ddos-plug-page';
+
+
+#{$pre} {
+  // margin-bottom: -55px;
+  // padding-bottom: 55px;
+  // overflow: hidden;
+  // padding-top: $padding-x10;
+  @include media-query(
+      (
+        padding-left: (
+          sm: $padding-x6,
+          xl: $padding-x12
+        ),
+        padding-right: (
+          sm: $padding-x6,
+          xl: $padding-x12
+        ),
+        padding-top: (
+          md: $padding-x12,
+          xl: $padding-x8
+        ),
+        overflow: (
+          md: visible
+        )
+      )
+    );
+  &__check-ip-title {
+    padding-bottom: 16px;
+    @extend %h3;
+    @include min-breakpoint("md") {
+      padding-bottom: 24px;
+    }
+  }
+  &__ip-item {
+    display: flex;
+    align-items: center;
+    padding-bottom: 4px;
+    /deep/ .er-input {
+      flex: none
+    }
+  }
+  &__ip-text {
+    @extend %h4;
+    padding-left: 4px;
+    padding-bottom: 4px;
+    @include min-breakpoint("sm") {
+      padding-left: 8px;
+    }
+    @include min-breakpoint("md") {
+      padding-left: 12px;
+    }
+  }
+  &__duration-title {
+    padding-top: 40px;
+    padding-bottom: 32px;
+    @include min-breakpoint("xl") {
+      padding-top: 56px;
+    }
+  }
+  &__duration {
+    @include min-breakpoint("sm") {
+      display: flex;
+      align-items: center;
+      /deep/ .er-date-picker {
+        width: 50%;
+      }
+    }
+   }
+  &__duration-check {
+    // display: flex;
+    padding-top: 16px;
+    // align-items: center;
+    @include min-breakpoint("sm") {
+      padding-top: 0;
+      padding-left: 40px;
+    }
+    @include min-breakpoint("md") {
+      padding-left: 48px;
+    }
+    // /deep/ .er-input {
+    //   flex: none
+    // }
+  }
+  // &__duration-text {
+  //   padding-left: 4px;
+  //   padding-bottom: 4px;
+  //   @include color-black(0.5)
+  // }
+  &__cost-title {
+    padding-top: 40px;
+    padding-bottom: 8px;
+    @extend %h4;
+    @include min-breakpoint("md") {
+      padding-top: 48px;
+    }
+  }
+  &__cost {
+    @extend %h2;
+  }
+  &__cost-wrapper {
+    display: flex;
+    align-items: flex-end;
+    padding-bottom: 32px;
+    @include min-breakpoint("md") {
+      padding-bottom: 40px;
+    }
+  }
+  &__unit {
+    // padding-bottom: 6px;
+    padding-left: 4px;
+    @extend %caption1;
+  }
+  &__buttons {
+    @include min-breakpoint("sm") {
+      display: flex;
+    }
+    @include min-breakpoint("lg") {
+      width: 60%;
+    }
+  }
+  &__connect-button {
+    @include max-breakpoint("sm") {
+      margin-bottom: 8px;
+    }
+    @include min-breakpoint("sm") {
+      margin-right: 16px;
+      flex-basis: 66%;
+    }
+  }
+  &__cancel-button {
+    @include min-breakpoint("sm") {
+      flex-basis: 33%;
+    }
+  }
+}
