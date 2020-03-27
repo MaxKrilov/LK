@@ -98,7 +98,13 @@ const actions = {
           })
           .query('/order/contract/edit')
           .then(() => { resolve(true) })
-          .catch(() => reject(false))
+          .catch((err: AxiosError) => {
+            if (err.message.toLowerCase().match(/заказ не может быть отправлен в исполнение автоматически/ig)) {
+              resolve(true)
+            } else {
+              reject(false)
+            }
+          })
       }, 2000)
     })
   },
