@@ -139,6 +139,7 @@ export class API {
     if (this._type === TYPE_FILE) {
       config.headers = { 'content-type': 'multipart/form-data' }
     }
+    config.headers['access-control-allow-credentials'] = true
     let data
     switch (this._type) {
       case TYPE_OBJECT:
