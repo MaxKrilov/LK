@@ -111,6 +111,9 @@ export class API {
     return this
   }
 
+  /**
+   * @deprecated
+   */
   public setWithCredentials = (): API => {
     this._withCredentials = true
     return this
@@ -156,7 +159,7 @@ export class API {
       responseType: this._responseType,
       data,
       url: API._getUrl(query, this._branch),
-      withCredentials: this._withCredentials
+      withCredentials: true
     })
     return new Promise((resolve, reject) => {
       axios(config)
