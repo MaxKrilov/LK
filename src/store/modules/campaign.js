@@ -20,7 +20,7 @@ const state = {
   ppr: []
 }
 
-const NOTIFICATION_BACKEND_BRANCH = 'campaign'
+const NOTIFICATION_BACKEND_BRANCH = 'master'
 
 const apiWrap = api => {
   return api
