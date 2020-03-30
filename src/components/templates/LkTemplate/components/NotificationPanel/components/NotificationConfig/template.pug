@@ -1,0 +1,35 @@
+.notify-config
+  p
+    | Вы можте отказаться от всех уведомлений. Вы не будете получать: анкеты, оповещения, уведомления об актуализации контактных данных, уведомления о планово-профилактических работах. Для этого выберите или наберите в селекторе фамилию сотрудника.
+
+  .notify-config__body
+    er-container.full.container--no-padding
+      er-row.notify-config__input-list
+        er-flex.xs12.sm7.notify-config__input
+          er-select(
+            placeholder="Выбрать сотрудника"
+            v-model="currentUser"
+            @input="handleUserChange"
+            :items="subscribedUserListArray"
+          )
+
+        er-flex.xs12.sm5.notify-config__input
+          er-button(
+            @click="onClickAddUser()"
+            :disabled="!currentUser.length"
+          ) Добавить в список
+
+      er-row(
+        v-for="user in unsubscribedUserList"
+        key="user.id"
+      ).notify-filter-user.d--flex.align-items-center
+        er-flex.xs1.notify-filter-user__remove(
+          @click="onClickRemoveUser(user.id)"
+        )
+          er-icon(name="close")
+
+        er-flex.xs6.notify-filter-user__name
+          | {{ user.name }}
+
+        er-flex.xs5.notify-filter-user__status
+          | не получает

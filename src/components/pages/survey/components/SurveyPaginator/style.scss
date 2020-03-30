@@ -1,0 +1,47 @@
+.quiz-paginator {
+  height: $padding-x8;
+  background-color: map_get($yellow, 'base');
+  max-width: 300px;
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  padding-right: $padding-x2;
+
+  &__label {
+    @extend %caption1-font;
+    @include color-black(.5);
+  }
+
+  &__active-page {
+    @extend %caption1-font;
+    @include color-black(.8);
+  }
+
+  &__last-page {
+    @extend %caption1-font;
+    @include color-black(.2);
+  }
+
+  &__prev,
+  &__next {
+    display: inline-flex;
+    background: none;
+    border: none;
+    cursor: pointer;
+    outline: none;
+
+    .er-icon {
+      color: map_get($shades, 'white');
+
+      @extend %small-icon;
+    }
+  }
+
+  &__prev {
+    margin-right: $padding-x1;
+  }
+
+  &__next {
+    margin-left: $padding-x1;
+  }
+}

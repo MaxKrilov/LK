@@ -1,0 +1,14 @@
+.notification-type-select.d--flex.align-items-stretch.justify-content-start
+  .notify-type(
+    v-for="item in items"
+    :key="item.id"
+    :class="{'notify-type--active': item.id == selected$}"
+    @click="onClickType(item.id)"
+  )
+    .notify-type__title
+      | {{ item.title }}
+
+    .notify-type__count-wrap
+      .notify-type__count(
+        :class="{'notify-type__count--red': item.id == 1}"
+      ) {{ item.count }}

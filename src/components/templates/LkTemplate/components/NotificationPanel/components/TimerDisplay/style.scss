@@ -1,0 +1,30 @@
+
+.er-timer {
+  margin-left: $padding-x8;
+  text-align: right;
+
+  &__label {
+    @extend %caption2;
+    white-space: nowrap;
+  }
+
+  &__days {
+    @include color-black(.8)
+  }
+
+  &__hours,
+  &__minutes {
+    @include color-black(.5)
+  }
+
+  &__digits {
+    @extend %h4;
+
+    & > * + * {
+      &::before {
+        content: ":";
+        display: inline-block;
+      }
+    }
+  }
+}

@@ -1,0 +1,29 @@
+er-side-modal(
+  :active="active"
+  :side="modalSide"
+  @click-outside="onClickClose"
+)
+  .chat__wrap
+    .chat__header
+      .chat-header__caption
+        .chat-header__status(
+          :class="{'chat-header__status--online': isOnline}"
+        )
+          span.label
+            | Оператор
+
+          span.indicator
+            template(v-if="isOnline")
+              | online
+            template(v-else)
+              | offline
+
+        .chat-header__operator-name
+          | {{ operatorName }}
+
+      .chat__close(
+        @click="onClickClose"
+      )
+        er-icon(name="close")
+
+    .chat__container(ref="chatWrap")

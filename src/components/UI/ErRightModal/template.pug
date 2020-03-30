@@ -1,13 +1,6 @@
-.er-right-modal(
-  :class="{'er-right-modal--active': active}"
+er-side-modal(
+  side="right"
+  :active="active"
+  @click-outside="$emit('click-outside')"
 )
-  er-overlay(
-    v-if="overlay"
-    :value="active"
-    :z-index="8"
-  )
-  .er-right-modal__content(
-    @transitionend="onTransitionEnd()"
-    ref="content"
-  )
-    slot
+  slot

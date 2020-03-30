@@ -1,6 +1,23 @@
 div(:class="`${pre}`")
-  menu-component
+  menu-component(
+    @click-chat="onOpenChat()"
+    @click-notifications="onOpenNotifications()"
+  )
+
   router-view
-  .space-before-footer
+
+  er-right-modal(
+    :active="showNotificationPanel"
+    @click-outside="onCloseNotificationPanel()"
+  ).er-notification-container
+    notification-panel(
+      @close="onCloseNotificationPanel()"
+    )
+
+  chat-wrap(
+    :active="showChatPanel"
+    @close="onCloseChat()"
+  )
+
   er-footer
   er-error-modal

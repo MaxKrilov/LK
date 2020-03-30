@@ -3,16 +3,37 @@ import ErFooter from '@/components/blocks/ErFooter'
 import { mapGetters, mapState } from 'vuex'
 import ErErrorModal from '@/components/blocks/ErErrorModal'
 
+import ChatWrap from './components/ChatWrap'
+import NotificationPanel from './components/NotificationPanel'
+
 export default {
   name: 'lk-template',
   components: {
-    MenuComponent,
+    ChatWrap,
+    ErErrorModal,
     ErFooter,
-    ErErrorModal
+    MenuComponent,
+    NotificationPanel
   },
   data: () => ({
-    pre: 'lk-template'
+    pre: 'lk-template',
+    showNotificationPanel: false,
+    showChatPanel: false
   }),
+  methods: {
+    onOpenChat () {
+      this.showChatPanel = true
+    },
+    onCloseChat () {
+      this.showChatPanel = false
+    },
+    onCloseNotificationPanel () {
+      this.showNotificationPanel = false
+    },
+    onOpenNotifications () {
+      this.showNotificationPanel = true
+    }
+  },
   computed: {
     ...mapGetters('auth', [
       'user'

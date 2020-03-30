@@ -32,20 +32,23 @@
   color: rgba(map_get($shades, 'black'), 0.8);
 }
 
-%h2 {
+%h2-font {
   font: 22px/28px $fedra-demi;
   letter-spacing: -1px;
-  color: rgba(map_get($shades, 'black'), 0.8);
   @include media-query((
     font-size:    (md: 24px, lg: 26px, xl: 28px),
     line-height:  (md: 38px, lg: 32px, xl: 38px)
   ));
 }
 
-%h3 {
+%h2 {
+  @extend %h2-font;
+  color: rgba(map_get($shades, 'black'), 0.8);
+}
+
+%h3-font {
   font: 17px/23px $fedra-demi;
   letter-spacing: -0.5px;
-  color: rgba(map_get($shades, 'black'), 0.8);
   @include media-query((
     font-size:      (md: 20px, xl: 24px),
     line-height:    (md: 25px, xl: 30px),
@@ -53,15 +56,24 @@
   ));
 }
 
-%h4 {
+%h3 {
+  @extend %h3-font;
+  color: rgba(map_get($shades, 'black'), 0.8);
+}
+
+%h4-font {
   font: 15px/20px $fedra-demi;
   letter-spacing: -0.35px;
-  color: rgba(map_get($shades, 'black'), 0.8);
   @include media-query((
     font-size:      (md: 18px),
     line-height:    (md: 22px),
-    letter-spacing: (md: -1px)
+    letter-spacing: (md: -1px, xl: -0.75px, xxl: -1px)
   ));
+}
+
+%h4 {
+  @extend %h4-font;
+  color: rgba(map_get($shades, 'black'), 0.8);
 }
 
 %caption1-font {
@@ -136,6 +148,11 @@
   }
 }
 
+%body {
+  @extend %body-font;
+  @extend %body-color;
+}
+
 %link-font {
   @extend %body-font;
   text-decoration: none;
@@ -147,15 +164,20 @@
   &:hover {
     color: map_get($blue, 'link-hover');
   }
+
+  &:active {
+    color: map_get($yellow, 'base');
+  }
 }
 
 %link {
   @extend %link-font;
+  @extend %link-color;
   cursor: pointer;
 
-  text-decoration: none;
   display: inline;
   border-bottom: 1px solid;
+  transition: all $primary-transition;
 }
 
 
@@ -169,6 +191,21 @@
   // в типографике макета 'menu'
   font-size: 14px;
   line-height: 120%;
+}
+
+%small-icon {
+  svg {
+    width: 16px;
+  }
+}
+
+%no-tap-highlight {
+  -webkit-tap-highlight-color: map_get($shades, 'transparent');
+}
+
+%no-user-select {
+  -webkit-touch-callout: none;
+  user-select: none;
 }
 
 %transparent-button {

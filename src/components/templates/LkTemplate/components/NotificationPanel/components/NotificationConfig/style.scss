@@ -1,0 +1,81 @@
+%h-padding {
+  padding: {
+    left: $padding-x4;
+    right: $padding-x4;
+  }
+
+  @include min-breakpoint('sm') {
+    padding: {
+      left: $padding-x6;
+      right: $padding-x6;
+    }
+  }
+}
+
+.notify-config {
+  @extend %h-padding;
+
+  p {
+    @extend %body-font;
+    @extend %body-color;
+
+    padding: {
+      top: $padding-x6;
+      bottom: $padding-x6;
+    }
+  }
+
+  &__body {
+    $body-column-padding: $padding-x2;
+
+    .flex {
+      padding-right: $body-column-padding;
+      padding-left: $body-column-padding;
+    }
+
+    .row {
+      margin-right: -$body-column-padding;
+      margin-left: -$body-column-padding;
+    }
+  }
+
+  &__input {
+    & + .notify-config__input {
+      margin-top: $padding-x4;
+
+      @include min-breakpoint('sm') {
+        margin-top: 0;
+      }
+    }
+  }
+}
+
+.notify-filter-user {
+  margin-top: $padding-x4;
+
+  & + & {
+    margin-top: $padding-x2;
+  }
+
+  &__status {
+    @extend %caption2;
+    @include color-black(.5);
+    text-align: center;
+  }
+
+  &__remove {
+    @include color-black(.2);
+    cursor: pointer;
+
+    .er-icon {
+      svg {
+        width: 16px;
+      }
+    }
+  }
+
+  &__name {
+    @extend %body-font;
+    @extend %body-color;
+  }
+}

@@ -1,4 +1,4 @@
-cd=$(ls)
+cd=$(ls *svg)
 rm README.md
 touch README.md
 echo "Icon | Name" >> README.md

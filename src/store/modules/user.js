@@ -20,7 +20,7 @@ import {
   GET_PROMISED_PAYMENT_INFO
 } from '../actions/user'
 import { ERROR_MODAL } from '../actions/variables'
-import { logError } from '@/functions/logging'
+import { logError } from '@/functions/logging.ts'
 import { eachArray } from '../../functions/helper'
 import {
   isContractDocument,

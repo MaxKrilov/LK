@@ -456,16 +456,29 @@
         position: absolute;
         top: -8px;
         right: -8px;
+        transition: all $primary-transition;
         @include media-query((
-                display: (sm: block),
-                width: (md: 24px),
-                height: (md: 24px),
-                font-size: (md: 11px),
-                line-height: (md: 24px),
-                top: (md: -12px),
-                right: (md: -12px)
+          display: (sm: block),
+          width: (md: 24px),
+          height: (md: 24px),
+          font-size: (md: 11px),
+          line-height: (md: 24px),
+          top: (md: -12px),
+          right: (md: -12px)
         ))
       }
+
+      &--empty {
+        &::after {
+          @include min-breakpoint('sm') {
+            // вместо display:none уменьшаем индикатор
+            // это нужно для плавности появления
+            transform: scale(0);
+            opacity: 0;
+          }
+        }
+      }
+
       &::before {
         content: '';
         display: block;

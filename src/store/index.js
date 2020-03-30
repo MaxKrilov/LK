@@ -13,6 +13,8 @@ import dictionary from './modules/dictionary'
 import user from './modules/user'
 import request from './modules/request'
 import loading from './modules/loading'
+import campaign from './modules/campaign'
+import survey from './modules/survey'
 import internet from './modules/internet'
 import documents from './modules/documents'
 import fileinfo from './modules/fileinfo'
@@ -36,6 +38,8 @@ export default new Vuex.Store({
     user,
     request,
     loading,
+    campaign,
+    survey,
     internet,
     documents,
     fileinfo,

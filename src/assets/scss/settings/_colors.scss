@@ -108,7 +108,6 @@ $colors: (
         'shades':   $shades
 );
 
-
 // Color aliases
 $named-colors: (
   'footer-bg': map_get($gray, '7'),
@@ -134,3 +133,5 @@ $soc-icon-color: (
   'vk': #2fa6ff,
   'instagram': #e86dfd
 );
+
+$big-space-color: #7C4FFF;

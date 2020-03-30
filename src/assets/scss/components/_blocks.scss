@@ -166,3 +166,23 @@ $browser-scrollbar-width: 48px;
     }
   }
 }
+
+
+.big-space {
+  padding-top: $padding-x40;
+
+  &--debug { // Отображается как в макете фиолетовым квадратом
+    position: relative;
+    background-color: rgba($big-space-color, .3);
+    width: $padding-x40;
+
+    &::before {
+      content: "160";
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      @include color-black(.3);
+    }
+  }
+}

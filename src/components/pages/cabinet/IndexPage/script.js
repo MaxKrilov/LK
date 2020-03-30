@@ -1,11 +1,13 @@
 import { mapState, mapGetters } from 'vuex'
 import { price } from '../../../../functions/filters'
 import ProductItemComponent from './blocks/ProductItemComponent/index.vue'
+import ErToastStack from '@/components/blocks/ErToastStack/index'
 
 export default {
   name: 'index-page',
   components: {
-    ProductItemComponent
+    ProductItemComponent,
+    ErToastStack
   },
   data: () => ({
     pre: 'index-page',
@@ -69,6 +71,9 @@ export default {
     },
     clearModelFilterService () {
       this.modelFilterService = ''
+    },
+    onClickToast (id) {
+      // ещё не реализовано
     }
   }
 }

@@ -1,0 +1,41 @@
+.notification-icon {
+  $color-warning: map_get($red, 'base');
+  $color-reload: map_get($yellow, 'base');
+  $color-gift: map_get($green, 'base');
+  $color-question: map_get($yellow, 'base');
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  &__label {
+    @extend %caption1;
+    margin-left: $padding-x2;
+  }
+
+  .er-icon {
+    svg {
+      width: 24px;
+
+      @include min-breakpoint('xl') {
+        width: 32px;
+      }
+    }
+
+    &--warning {
+      color: $color-warning;
+    }
+
+    &--question {
+      color: $color-question;
+    }
+
+    &--reload {
+      color: $color-reload;
+    }
+
+    &--gift {
+      color: $color-gift;
+    }
+  }
+}

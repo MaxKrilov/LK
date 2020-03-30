@@ -1,7 +1,7 @@
 @import "settings/colors";
 @import "settings/breakpoint";
 
-$fedra-book:  "Fedra Book";
+$fedra-book:  "Fedra Book", sans-serif;
 $fedra-demi:  "Fedra Book Demi";
 $fedra-light: "Fedra Book Light";
 $fedra-med:   "Fedra Book Med";
@@ -50,8 +50,10 @@ $z-index: (
         'top-menu': 5,
         'left-menu': 7,
         'right-modal': 100,
+        'side-modal': 100,
         'search-field': 1,
-        'top-overlay': 6
+        'top-overlay': 6,
+        'toast-stack': 10
 );
 
 // Fonts

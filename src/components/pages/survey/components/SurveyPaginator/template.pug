@@ -1,0 +1,12 @@
+.quiz-paginator
+  button.quiz-paginator__prev(@click="onPrevPage")
+    er-icon(name="arrow_l")
+
+  .d--flex.flex-direction-row
+    .quiz-paginator__label Вопрос
+    | &nbsp;
+    .quiz-paginator__active-page {{ value+1|leadingZero }}
+    .quiz-paginator__last-page /{{ maxPage|leadingZero }}
+
+  button.quiz-paginator__next(@click="onNextPage")
+    er-icon(name="arrow_r")

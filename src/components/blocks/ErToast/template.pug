@@ -1,0 +1,9 @@
+.toast(
+  @click="onClick"
+  :class="`toast--${type}`"
+)
+  .toast__icon
+    er-icon(:name="iconName")
+  .toast__content
+    .toast__title {{ title }}
+    .toast__text {{ text|cutText(61) }}

@@ -1,0 +1,44 @@
+.notification-panel
+    .notification-panel__head
+      .notification-panel__title(@click="$emit('close')")
+        template
+          er-icon(name="arrow_r").er-icon--arrow_r
+          er-icon(name="corner_up").er-icon--corner_up
+          | Уведомления
+
+    template
+      .notification-list-wrap(v-bar)
+        .notification-list(
+          :class="{'notification-list--empty': !count}"
+        )
+          .empty-wrap.notification-list-padding(v-if="!count")
+            .notification-list__empty-label
+              | У вас нет уведомлений
+            .d--flex.flex-grow-1.align-items-center.justify-content-center
+              er-icon(name="bell")
+
+          div(
+            v-else
+          ).notification-list-padding
+            template(
+              v-for="item in pprList"
+            )
+              notification-item(
+                v-if="!hidden.includes(item.id)"
+                :key="item.id"
+                :id="item.id"
+                :notification="item"
+                @hide='onHideItem(item.id)'
+              )
+
+            template(
+              v-for="item in notificationList"
+            )
+              notification-item(
+                v-if="!hidden.includes(item.id)"
+                :key="item.id"
+                :id="item.id"
+                :notification="item"
+                @hide='onHideItem(item.id)'
+                @survey="onGoToSurvey"
+              )

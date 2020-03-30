@@ -1,0 +1,60 @@
+.notification-type-select {
+  background-color: rgba(map_get($shades, 'black'), .08);
+  height: $padding-x12;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+
+  padding: {
+    top: $padding-x1;
+    bottom: $padding-x1;
+  }
+
+  @include min-breakpoint('sm') {
+    height: $padding-x10;
+  }
+
+  @include min-breakpoint('md') {
+    height: $padding-x12;
+  }
+
+  .notify-type {
+    border-radius: 12px;
+    margin-left: $padding-x1;
+    text-align: center;
+    min-width: 112px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &--active {
+      background-color: map_get($shades, 'white');
+    }
+
+    &__title {
+      @extend %caption1;
+    }
+
+    &__count-wrap {
+      // обёртка чтобы центровать число внутри
+      position: relative;
+      width: 0;
+    }
+
+    &__count {
+      @extend %caption2;
+      transform: translateY(-1em);
+      color: map_get($green, 'base');
+
+      position: absolute;
+      left: 0;
+      top: 0;
+      transform-origin: center;
+      transform: translateY(-100%);
+
+      &--red {
+        color: map_get($red, 'base');
+      }
+    }
+  }
+}

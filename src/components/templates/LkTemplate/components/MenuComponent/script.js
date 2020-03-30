@@ -21,6 +21,7 @@ export default {
     openSubMenuBackground: false,
     isOpenRightPanel: false,
     showChangeOrganizationPopup: false,
+    notificationCount: 0,
     menu: [
       {
         name: 'Главная',
@@ -87,6 +88,13 @@ export default {
     formatPhone,
     price
   },
+  watch: {
+    notificationCountPromise (promise) {
+      promise.then(data => {
+        this.notificationCount = data
+      })
+    }
+  },
   computed: {
     ...mapGetters({
       SCREEN_WIDTH,
@@ -94,7 +102,8 @@ export default {
       getBillingAccountsGroupByContract: 'user/getBillingAccountsGroupByContract',
       menuComponentBillingAccount: 'loading/menuComponentBillingAccount',
       menuComponentBalance: 'loading/menuComponentBalance',
-      menuComponentManager: 'loading/menuComponentManager'
+      menuComponentManager: 'loading/menuComponentManager',
+      notificationCountPromise: 'campaign/getCount'
     }),
     ...mapState({
       legalName: state => state.user.clientInfo.legalName,
@@ -128,6 +137,12 @@ export default {
     toggleRightPanel () {
       this.isOpenRightPanel = !this.isOpenRightPanel
     },
+    onClickChat () {
+      this.$emit('click-chat')
+    },
+    onClickNotifications () {
+      this.$emit('click-notifications')
+    },
     signOut () {
       this.$store.dispatch('auth/signOut', { api: this.$api })
     },
@@ -142,6 +157,17 @@ export default {
       this.$nextTick(() => {
         this.$store.commit('loading/rebootBillingAccount', false)
       })
+    },
+    getBellClass () {
+      const badgeClass = `${this.pre}__top__badge`
+      const emptyBadgeClass = `${this.pre}__top__badge--empty`
+      const notificationClass = `${this.pre}__top__notification`
+
+      return {
+        [emptyBadgeClass]: !this.notificationCount,
+        [notificationClass]: true,
+        [badgeClass]: true
+      }
     }
   },
   mounted () {

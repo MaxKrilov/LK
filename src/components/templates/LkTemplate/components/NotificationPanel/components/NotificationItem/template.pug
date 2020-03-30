@@ -1,0 +1,64 @@
+.notification-item(v-if="!hidden")
+  .notification-item__head(
+    :title="debugTitle"
+  )
+    .notification-item__icon
+      notification-icon(
+        :label="notification.label"
+        :icon-name="notification.iconName"
+      )
+
+    .notification-item__datetime-block
+      .notification-item__date
+        | {{ getDate() }}
+      .notification-item__time
+        | {{ getTime() }}
+
+  er-slide-up-down(:active="showDescription").spoiler-text
+    .notification-item__content.d--flex.flex-direction-row
+      .notification-item__text(
+        v-if="!isPPR"
+        v-html="textContent"
+      )
+
+      ppr-text(
+        v-else
+        :data="notification.data"
+      )
+
+      .notification-item__timer(v-if="hasTimer")
+        timer-display(
+          :to-date="expirationDate"
+        )
+
+    template(v-if="isCommonSurvey")
+      .notification-item__links.survey-actions
+        a.survey-actions__item.survey-actions__item--pass(
+          @click="onGoToSurvey"
+        ) Пройти
+
+        a.survey-actions__item.survey-actions__item--refuse(
+          @click="onRefuse"
+        ) Отказаться
+
+        a.survey-actions__item.survey-actions__item--put-off(
+          v-if="isSurvey && showPutOffButton"
+          @click="onPutOff"
+        ) Напомнить позже
+
+  .notification-item__footer
+    a.notification-item__action(
+      v-if="isCampaignMessage"
+      @click="onClickAccept"
+    ) Ознакомлен
+
+    .slide-up-down-activator(
+      v-if="isLongDescription || isPPR"
+      @click="onShowDescription"
+    )
+      template(v-if="showDescription")
+        span.slide-up-down-activator__label Свернуть
+        er-icon(name="corner_up")
+      template(v-else)
+        span.slide-up-down-activator__label Подробнее
+        er-icon(name="corner_down")
