@@ -1,0 +1,36 @@
+
+const SHOW_IN_SSP_RU = 'Нет'
+const SHOW_IN_SSP_EN = 'No'
+const MANDATORY_02 = '7777002'
+
+const QUESTION_SENDED = 'Отправлен'
+const QUESTION_CANCELED = 'Отменен'
+
+// анкета пройдена
+const SURVEY_STATUS_DONE = 'Отвечен'
+
+const SURVEY_STATUS_OPENED = 'Открыт'
+
+// пользователь отменил за
+const SURVEY_STATUS_CANCELED = 'Отменен'
+const SURVEY_STATUS_SENDED = 'Отправлен'
+
+const SURVEY_PUTOFF_DAYS = 10
+
+const SURVEY_MAX_POSTPONED_TIMES = 3
+const QUESTION_TYPE_TEXT = 'Произвольный Ответ'
+
+export {
+  SHOW_IN_SSP_EN,
+  SHOW_IN_SSP_RU,
+  MANDATORY_02,
+  QUESTION_CANCELED,
+  QUESTION_SENDED,
+  QUESTION_TYPE_TEXT,
+  SURVEY_STATUS_CANCELED,
+  SURVEY_STATUS_DONE,
+  SURVEY_STATUS_OPENED,
+  SURVEY_STATUS_SENDED,
+  SURVEY_PUTOFF_DAYS,
+  SURVEY_MAX_POSTPONED_TIMES
+}

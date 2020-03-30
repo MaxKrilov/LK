@@ -1,0 +1,20 @@
+.toast-stack
+  .toast-stack__column
+    transition-group(
+      name="slide-y-transition"
+      tag="div"
+      class="toast-stack__list"
+    )
+      template(
+        v-for="toast in queue"
+      )
+        toast(
+          v-if="!hidden.includes(toast.id)"
+          :text="getText(toast)"
+          :type="toast.communication_type"
+          :id="toast.id"
+          :key="toast.id"
+          @click="onClickToast"
+          @hide="onHideToast"
+          @timeout="removeFromQueue"
+        )

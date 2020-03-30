@@ -3,14 +3,14 @@
     div.app__content
       template(v-if="isFetching")
         | Проверяем авторизацию
-      template(v-else-if="!hasAccess")
+      template(v-else-if="!isAccessGranted")
         not-access-page
       template(v-else)
         router-view
 </template>
 
 <script>
-import { mapGetters, mapState } from 'vuex'
+import { mapGetters, mapState, mapActions } from 'vuex'
 import { SCREEN_WIDTH } from './store/actions/variables'
 import { getScreenWidth } from './functions/helper'
 import axios from 'axios'
@@ -24,6 +24,8 @@ import {
 
 import { GET_REQUEST } from '@/store/actions/request'
 
+const USE_SSO_AUTH = process.env.VUE_APP_USE_SSO_AUTH !== 'no'
+
 export default {
   name: 'app',
   components: {
@@ -33,6 +35,12 @@ export default {
     model: 1
   }),
   watch: {
+    isAccessGranted (val) {
+      if (val) {
+        this.fetchNotifications({ api: this.$api })
+        this.fetchPPR({ api: this.$api })
+      }
+    },
     rebootBillingAccount (val) {
       if (!val) {
         this.$store.commit(`loading/menuComponentBalance`, true)
@@ -48,7 +56,7 @@ export default {
     }
   },
   async created () {
-    if (process.env.VUE_APP_USE_SSO_AUTH !== 'no') {
+    if (USE_SSO_AUTH) {
       axios.interceptors.response.use(response => response, err => {
         return new Promise((resolve, reject) => {
           if (err && err.response && [403, 401].includes(err.response.status)) {
@@ -57,6 +65,7 @@ export default {
           reject(err)
         })
       })
+
       if (!this.refreshedToken.isFetching && !this.serverErrorMessage) {
         this.$store.dispatch('auth/checkAuth', { api: this.$api })
           .then(() => {
@@ -86,6 +95,11 @@ export default {
           })
       }
     }
+
+    if (this.isAccessGranted) {
+      this.fetchNotifications({ api: this.$api })
+      this.fetchPPR({ api: this.$api })
+    }
   },
   beforeCreate () {
     this.$store.commit(SCREEN_WIDTH, getScreenWidth())
@@ -109,7 +123,12 @@ export default {
       'font-size: 10px'
     )
   },
-  methods: {},
+  methods: {
+    ...mapActions({
+      fetchNotifications: 'campaign/fetchNotifications',
+      fetchPPR: 'campaign/fetchPPR'
+    })
+  },
   computed: {
     ...mapGetters('auth', ['user', 'hasAccess']),
     ...mapState({
@@ -118,7 +137,10 @@ export default {
       isFetched: state => state.auth.isFetched,
       refreshedToken: state => state.auth.refreshedToken,
       rebootBillingAccount: state => state.loading.rebootBillingAccount
-    })
+    }),
+    isAccessGranted () {
+      return USE_SSO_AUTH ? this.hasAccess : true
+    }
   }
 }
 </script>

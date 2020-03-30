@@ -1,0 +1,24 @@
+.survey-page
+  .survey-page__title {{ title }}
+
+  .survey-page__text(v-if="isTextQuestion")
+    er-textarea(
+      :label="'Введите свой вариант'"
+      @input="onInputText"
+      v-model="text"
+    )
+
+  .survey-page__list(v-else)
+    .survey-page__item(v-for="variant in variants")
+      .d--flex
+        label(:for="'id-poll-' + variant.id").er-toggle__custom-label
+          er-toggle(
+            type="radio"
+            view="radio-check"
+            name="poll"
+            :value="variant.id"
+            :key="variant.id"
+            :id="'id-poll-' + variant.id"
+            @input="onInput(variant)"
+          )
+          | {{ variant.name }}

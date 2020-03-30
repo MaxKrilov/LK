@@ -1,0 +1,76 @@
+$pre: '.toast';
+$toast-border-radius: 12px;
+$toast-width: 278px;
+
+#{$pre} {
+  @extend %no-tap-highlight;
+  @extend %no-user-select;
+
+  display: flex;
+  flex-direction: row;
+  padding-left: $padding-x2;
+  border-radius: $toast-border-radius;
+  transition: all $primary-transition;
+  width: $toast-width;
+  max-width: $toast-width;
+  background-color: map_get($shades, 'white');
+  box-shadow: -8px 8px 16px rgba(map_get($shades, 'black'), 0.04),
+    0px 8px 24px rgba(map_get($shades, 'black'), 0.06);
+
+  padding: {
+    top: $padding-x4;
+    left: $padding-x4;
+    right: $padding-x6;
+    bottom: $padding-x6;
+  }
+  cursor: pointer;
+
+  &:hover {
+    #{$pre}__text {
+      @include color-black(.8);
+    }
+  }
+
+  &--error {
+    background-color: map_get($red, 'other-2');
+
+    #{$pre}__title,
+    #{$pre}__icon {
+      color: map_get($red, 'base');
+    }
+  }
+
+  &--question {
+    #{$pre}__title,
+    #{$pre}__icon {
+      color: map_get($yellow, 'base');
+    }
+  }
+
+  &__content {
+    user-select: none;
+  }
+
+  &__icon {
+    padding-right: $padding-x2;
+    .er-icon {
+
+      svg {
+        width: $padding-x8;
+      }
+    }
+  }
+
+  &__title {
+    @extend %body-font;
+    height: 32px;
+    display: flex;
+    align-items: center;
+  }
+
+  &__text {
+    @extend %caption2;
+    @include color-black(.5);
+    transition: color $primary-transition;
+  }
+}

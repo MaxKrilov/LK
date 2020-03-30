@@ -11,3 +11,15 @@
     margin: { left: -2px };
   }
 }
+
+@keyframes waitDots {
+  30% {
+    content: '.';
+  }
+  60% {
+    content: '..';
+  }
+  90% {
+    content: '...';
+  }
+}

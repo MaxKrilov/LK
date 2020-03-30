@@ -31,3 +31,10 @@
     padding-top: $padding-x40;
   }
 }
+
+.er-notification-container {
+  .er-side-modal__content {
+    display: flex;
+    flex-direction: column;
+  }
+}

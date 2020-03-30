@@ -1,0 +1,13 @@
+.er-side-modal(
+  :class="classObject"
+)
+  er-overlay(
+    v-if="overlay"
+    :value="active"
+    :z-index="8"
+  )
+  .er-side-modal__content(
+    @transitionend="onTransitionEnd()"
+    ref="content"
+  )
+    slot

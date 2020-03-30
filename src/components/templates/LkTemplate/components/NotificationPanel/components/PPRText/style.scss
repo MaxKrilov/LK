@@ -1,0 +1,9 @@
+.ppr-text {
+  @extend %body-font;
+  @include color-black(.8);
+  padding: $padding-x2 0;
+
+  p + p {
+    margin-top: $padding-x1;
+  }
+}

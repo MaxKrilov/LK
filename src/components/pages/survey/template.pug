@@ -1,0 +1,94 @@
+.er-survey-page
+  .main-content.main-content--top-menu-fix.main-content--h-padding.main-content--top-padding
+    er-page-header(
+      linkText="Назад на главную"
+      title="Анкета"
+      backlink="/lk"
+    )
+
+  .main-content.main-content--h-padding
+    transition(name="fade-transition")
+      .loading-message(v-show="!isSurveyLoaded")
+        h3 Анкета загружается
+          .loading-dots
+
+    .er-survey-page__subtitle(
+      v-show="isSurveyLoaded && !done"
+      :title="`Анкета № ${survey.id} Статус '${survey.surveyStatus}'`"
+    )
+      template(v-if="isSurveyTicket")
+        | Дорогой Клиент! Нам важно Ваше мнение. Работы по вашему обращению от {{ surveyDate }} завершены.
+      template(v-else-if="isSurveyReception")
+        | Дорогой Клиент! Нам важно Ваше мнение. Подключение от {{ surveyDate }} завершено.
+      template(v-else)
+        | Оцените заявку от: {{ surveyDate }}
+
+  .main-content.main-content--h-padding.pos-relative.height-380
+    transition(name="fade-transition")
+      div(v-show="isSurveyLoaded && !done")
+        template(v-for="question, idx in sortedByOrderNumber")
+          survey-page(
+            v-if="idx === currentQuestionIndex"
+            :key="question.id"
+            :id="question.id"
+            :title="question.questionText"
+            :variants="question.possibleAnswers"
+            :type="question.questionType"
+            @selected="onQuestionSelected"
+            @input-text="onInputText"
+          )
+
+        er-container.full.container--no-padding.er-survey-page__actions
+          er-row
+            er-flex.xs12.sm6.md4.button-wrap
+              er-button(
+                :disabled="!isNextActive"
+                @click="onNextQuestion"
+                appendIcon="arrow_r"
+              )
+                //- пустой блок-выравниватель
+                .d--flex.flex-grow-1
+                | &nbsp;
+                .d--flex.flex-grow-10.justify-content-center Далее
+
+            er-flex.xs12.sm6.md4.button-wrap(
+              v-if="isSurvey"
+            )
+              er-button(
+                v-if="showPutOffButton"
+                color="gray",
+                @click="onPutOff"
+              )
+                | Напомнить позже
+            er-flex.xs12.sm6.md4.button-wrap
+              er-button(color="gray", @click="onRefuse")
+                | Отказаться
+
+    transition(name="fade-transition")
+      div(v-show="isSurveyLoaded && done").survey-success.main-content--left-padding
+        .d--flex.align-items-center
+          .survey-success__icon
+            er-icon(name="circle_ok")
+          .survey-success__title-wrap
+            .survey-success__title
+              | Спасибо, что помогаете
+              br
+              | нам стать лучше
+
+            .survey-success__subtitle
+              | Ваше мнение очень важно для нас
+
+        er-container.full.container--no-padding.er-survey-page__actions
+          er-row
+            er-flex.xs12.sm6.md4.button-wrap
+              er-button(
+                v-if="isNextSurveyActive"
+                @click="onNextSurvey"
+                appendIcon="arrow_r"
+              )
+                //- пустой блок-выравниватель
+                .d--flex.flex-grow-1
+                | &nbsp;
+                .d--flex.flex-grow-10.justify-content-center Следующая анкета
+
+    .big-space

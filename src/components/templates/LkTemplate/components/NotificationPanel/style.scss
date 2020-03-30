@@ -1,0 +1,192 @@
+$notification-panel-head-height: 48px;
+
+.notification-panel {
+  width: 100%;
+
+  @include min-breakpoint('md') {
+    width: 496px;
+  }
+
+  &__head {
+    display: flex;
+    flex-direction: row;
+    flex-grow: 0;
+    align-items: center;
+    justify-content: space-between;
+    padding-left: $padding-x4;
+    padding-right: $padding-x4;
+    z-index: 1;
+
+    height: $notification-panel-head-height;
+    min-height: $notification-panel-head-height;
+    background-color: map_get($shades, 'white');
+    border-bottom: 1px solid map_get($gray, '5');
+
+    @include min-breakpoint('sm') {
+      padding-left: $padding-x6;
+      padding-right: $padding-x6;
+    }
+
+    @include min-breakpoint('md') {
+      height: map_get($menu-top-height, md);
+      min-height: map_get($menu-top-height, md);
+    }
+
+    @include min-breakpoint('lg') {
+      height: map_get($menu-top-height, lg);
+      min-height: map_get($menu-top-height, lg);
+    }
+
+    @include min-breakpoint('xl') {
+      height: map_get($menu-top-height, xl);
+      min-height: map_get($menu-top-height, xl);
+    }
+  }
+
+  &__config {
+    cursor: pointer;
+    user-select: none;
+
+    .er-icon {
+      @include color-black(.3);
+      transition: color $primary-transition;
+
+      &--filter {
+        &:hover {
+          color: map_get($yellow, 'base');
+        }
+
+        svg {
+          width: 24px;
+
+          @include min-breakpoint('md') {
+            width: 32px;
+          }
+        }
+      }
+
+      &--close {
+        svg {
+          width: 16px
+        }
+
+        &:hover {
+          @include color-black(.5);
+        }
+      }
+    }
+  }
+
+  &__title {
+    @extend %h3;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    cursor: pointer;
+
+    .er-icon {
+      margin-right: $padding-x2;
+      transition: color $primary-transition;
+
+      &:hover {
+        color: map_get($yellow, 'base');
+      }
+
+      svg {
+        width: 16px;
+      }
+
+      &--arrow_r {
+        color: rgba(map_get($shades, 'black'), .2);
+        display: none;
+
+        @include min-breakpoint('xl') {
+          display: inherit;
+        }
+      }
+
+      &--corner_up {
+        color: map_get($yellow, 'base');
+        transform: rotate(-90deg);
+
+        @include min-breakpoint('xl') {
+          display: none;
+        }
+      }
+    }
+  }
+}
+
+.notification-list {
+  &-wrap {
+    position: relative;
+    height: calc(100vh - #{$notification-panel-head-height});
+
+    @include min-breakpoint('md') {
+      height: calc(100vh - #{map_get($menu-top-height, md)});
+    }
+
+    @include min-breakpoint('xl') {
+      height: calc(100vh - #{map_get($menu-top-height, xl)});
+    }
+  }
+
+  &-padding {
+    padding: {
+      top: $padding-x6;
+      left: $padding-x4;
+      right: $padding-x4;
+      bottom: $padding-x6;
+    }
+
+    @include min-breakpoint('sm') {
+      padding-left: $padding-x6;
+      padding-right: $padding-x6;
+    }
+  }
+
+
+  &--empty {
+    display: flex;
+    flex-direction: column;
+
+    .empty-wrap {
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+      height: 100%;
+    }
+
+    .notification-list__empty-label {
+      @extend %body-font;
+      @include color-black(.5);
+    }
+
+    .er-icon {
+      @include color-black(.05);
+
+      svg {
+        width: 128px;
+      }
+    }
+  }
+}
+
+.er-right-modal--notification {
+  .notification-panel {
+    width: 100vw;
+
+    @include min-breakpoint('md') {
+      width: calc(100vw - #{$padding-x16});
+    }
+
+    @include min-breakpoint('lg') {
+      width: 74vw;
+    }
+
+    @include min-breakpoint('xl') {
+      width: 496px;
+    }
+  }
+}

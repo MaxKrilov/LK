@@ -70,6 +70,9 @@ import ContentFilterMainPage from './components/pages/internet/content-filter/in
 // import OATSMainPage from './components/pages/oats/index'
 import OATSPromoPage from './components/pages/oats/promo/index'
 
+// Опрос
+import SurveyPage from './components/pages/survey/index'
+
 // Страницы с ошибками
 import OldBrowserPage from './components/pages/errors/old-browsers'
 
@@ -167,6 +170,12 @@ const router = new Router({
               component: SupportIndexPage
             }
           ]
+        },
+        {
+          name: 'survey',
+          path: 'survey/:id',
+          component: SurveyPage,
+          props: true
         },
         {
           path: 'internet/content-filter/promo',

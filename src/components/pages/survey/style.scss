@@ -1,0 +1,147 @@
+$pre: '.er-survey-page';
+
+$max-textarea-width: 512px;
+
+.loading-message {
+  position: absolute;
+}
+
+.loading-dots {
+  display: inline-block;
+
+  &::after {
+    content: '';
+    display: inline-block;
+    animation: waitDots 1s;
+    animation-iteration-count: infinite;
+  }
+}
+
+#{$pre} {
+  .pos-relative {
+    position: relative;
+  }
+  .height-380 {
+    min-height: 380px;
+  }
+
+  .er-button {
+    .flex-grow-10 {
+      flex-grow: 10;
+    }
+
+    &__icon {
+      flex-grow: 1;
+      margin-left: 0;
+      text-align: left;
+      @extend %small-icon;
+      @include color-black(.5)
+    }
+  }
+
+  &__subtitle {
+    @extend %caption1;
+    margin-top: $padding-x10;
+    margin-bottom: $padding-x8;
+  }
+
+  &__actions {
+    margin-top: $padding-x8;
+
+    .button-wrap {
+      &:not(:last-child) {
+        margin-bottom: $padding-x2;
+
+        @include min-breakpoint('md') {
+          margin-bottom: 0;
+        }
+      }
+    }
+
+    // корректировка межкнопочных интервалов
+    &.container {
+      .row {
+        margin-left: -$padding-x2;
+        margin-right: -$padding-x2;
+
+        @include min-breakpoint('lg') {
+          margin-left: -$padding-x3;
+          margin-right: -$padding-x3;
+        }
+
+        @include min-breakpoint('xl') {
+          margin-left: -$padding-x2;
+          margin-right: -$padding-x2;
+        }
+      }
+
+      .flex {
+        padding-left: $padding-x2;
+        padding-right: $padding-x2;
+
+        @include min-breakpoint('lg') {
+          padding-left: $padding-x3;
+          padding-right: $padding-x3;
+        }
+
+        @include min-breakpoint('xl') {
+          padding-left: $padding-x2;
+          padding-right: $padding-x2;
+        }
+      }
+    }
+  }
+
+  .survey-page {
+    margin-bottom: $padding-x8;
+
+    @include min-breakpoint('md') {
+      margin-bottom: $padding-x10;
+    }
+  }
+
+  .white-bg {
+    background-color: map_get($gray, '2')
+  }
+
+  .survey-success {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    margin-top: $padding-x6;
+
+    @include min-breakpoint('md') {
+      margin-top: $padding-x10;
+    }
+
+    &__title {
+      @extend %h3;
+    }
+
+    &__subtitle {
+      @extend %body;
+    }
+
+    &__icon {
+      color: map_get($green, 'base');
+      margin-right: $padding-x4;
+
+      svg {
+        width: 96px;
+
+        @include min-breakpoint('xl') {
+          width: 128px;
+        }
+      }
+    }
+
+    #{$pre}__actions {
+      margin-top: $padding-x8;
+
+      @include min-breakpoint('md') {
+        margin-top: $padding-x10;
+      }
+    }
+  }
+}

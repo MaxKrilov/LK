@@ -1,0 +1,35 @@
+$toast-stack-z-index: map_get($z-index, 'toast-stack');
+
+.slide-y-transition-leave-active {
+  position: absolute;
+  z-index: -1;
+}
+
+.toast-stack {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: $toast-stack-z-index;
+
+  &__column {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 0;
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+
+  &__list {
+    right: 0;
+    top: 0;
+    padding-right: $padding-x4;
+    display: flex;
+    flex-direction: column;
+
+    & > * {
+      margin-top: $padding-x4;
+    }
+  }
+}

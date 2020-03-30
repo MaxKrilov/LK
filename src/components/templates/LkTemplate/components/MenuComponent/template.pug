@@ -130,11 +130,19 @@ div (:class="`${pre}`")
                 a(:href="`mailto:${getManagerInfo.email}`") {{ getManagerInfo.email }}
               div.support
                 er-icon.mr-8(name="service")
-                router-link(to="/lk/support") Поддержка
 
-    div.ml-auto(:class="`${pre}__top__chat ${pre}__top__badge`", data-count="15")
+                router-link(to="/lk/support") Поддержка
+    div.ml-auto(
+      :class="`${pre}__top__chat ${pre}__top__badge`"
+      data-count="15"
+      @click="onClickChat()"
+    )
       er-icon(name="chat")
-    div(:class="`${pre}__top__notification ${pre}__top__badge`", data-count="25")
+    div(
+      :class="getBellClass()"
+      :data-count="notificationCount"
+      @click="onClickNotifications()"
+    )
       er-icon(name="bell")
     div.ml-56(:class="`${pre}__top__exit`", @click="signOut")
       er-icon(name="exit")

@@ -1,6 +1,5 @@
 Icon | Name
 --- | ---
-![](_run.sh) | _run.sh
 ![](24h.svg) | 24h
 ![](add.svg) | add
 ![](add_ip.svg) | add_ip
@@ -102,7 +101,6 @@ Icon | Name
 ![](profile.svg) | profile
 ![](question.svg) | question
 ![](ram.svg) | ram
-![](README.md) | README.md
 ![](rec.svg) | rec
 ![](reload.svg) | reload
 ![](rouble.svg) | rouble

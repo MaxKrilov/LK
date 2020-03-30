@@ -1,0 +1,125 @@
+$notification-link-margin: 56px;
+
+%notification-item-action {
+  @extend %caption2-font;
+  cursor: pointer;
+  text-decoration: none;
+  @include color-black(.5);
+  transition: color $primary-transition;
+  border-bottom-style: dashed;
+  border-width: 1px;
+
+  &:hover {
+    color: map_get($shades, 'black');
+  }
+}
+
+.notification-item {
+  .spoiler-text {
+    min-height: $padding-x12;
+  }
+
+  & + & {
+    margin-top: $padding-x6;
+  }
+
+  &__head {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__content {
+    justify-content: space-between;
+  }
+
+  &__datetime-block {
+    display: flex;
+    flex-direction: row;
+  }
+
+  &__date {
+    @extend %caption2;
+  }
+
+  &__action {
+    @extend %notification-item-action;
+  }
+
+  .survey-actions {
+    .survey-actions__item + .survey-actions__item {
+      @include min-breakpoint('sm') {
+        margin-left: $notification-link-margin;
+      }
+    }
+
+    &__item {
+      @extend %link;
+      @extend %button-font;
+
+      &--refuse {
+        @extend %link-color;
+
+        &:hover {
+          border-bottom-color: map_get($shades, 'transparent');
+        }
+      }
+
+      &--put-off {
+        @include color-black(.5);
+        border-bottom-style: dashed;
+
+        &:hover {
+          @include color-black(.8);
+        }
+      }
+    }
+  }
+
+  &__links {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding-top: $padding-x4;
+    justify-content: space-between;
+  }
+
+  &__time {
+    @extend %caption2;
+    margin-left: $padding-x4;
+  }
+
+  &__text,
+  &__timer {
+    @extend %body-font;
+    @include color-black(.8);
+    padding: $padding-x2 0;
+  }
+
+  &__footer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: $padding-x4;
+
+    .slide-up-down-activator {
+      display: inline-block;
+      @extend %caption2-font;
+      @include color-black(.5);
+
+      &__label {
+        @extend %notification-item-action;
+
+        margin-right: $padding-x1;
+      }
+
+      .er-icon {
+        svg {
+          width: 16px;
+        }
+      }
+    }
+  }
+}
