@@ -11,7 +11,7 @@ import {
   processSurvey
 } from '@/functions/survey'
 
-const SURVEY_BACKEND_BRANCH = 'campaign'
+const SURVEY_BACKEND_BRANCH = 'master'
 
 const SET_USER_SURVEYS = 'SET_USER_SURVEYS'
 const SET_CURRENT_SURVEY = 'SET_CURRENT_SURVEY'
