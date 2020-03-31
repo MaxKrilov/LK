@@ -1,5 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import store from './store'
+import { API } from '@/functions/api.ts'
 
 // Шаблоны
 import LkTemplate from './components/templates/LkTemplate/index'
@@ -78,6 +80,8 @@ import OldBrowserPage from './components/pages/errors/old-browsers'
 
 Vue.use(Router)
 
+const api = new API()
+
 const router = new Router({
   mode: 'history',
   base: process.env.BASE_URL,
@@ -91,6 +95,7 @@ const router = new Router({
     {
       path: '/lk',
       component: LkTemplate,
+      meta: { requiresAuth: true },
       children: [
         {
           path: '/',
@@ -237,11 +242,13 @@ const router = new Router({
     {
       path: '/create-client',
       name: 'create-client',
+      meta: { requiresAuth: true },
       component: DMPFormPage
     },
     {
       path: '/old-browser',
-      component: OldBrowserPage
+      component: OldBrowserPage,
+      meta: { requiresAuth: true }
     }
   ],
   scrollBehavior (to, from, savedPosition) {
@@ -250,6 +257,24 @@ const router = new Router({
     } else {
       return { x: 0, y: 0 }
     }
+  }
+})
+
+router.beforeEach((to, from, next) => {
+  const hasAccess = store.getters['auth/hasAccess']
+
+  if (to.matched.some(r => r.meta.requiresAuth)) {
+    if (!hasAccess) {
+      const tokenIsFetching = store.state.auth.refreshedToken.isFetching
+      const serverError = store.getters['auth/serverErrorMessage']
+      if (!tokenIsFetching && !serverError) {
+        store.dispatch('auth/checkAuth', { api })
+      }
+    } else {
+      next()
+    }
+  } else {
+    next()
   }
 })
 
