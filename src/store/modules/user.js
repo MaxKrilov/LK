@@ -161,7 +161,7 @@ const getters = {
 
 const actions = {
   [GET_CLIENT_INFO]: async ({ dispatch, commit, rootState, rootGetters }, { api }) => {
-    const { toms } = rootGetters['auth/user']
+    const toms = rootGetters['auth/getTOMS']
     try {
       const result = await api
         .setWithCredentials()
@@ -181,7 +181,7 @@ const actions = {
   },
   [GET_MANAGER_INFO]: async ({ commit, rootState, rootGetters }, { api }) => {
     const accountManagerId = rootState['user']?.clientInfo?.extendedMap?.[ACCOUNT_MANAGER_ID]?.singleValue?.attributeValue
-    const { toms } = rootGetters['auth/user']
+    const toms = rootGetters['auth/getTOMS']
     if (accountManagerId) {
       try {
         const result = await api
@@ -207,7 +207,7 @@ const actions = {
       toms = process.env.VUE_APP_DOCUMENT_TEST_USER_ID
       console.info(`used VUE_APP_DOCUMENT_TEST_USER_ID=${toms}`)
     } else {
-      toms = rootGetters['auth/user']['toms']
+      toms = rootGetters['auth/getTOMS']
     }
 
     return api
@@ -235,7 +235,7 @@ const actions = {
    * @return {Promise<void>}
    */
   [GET_LIST_BILLING_ACCOUNT]: async ({ commit, rootGetters }, { api }) => {
-    const { toms } = rootGetters['auth/user']
+    const toms = rootGetters['auth/getTOMS']
     try {
       const result = await api
         .setWithCredentials()
@@ -259,7 +259,7 @@ const actions = {
     }
   },
   [GET_LIST_PRODUCT_BY_ADDRESS]: async ({ commit, rootGetters, getters }, { api }) => {
-    const { toms } = rootGetters['auth/user']
+    const toms = rootGetters['auth/getTOMS']
     const activeBillingAccount = getters.getActiveBillingAccount
     try {
       const result = await api
@@ -276,7 +276,7 @@ const actions = {
     }
   },
   [GET_LIST_SERVICE_BY_ADDRESS]: async ({ commit, rootGetters, getters }, { api, address }) => {
-    const { toms } = rootGetters['auth/user']
+    const toms = rootGetters['auth/getTOMS']
     const activeBillingAccount = getters.getActiveBillingAccount
     try {
       const result = await api
@@ -294,7 +294,7 @@ const actions = {
     }
   },
   [GET_LIST_PRODUCT_BY_SERVICE]: async ({ commit, rootGetters, getters }, { api }) => {
-    const { toms } = rootGetters['auth/user']
+    const toms = rootGetters['auth/getTOMS']
     const activeBillingAccount = getters.getActiveBillingAccount
     try {
       const result = await api
@@ -313,7 +313,7 @@ const actions = {
     }
   },
   [GET_LIST_ADDRESS_BY_SERVICES]: async ({ commit, rootGetters, getters }, { api, productType }) => {
-    const { toms } = rootGetters['auth/user']
+    const toms = rootGetters['auth/getTOMS']
     const activeBillingAccount = getters.getActiveBillingAccount
     try {
       const result = await api
@@ -349,7 +349,7 @@ const actions = {
   },
   [GET_PROMISED_PAYMENT_INFO]: async ({ commit, rootGetters, getters }, { api }) => {
     const activeBillingAccount = getters.getActiveBillingAccount
-    const { toms } = rootGetters['auth/user']
+    const toms = rootGetters['auth/getTOMS']
     try {
       await api
         .setWithCredentials()

@@ -83,6 +83,9 @@ const getters = {
       ...state.userInfo
     }
   },
+  getTOMS (state) {
+    return state.userInfo.toms
+  },
   userResourceAccess (state, getters, rootState, rootGetters) {
     const systemsBase = rootGetters['directories/systemsDirectory']
     const resultData = mappingResourceAccess(state.userInfo.postAccess, systemsBase)

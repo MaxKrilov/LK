@@ -37,8 +37,7 @@ export default {
   watch: {
     isAccessGranted (val) {
       if (val) {
-        this.fetchNotifications({ api: this.$api })
-        this.fetchPPR({ api: this.$api })
+        this.fetchUserData()
       }
     },
     rebootBillingAccount (val) {
@@ -65,40 +64,10 @@ export default {
           reject(err)
         })
       })
-
-      if (!this.refreshedToken.isFetching && !this.serverErrorMessage) {
-        this.$store.dispatch('auth/checkAuth', { api: this.$api })
-          .then(() => {
-            this.$store.dispatch(`user/${GET_CLIENT_INFO}`, { api: this.$api })
-              .then(clientInfo => {
-                if (Object.keys(clientInfo).length !== 0) {
-                  this.$store.dispatch(`user/${GET_MANAGER_INFO}`, { api: this.$api })
-                  this.$store.dispatch(`request/${GET_REQUEST}`, { api: this.$api })
-                  this.$store.dispatch(`fileinfo/downloadListDocument`, { api: this.$api })
-                  this.$store.dispatch(`user/${GET_LIST_BILLING_ACCOUNT}`, { api: this.$api })
-                    .then(isValid => {
-                      if (isValid) {
-                        this.$store.dispatch(`user/${GET_PAYMENT_INFO}`, { api: this.$api })
-                        this.$store.dispatch(`user/${GET_PROMISED_PAYMENT_INFO}`, { api: this.$api })
-                        this.$store.dispatch(`user/${GET_LIST_PRODUCT_BY_ADDRESS}`, { api: this.$api })
-                          .then(() => {
-                            this.$store.dispatch(`user/${GET_LIST_PRODUCT_BY_SERVICE}`, { api: this.$api })
-                          })
-                      } else {
-                        this.$store.commit(`loading/menuComponentBalance`, false)
-                        this.$store.commit(`loading/loadingPromisedPayment`, false)
-                        this.$store.commit(`loading/indexPageProductByAddress`, false)
-                      }
-                    })
-                }
-              })
-          })
-      }
     }
 
     if (this.isAccessGranted) {
-      this.fetchNotifications({ api: this.$api })
-      this.fetchPPR({ api: this.$api })
+      this.fetchUserData()
     }
   },
   beforeCreate () {
@@ -126,8 +95,37 @@ export default {
   methods: {
     ...mapActions({
       fetchNotifications: 'campaign/fetchNotifications',
-      fetchPPR: 'campaign/fetchPPR'
-    })
+      fetchPPR: 'campaign/fetchPPR',
+      fetchClientInfo: `user/${GET_CLIENT_INFO}`
+    }),
+    fetchUserData () {
+      const context = { api: this.$api }
+      this.fetchNotifications(context)
+      this.fetchPPR(context)
+      this.fetchClientInfo(context)
+        .then(clientInfo => {
+          if (Object.keys(clientInfo).length !== 0) {
+            this.$store.dispatch(`user/${GET_MANAGER_INFO}`, context)
+            this.$store.dispatch(`request/${GET_REQUEST}`, context)
+            this.$store.dispatch(`fileinfo/downloadListDocument`, context)
+            this.$store.dispatch(`user/${GET_LIST_BILLING_ACCOUNT}`, context)
+              .then(isValid => {
+                if (isValid) {
+                  this.$store.dispatch(`user/${GET_PAYMENT_INFO}`, context)
+                  this.$store.dispatch(`user/${GET_PROMISED_PAYMENT_INFO}`, context)
+                  this.$store.dispatch(`user/${GET_LIST_PRODUCT_BY_ADDRESS}`, context)
+                    .then(() => {
+                      this.$store.dispatch(`user/${GET_LIST_PRODUCT_BY_SERVICE}`, context)
+                    })
+                } else {
+                  this.$store.commit(`loading/menuComponentBalance`, false)
+                  this.$store.commit(`loading/loadingPromisedPayment`, false)
+                  this.$store.commit(`loading/indexPageProductByAddress`, false)
+                }
+              })
+          }
+        })
+    }
   },
   computed: {
     ...mapGetters('auth', ['user', 'hasAccess']),

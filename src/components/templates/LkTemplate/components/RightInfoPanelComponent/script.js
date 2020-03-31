@@ -31,6 +31,9 @@ export default {
     },
     onChangeOrg () {
       this.$emit('change-org')
+    },
+    signOut () {
+      this.$store.dispatch('auth/signOut', { api: this.$api })
     }
   }
 }
