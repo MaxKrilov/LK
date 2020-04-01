@@ -1,44 +1,3 @@
-@mixin content-padding($padding-direction: '') {
-  $padding: 'padding';
-
-  @if $padding-direction != '' {
-    $padding: 'padding-#{$padding-direction}';
-  }
-
-  #{$padding}: $padding-x4;
-
-
-  @include min-breakpoint('xxl') {
-    $p-size: $padding-x16;
-
-    @if #{$padding} == 'left' {
-      $p-size: $padding-x8;
-    } @else if #{$padding} == 'right' {
-      $p-size: $padding-x8;
-    }
-
-    #{$padding}: $p-size;
-  }
-
-  @include min-breakpoint('sm') {
-    #{$padding}: $padding-x6;
-  }
-
-  @include min-breakpoint('md') {
-    #{$padding}: $padding-x6;
-  }
-
-  @include min-breakpoint('lg') {
-    #{$padding}: $padding-x8;
-  }
-
-  @include min-breakpoint('xl') {
-    #{$padding}: $padding-x6;
-  }
-}
-
-$browser-scrollbar-width: 48px;
-
 .main-content {
   /*
     выравнивает основной контент относительно бокового меню
@@ -55,8 +14,7 @@ $browser-scrollbar-width: 48px;
     Пример:
       div.main-content.main-content--top-menu-fix
   */
-  max-width: map_get($main-content-width, 'default');
-  width: calc(100vw - #{$left-menu-width + $browser-scrollbar-width});
+  @extend %main-content-width;
 
   margin: {
     left: auto;
@@ -65,11 +23,6 @@ $browser-scrollbar-width: 48px;
 
   @include min-breakpoint('xl') {
     margin-left: $left-menu-width;
-  }
-
-  @include max-breakpoint('xl') {
-    max-width: 100vw;
-    width: 100%;
   }
 
   @include media-min-width( ($left-menu-width * 2) + $content-max-width ) {

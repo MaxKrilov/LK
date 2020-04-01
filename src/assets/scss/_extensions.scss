@@ -193,6 +193,112 @@
   line-height: 120%;
 }
 
+
+/* Main content padding */
+%main-content-width {
+  max-width: map_get($main-content-width, 'default');
+  width: calc(100vw - #{$left-menu-width + $browser-scrollbar-width});
+  @include max-breakpoint('xl') {
+    max-width: 100vw;
+    width: 100%;
+  }
+}
+
+%main-content-padding-top {
+  @include content-padding('top');
+}
+
+%main-content-padding-left {
+  @include content-padding('left');
+}
+
+%main-content-padding-right {
+  @include content-padding('right');
+}
+
+%main-content-padding-bottom {
+  @include content-padding('bottom');
+}
+
+%main-content-padding {
+  @extend %main-content-padding-top;
+  @extend %main-content-padding-left;
+  @extend %main-content-padding-right;
+  @extend %main-content-padding-bottom;
+}
+
+%main-content-padding-h {
+  @extend %main-content-padding-left;
+  @extend %main-content-padding-right;
+}
+
+
+/* container */
+%container-8 {
+  .row {
+    margin-left: -$padding-x2;
+    margin-right: -$padding-x2;
+
+    @include min-breakpoint('lg') {
+      margin-left: -$padding-x3;
+      margin-right: -$padding-x3;
+    }
+
+    @include min-breakpoint('xl') {
+      margin-left: -$padding-x2;
+      margin-right: -$padding-x2;
+    }
+  }
+
+  .flex {
+    padding-left: $padding-x2;
+    padding-right: $padding-x2;
+
+    @include min-breakpoint('lg') {
+      padding-left: $padding-x3;
+      padding-right: $padding-x3;
+    }
+
+    @include min-breakpoint('xl') {
+      padding-left: $padding-x2;
+      padding-right: $padding-x2;
+    }
+  }
+}
+
+%container-20 {
+  $padding-x5: $padding-x10/2;
+  .row {
+    margin-left: -$padding-x5;
+    margin-right: -$padding-x5;
+
+    @include min-breakpoint('lg') {
+      margin-left: -$padding-x5;
+      margin-right: -$padding-x5;
+    }
+
+    @include min-breakpoint('xl') {
+      margin-left: -$padding-x5;
+      margin-right: -$padding-x5;
+    }
+  }
+
+  .flex {
+    padding-left: $padding-x5;
+    padding-right: $padding-x5;
+
+    @include min-breakpoint('lg') {
+      padding-left: $padding-x5;
+      padding-right: $padding-x5;
+    }
+
+    @include min-breakpoint('xl') {
+      padding-left: $padding-x5;
+      padding-right: $padding-x5;
+    }
+  }
+}
+
 %small-icon {
   svg {
     width: 16px;

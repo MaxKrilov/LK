@@ -70,6 +70,10 @@ export default {
             url: '/lk/speed'
           },
           {
+            name: 'Дополнительные IP-адреса',
+            url: '/lk/ip'
+          },
+          {
             name: 'Защита от DDoS атак',
             url: '/lk/internet/ddos/'
           }

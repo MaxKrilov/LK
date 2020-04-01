@@ -1,0 +1,37 @@
+@mixin content-padding($padding-direction: '') {
+  $padding: 'padding';
+
+  @if $padding-direction != '' {
+    $padding: 'padding-#{$padding-direction}';
+  }
+
+  #{$padding}: map_get($main-content-padding, 'xs');
+
+  @include min-breakpoint('xxl') {
+    $p-size: $padding-x16;
+
+    @if #{$padding} == 'left' {
+      $p-size: $padding-x8;
+    } @else if #{$padding} == 'right' {
+      $p-size: $padding-x8;
+    }
+
+    #{$padding}: $p-size;
+  }
+
+  @include min-breakpoint('sm') {
+    #{$padding}: map_get($main-content-padding, 'sm');
+  }
+
+  @include min-breakpoint('md') {
+    #{$padding}: map_get($main-content-padding, 'md');
+  }
+
+  @include min-breakpoint('lg') {
+    #{$padding}: map_get($main-content-padding, 'lg');
+  }
+
+  @include min-breakpoint('xl') {
+    #{$padding}: map_get($main-content-padding, 'xl');
+  }
+}

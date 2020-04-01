@@ -41,36 +41,7 @@ $document-padding: 16px;
     }
 
     .container {
-      .row {
-        margin-left: -$padding-x2;
-        margin-right: -$padding-x2;
-
-        @include min-breakpoint('lg') {
-          margin-left: -$padding-x3;
-          margin-right: -$padding-x3;
-        }
-
-        @include min-breakpoint('xl') {
-          margin-left: -$padding-x2;
-          margin-right: -$padding-x2;
-        }
-      }
-
-      .flex {
-        padding-left: $padding-x2;
-        padding-right: $padding-x2;
-
-        @include min-breakpoint('lg') {
-          padding-left: $padding-x3;
-          padding-right: $padding-x3;
-        }
-
-
-        @include min-breakpoint('xl') {
-          padding-left: $padding-x2;
-          padding-right: $padding-x2;
-        }
-      }
+      @extend %container-8;
     }
   }
 

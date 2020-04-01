@@ -1,0 +1,39 @@
+$pre: '.er-corner-button';
+
+#{$pre} {
+  cursor: pointer;
+  @include color-black(.2);
+
+  &:hover {
+    @include color-black(.5);
+
+    #{$pre}__label {
+      @include color-black(.5);
+    }
+  }
+
+  &--active {
+    .er-icon {
+      transform: rotate(180deg);
+    }
+  }
+
+  .er-icon {
+    transition: all $primary-transition;
+
+    svg {
+      width: $padding-x4;
+    }
+  }
+
+  &__label {
+    @extend %caption2;
+    transition: all $primary-transition;
+    border-bottom: 1px dashed;
+    user-select: none;
+
+    &:empty {
+      display: none;
+    }
+  }
+}

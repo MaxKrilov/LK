@@ -46,6 +46,16 @@ $padding-x32: $max-indentation * 2px;
 $padding-x40: $min-indentation * 40px;
 
 
+$browser-scrollbar-width: 48px;
+
+$main-content-padding: (
+  'xs': $padding-x4,
+  'sm': $padding-x6,
+  'md': $padding-x6,
+  'lg': $padding-x8,
+  'xl': $padding-x6
+);
+
 $z-index: (
         'top-menu': 5,
         'left-menu': 7,
@@ -80,6 +90,10 @@ $menu-top-height: (
   'md': 64px,
   'lg': 72px,
   'xl': 96px
+);
+
+$ui: (
+  'border-radius': 8px
 );
 
 $content-max-width: 1024px;
