@@ -4,6 +4,7 @@ import {
   eachObject,
   stringToCamel,
   toFullName } from '@/functions/helper'
+import {Cookie} from './storage'
 
 const makeUserInfo = function (token) {
   const userObj = parseJwt(token)
@@ -31,6 +32,8 @@ export const authParamsAfterRedirect = () => {
   let data = { redirect: window.location.href }
   if (urlParams.code && urlParams.state) {
     data = { code: urlParams.code, state: urlParams.state }
+    Cookie.set('openid_connect_state', urlParams.state)
+    Cookie.set('openid_connect_nonce', urlParams.code)
   }
 
   // убираем параметры из строки после редиректа
