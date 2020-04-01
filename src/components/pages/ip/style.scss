@@ -1,0 +1,456 @@
+
+$pre: '.er-ip-page';
+
+$connections-block_box-shadow:
+  0px 2px 12px rgba(map_get($shades, 'black'), 0.1),
+  0px 2px 2px rgba(map_get($shades, 'black'), 0.05);
+
+#{$pre} {
+  &__actions {
+    margin-top: $padding-x8;
+
+    @include min-breakpoint('md') {
+      margin-top: $padding-x10;
+    }
+  }
+
+  &__add-ip-form {
+    margin-top: $padding-x16;
+  }
+}
+
+.connections-wrap {
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  align-items: center;
+  margin-bottom: $padding-x6;
+
+  box-shadow: $connections-block_box-shadow;
+
+  @extend %main-content-width;
+
+  @include min-breakpoint('sm') {
+    padding: 0;
+    box-shadow: none;
+  }
+
+  @include min-breakpoint('md') {
+    @extend %main-content-padding-h;
+    margin-bottom: $padding-x8;
+  }
+
+  @include min-breakpoint('xl') {
+    margin-left: $left-menu-width;
+  }
+
+  @include media-min-width( ($left-menu-width * 2) + $content-max-width ) {
+    margin: {
+      left: auto;
+      right: auto;
+    }
+  }
+}
+
+.connections {
+  position: relative; // for big-expander only
+  background-color: map_get($shades, 'white');
+  border-radius: 0;
+  width: 100%;
+  padding: $padding-x4 map_get($main-content-padding, 'xs');
+
+  @include min-breakpoint('sm') {
+    padding-left: map_get($main-content-padding, 'sm');
+    padding-right: map_get($main-content-padding, 'sm');
+    box-shadow: $connections-block_box-shadow;
+  }
+
+  @include min-breakpoint('md') {
+    border-radius: 12px;
+    padding: $padding-x2 $padding-x4;
+  }
+
+  &__head {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  &__title {
+    @extend %caption1;
+    display: flex;
+    flex-grow: 1;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+
+    .er-icon {
+      color: map_get($yellow, 'base');
+    }
+  }
+
+  &__ip-address {
+    display: none;
+
+    @include min-breakpoint('md') {
+      display: inherit;
+    }
+
+    .ip-address {
+      @extend %caption1;
+    }
+
+    .ip-label {
+      @extend %caption2;
+      margin-right: $padding-x1;
+    }
+  }
+
+  .er-corner-button {
+    margin-left: $padding-x2;
+
+    @include min-breakpoint('xl') {
+      display: none;
+    }
+  }
+
+  &__content {
+    padding-top: $padding-x4;
+  }
+
+  &__big-expander {
+    cursor: pointer;
+    flex-direction: column;
+    align-items: center;
+    display: none;
+
+    @include min-breakpoint('xl') {
+      display: flex;
+    }
+
+    .big-expander-button {
+      display: flex;
+      width: 64px;
+      justify-content: center;
+      background-color: map_get($yellow, 'base');
+      border-bottom-left-radius: 4px;
+      border-bottom-right-radius: 4px;
+      margin-bottom: $padding-x2;
+
+      .er-icon {
+        transition: all $primary-transition;
+        color: map_get($shades, 'white');
+        svg {
+          width: 16px;
+        }
+      }
+
+      &--active {
+        .er-icon {
+          transform: rotate(-180deg);
+        }
+      }
+    }
+  }
+
+  &__total-connections {
+    @extend %caption2;
+    white-space: nowrap;
+    border-bottom: 1px dashed;
+  }
+}
+
+
+.login-block {
+  margin-bottom: $padding-x4;
+
+  @include min-breakpoint('md') {
+    margin-bottom: $padding-x8;
+  }
+
+  &__icon {
+    .er-icon {
+      margin-right: $padding-x2;
+      @include color-black(.2);
+
+      svg {
+        width: $padding-x6;
+      }
+    }
+  }
+
+  &__label {
+    @extend %caption2;
+    margin-bottom: $padding-x1;
+  }
+
+  &__name {
+    @extend %h4;
+  }
+}
+
+.ip-table {
+  width: 100%;
+  border-collapse: collapse;
+
+  th:first-child,
+  td:first-child {
+    text-align: left;
+    padding-left: $padding-x4;
+  }
+
+  th:last-child,
+  td:last-child {
+    padding-right: $padding-x4;
+  }
+
+  thead {
+    display: none;
+
+    @include min-breakpoint('sm') {
+      display: table-header-group;
+    }
+  }
+
+  .t-row:nth-child(odd) {
+    td {
+      background-color: map_get($shades, 'white');
+    }
+  }
+
+  th {
+    @extend %caption2;
+    padding-bottom: $padding-x4;
+    text-align: left;
+
+    &:not(:empty) {
+      &::after {
+        content: ":"
+      }
+    }
+  }
+
+  .t-row2 {
+    td {
+      padding-top: $padding-x1;
+      padding-bottom: $padding-x2;
+    }
+  }
+
+  .t-row td {
+    padding: {
+      top: $padding-x4;
+      bottom: $padding-x4;
+    }
+
+    @include min-breakpoint('sm') {
+      padding: {
+        top: $padding-x2;
+        bottom: $padding-x2;
+      }
+    }
+
+    @include min-breakpoint('md') {
+      padding: {
+        top: $padding-x1;
+        bottom: $padding-x1;
+      }
+    }
+  }
+
+  td.col-static-ip {
+    @extend %h4;
+  }
+
+  .evil-designer-block {
+    display: flex;
+
+    *:first-child {
+      margin-right: $padding-x4;
+    }
+
+    @include min-breakpoint('sm') {
+      display: none;
+    }
+  }
+
+  &__protocol {
+    @extend %body-font;
+    @include color-black(.5);
+  }
+
+  &__active-date {
+    @extend %body-font;
+    @include color-black(.5);
+  }
+
+  .col-protocol {
+    display: none;
+
+    @include min-breakpoint('sm') {
+      display: table-cell;
+    }
+  }
+
+  .col-active-date {
+    display: none;
+
+    @include min-breakpoint('sm') {
+      display: table-cell;
+    }
+  }
+
+  .col-price {
+    white-space: nowrap;
+    width: 10%;
+
+    .no-price {
+      @extend %caption1;
+      color: map_get($green, 'base');
+    }
+
+    .price {
+      display: flex;
+      flex-direction: column;
+
+      @include min-breakpoint('sm') {
+        display: block;
+      }
+    }
+  }
+
+  .col-actions {
+    width: 5%;
+    white-space: nowrap;
+    padding-right: $padding-x4;
+    padding-left: $padding-x6;
+    text-align: right;
+
+    .delete-action {
+      cursor: pointer;
+      display: inline-block;
+
+      .er-icon {
+        @include color-black(.2);
+      }
+
+      .label {
+        margin-left: $padding-x2;
+        @extend %caption1;
+        border-bottom: 1px dashed;
+        display: none;
+
+        @include min-breakpoint('md') {
+          display: inherit;
+        }
+      }
+    }
+  }
+}
+
+.total-block {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+
+  border-radius: map_get($ui, 'border-radius');
+  background-color: map_get($gray, '4');
+
+  padding: {
+    top: $padding-x2;
+    left: $padding-x4;
+    right: $padding-x4;
+    bottom: $padding-x2;
+  }
+
+  margin-top: $padding-x4;
+
+  @include min-breakpoint('md') {
+    padding: {
+      left: $padding-x6;
+      right: $padding-x6;
+    }
+
+    margin-top: $padding-x8;
+  }
+
+  @include min-breakpoint('xl') {
+    padding: {
+      left: $padding-x8;
+      right: $padding-x8;
+    }
+  }
+
+  &__label {
+    @extend %body-font;
+    user-select: none;
+
+    &::after {
+      content: ":";
+    }
+  }
+
+  .price__sum {
+    @extend %h4;
+  }
+
+  .total-points {
+    margin-left: $padding-x2;
+    @extend %caption2;
+    @include color-black(.5);
+
+    .month {
+      &::before {
+        content: "/";
+      }
+    }
+  }
+}
+
+.add-ip-form {
+  &__title {
+    margin-bottom: $padding-x8;
+  }
+
+  &__inputs {
+    margin-bottom: $padding-x8;
+
+    @include min-breakpoint('md') {
+      margin-bottom: $padding-x10;
+    }
+
+    .container {
+      @extend %container-8;
+    }
+  }
+
+  .column {
+    &:not(:first-child) {
+      margin-top: $padding-x4;
+
+      @include min-breakpoint('sm') {
+        margin-top: 0;
+      }
+    }
+
+    &__label {
+      @extend %caption2;
+      margin-bottom: $padding-x1;
+    }
+
+  }
+
+  &__actions {
+    .er-button {
+      margin-bottom: $padding-x2;
+
+      @include min-breakpoint('sm') {
+        margin-bottom: 0;
+      }
+    }
+
+    .container {
+      @extend %container-8;
+    }
+  }
+}

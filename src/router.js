@@ -65,6 +65,8 @@ import DMPFormPage from './components/pages/dmp-form/index'
 
 import OATSMainPage from './components/pages/oats/index'
 
+// Интернет
+import IpPage from './components/pages/ip/index'
 // Интернет Контент-фильтрация
 import ContentFilterPromoPage from './components/pages/internet/content-filter/promo/index'
 import ContentFilterPlugPage from './components/pages/internet/content-filter/plug/index'
@@ -175,6 +177,10 @@ const router = new Router({
               component: SupportIndexPage
             }
           ]
+        },
+        {
+          path: 'ip',
+          component: IpPage
         },
         {
           name: 'survey',
