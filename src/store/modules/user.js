@@ -62,10 +62,10 @@ const getters = {
   getManagerInfo (state) {
     return {
       // eslint-disable-next-line camelcase
-      name: state.personalManager?.surname && state.personalManager?.name && state.personalManager?.middle_name
-        ? `${state.personalManager.surname} ${state.personalManager.name} ${state.personalManager.middle_name}`
+      name: state.personalManager?.surname || state.personalManager?.name || state.personalManager?.middle_name
+        ? `${state.personalManager.surname || ''} ${state.personalManager.name || ''} ${state.personalManager.middle_name || ''}`.trim()
         : 'Нет закреплённого менеджера',
-      phone: state.personalManager?.phone?.replace(/[^\d]+/g, '') || '78003339000',
+      phone: state.personalManager?.phone?.replace(/[^\d]+/g, ''),
       email: state.personalManager?.email
     }
   },
@@ -198,6 +198,8 @@ const actions = {
       } finally {
         commit('loading/menuComponentManager', false, { root: true })
       }
+    } else {
+      commit('loading/menuComponentManager', false, { root: true })
     }
   },
   [GET_DOCUMENTS]: async ({ commit, rootState, rootGetters }, { api }) => {
