@@ -22,8 +22,7 @@ div(:class="`${pre}`").main-content.main-content--h-padding
     div(:class="`${pre}__main`")
       div(:class="`${pre}__line`")
       div(:class="`${pre}__sum`")
-        //div.d--flex(:class="`${pre}__sum__left ${direct}`" id="bgg1")
-        div.d--flex(:class="`${pre}__sum__left ${pre}__sum__left__direct`" id="bgg")
+        div.d--flex(:class="`${pre}__sum__left ${pre}__sum__left__direct`")
           er-flex.mb-16.pr-8(
             xs12
             md7
@@ -35,14 +34,14 @@ div(:class="`${pre}`").main-content.main-content--h-padding
             h4(:class="`${pre}__sum__title`")
               | Сумма оплаты
             div(:class="`${pre}__sum__input ${pre}__sum__input${borderSum}`")
-              er-text-field(
-                v-model="sumPay"
-                mask="moneynorub"
-              )
-                template(slot="append-inner")
-                  div.rub
-            div(:class="`${pre}__sum__empty`" v-if="isEmptySum")
-              | Поле не заполнено
+              er-form(ref="form")
+                er-text-field(
+                  :rules="[v => !!v || 'Поле не заполнено']"
+                  v-model="sumPay"
+                  mask="moneynorub"
+                )
+                  template(slot="append-inner")
+                    div.rub
 
             div(:class="`${pre}__sum__on-autopay`")
               div(
@@ -108,17 +107,16 @@ div(:class="`${pre}`").main-content.main-content--h-padding
         div(:class="`${pre}__check__header`")
           h3(:class="`${pre}__check__title`")
             | Отправить чек
-          span()
-            er-hint(:class="`${pre}__sum__hint__check`")
-              h3.mb-8
-                | Получение чека
-              | {{ textCheck }}
-            div(@click="checkConfirm")
-              er-icon(
-                name="question"
-                :class="`${pre}__sum__confirm__check`"
-              )
-        div(:class="`${pre}__check__body ${pre}__check__body${borderCheck}`")
+          er-hint(:class="`${pre}__sum__hint__check`")
+            h3.mb-8
+              | Получение чека
+            | {{ textCheck }}
+          div(@click="checkConfirm")
+            er-icon(
+              name="question"
+              :class="`${pre}__sum__confirm__check`"
+            )
+        div(:class="`${pre}__check__body`")
           div.caption(:class="`${pre}__check__input`")
             | на электронную почту:
           div(:class="`${pre}__check__input__over`")
@@ -195,21 +193,37 @@ div(:class="`${pre}`").main-content.main-content--h-padding
       @input="closeConfirm"
     )
 
-    // Чек
-
-    Confirm( v-if="openConfirmCheck"
-      :vis="openConfirmCheck"
-      title="Отправить чек"
-      :subText="textCheck"
+    Confirm(v-if="visAutoPay && visConfirmAutoPay"
+      :vis="visConfirmAutoPay"
+      title="Автоплатёж"
+      description="— это бесплатный сервис."
+      :subText="textAutopay"
+      :hasErr="errDelAutoPay"
       isHint=null
-      hasErr=""
-      err=""
-      buttRightText="Спасибо"
+      err="Произошла ошибка. Автоплатеж не отключен. Попробуйте позже."
+      buttLeftText="Отменить"
+      buttRightText="Отключить"
       @closeConfirm="closeConfirm"
-      @buttRight="closeConfirm"
+      @buttLeft="closeConfirm"
+      @buttRight="payAutoTextConfHint"
       @input="closeConfirm"
     )
 
+    Confirm(v-if="!visAutoPay && visConfirmAutoPay"
+      :vis="visConfirmAutoPay"
+      title="Автоплатёж"
+      description="— это бесплатный сервис."
+      :subText="textAutopay"
+      :hasErr="errDelAutoPay"
+      isHint=null
+      err="Произошла ошибка. Автоплатеж не подключен. Попробуйте позже."
+      buttLeftText="Отменить"
+      buttRightText="Подключить"
+      @closeConfirm="closeConfirm"
+      @buttLeft="closeConfirm"
+      @buttRight="payAutoTextConfHint"
+      @input="closeConfirm"
+    )
 
     // Запомнить карту
     Confirm( v-if="openConfirmDataCard"
@@ -227,35 +241,18 @@ div(:class="`${pre}`").main-content.main-content--h-padding
       @input="closeConfirm"
     )
 
-    Confirm(v-if="visAutoPay && visConfirmAutoPay"
-    :vis="visConfirmAutoPay"
-    title="Автоплатёж"
-    description="— это бесплатный сервис."
-    :subText="textAutopay"
-    :hasErr="errDelAutoPay"
-    isHint=null
-    err="Произошла ошибка. Автоплатеж не отключен. Попробуйте позже."
-    buttLeftText="Отменить"
-    buttRightText="Отключить"
-    @closeConfirm="closeConfirm"
-    @buttLeft="closeConfirm"
-    @buttRight="payAutoTextConfHint"
-    @input="closeConfirm"
+    // Чек
+    Confirm( v-if="openConfirmCheck"
+      :vis="openConfirmCheck"
+      title="Отправить чек"
+      :subText="textCheck"
+      isHint=null
+      hasErr=""
+      err=""
+      buttRightText="Спасибо"
+      @closeConfirm="closeConfirm"
+      @buttRight="closeConfirm"
+      @input="closeConfirm"
     )
 
 
-    Confirm(v-if="!visAutoPay && visConfirmAutoPay"
-    :vis="visConfirmAutoPay"
-    title="Автоплатёж"
-    description="— это бесплатный сервис."
-    :subText="textAutopay"
-    :hasErr="errDelAutoPay"
-    isHint=null
-    err="Произошла ошибка. Автоплатеж не подключен. Попробуйте позже."
-    buttLeftText="Отменить"
-    buttRightText="Подключить"
-    @closeConfirm="closeConfirm"
-    @buttLeft="closeConfirm"
-    @buttRight="payAutoTextConfHint"
-    @input="closeConfirm"
-    )

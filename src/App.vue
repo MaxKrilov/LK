@@ -113,6 +113,7 @@ export default {
                 if (isValid) {
                   this.$store.dispatch(`user/${GET_PAYMENT_INFO}`, context)
                   this.$store.dispatch(`user/${GET_PROMISED_PAYMENT_INFO}`, context)
+                  this.$store.dispatch(`payments/invPayment`, { api: this.$api })
                   this.$store.dispatch(`user/${GET_LIST_PRODUCT_BY_ADDRESS}`, context)
                     .then(() => {
                       this.$store.dispatch(`user/${GET_LIST_PRODUCT_BY_SERVICE}`, context)

@@ -1,4 +1,5 @@
-import { mapState } from 'vuex'
+import { mapGetters, mapState } from 'vuex'
+import { SCREEN_WIDTH } from '@/store/actions/variables'
 
 export default {
   name: 'confirm',
@@ -17,7 +18,8 @@ export default {
   data: () => ({
     pre: 'confirm',
     hint: '',
-    styleTitle: ''
+    styleTitle: '',
+    maxWidth: null
   }),
   created () {
     this.hint = Boolean(this.isHint)
@@ -28,8 +30,10 @@ export default {
       this.sumPayInteger = ''
       this.sumPayDecimal = ''
     }
+
   },
   computed: {
+    ...mapGetters([SCREEN_WIDTH]),
     ...mapState({
       numCard: state => state.payments.numCard
     }),
@@ -41,12 +45,21 @@ export default {
   watch: {
     isHint () {
       this.hint = Boolean(this.isHint)
-    }
+    },
+    SCREEN_WIDTH () {
+      this.changeWidth()
+    },
   },
   mounted () {
     this.styleTitle = this.buttLeftText === 'Отменить' ? '' : '__one-row'
+    this.changeWidth()
   },
   methods: {
+    changeWidth () {
+      this.maxWidth = (this[SCREEN_WIDTH] >= 1200) ? this.maxWidth = 544
+        : (this[SCREEN_WIDTH] >= 640) ? this.maxWidth = 384
+          : this.maxWidth = 448
+    },
     buttLeft () {
       this.$emit('buttLeft')
     },

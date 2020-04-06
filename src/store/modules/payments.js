@@ -49,7 +49,19 @@ const state = {
   visAutoPay: 0,
   errAutoPay: false,
   errDelCard: false,
-  bindingId: ''
+  bindingId: '',
+  invPaymentsForViewer: [
+    {
+      id: 0,
+      bucket: '',
+      fileName: '',
+      filePath: '',
+      type: {
+        id: 0,
+        name: ''
+      }
+    }
+  ]
 }
 const getters = {}
 const actions = {
@@ -88,6 +100,26 @@ const actions = {
     }
   },
   bindpay: async ({ commit }, { api, payload }) => {
+    try {
+      const result = await api
+        .setWithCredentials()
+        .setData(
+          payload
+        )
+        .query('/acquiring/card/bindpay')
+      const resultArr = [
+        result,
+        payload.email,
+        payload.returnUrl,
+        payload.billingAccount
+      ]
+      commit('bindpay', resultArr)
+      return result
+    } catch (e) {
+      commit(ERROR_MODAL, true, { root: true })
+    }
+  },
+  bindPayNext: async ({ commit }, { api, payload }) => {
     try {
       const result = await api
         .setWithCredentials()
@@ -201,6 +233,25 @@ const actions = {
     } catch (e) {
       commit('delErr')
     }
+  },
+  invPayment: async ({ commit, rootGetters, rootState }, { api }) => {
+    const { toms } = rootGetters['auth/user']
+    const { activeBillingAccount } = rootState.user
+    try {
+      const result = await api
+        .setWithCredentials()
+        .setData({
+          clientId: toms,
+          id: activeBillingAccount
+        })
+        .query('/billing/info-bill/index')
+      commit('invPayment', result)
+      return result
+    } catch (e) {
+      commit(ERROR_MODAL, true, { root: true })
+    } finally {
+      commit('loading/loadingInvoiceForPayment', false, { root: true })
+    }
   }
 }
 const mutations = {
@@ -260,6 +311,17 @@ const mutations = {
   },
   listCard: (state, result) => {
     state.listCard = result
+  },
+  invPayment: (state, result) => {
+    let invPayment = []
+    let myObj = {}
+    for (let [key, value] of Object.entries(result)) {
+      if (key) myObj[key] = `${value}`
+      if (key === 'fileName') myObj[key] = `${value}.pdf`
+    }
+    myObj.type = { id: '0', name: 'Счёт на оплату' }
+    invPayment.push(myObj)
+    state.invPaymentsForViewer = invPayment
   }
 }
 

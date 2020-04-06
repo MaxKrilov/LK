@@ -114,7 +114,7 @@ er-container(
                       | Автоплатеж
 
           er-flex(:class="`${pre}__height`")
-            er-card(
+            div(
               :class="`${pre}__card__bg`"
               :style="'transform: translate(' + leftMove[0] + 'px, ' +  topBg[0] + 'px)'"
             )
@@ -221,7 +221,7 @@ er-container(
                     | Автоплатеж
 
           er-flex(:class="`${pre}__height`")
-            er-card(
+            div(
               :class="`${pre}__card__bg`"
               :style="'transform: translate(' + leftMove[idx + 1] + 'px, ' +  topBg[idx + 1] + 'px)'"
             )
@@ -256,7 +256,6 @@ er-container(
   div(
     :class="`${pre}__card__deleted`"
     v-if="delCard"
-    :style="'left: ' + deleteLeft + 'px; width: ' + bgDeleteWidth + 'px'"
   )
     div(:class="`${pre}__card__deleted__size`")
       er-card
@@ -270,10 +269,8 @@ er-container(
             div(:class="`${pre}__card__deleted__text`")
               | Карта удалена
 
-            er-card(
-              :class="`${pre}__card__deleted__bg`"
-              :style="'left: ' + bgDeleteLeft + 'px'"
-            )
-              div(:class="`${pre}__card__deleted__bg__content`")
-                div(:class="`${pre}__card__deleted__bg__strip`")
+    div(:class="`${pre}__card__deleted__bg__size`")
+      div(:class="`${pre}__card__deleted__bg`")
+        div(:class="`${pre}__card__deleted__bg__content`")
+          div(:class="`${pre}__card__deleted__bg__strip`")
 

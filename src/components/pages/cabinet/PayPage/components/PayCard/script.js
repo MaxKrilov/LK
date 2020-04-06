@@ -32,9 +32,6 @@ export default {
     rightNext: '',
     delta: [],
     valOpacity: 0,
-    bgDeleteLeft: 0,
-    bgDeleteWidth: 0,
-    deleteLeft: 0,
     buttbottimg0: '',
     numbuttbott0: ''
   }),
@@ -54,7 +51,16 @@ export default {
   },
   watch: {
     SCREEN_WIDTH () {
+      const num = this.index
+      this.index = 0
+      this.moveInd = 0
       this.changeWidth()
+      this.topMove = 0
+      this.rightMove = 0
+      for (let i = 0; i < num; i++) {
+        this.index = i
+        this.move('Up')
+      }
     },
     activeBillingAccountId () {
       if (this.activeBillingAccountId !== '') {
@@ -84,19 +90,24 @@ export default {
         }
       }
     },
+    listCard () {
+      setTimeout(() => {
+        this.index = 0
+        this.moveInd = 0
+        this.changeWidth()
+        this.heightInd = 97
+        this.topMove = 0
+        this.rightMove = 0
+        this.$store.dispatch('payments/hideDelCard')
+        this.openConfirmDel = false
+      }, 1000)
+    },
     delCard () {
       if (this.delCard) {
         this.$store.dispatch('payments/listCard', {
           api: this.$api,
           billingAccount: this.activeBillingAccountId
         })
-        this.openConfirmDel = false
-        setTimeout(() => {
-          this.changeWidth()
-          this.topMove = 0
-          this.right = 0
-          this.$store.dispatch('payments/hideDelCard')
-        }, 3000)
       } else {
         this.index = 0
         this.openConfirmDel = true
@@ -111,7 +122,8 @@ export default {
       delCard: state => state.payments.delCard,
       numCard: state => state.payments.numCard,
       errDelCard: state => state.payments.errDelCard,
-      sel_save: state => state.payments.save
+      sel_save: state => state.payments.save,
+      listCard: state => state.payments.listCard
     })
   },
   methods: {
@@ -141,28 +153,22 @@ export default {
       if (this[SCREEN_WIDTH] >= 640) {
         this.delta = this.arrFill(len, 0, 0)
         this.leftMove = this.arrFill(len, 0, -128)
-        this.topBg = this.arrFill(len, 0, 0)
+        this.topBg = this.arrFill(len, 10, 0)
         this.valOpacity = 1
       } else {
         let posBgOne, deltaOne, scrwidth
         if (this[SCREEN_WIDTH] < 480) {
           scrwidth = this[SCREEN_WIDTH] - 320
-          this.bgDeleteLeft = 9 + scrwidth * 0.75
-          this.bgDeleteWidth = 270 + scrwidth * 0.82
-          this.deleteLeft = 14 + scrwidth * 0.088
           deltaOne = 24 + scrwidth * 0.8
           posBgOne = 8 + scrwidth * 0.74
         } else {
           scrwidth = this[SCREEN_WIDTH] - 480
-          this.bgDeleteLeft = 128 + scrwidth * 0.48
-          this.bgDeleteWidth = 400 + scrwidth * 0.56
-          this.deleteLeft = 28 + scrwidth * 0.22
           deltaOne = 151 + scrwidth * 0.91
           posBgOne = 128 + scrwidth * 0.55
         }
         this.delta = this.arrFill(len, deltaOne, 0)
         this.leftMove = this.arrFill(len, posBgOne, 10)
-        this.topBg = this.arrFill(len, this[SCREEN_WIDTH] < 480 ? 66 : 0, -9)
+        this.topBg = this.arrFill(len, this[SCREEN_WIDTH] < 480 ? 58 : 9, -9)
       }
     },
     move (direct) {

@@ -12,16 +12,16 @@ div
   div(:class="`${pre}__height${height}`")
   er-row(no-gutters)
     er-flex.mb-16(xs12 v-if="month !=='Адрес'")
-      Operations(index=0, :month="month")
-      Operations(index=1, :month="month")
-      Operations(index=2, :month="month")
-      Operations(index=3, :month="month")
-      Operations(index=4, :month="month")
+      Operations(
+        :month="month"
+        :index="index"
+        v-for="(value, index) in 5"
+      )
 
     er-flex.mb-16(xs12 v-else)
-      Operations(index=5, :month="month")
-      Operations(index=6, :month="month")
-      Operations(index=7, :month="month")
-      Operations(index=8, :month="month")
-      Operations(index=9, :month="month")
+      Operations(
+        :month="month"
+        :index="index + 5"
+        v-for="(value, index) in 5"
+      )
 
