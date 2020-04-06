@@ -17,8 +17,6 @@ export default {
     nameCard: '',
     empty: true,
     sumPay: '',
-    sumPayInteger: '',
-    sumPayDecimal: '',
     openConfirmPay: false,
     openConfirmAutoPay: false,
     visConfirmAutoPay: false,
@@ -94,7 +92,7 @@ export default {
   },
   methods: {
     listEmail () {
-      let emailList = this.clientInfo?.contactMethods?.filter(
+      const emailList = this.clientInfo?.contactMethods?.filter(
         _item => _item['@type'].match(/email/ig)
       )
       if (emailList) {
@@ -169,15 +167,6 @@ export default {
       this.empty = true
     },
     paymentConfirm () {
-      if (this.sumPay === '') {
-        this.isEmptySum = true
-        this.borderSum = '__border'
-      } else {
-        this.isEmptySum = false
-        this.borderSum = ''
-        this.sumPayInteger = this.sumPay.substr(0, this.sumPay.indexOf(','))
-        this.sumPayDecimal = this.sumPay.slice(-2)
-      }
       if (this.currentEmail === '' || !this.currentEmail.match(this.regexEmail)) {
         this.isEmptyEmail = true
         this.borderCheck = '__border'
@@ -186,7 +175,7 @@ export default {
         this.borderCheck = ''
       }
       if (this.currentEmail !== '' &&
-        this.sumPay !== '' &&
+        this.$refs.form.validate() &&
         this.currentEmail.match(this.regexEmail)
       ) {
         if (this.numCard === 0) {

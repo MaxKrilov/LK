@@ -1,12 +1,14 @@
 import { mapState, mapGetters } from 'vuex'
 import { price } from '../../../../functions/filters'
 import ProductItemComponent from './blocks/ProductItemComponent/index.vue'
+import ErDocumentViewer from '../../../blocks/ErDocumentViewer/index.vue'
 import ErToastStack from '@/components/blocks/ErToastStack/index'
 
 export default {
   name: 'index-page',
   components: {
     ProductItemComponent,
+    ErDocumentViewer,
     ErToastStack
   },
   data: () => ({
@@ -18,7 +20,8 @@ export default {
       { label: 'По офисам', value: 'office' },
       { label: 'По услугам', value: 'service' }
     ],
-    tmpActive: false
+    tmpActive: false,
+    isOpenViewer: false
   }),
   computed: {
     getCarouselItem () {
@@ -39,7 +42,8 @@ export default {
     },
     ...mapState({
       clientName: state => state.user.clientInfo.name,
-      balanceInfo: state => state.user.paymentInfo
+      balanceInfo: state => state.user.paymentInfo,
+      invPaymentsForViewer: state => state.payments.invPaymentsForViewer
     }),
     ...mapGetters({
       listProductByAddress: 'user/getListProductByAddress',
@@ -50,6 +54,7 @@ export default {
       loadingDocuments: 'loading/loadingDocuments',
       loadingRequest: 'loading/loadingRequest',
       loadingPromisedPayment: 'loading/loadingPromisedPayment',
+      loadingInvoiceForPayment: 'loading/loadingInvoiceForPayment',
       getCountRequestInWork: 'request/getCountRequestInWork',
       getCountUnsignedDocument: 'fileinfo/getCountUnsignedDocument'
     }),

@@ -3,25 +3,30 @@ import { SCREEN_WIDTH } from '@/store/actions/variables'
 import PromiseOn from '../components/PromiseOn/index.vue'
 import PromiseOff from '../components/PromiseOff/index.vue'
 import PromiseExpired from '../components/PromiseExpired/index.vue'
+import Confirm from '../components/Confirm/index.vue'
 
 export default {
   name: 'promise-pay',
   components: {
     PromiseOn,
     PromiseOff,
-    PromiseExpired
+    PromiseExpired,
+    Confirm
   },
   data: () => ({
     pre: 'promise-pay',
     openConfirmPromise: false,
-    visButtConf: false,
     visInfo: true,
     visExpired: false,
     success: false,
-    active: true
+    active: true,
+    date: '29.01.2019'
   }),
   computed: {
     ...mapGetters([SCREEN_WIDTH])
+  },
+  created () {
+    this.dateAll = 'до ' + this.date
   },
   methods: {
     paypage () {
@@ -29,7 +34,6 @@ export default {
     },
     paymentConfirm () {
       this.openConfirmPromise = true
-      this.visButtConf = this[SCREEN_WIDTH] < 1200
     },
     promiseOn () {
       this.openConfirmPromise = false

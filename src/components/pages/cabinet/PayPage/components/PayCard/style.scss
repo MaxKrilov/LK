@@ -14,19 +14,19 @@
       cursor: pointer;
       z-index: 1;
       top: 0;
-      background: transparent;
+      background: map_get($shades, 'transparent');
       border-radius: 12px;
       display: block;
       @include media-query((
         display: (md: none),
         width: (sm: 97px !important),
-        background: (sm: transparent)
+        background: (sm: map_get($shades, 'transparent'))
       ));
     }
     &__lateral-right {
       position: absolute;
       width: 100px !important;
-      background: transparent;
+      background: map_get($shades, 'transparent');
       border-radius: 12px;
       right: 17px;
       top: 0;
@@ -36,7 +36,7 @@
       @include media-query((
         display: (md: none),
         right: (sm: 11px),
-        background: (sm: transparent)
+        background: (sm: map_get($shades, 'transparent'))
       ));
       &__next {
         @extend .pay-card__card-butt__lateral-right;
@@ -52,7 +52,7 @@
     &__left {
       width: 320px !important;
       background: map_get($gray, '3');
-      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1), 0 4px 6px rgba(0, 0, 0, 0.05);
+      box-shadow: 0 1px 2px rgba(map_get($shades, 'black'), 0.1), 0 4px 6px rgba(map_get($shades, 'black'), 0.05);
       border-radius: 12px;
       height: 92px;
       .er-card__content {
@@ -130,7 +130,7 @@
     position: relative;
     left: 38px;
     top: 118px;
-    background: transparent;
+    background: map_get($shades, 'transparent');
     height: 91px;
     width: 220px;
     display: flex;
@@ -219,7 +219,7 @@
       ),
       right: (
         md: 51px,
-        xl: 0
+        xl: 16px
       ),
       top: (
         sm: 115px,
@@ -360,7 +360,7 @@
       ));
     }
     &__over {
-      background: transparent;
+      background: map_get($shades, 'transparent');
       position: absolute;
       top: -4px;
       height: 24px;
@@ -512,15 +512,13 @@
     &__bg {
       position: absolute;
       top: -160px;
+      height: 100%;
       left: 0;
       z-index: 1;
-      padding: 0 !important;
-      background: transparent !important;
+      border-radius: 12px;
+      padding: 0;
       transition: 0.5s;
       @include media-query((
-        transition: (
-          sm: .5s
-        ),
         left: (
           sm: 0px,
           md: 128px
@@ -530,17 +528,17 @@
           md: -198px
         ),
         width: (
-          xs: 256px !important,
-          md: 336px !important,
+          xs: 256px,
+          md: 336px,
         ),
       ));
       &__content {
         background: map_get($gray, '4');
-        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1), 0 4px 6px rgba(0, 0, 0, 0.05);
+        box-shadow: 0 1px 2px rgba(map_get($shades, 'black'), 0.1), 0 4px 6px rgba(map_get($shades, 'black'), 0.05);
         border-radius: 12px;
         &__next {
           background: radial-gradient(50% 50% at 50% 50%, map_get($yellow, 'base') 55.5%, map_get($yellow, 'other-4') 100%);
-          box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1), 0 4px 6px rgba(0, 0, 0, 0.05);
+          box-shadow: 0 1px 2px rgba(map_get($shades, 'black'), 0.1), 0 4px 6px rgba(map_get($shades, 'black'), 0.05);
           border-radius: 12px;
         }
       }
@@ -563,7 +561,7 @@
       }
       &__empty {
         background: map_get($red, 'base');
-        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1), 0 4px 6px rgba(0, 0, 0, 0.05);
+        box-shadow: 0 1px 2px rgba(map_get($shades, 'black'), 0.1), 0 4px 6px rgba(map_get($shades, 'black'), 0.05);
         border-radius: 12px;
       }
     }
@@ -585,12 +583,19 @@
     }
     &__deleted {
       position: relative;
+      justify-content: center;
+      display: flex;
       background: map_get($gray, '13');
       padding-top: 15px;
       top: -177px;
       height: 248px;
-      width: 279px;
+      width: 100%;
+      left: -27px;
+      border-radius: 12px;
       @include media-query((
+        justify-content: (
+          md: start
+        ),
         height: (
           sm: 236px,
           md: 387px
@@ -599,22 +604,27 @@
           md: 0
         ),
         left: (
-          md: 5px !important,
-          lg: -7px !important,
-          xl: -15px !important,
+          sm: -15px,
+          md: 5px,
+          lg: -7px,
+          xl: -15px,
         ),
-        width: (md: 500px !important),
+        width: (md: 500px),
         padding-top: (
           md: 77px,
-          lg: 77px,
-          xl: 106px
+          xl: 57px
         )
       ));
       &__size {
         height: 160px;
         width: 256px;
+        left: 11%;
+        position: absolute;
+        z-index: 1;
         @include media-query((
-          height: (md: 208px),
+          height: (
+            md: 208px
+          ),
           width: (md: 336px),
         ));
       }
@@ -622,7 +632,7 @@
         background: map_get($red, 'other-2');
         border: 1px solid map_get($red, 'base');
         box-sizing: border-box;
-        box-shadow: 0 16px 16px rgba(0, 0, 0, 0.03), 0 8px 6px rgba(0, 0, 0, 0.02);
+        box-shadow: 0 16px 16px rgba(map_get($shades, 'black'), 0.03), 0 8px 6px rgba(map_get($shades, 'black'), 0.02);
         border-radius: 12px;
       }
       &__text {
@@ -647,28 +657,41 @@
         }
       }
       &__bg {
-        position: absolute !important;
-        top: 57px !important;
-        z-index: -1;
-        max-height: 160px;
-        width: 256px !important;
-        background: map_get($gray, '4') !important;
-        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1), 0 4px 6px rgba(0, 0, 0, 0.05) !important;
+        position: relative;
+        border-radius: 12px;
+        top: 57px;
+        height: 100%;
+        z-index: 1;
+        background: map_get($gray, '4');
+        box-shadow: 0 1px 2px rgba(map_get($shades, 'black'), 0.1), 0 4px 6px rgba(map_get($shades, 'black'), 0.05);
         @include media-query((
           top: (
-            sm: 17px !important,
-            xl: 17px !important,
-          ),
-          left: (
-            md: 121px !important,
-          ),
-          max-height: (
-            sm: 208px,
-          ),
-          width: (
-            md: 336px !important,
+            sm: 18px,
+            xl: 57px,
           ),
         ));
+        &__size {
+          position: absolute;
+          z-index: 0;
+          right: 10%;
+          left: auto;
+          height: 160px;
+          width: 256px;
+          @include media-query((
+            left: (
+              md: 151px,
+              xl: 128px
+            ),
+            right: (
+              sm: 15%,
+              md: 0
+            ),
+            height: (
+              md: 208px
+            ),
+            width: (md: 320px),
+          ));
+        }
         &__strip {
           position: absolute;
           height: 28px;
@@ -693,7 +716,7 @@
   }
   &__logo {
     position: relative;
-    top: 24px;
+    top: 20px;
     left: 24px;
     &__imglogo {
       width: 48px !important;
@@ -721,12 +744,7 @@
       }
     }
     &__top {
-      top: 51px;
-      /*
-      &__next {
-        top: 44px;
-      }
-      */
+      top: 45px;
     }
     &__top-h2 {
       top: 10px;
@@ -738,7 +756,7 @@
       width: 100px;
       &__next {
         width: 100px;
-        top: -10px;
+        top: -20px;
       }
     }
   }

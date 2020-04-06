@@ -15,31 +15,24 @@
     ));
   }
   &__container-main {
-    padding: 0 !important;
+    padding: 0;
     min-width: 320px;
     margin-left: -16px;
     @include media-query((
       margin-top: (
         xs: -14px,
         sm: -25px,
-        md: 71px !important,
+        md: 71px,
         lg: -21px,
         xl: -23px,
       ),
       margin-left: (
         sm: 0,
-        md: 0,
-        lg: 0,
+        xl: 20px,
       ),
       margin-bottom: (
         xs: -7px,
       ),
-      max-width: (
-        xs: 480px !important,
-        sm: 640px !important,
-        md: 960px !important,
-        lg: 1200px !important,
-      )
     ));
   }
   &__back-arr {
@@ -111,7 +104,7 @@
     width: 108%;
     margin-top: 3px;
     background: map_get($gray, '13');
-    box-shadow: inset 0 4px 16px rgba(0, 0, 0, .05);
+    box-shadow: inset 0 4px 16px rgba(map_get($shades, 'black'), .05);
     display: flex;
     overflow: hidden;
     height: 614px;
@@ -185,9 +178,6 @@
       }
       & .er-text-field .er-input__control .er-input__slot {
         min-height: 39px !important;
-      }
-      &__border > .er-text-field .er-input__control .er-input__slot {
-        border: 1px solid map_get($red, 'base') !important;
       }
     }
     &__on-autopay {
@@ -307,6 +297,7 @@
       ));
       &__check {
         @extend .add-funds__sum__hint;
+        display: inline-block;
         @include media-query((
           top: (
             xl: 0,
@@ -388,26 +379,6 @@
         ));
       }
     }
-    &__empty {
-      margin-left: 184px;
-      font: 10px/120% $fedra-demi;
-      color: map_get($red, 'base');
-      letter-spacing: 0.5px;
-      @include media-query((
-        font-size: (
-          md: 12px,
-        ),
-        line-height: (
-          md: 16px,
-        ),
-        letter-spacing: (
-          md: normal,
-        ),
-        margin-left: (
-          sm: 86px,
-        )
-      ));
-    }
     &__left {
       @include media-query((
         margin-left: (
@@ -457,7 +428,7 @@
       width: calc(100% - 26px);
       height: 6px;
       background-color: map_get($gray, '35');
-      box-shadow: inset -2px 2px 2px rgba(0, 0, 0, .3);
+      box-shadow: inset -2px 2px 2px rgba(map_get($shades, 'black'), .3);
       border-radius: 4px;
     }
     &__get-check {
@@ -471,7 +442,7 @@
       background-image: url("../../../../../../static/get-check-bg.png");
       background-position: center;
       background-repeat: no-repeat;
-      filter: drop-shadow(-4px 6px 6px rgba(0, 0, 0, .15));
+      filter: drop-shadow(-4px 6px 6px rgba(map_get($shades, 'black'), .15));
       background-size: 288px 100%;
       @include media-query((
         padding: (

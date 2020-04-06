@@ -120,10 +120,6 @@
     color: map_get($shades, 'black');
     border-bottom: 1px dashed map_get($green, 'base');
     opacity: 0.3;
-    /*
-    margin-left: -15px;
-    text-align: left;
-    */
     @include media-query((
       font-size: (
         md: 14px,
@@ -163,17 +159,7 @@
     display: flex !important;
     justify-content: flex-end;
     position: relative;
-    /*
-    text-align: center;
-    */
     @include media-query((
-      /*
-      justify-content: (
-        sm: space-around,
-        md: space-between,
-      ),
-      text-align: (sm: end),
-      */
       display: (xl: none !important),
       left: (
         sm: 12px
@@ -206,7 +192,7 @@
       left: (
         sm: 38px,
         md: 25px,
-        xl: 33px
+        xl: 27px
       ),
     ));
   }
@@ -334,14 +320,3 @@
 
   }
 }
-//.er-dialog {
-//  margin: 16px !important;
-//  @include media-query((
-//    margin: (sm: 24px !important),
-//    max-width: (
-//      sm: 448px,
-//      md: 384px,
-//      xl: 544px,
-//    ),
-//  ));
-//}

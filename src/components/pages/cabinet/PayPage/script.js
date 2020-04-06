@@ -16,7 +16,10 @@ export default {
     PaymentsOn
   },
   data: () => ({
-    pre: 'pay-page'
+    pre: 'pay-page',
+    isOpenViewer: false,
+    invPaymentsForViewer: [],
+    showPanel: false
   }),
   methods: {
     history () {
@@ -24,6 +27,11 @@ export default {
     },
     main () {
       this.$router.push('/')
+    },
+    isOpenView (e) {
+      this.invPaymentsForViewer = e
+      this.showPanel = true
+      this.isOpenViewer = true
     }
   }
 }

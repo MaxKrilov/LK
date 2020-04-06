@@ -58,61 +58,19 @@ div(:class="`${pre}`").main-content.main-content--h-padding
     PromiseOff(v-if="!visInfo && !success && active")
     PromiseExpired(v-if="visExpired && !active")
 
-    // Пополнение
-    er-overlay(
-      v-model="openConfirmPromise"
-      :z-index="12"
-      :class="`${pre}__left`"
+    // Модальное окно
+    Confirm( v-if="openConfirmPromise"
+      :vis="openConfirmPromise"
+      title="Вы уверены, что хотите активировать обещанный платеж?"
+      :subText ="dateAll"
+      isHint="true"
+      hasErr="true"
+      err="Не забудьте пополнить счет"
+      sumPay=""
+      buttLeftText="Отменить"
+      buttRightText="Активировать"
+      @closeConfirm="promiseExpired"
+      @buttLeft="promiseOff"
+      @buttRight="promiseOn"
+      @input="promiseExpired"
     )
-    div(:class="`${pre}__confirm`" v-if="openConfirmPromise")
-      div(:class="`${pre}__confirm__content`")
-        div(:class="`${pre}__confirm__content__size`")
-          er-icon(name="question" :class="`${pre}__confirm__icon-height`")
-        div(:class="`${pre}__confirm__content__pos`")
-          div(:class="`${pre}__confirm__question`")
-            | Вы уверены, что хотите активировать обещанный платеж?
-          div(:class="`${pre}__confirm__date`")
-            span(:class="`${pre}__confirm__date__b`") до:&nbsp;
-            span
-              | 29.01.2019
-          div.caption(:class="`${pre}__confirm__prompt`")
-            | Не забудьте пополнить счет
-
-      div(
-        :class="`${pre}__confirm__close`"
-        @click="promiseExpired"
-      )
-        er-icon(name="close")
-      er-container(full :class="`${pre}__confirm__container-button`")
-        er-row.justify-content-start.no-gutters
-          er-flex.pr-28(xs3 xl6)
-            er-button(
-              type="submit"
-              @click="promiseOn"
-              v-if="!visButtConf"
-            ) Активировать
-          er-flex.pr-24.pl-4(xs3 xl6)
-            er-button.align-items-center(
-              type="submit"
-              flat=true
-              @click="promiseOff"
-              v-if="!visButtConf"
-            ) Отменить
-
-        er-row.no-gutters(:class="`${pre}__confirm__butt`")
-          er-flex(xs3 xl6)
-            div(:class="`${pre}__confirm__no__promise`")
-              a(
-                @click="promiseOff"
-                :class="`${pre}__confirm__no__text`"
-                v-if="visButtConf"
-              ) Отменить
-          er-flex(xs3 xl6)
-            div(:class="`${pre}__confirm__yes__promise`")
-              a(
-                @click="promiseOn"
-                :class="`${pre}__confirm__yes__text`"
-                v-if="visButtConf"
-              ) Активировать
-
-

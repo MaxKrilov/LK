@@ -7,6 +7,7 @@ const state = {
   loadingDocuments: true,
   loadingRequest: true,
   loadingPromisedPayment: true,
+  loadingInvoiceForPayment: true,
 
   rebootBillingAccount: false
 }
@@ -18,7 +19,8 @@ const getters = {
   clientInfo: state => state.clientInfo,
   loadingDocuments: state => state.loadingDocuments,
   loadingRequest: state => state.loadingRequest,
-  loadingPromisedPayment: state => state.loadingPromisedPayment
+  loadingPromisedPayment: state => state.loadingPromisedPayment,
+  loadingInvoiceForPayment: state => state.loadingInvoiceForPayment
 }
 const mutations = {
   indexPageProductByAddress (state, payload) {
@@ -47,6 +49,9 @@ const mutations = {
   },
   rebootBillingAccount (state, payload) {
     state.rebootBillingAccount = payload
+  },
+  loadingInvoiceForPayment (state, payload) {
+    state.loadingInvoiceForPayment = payload
   }
 }
 
