@@ -70,27 +70,36 @@ const getters = {
     }
   },
   getListContact (state) {
-    return state.clientInfo?.contacts?.map(item => {
-      const result = {}
-      result.id = item.id
-      result.firstName = item.firstName
-      result.name = item.name
+    return state.clientInfo?.contacts?.reduce((acc, item) => {
+      const { id, firstName, name } = item
+      const isLPR = !!item.roles?.filter(item => item.role.name.match(/decision maker/ig) || item.role.name.match(/лпр/ig))?.length || false
       eachArray(item.contactMethods || [], _item => {
-        if (_item['@type'].match(/phone/i)) {
-          result.phone = {
-            id: _item.id,
-            value: _item.value.replace(/[\D]+/g, '')
-          }
+        if (_item['@type'].match(/phone/i) || _item['@type'].match(/improfile/i)) {
+          acc.push({
+            id,
+            firstName,
+            name,
+            phone: {
+              id: _item.id,
+              value: _item.value.replace(/[\D]+/g, '')
+            },
+            isLPR
+          })
         } else if (_item['@type'].match(/email/i)) {
-          result.email = {
-            id: _item.id,
-            value: _item.value
-          }
+          acc.push({
+            id,
+            firstName,
+            name,
+            email: {
+              id: _item.id,
+              value: _item.value
+            },
+            isLPR
+          })
         }
       })
-      result.isLPR = !!item.roles?.filter(item => item.role.name.match(/decision maker/ig) || item.role.name.match(/лпр/ig))?.length || false
-      return result
-    }) || []
+      return acc
+    }, []) || []
   },
   getReportDocuments: state => state.documents.filter(el => {
     return isReportDocument(el)
