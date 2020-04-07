@@ -273,8 +273,10 @@ router.beforeEach((to, from, next) => {
       const serverError = store.getters['auth/serverErrorMessage']
       if (!tokenIsFetching && !serverError) {
         store.dispatch('auth/checkAuth', { api })
+          .then(() => {
+            next()
+          })
       }
-      // next()
     } else {
       next()
     }
