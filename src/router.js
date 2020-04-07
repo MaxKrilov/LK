@@ -274,6 +274,7 @@ router.beforeEach((to, from, next) => {
       if (!tokenIsFetching && !serverError) {
         store.dispatch('auth/checkAuth', { api })
       }
+      next()
     } else {
       next()
     }
