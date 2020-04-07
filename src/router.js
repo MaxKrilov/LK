@@ -90,9 +90,7 @@ const router = new Router({
   routes: [
     {
       path: '/',
-      redirect: {
-        name: 'index'
-      }
+      redirect: '/lk'
     },
     {
       path: '/lk',
