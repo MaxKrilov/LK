@@ -1,0 +1,9 @@
+div(:class="`${pre}`")
+  div(:class="`${pre}__welcome-title`")
+    router-link.caption(:to="{name: 'profile'}", :class="`${pre}__welcome-title__back-link`")
+      span(:class="`${pre}__welcome-title__back-link__icon`")
+        er-icon(:class="`${pre}__welcome-title__back-link__icon desktop`", name="arrow_l")
+        er-icon(:class="`${pre}__welcome-title__back-link__icon mobile`", name="corner_up")
+      span(:class="`${pre}__welcome-title__back-link__label`") Назад в кабинет
+    h1.h1-font Карточка клиента
+  router-view

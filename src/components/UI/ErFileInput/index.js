@@ -36,6 +36,7 @@ export default {
       })
     },
     cancelDocument () {
+      this.$refs[this.id].value = null
       this.file = null
       this.$emit('input', null)
     }
@@ -43,7 +44,7 @@ export default {
   render (h) {
     return (
       <div class={this.pre}>
-        <input id={this.id} type="file" onChange={this.onChange}/>
+        <input id={this.id} ref={this.id} type="file" onChange={this.onChange}/>
         {
           this.file?.name
             ? (

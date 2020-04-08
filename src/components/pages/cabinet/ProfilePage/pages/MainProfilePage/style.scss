@@ -1,4 +1,9 @@
 .main-profile-page {
+  padding: 40px 15px 0 !important;
+  @include media-query((
+      width: (xl: calc(100vw - 271px) !important),
+      padding: (md: 48px 24px 0 !important, lg: 48px 32px 0 !important, xl: 32px 24px 0 45px !important)
+  ));
   &__title {
     @include media-query((
       font: (xs: map_get($title, 'large'), md: map_get($title, 'xl'))
@@ -7,10 +12,13 @@
   &__welcome-title {
     display: flex;
     align-items: center;
+    margin: 0 0 24px;
+    flex-direction: row;
+    align-items: center;
     @include media-query((
-      flex-direction: (xs: row, md: column),
-      align-items: (xs: center, md: flex-start),
-      margin: (xs: 4px 0 56px)
+      flex-direction: (lg: column),
+      align-items: (lg: flex-start),
+      margin: (md: 0 0 32px, xl: 16px 0 48px)
     ));
     &__back-link {
       cursor: pointer;
@@ -23,7 +31,7 @@
         display: inline-block;
         &.desktop {
           @include media-query((
-            display: (xs: none, md: inline-block)
+            display: (xs: none, lg: inline-block)
           ));
           svg {
             width: 16px;
@@ -31,7 +39,7 @@
         }
         &.mobile {
           @include media-query((
-            display: (xs: inline-block, md: none)
+            display: (xs: inline-block, lg: none)
           ));
           padding-right: 8px;
           svg {
@@ -46,7 +54,7 @@
         font: map_get($text, 'xs');
         font-family: $fedra-demi;
         @include media-query((
-          display: (xs: none, md: inline-block)
+          display: (xs: none, lg: inline-block)
         ));
       }
       &:hover {
@@ -70,15 +78,19 @@
         xl: 0)
     ));
     &__controls {
+      label {
+        justify-content: center;
+      }
       .er-switch__label {
         padding-left: 0;
         justify-content: center;
       }
-      .er-switch__toggle__wrapper {
+      .er-switch__toggle--outer {
         display: none;
       }
     }
     &--mobile {
+      margin-bottom: 24px;
       @include media-query((
         display: (md: none)
       ));
@@ -87,25 +99,32 @@
   }
 
   &__cards {
-    &__wrapper {
-      @include media-query((
-        width: (xs: calc(100% + 32px), sm: calc(100% + 48px), md: 100%),
-        margin-left: (xs: -16px, sm: -24px, md: 0),
-        overflow: (xs: hidden, md: auto)
-      ));
-    }
     display: flex;
     margin-bottom: 37px;
-    padding: 12px 0 !important;
+    padding: 0 !important;
+    min-height: 350px;
     transition: transform 0.2s ease-out;
     overflow: hidden;
     &::-webkit-scrollbar {
       display: none;
     }
+    position: relative;
+    width: calc(100% + 30px) !important;
+    max-width: calc(100% + 30px) !important;
+    margin-left: -15px !important;
+    padding: 0 !important;
     @include media-query((
       flex-wrap: (md: nowrap, lg: nowrap, xl: nowrap),
+      width: (sm: calc(100% + 48px) !important, md: 100% !important),
+      max-width: (sm: calc(100% + 48px) !important, md: 100% !important),
+      margin-left: (sm: -24px, md: 0),
+      padding: (sm: 0 24px !important, md: 0 !important)
     ));
     &__item {
+      height: inherit !important;
+      .person-card__inner, .er-card__content {
+        height: 100%;
+      }
     }
     & > .company-card {
       min-width: 270px;
@@ -123,10 +142,10 @@
       min-width: 240px;
       margin-right: 16px;
       @include media-query((
-        min-width: (sm: 298px, md: 120px, lg: 200px, xl: 300px),
+        min-width: (sm: 298px, md: 296px, lg: 401px, xl: 420px),
         max-width: (xl: 424px),
-        margin-right: (sm: 38px, md: 40px, lg: 62px, xl: 68px),
-        margin-left: (xs: 16px, sm: 24px, md: 0),
+        margin-right: (sm: 38px, md: 40px, lg: 59px, xl: 67px),
+        margin-left: (xs: 16px, sm: 0),
         flex: (
           sm: 1 1 100%,
           md: 1 1 45%,

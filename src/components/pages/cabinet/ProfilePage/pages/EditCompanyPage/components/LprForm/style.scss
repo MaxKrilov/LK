@@ -1,0 +1,113 @@
+.lpr-form {
+  display: flex;
+  flex-direction: column;
+  margin-top: 48px;
+  &__row {
+    &_file {
+      height: 48px;
+      align-items: center;
+      margin: 0 !important;
+    };
+    &:last-child .lpr-form__field .lpr-form__field {
+      margin-bottom: 0px;
+    }
+  }
+  &__field {
+    margin-bottom: 32px;
+    @include media-query((
+      margin-bottom: (
+        md: 40px
+      )
+    ));
+    .er-messages {
+      height: 0;
+    }
+    .er-text-field__success-icon {
+      right: -15px;
+      svg {
+        width: 20px;
+      }
+    }
+    .er-input {
+      max-width: 268px;
+    }
+    .er-input__slot {
+      margin-bottom: 0;
+    }
+    .er-text-field--active {
+      transform: scale(0.85) translateY(-38px) !important;
+      @include media-query((
+        transform: (md: scale(0.85) translateY(-39px) !important, xl: scale(0.85) translateY(-45px) !important)
+      ));
+    }
+    .er-select {
+      width: 100% !important;
+      max-width: 100% !important;
+    }
+  }
+  &__label {
+    position: absolute;
+    top: -20px;
+    display: inline-flex;
+    font: map_get($text, 'xs');
+    opacity: .5;
+  }
+  &__file-input {
+    .er-file-input__filename {
+      font: map_get($text, 'medium') !important;
+      letter-spacing: -0.5px !important;
+      opacity: .5;
+    }
+    &__icon {
+      opacity: .2 !important;
+    }
+    &__hint {
+      color: map_get($red, 'base');
+      @extend %caption1-font;
+    }
+    .er-file-input__cancel {
+      top: -4px;
+    }
+    &.ok {
+      .er-file-input__filename {
+        color: map_get($green, 'base') !important;
+        opacity: 1;
+        border-bottom-color: map_get($green, 'base') !important;
+      }
+    }
+    label {
+      border-bottom: 1px dashed rgba(map_get($shades, 'black'), 0.5) !important;
+      font: map_get($text, 'medium') !important;
+      letter-spacing: -0.5px !important;
+      opacity: .5;
+    }
+    &.bad label {
+      color: map_get($red, 'base') !important;
+      opacity: 1 !important;
+    }
+    &__icon {
+      opacity: .5;
+      svg {
+        width: 26px;
+        height: 26px;
+      }
+      &.badIcon {
+        color: map_get($red, 'base');
+        opacity: 1;
+      }
+    }
+  }
+  &__phone-time {
+    flex: 0 0 48% !important;
+  }
+
+  .er-select {
+    max-width: 268px;
+    .er-input__control { 
+      max-height: 48px;
+    }
+  }
+  .er-text-field--error label {
+    color: rgba(map_get($shades, 'black'), 0.5) !important;
+  }
+}

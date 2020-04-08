@@ -1,6 +1,9 @@
 .person-card {
   font: map_get($text, 'small');
   &__inner {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
     padding: 24px 14px 16px;
     @include media-query((
       padding: (
@@ -169,6 +172,7 @@
   &__button.er-button {
     display: flex;
     justify-content: center;
+    min-width: 160px;
     height: 40px;
     @include media-query((
     max-width: (

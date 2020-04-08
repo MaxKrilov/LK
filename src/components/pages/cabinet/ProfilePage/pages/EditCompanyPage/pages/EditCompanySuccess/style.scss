@@ -1,0 +1,132 @@
+.edit-company-success {
+  display: flex;
+  flex-direction: column;
+  max-width: 530px;
+  margin-top: 8px;
+  &__welcome-title {
+    display: flex;
+    align-items: center;
+    margin: 24px 0 26px;
+    @include media-query((
+      flex-direction: (xs: row, md: column),
+      align-items: (xs: center, md: flex-start),
+      margin: (
+        xl: 4px 0 48px
+      )
+    ));
+
+    &__back-link {
+      cursor: pointer;
+      display: inline-block;
+      text-decoration: none;
+      @include media-query((
+        margin-bottom: (xs: 0, md: 8px)
+      ));
+
+      &__icon {
+        display: inline-block;
+
+        &.desktop {
+          @include media-query((
+            display: (xs: none, md: inline-block)
+          ));
+
+          svg {
+            width: 16px;
+          }
+        }
+
+        &.mobile {
+          @include media-query((
+            display: (xs: inline-block, md: none)
+          ));
+          padding-right: 8px;
+
+          svg {
+            transform: rotate(-90deg);
+            color: map_get($yellow, 'base');
+            width: 18px;
+          }
+        }
+      }
+
+      &__label {
+        margin-left: 11px;
+        font: map_get($text, 'xs');
+        font-family: $fedra-demi;
+        @include media-query((
+          display: (xs: none, md: inline-block)
+        ));
+      }
+
+      &:hover {
+        color: rgba(map_get($shades, 'black'), 0.8);
+
+        * > svg {
+          color: map_get($yellow, 'base');
+        }
+      }
+
+      &:active {
+        color: map_get($yellow, 'base');
+      }
+    }
+  }
+  &__wrapper {
+    display: flex;
+    align-items: center;
+    margin-bottom: 40px;
+    &__icon {
+      color: map_get($green, 'base');
+      svg {
+        width: 98px!important;
+        @include media-query((
+          width: (
+            md: 111px!important,
+            lg: 124px!important,
+            xl: 150px!important
+          )
+        ));
+      }
+    }
+    &__title {
+      margin-bottom: 8px;
+    }
+    &__content {
+      @include media-query((
+        margin-left: (
+          xs: 13.5px,
+          lg: 22px
+        )
+      ))
+    }
+    &__message {
+      span {
+        color: map_get($shades, 'black');
+        opacity: .6;
+      }
+      a {
+        color: map_get($shades, 'black');
+        opacity: .8;
+      }
+    }
+  }
+  &__back-link {
+    display: flex;
+    justify-content: center;
+    margin-top: auto;
+    max-width: 100%;
+    height: 40px;
+    text-decoration: none;
+    cursor: pointer;
+    @include media-query((
+      max-width: (sm: 256px)
+    ));
+    .er-button__content {
+      @extend %button-font;
+    }
+    @include media-query((
+      height: (md: 48px)
+    ));
+  }
+}

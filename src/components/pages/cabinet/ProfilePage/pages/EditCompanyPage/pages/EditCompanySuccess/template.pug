@@ -1,0 +1,9 @@
+div(:class="`${pre}`")
+  div(:class="`${pre}__wrapper`")
+    er-icon(name="circle_ok" :class="`${pre}__wrapper__icon`")
+    div(:class="`${pre}__wrapper__content`")
+      h3(:class="`${pre}__wrapper__title`") Данные успешно загружены
+      p(:class="`${pre}__wrapper__message`")
+        span Документы для подписи хранятся в разделе
+        router-link(target='_blank' to="/lk/documents")  документы
+  er-button(:class="`${pre}__back-link`" @click="onReturnToProfile") Вернуться в профиль

@@ -10,7 +10,7 @@ div(:class="`${pre}`")
     er-flex
       | {{serverErrorMessage}}
   template(v-else-if="hasAccess")
-    er-row.mb-24(:class="`${pre}__switcher`")
+    er-row(:class="`${pre}__switcher`")
       er-flex(:class="`${pre}__switcher--mobile`")
         er-switch(
           :class="`${pre}__switcher__controls`"
@@ -19,28 +19,27 @@ div(:class="`${pre}`")
           :labels="dataCardsSwitch",
           :has-icon="true"
         )
-    div(:class="`${pre}__cards__wrapper`")
-      er-flex(
-        ref="refCards"
-        :class="`${pre}__cards`",
-        xs12)
-        person-card(
-          v-if="user",
-          :class="`${pre}__cards__item`",
-          :first-name="user.firstName",
-          :last-name="user.lastName",
-          :middle-name="user.middleName",
-          :roles="realmRoles",
-          :can-edit="!isLPR"
-        )
-        company-card(
-          :class="`${pre}__cards__item`",
-          :name="getClientInfo.name"
-          :inn="getClientInfo.inn"
-          :kpp="getClientInfo.kpp"
-          :ogrn="getClientInfo.ogrn"
-          :address="getClientInfo.address"
-        )
+    er-flex(
+      ref="refCards"
+      :class="`${pre}__cards`",
+      xs12)
+      person-card(
+        v-if="user",
+        :class="`${pre}__cards__item`",
+        :first-name="user.firstName",
+        :last-name="user.lastName",
+        :middle-name="user.middleName",
+        :roles="realmRoles",
+        :can-edit="!isLPR"
+      )
+      company-card(
+        :class="`${pre}__cards__item`",
+        :name="getClientInfo.name"
+        :inn="getClientInfo.inn"
+        :kpp="getClientInfo.kpp"
+        :ogrn="getClientInfo.ogrn"
+        :address="getClientInfo.address"
+      )
 
   div(v-if="isLPR && !serverErrorMessage", :class="`${pre}__accounts`")
     accounts-section

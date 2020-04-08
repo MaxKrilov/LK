@@ -14,6 +14,11 @@ import IndexPage from './components/pages/cabinet/IndexPage/index'
 import ProfilePage from './components/pages/cabinet/ProfilePage/index'
 import EditProfilePage from './components/pages/cabinet/ProfilePage/pages/EditProfilePage'
 import MainProfilePage from './components/pages/cabinet/ProfilePage/pages/MainProfilePage'
+// Страница компании
+import EditCompanyPage from './components/pages/cabinet/ProfilePage/pages/EditCompanyPage'
+import EditCompanyInn from './components/pages/cabinet/ProfilePage/pages/EditCompanyPage/pages/EditCompanyInn'
+import EditCompanyForm from './components/pages/cabinet/ProfilePage/pages/EditCompanyPage/pages/EditCompanyForm'
+import EditCompanySuccess from './components/pages/cabinet/ProfilePage/pages/EditCompanyPage/pages/EditCompanySuccess'
 
 // Страница документы
 import DocumentPage from './components/pages/cabinet/DocumentPage/index'
@@ -115,6 +120,26 @@ const router = new Router({
               path: 'edit',
               name: 'profile-edit',
               component: EditProfilePage
+            },
+            {
+              path: 'company',
+              name: 'company',
+              component: EditCompanyPage,
+              children: [
+                {
+                  path: 'edit',
+                  name: 'company-edit',
+                  component: EditCompanyForm
+                }, {
+                  path: 'inn',
+                  name: 'company-inn',
+                  component: EditCompanyInn
+                }, {
+                  path: 'success',
+                  name: 'company-success',
+                  component: EditCompanySuccess
+                }
+              ]
             }
           ]
         },

@@ -4,6 +4,7 @@ import createPersistedState from 'vuex-persistedstate'
 
 import auth from './modules/auth'
 import accounts from './modules/accounts'
+import contacts from './modules/contacts'
 import modal from './modules/modal'
 import accountForm from './modules/accountForm'
 import directories from './modules/directories'
@@ -29,6 +30,7 @@ export default new Vuex.Store({
   modules: {
     auth,
     accounts,
+    contacts,
     modal,
     accountForm,
     directories,
