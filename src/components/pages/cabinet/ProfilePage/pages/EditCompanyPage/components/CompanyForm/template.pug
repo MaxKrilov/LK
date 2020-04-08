@@ -1,0 +1,79 @@
+div(:class="`${pre}`")
+  er-row(:class="`${pre}__row`")
+    er-flex(:class="[`${pre}__field`, { 'xs6' : isInnChanging}]")
+      er-text-field(
+        isShowSuccess
+        isShowLabelRequired
+        :rules="notEmptyRule"
+        ref="companyFormInnRef"
+        v-model.trim="value.inn"
+        label="ИНН"
+        :class="`${pre}__field__input`"
+      )
+    er-flex(:class="`${pre}__field`" v-if='isInnChanging').xs6.sm6
+      er-button(:color="'yellow'" @click="onResetInn") Изменить ИНН
+  div(:class="`${pre}__error`" v-if='isInnIncorrect')
+    error( error-message="Проверьте правильность введенных данных ИНН" )
+  div(:class="`${pre}__field`")
+    er-text-field(
+      isShowSuccess
+      isShowLabelRequired
+      :rules="notEmptyRule"
+      v-model.trim="value.name"
+      :disabled="isFetched && uneditableName"
+      label="Юридическое название"
+      :class="`${pre}__field__input`"
+    )
+  div(:class="`${pre}__field`")
+    er-text-field(
+      isShowSuccess
+      isShowLabelRequired
+      :rules="notEmptyRule"
+      v-model.trim="value.legalAddress"
+      :disabled="isFetched && uneditableAddress"
+      label="Юридический адрес"
+      :class="`${pre}__field__input`"
+    )
+  template(v-if='value.type === COMPANY_TYPE_CORP')
+    div(:class="`${pre}__field`")
+      er-text-field(
+        isShowSuccess
+        isShowLabelRequired
+        :rules="notEmptyRule"
+        v-model.trim="value.kpp"
+        :disabled="isFetched && uneditableKpp"
+        label="КПП"
+        :class="`${pre}__field__input`"
+      )
+  template(v-else)
+    er-row(:class="`${pre}__row`")
+      er-flex(:class="`${pre}__field passport`").xs6
+        er-text-field(
+          isShowSuccess
+          isShowLabelRequired
+          :rules="notEmptyRule"
+          v-model.trim="value.idSerialNumber"
+          :disabled="isFetched && uneditableSerial"
+          label="Паспорт"
+          :class="`${pre}__field__input`"
+        )
+      er-flex(:class="`${pre}__field passport`").xs6
+        er-text-field(
+          isShowSuccess
+          isShowLabelRequired
+          :rules="notEmptyRule"
+          v-model.trim="value.issuedDate"
+          :disabled="isFetched && uneditableDate"
+          label="Дата выдачи"
+          :class="`${pre}__field__input`"
+        )
+    div(:class="`${pre}__field`")
+      er-text-field(
+        isShowSuccess
+        isShowLabelRequired
+        :rules="notEmptyRule"
+        v-model.trim="value.issuedBy"
+        :disabled="isFetched && uneditableIssued"
+        label="Кем выдан"
+        :class="`${pre}__field__input`"
+      )

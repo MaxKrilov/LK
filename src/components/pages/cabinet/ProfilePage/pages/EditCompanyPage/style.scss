@@ -1,0 +1,71 @@
+.edit-company-page {
+  &__welcome-title {
+    display: flex;
+    align-items: center;
+    margin: 24px 0 26px;
+    @include media-query((
+      flex-direction: (xs: row, md: column),
+      align-items: (xs: center, md: flex-start),
+      margin: (
+        xl: 4px 0 48px
+      )
+    ));
+
+    &__back-link {
+      cursor: pointer;
+      display: inline-block;
+      text-decoration: none;
+      @include media-query((
+        margin-bottom: (xs: 0, md: 8px)
+      ));
+
+      &__icon {
+        display: inline-block;
+
+        &.desktop {
+          @include media-query((
+            display: (xs: none, md: inline-block)
+          ));
+
+          svg {
+            width: 16px;
+          }
+        }
+
+        &.mobile {
+          @include media-query((
+            display: (xs: inline-block, md: none)
+          ));
+          padding-right: 8px;
+
+          svg {
+            transform: rotate(-90deg);
+            color: map_get($yellow, 'base');
+            width: 18px;
+          }
+        }
+      }
+
+      &__label {
+        margin-left: 11px;
+        font: map_get($text, 'xs');
+        font-family: $fedra-demi;
+        @include media-query((
+          display: (xs: none, md: inline-block)
+        ));
+      }
+
+      &:hover {
+        color: rgba(map_get($shades, 'black'), 0.8);
+
+        * > svg {
+          color: map_get($yellow, 'base');
+        }
+      }
+
+      &:active {
+        color: map_get($yellow, 'base');
+      }
+    }
+  }
+}

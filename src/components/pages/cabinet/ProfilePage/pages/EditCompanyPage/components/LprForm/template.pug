@@ -1,0 +1,134 @@
+div(:class="`${pre}`")
+  div(:class="`${pre}__field`")
+    er-text-field(
+      isShowSuccess
+      isShowLabelRequired
+      v-model.trim="value.position"
+      label="Должность"
+      :rules="cyrillicRule",
+      :class="`${pre}__field__input`"
+    )
+  div(:class="`${pre}__field`")
+    er-text-field(
+      isShowSuccess
+      isShowLabelRequired
+      v-model.trim="value.gPosition"
+      label="Должность в род. падеже"
+      :class="`${pre}__field__input`"
+      :rules="cyrillicRule"
+    )
+  er-row(:class="`${pre}__row`")
+    er-flex(:class="`${pre}__field`").xs12.sm6
+      er-text-field(
+        isShowSuccess
+        isShowLabelRequired
+        v-model.trim="value.surname"
+        label="Фамилия"
+        @blur="onBlurSurname"
+        :rules="fullNameRule"
+        :class="`${pre}__field__input`"
+      )
+    er-flex(:class="`${pre}__field`").xs12.sm6
+      er-text-field(
+        isShowLabelRequired
+        v-model.trim="value.gSurname"
+        label="Фамилия в род. падеже"
+        :class="`${pre}__field__input`"
+        readonly
+      )
+  er-row(:class="`${pre}__row`")
+    er-flex(:class="`${pre}__field`").xs12.sm6
+      er-text-field(
+        isShowSuccess
+        isShowLabelRequired
+        v-model.trim="value.name"
+        label="Имя"
+        @blur="onBlurName"
+        :rules="fullNameRule"
+        :class="`${pre}__field__input`"
+      )
+    er-flex(:class="`${pre}__field`").xs12.sm6
+      er-text-field(
+        isShowLabelRequired
+        v-model.trim="value.gName"
+        label="Имя в род. падеже"
+        :class="`${pre}__field__input`"
+        readonly
+      )
+  er-row(:class="`${pre}__row`")
+    er-flex(:class="`${pre}__field`").xs12.sm6
+      er-text-field(
+        isShowSuccess
+        isShowLabelRequired
+        v-model.trim="value.patronymic"
+        label="Отчество"
+        @blur="onBlurPatronymic"
+        :class="`${pre}__field__input`"
+        :rules="fullNameRule"
+      )
+    er-flex(:class="`${pre}__field`").xs12.sm6
+      er-text-field(
+        isShowLabelRequired
+        v-model.trim="value.gPatronymic"
+        label="Отчество в род. падеже"
+        :class="`${pre}__field__input`"
+        readonly
+      )
+  er-row(:class="`${pre}__row`")
+    er-flex(:class="`${pre}__field`").xs12.sm6
+      er-text-field(
+        isShowSuccess
+        isShowLabelRequired
+        v-model.trim="value.phone"
+        label="Номер телефона"
+        mask="+9 999 999 9999"
+        :rules="phoneRule"
+        :class="`${pre}__field__input`"
+      )
+    er-flex(v-if="value.phone" :class="`${pre}__field`").xs12.sm6
+      span(:class="`${pre}__label`") Удобное время для звонка
+      er-row(:class="`${pre}__row`").align-items-center
+        er-flex(:class="`${pre}__phone-time`").xs6
+          er-text-field(
+            v-model.trim="value.phoneFrom"
+            mask="99:99",
+            :class="`${pre}__field__input`"
+          )
+        div &ndash;  
+        er-flex(:class="`${pre}__phone-time`").xs6
+          er-text-field(
+            v-model.trim="value.phoneTo"
+            mask="99:99",
+            :class="`${pre}__field__input`"
+          )
+  er-row(:class="`${pre}__row`")
+    er-flex(:class="`${pre}__field`").xs12.sm12.md6
+      er-select(
+        :class="`${pre}__field`"
+        :placeholder="docsLabel"
+        :items="['Устава', 'Доверенности', 'Другое']"
+        :rules="notEmptyRule"
+        v-model="value.confirmationDocName"
+        ref="docsRef"
+        readonly
+        isShowLabelRequired
+        )
+
+    er-flex(:class="`${pre}__field`").xs12.sm6
+      er-row(:class="`${pre}__row_file`")
+        er-icon(
+          v-if="!isFileLoaded"
+          :class="[`${pre}__file-input__icon`, {'badIcon': (!isFileValid && isFileLoaded) || fileInputLabel === 'Скан не загружен'}]"
+          name="husks"
+        )
+        er-file-input(
+          :class="[`${pre}__file-input`, {'ok': isFileLoaded === isFileValid, 'bad': fileInputLabel === 'Скан не загружен'}]"
+          @input="handleFileInput"
+          ref="fileInput"
+          :label="fileInputLabel"
+        )
+        div(
+          v-if="isFileLoaded && !isFileValid"
+          :class="`${pre}__file-input__hint`"
+        )
+          | Документ не загружен

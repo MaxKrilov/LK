@@ -1,0 +1,45 @@
+.company-form {
+  display: flex;
+  flex-direction: column;
+  margin-top: 32px;
+  &__field {
+    margin-bottom: 32px;
+    @include media-query((
+      margin-bottom: (
+        md: 40px
+      )
+    ));
+    &.passport {
+      max-width: 100%;
+      @include media-query((
+        max-width: (
+          md: 203px!important
+        )
+      ));
+    }
+    &__error {
+      margin-bottom: 40px;
+    }
+    .er-input__slot {
+      margin-bottom: 0;
+    }
+    .er-text-field__success-icon svg {
+      width: 20px;
+    }
+    .er-text-field--active {
+      transform: scale(0.85) translateY(-38px) !important;
+      @include media-query((
+        transform: (md: scale(0.85) translateY(-39px) !important, xl: scale(0.85) translateY(-45px) !important)
+      ));
+    }
+  };
+  &__error {
+    position: relative;
+    margin-top: -25px;
+    margin-bottom: 25px;
+    @include media-query((
+      margin-top: (md: -30px),
+      margin-bottom: (md: 30px)
+    ));
+  }
+}

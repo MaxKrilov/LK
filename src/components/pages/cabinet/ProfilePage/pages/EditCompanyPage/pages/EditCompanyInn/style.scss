@@ -1,0 +1,138 @@
+.edit-company-inn {
+  display: flex;
+  flex-direction: column;
+  max-width: 513px;
+  margin-top: 8px;
+  &__required-label {
+    position: relative;
+    padding-left: 12px;
+    display: inline-flex;
+    margin-bottom: 32px;
+    @extend %caption1-font;
+    & span {
+      opacity: .5;
+    }
+    &:before {
+      opacity: 1;
+      position: absolute;
+      top: 3%;
+      left: -1px;
+      font-size: 28px;
+      text-align: center;
+      display: inline-flex;
+      content: '\2022';
+      color: map_get($yellow, 'base');
+    }
+  }
+
+  .er-text-field--active {
+    transform: scale(0.85) translateY(-38px) !important;
+    @include media-query((
+      transform: (md: scale(0.85) translateY(-39px) !important, xl: scale(0.85) translateY(-45px) !important)
+    ));
+  }
+
+  &__inn {
+    display: flex;
+    align-items: center;
+    &-input {
+      min-width: 256px;
+      @include media-query((
+        min-width: (
+          sm: 208px,
+          md: 320px,
+        )
+      ));
+      .er-text-field--active {
+        color: rgba(map_get($shades, 'black'), 0.5) !important;
+      }
+    }
+
+    &-hint {
+      margin-bottom: 4px;
+
+      &-content {
+        display: flex;
+        flex-direction: column;
+        min-height: 130px;
+
+        &__title {
+          display: block;
+          margin-bottom: 15px;
+          letter-spacing: -1px;
+        }
+
+        &__text {
+          font: (normal 16px/20px $fedra-book, 'Roboto', 'Helvetica', sans-serif);
+          letter-spacing: -0.5px;
+        }
+      }
+    }
+
+    &-input + &-hint {
+      margin-left: 15px;
+    }
+  }
+
+  &__help {
+    opacity: .5;
+    margin-top: 20px;
+    @include media-query((
+      margin-top: (
+        xl: 32px
+      )
+    ));
+    span, a {
+      color: black;
+      @extend %body-font
+    }
+  }
+
+  &__error {
+    margin-top: 12px;
+  }
+
+  &__error + &__help {
+    margin-top: 24px;
+  }
+
+  &__button {
+    margin-top: 32px;
+    @include media-query((
+      margin-top: (
+        xl: 50px
+      )
+    ));
+    &.er-button {
+      display: flex;
+      justify-content: center;
+      height: 40px;
+      max-width: 100%;
+      @include media-query((
+        max-width: (sm: 208px, md: 256px),
+        height: (xl: 48px)
+      ));
+      svg {
+        width: 18px;
+        color: rgba(map_get($shades, 'black'), 0.5);
+      }
+      .er-button__content {
+        @extend %button-font;
+        width: 100%;
+        height: 40px;
+        @include media-query((
+          height: (xl: 48px)
+        ));
+        .er-button__icon--append {
+          position: absolute;
+          right: 15px;
+          top: 11px;
+          @include media-query((
+            right: (md: 13px, lg: 15px),
+            top: (sm: 12px, md: 11px, xl: 13px)
+          ));
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,26 @@
+div(:class="`${pre}`")
+  div(:class="`${pre}__required-label`")
+    span - Поля обязательные к заполнению
+  div(:class="`${pre}__inn`")
+    div(:class="`${pre}__inn-input`")
+      er-text-field(
+        ref="innRef"
+        v-model.trim="innValue"
+        @keydown.enter="checkInn"
+        :label="innLabel"
+        :class="`${pre}__inn-input__input`"
+        isShowLabelRequired
+      )
+    er-hint(:class="`${pre}__inn-hint`" right)
+      div(:class="`${pre}__inn-hint-content`")
+        h2(:class="`${pre}__inn-hint-content__title`").title--medium Ваш ИНН
+        p(:class="`${pre}__inn-hint-content__text`") Индивидуальный налоговый номер.
+  div(:class="`${pre}__error`" v-if='isInnIncorrect')
+    error( error-message="ИНН не существует. Проверьте правильность введенных данных" )
+  p(:class="`${pre}__help`")
+    span Если Вы не помните свой ИНН, Вы можете узнать его на&nbsp
+    a(:href='fns') сайте&nbsp;ФНС
+    span  или&nbsp
+    a(:href='selfEmployed') другом&nbsp;ресурсе
+    span  для самозанятых
+  er-button(:class="`${pre}__button`" color="yellow" appendIcon="arrow_r" :disabled="!innValue || isInnIncorrect" @click="checkInn") Заполнить

@@ -1,6 +1,8 @@
 import {
-  GET_CLIENT_INFO,
+  GET_CLIENT_INFO, UPDATE_CLIENT_INFO, GET_COMPANY_INFO,
   GET_CLIENT_INFO_SUCCESS,
+  GET_COMPANY_INFO_SUCCESS,
+  COMPANY_DATA_FETCHED,
   GET_LIST_BILLING_ACCOUNT,
   GET_LIST_BILLING_ACCOUNT_SUCCESS,
   GET_LIST_PRODUCT_BY_ADDRESS,
@@ -17,11 +19,11 @@ import {
   GET_PAYMENT_INFO,
   GET_PAYMENT_INFO_SUCCESS,
   SET_ACTIVE_BILLING_ACCOUNT_NUMBER,
-  GET_PROMISED_PAYMENT_INFO
+  GET_PROMISED_PAYMENT_INFO, GET_CLIENT_INFO_ERROR
 } from '../actions/user'
 import { ERROR_MODAL } from '../actions/variables'
 import { logError } from '@/functions/logging.ts'
-import { eachArray } from '../../functions/helper'
+import { eachArray, eachObject } from '../../functions/helper'
 import {
   isContractDocument,
   isBlankDocument,
@@ -36,8 +38,12 @@ const OGRN_ID = '9154340419713221073'
 
 const state = {
   clientInfo: {
-    fullAddress: {}
+    fullAddress: {},
+    primaryContact: {},
+    contacts: {}
   },
+  companyInfo: {},
+  lprInfo: {},
   personalManager: {},
   countUnsignedDocuments: 0,
   documents: [],
@@ -56,7 +62,18 @@ const getters = {
       inn: state.clientInfo?.extendedMap?.[INN_ID]?.singleValue?.attributeValue,
       kpp: state.clientInfo?.extendedMap?.[KPP_ID]?.singleValue?.attributeValue,
       ogrn: state.clientInfo?.extendedMap?.[OGRN_ID]?.singleValue?.attributeValue,
-      address: state.clientInfo?.fullLegalAddress
+      address: state.clientInfo?.fullLegalAddress,
+      contactId: state.clientInfo?.primaryContact.id
+    }
+  },
+  getFnsClientInfo (state) {
+    return {
+      inn: state.companyInfo?.inn,
+      name: state.companyInfo?.orgNameFull,
+      legalAddress: state.companyInfo?.legalAddressText,
+      kpp: state.companyInfo?.kpp,
+      type: state.companyInfo?.type,
+      isFetched: state.companyInfo?.isFetched
     }
   },
   getManagerInfo (state) {
@@ -165,6 +182,9 @@ const getters = {
   },
   agreementNumber (state) {
     return state.listBillingAccount.find(item => item.billingAccountId === state.activeBillingAccount)?.contractNumber
+  },
+  getPrimaryContact (state) {
+    return state.clientInfo.contacts.filter(item => item.id === state.clientInfo.primaryContact.id)[0]
   }
 }
 
@@ -180,12 +200,68 @@ const actions = {
         })
         .query('/customer/account/client-info')
       commit(GET_CLIENT_INFO_SUCCESS, result)
+
       return result
     } catch (error) {
       commit(ERROR_MODAL, true, { root: true })
       // todo Логирование
     } finally {
       commit('loading/clientInfo', false, { root: true })
+    }
+  },
+  [UPDATE_CLIENT_INFO]: async (
+    { commit, dispatch, rootState, rootGetters },
+    { api, formData }) => {
+    const { toms: clientId } = rootGetters['auth/user']
+    const id = clientId
+    const { inn: INN, isFetched, type, legalAddress, ...requestData } = formData
+    let preparedData = { INN, id, clientId, legalAddress, ...requestData }
+    eachObject(preparedData, (value, key) => {
+      if (!preparedData[key]) {
+        delete preparedData[key]
+      }
+    })
+
+    const url = '/customer/account/edit-client'
+    try {
+      const response = await api
+        .setWithCredentials()
+        .setData({
+          ...preparedData
+        })
+        .query(url)
+
+      if (response.id) {
+        return true
+      } else {
+        commit(GET_CLIENT_INFO_ERROR, `Ошибка обновления данных клиента: ${response.message.toString()}`)
+        return false
+      }
+    } catch (error) {
+      commit(GET_CLIENT_INFO_ERROR, 'Сервер не отвечает. Попробуйте обновить страницу.')
+      return false
+    }
+  },
+  [GET_COMPANY_INFO]: async ({ commit, rootState, rootGetters }, { api, inn }) => {
+    const innLength = inn.length
+    try {
+      const result = await api
+        .setWithCredentials()
+        .setData({ inn: inn })
+        .query('/customer/account/get-organization-info')
+
+      commit(GET_COMPANY_INFO_SUCCESS, { inn, isFetched: true, ...result })
+      return result
+    } catch (error) {
+      commit(COMPANY_DATA_FETCHED, false)
+      switch (innLength) {
+        case 10:
+          commit(GET_COMPANY_INFO_SUCCESS, { inn, type: 'corporation' })
+          break
+        case 12:
+          commit(GET_COMPANY_INFO_SUCCESS, { inn, type: 'entrepreneur' })
+          break
+      }
     }
   },
   [GET_MANAGER_INFO]: async ({ commit, rootState, rootGetters }, { api }) => {
@@ -407,6 +483,12 @@ const mutations = {
   },
   [GET_PAYMENT_INFO_SUCCESS]: (state, payload) => {
     state.paymentInfo = payload
+  },
+  [GET_COMPANY_INFO_SUCCESS]: (state, payload) => {
+    state.companyInfo = { ...state.companyInfo, ...payload }
+  },
+  [COMPANY_DATA_FETCHED]: (state, payload) => {
+    state.companyInfo.isFetched = payload
   }
 }
 

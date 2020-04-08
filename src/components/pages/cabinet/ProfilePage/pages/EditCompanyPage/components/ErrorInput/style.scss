@@ -1,0 +1,14 @@
+.error-input {
+  display: flex;
+  align-items: center;
+  * {
+    color: map_get($red, 'base');
+  }
+  &__icon {
+    display: block;
+    margin-right: 12px;
+  }
+  &__message {
+    @extend %caption2;
+  }
+}

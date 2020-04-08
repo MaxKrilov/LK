@@ -1,9 +1,14 @@
-import { ERROR_MODAL, SCREEN_WIDTH } from '../actions/variables'
+import { ERROR_MODAL, SCREEN_WIDTH, FNS, SELF_EMPLOYED } from '../actions/variables'
 import { Cookie } from '../../functions/storage'
+
+const FNS_LINK = 'https://egrul.nalog.ru/index.html'
+const SELF_EMPLOYED_LINK = 'https://www.rusprofile.ru/egrul-fns'
 
 const state = {
   [ERROR_MODAL]: false,
-  [SCREEN_WIDTH]: 0
+  [SCREEN_WIDTH]: 0,
+  [FNS]: FNS_LINK,
+  [SELF_EMPLOYED]: SELF_EMPLOYED_LINK
 }
 
 const getters = {

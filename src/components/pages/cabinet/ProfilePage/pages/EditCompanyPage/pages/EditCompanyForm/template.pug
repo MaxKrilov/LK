@@ -1,0 +1,33 @@
+div(:class="`${pre}`")
+  div(:class="`${pre}__required-label`")
+    span - Поля обязательные к заполнению
+  er-form(ref='companyForm' @change="validateCompanyForm" @submit.prevent="validateCompanyForm")
+    div(:class="`${pre}__company`")
+      h2(:class="`${pre}__title`") Данные организации
+      span(v-if='hasNoData' :class="`${pre}__subtitle`") На сайте ФНС нет данных по указанному ИНН, введите самотоятельно
+      span(v-else :class="`${pre}__subtitle`") Проверьте пожалуйста Ваши данные
+      company-form(
+        v-model='editableCompanyClientObject'
+        :isFetched='getFnsClientInfo.isFetched'
+        @resetInn='handleResetInn'
+      )
+    div(:class="`${pre}__lpr`")
+      div(:class="`${pre}__lpr-title`")
+        h2(:class="`${pre}__title`") Лицо, имеющее право подписи
+        div(:class="`${pre}__lpr-hint`")
+      span(:class="`${pre}__subtitle`") Вам будет предложено загрузить скан подтверждающего документа
+      p(:class="`${pre}__info`") Это может быть: Устав предприятия, Договоренность, Паспорт и прочее. Размер файла не должен превышать 4Мб. Формат: jpg, pdf, doc, docx, png.
+      lpr-form(
+        v-model='editableSignContactObject'
+        ref="lprForm"
+      )
+    er-row(
+      :class="`${pre}__error`"
+      v-if="somethingWrong").align-items-center
+      span
+        er-icon(name="warning")
+      p.ml-16
+        | При сохранении данных произошла ошибка. Попробуйте сохранить позже.
+    div(:class="`${pre}__submit`")
+      er-button(type="submit")
+        | Сохранить
