@@ -36,6 +36,9 @@ export default {
     toggleButtons () {
       this.hideButtonsFirstTime = false
       this.showButtons = !this.showButtons
+    },
+    sendOnEmail () {
+      this.$emit('send', this.selectedEmail)
     }
   }
 }

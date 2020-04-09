@@ -8,6 +8,7 @@ import ChangeOrganizationPopup from '../ChangeOrganizationPopup/index'
 
 import { formatPhone, price } from '../../../../../functions/filters'
 import { SET_ACTIVE_BILLING_ACCOUNT, SET_ACTIVE_BILLING_ACCOUNT_NUMBER } from '../../../../../store/actions/user'
+import {Cookie} from '../../../../../functions/storage'
 
 export default {
   name: 'menu-component',
@@ -160,6 +161,7 @@ export default {
       this.$store.commit(`user/${SET_ACTIVE_BILLING_ACCOUNT_NUMBER}`, accountNumber)
       this.$nextTick(() => {
         this.$store.commit('loading/rebootBillingAccount', false)
+        Cookie.set('billingAccountId', billingAccountId)
       })
     },
     getBellClass () {

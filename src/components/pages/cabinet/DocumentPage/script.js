@@ -59,7 +59,7 @@ export default {
         'test2@example.com'
       ],
       contractFilterType: 0,
-      reportSelected: new Set([]),
+      reportSelected: new Map(),
       reportSelectedCount: 0,
       filterContract: '',
       reportDocuments: [],
@@ -99,7 +99,8 @@ export default {
     ...mapGetters({
       allContractDocuments: 'fileinfo/getListContractDocument',
       allReportDocuments: 'fileinfo/getListReportDocument',
-      listContact: 'user/getListContact'
+      listContact: 'user/getListContact',
+      loadingDocuments: 'loading/loadingDocuments'
     }),
     hasSelectedReports () {
       return this.reportSelectedCount > 0
@@ -158,13 +159,13 @@ export default {
   methods: {
     onChangeMonth (idx) {
     },
-    onReportUnselect (reportId) {
+    onReportUnselect (documentId) {
       this.reportSelectedCount -= 1
-      this.reportSelected.delete(reportId)
+      this.reportSelected.delete(documentId)
     },
-    onReportSelect (reportId) {
+    onReportSelect (document) {
       this.reportSelectedCount += 1
-      this.reportSelected.add(reportId)
+      this.reportSelected.set(document.id, { key: document.key, bucket: document.bucket })
     },
     onOrderDocumentClick () {
       this.$router.push({ path: '/lk/support?open=document' })
@@ -182,10 +183,18 @@ export default {
     },
     successSigned () {
       this.$store.dispatch(`user/${GET_DOCUMENTS}`, { api: this.$api })
+    },
+    sendOnEmail (email) {
+      const files = Array.from(this.reportSelected.values())
+      // this.$store.dispatch('fileinfo/sendOnEmail', {
+      //   api: this.$api,
+      //   files,
+      //   email
+      // })
     }
   },
   async mounted () {
-    this.$store.dispatch('fileinfo/downloadDocuments', { api: this.$api })
+    // this.$store.dispatch('fileinfo/downloadDocuments', { api: this.$api })
     const script = document.createElement('script')
     script.setAttribute('src', CADESPLUGIN_PATH)
     script.setAttribute('id', 'cadesplugin-script')

@@ -13,8 +13,6 @@ div(:class="`${pre}`").main-content.main-content--padding.main-content--top-menu
           er-icon(name="wallet_auto")
         a.link--solid--yellow.fonts--demi.rub {{ balanceInfo.balance || '0.0' }}
         span(v-if="balanceInfo.autoPay") Автоплатёж
-  er-container
-    | Здесь сторис
   er-container.mb-48(full)
     er-row(no-gutters)
       er-flex(xs12 :class="`${pre}__fast-links`")
@@ -113,12 +111,12 @@ div(:class="`${pre}`").main-content.main-content--padding.main-content--top-menu
               er-switch(:labels="dataFilterSwitch", v-model="modelSortService", name="sortService")
     div.justify-content-between.mb-24(:class="`${pre}__filters--desktop`")
       div.mr-8(:class="`${pre}__filters--desktop__input`")
-        er-text-field(
-          label="Фильтрация по точкам",
-          v-model="modelFilterService",
-          appendInnerIcon="close",
-          @click:append-inner="clearModelFilterService"
-        )
+        //- er-text-field(
+        //-  label="Фильтрация по точкам",
+        //-  v-model="modelFilterService",
+        //-  appendInnerIcon="close",
+        //-  @click:append-inner="clearModelFilterService"
+        //- )
       div.ml-8(:class="`${pre}__filters--desktop__toggle`")
         er-switch(:labels="dataFilterSwitch", v-model="modelSortService", name="sortService")
   template(v-if="indexPageProductByAddress")
@@ -133,8 +131,8 @@ div(:class="`${pre}`").main-content.main-content--padding.main-content--top-menu
   template(v-else)
     template(v-if="modelSortService === 'service'")
       product-item-component.mb-4(
-        v-for="product in listProductByService"
-        :key="product.code"
+        v-for="(product, index) in listProductByService"
+        :key="index"
         :title="product.name"
         :price="product.price"
         :product-type="product.code"
@@ -142,8 +140,8 @@ div(:class="`${pre}`").main-content.main-content--padding.main-content--top-menu
       )
     template(v-else)
       product-item-component.mb-4(
-        v-for="product in listProductByAddress"
-        :key="product.id"
+        v-for="(product, index) in listProductByAddress"
+        :key="index"
         :title="product.address"
         :price="product.price"
         :address-id="product.addressId"

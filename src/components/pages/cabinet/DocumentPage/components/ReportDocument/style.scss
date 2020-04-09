@@ -201,6 +201,9 @@ $footer-button-height: 56px;
 
   .document-date {
     @include color-white(.5);
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    text-align: right;
 
     @include min-breakpoint('md') {
       @include color-black(.5);
@@ -222,6 +225,9 @@ $footer-button-height: 56px;
 .document-date {
   margin-top: $padding-x2;
   @include after-ripple-color-transition();
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  text-align: right;
 
   @include min-breakpoint('md') {
     @include color-black(.5);

@@ -38,10 +38,10 @@
             er-button(:color="'gray'")
               | Заказать дубликат
           er-flex.lg3.md4.sm6
-            er-button(:color="'gray'")
+            er-button(:color="'gray'" @click="sendOnEmail")
               | Отправить e-mail
           er-flex.flex-grow-1.lg3.md8.email-select
-            er-select(
+            er-combobox(
               :items="emails"
               :isSelectFirst="true"
               value="selectedEmail"

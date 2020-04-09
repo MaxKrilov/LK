@@ -1,6 +1,7 @@
 import { Vue, Component, Watch } from 'vue-property-decorator'
 import { price } from '../../../../../../functions/filters'
 import { GET_LIST_SERVICE_BY_ADDRESS, GET_LIST_ADDRESS_BY_SERVICES } from '../../../../../../store/actions/user'
+import { getIconNameByCode } from './_functions'
 
 @Component({
   props: {
@@ -52,6 +53,18 @@ export default class ProductItemComponent extends Vue {
     return this.sortBy === 'service'
       ? this.getFormatListAddress
       : this.getFormatListService
+  }
+
+  getTopIcon () {
+    return this.sortBy === 'service'
+      ? getIconNameByCode(this.title)
+      : 'geolocation'
+  }
+
+  getSubIcon (title) {
+    return this.sortBy === 'service'
+      ? 'geolocation'
+      : getIconNameByCode(title)
   }
 
   toggleDetail () {
