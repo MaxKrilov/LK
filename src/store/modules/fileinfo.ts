@@ -59,7 +59,7 @@ const actions = {
         .setWithCredentials()
         .setData({
           clientId,
-          billingAccountId
+          // billingAccountId
         })
         .query('/customer/management/fileinfo')
         .then((data: DocumentInterface[]) => {
