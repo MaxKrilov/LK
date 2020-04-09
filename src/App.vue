@@ -42,14 +42,15 @@ export default {
     },
     rebootBillingAccount (val) {
       if (!val) {
+        const context = { api: this.$api }
         this.$store.commit(`loading/menuComponentBalance`, true)
-        // this.$store.commit(`loading/loadingPromisedPayment`, true) todo убрать комментарий
         this.$store.commit(`loading/indexPageProductByAddress`, true)
-        this.$store.dispatch(`user/${GET_PAYMENT_INFO}`, { api: this.$api })
-        // this.$store.dispatch(`user/${GET_PROMISED_PAYMENT_INFO}`, { api: this.$api }) todo убрать комментарий
-        this.$store.dispatch(`user/${GET_LIST_PRODUCT_BY_ADDRESS}`, { api: this.$api })
+        this.$store.commit(`loading/loadingDocuments`, true)
+        this.$store.dispatch(`fileinfo/downloadListDocument`, context)
+        this.$store.dispatch(`user/${GET_PAYMENT_INFO}`, context)
+        this.$store.dispatch(`user/${GET_LIST_PRODUCT_BY_ADDRESS}`, context)
           .then(() => {
-            this.$store.dispatch(`user/${GET_LIST_PRODUCT_BY_SERVICE}`, { api: this.$api })
+            this.$store.dispatch(`user/${GET_LIST_PRODUCT_BY_SERVICE}`, context)
           })
       }
     }
@@ -107,13 +108,13 @@ export default {
           if (Object.keys(clientInfo).length !== 0) {
             this.$store.dispatch(`user/${GET_MANAGER_INFO}`, context)
             this.$store.dispatch(`request/${GET_REQUEST}`, context)
-            this.$store.dispatch(`fileinfo/downloadListDocument`, context)
             this.$store.dispatch(`user/${GET_LIST_BILLING_ACCOUNT}`, context)
               .then(isValid => {
                 if (isValid) {
+                  this.$store.dispatch(`fileinfo/downloadListDocument`, context)
                   this.$store.dispatch(`user/${GET_PAYMENT_INFO}`, context)
                   this.$store.dispatch(`user/${GET_PROMISED_PAYMENT_INFO}`, context)
-                  this.$store.dispatch(`payments/invPayment`, { api: this.$api })
+                  this.$store.dispatch(`payments/invPayment`, context)
                   this.$store.dispatch(`user/${GET_LIST_PRODUCT_BY_ADDRESS}`, context)
                     .then(() => {
                       this.$store.dispatch(`user/${GET_LIST_PRODUCT_BY_SERVICE}`, context)

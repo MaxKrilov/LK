@@ -7,12 +7,17 @@ import { logError } from '@/functions/logging.ts'
 import { getFirstElement } from '@/functions/helper'
 import { CONTRACT, GROUP_CONTRACT } from '@/constants/document'
 import { isReportDocument, isContractDocument, isUserListDocument, isBlankDocument } from '@/functions/document'
-import { TYPE_FILE } from '@/constants/type_request'
+import { TYPE_ARRAY, TYPE_FILE } from '@/constants/type_request'
 
 interface IState {
   listDocument: (DocumentInterface[])[],
   listReportDocument: (DocumentInterface | DocumentInterface[])[],
   listContractDocument: (DocumentInterface | DocumentInterface[])[]
+}
+
+interface IFile {
+  bucket: string
+  key: string
 }
 
 const state: IState = {
@@ -48,10 +53,14 @@ const actions = {
    */
   downloadListDocument (context: ActionContext<IState, any>, payload: { api: API }) {
     const { toms: clientId } = context.rootGetters['auth/user']
+    const billingAccountId = context.rootGetters['user/getActiveBillingAccount']
     return new Promise<void>((resolve, reject) => {
       payload.api
         .setWithCredentials()
-        .setData({ clientId })
+        .setData({
+          clientId,
+          // billingAccountId
+        })
         .query('/customer/management/fileinfo')
         .then((data: DocumentInterface[]) => {
           context.commit('downloadListDocumentSuccess', data)
@@ -121,6 +130,20 @@ const actions = {
         .query('/docs/s3/set')
         .then(() => resolve(true))
         .catch(() => reject(false))
+    })
+  },
+  sendOnEmail (context: ActionContext<IState, any>, { api, files, email }: { api: API, files: IFile[], email: string }) {
+    return new Promise<boolean>((resolve) => {
+      api
+        .setWithCredentials()
+        // .setType(TYPE_ARRAY)
+        .setData({
+          files,
+          email
+        })
+        .query('/docs/s3/send-mail')
+        .then(response => resolve(response))
+        .catch(() => resolve(false))
     })
   }
 }

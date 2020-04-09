@@ -30,6 +30,7 @@ import {
   isUserListDocument,
   isReportDocument
 } from '@/functions/document'
+import {Cookie} from '../../functions/storage'
 
 const ACCOUNT_MANAGER_ID = '9134601279613203712'
 const INN_ID = '9148328342013670726'
@@ -87,36 +88,38 @@ const getters = {
     }
   },
   getListContact (state) {
-    return state.clientInfo?.contacts?.reduce((acc, item) => {
-      const { id, firstName, name } = item
-      const isLPR = !!item.roles?.filter(item => item.role.name.match(/decision maker/ig) || item.role.name.match(/лпр/ig))?.length || false
-      eachArray(item.contactMethods || [], _item => {
-        if (_item['@type'].match(/phone/i) || _item['@type'].match(/improfile/i)) {
-          acc.push({
-            id,
-            firstName,
-            name,
-            phone: {
-              id: _item.id,
-              value: _item.value.replace(/[\D]+/g, '')
-            },
-            isLPR
-          })
-        } else if (_item['@type'].match(/email/i)) {
-          acc.push({
-            id,
-            firstName,
-            name,
-            email: {
-              id: _item.id,
-              value: _item.value
-            },
-            isLPR
-          })
-        }
-      })
-      return acc
-    }, []) || []
+    return state.clientInfo?.contacts?.reduce
+      ? state.clientInfo?.contacts?.reduce((acc, item) => {
+        const { id, firstName, name } = item
+        const isLPR = !!item.roles?.filter(item => item.role.name.match(/decision maker/ig) || item.role.name.match(/лпр/ig))?.length || false
+        eachArray(item.contactMethods || [], _item => {
+          if (_item['@type'].match(/phone/i) || _item['@type'].match(/improfile/i)) {
+            acc.push({
+              id,
+              firstName,
+              name,
+              phone: {
+                id: _item.id,
+                value: _item.value.replace(/[\D]+/g, '')
+              },
+              isLPR
+            })
+          } else if (_item['@type'].match(/email/i)) {
+            acc.push({
+              id,
+              firstName,
+              name,
+              email: {
+                id: _item.id,
+                value: _item.value
+              },
+              isLPR
+            })
+          }
+        })
+        return acc
+      }, [])
+      : []
   },
   getReportDocuments: state => state.documents.filter(el => {
     return isReportDocument(el)
@@ -332,7 +335,23 @@ const actions = {
         })
         .query('/payment/account/list')
       commit(GET_LIST_BILLING_ACCOUNT_SUCCESS, result)
-      // Устанавливаем активным первый биллинг-аккаунт
+      // Проверяем - установлен ли какой-то л/с в куках
+      const cookieBillingAccountId = Cookie.get('billingAccountId')
+      if (cookieBillingAccountId !== undefined) {
+        // Проверяем - есть ли такой л/с в списке
+        const indexBillingAccount = Array.isArray(result) && !!result.length
+          ? result.findIndex(billingAccount => billingAccount.billingAccountId === cookieBillingAccountId)
+          : -1
+        // Если такого л/с нет - удаляем из кук
+        if (indexBillingAccount < 0) {
+          Cookie.remove('billingAccountId')
+        } else { // В противном случае - устанавливаем активным
+          commit(SET_ACTIVE_BILLING_ACCOUNT, result[indexBillingAccount].billingAccountId)
+          commit(SET_ACTIVE_BILLING_ACCOUNT_NUMBER, result[indexBillingAccount].accountNumber)
+          return true
+        }
+      }
+      // Если в куках нет л/с - устанавливаем первый
       if (Array.isArray(result) && result.length !== 0) {
         commit(SET_ACTIVE_BILLING_ACCOUNT, result[0].billingAccountId)
         commit(SET_ACTIVE_BILLING_ACCOUNT_NUMBER, result[0].accountNumber)

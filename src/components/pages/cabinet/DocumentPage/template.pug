@@ -23,7 +23,12 @@ div(:class="`${pre}`")
 
   .document-page__list.main-content.main-content--h-padding
     er-container.full.container--no-padding.document
-      er-row(v-if="computedAllContractDocuments.length !== 0")
+      er-row(v-if="loadingDocuments")
+        er-flex.document-page__loading.d--flex.align-items-center
+          .loading-text.mr-16
+            | Идёт загрузка документов
+          er-progress-circular(indeterminate width="2")
+      er-row(v-else-if="computedAllContractDocuments.length !== 0")
         er-flex.lg4.md6.sm6.xs12.d--flex(
           v-for="document in computedAllContractDocuments"
           :key="document.number"
@@ -70,7 +75,12 @@ div(:class="`${pre}`")
 
   .document-page__list.main-content.main-content--h-padding
     er-container.full.container--no-padding.document
-      er-row(v-if="allReportDocuments.length")
+      er-row(v-if="loadingDocuments")
+        er-flex.document-page__loading.d--flex.align-items-center
+          .loading-text.mr-16
+            | Идёт загрузка документов
+          er-progress-circular(indeterminate width="2")
+      er-row(v-else-if="allReportDocuments.length")
         er-flex.lg4.md6.sm6.xs12.d--flex(
           v-for="report in computedAllReportDocuments"
           :key="report.number"
@@ -97,6 +107,7 @@ div(:class="`${pre}`")
     :active="hasSelectedReports"
     :emails="listEmail"
     :count="reportSelectedCount"
+    @send="sendOnEmail"
   )
 
   manual-signing-document(

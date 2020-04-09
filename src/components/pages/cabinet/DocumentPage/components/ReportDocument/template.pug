@@ -19,7 +19,7 @@ common-document(
     h3.er-document__content {{ document.type.id | typeName }}
 
     .document-date.caption2
-      | от {{ $moment(document.date).format("DD.MM.YY") }}
+      | {{ document.fileName }}
 
   template(v-slot:footer)
     er-document-viewer(

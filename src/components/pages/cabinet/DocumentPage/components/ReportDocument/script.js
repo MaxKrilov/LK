@@ -38,9 +38,13 @@ export default {
   methods: {
     onSelect (val) {
       if (val) {
-        this.$emit('select', this.document.number)
+        this.$emit('select', {
+          id: this.document.id,
+          key: this.document.filePath,
+          bucket: this.document.bucket
+        })
       } else {
-        this.$emit('unselect', this.document.number)
+        this.$emit('unselect', this.document.id)
       }
     }
   }

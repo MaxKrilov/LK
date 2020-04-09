@@ -205,8 +205,10 @@
     }
     .title {
       @extend %h4;
+      width: 100%;
     }
     .offer-name {
+      width: 100%;
       .caption {
         @extend %caption2;
       }
