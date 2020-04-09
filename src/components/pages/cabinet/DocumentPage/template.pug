@@ -107,6 +107,7 @@ div(:class="`${pre}`")
     :active="hasSelectedReports"
     :emails="listEmail"
     :count="reportSelectedCount"
+    :loading-sending="loadingSending"
     @send="sendOnEmail"
   )
 
@@ -125,3 +126,21 @@ div(:class="`${pre}`")
     :signing-document="signingDocument"
     @success="successSigned"
   )
+
+  er-activation-modal(
+    type="success",
+    title="Документы успешно отправлены"
+    :is-show-action-button="false"
+    cancel-button-text="Спасибо",
+    v-model="isSuccessSend"
+  )
+
+  er-activation-modal(
+    type="error",
+    title="При отправке возникла ошибка"
+    :is-show-action-button="false"
+    cancel-button-text="Закрыть",
+    v-model="isErrorSend"
+  )
+    template(slot="description")
+      | Повторите запрос позднее

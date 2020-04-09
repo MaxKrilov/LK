@@ -88,7 +88,11 @@ export default {
       signingDocument: {},
 
       isManualSigning: false,
-      isDigitalSigning: false
+      isDigitalSigning: false,
+
+      loadingSending: false,
+      isSuccessSend: false,
+      isErrorSend: false
     }
   },
   computed: {
@@ -186,11 +190,23 @@ export default {
     },
     sendOnEmail (email) {
       const files = Array.from(this.reportSelected.values())
-      // this.$store.dispatch('fileinfo/sendOnEmail', {
-      //   api: this.$api,
-      //   files,
-      //   email
-      // })
+      this.loadingSending = true
+      this.$store.dispatch('fileinfo/sendOnEmail', {
+        api: this.$api,
+        files,
+        email
+      })
+        .then(answer => {
+          if (answer) {
+            this.isSuccessSend = true
+          } else {
+            this.isErrorSend = true
+          }
+        })
+        .catch(() => { this.isErrorSend = true })
+        .finally(() => {
+          this.loadingSending = false
+        })
     }
   },
   async mounted () {
