@@ -39,20 +39,39 @@ export class API {
     return dataResult
   }
 
-  private _transformDataForArray = (): string => {
-    const dataResult: string[] = []
-    eachObject(this._data, (value: string | string[], key: string) => {
-      if (Array.isArray(value)) {
-        eachArray(value, (item: string) => {
-          dataResult.push(`${key}[]=${item}`)
+  private _transformDataForArray = (): URLSearchParams => {
+    const dataResult = new URLSearchParams()
+    eachObject(this._data, (value: any | any[], key: string) => {
+      if (value instanceof Array) {
+        eachArray(value, (item: any) => {
+          if (typeof item === 'object') {
+            eachObject(item, (subItem: any, subKey: string) => {
+              dataResult.append(`${key}[][${subKey}]`, subItem)
+            })
+          } else {
+            dataResult.append(`${key}[]`, item)
+          }
         })
       } else {
-        dataResult.push(`${key}=${value}`)
+        dataResult.append(key, value)
       }
     })
     const _token = this._getToken()
-    !!_token && dataResult.push(`_token=${_token}`)
-    return dataResult.join('&')
+    !!_token && dataResult.append('_token', _token)
+    return dataResult
+    // const dataResult: string[] = []
+    // eachObject(this._data, (value: string | string[], key: string) => {
+    //   if (Array.isArray(value)) {
+    //     eachArray(value, (item: string) => {
+    //       dataResult.push(`${key}[]=${item}`)
+    //     })
+    //   } else {
+    //     dataResult.push(`${key}=${value}`)
+    //   }
+    // })
+    // const _token = this._getToken()
+    // !!_token && dataResult.push(`_token=${_token}`)
+    // return dataResult.join('&')
   }
 
   private _transformDataForJson = (): any => {

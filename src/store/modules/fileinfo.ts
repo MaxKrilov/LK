@@ -7,7 +7,7 @@ import { logError } from '@/functions/logging.ts'
 import { getFirstElement } from '@/functions/helper'
 import { CONTRACT, GROUP_CONTRACT } from '@/constants/document'
 import { isReportDocument, isContractDocument, isUserListDocument, isBlankDocument } from '@/functions/document'
-import { TYPE_ARRAY, TYPE_FILE } from '@/constants/type_request'
+import { TYPE_ARRAY, TYPE_FILE, TYPE_JSON } from '@/constants/type_request'
 
 interface IState {
   listDocument: (DocumentInterface[])[],
@@ -59,7 +59,7 @@ const actions = {
         .setWithCredentials()
         .setData({
           clientId,
-          // billingAccountId
+          billingAccountId
         })
         .query('/customer/management/fileinfo')
         .then((data: DocumentInterface[]) => {
@@ -136,7 +136,7 @@ const actions = {
     return new Promise<boolean>((resolve) => {
       api
         .setWithCredentials()
-        // .setType(TYPE_ARRAY)
+        .setType(TYPE_JSON)
         .setData({
           files,
           email

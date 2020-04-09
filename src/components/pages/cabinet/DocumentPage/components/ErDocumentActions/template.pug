@@ -38,7 +38,7 @@
             er-button(:color="'gray'")
               | Заказать дубликат
           er-flex.lg3.md4.sm6
-            er-button(:color="'gray'" @click="sendOnEmail")
+            er-button(:color="'gray'" @click="sendOnEmail" :loading="loadingSending")
               | Отправить e-mail
           er-flex.flex-grow-1.lg3.md8.email-select
             er-combobox(

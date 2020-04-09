@@ -1,4 +1,5 @@
 import BreakpointMixin from '@/mixins/BreakpointMixin'
+import { PATTERN_EMAIL } from '../../../../../../constants/regexp'
 
 const SHOW_BUTTONS_DURATION = 150
 
@@ -6,7 +7,8 @@ export default {
   props: {
     active: { type: Boolean },
     emails: { type: Array },
-    count: { type: Number }
+    count: { type: Number },
+    loadingSending: Boolean
   },
   mixins: [BreakpointMixin],
   data () {
@@ -19,6 +21,11 @@ export default {
   watch: {
     active (newVal, oldVal) {
       this.hideButtonsFirstTime = this.isMaxBreakpoint('md') && newVal
+    },
+    selectedEmail (val) {
+      if (!val.match(PATTERN_EMAIL)) {
+        this.selectedEmail = ''
+      }
     }
   },
   computed: {
