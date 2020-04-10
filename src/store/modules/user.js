@@ -30,7 +30,7 @@ import {
   isUserListDocument,
   isReportDocument
 } from '@/functions/document'
-import {Cookie} from '../../functions/storage'
+import { Cookie } from '../../functions/storage'
 
 const ACCOUNT_MANAGER_ID = '9134601279613203712'
 const INN_ID = '9148328342013670726'
@@ -324,8 +324,9 @@ const actions = {
    * @param api
    * @return {Promise<void>}
    */
-  [GET_LIST_BILLING_ACCOUNT]: async ({ commit, rootGetters }, { api }) => {
+  [GET_LIST_BILLING_ACCOUNT]: async ({ commit, rootGetters }, { api, route }) => {
     const toms = rootGetters['auth/getTOMS']
+    console.log(route)
     try {
       const result = await api
         .setWithCredentials()
@@ -335,6 +336,19 @@ const actions = {
         })
         .query('/payment/account/list')
       commit(GET_LIST_BILLING_ACCOUNT_SUCCESS, result)
+      // Проверяем - прописан ли какой-либо л/с в GET параметрах
+      const requestBillingNumber = route.query.billing_account
+      if (requestBillingNumber) {
+        // // Проверяем - есть ли такой л/с в списке
+        const indexBillingAccount = Array.isArray(result) && !!result.length
+          ? result.findIndex(billingAccount => billingAccount.accountNumber === requestBillingNumber)
+          : -1
+        if (indexBillingAccount > -1) {
+          commit(SET_ACTIVE_BILLING_ACCOUNT, result[indexBillingAccount].billingAccountId)
+          commit(SET_ACTIVE_BILLING_ACCOUNT_NUMBER, result[indexBillingAccount].accountNumber)
+          return true
+        }
+      }
       // Проверяем - установлен ли какой-то л/с в куках
       const cookieBillingAccountId = Cookie.get('billingAccountId')
       if (cookieBillingAccountId !== undefined) {

@@ -23,14 +23,13 @@ export default {
   }),
   created () {
     this.hint = Boolean(this.isHint)
-    if (this.sumPay !== undefined) {
-      this.sumPayInteger = this.sumPay.substr(0, this.sumPay.indexOf(','))
-      this.sumPayDecimal = this.sumPay.slice(-2)
-    } else {
-      this.sumPayInteger = ''
-      this.sumPayDecimal = ''
-    }
-
+    // if (this.sumPay !== undefined) {
+    //   this.sumPayInteger = this.sumPay.substr(0, this.sumPay.indexOf(','))
+    //   this.sumPayDecimal = this.sumPay.slice(-2)
+    // } else {
+    //   this.sumPayInteger = ''
+    //   this.sumPayDecimal = ''
+    // }
   },
   computed: {
     ...mapGetters([SCREEN_WIDTH]),
@@ -40,6 +39,12 @@ export default {
     internalVisible: {
       get () { return this.vis },
       set (val) { this.$emit('input', val) }
+    },
+    sumPayInteger () {
+      return this.sumPay ? this.sumPay.substr(0, this.sumPay.indexOf(',')) : ''
+    },
+    sumPayDecimal () {
+      return this.sumPay ? this.sumPay.slice(-2) : ''
     }
   },
   watch: {
@@ -48,7 +53,7 @@ export default {
     },
     SCREEN_WIDTH () {
       this.changeWidth()
-    },
+    }
   },
   mounted () {
     this.styleTitle = this.buttLeftText === 'Отменить' ? '' : '__one-row'

@@ -76,6 +76,7 @@ div(:class="`${pre}`").main-content.main-content--h-padding
               er-button(
                 width="100%",
                 @click="paymentConfirm"
+                :loading="isLoadingPayment"
               ) Пополнить счёт
             div(:class="`${pre}__sum__text`")
               | Нажимая на кнопку, Вы принимаете&ensp;
