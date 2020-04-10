@@ -1,0 +1,119 @@
+div(:class="`${pre}`")
+  er-row
+    er-flex(xs12 sm6 md6 lg4 :class="`${pre}__signature`")
+      div
+        h3(:class="`${pre}-title ${pre}-title--large`") Мой&nbsp;профиль
+        div(:class="`${pre}__input-block`")
+          div(v-if="isLastNameChanged" :class="`${pre}__changed`")
+            er-icon(:class="`${pre}__changed-icon`" name="ok")
+            span(:class="`${pre}__changed-text`") Изменен
+          er-text-field(
+            :class="`${pre}-field`"
+            name="inputLastName"
+            label="Фамилия"
+            v-model="value.lastName"
+            isShowSuccess
+            :rules="fullNameRule")
+      div(:class="`${pre}__input-block`")
+        div(v-if="isFirstNameChanged" :class="`${pre}__changed`")
+          er-icon(:class="`${pre}__changed-icon`" name="ok")
+          span(:class="`${pre}__changed-text`") Изменен
+        er-text-field(
+          :class="`${pre}-field`"
+          name="inputFirstName"
+          label="Имя"
+          v-model="value.firstName"
+          isShowSuccess
+          :rules="fullNameRule")
+      div(:class="`${pre}__input-block`")
+        div(v-if="isMiddleNameChanged" :class="`${pre}__changed`")
+          er-icon(:class="`${pre}__changed-icon`" name="ok")
+          span(:class="`${pre}__changed-text`") Изменен
+        er-text-field(
+          :class="`${pre}-field`"
+          name="inputMiddleName"
+          label="Отчество"
+          v-model="value.middleName"
+          isShowSuccess
+          :rules="fullNameRule")
+    er-flex(sm6 md6 lg4 :class="`${pre}__contact-methods`")
+      er-row
+        er-flex(xs12 md12 lg12)
+          div
+            h3(:class="`${pre}-title`") Учетная запись (логин)
+            div(:class="`${pre}__input-block`")
+              div(v-if="isPhonesChanged" :class="`${pre}__changed`")
+                er-icon(:class="`${pre}__changed-icon`" name="ok")
+                span(:class="`${pre}__changed-text`") Изменен
+              div(:class="`${pre}__required-caption__text`") Номер телефона
+              div(:class="`${pre}__methods`" v-for="phone in value.phones")
+                edit-field(
+                  :class="`${pre}__method`"
+                  :value="phone.value"
+                  @onRemove="$emit('onRemovePhone', $event)"
+                  @onPrefer="$emit('onPreferPhone', $event)"
+                )
+              er-text-field(
+                :class="`${pre}-field`"
+                name="inputPhoneNumber"
+                label="Добавьте номер телефона"
+                mask="phone"
+                v-model="editablePhone"
+                isShowSuccess
+                ref="phone"
+                :rules="phoneRule"
+              )
+            div(:class="`${pre}__input-block`")
+              div(v-if="isEmailsChanged" :class="`${pre}__changed`")
+                er-icon(:class="`${pre}__changed-icon`" name="ok")
+                span(:class="`${pre}__changed-text`") Изменен
+              div(:class="`${pre}__required-caption__text`") Электронная почта
+              div(:class="`${pre}__methods`" v-for="mail in value.emails")
+                edit-field(
+                  :class="`${pre}__method`"
+                  :value="mail.value"
+                  @onRemove="$emit('onRemoveEmail', $event)"
+                  @onPrefer="$emit('onPreferEmail', $event)"
+                )
+              er-text-field(
+                :class="`${pre}-field`"
+                name="inputEmail"
+                label="Добавьте электронную почту"
+                type="email"
+                v-model="editableEmail"
+                isShowSuccess
+                ref="email"
+                :rules="emailRule"
+              )
+    er-flex(xs12 sm6 md6 lg4 :class="`${pre}__signature-right`")
+      er-row(:class="`${pre}-title`")
+        er-toggle(:class="`${pre}__switch`" view="switch" v-model="value.canSign")
+        h3 Право подписи
+      template(v-if="value.canSign")
+        div
+          er-file-input(
+            :class="`${pre}__file-loader`"
+            label="Документ, удостоверяющий право подписи"
+          )
+        div
+          er-text-field(
+            :class="`${pre}-field`"
+            label="Фамилия в род. падеже")
+        div
+          er-text-field(
+            :class="`${pre}-field`"
+            label="Имя в род. падеже")
+        div
+          er-text-field(
+            :class="`${pre}-field`"
+            label="Отчество в род. падеже")
+        div
+          er-text-field(
+            :class="`${pre}-field`"
+            label="Должность  в род. падеже")
+      div(v-else)
+        p(:class="`${pre}__text-info`")
+          | Вам будет предложено загрузить скан
+          | подтверждающего документа
+        p(:class="`${pre}__text-info_desc`")
+          | Это может быть: Устав предприятия, Договоренность. Паспорт и прочее. Размер файла не должен превышать 4Мб. Формат: jpg, pdf, docx, png.

@@ -200,18 +200,17 @@
     }
   }
   &__changed {
+    color: map_get($green, 'base');
     position: absolute;
-    top: -1.4rem;
+    top: -22.4px;
     right: 0;
     &-icon {
       svg {
         width: 14px !important;
-        color: map_get($green, 'base');
       }
     }
     &-text {
       padding-left: 2px;
-      color: map_get($green, 'base');
       font: 10.2px/12.75px $fedra-demi;
     }
   }

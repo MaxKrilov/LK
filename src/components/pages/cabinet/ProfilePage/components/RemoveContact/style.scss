@@ -1,0 +1,84 @@
+.remove-contact {
+  color: rgba(map_get($shades, 'black'), 0.8);
+  &__inner {
+    display: flex;
+    flex-direction: column;
+    @include media-query((
+            min-height: (xs: inset, md: 416px)
+    ));
+    @include media-query((
+            padding: (xs: 20px 16px, md: 32px)
+    ));
+  }
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+  &__icon_question {
+    color: map_get($yellow, 'base');
+    &.er-icon svg {
+      width: 52px;
+    }
+  }
+  &__icon_close {
+    color: rgba(map_get($shades, 'black'), 0.2);
+    cursor: pointer;
+    .er-icon svg {
+      width: 16px;
+    }
+  }
+  &__title {
+    display: block;
+    max-width: 420px;
+    color: rgba(map_get($shades, 'black'), 0.8);
+    font: map_get($title, 'medium');
+  }
+  &__names {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    :first-child {
+      padding-right: 5px;
+    }
+  }
+  &__name {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    &_last {
+      color: rgba(map_get($shades, 'black'), 0.8);
+      font: map_get($title, 'small');
+      line-height: 22px;
+      letter-spacing: -1px;
+    }
+    &_first, &_middle {
+      color: rgba(map_get($shades, 'black'), 0.5);
+      font: map_get($text, 'medium');
+      line-height: 21px;
+      letter-spacing: -0.5px;
+    }
+  }
+  &__buttons {
+    &_wrap {
+      & + & {
+        @include media-query(
+            (padding-top: (xs: 8px, sm: 0))
+        );
+      }
+    }
+    margin-top: auto;
+    display: flex;
+    justify-content: space-between;
+  }
+  &__button {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  &__error {
+    color: map_get($red, 'base');
+  }
+}

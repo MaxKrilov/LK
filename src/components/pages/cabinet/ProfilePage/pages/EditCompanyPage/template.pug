@@ -5,5 +5,7 @@ div(:class="`${pre}`")
         er-icon(:class="`${pre}__welcome-title__back-link__icon desktop`", name="arrow_l")
         er-icon(:class="`${pre}__welcome-title__back-link__icon mobile`", name="corner_up")
       span(:class="`${pre}__welcome-title__back-link__label`") Назад в кабинет
-    h1.h1-font Карточка клиента
+    h1(:class="`${pre}__title`") Карточка клиента
+  div(:class="`${pre}__required-label`")
+    span - Поля обязательные к заполнению
   router-view

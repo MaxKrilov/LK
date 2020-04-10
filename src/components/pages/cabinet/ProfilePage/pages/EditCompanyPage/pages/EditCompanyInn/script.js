@@ -20,7 +20,7 @@ export default {
       if (!this.isMounted) {
         return
       }
-      return this.$refs.innRef.hasFocus || this.innValue ? 'ИНН' : 'Введите ИНН организации'
+      return this.$refs.innRef.hasFocus ? 'ИНН' : 'Введите ИНН организации'
     },
     ...mapState({
       fns: (state) => state.variables[FNS],

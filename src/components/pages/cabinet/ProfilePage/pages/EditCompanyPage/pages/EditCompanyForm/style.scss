@@ -57,9 +57,7 @@
   }
   &__error {
     flex-wrap: nowrap !important;
-    @include media-query((
-      margin: (xs: 0 0 25px !important)
-    ));
+    margin: 0 0 25px !important;
     color: map_get($red, 'base')
   }
 }

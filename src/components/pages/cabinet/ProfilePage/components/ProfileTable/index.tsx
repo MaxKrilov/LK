@@ -121,7 +121,7 @@ export default class ProfileTable extends ProfileTableProp {
   handleClickRow (item: any) {
     return this.$emit('clickRow', { item })
   }
-
+  // eslint-disable-next-line
   render (h: CreateElement): VNode {
     const scopedSlots = {
       cell: ({ item, dataKey, index }: any) => {
@@ -148,7 +148,6 @@ export default class ProfileTable extends ProfileTableProp {
       const {
         label,
         disableSort,
-        // display,
         dataKey,
         showAmount,
         flexGrow = 1,

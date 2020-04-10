@@ -2,21 +2,21 @@ div(v-if="(isXS || isSM) && stateModalVisibility" :class="`${pre}--mobile`")
   h1(:class="`${pre}--mobile__title`") Смена пароля
   a(@click="close" :class="`${pre}--mobile__close`")
     span
-      er-icon(name="close")
+      er-icon(name="close" width="16px" height="16px")
   p(v-if="!!serverError").text-sm.err.mb-16.mt-16 {{serverError}}
   p(v-else).text-sm.mb-16.mt-16 В целях вашей безопасности рекомендуем менять пароль один раз в месяц. Пароль должен состоять из комбинации букв, цифр, cпецсимволов и быть не менее 8 и не более 16 символов.
   er-row(:class="`${pre}--mobile__checks`")
-    er-flex(xs12, sm4, :class="[`${pre}--mobile__check`, checkEmptyFields ? '' : isLettersOk ? 'ok' : 'err']" )
+    er-flex(xs4, sm4, :class="[`${pre}--mobile__check`, checkEmptyFields ? '' : isLettersOk ? 'ok' : 'err']" )
       span.text-xl
         | A-z
         er-icon(v-if="!!this.passwordNew" :class="`${pre}__icon`" :name="checkEmptyFields ? '' : isLettersOk ? 'ok' : 'close'")
       span(v-if="!isXS").text-xs Латинские символы с верхним и нижним регистром
-    er-flex(xs12, sm4, :class="[`${pre}--mobile__check`, checkEmptyFields ? '' : isNumbersOk ? 'ok' : 'err']" )
+    er-flex(xs4, sm4, :class="[`${pre}--mobile__check`, checkEmptyFields ? '' : isNumbersOk ? 'ok' : 'err']" )
       span.text-xl
         | 0-9
         er-icon(v-if="!!this.passwordNew" :class="`${pre}__icon`" :name="checkEmptyFields ? '' : isNumbersOk ? 'ok' : 'close'")
       span(v-if="!isXS").text-xs Цифра или несколько цифр
-    er-flex(xs12, sm4, :class="[`${pre}--mobile__check`, checkEmptyFields ? '' : isSymbolsOk ? 'ok' : 'err']" )
+    er-flex(xs4, sm4, :class="[`${pre}--mobile__check`, checkEmptyFields ? '' : isSymbolsOk ? 'ok' : 'err']" )
       span.text-xl
         | _ ] [ - . ! #
         er-icon(v-if="isSymbolsOk" :class="`${pre}__icon`" :name="checkEmptyFields ? '' : isSymbolsOk ? 'ok' : 'close'")

@@ -8,10 +8,10 @@ import { BREAKPOINT_MD, BREAKPOINT_LG } from '@/constants/breakpoint'
 import { USER_ROLES, ACCESS_ROLE_LIST } from '@/store/mock/profile'
 import { lengthVar } from '@/functions/helper'
 import AccountDetails from './components/AccountDetails'
-import SearchField from './components/SearchField'
 import AccountForm from '../AccountForm'
 import ProfileTable from '../ProfileTable'
-import Alert from './components/Alert'
+import SearchField from '../SearchField'
+import Alert from '../Alert'
 
 export default {
   name: 'accounts-section',

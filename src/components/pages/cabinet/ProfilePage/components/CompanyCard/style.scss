@@ -56,14 +56,9 @@
       @extend %h4;
     }
     &-text {
-      font: (normal 11px $fedra-book, 'Roboto', 'Helvetica', sans-serif);
+      @extend %caption2;
       margin-bottom: 4px;
       @include media-query((
-        font: (
-          sm: (normal 11px $fedra-book, 'Roboto', 'Helvetica', sans-serif),
-          md: (normal 12px $fedra-demi, 'Roboto', 'Helvetica', sans-serif),
-          lg: (normal 12px $fedra-demi, 'Roboto', 'Helvetica', sans-serif),
-          xl: (normal 12px $fedra-demi, 'Roboto', 'Helvetica', sans-serif)),
           margin-bottom: (sm: 8px, md: 4px, lg: 8px)
       ));
       color: map_get($gray, '6');
@@ -93,17 +88,7 @@
     text-decoration: none;
     cursor: pointer;
     .er-button__content {
-      @include media-query((
-        font: (
-          xs: (normal 13px/16px $fedra-demi, 'Roboto', 'Helvetica', sans-serif),
-          md: (normal 14px/17px $fedra-demi, 'Roboto', 'Helvetica', sans-serif),
-          lg: (normal 16px/20px $fedra-demi, 'Roboto', 'Helvetica', sans-serif)
-        ),
-        letter-spacing: (
-          xs: 0.35px,
-          sm: 0
-        )
-      ));
+      @extend %button-font;
     }
     @include media-query((
       height: (md: 48px)

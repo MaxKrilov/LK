@@ -8,23 +8,37 @@ div(:class="`${pre}`")
     h1(:class="`${pre}__title`") Профиль
 
   div(
-    v-if="!isLPR"
     :class="`${pre}__wrapper`")
     er-row(v-if="serverErrorMessage")
       er-flex
         | {{ serverErrorMessage }}
     er-row(v-else-if="hasAccess")
       er-flex(xs-12)
-        account-form(
-          isUpdate
-          :class="`${pre}__edit-form`"
-          :userId="user.userId"
-          :lastName="user.lastName",
-          :firstName="user.firstName",
-          :middleName="user.middleName",
-          :phoneNumber="user.phone",
-          :email="user.email",
-          :systems="userResourceAccess"
-          @success="handleEventForm"
-          @fail="handleEventForm"
-          @cancel="handleEventForm")
+        template(v-if="isLPR")
+          contacts-form(
+            isUpdate
+            :class="`${pre}__edit-form`"
+            :userId="user.userId"
+            :lastName="user.lastName",
+            :firstName="user.firstName",
+            :middleName="user.middleName",
+            :phoneNumber="user.phone",
+            :email="user.email",
+            :systems="userResourceAccess"
+            @success="handleEventForm"
+            @fail="handleEventForm"
+            @cancel="handleEventForm")
+        template(v-if="!isLPR")
+          account-form(
+            isUpdate
+            :class="`${pre}__edit-form`"
+            :userId="user.userId"
+            :lastName="user.lastName",
+            :firstName="user.firstName",
+            :middleName="user.middleName",
+            :phoneNumber="user.phone",
+            :email="user.email",
+            :systems="userResourceAccess"
+            @success="handleEventForm"
+            @fail="handleEventForm"
+            @cancel="handleEventForm")

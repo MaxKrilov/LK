@@ -25,6 +25,10 @@ const CREATE_CONTACT = 'CREATE_CONTACT'
 const CREATE_CONTACT_SUCCESS = 'CREATE_CONTACT_SUCCESS'
 const CREATE_CONTACT_ERROR = 'CREATE_CONTACT_ERROR'
 
+// Account id's
+const MIDDLE_NAME = '9134317459913190730'
+const CONTACT_ROLE_SIGNATORY_AUTH = '9142343507913277484'
+
 const CREATE_CONTACT_ROLE = 'CREATE_CONTACT_ROLE'
 const CREATE_CONTACT_ROLE_SUCCESS = 'CREATE_CONTACT_ROLE_SUCCESS'
 const CREATE_CONTACT_ROLE_ERROR = 'CREATE_CONTACT_ROLE_ERROR'
@@ -217,19 +221,15 @@ const actions = {
   updateUserContact: ({ commit }, data) => {
     commit(UPDATE_CONTACT, data)
   },
-
   setRemoveContactModalVisibility: ({ commit }, payload) => {
     commit(CONTACTS_REMOVE_MODAL, payload)
   },
-
   setModalInfoVisibility: ({ commit }, payload) => {
     commit(CONTACTS_INFO_MODAL, payload)
   },
-
   setModalUserId: ({ commit }, { userId, userPostId }) => {
     commit(CONTACTS_SET_ID, { userId, userPostId })
   },
-
   cleanModal: ({ commit }) => {
     commit(CONTACTS_SET_ID, { userId: '', userPostId: '' })
   },
@@ -266,7 +266,7 @@ const actions = {
         commit(CREATE_CONTACT_ROLE_SUCCESS)
         return true
       }
-      commit(CREATE_CONTACT_ROLE_ERROR, `Ошибка создания роли контакта: ${output.message.toString()}`)
+      commit(CREATE_CONTACT_ROLE_ERROR, `Ошибка создания роли контакта: ${ output.message.toString() }`)
       return false
     } catch (error) {
       commit(CREATE_CONTACT_ROLE_ERROR, 'Сервер не отвечает. Попробуйте обновить страницу.')

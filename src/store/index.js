@@ -7,6 +7,7 @@ import accounts from './modules/accounts'
 import contacts from './modules/contacts'
 import modal from './modules/modal'
 import accountForm from './modules/accountForm'
+import contactForm from './modules/contactForm'
 import directories from './modules/directories'
 import api from './modules/api'
 import variables from './modules/variables'
@@ -33,6 +34,7 @@ export default new Vuex.Store({
     contacts,
     modal,
     accountForm,
+    contactForm,
     directories,
     api,
     variables,

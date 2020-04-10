@@ -1,10 +1,12 @@
 import { mapGetters } from 'vuex'
 import AccountForm from '../../components/AccountForm/index'
+import ContactForm from '../../components/ContactForm/index'
 
 export default {
   name: 'edit-profile-page',
   components: {
-    AccountForm
+    AccountForm,
+    ContactForm
   },
   data: () => ({
     pre: 'edit-profile-page'
