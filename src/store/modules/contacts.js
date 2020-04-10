@@ -81,34 +81,36 @@ const getters = {
         return false
       }
     }
-    const contacts = rootState.user.clientInfo?.contacts?.map(it => {
-      return {
-        contactId: it.id,
-        firstName: it.firstName || '',
-        lastName: it.lastName || '',
-        name: it.name,
-        middleName: it.extendedMap?.[MIDDLE_NAME]?.singleValue?.attributeValue || '',
-        roles: it.roles?.map(roleObj => ({
-          id: roleObj.role?.id,
-          name: roleObj.role?.name
-        })) || [],
-        canSign: it.roles?.filter(roleObj => roleObj.role?.id === CONTACT_ROLE_SIGNATORY_AUTH).length > 0,
-        phones: it.contactMethods
-          .filter(item => item['@type']
-            .match(/PhoneNumber/ig))
-          .map(field => ({
-            value: field.value,
-            isPrefer: checkPreferenceContact(it, field.id)
+    const contacts = rootState.user.clientInfo?.contacts?.map
+      ? rootState.user.clientInfo?.contacts?.map(it => {
+        return {
+          contactId: it.id,
+          firstName: it.firstName || '',
+          lastName: it.lastName || '',
+          name: it.name,
+          middleName: it.extendedMap?.[MIDDLE_NAME]?.singleValue?.attributeValue || '',
+          roles: it.roles?.map(roleObj => ({
+            id: roleObj.role?.id,
+            name: roleObj.role?.name
           })) || [],
-        emails: it.contactMethods
-          .filter(item => item['@type']
-            .match(/Email/ig))
-          .map(field => ({
-            value: field.value,
-            isPrefer: checkPreferenceContact(it, field.id)
-          })) || []
-      }
-    })
+          canSign: it.roles?.filter(roleObj => roleObj.role?.id === CONTACT_ROLE_SIGNATORY_AUTH).length > 0,
+          phones: it.contactMethods
+            .filter(item => item['@type']
+              .match(/PhoneNumber/ig))
+            .map(field => ({
+              value: field.value,
+              isPrefer: checkPreferenceContact(it, field.id)
+            })) || [],
+          emails: it.contactMethods
+            .filter(item => item['@type']
+              .match(/Email/ig))
+            .map(field => ({
+              value: field.value,
+              isPrefer: checkPreferenceContact(it, field.id)
+            })) || []
+        }
+      })
+      : []
     if (!usersQuery.length) {
       return contacts
     }

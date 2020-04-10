@@ -153,7 +153,7 @@ const router = new Router({
           component: AddFunds
         },
         {
-          path: 'add-funds/payments-on',
+          path: 'payment-result',
           component: PaymentsOn
         },
         {

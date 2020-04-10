@@ -108,7 +108,7 @@ export default {
           if (Object.keys(clientInfo).length !== 0) {
             this.$store.dispatch(`user/${GET_MANAGER_INFO}`, context)
             this.$store.dispatch(`request/${GET_REQUEST}`, context)
-            this.$store.dispatch(`user/${GET_LIST_BILLING_ACCOUNT}`, context)
+            this.$store.dispatch(`user/${GET_LIST_BILLING_ACCOUNT}`, { ...context, route: this.$route })
               .then(isValid => {
                 if (isValid) {
                   this.$store.dispatch(`fileinfo/downloadListDocument`, context)

@@ -83,41 +83,51 @@ const actions = {
   hideDelCard: async ({ commit }) => {
     commit('hideDelCard')
   },
-  payment: async ({ commit }, { api, payload }) => {
-    try {
-      const result = await api
+  payment: ({ commit }, { api, payload }) => {
+    return new Promise((resolve, reject) => {
+      api
         .setWithCredentials()
-        .setData(
-          payload
-        )
+        .setData(payload)
         .query('/acquiring/card/pay')
-      const resultArr = [result, payload.email]
-      commit('payment', resultArr)
-
-      return result
-    } catch (e) {
-      commit(ERROR_MODAL, true, { root: true })
-    }
+        .then(response => {
+          if (response && response.hasOwnProperty('pay_url')) {
+            commit('paymentSuccess', {
+              email: payload.email,
+              payUrl: response.pay_url
+            })
+            resolve()
+          } else {
+            commit(ERROR_MODAL, true, { root: true })
+            reject()
+          }
+        })
+        .catch(() => {
+          commit(ERROR_MODAL, true, { root: true })
+          reject()
+        })
+    })
   },
-  bindpay: async ({ commit }, { api, payload }) => {
-    try {
-      const result = await api
+  bindpay: ({ commit }, { api, payload }) => {
+    return new Promise((resolve, reject) => {
+      api
         .setWithCredentials()
-        .setData(
-          payload
-        )
+        .setData(payload)
         .query('/acquiring/card/bindpay')
-      const resultArr = [
-        result,
-        payload.email,
-        payload.returnUrl,
-        payload.billingAccount
-      ]
-      commit('bindpay', resultArr)
-      return result
-    } catch (e) {
-      commit(ERROR_MODAL, true, { root: true })
-    }
+        .then(response => {
+          commit('bindpaySuccess', {
+            email: payload.email,
+            acsUrl: response.acsUrl,
+            MD: response.MD,
+            PaReq: response.PaReq,
+            TermUrl: response.TermUrl
+          })
+          resolve(response)
+        })
+        .catch(() => {
+          commit(ERROR_MODAL, true, { root: true })
+          reject(false)
+        })
+    })
   },
   bindPayNext: async ({ commit }, { api, payload }) => {
     try {
@@ -259,9 +269,37 @@ const mutations = {
     state.pay_status = result.pay_status
     state.bindingId = result.bindingId
   },
-  payment: (state, result) => {
-    localStorage.setItem('email', result[1])
-    location.href = result[0].pay_url
+  paymentSuccess: (_, payload) => {
+    localStorage.setItem('email', payload.email)
+    location.href = payload.payUrl
+  },
+  bindpaySuccess: (_, payload) => {
+    localStorage.setItem('email', payload.email)
+    let form = document.createElement('form')
+    form.setAttribute('action', payload.acsUrl)
+    form.setAttribute('method', 'POST')
+    form.style.display = 'none'
+    // MD
+    const mdInput = document.createElement('input')
+    mdInput.setAttribute('type', 'hidden')
+    mdInput.setAttribute('name', 'MD')
+    mdInput.setAttribute('value', payload.MD)
+    form.appendChild(mdInput)
+    // PaReq
+    const paReqInput = document.createElement('input')
+    paReqInput.setAttribute('type', 'hidden')
+    paReqInput.setAttribute('name', 'PaReq')
+    paReqInput.setAttribute('value', payload.PaReq)
+    form.appendChild(paReqInput)
+    // TermUrl
+    const termUrlInput = document.createElement('input')
+    termUrlInput.setAttribute('type', 'hidden')
+    termUrlInput.setAttribute('name', 'TermUrl')
+    termUrlInput.setAttribute('value', payload.TermUrl)
+    form.appendChild(termUrlInput)
+
+    form = document.body.appendChild(form)
+    form.submit()
   },
   bindpay: (state, result) => {
     localStorage.setItem('email', result[1])

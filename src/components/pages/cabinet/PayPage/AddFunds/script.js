@@ -46,7 +46,8 @@ export default {
     checkAutoPay: 'Подключить автоплатёж',
     selectedEmail: '',
     emails: [],
-    currentEmail: ''
+    currentEmail: '',
+    isLoadingPayment: false
   }),
   computed: {
     ...mapGetters([SCREEN_WIDTH]),
@@ -66,6 +67,11 @@ export default {
   mounted () {
     this.changeWidth()
     this.listEmail()
+    // Проверяем - есть ли в GET параметрах сумма. Если да, то устанавливаем её
+    const sumPay = this.$route.query.total_amount
+    if (sumPay) {
+      this.sumPay = `${sumPay},00`
+    }
   },
   watch: {
     SCREEN_WIDTH () {
@@ -227,15 +233,19 @@ export default {
       sumPay = sumPay.replace(',', '.')
       let selSave = Number(this.selSave)
       let payload
+      this.isLoadingPayment = true
       if (this.numCard === 0) {
         payload = {
           value: sumPay,
           billingAccount: this.activeBillingAccountId,
           save: selSave,
           email: this.currentEmail,
-          returnUrl: location.href + '/payments-on'
+          returnUrl: `${location.origin}/lk/payment-result`
         }
         this.$store.dispatch('payments/payment', { api: this.$api, payload: payload })
+          .finally(() => {
+            this.isLoadingPayment = false
+          })
       } else {
         const cvv = this.numCard === 0 ? this.cvc[0] : this.cvc[this.numCard - 1]
         payload = {
@@ -244,9 +254,12 @@ export default {
           value: sumPay,
           email: this.currentEmail,
           cvv: cvv,
-          returnUrl: location.href + '/payments-on'
+          returnUrl: `${location.origin}/lk/payment-result`
         }
         this.$store.dispatch('payments/bindpay', { api: this.$api, payload: payload })
+          .finally(() => {
+            this.isLoadingPayment = false
+          })
       }
       this.openConfirmPay = false
     },
