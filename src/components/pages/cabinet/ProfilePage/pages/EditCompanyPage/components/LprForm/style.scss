@@ -9,7 +9,7 @@
       margin: 0 !important;
     };
     &:last-child .lpr-form__field .lpr-form__field {
-      margin-bottom: 0px;
+      margin-bottom: 0;
     }
   }
   &__field {
@@ -103,7 +103,7 @@
 
   .er-select {
     max-width: 268px;
-    .er-input__control { 
+    .er-input__control {
       max-height: 48px;
     }
   }

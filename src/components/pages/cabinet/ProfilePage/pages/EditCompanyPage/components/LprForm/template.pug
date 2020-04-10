@@ -5,7 +5,7 @@ div(:class="`${pre}`")
       isShowLabelRequired
       v-model.trim="value.position"
       label="Должность"
-      :rules="cyrillicRule",
+      :rules="cyrillicRule"
       :class="`${pre}__field__input`"
     )
   div(:class="`${pre}__field`")
@@ -94,7 +94,7 @@ div(:class="`${pre}`")
             mask="99:99",
             :class="`${pre}__field__input`"
           )
-        div &ndash;  
+        div &ndash;
         er-flex(:class="`${pre}__phone-time`").xs6
           er-text-field(
             v-model.trim="value.phoneTo"

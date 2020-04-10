@@ -1,0 +1,28 @@
+.edit-field {
+  align-items: center;
+  &__value {
+    margin-right: auto;
+    font: map_get($text, 'sm');
+    @include media-query((
+      font: (
+        lg: map_get($text, 'md'),
+        xl: map_get($text, 'lg'))
+    ))
+  }
+  &__actions {
+    display: inline-flex;
+    margin-bottom: 8px;
+  }
+  &__delete, &__preference {
+    padding-left: 10px;
+  }
+  &__icon {
+    color: map_get($gray, '6');
+    width: 18px;
+    height: 18px;
+    i, svg {
+      width: inherit !important;
+      height: 18px;
+    }
+  }
+}

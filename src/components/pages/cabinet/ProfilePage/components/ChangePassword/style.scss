@@ -113,15 +113,15 @@
     z-index: 100;
     overflow-y: auto;
     overflow-x: hidden;
-    padding: 1rem 1.5rem;
+    padding: 16px 24px;
     &__title {
+      @extend %h2;
       display: block;
-      width: calc(100% + 3rem);
-      margin-left: -1.5rem;
-      margin-top: -1rem;
+      width: calc(100% + 48px);
+      margin-left: -24px;
+      margin-top: -16px;
       background-color: map_get($shades, 'white');
-      padding: 1rem 1.5rem .9rem;
-      font: 17px/22px $fedra-demi;
+      padding: 16px 24px 14px;
     }
     & .text-sm {
       font: map_get($text, 'small');
@@ -142,9 +142,7 @@
       right: 1.5rem;
       top: 1rem;
       opacity: 0.5;
-      svg {
-        width: 16px !important;
-      }
+
       &:hover {
         transition: opacity 0.2s ease-in;
         opacity: 1;
@@ -163,7 +161,6 @@
     }
     &__check {
       display: flex;
-      flex: 0 0 32% !important;
       flex-direction: column;
       color: rgba(map_get($shades, 'black'), 0.5);
       span + span {

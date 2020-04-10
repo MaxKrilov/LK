@@ -1,0 +1,114 @@
+div(:class="`${pre}`")
+  edit-confirm(
+    @save="handleConfirmSaveClick",
+    @cancel="handleConfirmCancelClick")
+  remove-contact(
+    :first-name="firstName",
+    :last-name="lastName",
+    :middle-name="middleName",
+    v-model="dialogRemoveContact",
+    @remove="handleRemoveContactClick",
+    @cancel="handleRemoveContactCancelClick")
+  div(v-if="isSM || isXS" :class="`${pre}-mobile`")
+    div(:class="`${pre}-mobile__header`")
+      er-row
+        er-flex(xs6 sm8)
+          h3(
+            v-if="!isUpdate"
+            :class="`${pre}-mobile__header-title`") Новый контакт
+          h3(
+            v-else-if="isUpdate"
+            :class="`${pre}-mobile__header-title`") Редактировать контакт
+        er-flex(xs6 sm4 :class="`${pre}-mobile__header__btns-group`")
+          a(
+            v-if="!isUpdate && (isFilled && isChanged)"
+            type="submit",
+            @click="handleSaveClick")
+            span
+              span(
+                :class="`${pre}-mobile__header__btns-group__text ${pre}__header__link__text--green`")
+                | Сохранить
+          a(@click="handleCancelClick")
+            span
+              er-icon(
+                name="close",
+                :class="`${pre}-mobile__header__btns-group__icon`")
+      div(
+        v-if="!isUpdate && isSM"
+        :class="`${pre}__required-caption`")
+        div(:class="`${pre}__required-caption__circle`")
+        span(:class="`${pre}__required-caption__text`")
+          | — Поля обязательные к заполнению
+    div(:class="`${pre}-mobile__content`")
+      er-form(ref="contactForm" @change="validForm" @submit.prevent="validForm")
+        div(
+          v-if="!isUpdate && isXS"
+          :class="`${pre}__required-caption`")
+          div(:class="`${pre}__required-caption__circle`")
+          span(:class="`${pre}__required-caption__text`")
+            | — Поля обязательные к заполнению
+        edit-section(
+          isUpdate
+          v-model="sectionContactData"
+          :isLastNameChanged="isLastNameChanged"
+          :isFirstNameChanged="isFirstNameChanged"
+          :isMiddleNameChanged="isMiddleNameChanged"
+          :isPhonesChanged="isPhonesChanged"
+          :isEmailsChanged="isEmailsChanged"
+          ref="editSec").mb-24
+        er-row(
+          :class="`${pre}__error`"
+          v-if="isEmailExistsError || isPhoneExistsError").align-items-center
+          span
+            er-icon(name="warning")
+          p.ml-16 {{updatedFailText}}
+        er-row(:class="`${pre}__btns-group`")
+          er-flex(xs12 sm6 md6 lg4).mb-8
+            er-button(
+              type="submit",
+              :disabled="!isFilled || !isChanged"
+              :loading="isLoading",
+              @click="handleSaveClick") Сохранить
+          er-flex(xs12 sm6 md6 lg4).mb-8
+            er-button(flat, @click="handleCancelClick") Отменить
+  template(v-if="!isSM && !isXS")
+    er-form(ref="accountForm" @change="validForm" @submit.prevent="validForm")
+      div(
+        v-if="!isUpdate"
+        :class="`${pre}__required-caption`")
+        div(:class="`${pre}__required-caption__circle`")
+        span(:class="`${pre}__required-caption__text`")
+          | — Поля обязательные к заполнению
+      edit-section(
+        isUpdate
+        v-model="sectionContactData"
+        :isLastNameChanged="isLastNameChanged"
+        :isFirstNameChanged="isFirstNameChanged"
+        :isMiddleNameChanged="isMiddleNameChanged"
+        :isPhonesChanged="isPhonesChanged"
+        :isEmailsChanged="isEmailsChanged"
+        @onRemoveEmail="handleRemoveEmail"
+        @onPreferEmail="handlePreferEmail"
+        @onRemovePhone="handleRemovePhone"
+        @onPreferPhone="handlePreferPhone"
+        ref="editSec")
+      er-row(
+        :class="`${pre}__error`"
+        v-if="true").align-items-center
+        span
+          er-icon(name="warning")
+        p.ml-16 {{updatedFailText}}
+      er-row(:class="`${pre}__btns-group`")
+        er-flex(sm12 md6 lg4 :class="`${pre}-btn-save`").mb-8
+          er-button(
+            type="submit",
+            :disabled="!isFilled || !isChanged"
+            :loading="isLoading",
+            @click="handleSaveClick") Сохранить
+        er-flex(sm12 md6 lg4).mb-32
+          er-button(flat, @click="handleCancelClick") Отменить
+        er-flex(sm12, md6, lg4)
+          er-button.mb-16(
+            flat,
+            v-if="isUpdate",
+            @click="handleShowRemoveContactClick") Удалить запись

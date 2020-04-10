@@ -1,0 +1,36 @@
+div.pb-8(:class="`${pre}`")
+  remove-contact(
+    :first-name="firstName",
+    :last-name="lastName",
+    :middle-name="middleName",
+    v-model="dialogRemoveContact",
+    @remove="handleRemoveContactClick",
+    @cancel="handleRemoveContactCancelClick")
+
+  div(v-if="isShowContactForm")
+    contact-form(
+      isLPR
+      isUpdate
+      :userId="userId"
+      :contactId="contactId"
+      :firstName="firstName"
+      :middleName="middleName"
+      :lastName="lastName"
+      :roles="roles"
+      :rolesList="roles"
+      :phones="phones"
+      :emails="emails"
+      @success="onSuccessForm"
+      @fail="onFailForm"
+      @cancel="onCancelForm")
+
+  er-row(v-if="!isDesktop").mt-24
+    er-flex(xs12, sm6, md5)
+      er-button.mb-16(
+        v-if="!isShowContactForm",
+        @click="handleUpdateClick") Редактировать
+    er-flex(xs12, sm6, md5)
+      er-button.mb-16(
+        flat,
+        v-if="!isShowContactForm",
+        @click="handleShowRemoveContactClick") Удалить запись

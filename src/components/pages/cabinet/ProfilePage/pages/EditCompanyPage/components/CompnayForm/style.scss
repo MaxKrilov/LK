@@ -1,0 +1,12 @@
+.company-form {
+  display: flex;
+  flex-direction: column;
+  margin-top: 48px;
+  &__field {
+    margin-bottom: 24px;
+  }
+
+  &__error {
+    margin-bottom: 40px;
+  }
+}

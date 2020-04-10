@@ -1,0 +1,362 @@
+.access-section {
+  &__changed {
+    margin-top: auto;
+    margin-bottom: auto;
+    color: map_get($green, 'base');
+    &-icon {
+      svg {
+        width: 16px !important;
+      }
+    }
+    &-text {
+      padding-left: 2px;
+      font-size: 12px;
+    }
+  }
+  &__container {
+    flex-wrap: wrap !important;
+    @include media-query((
+      flex-wrap: (lg: nowrap !important)
+    ));
+  }
+  &__separator {
+    width: 100%;
+    position: relative;
+    @include media-query((
+      width: (lg: 97%),
+      position: (lg: absolute)
+    ));
+    &::before {
+      position: absolute;
+      top: 44px;
+      left: -15px;
+      width: 120%;
+      @include media-query((
+        top: (md: 45px, lg: 24px),
+        left: (lg: 0),
+        width: (lg: 100%)
+      ));
+      content: '';
+      height: 1px;
+      background: map_get($gray, '4');
+    }
+  }
+  &__header {
+    @include media-query((
+      margin-top: (md: -4px, lg: 5px, xl: 0),
+      flex: (md: 1 1 100%, lg: 0 0 35%),
+      min-width: (md: 100%, lg: 35%),
+      flex-wrap: (md: nowrap !important, lg: wrap !important)
+    ));
+    &__title,
+    &__title__small {
+      color: rgba(map_get($shades, 'black'), 0.3);
+      display: block;
+      margin-bottom: 8px;
+      @extend %caption1;
+      @include media-query((
+        line-height: (md: 16px)
+      ));
+      &__separator {
+        display: block;
+        @include media-query((
+          display: (lg: none)
+        ));
+        width: 100%;
+        position: relative;
+        &::before {
+          position: absolute;
+          top: 8px;
+          display: block;
+          @include media-query((
+            top: (sm: -12px, md: 8px),
+            display: (lg: none)
+          ));
+          content: '';
+          width: 100%;
+          height: 1px;
+          background: map_get($gray, '4');
+        }
+      }
+    }
+    &__title__small {
+      margin-bottom: 0;
+      @include media-query((
+        font: (
+          md: 11px $fedra-book !important,
+          lg: 13px $fedra-book !important,
+          xl: map-get($text, 'small') $fedra-book !important),
+        letter-spacing: (md: 0.35px),
+        margin-bottom: (sm: 16px, md: 0, lg: 20px, xl: 26px),
+        margin-left: (md: 0)
+      ));
+    }
+  }
+  &__side-menu {
+    &__list {
+      max-height: 200px;
+      display: flex;
+      padding: 0 0 10px 0 !important;
+      margin-bottom: 22px !important;
+      flex-direction: row;
+      white-space: nowrap;
+      @include media-query((
+        position: (md: relative),
+        overflow: (
+          lg: visible !important),
+        justify-content: (sm: space-between),
+        flex-direction: (lg: column),
+        padding: (
+          md: 2px 0 !important),
+        margin-bottom: (
+          md: 0 !important),
+        white-space: (lg: normal),
+        scroll-snap-type: (lg: none)
+      ));
+      &--blur {
+        position: relative;
+        @include media-query((
+          display: (md: none)
+        ));
+        &::after {
+          content: '';
+          position: absolute;
+          width: 50%;
+          height: 50%;
+          right: 0;
+          background: linear-gradient(90deg, rgba(map_get($gray, '3'), 0.5) 25%, map_get($gray, '3') 100%);
+        }
+      }
+      &::-webkit-scrollbar {
+        display: none;
+      }
+      scrollbar-width: none;
+      &__item {
+        flex-wrap: wrap !important;
+        align-items: stretch;
+        padding: 0;
+        margin: 0 !important;
+        cursor: pointer;
+        @include media-query((
+          display: (md: inline-block),
+          flex-wrap: (lg: nowrap !important),
+          padding: (
+            lg: 8px 6px,
+            xl: 12px 6px)
+        ));
+        &:last-child {
+          @include media-query((
+            padding: (lg: 8px 6px, xl: 12px 6px)
+          ));
+        }
+        & + & {
+          margin-left: 30px !important;
+          @include media-query((
+            margin-left: ( md: 0 !important)
+          ));
+        }
+        span {
+          color: rgba(map_get($shades, 'black'), 0.5) !important;
+          @extend %button-font;
+          @include media-query((
+            color: (lg: map_get($shades, 'black') !important, xl: map_get($shades, 'black') !important),
+            line-height: (xl: 21px),
+            letter-spacing: (xl: -0.5px),
+            padding-bottom: (sm: 0, md: 35px, lg: 0),
+            white-space: (md: nowrap, lg: normal)
+          ));
+        }
+        .er-icon {
+          @include media-query(
+            (display: (xs: none, lg: block, xl: block))
+          );
+          color: map_get($gray, '6');
+          svg {
+            width: 28px;
+            height: 28px;
+          }
+        }
+        &__active-line {
+          position: relative;
+          @include media-query((
+            width: (
+              xs: calc(100% + 4px),
+              lg: 0)
+          ));
+          &::before {
+            content: '';
+            position: absolute;
+            background: map_get($yellow, 'base');
+            border-radius: 2px;
+            height: 3px;
+            width: 100%;
+            left: 0;
+            bottom: -20px;
+            @include media-query((
+              height: (
+                lg: calc(100% + 24px)),
+              width: (
+                lg: 4px,
+                xl: 4px),
+              left: (
+                lg: -37px
+              ),
+              top: (
+                sm: 18px,
+                md: 22px,
+                lg: -12px
+              ),
+              bottom: (
+                lg: 0
+              )
+            ));
+          }
+        }
+        &:hover {
+          border-radius: 8px;
+          background: map_get($shades, 'transparent');
+          @include media-query((
+            background: (
+              lg: rgba(map_get($shades, 'black'), .05),
+              xl: rgba(map_get($shades, 'black'), .05))
+          ));
+          span {
+            color: rgba(map_get($shades, 'black'), .8) !important;
+          }
+        }
+        &:active {
+          background: map_get($shades, 'transparent');
+          span {
+            color: map_get($yellow, 'base') !important;
+          }
+        }
+        &--active {
+          .er-icon {
+            color: map_get($yellow, 'base');
+          }
+          span {
+            color: map_get($shades, 'black') !important;
+            &::before {
+              background: map_get($shades, 'black');
+            }
+          }
+        }
+        &__arrow {
+          transform: rotate(90deg);
+          color: map_get($shades, 'transparent') !important;
+          svg {
+            width: 16px !important;
+            height: 16px !important;
+          }
+          &--active {
+            color: map_get($gray, '6') !important;
+          }
+        }
+      }
+    }
+  }
+  &__content {
+    flex: 100% !important;
+    min-width: 65%;
+    @include media-query((
+      margin-top: (lg: 5px, xl: 0),
+    ));
+    & .access-section__header__title {
+      @include media-query((
+          font: (sm: 9px/16px !important, lg: map_get($text, 'small') !important, xl: map_get($text, 'medium') !important)
+        ));
+    }
+    &__list {
+      padding: 18px 0 0 0 !important;
+      @include media-query((
+        padding: (
+          sm: 0 !important,
+          md: 20px 0 0 0 !important,
+          lg: 0 0 0 !important),
+      ));
+      &__item {
+        @extend %button-font;
+        margin: 0 !important;
+        padding: 5px 0;
+        border-radius: 8px;
+        box-sizing: border-box;
+        border: 1px solid map_get($shades, 'transparent');
+        align-items: flex-end;
+        & > .flex {
+          padding: 2px;
+          @include media-query((
+            padding: (
+              sm: 2px,
+              md: 0 12px,
+              lg: 0 15px),
+          ));
+        }
+        &__btn {
+          &-remove {
+            text-align: right;
+            margin-top: -2px;
+            @include media-query((
+              margin-top: (md: -3px, lg: -2px)
+            ));
+            &__icon {
+              vertical-align: sub;
+            }
+            .er-icon {
+              color: rgba(map_get($shades, 'black'), .2);
+            svg {
+                width: 15px;
+                height: 15px;
+              }
+            }
+          }
+        }
+        &:hover {
+          background: rgba(map_get($shades, 'black'), .05);
+          .er-icon {
+            cursor: pointer;
+            color: rgba(map_get($shades, 'black'), .5);
+            &:active {
+              color: rgba(map_get($shades, 'black'), .2);
+            }
+          }
+        }
+        &:visited {
+          border: 1px solid map-get($green, 'base');
+        }
+        &:active,
+        &--active {
+          background: map_get($yellow, 'base');
+        }
+      }
+    }
+  }
+  &__add-btn {
+    @include media-query((
+      margin: (
+        xs: 11px 0 24px,
+        sm: 13px 0 24px,
+        md: 32px 0 24px,
+        lg: 21px 0 24px,
+        xl: 29px 0 24px)
+    ));
+    // Замена марджинов на паддинги, чтобы реализовать белый фон при редактировании прав доступа
+    .active & {
+      @include media-query((
+        margin-top: (
+          xs: 0,
+          sm: 0),
+        margin-bottom: (
+          xs: 0,
+          sm: 0),
+        padding: (
+          xs: 11px 0 24px,
+          sm: 13px 0 24px)
+        ));
+    }
+    & .er-button {
+      @include media-query((
+        height: (xs: 40px, xl: 48px)
+      ));
+    }
+  }
+}

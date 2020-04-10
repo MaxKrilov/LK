@@ -11,6 +11,12 @@ export const ENDPOINTS_API = {
      */
     getListlk: 'get-list-lk',
     /**
+     * Список контактов
+     * @param tomsId
+     */
+    // TODO
+    getContacts: 'get-list-lk',
+    /**
      * Добавление УЗ пользователем ЛПР
      * @param email,name,phone,tomsId,dmpId
      */
@@ -26,6 +32,11 @@ export const ENDPOINTS_API = {
      */
     createUserRoles: 'create-user-roles',
     /**
+     * Создание ролей коонтакта
+     * @param  userPostId,systemRoleId
+     */
+    createContactRoles: 'create-contact-roles',
+    /**
      * Редактирование должности
      * @param id,roleId
      */
@@ -35,6 +46,11 @@ export const ENDPOINTS_API = {
      * userPostId,systemRoleId
      */
     removeUserRoles: 'remove-user-roles',
+    /**
+     * Удаление прав доступа аккаунта
+     * userPostId, systemRoleId
+     */
+    removeContactRoles: 'remove-account-roles',
     /**
      * Сменить пароль от УЗ
      * @param userId, password

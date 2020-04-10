@@ -1,0 +1,29 @@
+.contact-details {
+  @include media-query((
+    padding: (xs: 18px 15px, sm: 18px 25px)
+  ));
+  &__tags {
+    @include media-query((
+      margin-left: (xs: 0, sm: 22px)
+    ));
+    & .caption, &__title {
+      font: normal 10px/12px $fedra-book;
+      margin-bottom: 2px;
+    }
+    &__description {
+      @include media-query((
+        font: (xs: map_get($text, 'small'), sm: normal 13px/18px $fedra-book)
+      ));
+      margin-bottom: 15px;
+    }
+  }
+  .er-button--flat {
+    background: map_get($shades, 'white') !important;
+  }
+  & > .row {
+    margin: 0 -10px;
+    & > .flex {
+      padding: 0 8px;
+    }
+  }
+}

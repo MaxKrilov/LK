@@ -34,7 +34,7 @@ export default class SearchField extends SearchFieldProp {
   handleSearchChange (value: any) {
     this.modelSearch = value
   }
-
+  // eslint-disable-next-line
   render (h: CreateElement): VNode {
     const pluralText = getNoun(this.countRows, 'учетная запись', 'учетные записи', 'учетных записей')
     return (

@@ -272,8 +272,8 @@
           ))
         }
         &__cell {
+          @extend %caption2;
           @include media-query((
-            font: (xs: 10px/12px $fedra-demi, sm: 11px/12px $fedra-demi),
             padding: (
               xs: 10px 0 8px,
               sm: 10px 0 8px !important,
@@ -333,10 +333,6 @@
             md: map_get($gray, '9')
           )
         ));
-
-        &__cell {
-
-        }
 
         &__separator {
           width: 100%;

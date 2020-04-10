@@ -270,8 +270,8 @@
     position: relative;
     border: 1px solid rgba(map_get($shades, 'black'), 0.2);
     &:hover {
-      border-color: #000000 !important;
-      background: #FFFFFF !important;
+      border-color: map_get($shades, 'black') !important;
+      background: map_get($shades, 'white') !important;
     }
   }
   &__changed {
@@ -288,6 +288,21 @@
       padding-left: 2px;
       color: map_get($green, 'base');
       font: 10.2px/12.75px $fedra-demi;
+    }
+  }
+  &__changed {
+    color: map_get($green, 'base');
+    position: absolute;
+    top: -22.4px;
+    right: 0;
+    &-icon {
+      svg {
+        width: 14px !important;
+      }
+    }
+    &-text {
+      @extend %caption2;
+      padding-left: 2px;
     }
   }
 }

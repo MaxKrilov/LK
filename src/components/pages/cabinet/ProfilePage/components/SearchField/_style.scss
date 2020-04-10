@@ -16,13 +16,12 @@
   }
   &__form {
     box-sizing: border-box;
-    top: 2px;
     @include media-query((
       position: (xs: absolute, md: relative),
       width: (xs: 95px, sm: 210px, md: 264px),
       display: (xs: block, lg: none),
       margin-right: (xs: 30px),
-      top: (xs: 3px, sm: 3px, md: 2px)
+      top: (xs: 5px, md: 2px)
     ));
     right: 0;
     z-index: map_get($z-index, 'search-field');
@@ -56,6 +55,11 @@
         display: none;
       }
       &.er-text-field > .er-input__control > .er-input__slot {
+        label {
+          @include media-query((
+            top: (xs: -1px, md: 0)
+          ))
+        }
         @include media-query((
           border: (
             xs: none,
@@ -63,6 +67,11 @@
           ),
           min-height: (xs: 32px, sm: 34px, md: 40px)
         ));
+        .main-profile-page & {
+          @include media-query((
+            min-height: (xs: 40px)
+          ));
+        }
         margin-bottom: 0;
         & .er-input__append-inner {
           @include media-query((
