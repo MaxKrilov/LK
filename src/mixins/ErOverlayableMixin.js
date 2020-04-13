@@ -1,7 +1,6 @@
 import '@/assets/scss/components/UI/_er-overlay.scss'
-import { addClass, eachArray, getFirstElement, getScreenWidth, removeClass, setStyle } from '../functions/helper'
+import { addClass, eachArray, getFirstElement, removeClass, setStyle } from '../functions/helper'
 import { keyCode } from '../functions/keyCode'
-import { BREAKPOINT_SM } from '../constants/breakpoint'
 
 export default {
   name: 'overlayable',

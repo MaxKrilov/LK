@@ -127,8 +127,8 @@ export default {
     },
     generateHeadTitle () {
       return this.$createElement('div', {
-          staticClass: `${this.pre}__head__title`
-        }, this.typeOfCalendar === 'calendar'
+        staticClass: `${this.pre}__head__title`
+      }, this.typeOfCalendar === 'calendar'
         ? this.generateHeadTitleForCalendar()
         : this.generateHeadTitleForReport()
       )

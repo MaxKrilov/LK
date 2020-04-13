@@ -10,7 +10,6 @@ import {
 } from '../actions/request'
 import { ERROR_MODAL } from '../actions/variables'
 import { TYPE_ARRAY } from '../../constants/type_request'
-import { UPLOAD_FILE } from '../actions/documents'
 import moment from 'moment'
 
 const CANCELLATION_REASON = '9150410012013966885'
