@@ -4,7 +4,7 @@ import {
   eachObject,
   stringToCamel,
   toFullName } from '@/functions/helper'
-import {Cookie} from './storage'
+import { Cookie } from './storage'
 
 const makeUserInfo = function (token) {
   const userObj = parseJwt(token)

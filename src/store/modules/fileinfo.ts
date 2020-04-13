@@ -7,7 +7,7 @@ import { logError } from '@/functions/logging.ts'
 import { getFirstElement } from '@/functions/helper'
 import { CONTRACT, GROUP_CONTRACT } from '@/constants/document'
 import { isReportDocument, isContractDocument, isUserListDocument, isBlankDocument } from '@/functions/document'
-import { TYPE_ARRAY, TYPE_FILE, TYPE_JSON } from '@/constants/type_request'
+import { TYPE_FILE, TYPE_JSON } from '@/constants/type_request'
 
 interface IState {
   listDocument: (DocumentInterface[])[],
@@ -53,12 +53,12 @@ const actions = {
    */
   downloadListDocument (context: ActionContext<IState, any>, payload: { api: API }) {
     const { toms: clientId } = context.rootGetters['auth/user']
-    const billingAccountId = context.rootGetters['user/getActiveBillingAccount']
+    // const billingAccountId = context.rootGetters['user/getActiveBillingAccount']
     return new Promise<void>((resolve, reject) => {
       payload.api
         .setWithCredentials()
         .setData({
-          clientId,
+          clientId
           // billingAccountId
         })
         .query('/customer/management/fileinfo')

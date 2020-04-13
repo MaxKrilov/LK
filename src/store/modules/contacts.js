@@ -268,7 +268,7 @@ const actions = {
         commit(CREATE_CONTACT_ROLE_SUCCESS)
         return true
       }
-      commit(CREATE_CONTACT_ROLE_ERROR, `Ошибка создания роли контакта: ${ output.message.toString() }`)
+      commit(CREATE_CONTACT_ROLE_ERROR, `Ошибка создания роли контакта: ${output.message.toString()}`)
       return false
     } catch (error) {
       commit(CREATE_CONTACT_ROLE_ERROR, 'Сервер не отвечает. Попробуйте обновить страницу.')
