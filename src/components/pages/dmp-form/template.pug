@@ -17,7 +17,7 @@ div.px-32.py-64(:class="`${pre}`")
       div.mb-44(:class="`${pre}__description-inn`")
         | Если вы не помните свой ИНН, вы можете узнать его на <a href="https://www.nalog.ru" target="_blank">сайте ФНС</a> или другом ресурсе для самозанятых
       div(:class="`${pre}__submit-inn`")
-        er-button(type="submit")
+        er-button(type="submit" :loading="loadingInn")
           | Заполнить
   er-slide-up-down(:active="!isInputInn")
     er-container(full)
@@ -171,8 +171,27 @@ div.px-32.py-64(:class="`${pre}`")
               readonly
               )
         er-row
-          er-flex(xs6, offset-xs6)
-            er-file-input(
-              label="Документ, удостоверяющий право подписи"
+          er-flex(xs3 offset-xs6)
+            er-text-field(
+              label="Номер телефона"
+              v-model="modelData.phoneNumber"
+              :rules="[rules.isRequired]"
+              tabIndex="15"
+              key="phoneNumber",
+              mask="+7 999 999 9999"
             )
+        er-row
+          er-flex(xs6, offset-xs6)
+            .file-input
+              .top(v-show="!issetFile") Для подтверждения права подписи
+              label(
+                :class="{ 'success': issetFile, 'error': !isValidFile }"
+              )
+                input(type="file" @change="onChangeFile")
+                | {{ issetFile ? getFileName : 'загрузите скан документа' }}
+              .description(v-show="!issetFile" :class="{ 'error': !isValidFile }")
+                template(v-if="isValidFile")
+                  | Это может быть: Устав предприятия, Доверенность. Размер файла не должен превыщать 2Мб. Формат: JPG, PNG, PDF
+                template(v-else)
+                  | Документ не загружен
   er-error-modal
