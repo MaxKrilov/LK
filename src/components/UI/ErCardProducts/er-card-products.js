@@ -1,8 +1,16 @@
+import { Skeleton } from 'vue-loading-skeleton'
 
 export default {
   name: 'er-card-products',
+  components: {
+    Skeleton
+  },
   props: {
     stopped: {
+      type: Boolean,
+      default: false
+    },
+    loading: {
       type: Boolean,
       default: false
     },
