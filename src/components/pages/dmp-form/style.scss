@@ -29,4 +29,34 @@
       margin-bottom: 18px;
     }
   }
+  .file-input {
+    .top {
+      @extend %h4;
+      @include color-black(0.5);
+    }
+    label {
+      input { display: none }
+      @extend %h4;
+      @include color-black(0.8);
+      border-bottom: 1px dashed map-get($yellow, 'base');
+      transition: color $primary-transition;
+      cursor: pointer;
+      &:hover {
+        @include color-black(1);
+      }
+      &.success {
+        color: map-get($green, 'base');
+        border-bottom-color: map-get($green, 'base');
+      }
+      &.error {
+        color: map-get($red, 'base');
+        border-bottom-color: map-get($red, 'base');
+      }
+    }
+    .description {
+      font: 14px/19px $fedra-book;
+      @include color-black(0.5);
+      margin-top: 20px;
+    }
+  }
 }
