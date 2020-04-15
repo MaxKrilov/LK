@@ -121,6 +121,7 @@ export default {
         editData['issuedBy'] = this.modelData.passportIssuedBy
       }
       const responseClient = await this.$store.dispatch(`user/${UPDATE_CLIENT_INFO}`, { api: this.$api, formData: editData })
+      console.log(responseClient)
       if (!responseClient) {
         this.$store.commit(ERROR_MODAL, true)
         return false
@@ -138,11 +139,13 @@ export default {
         phone: this.modelData.phoneNumber
       }
       const responseContact = await this.$store.dispatch('contacts/createSignContact', { api: this.$api, data: contactData })
+      console.log(responseContact)
       if (!responseContact) {
         this.$store.commit(ERROR_MODAL, true)
         return false
       }
       const responseRole = await this.$store.dispatch('contacts/createContactRole', { api: this.$api })
+      console.log(responseRole)
       if (!responseRole) {
         this.$store.commit(ERROR_MODAL, true)
         return false
