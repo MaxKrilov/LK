@@ -97,8 +97,8 @@
               )
       ));
       &__background-sub-menu {
-        position: fixed;
-        top: 56px; right: 0; left: 56px;
+        position: absolute;
+        top: 0; right: 0; left: 56px;
         height: 0;
         background-color: map_get($shades, 'white');
         transition: $primary-transition;
@@ -106,11 +106,11 @@
         &.open {
           height: calc(100vh - 56px);
           @include media-query((
-                  top: (
-                          md: 64px,
-                          lg: 72px,
-                          xl: 96px
-                  ),
+                  //top: (
+                  //        md: 64px,
+                  //        lg: 72px,
+                  //        xl: 96px
+                  //),
                   height: (
                           md: calc(100vh - 64px),
                           lg: calc(100vh - 72px),

@@ -1,3 +1,6 @@
+import 'core-js'
+import 'regenerator-runtime/runtime'
+
 import Vue, { DirectiveFunction, DirectiveOptions } from 'vue'
 import router from './router'
 import store from './store'

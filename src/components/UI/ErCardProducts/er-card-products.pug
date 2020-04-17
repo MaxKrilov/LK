@@ -8,7 +8,7 @@ div(:class="`${pre}`")
         div(:class="`${pre}__point-icon`")
           er-icon(class="icon" :name="icon")
         div(:class="`${pre}__point-wrapper`")
-          skeleton(:loading="loading" :width="'20vw'") 
+          skeleton(:loading="loading" :width="'20vw'")
             div(:class="`${pre}__title-block`")
               div(:class="`${pre}__point-name`")
                 slot
@@ -29,7 +29,7 @@ div(:class="`${pre}`")
                 div(class="title")
                   slot(name="date-title")
                     | Дата активации:
-                skeleton(:loading="loading")  
+                skeleton(:loading="loading")
                   div(:class="`${pre}__h4`") {{ date }}
               div(:class="`${pre}__price`")
                 div(class="title") Абонентская плата
