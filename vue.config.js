@@ -1,4 +1,5 @@
 module.exports = {
+  transpileDependencies: ['vue-loading-skeleton'],
   css: {
     loaderOptions: {
       sass: {
