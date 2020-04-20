@@ -21,6 +21,7 @@ import {
   GET_LIST_BILLING_ACCOUNT, GET_LIST_PRODUCT_BY_ADDRESS, GET_LIST_PRODUCT_BY_SERVICE,
   GET_MANAGER_INFO, GET_PAYMENT_INFO, GET_PROMISED_PAYMENT_INFO
 } from '@/store/actions/user'
+import { GET_CHAT_TOKEN } from '@/store/actions/chat'
 
 import { GET_REQUEST } from '@/store/actions/request'
 
@@ -113,6 +114,7 @@ export default {
                 if (isValid) {
                   this.$store.dispatch(`fileinfo/downloadListDocument`, context)
                   this.$store.dispatch(`user/${GET_PAYMENT_INFO}`, context)
+                  this.$store.dispatch(`chat/${GET_CHAT_TOKEN}`, context)
                   this.$store.dispatch(`user/${GET_PROMISED_PAYMENT_INFO}`, context)
                   this.$store.dispatch(`payments/invPayment`, context)
                   this.$store.dispatch(`user/${GET_LIST_PRODUCT_BY_ADDRESS}`, context)
