@@ -1,3 +1,8 @@
+$ripple-animation-transition-in: transform 250ms map-get($transition, 'fast-in-slow-out'),
+                                  opacity 100ms map-get($transition, 'fast-in-slow-out') !default;
+$ripple-animation-transition-out: opacity 300ms map-get($transition, 'fast-in-slow-out') !default;
+$ripple-animation-visible-opacity: 150ms !default;
+
 .er-ripple {
   &__container {
     color: inherit;
@@ -8,10 +13,11 @@
     left: 0;
     top: 0;
     overflow: hidden;
-    z-index: $ripple-z-index;
+    z-index: 0;
     pointer-events: none;
     contain: strict;
   }
+
   &__animation {
     color: inherit;
     position: absolute;
@@ -23,12 +29,15 @@
     pointer-events: none;
     overflow: hidden;
     will-change: transform, opacity;
+
     &--enter {
       transition: none;
     }
+
     &--in {
       transition: $ripple-animation-transition-in;
     }
+
     &--out {
       transition: $ripple-animation-transition-out;
     }
