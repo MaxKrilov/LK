@@ -198,8 +198,7 @@ const actions = {
       const result = await api
         .setWithCredentials()
         .setData({
-          id: toms,
-          clientId: toms
+          id: toms
         })
         .query('/customer/account/client-info')
       commit(GET_CLIENT_INFO_SUCCESS, result)
