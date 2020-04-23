@@ -9,7 +9,8 @@ import {
 
 import {
   questionIsVisibleInSSP,
-  questionHasMandatory,
+  isRequiredQuestion,
+  isChildQuestion,
   isTextQuestion,
   surveyStatusIsDone,
   isMaxPostponedTimes,
@@ -32,7 +33,8 @@ export default {
       isSurveyLoaded: false,
       showPutOffButton: false,
       bindedCampaign: {},
-      surveyDate: ''
+      surveyDate: '',
+      prevAnswer: {}
     }
   },
   async created () {
@@ -55,8 +57,7 @@ export default {
       survey: 'survey/getSurvey',
       actualSurveyList: 'survey/getActualSurveyList',
       actualSurveyCount: 'survey/getActualSurveyCount',
-      allActualSurveyCount: 'survey/getAllActualSurveyCount',
-      sortedByOrderNumber: 'survey/getOrderedCurrentQuestionList'
+      allActualSurveyCount: 'survey/getAllActualSurveyCount'
     }),
     async actualSurveyCount () {
       // кол-во актуальных анкет кроме текущей
@@ -66,19 +67,16 @@ export default {
       ).length > 0
     },
     maxPage () {
-      const count = this.sortedByOrderNumber.length
+      const count = this.survey.surveyQuestion.length
       return count
-    },
-    hasMandatory () {
-      return questionHasMandatory(
-        this.getCurrentQuestion()
-      )
     },
     isQuestionVisibleInSSP () {
       return questionIsVisibleInSSP(this.getCurrentQuestion())
     },
     isNextActive () {
-      return this.hasMandatory || this.isAnswerSelected
+      const currentQuestion = this.getCurrentQuestion()
+      const isRequired = isRequiredQuestion(currentQuestion)
+      return !isRequired || this.isAnswerSelected
     },
     isSurvey () {
       const communicationType = this.bindedCampaign.communication_type
@@ -94,6 +92,11 @@ export default {
       const communicationType = this.bindedCampaign.communication_type
       const result = isSurveyReception(communicationType)
       return result
+    },
+    isLastRequiredQuestion () {
+      const remainsQuestionList = this.survey.surveyQuestion.slice(this.currentQuestionIndex + 1)
+      const requiredQuestionList = remainsQuestionList.filter(el => isRequiredQuestion(el))
+      return !requiredQuestionList.length
     },
     async currentSurveyInSurveyList () {
       const surveyList = await this.surveyList
@@ -163,9 +166,8 @@ export default {
 
       this.getSurveyByClient({ api: this.$api })
     },
-    async getCurrentQuestion () {
-      const curQuestion = await this.sortedByOrderNumber[this.currentQuestionIndex]
-      return curQuestion
+    getCurrentQuestion () {
+      return this.survey.surveyQuestion[this.currentQuestionIndex]
     },
     onQuestionSelected (answer) {
       this.isAnswerSelected = true
@@ -176,39 +178,99 @@ export default {
       this.currentAnswer = value
     },
     async onNextQuestion () {
+      const currentQuestion = await this.getCurrentQuestion()
       const lastQuestionIndex = (await this.maxPage - 1)
       const isLastQuestion = this.currentQuestionIndex >= lastQuestionIndex
-      const currentQuestion = await this.getCurrentQuestion()
-      const {
-        id,
-        name,
-        questionText,
-        questionType
-      } = currentQuestion
 
-      const question = {
-        id,
-        name,
-        questionText,
-        questionType
+      if (this.currentAnswer || isRequiredQuestion(currentQuestion)) {
+        const {
+          id,
+          name,
+          questionText,
+          questionType
+        } = currentQuestion
+
+        const question = {
+          id,
+          name,
+          questionText,
+          questionType
+        }
+
+        if (isTextQuestion(questionType)) {
+          question.textAnswer = this.currentAnswer
+        } else {
+          question.listAnswer = {
+            id: this.currentAnswer.id,
+            answerText: this.currentAnswer.answerText
+          }
+        }
+
+        this.sendQuestionResponse(question)
+        this.prevAnswer = { ...this.currentAnswer }
+      } else {
+        this.prevAnswer = {}
       }
 
-      if (isTextQuestion(questionType)) {
-        question.textAnswer = this.currentAnswer
+      if (this.isLastRequiredQuestion) {
+        // Удаление из кампейна
+        const deletePayload = {
+          api: this.$api,
+          id: this.bindedCampaign.id
+        }
+        this.campaignDelete(deletePayload)
+          .then(data => {
+            logInfo('survey onNextQuestion isLastQuestion')
+          })
+      }
+
+      // сбрасываем ответы
+      this.currentAnswer = null
+      this.isAnswerSelected = false
+
+      if (isLastQuestion) {
+        this.onDone()
       } else {
-        question.listAnswer = {
-          id: this.currentAnswer.id,
-          answerText: this.currentAnswer.answerText
+        this.currentQuestionIndex += 1
+
+        const nextQuestion = await this.getCurrentQuestion()
+
+        if (isChildQuestion(nextQuestion)) {
+          const depAnswerIdList = nextQuestion.dependencyOnAnswer.map(el => el.id)
+
+          if (!depAnswerIdList.includes(this.prevAnswer.id)) {
+            this.currentQuestionIndex += 1
+
+            if (this.currentQuestionIndex > lastQuestionIndex) {
+              this.onDone()
+            }
+          }
         }
       }
+    },
+    onNextSurvey () {
+      logInfo('onNextSurvey')
+      if (this.isNextSurveyActive) {
+        const fixDuplicatedIds = this.actualSurveyList.filter(
+          el => el.id !== this.survey.id
+        )
 
+        const nextSurvey = fixDuplicatedIds[0]
+        this.$router.push({
+          name: 'survey',
+          params: { id: nextSurvey.id }
+        }).catch(err => { logError(err) })
+      }
+    },
+    async sendQuestionResponse (question) {
+      const currentQuestion = await this.getCurrentQuestion()
       const payload = {
         api: this.$api,
         id: this.id,
         surveyQuestion: [question]
       }
 
-      this.surveyResponseSended(payload)
+      return this.surveyResponseSended(payload)
         .then(data => {
           if (data.businessErrorCode !== undefined) {
             logError('survey/responseSended', data.userMessage)
@@ -224,41 +286,10 @@ export default {
             }
 
             this.campaignResponseAnswer(payload)
-              .then(data => {
-                if (isLastQuestion) {
-                  // Удаление из кампейна
-                  const deletePayload = {
-                    api: this.$api,
-                    id: this.bindedCampaign.id
-                  }
-                  this.campaignDelete(deletePayload)
-                    .then(data => { // hello callback hell
-                      logInfo('survey onNextQuestion isLastQuestion')
-                      this.onDone()
-                    })
-                } else { // Продолжаем проходить анкету
-                  this.currentQuestionIndex += 1
-                }
-
-                this.currentAnswer = null
-                this.isAnswerSelected = false
-              })
           }
-        })
-    },
-    onNextSurvey () {
-      logInfo('onNextSurvey')
-      if (this.isNextSurveyActive) {
-        const fixDuplicatedIds = this.actualSurveyList.filter(
-          el => el.id !== this.survey.id
-        )
 
-        const nextSurvey = fixDuplicatedIds[0]
-        this.$router.push({
-          name: 'survey',
-          params: { id: nextSurvey.id }
-        }).catch(err => { logError(err) })
-      }
+          return data
+        })
     },
     onDone () {
       logInfo('onDone')

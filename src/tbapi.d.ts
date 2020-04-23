@@ -215,3 +215,18 @@ export interface ICustomerProduct {
     }
   ]
 }
+
+export interface ISurveyQuestion {
+  id: string
+  orderNumber: string // number in string
+  questionText: string
+  questionType: string
+  doNotShowInSSP: 'Yes' | 'No' | 'Да' | 'Нет'
+  mandatory: string
+  possibleAnswers?: any[]
+  dependencyOnAnswer?: any[]
+  dependencyOnQuestion?: {
+    id: string
+    name: string
+  }
+}

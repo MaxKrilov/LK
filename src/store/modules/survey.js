@@ -7,7 +7,6 @@ import {
 import { logInfo } from '@/functions/logging.ts'
 import {
   surveyStatusIsDone,
-  questionIsVisibleInSSP,
   processSurvey
 } from '@/functions/survey'
 
@@ -34,21 +33,6 @@ const apiWrap = api => {
 const getters = {
   getSurvey (state) {
     return state.current
-  },
-  getOrderedCurrentQuestionList (state) {
-    const questionList = state.current.surveyQuestion
-    if (questionList) {
-      let newList = questionList.slice()
-      newList.sort((a, b) => {
-        const aOrder = parseInt(a.orderNumber)
-        const bOrder = parseInt(b.orderNumber)
-        return aOrder - bOrder
-      })
-      const filteredList = newList.filter(el => questionIsVisibleInSSP(el))
-      return filteredList
-    }
-
-    return []
   },
   getAllActualSurveyCount (state) {
     return state.actualList.length
@@ -77,7 +61,7 @@ const actions = {
         return data
       })
   },
-  fetchSurveyById: ({ commit, rootGetters }, { api, id }) => {
+  fetchSurveyById: ({ rootGetters }, { api, id }) => {
     const url = '/customer/survey/get-by-id'
     const { toms } = rootGetters['auth/user']
 
