@@ -30,6 +30,25 @@
     // т.к. у футера уже есть margin-top: auto
     padding-top: $padding-x40;
   }
+  .space-after-top-menu {
+    // Наполняет место верхнего меню,
+    // которое абсолютно позиционированно
+    @include min-breakpoint('xs') {
+      margin-top: map_get($menu-top-height, 'default');
+    }
+
+    @include min-breakpoint('md') {
+      margin-top: map_get($menu-top-height, 'md');
+    }
+
+    @include min-breakpoint('lg') {
+      margin-top: map_get($menu-top-height, 'lg');
+    }
+
+    @include min-breakpoint('xl') {
+      margin-top: map_get($menu-top-height, 'xl');
+    }
+  }
 }
 
 .er-notification-container {
