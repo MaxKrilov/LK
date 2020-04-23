@@ -26,7 +26,7 @@
   .main-content.main-content--h-padding.pos-relative.height-380
     transition(name="fade-transition")
       div(v-show="isSurveyLoaded && !done")
-        template(v-for="question, idx in sortedByOrderNumber")
+        template(v-for="question, idx in survey.surveyQuestion")
           survey-page(
             v-if="idx === currentQuestionIndex"
             :key="question.id"
@@ -90,5 +90,3 @@
                 .d--flex.flex-grow-1
                 | &nbsp;
                 .d--flex.flex-grow-10.justify-content-center Следующая анкета
-
-    .big-space

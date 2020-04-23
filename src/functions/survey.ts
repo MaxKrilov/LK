@@ -4,17 +4,46 @@ import {
   SHOW_IN_SSP_EN,
   QUESTION_TYPE_TEXT,
   SURVEY_STATUS_DONE,
-  SURVEY_MAX_POSTPONED_TIMES
+  SURVEY_MAX_POSTPONED_TIMES,
+  QUESTION_IS_REQUIRED
 } from '@/constants/survey.ts'
-import { logInfo } from '@/functions/logging'
 
-function questionIsVisibleInSSP (surveyQuestion: any): boolean {
+import { ISurveyQuestion } from '@/tbapi'
+
+function questionIsVisibleInSSP (question: ISurveyQuestion): boolean {
   const showInSSP = [SHOW_IN_SSP_RU, SHOW_IN_SSP_EN]
-  return showInSSP.includes(surveyQuestion.doNotShowInSSP)
+  return showInSSP.includes(question.doNotShowInSSP)
 }
 
-function questionHasMandatory (surveyQuestion: any): boolean {
-  return surveyQuestion.mandatory === MANDATORY_02
+function questionHasMandatory (question: ISurveyQuestion): boolean {
+  return question.mandatory === MANDATORY_02
+}
+
+function isRequiredQuestion (question: ISurveyQuestion): boolean {
+  return question.mandatory === QUESTION_IS_REQUIRED
+}
+
+function getOrderedQuestionList (questionList: ISurveyQuestion[]): any[] {
+  if (questionList) {
+    let newList = questionList.slice()
+    newList.sort((a, b) => {
+      const aOrder = parseInt(a.orderNumber)
+      const bOrder = parseInt(b.orderNumber)
+      return aOrder - bOrder
+    })
+    const filteredList = newList.filter(el => questionIsVisibleInSSP(el))
+    return filteredList
+  }
+
+  return []
+}
+
+function isChildQuestion (question: ISurveyQuestion): boolean {
+  return !!question.dependencyOnQuestion
+}
+
+function getParentQuestionList (questionList: ISurveyQuestion[]): ISurveyQuestion[] {
+  return questionList.filter(el => !isChildQuestion(el))
 }
 
 function surveyStatusIsDone (surveyStatus: string): boolean {
@@ -26,6 +55,7 @@ function isTextQuestion (questionType: string): boolean {
 }
 
 function isMaxPostponedTimes (postponedTimes: string): boolean {
+  /* отложено максимальное количество раз */
   const times = parseInt(postponedTimes)
   return times >= SURVEY_MAX_POSTPONED_TIMES
 }
@@ -53,12 +83,17 @@ function processSurvey (data: any): any {
     ? new Date(data.postponedTill)
     : undefined
 
+  data.surveyQuestion = getOrderedQuestionList(data.surveyQuestion)
   return data
 }
 
 export {
   questionIsVisibleInSSP,
   questionHasMandatory,
+  isRequiredQuestion,
+  isChildQuestion,
+  getOrderedQuestionList,
+  getParentQuestionList,
   isTextQuestion,
   surveyStatusIsDone,
   isMaxPostponedTimes,
