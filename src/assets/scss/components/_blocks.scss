@@ -63,21 +63,6 @@
   }
 
   &--top-menu-fix {
-    @include min-breakpoint('xs') {
-      margin-top: map_get($menu-top-height, 'default');
-    }
-
-    @include min-breakpoint('md') {
-      margin-top: map_get($menu-top-height, 'md');
-    }
-
-    @include min-breakpoint('lg') {
-      margin-top: map_get($menu-top-height, 'lg');
-    }
-
-    @include min-breakpoint('xl') {
-      margin-top: map_get($menu-top-height, 'xl');
-    }
   }
 }
 
