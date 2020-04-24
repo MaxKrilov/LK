@@ -8,6 +8,7 @@ div(:class="`${pre}`")
       )
       div
         span(:class="`${pre}__download-offer-text`") Скачать комерческое<br> предложение
+
   img(:class=("`${pre}__banner`") :src="getImg(banner)" alt="")
   div(:class="`${pre}__feature`")
     div(:class="`${pre}__feature-item`" v-for="item in featureList" :key="item.id")
@@ -17,8 +18,22 @@ div(:class="`${pre}`")
           :name="item.icon"
         )
       h3(:class="`${pre}__feature-name`") {{ item.name }}
-      div(:class="`${pre}__feature-description`") {{ item.description }}
+
+      template(v-if="item.isComponent")
+        div(
+          :class="`${pre}__feature-description`"
+          v-class-mod="['html']"
+        )
+          component(:is="item.component")
+      template(v-else-if="item.isHTML")
+        div(
+          :class="`${pre}__feature-description`"
+          v-class-mod="['html']"
+          v-html="item.description"
+        )
+      template(v-else)
+        div(:class="`${pre}__feature-description`") {{ item.description }}
+
   div(:class="`${pre}__buttons`")
     er-button(:class="`${pre}__buttons-item`" color="blue") {{ plugText }}
     er-button(:flat="true") Посмотреть демо-версию
-
