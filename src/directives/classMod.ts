@@ -33,13 +33,18 @@
   ПРИМЕЧАНИЕ:
     Название класса Блока - это первый класс элемента
 */
+import { VNodeDirective } from 'vue'
 
-function blockAddMod (blockName, modName) {
+interface classModDirective extends VNodeDirective {
+  value?: string[] | any
+}
+
+function blockAddMod (blockName: string, modName: string) {
   // соединяет Блок и Модификатор
   return `${blockName}--${modName}`
 }
 
-const updateClassList = (el, bind) => {
+const updateClassList = (el: Element, bind: classModDirective) => {
   const block = el.classList[0]
   const classList = bind.value
 
