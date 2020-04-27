@@ -9,6 +9,7 @@ import ChangeOrganizationPopup from '../ChangeOrganizationPopup/index'
 import { formatPhone, price } from '../../../../../functions/filters'
 import { SET_ACTIVE_BILLING_ACCOUNT, SET_ACTIVE_BILLING_ACCOUNT_NUMBER } from '../../../../../store/actions/user'
 import { Cookie } from '../../../../../functions/storage'
+import MenuItemList from './menu'
 
 export default {
   name: 'menu-component',
@@ -23,71 +24,7 @@ export default {
     isOpenRightPanel: false,
     showChangeOrganizationPopup: false,
     notificationCount: 0,
-    menu: [
-      {
-        name: 'Главная',
-        icon: 'home',
-        isOpen: false,
-        url: '/lk',
-        subitem: [
-          {
-            name: 'Профиль',
-            url: '/lk/profile'
-          },
-          {
-            name: 'Платежи',
-            url: '/lk/payments'
-          },
-          {
-            name: 'Документы',
-            url: '/lk/documents'
-          },
-          {
-            name: 'Поддержка',
-            url: '/lk/support'
-          },
-          {
-            name: 'Цифровые продукты',
-            url: '/lk/digital-products'
-          }
-        ]
-      },
-      {
-        name: 'Интернет',
-        icon: 'internet',
-        isOpen: false,
-        url: '/lk/internet',
-        subitem: [
-          {
-            name: 'Статистика',
-            url: '/lk/statistic'
-          },
-          {
-            name: 'Контент-фильтрация',
-            url: '/lk/internet/content-filter/plug'
-          },
-          {
-            name: 'Скорость',
-            url: '/lk/speed'
-          },
-          {
-            name: 'Дополнительные IP-адреса',
-            url: '/lk/ip'
-          },
-          {
-            name: 'Защита от DDoS атак',
-            url: '/lk/internet/ddos/'
-          }
-        ]
-      },
-      {
-        name: 'Облачная телефония',
-        icon: 'cloud_telephone',
-        isOpen: false,
-        url: '/lk/oats/promo',
-        subitem: [{ name: 'Портал ОАТС', url: '/lk/oats' }]
-      }
-    ]
+    menu: MenuItemList
   }),
   filters: {
     formatPhone,
