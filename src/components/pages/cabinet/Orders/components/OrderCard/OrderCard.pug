@@ -1,0 +1,84 @@
+div(:class="['order-card', status.style]")
+  div(:class="['order-card__line', `order-card__line_${status.style}`]")
+
+  div(class="order-card__wrapper")
+    div(class="order-card__content")
+      div(class="order-card__header-wrapper")
+        div(class="order-card__header")
+          skeleton(:loading="loadingOrders" :width="'100px'")
+            div(class="order-card__order-number") №
+              span(class="order-card__order-number__content")  {{ card.sequenceNo || '' }}
+          div(:class="['order-card__indicator', status.style]")
+        div.order-card__status-content
+          div(class="order-card__subtitle") Статус:
+          div(class="order-card__status")
+            div(class="")
+              skeleton(:loading="loadingOrders" :width="'100px'")
+                h3(:class="[status.style]") {{ status.name }}
+            skeleton(:loading="loadingOrders" :width="'100px'")
+              span(class="order-card__status__date") {{ $moment(card.createdWhen || '' ).format('DD.MM.YY') }}
+              span(class="order-card__status__time") {{ $moment(card.createdWhen || '' ).format('HH:mm') }}
+          div(class="order-card__status-description")
+            skeleton(:loading="loadingOrders" :width="'100px'")
+              | {{ status.description }}
+
+      div(class="order-card__price-wrapper")
+        div(class="order-card__subtitle") Абонентская плата:
+        skeleton(:loading="loadingOrders" :width="'100px'")
+          div(class="order-card__price") {{ card.price }}
+            span(class="order-card__units")  ₽
+    div(v-for="item in card.orderItems" class="order-card__address" )
+      div(class="order-card__subtitle") Адрес:
+      skeleton(:loading="loadingOrders" :width="'100px'")
+        h4(class="order-card__address__content") {{ item.fullAddress }}
+      div(class="order-card__services-wrapper")
+        div(:class="['order-card__services-button', { 'order-card__services-button_active': canShowMoreServices(item) }, { 'order-card__services-button_closed': !isShowOrder }]"
+            @click='isShowOrder = canShowMoreServices(item) && !isShowOrder' )
+          er-icon(name="corner_up" width="8px")
+          span(class="text") Заказ:
+        skeleton(:loading="loadingOrders" :width="'100px'")
+          div(class="order-card__services-slide")
+            div(:class="['order-card__services', {'order-card__services_show': isShowOrder}]")
+              | {{getListSpecs(item)}}
+
+    div(class="order-card__footer")
+      div(class="order-card__buttons")
+        er-button(
+          v-if="status.type === 'Ввод данных' || status.type === 'Согласование с Клиентом'"
+          flat
+          @click="isShowModal = true"
+          ) Отказаться
+        er-button(
+          v-if="status.type === 'Согласовано с Клиентом' || status.type === 'Договор подписан'"
+          @click="$router.push({ name: 'add-funds', params: {sum: price }})"
+          ) Оплатить картой
+        er-button(
+          v-if="status.type === 'Согласовано с Клиентом' || status.type === 'Договор подписан'"
+          to="/lk/documents"
+          ) Подписать документы
+  er-activation-modal(
+      type="question"
+      v-model="isShowModal"
+      :title="`Вы действительно хотите отменить заказ?`"
+      cancel-button-text="Не отменять"
+      actionButtonText="Отменить"
+      @confirm="cancelOrder()"
+    )
+  er-activation-modal(
+    type="success"
+    v-model="resultDialogSuccess"
+    :title="`Запрос на отмену заказа сформирован`"
+    :is-show-action-button="false"
+    cancel-button-text="Спасибо"
+  )
+
+
+  er-activation-modal(
+    type="error"
+    v-model="resultDialogError"
+    title="Произошла ошибка"
+    :is-show-action-button="false"
+    cancel-button-text="Спасибо"
+  )
+    template(slot="description")
+      | Попробуйте повторить попытку позже или обратитесь к Вашему персональному менджеру

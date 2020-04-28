@@ -1,0 +1,136 @@
+$pre: ".er-filter";
+
+#{$pre} {
+  $label-height: $padding-x8;
+  $selected-height: $padding-x6;
+
+  margin-top: $padding-x4;
+  margin-bottom: $padding-x2;
+  position: relative;
+  min-height: $label-height + $selected-height;
+  .er-right-modal__content {
+    width: 90vw;
+  }
+  &__label {
+    @extend %caption1;
+    padding-left: $padding-x4;
+    @include min-breakpoint("sm") {
+      padding-left: $padding-x6;
+    }
+    @include min-breakpoint("lg") {
+      padding-left: 36px;
+    }
+    @include color-black(0.3);
+    margin-bottom: $padding-x2;
+    @include min-breakpoint("xl") {
+      margin-bottom: $padding-x4;
+    }
+  }
+
+  &__filter-icon {
+    color: map_get($shades, "black");
+    opacity: 0.2;
+    margin-right: $padding-x4;
+  }
+
+  // список выбранных фильтров
+  &__selected {
+    padding-left: $padding-x4;
+    cursor: pointer;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    height: $padding-x6;
+    transition: all $primary-transition;
+    @include min-breakpoint("sm") {
+      padding-left: $padding-x6;
+    }
+    @include min-breakpoint("lg") {
+      padding-left: 36px;
+    }
+  }
+
+  &__body {
+    position: relative;
+  }
+
+  &__filter-content {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    background-color: map_get($gray, "9");
+  }
+
+  &__title {
+    @extend %h3;
+    padding: $padding-x4;
+    display: flex;
+    align-items: stretch;
+    background-color: map_get($shades, "white");
+
+    .er-icon {
+      color: map_get($yellow, "base");
+      transform: rotate(-90deg);
+
+      svg {
+        width: 16px;
+        height: 16px;
+      }
+    }
+
+    @include min-breakpoint("md") {
+      display: none;
+    }
+  }
+
+  &__content-body {
+    display: flex;
+  }
+
+  &__filters {
+    flex-basis: 100%;
+    @include min-breakpoint("lg") {
+      flex-wrap: nowrap;
+    }
+  }
+  &__close-filter {
+    align-self: center;
+    padding-right: 24px;
+    cursor: pointer;
+    color: map_get($shades, "black");
+    opacity: 0.5;
+    display: flex;
+    &:hover {
+      color: map-get($yellow, "base");
+    }
+  }
+
+  &__action-buttons {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding-top: $padding-x4;
+
+    .er-button:first-child {
+      margin-bottom: $padding-x2;
+    }
+
+    @include min-breakpoint("md") {
+      display: none;
+    }
+  }
+
+  @include min-breakpoint("sm") {
+    margin-bottom: $padding-x4;
+  }
+
+  @include min-breakpoint("md") {
+    margin-bottom: $padding-x8;
+  }
+
+  @include min-breakpoint("xl") {
+    margin-top: $padding-x8;
+    margin-bottom: $padding-x12;
+  }
+}

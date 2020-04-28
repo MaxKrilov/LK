@@ -1,0 +1,41 @@
+.er-filter
+  .er-filter__label Фильтровать
+
+  div(v-show="!isFiltersVisible || isMobile" @click="isFiltersVisible=true").er-filter__selected
+    er-icon(name="filter_1").er-filter__filter-icon
+    slot(name="selected-filters") Все
+
+  .er-filter__body
+    component(
+      :is="getFilterComponent()"
+      v-bind="getFilterProps()"
+      @click-outside="closeFilter()"
+    )
+      .er-filter__filter-content
+        .er-filter__title(
+          @click="isFiltersVisible=false"
+        )
+          er-icon(name="corner_up")
+          slot(name="title")
+
+        div(:class="[{'main-content': isFiltersVisible}]").er-filter__content-body
+          div.er-filter__filters
+            slot(name="filters")
+          div(v-if="!isMobile" @click="closeFilter()").er-filter__close-filter
+            er-icon(
+              name="corner_up"
+              width="16"
+              height="16"
+            )
+
+        .er-filter__action-buttons
+          slot(name="buttons")
+            .main-content--h-padding
+              er-container.full.container--no-padding
+                er-row
+                  er-flex.xs12.sm6
+                    er-button(:color="'yellow'")
+                      | Фильтровать
+                  er-flex.xs12.sm6
+                    er-button(:color="'gray'")
+                      | Сбросить фильтр

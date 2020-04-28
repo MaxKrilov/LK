@@ -7,6 +7,8 @@ const state = {
   loadingDocuments: true,
   loadingRequest: true,
   loadingPromisedPayment: true,
+  loadingOrders: true,
+  sendingCancellingOrder: false,
   loadingInvoiceForPayment: true,
 
   rebootBillingAccount: false
@@ -20,6 +22,8 @@ const getters = {
   loadingDocuments: state => state.loadingDocuments,
   loadingRequest: state => state.loadingRequest,
   loadingPromisedPayment: state => state.loadingPromisedPayment,
+  loadingOrders: state => state.loadingOrders,
+  sendingCancellingOrder: state => state.sendingCancellingOrder,
   loadingInvoiceForPayment: state => state.loadingInvoiceForPayment
 }
 const mutations = {
@@ -46,6 +50,12 @@ const mutations = {
   },
   loadingPromisedPayment (state, payload) {
     state.loadingPromisedPayment = payload
+  },
+  loadingOrders (state, payload) {
+    state.loadingOrders = payload
+  },
+  sendingCancellingOrder (state, payload) {
+    state.sendingCancellingOrder = payload
   },
   rebootBillingAccount (state, payload) {
     state.rebootBillingAccount = payload

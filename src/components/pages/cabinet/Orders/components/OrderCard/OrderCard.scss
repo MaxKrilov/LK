@@ -1,0 +1,323 @@
+.order-card {
+  border-radius: 12px;
+  background-color: map_get($gray, "9");
+  box-shadow: -4px 4px 4px rgba(map_get($shades, "black"), .05);
+  margin-bottom: $padding-x4;
+  @include color-black(0.8);
+  overflow: hidden;
+  @include max-breakpoint("md") {
+    position: relative;
+  }
+  @include min-breakpoint("md") {
+    display: flex;
+  }
+
+  &__line {
+    height: auto;
+    padding: 4px;
+    transition: opacity $primary-transition;
+    @include max-breakpoint("md") {
+      display: none;
+    }
+    &_processing {
+      background-color: map_get($blue, "base");
+    }
+    &_wait {
+      background-color: map_get($yellow, "base");
+    }
+    &_complete {
+      background-color: map_get($green, "base");
+    }
+    &_cancelled {
+      background-color: map_get($red, "base");
+    }
+    &_hide {
+      opacity: 0;
+    }
+  }
+  &__wrapper {
+    padding-top: $padding-x6;
+    padding-bottom: $padding-x4;
+    flex-basis: 100%;
+
+    @include min-breakpoint("md") {
+      padding-bottom: $padding-x6;
+    }
+    @include min-breakpoint("xl") {
+      padding-top: $padding-x8;
+      padding-bottom: $padding-x8;
+    }
+  }
+  &__content {
+    display: flex;
+    padding-left: 24px;
+    padding-right: 24px;
+    flex-direction: row;
+    flex-wrap: wrap;
+    @include min-breakpoint("md") {
+      justify-content: space-between;
+      padding-left: 32px;
+      padding-right: 32px;
+    }
+  }
+  &__header-wrapper {
+    @include min-breakpoint("md") {
+      flex-basis: 65%;
+    }
+  }
+
+  &__price-wrapper {
+    @include min-breakpoint("md") {
+      flex-basis: 35%;
+      text-align: right;
+      align-self: baseline;
+    }
+  }
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    .processing {
+      background-color: map_get($blue, "base");
+    }
+    .wait {
+      background-color: map_get($yellow, "base");
+    }
+    .complete {
+      background-color: map_get($green, "base");
+    }
+    .cancelled {
+      background-color: map_get($red, "base");
+    }
+  }
+  &__indicator {
+    padding: 12px;
+    border-radius: 24px;
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    @include min-breakpoint("md") {
+      display: none;
+    }
+  }
+
+  &__order-number {
+    @include color-black(0.3);
+    &__content {
+      @include color-black(0.8);
+    }
+  }
+
+  &__title {
+    @include color-black(0.8);
+    padding: $padding-x4 0;
+  }
+
+  &__subtitle {
+    @include color-black(0.8);
+    @extend %caption2;
+    @include color-black(0.3);
+    padding-bottom: $padding-x1;
+  }
+
+  &__address {
+    &__content {
+      min-height: 20px;
+    }
+    padding-bottom: $padding-x4;
+    padding-left: 24px;
+    padding-right: 24px;
+    @include min-breakpoint("md") {
+      padding-left: 32px;
+      padding-right: 32px;
+    }
+  }
+
+  &__price {
+    @extend %h2;
+    padding-bottom: $padding-x6;
+  }
+
+  &__units {
+    @extend %caption2;
+    @include color-black(0.5);
+    @include min-breakpoint("md") {
+    }
+  }
+
+  &__status {
+    font-weight: bold;
+    .processing {
+      color: map_get($blue, "base");
+    }
+    .wait {
+      color: map_get($yellow, "other-5");
+    }
+    .complete {
+      color: map_get($green, "base");
+    }
+    .cancelled {
+      color: map_get($red, "base");
+    }
+
+    display: flex;
+    justify-content: space-between;
+
+    @include min-breakpoint("md") {
+      justify-content: start;
+      align-items: center;
+    }
+
+    &__date {
+      @include color-black(0.5);
+      font-weight: normal;
+      padding-right: $padding-x2;
+      @include min-breakpoint("md") {
+        padding-right: $padding-x4;
+        padding-left: $padding-x8;
+      }
+    }
+
+    &__time {
+      @include color-black(0.3);
+      font-weight: normal;
+    }
+  }
+  &__status-description {
+    padding-top: $padding-x2;
+    padding-bottom: $padding-x2;
+    @include min-breakpoint("md") {
+      padding-bottom: $padding-x4;
+    }
+  }
+  &__buttons {
+    display: flex;
+    flex-direction: column-reverse;
+    flex-basis: 100%;
+    @include min-breakpoint("sm") {
+      justify-content: flex-end;
+      flex-direction: row;
+      margin-right: -$padding-x2;
+      margin-left: -$padding-x2;
+      flex-wrap: wrap;
+      justify-content: space-between;
+    }
+    @include min-breakpoint("md") {
+      justify-content: flex-end;
+    }
+
+    .er-button {
+      @include max-breakpoint("md") {
+        margin-bottom: $padding-x2;
+      }
+      @include min-breakpoint("sm") {
+        margin-right: $padding-x2;
+        margin-left: $padding-x2;
+        flex-basis: 45%;
+      }
+      @include min-breakpoint("md") {
+        width: 100%;
+      }
+      @include min-breakpoint("lg") {
+        flex-basis: 244px;
+      }
+    }
+
+    .history {
+      @include min-breakpoint("md") {
+        display: none;
+      }
+    }
+  }
+
+  &__footer {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    padding-left: 24px;
+    padding-right: 24px;
+    padding-top: 24px;
+    @include min-breakpoint("md") {
+      padding-left: 32px;
+      padding-right: 32px;
+      padding-top: 40px;
+    }
+  }
+  &__status-content {
+    padding-top: 16px;
+  }
+  &__services-wrapper {
+    padding-left: 24px;
+    padding-right: 24px;
+    padding-top: $padding-x4;
+    @include min-breakpoint("md") {
+      padding-left: 32px;
+      padding-right: 32px;
+      max-width: 70%;
+    }
+  }
+  &__services {
+    &-slide {
+      min-height: 20px;
+    }
+    position: relative;
+    transition: $primary-transition;
+    margin-top: 4px;
+    padding-left: 16px;
+    max-height: 20px;
+    overflow: hidden;
+    &_show {
+      max-height: 200px;
+      transition: ease-out 1s;
+      &::after {
+        opacity: 0;
+      }
+    }
+    &::after {
+      content: "";
+      position: absolute;
+      right: 0;
+      top: 0;
+      width: 100px;
+      height: 100%;
+      @include min-breakpoint("md") {
+        width: 200px;
+      }
+      background: linear-gradient(to right, map_get($shades, "transparent"), map_get($gray, "9") 100%);
+    }
+  }
+  &__services-button {
+    @extend %caption2;
+    @include color-black(0.3);
+    white-space: nowrap;
+    .er-icon {
+      padding-right: 4px;
+      opacity: 0;
+      svg {
+        width: 12px;
+      }
+    }
+    &_closed {
+      svg {
+        transform: rotateX(180deg);
+      }
+    }
+    &_active {
+      .er-icon {
+        opacity: 1;
+      }
+      .text {
+        border-bottom: 1px dashed map_get($shades, "30");
+        cursor: pointer;
+        white-space: nowrap;
+      }
+    }
+  }
+}
+@keyframes placeHolderShimmer {
+  0% {
+    background-position: 100% 0;
+  }
+  100% {
+    background-position: -50% 0;
+  }
+}

@@ -1,0 +1,73 @@
+.orders {
+  &__filter-wrapper {
+    display: flex;
+    position: relative;
+  }
+  &__filters {
+    padding-left: 16px;
+    padding-right: 16px;
+    @include min-breakpoint("sm") {
+      display: flex;
+      flex-wrap: wrap;
+      padding-right: 24px;
+      padding-left: 24px;
+    }
+    @include min-breakpoint("md") {
+      padding-bottom: 40px;
+      padding-top: 16px;
+    }
+    @include min-breakpoint("xl") {
+      padding-right: 0;
+    }
+  }
+  &__select {
+    padding-top: 32px;
+    @include min-breakpoint("sm") {
+      flex-basis: 50%;
+      &:nth-child(odd) {
+        padding-right: 8px;
+      }
+      &:nth-child(even) {
+        padding-left: 8px;
+        padding-right: 16px;
+      }
+    }
+    @include min-breakpoint("lg") {
+      flex-basis: 33%;
+      padding-left: 0;
+    }
+  }
+  &__search {
+    width: 300px;
+    align-self: center;
+  }
+  &__search-icon {
+    opacity: .2;
+  }
+  &__no {
+    display: flex;
+    align-items: center;
+    .er-icon {
+      padding-right: 40px;
+      svg {
+        width: 128px;
+        @include color-black(0.2)
+      }
+    }
+  }
+}
+.no-orders-enter-active, .no-orders-leave-active {
+  transition: opacity .5s;
+}
+.no-orders-enter, .no-orders-leave-to {
+  opacity: 0;
+}
+
+.list-enter-active, .list-leave-active {
+  transition: all 1s;
+  opacity: 1;
+}
+.list-enter, .list-leave-to {
+  opacity: 0;
+  transform: translateY(30px);
+}

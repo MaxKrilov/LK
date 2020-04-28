@@ -20,6 +20,9 @@ import EditCompanyInn from './components/pages/cabinet/ProfilePage/pages/EditCom
 import EditCompanyForm from './components/pages/cabinet/ProfilePage/pages/EditCompanyPage/pages/EditCompanyForm'
 import EditCompanySuccess from './components/pages/cabinet/ProfilePage/pages/EditCompanyPage/pages/EditCompanySuccess'
 
+// Страница заказов
+import Orders from './components/pages/cabinet/Orders'
+
 // Страница документы
 import DocumentPage from './components/pages/cabinet/DocumentPage/index'
 import OrderDocumentPage from './components/pages/cabinet/OrderDocumentPage'
@@ -150,7 +153,8 @@ const router = new Router({
         {
           name: 'add-funds',
           path: 'add-funds',
-          component: AddFunds
+          component: AddFunds,
+          props: true
         },
         {
           path: 'payment-result',
@@ -178,6 +182,11 @@ const router = new Router({
           name: 'documents.duplicates',
           path: 'documents/duplicates',
           component: DocumentDuplicatePage
+        },
+        {
+          name: 'orders',
+          path: 'orders',
+          component: Orders
         },
         {
           path: 'digital-products',

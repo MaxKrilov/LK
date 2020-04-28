@@ -15,6 +15,7 @@ import dictionary from './modules/dictionary'
 import user from './modules/user'
 import request from './modules/request'
 import loading from './modules/loading'
+import orders from './modules/orders'
 import campaign from './modules/campaign'
 import survey from './modules/survey'
 import internet from './modules/internet'
@@ -43,6 +44,7 @@ export default new Vuex.Store({
     user,
     request,
     loading,
+    orders,
     campaign,
     survey,
     internet,
