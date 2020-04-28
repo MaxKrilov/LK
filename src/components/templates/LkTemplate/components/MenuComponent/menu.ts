@@ -35,6 +35,10 @@ const MenuItemList: MenuItem[] = [
         url: '/lk/support'
       },
       {
+        name: 'Заказы',
+        url: '/lk/orders'
+      },
+      {
         name: 'Цифровые продукты',
         url: '/lk/digital-products'
       }

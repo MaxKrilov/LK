@@ -12,6 +12,12 @@ export default {
     PaymentsOn,
     Confirm
   },
+  props: {
+    sum: {
+      type: Number,
+      default: 0
+    }
+  },
   data: () => ({
     pre: 'add-funds',
     nameCard: '',
@@ -71,6 +77,9 @@ export default {
     const sumPay = this.$route.query.total_amount
     if (sumPay) {
       this.sumPay = `${sumPay},00`
+    }
+    if (this.sum) {
+      this.sumPay = this.sum.toFixed(2).replace('.', ',')
     }
   },
   watch: {

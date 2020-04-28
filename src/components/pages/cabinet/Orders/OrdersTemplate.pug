@@ -1,0 +1,38 @@
+div(:class="`${pre}`")
+  er-page-header(title="Заказы").main-content.main-content--top-menu-fix.main-content--h-padding.main-content--top-padding
+  div.wide-content
+    div(:class="[{'orders__filter-wrapper': !isFiltersVisible}, {'main-content': !isFiltersVisible}]")
+      er-filter(v-model="isFiltersVisible")
+        template(v-slot:selected-filters v-if="selectedFilters") {{ selectedFilters }}
+        template(v-slot:title) Фильтровать заказы
+        template(v-slot:filters )
+          div(class="orders__filters")
+            .orders__select
+              er-select(
+                :isSelectedFirst='true'
+                :items="statuses"
+                placeholder="Статус заказа"
+                v-model="selectedStatus"
+              )
+            .orders__select
+              er-select(
+                :items="cities"
+                placeholder="Город"
+                v-model="selectedCity"
+              )
+
+  div(v-for="(card, index) in orders" :key="index").main-content.main-content--h-padding
+    order-card(:card='card')
+  transition(name="no-orders")
+    .main-content.main-content--h-padding
+      order-card(v-if="loadingOrders && !getListOrders[0]")
+  transition(name="no-orders")
+    div(v-if="!loadingOrders && isNoOrders" class="orders__no" ).main-content.main-content--h-padding
+      er-icon(name="no")
+      div У вас нет активных заказов
+//- TO DO 
+//- добавить лоадер при отмене заказа
+//-  при фильтрации по статусам, если не дождаться запроса, и послать новый, теряется имитация загрузки
+//- при развертке заказа, если он содержит несколько точе, развертываются все. надо исправить
+//-
+ 

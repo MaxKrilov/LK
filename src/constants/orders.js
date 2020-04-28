@@ -1,0 +1,7 @@
+export const ALL_CITIES = 'Все города'
+export const IN_PROGRESS = 'В работе'
+export const ALL_STATUSES = 'Все статусы'
+export const CANCELLED = 'Отменен'
+export const ACCEPTED = 'Принят'
+export const WAIT = 'Ожидаем'
+export const COMPLITED = 'Выполнен'
