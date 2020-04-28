@@ -4,7 +4,6 @@ import {
   eachObject,
   stringToCamel,
   toFullName } from '@/functions/helper'
-import { Cookie } from './storage'
 
 const makeUserInfo = function (token) {
   const userObj = parseJwt(token)
@@ -86,7 +85,7 @@ export const validationToken = (token) => {
     return false
   }
 
-  const payload = JSON.parse(atob(token.split('.')[1]))
+  const payload = parseJwt(token)
   const time = parseInt(Date.now() / 1000, 10)
   const { exp } = payload
 
