@@ -54,7 +54,7 @@ div(:class="['order-card', status.style]")
           ) Оплатить картой
         er-button(
           v-if="status.type === 'Согласовано с Клиентом' || status.type === 'Договор подписан'"
-          to="/lk/documents"
+          @click="$router.push('/lk/documents')"
           ) Подписать документы
   er-activation-modal(
       type="question"
