@@ -188,28 +188,34 @@ const getters = {
   },
   getPrimaryContact (state) {
     return state.clientInfo.contacts.filter(item => item.id === state.clientInfo.primaryContact.id)[0]
+  },
+  getMarketingBrandId (state) {
+    return state.paymentInfo?.marketingBrandId
   }
 }
 
 const actions = {
-  [GET_CLIENT_INFO]: async ({ dispatch, commit, rootState, rootGetters }, { api }) => {
-    const toms = rootGetters['auth/getTOMS']
-    try {
-      const result = await api
+  [GET_CLIENT_INFO]: ({ dispatch, commit, rootState, rootGetters }, { api }) => {
+    return new Promise((resolve, reject) => {
+      const toms = rootGetters['auth/getTOMS']
+      api
         .setWithCredentials()
         .setData({
           id: toms
         })
         .query('/customer/account/client-info')
-      commit(GET_CLIENT_INFO_SUCCESS, result)
-
-      return result
-    } catch (error) {
-      commit(ERROR_MODAL, true, { root: true })
-      // todo Логирование
-    } finally {
-      commit('loading/clientInfo', false, { root: true })
-    }
+        .then(response => {
+          commit(GET_CLIENT_INFO_SUCCESS, response)
+          resolve(response)
+        })
+        .catch(error => {
+          commit(ERROR_MODAL, true, { root: true })
+          reject(error)
+        })
+        .finally(() => {
+          commit('loading/clientInfo', false, { root: true })
+        })
+    })
   },
   [UPDATE_CLIENT_INFO]: async (
     { commit, dispatch, rootState, rootGetters },
@@ -325,7 +331,6 @@ const actions = {
    */
   [GET_LIST_BILLING_ACCOUNT]: async ({ commit, rootGetters }, { api, route }) => {
     const toms = rootGetters['auth/getTOMS']
-    console.log(route)
     try {
       const result = await api
         .setWithCredentials()

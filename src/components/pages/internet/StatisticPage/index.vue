@@ -15,42 +15,81 @@
     .statistic-internet-page__info.main-content.main-content--h-padding.mb-22
       .statistic-internet-page__tariff.mb-8
         .caption.mb-4 Тарифный план
-        .value Безлимитный Безлимитище 512-800
+        template(v-if="isLoading")
+          PuSkeleton
+        template(v-else)
+          .value {{ getTloName }}
       .statistic-internet-page__traffic.d--flex
         .internet.mr-32
           .caption.mb-4 Интернет-трафик (ИТ)
-          .value
-            span 000.0
-            | КБ.
+          template(v-if="isLoading")
+            PuSkeleton
+          template(v-else)
+            .value(v-html="getInternetTraffic")
         .multimedia
           .caption.mb-4 Мультимедиа (ММ)
-          .value
-            span 000.0
-            | КБ.
+          template(v-if="isLoading")
+            PuSkeleton
+          template(v-else)
+            .value
+              span 000.0
+              | КБ.
     .statistic-internet-page__table
       .statistic-internet-page__head.main-content.main-content--h-padding.py-8
         .filter--ip
-          input(placeholder="IP адрес")
+          template(v-if="isLoading")
+            PuSkeleton
+          template(v-else)
+            input(placeholder="IP адрес")
         .filter--start
-          er-table-filter(title="Начало сессии")
-        .filter--end
-          er-table-filter(title="Конец сессии")
-        .filter--period
-          er-table-filter(title="Период сессии")
-        .filter--time-session
-          er-table-filter(title="Время сессии")
+          template(v-if="isLoading")
+            PuSkeleton
+          template(v-else)
+            er-table-filter(
+              title="Начало сессии"
+              @change-filter="e => { sortBy('start', e) }"
+              :value="sortField === 'start'"
+              :order="sortField === 'start' ? sortDirection : 'asc'"
+              )
         .filter--volume
-          er-table-filter(title="Объём")
+          template(v-if="isLoading")
+            PuSkeleton
+          template(v-else)
+            er-table-filter(
+              title="Объём"
+              @change-filter="e => { sortBy('bytes', e) }"
+              :value="sortField === 'bytes'"
+              :order="sortField === 'bytes' ? sortDirection : 'asc'"
+              )
         .filter--type
-          er-table-filter(title="Тип")
+          template(v-if="isLoading")
+            PuSkeleton
+          template(v-else)
+            er-table-filter(
+              title="Тип"
+              @change-filter="e => { sortBy('type', e) }"
+              :value="sortField === 'type'"
+              :order="sortField === 'type' ? sortDirection : 'asc'"
+              )
       .statistic-internet-page__body
-        internet-statistic-component(
-          ip="10.95.217.183"
-          :start="new Date(2018, 3, 2, 12, 12)"
-          :end="new Date(2019, 2, 2, 12, 13)"
-          :bytes="123456789"
-          type="ИТ"
-        )
+        template(v-if="isLoading")
+          include ./internet-statistic-component-loading.pug
+        template(v-else-if="listStatistic.length === 0")
+        template(v-else)
+          internet-statistic-component(
+            v-for="(item, index) in computedListStatistic"
+            :key="index"
+            v-bind="item"
+          )
+    er-activation-modal(
+      v-model="isShowDialogForFile"
+      type="question"
+      title="Вы желаете скачать файл?"
+      action-button-text="Скачать"
+      :persistent="true"
+      :is-loading-confirm="isLoadingFile"
+      @confirm="getFileStatistic"
+    )
 </template>
 <script lang="ts" src="./script.ts"></script>
 <style lang="scss" src="./style.scss"></style>

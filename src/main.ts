@@ -16,6 +16,7 @@ import Vuebar from 'vuebar'
 import VueScrollTo from 'vue-scrollto'
 // @ts-ignore
 import iFrameResize from 'iframe-resizer/js/iframeResizer'
+import Skeleton from 'vue-loading-skeleton'
 
 // Подключение стилей
 import './assets/scss/main.scss'
@@ -62,7 +63,7 @@ Vue.use(Vuebar)
 // Прокрутка с анимацией
 Vue.use(VueScrollTo)
 
-// На старых браузерах - редирект с предложением обновить
+Vue.use(Skeleton)
 
 new Vue({
   router,

@@ -71,6 +71,7 @@
         }
         .toggle {
           @include color-black(0.2);
+          margin-left: auto;
           svg {
             width: 16px;
           }
@@ -314,6 +315,7 @@
           display: block;
           width: 64px;
           height: 16px;
+          line-height: 16px;
           border: none;
           outline: none;
           background: radial-gradient(50% 50% at 50% 50%, map_get($yellow, 'base') 55.5%, map_get($yellow, 'other-4') 100%);
@@ -322,6 +324,9 @@
           @include color-white();
           cursor: pointer;
           transition: $primary-transition;
+          i {
+            vertical-align: top;
+          }
           svg {
             width: 16px;
             transition: $primary-transition;

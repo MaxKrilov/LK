@@ -1,14 +1,11 @@
 .er-activation-modal {
   &--modal {
-    height: 85vh;
+    height: 371px;
     box-shadow: -8px 8px 16px rgba(map_get($shades, 'black'), 0.04),
-    0px 8px 24px rgba(map_get($shades, 'black'), 0.06);
+                0 8px 24px rgba(map_get($shades, 'black'), 0.06);
     border-radius: 12px;
     background: linear-gradient(to top, map_get($gray, '26') 28.65%, map_get($shades, 'white') 90.63%);
     padding: 1px;
-    @include min-breakpoint('md') {
-      height: 371px;
-    }
     .er-activation-modal {
       &__content {
         background-color: map-get($shades, 'white');
@@ -46,28 +43,9 @@
         @extend %h3;
       }
       &__actions {
-        &--mobile,
-        &--desktop {
+        width: 100%;
+        > * {
           width: 100%;
-        }
-        &--desktop {
-          display: none;
-        }
-      }
-      &__action {
-        button {
-          background: map_get($shades, 'transparent');
-          border: none;
-          outline: none;
-          @extend %button-font;
-          cursor: pointer;
-          border-bottom: 1px dashed;
-        }
-        &.cancel button {
-          @include color-black(0.5);
-        }
-        &.confirm button {
-          color: map_get($green, 'base');
         }
       }
     }

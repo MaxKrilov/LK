@@ -19,9 +19,6 @@
                   er-icon(name="geolocation")
                 .address
                   | {{ getActiveFulladdress  }}
-                .ip
-                  .caption IP:&nbsp;
-                  .value 255.255.255.255
                 .toggle
                   er-icon(name="corner_down")
           .list-point-component__modal
@@ -41,9 +38,6 @@
                 .content
                   .address
                     | {{ point.fulladdress }}
-                  .ip
-                    | IP:&nbsp;
-                    span 255.255.255.255
                   .tariff
                     | Тариф:&nbsp;
                     span {{ point.offerName }}
@@ -73,9 +67,6 @@
               .tariff
                 | Тариф:&nbsp;
                 span {{ point.offerName }}
-            .ip.ml-auto
-              | IP:&nbsp;
-              span 255.255.255.255
         .list-point-component__toggle
           .line
           button(@click="toggleList")

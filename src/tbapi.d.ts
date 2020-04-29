@@ -216,6 +216,112 @@ export interface ICustomerProduct {
   ]
 }
 
+export interface IBillingStatisticResponse {
+  costedEventName: string
+  bill: string
+  prebillingCost: number
+  service: string
+  duration: string
+  productInstance: {
+    name: string
+    id: string
+    instanceId: number
+  }
+  createdDate: number
+  priceEventSpecification: {
+    eventTypeId: number
+    name: string
+  }
+  billedCost: number
+  calledNumber: string
+  customer: {
+    name: string
+    id: string
+    customerReference: string
+  }
+}
+
+export interface IPriceItem {
+  currency: {
+    name: string
+    currencyCode: string
+  }
+  value: string
+}
+
+export interface IPrice {
+  taxFlag?: IPriceItem
+  totalPointAmount?: IPriceItem
+  oneTimeDiscount?: IPriceItem
+  oneTimeTax?: IPriceItem
+  oneTimeTotal?: IPriceItem
+  recurrentTotal?: IPriceItem
+  recurrentTax?: IPriceItem
+  oneTime?: IPriceItem
+  recurrent?: IPriceItem
+}
+
+export interface ISaleOrder {
+  validationElements?: [{
+    locationId?: string
+    typeOfProblem?: string
+    validationPriority?: string
+    targetOrderItemId?: string
+    id?: string
+    message?: string
+  }]
+  salesOrderOwner?: string | number
+  operationType?: string[]
+  submitDate?: string
+  processedWhen?: string
+  createdWhen?: string
+  locationIds?: string[]
+  rules?: [{
+    locationId?: string
+    targetOrderItemIds?: string[]
+    name?: string
+    description?: string
+    active?: boolean
+    id?: string
+    productOfferingRuleId?: string
+    parentId?: string
+
+  }]
+  sequenceNo: string
+  price: IPrice
+  customerId: string
+  name: string
+  id: string
+  distributionChannel: string
+  status: string
+  orderItems: [{
+    customerProductId: string
+    typeOfSelling?: string
+    billingAccountId: string
+    orderItems: [{
+      customerProductId?: string
+      typeOfSelling?: string
+      billingAccountId?: string
+      parentId?: string
+      locationId?: string
+      name?: string
+      action?: string
+      id?: string
+      prices?: IPrice
+      offer?: any
+    }]
+    parentId: string
+    locationId: string
+    name: string
+    action: string
+    id: string
+    prices: IPrice
+    suggestions?: any[]
+    offer: any
+    chars: any
+  }]
+}
+
 export interface ISurveyQuestion {
   id: string
   orderNumber: string // number in string
