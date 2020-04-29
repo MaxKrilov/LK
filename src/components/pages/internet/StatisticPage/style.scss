@@ -86,4 +86,9 @@
       @include type;
     }
   }
+  &__body {
+    .internet-statistic-component:nth-child(2n + 1) {
+      background-color: map-get($gray, '9');
+    }
+  }
 }

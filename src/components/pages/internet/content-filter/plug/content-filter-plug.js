@@ -196,8 +196,6 @@ export default {
       this.hoveredColumn = null
     },
     handleScroll: function () {
-      console.log(this.$refs.buttons.getBoundingClientRect())
-      console.log(this.$refs.sbuttons.getBoundingClientRect())
       const staticButtonsTop = this.$refs.sbuttons.getBoundingClientRect().top
       const buttonsTop = this.$refs.buttons.getBoundingClientRect().top
       this.hideButtons = staticButtonsTop < buttonsTop + 50

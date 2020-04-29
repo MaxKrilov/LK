@@ -11,7 +11,6 @@ const FORMAT_TIME = 'HH:mm'
   props: {
     ip: String,
     start: [Number, Date],
-    end: [Number, Date],
     bytes: Number,
     type: String
   }
@@ -20,7 +19,6 @@ export default class InternetStatisticComponent extends Vue {
   // Props
   readonly ip!: string
   readonly start!: number
-  readonly end!: number
   readonly bytes!: number
   readonly type!: string
   // Computed
@@ -33,34 +31,6 @@ export default class InternetStatisticComponent extends Vue {
   get computedStartDateNTime () {
     return moment(this.start).format(`${FORMAT_DATE} ${FORMAT_TIME}`)
   }
-  get computedEndDate () {
-    return moment(this.end).format(FORMAT_DATE)
-  }
-  get computedEndTime () {
-    return moment(this.end).format(FORMAT_TIME)
-  }
-  get computedEndDateNTime () {
-    return moment(this.end).format(`${FORMAT_DATE} ${FORMAT_TIME}`)
-  }
-  get htmlTimeSession () {
-    const f = Math.floor
-    const _s = moment(this.start)
-    const _e = moment(this.end)
-    let _d = Math.abs(_s.diff(_e, 'seconds'))
-    // Кол-во полных дней
-    const d = f(_d / 60 / 60 / 24)
-    _d = _d - d * 60 * 60 * 24
-    // Кол-во полных часов
-    const h = f(_d / 60 / 60)
-    _d = _d - h * 60 * 60
-    // Кол-во полных минут
-    const m = f(_d / 60)
-    _d = _d - m * 60
-    // Кол-во секунд
-    const s = _d
-    return `<span class="days">${('0' + d).slice(-2)} д.</span>
-      <span class="time">${('0' + h).slice(-2)}:${('0' + m).slice(-2)}:${('0' + s).slice(-2)}</span>`
-  }
   get htmlIP () {
     return `
       <span class="start">${this.computedStartDate}</span>
@@ -70,7 +40,6 @@ export default class InternetStatisticComponent extends Vue {
   get htmlPeriod () {
     return `
       <div><span class="date">${this.computedStartDate}</span>&nbsp;${this.computedStartTime}</div>
-      <div><span class="date">${this.computedEndDate}</span>&nbsp;${this.computedEndTime}</div>
     `
   }
   get htmlVolume () {
@@ -106,9 +75,6 @@ export default class InternetStatisticComponent extends Vue {
       }, [
         rc('ip', this.htmlIP),
         rc('start', `<div><span class="date">${this.computedStartDate}</span>&nbsp;${this.computedStartTime}</div>`),
-        rc('end', `<div><span class="date">${this.computedEndDate}</span>&nbsp;${this.computedEndTime}</div>`),
-        rc('period', this.htmlPeriod),
-        rc('time-session', this.htmlTimeSession),
         rc('volume', this.htmlVolume),
         rc('type', this.type)
       ])

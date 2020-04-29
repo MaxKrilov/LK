@@ -18,7 +18,7 @@ $flex-basis-lg: (100% / 6);
 
 @mixin start {
   display: none;
-  @include min-breakpoint('lg') {
+  @include min-breakpoint('sm') {
     display: block;
     flex-basis: $flex-basis-lg;
   }

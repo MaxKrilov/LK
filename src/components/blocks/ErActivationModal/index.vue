@@ -3,6 +3,7 @@
     er-dialog(
       :max-width="getMaxWidth"
       v-model="internalValue"
+      :persistent="persistent"
     )
       template(v-slot:activator="{ on }")
         slot(name="activator" v-bind="{ on }")
@@ -18,17 +19,13 @@
             | {{ title }}
           .er-activation-modal__description
             slot(name="description")
-          .er-activation-modal__actions.d--flex.mt-auto
-            .er-activation-modal__actions--mobile.d--flex.justify-content-between.justify-content-sm-end
-              .er-activation-modal__action.cancel(v-if="isShowCancelButton")
-                button(@click="closeDialog")
-                  | {{ cancelButtonText }}
-              .er-activation-modal__action.confirm.ml-sm-32(v-if="isShowActionButton")
-                button(@click="confirmDialog")
-                  | {{ actionButtonText }}
-            .er-activation-modal__actions--desktop
-              .er-activation-modal__action--cancel
-              .er-activation-modal__action--confirm
+          .er-activation-modal__actions.d--flex.mt-auto.flex-column-reverse.flex-sm-row
+            .er-activation-modal__action.pr-sm-8(v-if="isShowCancelButton")
+              er-button(@click="closeDialog" flat :disabled="isLoadingConfirm")
+                | {{ cancelButtonText }}
+            .er-activation-modal__action.mb-8.mb-sm-0.pl-sm-8(v-if="isShowActionButton")
+              er-button(@click="confirmDialog" :loading="isLoadingConfirm")
+                | {{ actionButtonText }}
 </template>
 
 <script lang="ts" src="./script.ts"></script>

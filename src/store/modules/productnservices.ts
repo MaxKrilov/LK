@@ -46,7 +46,7 @@ const actions = {
       payload.api
         .setWithCredentials()
         .setData(data)
-        .query('/customer/product/internet')
+        .query('/customer/product/all')
         .then((response: ICustomerProduct) => resolve(response))
         .catch((err: AxiosError) => reject(err))
     })
@@ -65,13 +65,15 @@ const actions = {
     })
   },
   productInfoList (context: ActionContext<IState, any>, { api, id }: { api: API, id: string | number }) {
+    const { toms: clientId } = context.rootGetters['auth/user']
     return new Promise((resolve, reject) => {
       api
         .setWithCredentials()
         .setData({
+          clientId,
           id
         })
-        .query('/customer/products/infolist')
+        .query('/customer/product/infolist')
         .then((response: any) => resolve(response))
         .catch((err: AxiosError) => reject(err))
     })

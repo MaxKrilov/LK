@@ -18,7 +18,7 @@
     svg {
       width: 16px;
       @include color-black(0.2);
-      transition: transform, color $primary-transition;
+      transition: $primary-transition;
     }
   }
   .title {

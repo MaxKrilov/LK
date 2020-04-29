@@ -16,7 +16,7 @@
         @extend %caption2-font;
         @include color-black(0.5);
         margin-bottom: 4px;
-        @include min-breakpoint('md') {
+        @include min-breakpoint('sm') {
           display: none;
         }
       }
