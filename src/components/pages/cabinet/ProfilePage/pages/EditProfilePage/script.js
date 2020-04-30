@@ -30,6 +30,7 @@ export default {
       'user',
       'userResourceAccess',
       'serverErrorMessage'
-    ])
+    ]),
+    ...mapGetters('contacts', ['getCurrentClientContacts'])
   }
 }

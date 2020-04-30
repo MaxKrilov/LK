@@ -1,5 +1,6 @@
 import { generateUrl } from '../../functions/helper'
 import { USER_FOUND_BY_PHONE, USER_EXISTS_WITH_EMAIL } from '@/constants/status_response'
+import { TYPE_JSON } from '../../constants/type_request'
 
 const ACCOUNT_FORM_MODAL = 'ACCOUNT_FORM_MODAL'
 const ACCOUNT_FORM_REQUEST = 'ACCOUNT_FORM_REQUEST'
@@ -247,18 +248,49 @@ const actions = {
       commit(REMOVE_USER_ROLES_ERROR, 'Сервер не отвечает. Попробуйте обновить страницу.')
     }
   },
+  updateContacts: async (
+    { dispatch, commit, rootState, rootGetters },
+    { api, data }) => {
+    commit(UPDATE_USER_REQUEST)
+    try {
+      await dispatch('auth/checkAuth', { api }, { root: true })
+      const toms = rootGetters['auth/getTOMS']
+      const result = await api
+        .setWithCredentials()
+        .setType(TYPE_JSON)
+        .setData({
+          clientId: toms,
+          ...data
+        })
+        .query('/customer/account/edit-contact')
+      if (result?.success) {
+        return commit(UPDATE_USER_SUCCESS, { ...result?.output })
+      }
+      commit(UPDATE_USER_ERROR, `Ошибка обновления контактных данных: ${result?.message.toString()}`)
+    } catch (e) {
+      commit(UPDATE_USER_ERROR, 'Сервер не отвечает. Попробуйте обновить страницу.')
+    }
+  },
   updateUser: async (
-    { commit, dispatch, rootState },
+    { commit, dispatch, rootState, rootGetters },
     { api, userId, fio, email }) => {
     commit(UPDATE_USER_REQUEST)
     try {
       await dispatch('auth/checkAuth', { api }, { root: true })
-      const { accessToken } = rootState.auth
+      const { accessToken: token } = rootState.auth
+      if (!token) {
+        throw new Error('Токен невалидный')
+      }
+      const user = rootGetters['auth/user']
       const url = generateUrl('updateUser')
+      if (!user?.toms) {
+        throw new Error('Нет toms')
+      }
       const { success, message, output } = await api
         .setWithCredentials()
         .setData({
-          token: accessToken,
+          toms: user.toms,
+          token,
           user: userId,
           fio,
           email
@@ -275,7 +307,6 @@ const actions = {
 
       commit(UPDATE_USER_ERROR, `Ошибка обновления пользователя: ${message.toString()}`)
     } catch (error) {
-      console.log(error)
       commit(UPDATE_USER_ERROR, 'Сервер не отвечает. Попробуйте обновить страницу.')
     }
   },

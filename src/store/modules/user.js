@@ -206,6 +206,7 @@ const actions = {
         .query('/customer/account/client-info')
         .then(response => {
           commit(GET_CLIENT_INFO_SUCCESS, response)
+          dispatch('contacts/getCurrentClientContacts', true, { root: true })
           resolve(response)
         })
         .catch(error => {

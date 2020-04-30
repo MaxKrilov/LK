@@ -1,0 +1,140 @@
+.edit-contact-section {
+  $root: #{&};
+  padding-top: 0;
+  position: relative;
+
+  @include media-query((
+    padding-top: (
+      md: 34px
+    )
+  ));
+
+  &__col{
+    flex-direction: column;
+
+    @include media-query((
+      display: (lg: flex)
+    ));
+
+    &:not(:first-child) {
+      margin-top: 24px;
+      @include media-query((
+        margin-top: (lg: 0)
+      ));
+    }
+
+    @at-root :root &{
+      &.flex{
+        &:not(:last-child) {
+          @include media-query((
+            padding-right: (md: 24px)
+          ));
+        }
+      }
+    }
+
+    &__title {
+      @extend %caption2;
+
+      margin-bottom: 6px;
+
+      @include media-query((
+        margin-bottom: (lg: 0)
+      ));
+    }
+
+    #{$root}__input-block{
+      flex-direction: column;
+      flex-basis: 100%;
+
+      @include media-query((
+        display: (lg: flex)
+      ));
+    }
+
+    #{$root}__field{
+      flex-grow: 0;
+
+      @include media-query((
+        margin-top: (lg: auto)
+      ));
+    }
+  }
+
+  &__separator {
+    width: 100%;
+    position: absolute;
+    left: 0;
+    visibility: hidden;
+
+    @include media-query((
+      visibility: (lg: visible),
+    ));
+
+    &::before {
+      width: 100%;
+      position: absolute;
+      top: 24px;
+      left: 0;
+      content: '';
+      height: 1px;
+      background: map_get($gray, '4');
+    }
+  }
+
+  &__field {
+    padding-top: 24px;
+    .er-input__prepend-inner {
+      padding-right: 4px;
+    }
+  }
+
+  &__input-block{
+    @include media-query((
+      margin-top: (lg: 24px)
+    ));
+  }
+
+  &__method {
+    margin-bottom: 8px;
+  }
+
+  &__method + &__field {
+    padding-top: 24px;
+  }
+
+  &__changed {
+    margin-top: auto;
+    margin-bottom: auto;
+    color: map_get($green, 'base');
+
+    &-icon {
+      svg {
+        width: 16px !important;
+      }
+    }
+
+    &-text {
+      padding-left: 2px;
+      font-size: 12px
+    }
+  }
+
+  .er-input__slot {
+    padding: 0 8px !important;
+  }
+
+  .er-text-field--active {
+    transform: scale(0.85) translateY(-45px) translateX(-38px) !important;
+  }
+
+  &__prefer{
+    margin-top: 24px;
+
+    &-label{
+      @extend %caption2;
+      display: inline-block;
+      margin-bottom: 12px;
+    }
+  }
+}

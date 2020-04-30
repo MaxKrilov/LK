@@ -1,0 +1,61 @@
+div(:class="`${pre}`")
+  er-row.mb-12
+    h3 Контактные&nbsp;данные
+    div(v-if="isContactsChanged" :class="`${pre}__changed`").ml-8
+      er-icon(:class="`${pre}__changed-icon`" name="ok")
+      span(:class="`${pre}__changed-text`") Изменен
+
+  div(:class="`${pre}__separator`")
+
+  er-row
+    er-flex(xs12 lg4 :class="`${pre}__col`")
+      div(:class="`${pre}__col__title`") Роль контакта
+      div(:class="`${pre}__input-block`")
+        div(:class="`${pre}__method`") {{ data.role }}
+
+    er-flex(xs12 md6 lg4 :class="`${pre}__col`")
+      div(:class="`${pre}__col__title`") Номер телефона
+      div(:class="`${pre}__input-block`")
+        div(:class="`${pre}__method`" v-for="(phone, ind) in data.phones")
+          edit-field(
+            :key="phone + ind"
+            :item="phone"
+            :prefer="data.preferredContactMethodId === phone.id"
+            @onRemove="removeContact(ind, 'phones')"
+            @onPrefer="setPrefer($event)"
+          )
+        er-text-field(
+          :class="`${pre}__field`"
+          name="inputPhoneNumber"
+          data-skip-validate="true"
+          label="Добавьте номер телефона"
+          mask="phone"
+          ref="phones"
+          :rules="phoneRule"
+          prependInnerIcon="circle_add"
+          v-model="value.phones"
+          @keydown.enter.prevent="addContact($event.target.value, 'phones')"
+        )
+    er-flex(xs12 md6 lg4 :class="`${pre}__col`")
+      div(:class="`${pre}__col__title`") Электронная почта
+      div(:class="`${pre}__input-block`")
+        div(:class="`${pre}__method`" v-for="(email, ind) in data.emails")
+          edit-field(
+            :key="email + ind"
+            :item="email"
+            :prefer="data.preferredContactMethodId === email.id"
+            @onRemove="removeContact(ind, 'emails')"
+            @onPrefer="setPrefer($event)"
+          )
+        er-text-field(
+          :class="`${pre}__field`"
+          name="inputEmail"
+          data-skip-validate="true"
+          label="Добавьте эл. почту"
+          type="email"
+          ref="emails"
+          v-model="value.emails"
+          :rules="emailRule"
+          prependInnerIcon="circle_add"
+          @keydown.enter.prevent="addContact($event.target.value, 'emails')"
+        )

@@ -76,6 +76,16 @@ div(:class="`${pre}`")
           :isLPR="isLPR"
           :isChanged="isUpdate && isAccessRightsChanged")
         hr(:class="`${pre}__separator`")
+        edit-contact-section(
+          :isContactsChanged="isContactsChanged"
+          :data="currentClientContacts"
+        )
+        er-row(
+          :class="`${pre}__error`"
+          v-if="isContactsEmptyError").align-items-center
+          span
+            er-icon(name="warning")
+          p.ml-16 {{ contactsEmptyErrorText }}
         er-row(
           :class="`${pre}__error`"
           v-if="isEmailExistsError || isPhoneExistsError").align-items-center
@@ -128,6 +138,16 @@ div(:class="`${pre}`")
         :isLPR="isLPR"
         :isChanged="isUpdate && isAccessRightsChanged")
       hr(:class="`${pre}__separator`")
+      edit-contact-section(
+        :isContactsChanged="isContactsChanged"
+        :data="currentClientContacts"
+      )
+      er-row(
+        :class="`${pre}__error`"
+        v-if="isContactsEmptyError").align-items-center
+        span
+          er-icon(name="warning")
+        p.ml-16 {{ contactsEmptyErrorText }}
       er-row(
         :class="`${pre}__error`"
         v-if="isEmailExistsError || isPhoneExistsError").align-items-center
@@ -135,13 +155,13 @@ div(:class="`${pre}`")
           er-icon(name="warning")
         p.ml-16 {{updatedFailText}}
       er-row(:class="`${pre}__btns-group`")
-        er-flex(sm12 md6 lg4 :class="`${pre}-btn-save`").mb-8
+        er-flex(sm12 md6 lg4 :class="`${pre}-btn ${pre}-btn-save`").mb-8
           er-button(
             type="submit",
             :disabled="!isFilled || !isChanged"
             :loading="isLoading",
             @click="handleSaveClick") Сохранить
-        er-flex(sm12 md6 lg4).mb-32
+        er-flex(sm12 md6 lg4 :class="`${pre}-btn`").mb-32
           er-button(flat, @click="handleCancelClick") Отменить
         er-flex(sm12, md6, lg4)
           er-button.mb-16(

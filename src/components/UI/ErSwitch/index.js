@@ -37,6 +37,7 @@ export default class ErSwitch extends Vue {
               <input
                 type="radio"
                 name={this.name}
+                disabled={item?.disabled}
                 checked={this.value === item.value}
                 onChange={() => this.onChange(item.value)}
               />

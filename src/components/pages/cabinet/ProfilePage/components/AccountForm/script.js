@@ -1,6 +1,7 @@
 import { mapActions, mapState, mapGetters } from 'vuex'
 import EditLprSection from './components/EditLprSection'
 import EditSection from './components/EditSection'
+import EditContactSection from './components/EditContactSection'
 import AccessSection from './components/AccessSection'
 import EditConfirm from './components/EditConfirm'
 import RemoveAccount from '../RemoveAccount'
@@ -13,6 +14,7 @@ export default {
   components: {
     EditLprSection,
     EditSection,
+    EditContactSection,
     AccessSection,
     RemoveAccount,
     EditConfirm
@@ -32,6 +34,7 @@ export default {
     removeAccountFailText: 'При удалении учетной записи произошла ошибка. Попробуйте удалить еще раз',
     emailAlreadyExistsText: 'Имейл уже существует',
     phoneAlreadyExistsText: 'Телефон уже существует',
+    contactsEmptyErrorText: 'В Контактных данных необходимо указать телефон или электронную почту',
     sectionLprData: {
       lastName: '',
       firstName: '',
@@ -47,7 +50,8 @@ export default {
       fetching: false
     },
     isPhoneExistsError: false,
-    isEmailExistsError: false
+    isEmailExistsError: false,
+    isContactsEmptyError: false
   }),
   props: {
     userId: { type: String, default: '' },
@@ -62,16 +66,24 @@ export default {
     systems: { type: Object, default: () => ({}) },
     isUpdate: { type: Boolean, default: false },
     isLPR: { type: Boolean, default: false },
-    isConfirm: { type: Boolean, default: false }
+    isConfirm: { type: Boolean, default: false },
+    currentClientContacts: { type: Object, default: () => ({}) }
   },
   mounted () {
     this.$nextTick(() => {
       window.addEventListener('resize', this.handleResize)
+      // поля в Контактные данные надо проверять при добавлении номера/адреса,
+      // но не надо при отправки формы
+      // если в атрибутах поля есть 'data-skip-validate' - исключить из валидации
+      const { accountForm } = this.$refs
+      accountForm.inputs.map((input) => {
+        if (Object.keys(input.$attrs).includes('data-skip-validate')) {
+          accountForm.unregister(input)
+        }
+      })
     })
-
     this.sectionLprData.roles = copyObject(this.roles)
     this.sectionAccessRightsData = copyObject(this.filterAccess())
-
     if (this.isUpdate) {
       this.sectionLprData.lastName = this.lastName
       this.sectionLprData.firstName = this.firstName
@@ -86,6 +98,11 @@ export default {
   watch: {
     systems (val) {
       this.sectionAccessRightsData = copyObject(val)
+    },
+    loadingClientInfo (val) {
+      if (!val) {
+        this.snapshot.contacts = copyObject(this.currentClientContacts)
+      }
     }
   },
   destroy () {
@@ -100,6 +117,9 @@ export default {
       'createUserLpr',
       'removeProfileAccount'
     ]),
+    ...mapActions('contacts', [
+      'contacts'
+    ]),
     ...mapActions('accountForm', [
       'createUserPosition',
       'createUserRoles',
@@ -107,6 +127,7 @@ export default {
       'changeAttributes',
       'removeUserRoles',
       'updateUser',
+      'updateContacts',
       'getPost',
       'setConfirmModalVisibility'
     ]),
@@ -125,7 +146,8 @@ export default {
       const formData = { ...this.sectionLprData }
       return {
         user: formData,
-        accessRights: this.getSelectedAccessRights(this.sectionAccessRightsData)
+        accessRights: this.getSelectedAccessRights(this.sectionAccessRightsData),
+        contacts: copyObject(this.currentClientContacts)
       }
     },
     getFormData () {
@@ -133,7 +155,8 @@ export default {
       const formAccessRightsData = this.isLPR
         ? this.getSelectedAccessRights(this.sectionAccessRightsData)
         : []
-      return { formData, formAccessRightsData }
+      const formContactsData = this.currentClientContacts
+      return { formData, formAccessRightsData, formContactsData }
     },
     getSelectedAccessRights () {
       return Object.values(this.sectionAccessRightsData)
@@ -150,18 +173,22 @@ export default {
       this.sectionLprData = {}
       this.sectionAccessRightsData = {}
     },
+    validateContactsData () {
+      let isValid = true
+      this.isContactsEmptyError = false
+      const { emails, phones } = this.currentClientContacts
+      if (!emails.length && !phones.length) {
+        isValid = false
+        this.isContactsEmptyError = true
+      }
+      return isValid
+    },
     validForm () {
       if (!this.isLPR && this.isUpdate) {
-        this.isSuccess = this.$refs.accountForm.validate()
+        this.isSuccess = this.$refs.accountForm.validate() && this.validateContactsData()
       } else {
         this.isSuccess = this.$refs.accountForm.validate() && this.sectionLprData.role
       }
-    },
-    setEmailError () {
-
-    },
-    setPhoneError () {
-
     },
     filterAccess () {
       const shownAccesses = ['lkb2b', 'dmp-kc-sit']
@@ -213,11 +240,29 @@ export default {
       }
     },
     async updateAccount (formData, formAccessRightsData) {
+      // обновление контактных данных
+      let contactsData = null
+      if (this.isContactsChanged) {
+        const { currentClientContacts } = this
+        const { id, firstName, lastName, preferredContactMethodId, emails, phones } = currentClientContacts
+        contactsData = {
+          id,
+          firstName,
+          lastName,
+          preferredContactMethodId,
+          emails,
+          phones
+        }
+        await this.updateContacts({ api: this.$api, data: contactsData })
+      }
+
+      let userData = null
+
       if (this.snapshot.user.firstName !== formData.firstName ||
         this.snapshot.user.lastName !== formData.lastName ||
         this.snapshot.user.middleName !== formData.middleName ||
         this.snapshot.user.email !== formData.email) {
-        const userData = {
+        userData = {
           userId: this.userId,
           fio: `${formData.lastName} ${formData.firstName} ${formData.middleName}`,
           email: formData.email
@@ -287,7 +332,6 @@ export default {
       this.setConfirmModalVisibility({ isFetching: true })
       try {
         const { formData, formAccessRightsData } = this.getFormData()
-
         await this.updateAccount(formData, formAccessRightsData)
 
         if (!this.isLPR) {
@@ -438,6 +482,9 @@ export default {
       'updatedUserInfo',
       'gotPost'
     ]),
+    ...mapState({
+      loadingClientInfo: state => state.loading.clientInfo
+    }),
     isAccessRightsChanged () {
       const { formAccessRightsData } = this.getFormData()
       return JSON.stringify(this.snapshot.accessRights) !== JSON.stringify(formAccessRightsData)
@@ -456,13 +503,14 @@ export default {
       return data.length === 0 && isFullPhone
     },
     isChanged () {
-      const { formData, formAccessRightsData } = this.getFormData()
+      const { formData, formAccessRightsData, formContactsData } = this.getFormData()
       const data = {
         user: {
           ...formData,
           phoneNumber: this.getPhoneNumberWithoutCode(formData.phoneNumber)
         },
-        accessRights: formAccessRightsData
+        accessRights: formAccessRightsData,
+        contacts: formContactsData
       }
       if (data.user.role && data.user.role.id) data.user.role.id = data.user.role.id.toString()
       return JSON.stringify(this.snapshot) !== JSON.stringify(data)
@@ -492,8 +540,9 @@ export default {
       const { formData } = this.getFormData()
       return this.snapshot.user && this.snapshot.user.role ? formData.role.code !== this.snapshot.user.role.code : Boolean(formData.role)
     },
-    isCorrectPhone () {
-      return false
+    isContactsChanged () {
+      const { formContactsData } = this.getFormData()
+      return this.snapshot.contacts && JSON.stringify(this.snapshot.contacts) !== JSON.stringify(formContactsData)
     }
   }
 }
