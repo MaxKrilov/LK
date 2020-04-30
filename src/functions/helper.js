@@ -49,7 +49,7 @@ export function scrollXToStart (element, currScroll, speed, step) {
 
 /**
  * Функция, приводит мобильный телефон к одному типу: 79196026543
- * @param {string}
+ * @param {string} str
  * @return {string}
  */
 export function toDefaultPhoneNumber (str) {
@@ -57,6 +57,29 @@ export function toDefaultPhoneNumber (str) {
   return ''
 }
 /**
+ * Функция, приводит мобильный телефон к одному типу c форматированием: +7 919 60 265 43
+ * @param number {string}
+ * @return {string}
+ */
+
+export function formatPhoneNumber (number) {
+  if (number.length === 11) {
+    return '+' + number.slice(0, 1) + ' ' +
+      number.slice(1, 4) + ' ' +
+      number.slice(4, 6) + ' ' +
+      number.slice(6, 9) + ' ' +
+      number.slice(9, 11)
+  } else if (number.length > 11) {
+    return '+' + number.slice(0, 1) + ' (' +
+      number.slice(1, 4) + ') ' +
+      number.slice(4, 7) + '-' +
+      number.slice(7, 9) + '-' +
+      number.slice(9, 11) +
+      ' (доб. ' + number.slice(11) + ')'
+  } else {
+    return number
+  }
+}/**
  * Функция, преобразует строку в ФИО
  * @param {string} str исходный объект
  * @return {Object} новый объект

@@ -2,47 +2,46 @@
   &__changed {
     margin-top: auto;
     margin-bottom: auto;
+    color: map_get($green, 'base');
     &-icon {
       svg {
         width: 16px !important;
-        color: map_get($green, 'base');
       }
     }
     &-text {
       padding-left: 2px;
-      color: map_get($green, 'base');
       font-size: 12px
     }
   }
   &__container {
+    flex-wrap: wrap;
     @include media-query((
       flex-wrap: (
-        xs: wrap !important,
-        lg: nowrap !important,
-        xl: nowrap !important)
+        lg: nowrap !important)
     ));
   }
   &__separator {
-    width: 100%;
-    position: relative;
-    @include media-query((
-      width: (lg: 97%, xl: 97%),
-      position: (lg: absolute, xl: absolute)
-    ));
-    &::before {
-      position: absolute;
-      left: -15px;
-      width: 120%;
-      @include media-query((
-        top: (xs: 44px, md: 45px, lg: 24px, xl: 20px),
-        left: (lg: 0, xl: 0),
-        width: (lg: 100%, xl: 100%)
-      ));
-      content: '';
-      height: 1px;
-      background: map_get($gray, '4');
-    }
-  }
+     width: 100%;
+     position: relative;
+     @include media-query((
+       width: (lg: 97%),
+       position: (lg: absolute)
+     ));
+     &::before {
+       position: absolute;
+       left: -15px;
+       width: 120%;
+       top: 44px;
+       @include media-query((
+         top: (md: 45px, lg: 24px, xl: 20px),
+         left: (lg: 0),
+         width: (lg: 100%)
+       ));
+       content: '';
+       height: 1px;
+       background: map_get($gray, '4');
+     }
+   }
   &__header {
     @include media-query((
       margin-top: (md: -4px, lg: 5px, xl: 0),
@@ -53,28 +52,30 @@
     &__title,
     &__title__small {
       color: rgba(map_get($shades, 'black'), 0.3);
+      display: block;
+      font-size: 11px;
+      margin-bottom: 8px;
       @include media-query((
-        display: (xs: block, md: block),
-        margin-bottom: (xs: 8px, sm: 8px, md: 8px),
         font-size: (
-          xs: 11px,
-          sm: 11px,
           md: 13px,
           xl: map-get($text, 'small')),
         line-height: (
           md: 16px)
       ));
       &__separator {
+        display: block;
         @include media-query((
-          display: (xs: block, lg: none)
+          display: (lg: none)
         ));
         width: 100%;
         position: relative;
         &::before {
           position: absolute;
+          top: 8px;
+          display: block;
           @include media-query((
-            top: (xs: 8px, sm: -12px, md: 8px),
-            display: (xs: block, lg: none)
+            top: (sm: -12px, md: 8px),
+            display: (lg: none)
           ));
           content: '';
           width: 100%;
@@ -84,50 +85,37 @@
       }
     }
     &__title__small {
+      margin-bottom: 0;
       @include media-query((
         font: (
           md: 11px $fedra-book !important,
           lg: 13px $fedra-book !important,
           xl: map-get($text, 'small') $fedra-book !important),
         letter-spacing: (md: 0.35px),
-        margin-bottom: (xs: 0px, sm: 16px, md: 0, lg: 20px, xl: 26px),
-        margin-left: (md: 0, lg: 0)
+        margin-bottom: (sm: 16px, md: 0, lg: 20px, xl: 26px),
+        margin-left: (md: 0)
       ));
     }
   }
   &__side-menu {
     &__list {
-      // scroll-snap-type: x mandatory;
+      overflow: auto;
+      display: flex;
+      flex-direction: row;
+      padding: 0 0 10px 0 !important;
+      margin-bottom: 22px !important;
       @include media-query((
         position: (md: relative),
         overflow: (
-          xs: auto,
-          sm: auto,
-          lg: visible !important,
-          xl: visible !important),
-        display: (xs: flex),
+          lg: visible !important),
         justify-content: (
-          sm: space-between,
-          md: space-between),
-        flex-direction: (xs: row, lg: column, xl: column),
-        padding: (
-          xs: 0 0 10px 0 !important,
-          md: 2px 0 !important),
-        margin-bottom: (
-          xs: 22px !important,
-          md: 0 !important),
+          sm: space-between),
+        flex-direction: ( lg: column, xl: column),
+        padding: (md: 2px 0 !important),
+        margin-bottom: (md: 0 !important),
         white-space: (xs: nowrap, lg: normal, xl: normal),
         scroll-snap-type: (lg: none, xl: none)
       ));
-      // &::before {
-      //   content: '';
-      //   position: absolute;
-      //   width: 50%;
-      //   height: 50%;
-      //   right: 0;
-      //   pointer-events: none;
-      //   background: linear-gradient(90deg, rgba(map_get($gray, '3'), 0.5) 25%, map_get($gray, '3') 100%);
-      // }
       &--blur {
         position: relative;
         @include media-query((

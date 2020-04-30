@@ -157,7 +157,6 @@ const actions = {
 
       commit(ACCOUNTS_ERROR, message)
     } catch (e) {
-      console.log(e)
       commit(ACCOUNTS_ERROR, 'Не удалось получить список УЗ')
     }
   },

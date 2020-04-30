@@ -89,17 +89,19 @@
   }
 
   .account-form {
+    &-btn {
+      @include media-query((
+        padding-right: (
+          md: 24px !important,
+        )
+      ))
+    }
     &-btn-save {
       @include media-query((
         margin: (
           sm: 8px 0 8px 0 !important,
           md: 0 !important,
-          lg: 0 8px 0 0 !important,
-          xl: 0 8px 0 0 !important,
-        ),
-        padding-right: (
-          md: 16px !important,
-        ),
+        )
       ));
     }
     &__separator {

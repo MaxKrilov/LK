@@ -39,6 +39,7 @@ div(:class="`${pre}`")
             :phoneNumber="user.phone",
             :email="user.email",
             :systems="userResourceAccess"
+            :currentClientContacts="getCurrentClientContacts"
             @success="handleEventForm"
             @fail="handleEventForm"
             @cancel="handleEventForm")

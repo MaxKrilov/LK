@@ -10,6 +10,7 @@ const state = {
   loadingOrders: true,
   sendingCancellingOrder: false,
   loadingInvoiceForPayment: true,
+  contacts: true,
 
   rebootBillingAccount: false
 }

@@ -1,3 +1,8 @@
 .profile-page {
-
+    .main-content--padding {
+        padding-left: 45px;
+    }
+    .main-content {
+        width: calc(100vw - 271px);
+    }
 }

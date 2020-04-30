@@ -6,8 +6,7 @@ import { BACKEND_COMBAT, BACKEND_TESTING } from '@/constants/url'
 import { API_DADATA } from '@/store/actions/api'
 import store from '../store'
 
-// TODO вернуть master после окончания разработки
-const BASE_BRANCH = 'master' // !!!
+const BASE_BRANCH = 'master'
 
 export class API {
   private _branch = BASE_BRANCH

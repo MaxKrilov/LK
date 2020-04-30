@@ -103,7 +103,6 @@ const actions = {
   checkAuth: async ({ dispatch, state }, { api }) => {
     const { accessToken } = state
     const validToken = validationToken(accessToken)
-
     if (validToken) {
       return state
     }
