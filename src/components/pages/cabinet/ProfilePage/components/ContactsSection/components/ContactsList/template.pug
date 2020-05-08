@@ -1,0 +1,20 @@
+div(:class="`${pre}`")
+  profile-table(
+    :columns="listColumns"
+    :tableData="contactsList",
+    :showAmount="showListAmount"
+    @clickRow="handleExpandContact($event)"
+  )
+    template(v-slot:cell="{ item, dataKey, index }")
+      contacts-list-item(
+        :item="item"
+        :dataKey="dataKey"
+        :expandedId="expandedId"
+        )
+
+    template(v-slot:row="{ item }")
+      er-slide-up-down(:active="expandedId === item.id")
+        lpr-contact-form(
+          :isOpen="expandedId === item.id"
+          :primaryContactId="getPrimaryContact.id"
+          @addContactClose="handleExpandContact")

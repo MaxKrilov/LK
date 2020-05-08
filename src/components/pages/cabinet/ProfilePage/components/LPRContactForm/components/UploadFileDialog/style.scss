@@ -1,0 +1,121 @@
+%upload-file-dialog {
+  padding: 28px 32px 32px;
+  background-color: map_get($shades, 'white');
+}
+
+.upload-file-dialog {
+  @extend %body-font;
+  @extend %upload-file-dialog;
+  position: relative;
+
+  &__close {
+    position: absolute;
+    top: 32px;
+    right: 32px;
+    cursor: pointer;
+    z-index: 3;
+  }
+
+  &__save-error{
+    @extend %upload-file-dialog;
+
+    width: 100%;
+    height: 100%;
+
+    flex-direction: column;
+
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 2;
+
+    &__icon{
+      color: map_get($red, 'base');
+
+      svg{
+        width: 52px !important;
+        height: 52px;
+      }
+    }
+
+    &__text{
+      margin-top: $padding-x2;
+      flex-grow: 5;
+    }
+
+    &__repeat {
+      padding-right: $padding-x4;
+      padding-left: $padding-x4;
+      align-self: flex-start;
+    }
+  }
+
+  &__intro-icon{
+    color: map_get($yellow, 'base');
+
+    svg{
+      width: 52px !important;
+      height: 52px;
+    }
+  }
+
+  &__title{
+    @extend %h4;
+    margin-top: $padding-x2;
+    margin-bottom: $padding-x3;
+  }
+
+  &__desc{
+    @extend %caption2;
+    line-height: 1.5;
+  }
+
+  &__errors, &__success {
+    @extend %caption1-font;
+    margin-top: $padding-x4;
+  }
+
+  &__errors{
+    color: map_get($red, 'base');
+  }
+
+  &__success {
+    color: map_get($green, 'base');
+  }
+
+  &__upload{
+    margin-top: $padding-x4;
+
+    .er-file-input label, .er-file-input__filename{
+      font: inherit;
+    }
+
+    &_complete{
+      .er-file-input__filename{
+        color: map_get($green, 'base');
+      }
+    }
+  }
+
+  &__file-input{
+
+    &__info{
+      margin-top: $padding-x2;
+      @extend %caption2;
+    }
+  }
+
+  &__actions{
+    margin-top: $padding-x8;
+
+    &__btn{
+      &:not(:last-child) {
+        margin-bottom: $padding-x4;
+
+        @include media-query((
+          margin-bottom: (md: 0)
+        ));
+      }
+    }
+  }
+}

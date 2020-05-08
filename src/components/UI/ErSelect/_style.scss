@@ -28,7 +28,6 @@
   }
   &__selections {
     display: flex;
-    //flex-wrap: wrap;
     align-items: center;
     flex: 1 1;
     max-width: 100%;
@@ -36,30 +35,57 @@
     + .er-text-field__slot {
       position: static;
     }
+
+    &_multiple{
+      flex-wrap: wrap;
+      position: relative;
+
+      > input{
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 1;
+      }
+    }
+
     &--chip {
-      @extend %caption2;
-      font-weight: 400;
+      @extend %body-font;
       @include color-black(0.8);
+
+      font-weight: 400;
       text-decoration: underline;
       text-decoration-style: dashed;
       margin-right: 16px;
+      display: inline-flex;
+      align-items: flex-start;
+
+      &:not(:last-child) {
+        margin-bottom: $padding-x1;
+      }
       button {
+        width: 14px;
         background-color: map_get($shades, 'transparent');
         border: none;
         outline: none;
         cursor: pointer;
         margin-left: 2px;
+        position: relative;
+        z-index: 2;
+
+        white-space: nowrap;
         svg {
-          width: 16px;
+          width: inherit !important;
           @include color-black(0.2)
         }
       }
     }
     &--comma {
+      max-width: 100%;
       white-space: nowrap;
       overflow: hidden;
       position: relative;
       text-overflow: ellipsis;
+      flex-shrink: 0;
       @extend %body-font;
     }
     input {

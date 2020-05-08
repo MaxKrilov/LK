@@ -1,220 +1,76 @@
-div.text--small(:class="`${pre}`")
-  div.small--box--shadow
-  er-row.align-items-center
-    er-flex(xs12, md6)
-      h2(:class="`${pre}__welcome-title`")
-        | Контакты
-        template(v-if="isLPR")
-          template(v-if="!isCurrentBreakpoint('sm')")
-            div(:class="`${pre}__welcome-title__question`")
-              er-hint(right)
-                template(v-slot:activator="{ on }")
-                  span(
-                    :class="[`${pre}__welcome-title__question__icon`, { active: isQuestionOpen }]",
-                    v-on="on")
-                    er-icon(name="question")
-                div(:class="`${pre}__welcome-title__question__wrapper`")
-                  h2.title--medium Контакты
-                  p(:class="`${pre}__welcome-title__question__text`") Вы можете добавить контакты сотрудников, чтобы они были в курсе работы Ваших сервисов в Дом.ru Бизнес
-          template(v-else)
-            span(:class="`${pre}__welcome-title__question__icon`" @click="openInfoModal").ml-12
+div(:class="`${pre}`")
+  er-row(:class="[`${pre}__header`, 'no-gutters']")
+    er-flex(xs12 md6)
+      div(:class="`${pre}__title-wrap`")
+        h2(:class="`${pre}__title`") Контакты
+        div(:class="[`${pre}__title-hint`, `${pre}__title-hint--inline`]")
+          template(v-if="isMobile")
+            span(@click="handleTitlePopup('open')")
               er-icon(
-                height='24px'
-                width='24px'
                 name='question'
-              )
-    er-flex(xs12, md6)
-      search-field(
-        placeholder="Искать контакт",
-        :countRows="countRows"
-        @search="handleSearch"
-      )
-  template(v-if="isFetched && error")
-    p {{ error }}
-  profile-table(
-      v-if="isCurrentBreakpoint('sm')",
-      :class="`${pre}__table`",
-      :tableData="filteredContactsByName",
-      :columns="contactTableColumnsMobile",
-      :sortField="sortField",
-      :sortAsc="sortAsc",
-      :expandedId="expandedContact",
-      @clickRow="handleContactDetails"
-    )
-      template(v-slot:cell="{ item, dataKey, index }")
-        div(v-if="expandedContact === item.contactId")
-          div(v-if="dataKey === 'firstName'", :class="`${pre}__table__cell`")
-            div.d--flex
-              er-icon(name="corner_down", :class="`${pre}__table__cell__icon`")
-        div(v-else)
-          div(
-            v-if="dataKey === 'firstName'",
-            :class="`${pre}__table__cell`")
-            div.d--flex
-              er-icon(name="corner_down", :class="`${pre}__table__cell__icon`")
-              div.d--flex.flex-column(:class="`${pre}__table__cell__person`")
-                span(:class="`${pre}__table__cell__person__family-name`") {{ item.lastName }}
-                div(:class="`${pre}__table__cell__person__name`")
-                  | {{item.firstName}} {{item.middleName}}
-                span(v-if="item.canSign" :class="`${pre}__table__cell__person__role`") Право подписи
+                :class="`${pre}__title-hint__ico`"
+                )
+          template(v-else)
+            er-hint(right)
+              template(v-slot:activator="{ on }")
+              div
+                h3(:class="`${pre}__title-hint__title`") Контакты
+                p(:class="`${pre}__title-hint__txt`") Вы&nbsp;можете добавить контакты сотрудников, чтобы они были в&nbsp;курсе работы ваших сервисов в&nbsp;Дом.ru&nbsp;Бизнес
+    er-flex(xs12 md6)
+  div(:class="`${pre}__body`")
+    contacts-list(:contactsList="pagData" @editContactOpen="handleEditContactOpen")
+    lpr-contact-form(:isOpen="isOpenContactForm" @addContactClose="handleClickAddContact")
+  er-row(:class="`${pre}__footer`")
+    er-flex(xs12 md6 lg4)
+      er-button(
+        :class="`${pre}__add-btn`"
+        :disabled="isOpenContactForm || isEditContactOpen"
+        :loading="getCreatedContactState.isFetching"
+        preIcon="add"
+        @click="handleClickAddContact"
+        ) Добавить контакт
 
-        div(
-          v-if="dataKey === 'alert' && requestStatus.id === item.contactId",
-          :class="`${pre}__table__cell__alert--${requestStatus.type}`"
+    template(v-if="pagLength > 1")
+      er-flex(xs12 md6 lg8 :class="`${pre}__paginator`")
+        er-pagination(
+          v-model="pagCurrentPage"
+          :length="pagLength"
+          :total-visible="pagLength"
         )
-          alert(
-            :message="requestStatus.message"
-            :isFail="requestStatus.type === 'error'"
-          )
-      template(v-slot:row="{ item }")
-          er-slide-up-down(:active="expandedContact === item.contactId")
-            contact-details(
-              :contactId="item.contactId",
-              :firstName="item.firstName",
-              :lastName="item.lastName",
-              :middleName="item.middleName"
-              :phones="item.phones",
-              :emails="item.emails",
-              :roles="item.roles",
-              :rolesList="rolesDirectory"
-              @success="handleSuccessForm"
-              @fail="handleFailForm"
-              @cancel="handleCancelForm")
 
-  profile-table(
-    v-if="isCurrentBreakpoint('md')",
-    :class="`${pre}__table`",
-    :tableData="filteredContactsByName",
-    :columns="contactTableColumnsTablet",
-    :sortField="sortField",
-    :sortAsc="sortAsc",
-    :expandedId="expandedContact",
-    @clickRow="handleContactDetails"
+  er-dialog(
+    :value="isOpenTitlePopupHint"
+    :maxWidth="544"
+    @update:returnValue="handleTitlePopup('close')"
   )
-    template(v-slot:cell="{ item, dataKey, index }")
-      div(v-if="expandedContact === item.id")
-        div(v-if="dataKey === 'firstName'", :class="`${pre}__table__cell`")
-          div.d--flex
-            er-icon(name="corner_down", :class="`${pre}__table__cell__icon`")
-      div(v-else)
-        div(v-if="dataKey === 'firstName'", :class="`${pre}__table__cell`")
-          div.d--flex
-            er-icon(name="corner_down", :class="`${pre}__table__cell__icon`")
-            div.d--flex.flex-column(:class="`${pre}__table__cell__person`")
-              span(:class="`${pre}__table__cell__person__family-name`") {{item.lastName}}
-              div(:class="`${pre}__table__cell__person__name`")
-                | {{item.firstName}} {{item.middleName}}
-              span(v-if="item.canSign" :class="`${pre}__table__cell__person__role`") Право подписи
-
-        div(v-if="dataKey === 'phones'", :class="`${pre}__table__cell`")
-          template(v-for="phone in item.phones")
-            p(:class="[`${pre}__table__value`, { prefer: phone.isPrefer }]").mb-4 {{ phone.value | formatPhone }}
-            er-menu(offset-x, min-width="238", max-width="240", transition="slide-x-transition", nudge-left="30")
-              div test
-
+    div(:class="[`${pre}__title-hint`, `${pre}__title-hint--popup`, `${pre}__dialog`]")
+      er-icon(
+        name='question'
+        :class="`${pre}__title-hint__ico`"
+        :width="52"
+        :height="52"
+        )
+      h3(:class="`${pre}__title-hint__title`") Контакты
+      p(:class="`${pre}__title-hint__txt`") Вы&nbsp;можете добавить контакты сотрудников, чтобы они были в&nbsp;курсе работы ваших сервисов в&nbsp;Дом.ru&nbsp;Бизнес
       div(
-        v-if="dataKey === 'alert' && requestStatus.id === item.contactId",
-        :class="`${pre}__table__cell__alert--${requestStatus.type}`"
-      )
-        alert(
-          :message="requestStatus.message"
-          :isFail="requestStatus.type === 'error'"
-        )
+        :class="`${pre}__dialog__close-wrap`"
+        @click="handleTitlePopup('close')")
+        span(:class="`${pre}__dialog__close`") Спасибо
 
-    template(v-slot:row="{ item }")
-      er-slide-up-down(:active="expandedContact === item.contactId")
-        template(v-if="expandedContact === item.contactId")
-          contact-form(
-            isUpdate
-            :canSign="item.canSign",
-            :contactId="item.contactId",
-            :firstName="item.firstName",
-            :lastName="item.lastName",
-            :middleName="item.middleName"
-            :roles="item.roles",
-            :phones="item.phones",
-            :emails="item.emails",
-            :rolesList="rolesDirectory"
-            @success="handleSuccessForm"
-            @fail="handleFailForm"
-            @cancel="handleCancelForm")
-
-  profile-table(
-    v-if="isCurrentBreakpoint('lg')",
-    :class="`${pre}__table ${preLoadingStyles}`",
-    :tableData="filteredContactsByName",
-    :columns="contactTableColumnsDesktop",
-    :sortField="sortField",
-    :sortAsc="sortAsc",
-    :expandedId="expandedContact",
-    @clickRow="handleContactDetails"
+  er-dialog(
+    :value="hasError"
+    :maxWidth="544"
+    @update:returnValue="handleErrorPopup('close')"
   )
-    template(v-slot:cell="{ item, dataKey, index }")
-      div(v-if="dataKey === 'firstName'", :class="`${pre}__table__cell`")
-        div(:class="`${pre}__table__cell__person`")
-          div(:class="`${pre}__table__cell__person__family-name`") {{item.lastName}}
-          div(:class="`${pre}__table__cell__person__name`")
-            | {{item.firstName}} {{item.middleName}}
-          span(v-if="item.canSign" :class="`${pre}__table__cell__person__role`") Право подписи
-
-      div(v-if="dataKey === 'systemLabel'", :class="`${pre}__table__cell`")
-        div.d--flex.justify-content-end
-          .d--inline-block
-            p.mb-8(v-if="item.systems" v-for="system in getResourceAccessLabels(item.contactId)") {{ system }}
-          er-icon(name="corner_down", :class="`${pre}__table__cell__icon`")
-      div(v-if="dataKey === 'phones'", :class="`${pre}__table__cell`")
-        template(v-for="phone in item.phones")
-          er-menu(v-if="phone.isPrefer", openOnHover, min-width="100", max-width="180", transition="slide-x-transition", nudge-right="90", nudge-top="24")
-            template(v-slot:activator="{ on }")
-              p(v-on="on" :class="[`${pre}__table__value`, { prefer: phone.isPrefer }]").mb-4 {{ phone.value | formatPhone }}
-            div(:class="`${pre}__hint`") Предпочтительный канал связи
-          template(v-else)
-            p(:class="[`${pre}__table__value`, { prefer: phone.isPrefer }]").mb-4 {{ phone.value | formatPhone }}
-      div(v-if="dataKey === 'emails'", :class="`${pre}__table__cell`")
-        template(v-for="email in item.emails")
-          er-menu(v-if="email.isPrefer", openOnHover, min-width="100", max-width="180", transition="slide-x-transition", nudge-right="90", nudge-top="24")
-            template(v-slot:activator="{ on }")
-              p(v-on="on" :class="[`${pre}__table__value`, { prefer: email.isPrefer }]").mb-4 {{ email.value }}
-            div(:class="`${pre}__hint`") Предпочтительный канал связи
-          template(v-else)
-            p(:class="[`${pre}__table__value`, { prefer: email.isPrefer }]").mb-4 {{ email.value }}
-      div(v-if="dataKey === 'roles'", :class="`${pre}__table__cell`")
-        div.d--flex.justify-content-between
-          .d--inline-block
-            p.mb-8(v-if="item.roles" v-for="role in item.roles") {{ role.name }}
-          er-icon(name="corner_down", :class="`${pre}__table__cell__icon`")
-    template(v-slot:row="{ item }")
-      er-slide-up-down(:active="isLPR && expandedContact === item.contactId")
-        template(v-if="isLPR && expandedContact === item.contactId")
-          contact-form(
-            isUpdate
-            :contactId="item.contactId",
-            :canSign="item.canSign",
-            :firstName="item.firstName",
-            :lastName="item.lastName",
-            :middleName="item.middleName"
-            :roles="item.roles",
-            :phones="item.phones",
-            :emails="item.emails",
-            :rolesList="rolesDirectory"
-            @success="handleSuccessForm"
-            @fail="handleFailForm"
-            @cancel="handleCancelForm")
-
-  er-flex(
-    v-if="isShowContactForm && !expandedContact" xs12
-    :class="`${pre}__add-contact-form`")
-    contact-form(
-      :roleslist="rolesDirectory"
-      @success="handleSuccessForm"
-      @fail="handleFailForm"
-      @cancel="handleCancelForm")
-
-  //er-row(v-if="isLPR && !isShowContactForm" no-gutters, :class="`${pre}__add-contact`")
-  //  er-flex(xs12, sm8, md6, lg5)
-  //    div(:class="`${pre}__add-contact__button`")
-  //      er-button(
-  //        preIcon="add",
-  //        :disabled="!!expandedContact"
-  //        @click="handleAddNewContactClick")
-  //        | Добавить контакт
+    div(:class="[`${pre}__dialog`, `${pre}__dialog--error`]")
+      er-icon(
+        name='warning'
+        :class="`${pre}__dialog__ico`"
+        :width="52"
+        :height="52"
+      )
+      p(:class="`${pre}__dialog__txt`") {{ getCreatedContactState.error }}
+      div(
+        :class="`${pre}__dialog__close-wrap`"
+        @click="handleErrorPopup('close')")
+        span(:class="`${pre}__dialog__close`") Закрыть

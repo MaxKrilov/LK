@@ -35,6 +35,9 @@ export default {
         }
       })
       return isEmpty(this.messages)
+    },
+    reset () {
+      this.messages = []
     }
   },
   created () {

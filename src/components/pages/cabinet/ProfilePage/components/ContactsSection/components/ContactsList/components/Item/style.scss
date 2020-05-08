@@ -1,0 +1,49 @@
+.contacts-list-item {
+  @extend %body-font;
+
+  &__name{
+    @extend %caption1;
+
+    &__last-name{
+      @extend %h4;
+      display: block;
+    }
+  }
+
+  &__roles-list{
+
+    &__item{
+      @extend %caption1;
+      margin: $padding-x1 0;
+    }
+  }
+
+  &__contact-methods{
+    margin-top: $padding-x4;
+
+    &__title{
+      @extend %h4;
+      margin-bottom: $padding-x2;
+    }
+
+    &__section{
+
+      &:not(:last-child){
+        margin-bottom: $padding-x2;
+      }
+
+      &__title{
+        @extend %caption1;
+        margin-bottom: $padding-x1;
+      }
+    }
+  }
+
+  &__methods-list{
+
+    &__item{
+      @extend %body-font;
+      margin: $padding-x1 0;
+    }
+  }
+}

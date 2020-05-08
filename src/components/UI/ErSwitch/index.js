@@ -33,7 +33,7 @@ export default class ErSwitch extends Vue {
         />
         {
           this.labels.map((item, index) => (
-            <label key={index}>
+            <label key={index} class={item?.disabled ? 'is-disabled' : ''}>
               <input
                 type="radio"
                 name={this.name}

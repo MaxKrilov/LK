@@ -3,6 +3,7 @@ import PersonCard from '../../components/PersonCard/index'
 import CompanyCard from '../../components/CompanyCard/index'
 import AccountForm from '../../components/AccountForm/index'
 import AccountsSection from '../../components/AccountsSection/index'
+import ContactsSection from '../../components/ContactsSection'
 import ChangePassword from '../../components/ChangePassword/index'
 import ModalAccountsInfo from '../../components/AccountsInfo/index'
 import { scrollXTo, scrollXToStart } from '@/functions/helper'
@@ -25,6 +26,7 @@ export default {
     CompanyCard,
     AccountForm,
     AccountsSection,
+    ContactsSection,
     ChangePassword,
     ModalAccountsInfo
   },

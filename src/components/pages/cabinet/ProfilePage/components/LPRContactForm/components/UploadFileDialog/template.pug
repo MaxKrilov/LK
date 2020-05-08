@@ -1,0 +1,87 @@
+div(:class="`${pre}`")
+  div(:class="`${pre}__close`" @click="closeUploadDialog")
+    er-icon(
+      name="close"
+      width="14px"
+      height="14px"
+    )
+
+  er-row(
+    :class="`${pre}__save-error`"
+    v-if="fileSaveState.error"
+    )
+    er-icon(
+      :class="`${pre}__save-error__icon`"
+      width="52"
+      height="52"
+      name="warning"
+    )
+
+    p(:class="`${pre}__save-error__text`") Что-то пошло не так. Данные не сохранены. Попробуйте сохранить позже
+
+    er-button(
+      :class="`${pre}__save-error__repeat`"
+      @click="repeatSaveFile"
+    ) Попробовать снова
+
+  er-icon(
+    :class="`${pre}__intro-icon`"
+    width="52"
+    height="52"
+    name="question"
+  )
+  h4(:class="`${pre}__title`") Для подтверждения права подписи загрузите скан документа
+  p(:class="`${pre}__desc`") Это может быть Устав&nbsp;предприятия, Доверенность, Паспорт и&nbsp;прочее. Размер файла не&nbsp;должен
+      | превышать&nbsp;4Мб. Формат: jpg, png, pdf, doc, docx.
+
+  er-row(:class="[`${pre}__upload`, {[`${pre}__upload_complete`]: fileSaveState.add}, 'no-gutters']")
+    er-file-input(
+      ref="fileInput"
+      :class="[`${pre}__file-input`]"
+      :label="fileInputLabel"
+      @input="handleFileInput"
+    )
+
+  p(
+    :class="`${pre}__file-input__info`"
+    v-if="isFileLoaded"
+  )
+    | {{value.size}}
+
+  p(:class="`${pre}__errors`") {{checkFileError.current}}
+
+  p(
+    :class="`${pre}__success`"
+    v-if="fileSaveState.save"
+    ) Файл добавлен
+
+  er-row(:class="[`${pre}__actions`]")
+    er-flex(
+      xs12
+      md6
+      :class="`${pre}__actions__btn`"
+      v-if="!fileSaveState.add")
+      er-button(
+        :loading="fileSaveState.progressAdd"
+        :disabled="!isFileValid || fileSaveState.add || fileSaveState.progressAdd"
+        @click="addFile"
+      ) Загрузить
+
+    er-flex(
+      xs12
+      md6
+      :class="`${pre}__actions__btn`"
+      v-if="fileSaveState.add"
+      )
+      er-button(
+        :loading="fileSaveState.progressSave"
+        :disabled="fileSaveState.save || fileSaveState.progressSave"
+        @click="saveFile"
+      ) Сохранить
+
+    er-flex(xs12 md6 :class="`${pre}__actions__btn`")
+      er-button(
+        :flat="true"
+        :disabled="fileSaveState.save"
+        @click.prevent="closeUploadDialog"
+      ) Отменить

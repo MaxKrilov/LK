@@ -19,6 +19,10 @@
     input {
       display: none;
     }
+    &.is-disabled{
+      cursor: default;
+      opacity: .4;
+    }
   }
   &__text {
     @extend %body-font;
