@@ -46,6 +46,9 @@ export default {
     },
     survey () {
       this.isSurveyLoaded = true
+    },
+    $route () {
+      this.isAnswerSelected = false
     }
   },
   computed: {
