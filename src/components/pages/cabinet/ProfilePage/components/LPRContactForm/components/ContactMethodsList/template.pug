@@ -1,0 +1,11 @@
+div(:class="`${pre}`")
+  span(:class="[`${pre}__value`]") {{item.value}}
+  div(:class="`${pre}__actions`")
+    div(:class="[`${pre}__icon`, `${pre}__delete`]" @click="onRemove")
+      er-icon(name="close" width="14px" height="14px" )
+    template(v-if="item.id && item.id.length")
+      div(
+        :class="[`${pre}__icon`, `${pre}__preference`, { 'is-prefer': isPrefer }]"
+        @click="onPrefer(item.id)"
+      )
+        er-icon(name="pin" width="14px" height="14px")

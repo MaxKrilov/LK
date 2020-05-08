@@ -19,7 +19,8 @@ import {
   GET_PAYMENT_INFO,
   GET_PAYMENT_INFO_SUCCESS,
   SET_ACTIVE_BILLING_ACCOUNT_NUMBER,
-  GET_PROMISED_PAYMENT_INFO, GET_CLIENT_INFO_ERROR
+  GET_PROMISED_PAYMENT_INFO, GET_CLIENT_INFO_ERROR,
+  ADD_CLIENT_CONTACTS_STORE
 } from '../actions/user'
 import { ERROR_MODAL } from '../actions/variables'
 import { logError } from '@/functions/logging.ts'
@@ -188,6 +189,9 @@ const getters = {
   },
   getPrimaryContact (state) {
     return state.clientInfo.contacts.filter(item => item.id === state.clientInfo.primaryContact.id)[0]
+  },
+  getContactById: (state) => (contactId) => {
+    return state.clientInfo.contacts.filter(item => item.id === contactId)[0]
   },
   getMarketingBrandId (state) {
     return state.paymentInfo?.marketingBrandId
@@ -527,6 +531,9 @@ const mutations = {
   },
   [COMPANY_DATA_FETCHED]: (state, payload) => {
     state.companyInfo.isFetched = payload
+  },
+  [ADD_CLIENT_CONTACTS_STORE]: (state, payload) => {
+    state.clientInfo.contacts = [...state.clientInfo.contacts, payload]
   }
 }
 

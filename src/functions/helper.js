@@ -570,6 +570,18 @@ export const getNoun = (number, one, two, five) => {
   return five
 }
 
+export const formatBytes = (bytes, decimals = 2) => {
+  if (bytes === 0) return '0 байт'
+
+  const k = 1024
+  const dm = decimals < 0 ? 0 : decimals
+  const sizes = ['байт', 'Кб', 'Мб', 'Гб', 'TB', 'PB', 'EB', 'ZB', 'YB']
+
+  const i = Math.floor(Math.log(bytes) / Math.log(k))
+
+  return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i]
+}
+
 export const ucfirst = str => str.charAt(0).toUpperCase() + str.substr(1, str.length - 1)
 
 export const kebabCase = str => (str || '').replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase()

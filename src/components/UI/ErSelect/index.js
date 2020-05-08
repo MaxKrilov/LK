@@ -174,6 +174,7 @@ export default class ErSelect extends mixins(ErTextField) {
   }
 
   onRemoveMultiple (e, item) {
+    e.preventDefault()
     e.stopPropagation()
     const fIndex = this.value.findIndex(_item => typeof _item === 'string'
       ? _item === item
@@ -214,13 +215,16 @@ export default class ErSelect extends mixins(ErTextField) {
 
   generateSelections () {
     const children = []
+    let staticClass = 'er-select__selections'
     if (this.isMultiple) {
       children.push(...this.generateMultipleSelection())
+      staticClass = staticClass + ' ' + staticClass + '_multiple'
     } else if (!this.hasFocus) {
       children.push(this.generateCommaSelection())
     }
+
     return this.$createElement('div', {
-      staticClass: 'er-select__selections'
+      staticClass: staticClass
     }, [
       ...children,
       this.generateInput()

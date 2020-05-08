@@ -1,0 +1,285 @@
+div(
+  v-if="isOpen"
+  :class="[`${pre}`, {[`${pre}--is-mobile`]: isMobile}]"
+  )
+  template(v-if="isMobile")
+    er-row(:class="[`${pre}__header`, 'no-gutters', 'align-items-center']")
+      er-flex(xs8)
+        h2(:class="`${pre}__header-title`") {{formTitle}}
+      er-flex(xs4 :class="`${pre}-header-actions`")
+        div(:class="`${pre}-header-actions__item`")
+          span(
+            role="button"
+            :class="`${pre}-header-actions__item-save`"
+            @click="handleSaveForm"
+            ) Сохранить
+        div(
+          :class="`${pre}-header-actions__item`"
+          @click="handleClickClose"
+          )
+            er-icon(
+              name="close"
+              :width="16"
+              :height="16"
+              :class="`${pre}-header-actions__item-close`"
+              )
+  div(:class="[`${pre}__body`]")
+
+    div(
+        :class="`${pre}__required-caption`"
+        v-if="isNewContact"
+      ) — Поля обязательные к заполнению
+
+    er-form(ref="LPRContactForm")
+      er-row
+        er-flex(:class="`${preSection}`" xs12 sm6 lg4)
+
+          h3(:class="`${preSection}__title`") Сотрудник
+
+          div(:class="[`${preInput}`, {[`${preInput}_changed`]: changedFields.includes('lastName')}]")
+            div(:class="`${preInput}__changed`")
+              er-icon(
+                :class="`${preInput}__changed-icon`"
+                :width="14"
+                :height="14"
+                name="ok"
+              )
+              span(:class="`${preInput}__changed-text`") Изменен
+
+            er-text-field(
+              :class="`${preInput}__field`"
+              :rules="notEmptyRule"
+              label="Фамилия"
+              :isShowLabelRequired="isNewContact"
+              @blur="handleBlurFIO('lastName')"
+              v-model.trim="formData.lastName"
+            )
+
+          div(:class="[`${preInput}`, {[`${preInput}_changed`]: changedFields.includes('firstName')}]")
+            div(:class="`${preInput}__changed`")
+              er-icon(
+                :class="`${preInput}__changed-icon`"
+                :width="14"
+                :height="14"
+                name="ok"
+              )
+              span(:class="`${preInput}__changed-text`") Изменен
+
+            er-text-field(
+              ref="firstName"
+              :class="`${preInput}__field`"
+              :rules="notEmptyRule"
+              label="Имя"
+              :isShowLabelRequired="isNewContact"
+              @blur="handleBlurFIO('firstName')"
+              v-model.trim="formData.firstName"
+            )
+
+          div(:class="[`${preInput}`, {[`${preInput}_changed`]: changedFields.includes('secondName')}]")
+            div(:class="`${preInput}__changed`")
+              er-icon(
+                :class="`${preInput}__changed-icon`"
+                :width="14"
+                :height="14"
+                name="ok"
+              )
+              span(:class="`${preInput}__changed-text`") Изменен
+
+            er-text-field(
+              ref="secondName"
+              :class="`${preInput}__field`"
+              :rules="notEmptyRule"
+              label="Отчество"
+              :isShowLabelRequired="isNewContact"
+              @blur="handleBlurFIO('secondName')"
+              v-model.trim="formData.secondName"
+            )
+
+          div(:class="[`${preInput}`, {[`${preInput}_changed`]: changedFields.includes('roles')}]")
+            div(:class="`${preInput}__changed`")
+              er-icon(
+                :class="`${preInput}__changed-icon`"
+                :width="14"
+                :height="14"
+                name="ok"
+              )
+              span(:class="`${preInput}__changed-text`") Изменен
+
+            er-select(
+              placeholder="Роль контакта"
+              track-id="id"
+              label="name"
+              ref="contactRoles"
+              data-skip-validate="true"
+              :isShowLabelRequired="isNewContact"
+              :items="fetchedContactRoles"
+              :rules="[value => erSelectValidate(value)]"
+              v-model="formData.roles"
+            )
+
+        er-flex(:class="`${preSection}`" xs12 sm6 lg4)
+          h3(:class="`${preSection}__title`") Контактные данные
+
+          div(:class="[`${preInput}`, {[`${preInput}_changed`]: changedFields.includes('phones')}]")
+            er-row(
+              :class="[`${preInput}__header`, 'no-gutters']"
+              v-if="hasContactsMethods.phones"
+              )
+              div(:class="`${preInput}__title`") Номер телефона
+              div(:class="[`${preInput}__changed`, `${preInput}__actions`]")
+                er-icon(
+                  :class="`${preInput}__changed-icon`"
+                  :width="14"
+                  :height="14"
+                  name="ok"
+                )
+                span(:class="`${preInput}__changed-text`") Изменен
+
+            template(v-for="(phone, ind) in formData.phones")
+              div(:key="phone + ind" :class="`${pre}__method`" )
+                contact-methods-list(
+                  :item="phone"
+                  :prefer="formData.preferredContactMethodId"
+                  @onPrefer="setPrefer($event)"
+                  @onRemove="removeContactMethod(ind, 'phones')"
+                )
+
+            er-text-field(
+              :class="`${pre}__add-contact-method`"
+              name="inputPhoneNumber"
+              data-skip-validate="true"
+              label="Добавьте номер телефона"
+              mask="phone"
+              ref="phones"
+              :rules="phoneRule"
+              prependInnerIcon="circle_add"
+              v-model="currentValue.phones"
+              @keydown.enter.prevent="addContactMethod($event.target.value, 'phones')"
+            )
+
+          div(:class="[`${preInput}`, {[`${preInput}_changed`]: changedFields.includes('emails')}]")
+            er-row(
+              :class="[`${preInput}__header`, 'no-gutters']"
+              v-if="hasContactsMethods.emails"
+              )
+              div(:class="`${preInput}__title`") Электронная почта
+              div(:class="[`${preInput}__changed`, `${preInput}__actions`]")
+                er-icon(
+                  :class="`${preInput}__changed-icon`"
+                  :width="14"
+                  :height="14"
+                  name="ok"
+                )
+                span(:class="`${preInput}__changed-text`") Изменен
+
+            template(v-for="(email, ind) in formData.emails")
+              div(:key="email + ind" :class="`${pre}__method`" )
+                contact-methods-list(
+                  :item="email"
+                  :prefer="formData.preferredContactMethodId"
+                  @onPrefer="setPrefer($event)"
+                  @onRemove="removeContactMethod(ind, 'emails')"
+                )
+            er-text-field(
+              :class="`${pre}__add-contact-method`"
+              name="inputEmail"
+              data-skip-validate="true"
+              label="Добавьте эл. почту"
+              type="email"
+              ref="emails"
+              v-model="currentValue.emails"
+              :rules="emailRule"
+              prependInnerIcon="circle_add"
+              @keydown.enter.prevent="addContactMethod($event.target.value, 'emails')"
+            )
+
+        er-flex(:class="`${preSection}`" xs12 sm6 lg4)
+          div(:class="`${preSection}__action`")
+            div(:class="`${preSection}__action__sign`")
+              er-toggle(v-model="showUploadDialog" v-if="!canSign")
+              er-toggle(v-model="canSign" v-else)
+            h3(:class="`${preSection}__title ${preSection}__action__title`") Право подписи
+
+          div(:class="`${pre}__sign-intro`" v-if="!canSign")
+            h4(:class="`${pre}__sign-intro__title`") Вам будет предложено загрузить скан подтверждающего документа
+            p(:class="`${pre}__sign-intro__desc`") Это может быть Устав&nbsp;предприятия, Доверенность, Паспорт и&nbsp;прочее. Размер файла не&nbsp;должен
+              | превышать&nbsp;4Мб. Формат: jpg, png, pdf, doc, docx.
+
+          template(v-if="canSign")
+            div(:class="`${preInput}`")
+              er-select(
+                placeholder="На основании"
+                :isShowLabelRequired="isNewContact"
+                :items="signDocumentsList"
+                :rules="[value => erSelectValidate(value)]"
+                v-model="formData.registrationDocument"
+              )
+
+            div(:class="`${preInput}`")
+              er-text-field(
+                :class="`${preInput}__field`"
+                :rules="notEmptyRule"
+                label="Фамилия в род. падеже"
+                :isShowLabelRequired="isNewContact"
+                v-model.trim="formData.lastNameGenitive"
+              )
+
+            div(:class="`${preInput}`")
+              er-text-field(
+                :class="`${preInput}__field`"
+                :rules="notEmptyRule"
+                label="Имя в род. падеже"
+                :isShowLabelRequired="isNewContact"
+                v-model.trim="formData.firstNameGenitive"
+              )
+
+            div(:class="`${preInput}`")
+              er-text-field(
+                :class="`${preInput}__field`"
+                :rules="notEmptyRule"
+                label="Отчество  в род. падеже"
+                :isShowLabelRequired="isNewContact"
+                v-model.trim="formData.secondNameGenitive"
+              )
+
+            div(:class="`${preInput}`")
+              er-text-field(
+                :class="`${preInput}__field`"
+                :rules="notEmptyRule"
+                label="Должность  в род. падеже"
+                :isShowLabelRequired="isNewContact"
+                v-model.trim="formData.jobTitleGenitive"
+              )
+
+
+      er-row(
+        :class="[`${pre}__error`, 'no-gutters', 'align-items-center']"
+        v-if="formErrors.current")
+        span
+          er-icon(name="warning")
+        p(:class="`${pre}__error__text`") {{formErrors.current}}
+
+      er-row(:class="[`${pre}__footer`, `${pre}__actions`]")
+        er-flex(xs12 sm6 lg4
+        :class="`${pre}__actions__btn`")
+          er-button(@click="handleSaveForm") Сохранить
+        er-flex(xs12 sm6 lg4
+        :class="`${pre}__actions__btn`")
+          er-button(
+            :flat="true"
+            @click="handleClickClose"
+            ) Отменить
+        template(v-if="!isNewContact && primaryContactId !== formData.id")
+          er-flex(xs12 sm6 lg4
+          :class="`${pre}__actions__btn`")
+            er-button(
+              :flat="true"
+              @click="handleDeleteContact"
+            ) Удалить
+
+    er-dialog(
+      :value="showUploadDialog"
+      :persistent="true"
+      maxWidth="544px"
+      )
+        upload-file-dialog(@closeUploadDialog="handleUploadDialog")

@@ -1,0 +1,46 @@
+div(:class="`${pre}`")
+  template(v-if="dataKey === 'firstName'")
+    p(:class="`${pre}__name`")
+      span(:class="`${pre}__name__last-name`") {{item.lastName}}
+      | {{item.firstName}} {{item.secondName}}
+
+    template(v-if="isMobile")
+      ul(:class="`${pre}__roles-list`")
+        template(v-for="(role, idx) in item.roles")
+          li(
+            :key="'role' + idx"
+            :class="`${pre}__roles-list__item`"
+            ) {{role.name}}
+
+    template(v-if="(isMobile || isMD) && expandedId === item.id")
+      div(:class="`${pre}__contact-methods`")
+        h4(:class="`${pre}__contact-methods__title`") Контактные данные
+
+        template(v-if="item.phones.length")
+          div(:class="`${pre}__contact-methods__section`")
+            h5(:class="`${pre}__contact-methods__section__title`") Номер телефона
+            ul(:class="`${pre}__methods-list`")
+              template(v-for="(method, idx) in item.phones")
+                li(
+                  :key="'method-phone' + idx"
+                  :class="`${pre}__methods-list__item`"
+                  ) {{method}}
+
+        template(v-if="item.emails.length")
+          div(:class="`${pre}__contact-methods__section`")
+            h5(:class="`${pre}__contact-methods__section__title`") Электронная почта
+            ul(:class="`${pre}__methods-list`")
+              template(v-for="(method, idx) in item.emails")
+                li(
+                  :key="'method-email' + idx"
+                  :class="`${pre}__methods-list__item`"
+                  ) {{method}}
+
+  template(v-if="dataKey === 'phones'")
+    template(v-if="isMD && expandedId !== item.id")
+      ul(:class="`${pre}__methods-list`")
+        template(v-for="(method, idx) in item.phones")
+          li(
+            :key="'method-phone' + idx"
+            :class="`${pre}__methods-list__item`"
+          ) {{method}}

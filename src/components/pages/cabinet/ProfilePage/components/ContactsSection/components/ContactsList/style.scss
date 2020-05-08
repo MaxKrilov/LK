@@ -1,0 +1,48 @@
+.contacts-list {
+
+  .profile-table{
+
+    &__header{
+      background-color: map_get($gray, '4');
+      color:  map_get($gray, '6');
+
+      &__row{
+        @extend %caption2-font;
+
+        margin: 0 $padding-x6;
+        padding: $padding-x2 0;
+
+        @include media-query((
+          margin: (
+            md: 0 $padding-x8
+          ),
+          padding: (
+            md: 0
+          )
+        ));
+      }
+    }
+
+    &__content{
+
+      &__row{
+        padding: 0 $padding-x6;
+        @include media-query((
+          padding: (
+            md: 0 $padding-x8
+          )
+        ));
+      }
+
+      &__cell{
+        padding: $padding-x3 0;
+
+        @include media-query((
+          padding: (
+            md: $padding-x6 0
+          )
+        ));
+      }
+    }
+  }
+}

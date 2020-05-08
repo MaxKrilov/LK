@@ -1,0 +1,38 @@
+.contact-methods-list {
+  display: flex;
+  align-items: center;
+
+  &__value {
+    max-width: 80%;
+    overflow: hidden;
+
+    &.prefer {
+      color: map_get($green, 'base');
+    }
+  }
+
+  &__actions {
+    margin-left: auto;
+    display: inline-flex;
+  }
+
+  &__preference {
+    &.is-prefer {
+      color: map_get($green, 'base');
+    }
+  }
+
+  &__icon {
+    &:not(:last-child) {
+      @include media-query((
+        margin-right: (xs: 10px, lg: 16px)
+      ));
+    }
+    color: map_get($gray, '6');
+    width: 14px;
+    cursor: pointer;
+    svg {
+      width: inherit !important;
+    }
+  }
+}

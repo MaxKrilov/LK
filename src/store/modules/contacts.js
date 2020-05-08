@@ -1,3 +1,4 @@
+import { cloneDeep, find } from 'lodash'
 import {
   generateUrl,
   eachArray,
@@ -15,6 +16,9 @@ const CONTACTS_SEARCH = 'CONTACTS_SEARCH'
 // получение контактов текущего клиента
 const CONTACTS_CLIENT_SUCCESS = 'CONTACTS_CLIENT_SUCCESS'
 // удалние контакта
+const RESET_CURRENT_CONTACTS = 'RESET_CURRENT_CONTACTS'
+const SET_CURRENT_CONTACTS = 'SET_CURRENT_CONTACTS'
+// удаление контакта
 const CONTACTS_REMOVE_MODAL = 'CONTACTS_REMOVE_MODAL'
 const CONTACTS_REMOVE_REQUEST = 'CONTACTS_REMOVE_REQUEST'
 const CONTACTS_REMOVE_SUCCESS = 'CONTACTS_REMOVE_SUCCESS'
@@ -33,16 +37,33 @@ const EDIT_CONTACT = 'EDIT_CONTACT'
 const EDIT_CONTACT_SUCCESS = 'EDIT_CONTACT_SUCCESS'
 const EDIT_CONTACT_ERROR = 'EDIT_CONTACT_ERROR'
 
-// Contact id's
-// Account id's
-const MIDDLE_NAME = '9134317459913190730'
-const CONTACT_ROLE_SIGNATORY_AUTH = '9142343507913277484'
-
 const CREATE_CONTACT_ROLE = 'CREATE_CONTACT_ROLE'
 const CREATE_CONTACT_ROLE_SUCCESS = 'CREATE_CONTACT_ROLE_SUCCESS'
 const CREATE_CONTACT_ROLE_ERROR = 'CREATE_CONTACT_ROLE_ERROR'
 
 const CREATE_CONTACT_ROLE_ID = '9142343507913277484'
+
+// Contact id's
+const MIDDLE_NAME = '9134317459913190730'
+const CONTACT_ROLE_SIGNATORY_AUTH = '9142343507913277484'
+
+const CURRENT_CLIENT_CONTACTS = {
+  emails: [],
+  phones: [],
+  id: '',
+  name: '',
+  firstName: '',
+  firstNameGenitive: '',
+  secondName: '',
+  secondNameGenitive: '',
+  lastName: '',
+  lastNameGenitive: '',
+  jobTitle: '',
+  jobTitleGenitive: '',
+  roles: [],
+  registrationDocument: '',
+  preferredContactMethodId: ''
+}
 
 const state = {
   contactsList: [],
@@ -57,20 +78,10 @@ const state = {
   },
   currentClientContacts: {
     error: null,
-    content: {
-      emails: [],
-      phones: [],
-      id: '',
-      name: '',
-      role: '',
-      preferredContactMethodId: ''
-    },
+    content: Object.assign({}, CURRENT_CLIENT_CONTACTS),
     isFetching: false,
     isFetched: false
   },
-  isRoleFetching: false,
-  isRoleFetched: false,
-  roleError: null,
   usersQuery: '',
   sortField: null,
   sortAsc: null,
@@ -96,46 +107,115 @@ const state = {
   }
 }
 
+const getContactMethods = (methods) => {
+  let phones = []
+  let emails = []
+  if (methods) {
+    methods.map((item) => {
+      if (item['@type'] === 'PhoneNumber') {
+        phones.push(item)
+      }
+
+      if (item['@type'] === 'Email') {
+        emails.push(item)
+      }
+    })
+  }
+
+  return {
+    phones,
+    emails
+  }
+}
+
+const removeContactKeys = (contact) => {
+  const keys = [
+    'contactMethods',
+    'extendedMap',
+    'name',
+    'primaryEmailId'
+  ]
+
+  keys.map((item) => {
+    if (contact?.[item]) {
+      delete contact[item]
+    }
+  })
+
+  return contact
+}
+
+const getContactExtendedData = (contact) => {
+  const extendedMap = contact?.extendedMap
+  const extendedData = {}
+  const extendedMapKeys = Object.keys(extendedMap)
+  for (let i = 0; i < extendedMapKeys.length; i++) {
+    let key = extendedMapKeys[i]
+    if (Array.isArray(extendedMap[key].singleValue)) {
+      continue
+    }
+    switch (extendedMap[key].attributeName) {
+      case 'Second Last Name':
+        extendedData.secondName = extendedMap[key].singleValue.attributeValue
+        break
+      case 'First Name (genitive)':
+        extendedData.firstNameGenitive = extendedMap[key].singleValue.attributeValue
+        break
+      case 'Second Last Name (genitive)':
+        extendedData.secondNameGenitive = extendedMap[key].singleValue.attributeValue
+        break
+      case 'Last Name (genitive)':
+        extendedData.lastNameGenitive = extendedMap[key].singleValue.attributeValue
+        break
+      case 'Job Title (genitive)':
+        extendedData.jobTitleGenitive = extendedMap[key].singleValue.attributeValue
+        break
+      case 'Registration Document':
+        extendedData.registrationDocument = extendedMap[key].singleValue.attributeValue
+        break
+    }
+  }
+  return extendedData
+}
+
+const makeCurrentClientContacts = (data) => {
+  let contact = cloneDeep(data)
+  contact.secondName = data.extendedMap?.[MIDDLE_NAME]?.singleValue?.attributeValue
+  contact.roles = data.roles?.map(roleObj => ({
+    id: roleObj.role?.id,
+    name: roleObj.role?.name
+  })) || []
+  // contact.roles = data.roles?.map(roleObj => (roleObj.role?.name)) || []
+  const contactMethods = getContactMethods(data.contactMethods)
+  contact.phones = contactMethods.phones
+  contact.emails = contactMethods.emails
+  contact.canSign = data.roles?.filter(roleObj => roleObj.role?.id === CONTACT_ROLE_SIGNATORY_AUTH).length > 0
+  contact = removeContactKeys(contact)
+  contact = Object.assign(contact, getContactExtendedData(data))
+  return contact
+}
+
 const getters = {
   getCurrentClientContacts (state) {
     return Object.assign({}, state?.currentClientContacts?.content)
   },
   filteredContactsByName ({ usersQuery }, getters, rootState) {
     // TODO ВЫНЕСТИ В ХЕЛПЕРЫ
-    const checkPreferenceContact = (contactObject, value) => {
-      if (contactObject.hasOwnProperty('preferredContactMethodId')) {
-        return contactObject.preferredContactMethodId === value
-      } else {
-        return false
-      }
+    // const checkPreferenceContact = (contactObject, value) => {
+    //   if (contactObject.hasOwnProperty('preferredContactMethodId')) {
+    //     return contactObject.preferredContactMethodId === value
+    //   } else {
+    //     return false
+    //   }
+    // }
+
+    let contacts = cloneDeep(rootState.user.clientInfo?.contacts)
+    if (!contacts.length) {
+      return
     }
-    const contacts = rootState.user.clientInfo?.contacts?.map(it => {
-      return {
-        contactId: it.id,
-        firstName: it.firstName || '',
-        lastName: it.lastName || '',
-        name: it.name,
-        middleName: it.extendedMap?.[MIDDLE_NAME]?.singleValue?.attributeValue || '',
-        roles: it.roles?.map(roleObj => ({
-          id: roleObj.role?.id,
-          name: roleObj.role?.name
-        })) || [],
-        canSign: it.roles?.filter(roleObj => roleObj.role?.id === CONTACT_ROLE_SIGNATORY_AUTH).length > 0,
-        phones: it.contactMethods
-          .filter(item => item['@type']
-            .match(/PhoneNumber/ig))
-          .map(field => ({
-            value: field.value,
-            isPrefer: checkPreferenceContact(it, field.id)
-          })) || [],
-        emails: it.contactMethods
-          .filter(item => item['@type']
-            .match(/Email/ig))
-          .map(field => ({
-            value: field.value,
-            isPrefer: checkPreferenceContact(it, field.id)
-          })) || []
-      }
+
+    contacts = contacts?.map(it => {
+      return makeCurrentClientContacts(it)
     })
 
     if (!usersQuery.length) {
@@ -145,6 +225,14 @@ const getters = {
       return firstName?.toLowerCase().includes(usersQuery) ||
         lastName?.toLowerCase().includes(usersQuery)
     })
+  },
+  getCreatedContactState (context) {
+    const { isFetching, isFetched, error } = context.createdContact
+    return {
+      isFetching,
+      isFetched,
+      error
+    }
   },
   getUserById: ({ contactsList }) => (id) => {
     return contactsList.find((user) => {
@@ -163,6 +251,202 @@ const getters = {
 }
 
 const actions = {
+  getRolesDictionary: async ({ commit, rootGetters, rootState }, { api }) => {
+    const url = '/meta/info'
+    try {
+      const response = await api
+        .setWithCredentials()
+        .query(url)
+
+      if (response) {
+        // eslint-disable-next-line camelcase
+        return response?.contact?.contact_roles.filter((item) => {
+          if (item.status === 'Активный') {
+            delete item.status
+            return item
+          }
+        })
+      } else {
+        return false
+      }
+    } catch (error) {
+      return false
+    }
+  },
+
+  createContact: async ({ commit, dispatch, rootState, rootGetters }, { api, data }) => {
+    const { toms: clientId, name: clientName } = rootGetters['auth/user']
+    const url = '/customer/account/edit-contact'
+
+    // если не передан id - создание нового контакта
+    const isCreate = !data?.id
+    console.log('action create? ', isCreate)
+
+    // перед отправкой удаляю пустые поля чтобы не было ошибок на беке
+    Object.keys(data).map((item) => {
+      if (!data[item].length) {
+        delete data[item]
+      }
+    })
+    console.log('del keys', data)
+    // дальше нужно забрать что относится к созданию ролей контакта
+    let roles = data?.roles || undefined
+    delete data.roles
+    // теперь собрать обязательные для создания контакта данные
+    const contactFor = {
+      id: clientId,
+      name: clientName
+    }
+    console.log('contactFor', contactFor)
+
+    // если у контакта есть право подписи
+    // проверить можно по одному из обязательных полей для этой роли
+    let canSignRole = !!data.registrationDocument
+    let roleCreateRequests = []
+    console.log('canSignRole? ', canSignRole)
+    data.clientId = clientId
+    // если редактирование контакта
+    if (!isCreate) {
+      const existContact = rootGetters['user/getContactById'](data.id)
+      const existRoles = existContact.roles
+      // if (existRoles) по идее временно, т.к. сейчас есть контакты созданные с ошибками
+      if (existRoles) {
+        // роли которые надо удалить
+        let roleDelete = existRoles.filter((item) => {
+          return !find(roles, (o) => { return o.id === item.role.id })
+        })
+        // роли которые надо создать
+        roles = roles.filter((item) => {
+          return !find(existRoles, (o) => { return o.role.id === item.id })
+        })
+
+        console.log('roleDelete', roleDelete)
+        console.log('roleCreate', roles)
+      }
+    } else {
+      if (canSignRole) {
+        roleCreateRequests.push(dispatch('createContactRole', { api: api }))
+      }
+    }
+
+    try {
+      const contactResponse = await api
+        .setWithCredentials()
+        .setType(TYPE_JSON)
+        .setData(data)
+        .query(url)
+      console.log('contactResponse', contactResponse)
+
+      if (contactResponse.id) {
+        const contact = {
+          id: contactResponse.id,
+          name: contactResponse.name
+        }
+
+        commit(CREATE_CONTACT_SUCCESS, contact)
+        // создание/изменение ролей контакта
+        if (roles) {
+          for (let i = 0; i < roles.length; i++) {
+            roleCreateRequests.push(dispatch('createContactRole', { api: api, role: roles[i] }))
+          }
+        }
+
+        const roleResponse = await Promise.all(roleCreateRequests)
+        console.log('roleResponse', roleResponse)
+        // т.к. в ТЗ не описан ответ API при ошибке создания роли пока так
+        const checkRoleCreateError = roleResponse.filter((item) => {
+          return !item.role
+        })
+
+        if (!checkRoleCreateError.length) {
+          contactResponse.roles = roleResponse
+          if (isCreate) {
+            commit(RESET_CURRENT_CONTACTS)
+          }
+          // обновить список контактов на клиенте, без запроса client-info
+          commit('user/ADD_CLIENT_CONTACTS_STORE', contactResponse, { root: true })
+        } else {
+          commit(CREATE_CONTACT_ERROR, `Ошибка создания роли контакта: ${contactResponse?.message?.toString()}`)
+          return false
+        }
+        return true
+      } else {
+        commit(CREATE_CONTACT_ERROR, `Ошибка сохранения контакта: ${contactResponse?.message?.toString()}`)
+        return false
+      }
+    } catch (e) {
+      console.log(e)
+      commit(CREATE_CONTACT_ERROR, 'Сервер не отвечает. Попробуйте обновить страницу.')
+    }
+  },
+
+  deleteContact: async ({ state, dispatch, rootGetters }, { api }) => {
+    const toms = rootGetters['auth/getTOMS']
+    const { id, roles } = state.currentClientContacts.content
+    console.log('delete for', id, roles)
+    // удаление ролей
+    /* let roleDeleteRequests = []
+    for (let i = 0; i < roles.length; i++) {
+      roleDeleteRequests.push(dispatch('deleteContactRole', { api: api, roleId: roles[i].id }))
+    }
+    console.log(444, roleDeleteRequests)
+    const roleDeleteResponse = await Promise.all(roleDeleteRequests)
+    console.log(555, roleDeleteResponse) */
+
+    // удаление контакта
+    try {
+      let url = '/customer/account/delete-contact'
+      const result = await api
+        .setWithCredentials()
+        .setType(TYPE_JSON)
+        .setData({ id: id, clientId: toms })
+        .query(url)
+
+      console.log(777, result)
+      return result
+    } catch (e) {
+      console.log(e)
+    }
+  },
+
+  deleteContactRole: async ({ commit }, { api, roleId }) => {
+    let url = `/customerManagement/contactRole/` + roleId
+
+    try {
+      const result = await api
+        .setWithCredentials()
+        // .setData({ id: roleId })
+        .setMethod('DELETE')
+        .query(url)
+
+      if (result) {
+        return result
+      }
+      commit(CREATE_CONTACT_ROLE_ERROR, `Ошибка удаления роли контакта: ${result?.message?.toString()}`)
+      return false
+    } catch (error) {
+      commit(CREATE_CONTACT_ROLE_ERROR, 'Сервер не отвечает. Попробуйте обновить страницу.')
+      return false
+    }
+  },
+
+  setCurrentClientContacts: ({ commit, rootGetters }, { contactId }) => {
+    const contact = rootGetters['user/getContactById'](contactId)
+    console.log(contact)
+    const currentContact = makeCurrentClientContacts(contact)
+    console.log(currentContact)
+    commit(SET_CURRENT_CONTACTS, currentContact)
+  },
+
+  resetCurrentClientContacts ({ commit }) {
+    commit(RESET_CURRENT_CONTACTS)
+  },
+
+  resetCreatedContactState: ({ commit }) => {
+    commit(CREATE_CONTACT_ERROR, null)
+  },
+
+  // используется в EditCompanyForm
   createSignContact: async ({ commit, dispatch, rootState, rootGetters }, { api, data }) => {
     commit(CREATE_CONTACT)
 
@@ -250,10 +534,11 @@ const actions = {
   resetProfileContacts: ({ commit }) => {
     commit(CONTACTS_RESET)
   },
+
   searchProfileContacts: ({ commit }, { query }) => {
     commit(CONTACTS_SEARCH, query)
   },
-
+  // не ЛПР редактирование контактов
   getCurrentClientContacts: ({ commit, rootGetters }) => {
     const contactData = rootGetters['user/getPrimaryContact']
     const parsedData = {
@@ -316,67 +601,79 @@ const actions = {
     }
   },
 
-  setRemoveContactModalVisibility: ({ commit }, payload) => {
-    commit(CONTACTS_REMOVE_MODAL, payload)
-  },
-
-  setModalInfoVisibility: ({ commit }, payload) => {
-    commit(CONTACTS_INFO_MODAL, payload)
-  },
-
-  setModalUserId: ({ commit }, { userId, userPostId }) => {
-    commit(CONTACTS_SET_ID, { userId, userPostId })
-  },
-
   updateUserContact: ({ commit }, data) => {
     commit(UPDATE_CONTACT, data)
   },
+
   setRemoveContactModalVisibility: ({ commit }, payload) => {
     commit(CONTACTS_REMOVE_MODAL, payload)
   },
+
   setModalInfoVisibility: ({ commit }, payload) => {
     commit(CONTACTS_INFO_MODAL, payload)
   },
+
   setModalUserId: ({ commit }, { userId, userPostId }) => {
     commit(CONTACTS_SET_ID, { userId, userPostId })
   },
+
   cleanModal: ({ commit }) => {
     commit(CONTACTS_SET_ID, { userId: '', userPostId: '' })
   },
 
-  createContactRole: async ({ commit, dispatch, rootState, rootGetters }, { api }) => {
+  /**
+   * Создание роли контакта
+   * @param commit
+   * @param dispatch
+   * @param rootState
+   * @param rootGetters
+   * @param api
+   * @param role { null | object } role по умолчанию null, если аргумент не передан будет
+   * будет создана роль 'Лицо, имеющее право подписи'; object - объект описывающий роль контакта
+   * @return {Promise<boolean>}
+   */
+
+  createContactRole: async ({ commit, dispatch, rootState, rootGetters }, { api, role = null }) => {
     commit(CREATE_CONTACT_ROLE)
 
     const url = '/customer/contact-role/post'
     const contact = rootState['contacts'].createdContact.content
-    const user = rootState['user'].clientInfo
-    const { toms: clientId } = rootGetters['auth/user']
+    const { toms: clientId, name: clientName } = rootGetters['auth/user']
+    const roleCreateRequire = {
+      contact: {
+        id: contact.id,
+        name: contact.name
+      },
+      contactFor: {
+        id: clientId,
+        name: clientName
+      },
+      clientId
+    }
+
+    if (!role) {
+      role = {
+        id: CREATE_CONTACT_ROLE_ID,
+        name: 'Лицо, имеющее право подписи'
+      }
+    }
+
+    role = Object.assign({ role: role }, roleCreateRequire)
+
+    console.log('add role', role)
+
     try {
       const result = await api
         .setWithCredentials()
         .setType(TYPE_JSON)
-        .setData({
-          contact: {
-            id: contact.id,
-            name: contact.name
-          },
-          role: {
-            id: CREATE_CONTACT_ROLE_ID,
-            name: 'Лицо, имеющее право подписи'
-          },
-          contactFor: {
-            id: user.id,
-            name: user.name
-          },
-          clientId
-        })
+        .setData(role)
         .query(url)
 
       if (result.id) {
         commit(CREATE_CONTACT_ROLE_SUCCESS)
-        return true
+        return result
       }
-      commit(CREATE_CONTACT_ROLE_ERROR, `Ошибка создания роли контакта: ${output.message.toString()}`)
+      commit(CREATE_CONTACT_ROLE_ERROR, `Ошибка создания роли контакта: ${result?.message?.toString()}`)
       return false
     } catch (error) {
       commit(CREATE_CONTACT_ROLE_ERROR, 'Сервер не отвечает. Попробуйте обновить страницу.')
@@ -493,6 +790,12 @@ const mutations = {
       updatedContacts.push(value)
     })
     state.contactsList = updatedContacts
+  },
+  [SET_CURRENT_CONTACTS]: (state, payload) => {
+    state.currentClientContacts.content = Object.assign({}, payload)
+  },
+  [RESET_CURRENT_CONTACTS]: (state) => {
+    state.currentClientContacts.content = Object.assign({}, CURRENT_CLIENT_CONTACTS)
   }
 }
 

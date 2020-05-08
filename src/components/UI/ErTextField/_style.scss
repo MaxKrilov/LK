@@ -60,7 +60,12 @@
       &.er-text-field,
       &.er-textarea {
         &--active {
-          transform: scale(0.85) translateY(-45px);
+          transform: scale(0.85) translateY(-37px);
+          @include media-query((
+            transform: (
+              md: scale(0.85) translateY(-45px)
+            )
+          ));
         }
       }
     }
