@@ -1,25 +1,34 @@
 <template lang="pug">
   .reverce-zones-page
     .reverce-zones-page__hint
+    .reverce-zones-page__select-ip.main-content.main-content--h-padding
+      .content
+        template(v-if="isLoadingIP")
+          PuSkeleton
+        template(v-else)
+          er-select(
+            :items="listIP"
+            v-model="currentIP"
+          )
     .reverce-zones-page__list
       .reverce-zones-page__list__head.main-content.main-content--h-padding
         .ip-n-reverce-zone
           span.title IP адрес и обратная зона
-          span.icon
-            er-icon(name="funnel")
         .ip
           span.title IP адрес
-          span.icon
-            er-icon(name="funnel")
         .reverce-zone
           span.title Обратная зона
       .reverce-zones-page__list__body
-        reverce-zone-item-component(
-          v-for="(item, index) in listReverceZone"
-          :key="item.reverceZone"
-          v-bind="item"
-          @delete="() => { deleteReverceZone(item.reverceZone) }"
-        )
+        template(v-if="isLoadingReverceZone")
+          include ./loading-block.pug
+        template(v-else)
+          reverce-zone-item-component(
+            v-for="(item, index) in listReverceZone"
+            :key="index"
+            :ip="currentIP"
+            :reverce-zone="item"
+            @delete="() => { deleteReverceZone(item) }"
+          )
     .reverce-zones-page__add.main-content.main-content--h-padding
       er-slide-up-down(:active="isOpenAdding")
         er-form(ref="form")
@@ -27,19 +36,21 @@
             er-flex.mb-32.mb-md-0(xs12 md5)
               .reverce-zones-page__add-ip-select
                 er-select(
-                  :items="ipList"
+                  :items="listIP"
                   v-model="model.ip"
                   placeholder="IP-адрес"
+                  :rules="[v => !!v || 'Поле обязательно к заполнению']"
                 )
             er-flex(xs12 md7)
               .reverce-zones-page__add-domain.mb-32.mb-md-0
                 er-text-field(
                   v-model="model.domain",
                   label="Домен"
+                  :rules="[v => !!v || 'Поле обязательно к заполнению']"
                 )
           .reverce-zones-page__actions.d--flex.flex-column.flex-sm-row
             .reverce-zones-page__action.mr-sm-16.mb-8.mb-sm-0
-              er-button
+              er-button(@click="addReverceZone")
                 | Добавить
             .reverce-zones-page__action
               er-button(flat @click="() => { isOpenAdding = false }")

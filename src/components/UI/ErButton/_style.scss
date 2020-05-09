@@ -43,11 +43,10 @@
   }
   &--green {
     background: map_get($green, 'base');
-    color: map_get($shades, 'black');
-    opacity: .5;
+    color: map_get($shades, 'white');
 
     &:hover {
-      background: map_get($gray, 'other-1');
+      background: map_get($green, 'other-1');
     }
     &:active {
       background: map_get($green, 'base');

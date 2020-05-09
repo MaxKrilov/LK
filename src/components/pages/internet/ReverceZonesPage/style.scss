@@ -1,4 +1,8 @@
 .reverce-zones-page {
+  &__select-ip .content {
+    width: 100%;
+    max-width: 300px;
+  }
   &__list {
     margin-bottom: 32px;
     @include min-breakpoint('md') {

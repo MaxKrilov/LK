@@ -1,9 +1,9 @@
-import { Vue, Component, Prop } from 'vue-property-decorator'
+import Vue from 'vue'
+import Component from 'vue-class-component'
 import TariffComponent from '@/components/pages/internet/blocks/TariffComponent/index.vue'
 import SpeedComponent from '@/components/pages/internet/blocks/SpeedComponent/index.vue'
 import ServicesComponent from '@/components/pages/internet/blocks/ServicesComponent/index.vue'
 import PriceServicesComponent from '@/components/pages/internet/blocks/PriceServicesComponent/index.vue'
-// eslint-disable-next-line no-unused-vars
 import { API } from '@/functions/api'
 import { ICustomerProduct } from '@/tbapi'
 
@@ -20,14 +20,21 @@ export interface iPointItem {
     SpeedComponent,
     ServicesComponent,
     PriceServicesComponent
+  },
+  props: {
+    customerProduct: {
+      type: Object,
+      default: null
+    },
+    isLoadingCustomerProduct: Boolean,
+    locationId: [String, Number]
   }
 })
 export default class IndexPage extends Vue {
   $api!: API
 
-  @Prop(Object) readonly customerProduct!: null | ICustomerProduct
-
-  tariffPrice: string | number = 0
-  tariffCurrency: string = ''
-  tariffSpeed: string | number = 0
+  // Props
+  readonly customerProduct!: ICustomerProduct | null
+  readonly isLoadingCustomerProduct!: boolean
+  readonly locationId!: number | string
 }

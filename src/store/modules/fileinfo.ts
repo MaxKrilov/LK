@@ -6,13 +6,20 @@ import { ERROR_MODAL } from '@/store/actions/variables'
 import { logError } from '@/functions/logging.ts'
 import { getFirstElement } from '@/functions/helper'
 import { CONTRACT, GROUP_CONTRACT } from '@/constants/document'
-import { isReportDocument, isContractDocument, isUserListDocument, isBlankDocument } from '@/functions/document'
+import {
+  isReportDocument,
+  isContractDocument,
+  isUserListDocument,
+  isBlankDocument,
+  isOtherDocument
+} from '@/functions/document'
 import { TYPE_FILE, TYPE_JSON } from '@/constants/type_request'
 
 interface IState {
   listDocument: (DocumentInterface[])[],
   listReportDocument: (DocumentInterface | DocumentInterface[])[],
-  listContractDocument: (DocumentInterface | DocumentInterface[])[]
+  listContractDocument: (DocumentInterface | DocumentInterface[])[],
+  listOtherDocument: (DocumentInterface | DocumentInterface[])[]
 }
 
 interface IFile {
@@ -23,7 +30,8 @@ interface IFile {
 const state: IState = {
   listDocument: [],
   listReportDocument: [],
-  listContractDocument: []
+  listContractDocument: [],
+  listOtherDocument: []
 }
 
 const getters = {
@@ -42,7 +50,8 @@ const getters = {
    * Получение контрактных докуметов и/или пакетов документов
    * @param state
    */
-  getListContractDocument: (state: IState) => state.listContractDocument
+  getListContractDocument: (state: IState) => state.listContractDocument,
+  getListOtherDocument: (state: IState) => state.listOtherDocument
 }
 
 const actions = {
@@ -160,6 +169,10 @@ const mutations = {
    *    2.5. Список пользователей
    */
   downloadListDocumentSuccess (state: IState, payload: DocumentInterface[]) {
+    state.listContractDocument = []
+    state.listReportDocument = []
+    state.listOtherDocument = []
+    state.listDocument = []
     payload.forEach(document => {
       if (isReportDocument(document)) {
         state.listReportDocument.push(document)
@@ -177,6 +190,9 @@ const mutations = {
         } else {
           state.listContractDocument.push([document])
         }
+      }
+      if (isOtherDocument(document)) {
+        state.listOtherDocument.push(document)
       }
     })
   }

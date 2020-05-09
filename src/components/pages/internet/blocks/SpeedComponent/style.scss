@@ -1,4 +1,11 @@
 .er-speed-component {
+  svg {
+    width: 273px;
+
+    @include min-breakpoint('md') {
+      width: 305px;
+    }
+  }
   .filter {
     stroke-width: 5;
     stroke-linejoin: round;

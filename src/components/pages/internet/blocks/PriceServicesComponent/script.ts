@@ -27,14 +27,14 @@ export default class PriceServicesComponent extends Vue {
     const result = []
     // Стоимость TLO
     result.push({
-      name: this.customerProduct.tlo.offer.code,
+      name: this.customerProduct.tlo.offer.originalName,
       price: Number(this.customerProduct.tlo.purchasedPrices.recurrentTotal.value),
       currency: `${this.customerProduct.tlo.purchasedPrices.recurrentTotal.currency.currencyCode}/месяц`
     })
     this.customerProduct.slo.forEach(slo => {
       if (slo.activated) {
         result.push({
-          name: slo.childProductOffering.code,
+          name: slo.originalName,
           price: typeof slo.purchasedPrices !== 'string' ? Number(slo.purchasedPrices.recurrentTotal.value) : 0,
           currency: typeof slo.purchasedPrices !== 'string'
             ? `${slo.purchasedPrices.recurrentTotal.currency.currencyCode}/месяц`

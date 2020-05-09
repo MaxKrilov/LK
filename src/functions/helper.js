@@ -636,3 +636,9 @@ export function generateFilePath (id, fileName) {
   // const date = Number(new Date())
   return `${moment().format('MMYYYY')}/${id}`
 }
+
+export function uniq (a, f) {
+  let r = {}
+  // eslint-disable-next-line no-return-assign
+  return a.filter(i => r.hasOwnProperty(i[f]) ? !1 : r[i[f]] = !0)
+}

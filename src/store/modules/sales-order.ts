@@ -125,10 +125,9 @@ const actions = {
   },
   updateElement (
     context: ActionContext<IState, any>,
-    { chars }: { chars: Record<string, string> }
+    { chars }: { chars: Record<string, string> | Record<string, string>[] }
   ) {
     if (!chars) throw new Error('Missing required parameter')
-    if (Object.keys(chars).length !== 1) throw new Error('Wrong parameter')
     const clientId = getClientId(context)
     const currentResponse = context.getters.currentResponse as ISaleOrder
     const bpi = context.getters.bpi as string
@@ -140,6 +139,15 @@ const actions = {
     if (orderItemElement === null) throw new Error('Unknown error')
     const elementId = orderItemElement!.id
     if (!elementId) throw new Error('Unknown error')
+    const elements = Array.isArray(chars)
+      ? chars.map(char => ({
+        id: elementId,
+        chars: char
+      }))
+      : [{
+        id: elementId,
+        chars
+      }]
 
     return new Promise((resolve, reject) => {
       api()
@@ -148,10 +156,7 @@ const actions = {
         .setData({
           clientId,
           id: orderId,
-          elements: [{
-            id: elementId,
-            chars
-          }]
+          elements
         })
         .query(QUERY.UPDATE_ELEMENT)
         .then((response: ISaleOrder) => {
@@ -214,7 +219,7 @@ const actions = {
   },
   createSaleOrder (
     context: ActionContext<IState, any>,
-    { locationId, bpi, offerId, chars }: { locationId: string, bpi: string, offerId: string, chars?: Record<string, string> }
+    { locationId, bpi, offerId, chars }: { locationId: string, bpi: string, offerId: string, chars?: Record<string, string> | Record<string, string>[] }
   ) {
     return new Promise((resolve, reject) => {
       context.dispatch('create', { locationId, bpi })

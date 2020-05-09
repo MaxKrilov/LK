@@ -1,27 +1,44 @@
-speed-component.mb-24.mb-lg-0(
-	:current-speed="computedCurrentSpeed"
-	:list-available-speed="computedListAvailableSpeedIncrease"
+speed-component.mb-lg-0(
+	:current-speed="currentSpeed"
+	:list-available-speed="listAvailableSpeedIncrease"
 	ref="speed-component"
-	@change="onChainingSpeed"
+	v-model="internetSpeed"
+	:is-turbo-activation="isTurboActivation"
 )
 div.ml-lg-64
-	.info-block.d--flex.justify-content-between.mb-16.flex-lg-column
+	.info-block.d--flex.justify-content-between.mb-16.flex-lg-column.flex-column
+		.period.mb-lg-16(v-if="isTurboActivation")
+			.caption
+				| Период
+			.d--flex.flex-column.flex-sm-row.align-items-sm-center
+				.calendar.mb-8.mr-sm-16
+					er-date-picker(v-model="turboPeriod")
+				.infinity.mb-8
+					er-toggle(view="radio-check" v-model="isInfinity")
+						template(slot="append-outer")
+							span
+								| Бессрочно
 		.price.mb-lg-16
 			.caption.mb-4
-				| Абонентская плата
+				| {{ isTurboActivation ? 'Плата за период' : 'Абонентская плата' }}
 			.value
-				span {{ internetPriceAfterChange | price }}
-				| &nbsp;{{ computedCurrencyCode }}/месяц
-		.current-price
+				span {{ ( isTurboActivation ? turboPriceAfterIncrease : priceAfterIncrease) | price }}
+				| &nbsp;{{ currencyCode }}/месяц
+		.current-price(v-if="!isTurboActivation")
 			.caption.mb-4
 				| Текущая абонентская плата
 			.value.mb-lg-32
-				span {{ computedCurrentPrice | price }}
-				| &nbsp;{{ computedCurrencyCode }}/месяц
-	.actions-block.d--flex.flex-column.flex-sm-row.flex-lg-column
-		.action.mb-8.mr-sm-8.mb-sm-0.mb-lg-8
-			er-button(color="blue")
-				| Изменить
+				span {{ recurrentTotal | price }}
+				| &nbsp;{{ currencyCode }}/месяц
+	.actions-block.d--flex.flex-row.flex-lg-column
+		.action.mb-8.mr-8.mb-lg-8
+			er-button(
+				:color="isTurboActivation ? 'green' : 'blue'"
+				@click="createSaleOrder"
+				:loading="isLoadingConnect"
+				:disabled="!internetSpeed || internetSpeed === currentSpeed"
+				)
+				| {{ isTurboActivation ? 'Подключить' : 'Изменить' }}
 		.action.ml-sm-0
-			er-button(flat @click="closeFormChainingSpeed")
+			er-button(flat @click="closeBlur")
 				| Отмена

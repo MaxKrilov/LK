@@ -1,14 +1,78 @@
 import { API } from '@/functions/api'
 import { ActionContext } from 'vuex'
+import { AxiosError } from 'axios'
 
-const $api = new API()
+const REVERCE_ZONE_QUERY = {
+  GET: '/internet/revercezonebss/list',
+  ADD: '/internet/revercezonebss/add',
+  EDIT: '/internet/revercezonebss/edit',
+  DELETE: '/internet/revercezonebss/del'
+}
+
+const api = () => new API()
 
 const actions = {
+  getListReverceZone (
+    context: ActionContext<undefined, any>,
+    { ip }: { ip: string }
+  ) {
+    if (!ip) throw Error('Missing required parameter')
+    return new Promise((resolve, reject) => {
+      api()
+        .setWithCredentials()
+        .setData({ ip })
+        .query(REVERCE_ZONE_QUERY.GET)
+        .then((response: string[]) => resolve(response))
+        .catch((error: AxiosError) => reject(error))
+    })
+  },
+  addReverceZone (
+    context: ActionContext<undefined, any>,
+    { ip, domain }: { ip: string, domain: string }
+  ) {
+    if (!ip || !domain) throw Error('Missing required parameter')
+    return new Promise((resolve, reject) => {
+      api()
+        .setWithCredentials()
+        .setData({ ip, domain })
+        .query(REVERCE_ZONE_QUERY.ADD)
+        .then((response: any) => resolve(response)) // todo Проверить
+        .catch((error: AxiosError) => reject(error))
+    })
+  },
+  editReverceZone (
+    context: ActionContext<undefined, any>,
+    { ip, domain, domainOld }: { ip: string, domain: string, domainOld: string }
+  ) {
+    if (!ip || !domain || !domainOld) throw Error('Missing required parameter')
+    return new Promise((resolve, reject) => {
+      api()
+        .setWithCredentials()
+        .setData({ ip, domain, domainOld })
+        .query(REVERCE_ZONE_QUERY.EDIT)
+        .then((response: any) => resolve(response)) // todo Проверить
+        .catch((error: AxiosError) => reject(error))
+    })
+  },
+  deleteReverceZone (
+    context: ActionContext<undefined, any>,
+    { ip, domain }: { ip: string, domain: string }
+  ) {
+    if (!ip || !domain) throw Error('Missing required parameter')
+    return new Promise((resolve, reject) => {
+      api()
+        .setWithCredentials()
+        .setData({ ip, domain })
+        .query(REVERCE_ZONE_QUERY.DELETE)
+        .then((response: any) => resolve(response)) // todo Проверить
+        .catch((error: AxiosError) => reject(error))
+    })
+  },
   getStatistic (context: ActionContext<any, any>, { fromDate, toDate, productInstance }: { fromDate: string, toDate: string, productInstance: string }) {
     const billingAccountId = context.rootGetters['user/getActiveBillingAccount']
     const { toms: clientId } = context.rootGetters['auth/user']
     return new Promise((resolve, reject) => {
-      $api
+      api()
         .setWithCredentials()
         .setData({
           clientId,
@@ -29,7 +93,7 @@ const actions = {
     const billingAccountId = context.rootGetters['user/getActiveBillingAccount']
     const { toms: clientId } = context.rootGetters['auth/user']
     return new Promise((resolve, reject) => {
-      $api
+      api()
         .setWithCredentials()
         .setData({
           clientId,

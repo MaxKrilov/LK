@@ -46,6 +46,27 @@
           @include color-black(0.8);
         }
       }
+
+      .period {
+        .er-date-picker {
+          max-width: 210px;
+        }
+        .infinity {
+          .er-input {
+            align-items: center;
+          }
+          .er-input > .er-input__control {
+            flex: 0 1 auto;
+            width: auto;
+            margin-right: 4px;
+          }
+          .er-input > .er-input__append-outer span {
+            @include color-black(0.5);
+            border-bottom: 1px dashed;
+            user-select: none;
+          }
+        }
+      }
     }
 
     .actions-block {
@@ -83,6 +104,7 @@
     margin-bottom: 24px;
     grid-column-start: 1;
     grid-column-end: 3;
+    padding-right: 16px;
     @include min-breakpoint('sm') {
       grid-column-end: 2;
     }
@@ -107,7 +129,8 @@
     .chart {
       margin-bottom: 16px;
     }
-    .chart svg {
+    .chart svg,
+    .chart-loading svg {
       width: 104px;
       user-select: none;
       @include min-breakpoint('md') {
@@ -182,6 +205,31 @@
       left: 8px;
       @include color-white(1)
     }
+    .date-activate,
+    .price {
+      @include max-breakpoint('lg') {
+        display: none;
+      }
+      .caption {
+        @extend %caption2-font;
+        @include color-black(0.3);
+      }
+    }
+    .date-activate .value {
+      display: flex;
+      align-items: center;
+      i {
+        @include color-black(0.2);
+      }
+    }
+    .price .value {
+      @extend %caption2-font;
+      @include color-black(0.5);
+      span {
+        @extend %h2-font;
+        @include color-black(0.8);
+      }
+    }
   }
   &__price,
   &__turbo-price {
@@ -209,6 +257,9 @@
     grid-column-start: 2;
     grid-column-end: 3;
     padding-left: 16px;
+    @include min-breakpoint('lg') {
+      display: none;
+    }
   }
   &__settings {
     grid-column-start: 1;
@@ -225,7 +276,8 @@
       margin-bottom: 24px;
     }
     i {
-      color: map_get($yellow, 'base');
+      @include color-black(0.2);
+      transition: $primary-transition;
       margin-right: 8px;
     }
     button {
@@ -235,6 +287,35 @@
       @extend %body-font;
       @include color-black(0.5);
       border-bottom: 1px dashed;
+      transition: $primary-transition;
+    }
+    &:hover {
+      i { color: map-get($yellow, 'base') }
+      button { @include color-black(0.8) }
+    }
+  }
+  &__offer {
+    .er-input {
+      flex: 0 1 auto;
+      margin-right: 8px;
+    }
+    .text {
+      @include color-black(0.3);
+      span {
+        border-bottom: 1px dashed;
+      }
+      a {
+        @include color-black(0.5);
+        text-decoration: none;
+        border-bottom: 1px dashed;
+      }
+    }
+  }
+  &__connect-price {
+    @extend %caption2-font;
+    @include color-black(0.3);
+    span {
+      @include color-black(0.5);
     }
   }
 }
