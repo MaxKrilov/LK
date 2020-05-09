@@ -1,8 +1,7 @@
 <template lang="pug">
   .subnet
     er-corner-button(
-      :active="isOpene"
-      @click="isOpen = !isOpen"
+      v-model="isOpen"
     )
       | Подсеть {{ list.length }} адресов
     er-slide-up-down(:active="isOpen")
@@ -14,12 +13,7 @@
 </template>
 
 <script>
-import ErCornerButton from '@/components/blocks/ErCornerButton/index'
-
 export default {
-  components: {
-    ErCornerButton
-  },
   props: {
     list: Array
   },

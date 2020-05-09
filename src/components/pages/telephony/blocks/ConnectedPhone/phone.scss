@@ -1,0 +1,146 @@
+.connected-phone {
+  transition: $primary-transition;
+  cursor: pointer;
+  border-bottom: solid 1px;
+  border-color: rgba(map-get($shades, "black"), 0.2);
+  &__h4 {
+    @extend %h4;
+  }
+
+  &__wrapper {
+    transition: $primary-transition;
+    padding: 12px 0;
+    margin-left: -12px;
+    margin-right: -12px;
+    padding-right: 12px;
+    padding-left: 12px;
+    border-radius: 8px;
+    &:hover {
+      background-color: map-get($shades, "white");
+    }
+
+    &:active {
+      background-color: map-get($yellow, "base");
+    }
+  }
+  &__row {
+    display: flex;
+    align-items: center;
+  }
+  &__title {
+    margin-bottom: 16px;
+  }
+  &__number {
+    @include color-black(0.8);
+    flex-grow: 1;
+    text-decoration: rgba(map-get($shades, "black"), 0.8) underline;
+    transition: $primary-transition;
+    &:hover {
+      text-decoration-color: rgba(map-get($shades, "black"), 0);
+    }
+  }
+  &__price {
+    justify-content: flex-end;
+    margin-left: auto;
+    text-align: right;
+    display: flex;
+    align-items: baseline;
+    min-width: 75px;
+  }
+  &__icon-more {
+    padding-right: 8px;
+    .er-icon {
+      svg {
+        @include color-black(0.2);
+        width: 16px;
+        transition: $primary-transition;
+      }
+    }
+  }
+  &__channels {
+    @include max-breakpoint("md") {
+      display: none;
+    }
+    @include min-breakpoint("sm") {
+      margin-right: 24px;
+    }
+    @include min-breakpoint("md") {
+      margin-right: 32px;
+    }
+    @include min-breakpoint("lg") {
+      margin-right: 40px;
+    }
+    display: flex;
+    align-items: center;
+    &_text {
+      @extend %caption1;
+      @include max-breakpoint("sm") {
+        display: none;
+      }
+    }
+    .er-icon {
+      @include min-breakpoint("sm") {
+        display: none;
+      }
+      padding-right: 4px;
+      svg {
+        @include color-black(0.2);
+      }
+    }
+  }
+  &__remove {
+    margin-left: 16px;
+    @include min-breakpoint("md") {
+      margin-left: 32px;
+    }
+    .er-icon {
+      cursor: pointer;
+      &:hover {
+        svg {
+          color: map-get($red, "base");
+        }
+      }
+      &:active {
+        svg {
+          color: map-get($yellow, "base");
+        }
+      }
+      svg {
+        transition: $primary-transition;
+        width: 24px;
+        @include color-black(0.2);
+      }
+    }
+    @include max-breakpoint("sm") {
+      display: none;
+    }
+  }
+  &__slider {
+    display: flex;
+    align-items: center;
+    padding: 16px 0;
+    .er-icon {
+      @include color-black(0.2);
+    }
+    .statistic {
+      margin-left: 4px;
+      @extend %caption1;
+      @include color-black(0.5);
+      text-decoration: underline dashed;
+    }
+    .count {
+      @extend %h4;
+      padding-left: 8px;
+    }
+    .channels {
+      @include color-black(0.5);
+      @extend %caption1;
+      padding-left: 24px;
+    }
+  }
+  .openned {
+    svg {
+      transform: rotate(180deg);
+    }
+  }
+}

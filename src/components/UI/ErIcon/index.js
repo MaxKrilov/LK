@@ -59,7 +59,7 @@ export default {
   },
   render (h) {
     return h('i', {
-      staticClass: this.pre
+      staticClass: `${this.pre} ${this.pre}--${this.name}`
     }, [
       h('svg', {
         attrs: {

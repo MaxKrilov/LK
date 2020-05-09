@@ -1,0 +1,78 @@
+.telephony-page(
+  v-class-mod="['no-padding']"
+)
+  .telephony-page__content.main-content--top-menu-fix
+    er-page-header(
+      linkText="Назад в Телефонию"
+      title="Статистика"
+      backlink="/lk/telephony"
+    )
+
+  .telephony-page__address
+    er-address-block(
+      :list="addressList"
+      v-model="currentAddress"
+    )
+
+  .telephony-page__download-form
+    .download-form
+      er-container.full.container--no-padding
+        er-row
+          er-flex.xs12.lg8
+            p Вы можете посмотреть статистику звонков с 1-го числа до текущего. Скачать всю статистику можно за выбраный период в формате *.xls
+        er-row
+          er-flex.xs12.sm6.lg4.download-form__input
+            er-select(
+              :items="filterList"
+              v-model="currentPhone"
+            )
+          er-flex.xs12.sm6.lg4.download-form__input
+            er-date-picker
+          er-flex.xs12.sm6.lg4.download-form__input
+            er-button.download-form__download-button
+              | Скачать *.xls
+
+    .download-files(
+      v-class-mod="{updated: hasNewFile}"
+    )
+      .download-files__head
+        er-corner-button(v-model="showFiles") Файлы статистики
+        template(v-if="hasNewFile")
+          .download-files__notify
+            | Новый файл
+            er-icon(name="ok")
+
+      .download-files__body
+        er-slide-up-down(:active="showFiles")
+          .download-files__list
+            span.dl-file
+              er-icon(name="download")
+              .dl-file__label Stat_100818-110820
+
+
+  .telephony-page__statistic.statistic
+    h2.statistic__title Подключенные телефоны
+
+    .statistic__phones
+      phone-folder(
+        phone="01001001010"
+        :disabled="true"
+      )
+        phone-statistic
+
+      phone-folder(phone="+7(342)2315402")
+        phone-statistic
+
+  .telephony-page__legend.legend
+    .legend__title Условные обозначения:
+
+    .legend__list
+      .legend__item.legend__item--in
+        er-icon(name="incoming_call")
+        .legend__item-title Входящие
+      .legend__item.legend__item--out
+        er-icon(name="outgoing_call")
+        .legend__item-title Исходящие
+      .legend__item.legend__item--missed
+        er-icon(name="missed_call")
+        .legend__item-title Не принятые

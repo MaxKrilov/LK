@@ -1,0 +1,45 @@
+.add-redirection-form {
+  @extend %main-content-width;
+
+  .hint {
+    @extend %body;
+  }
+
+  &__content {
+    @extend %main-content-padding-h;
+  }
+
+  &__form {
+    margin-top: $padding-x8;
+  }
+
+  &__period {
+    margin-top: $padding-x12;
+
+    @include min-breakpoint('md') {
+      margin-top: $padding-x14;
+    }
+
+    .title {
+      @extend %h2;
+    }
+
+    .period-select {
+      margin-top: $padding-x6;
+    }
+  }
+
+  &__actions {
+    margin-top: $padding-x12;
+
+    @include min-breakpoint('md') {
+      margin-top: $padding-x14;
+    }
+
+    .er-button {
+      margin-top: $padding-x2;
+    }
+
+    @include container-padding($padding-x4)
+  }
+}

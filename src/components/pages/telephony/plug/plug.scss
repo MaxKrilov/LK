@@ -1,0 +1,489 @@
+$pre: ".telephony-plug-page";
+.telephony-plug-page {
+  margin-bottom: -55px;
+  padding-bottom: 55px;
+  overflow: hidden;
+  padding-top: $padding-x10;
+  padding-left: 16px;
+  padding-right: 16px;
+  @include media-query(
+    (
+      padding-left: (
+        sm: $padding-x6,
+        xl: $padding-x12
+      ),
+      padding-right: (
+        sm: $padding-x6,
+        xl: $padding-x12
+      ),
+      padding-top: (
+        md: $padding-x12,
+        xl: $padding-x8
+      ),
+      overflow: (
+        md: visible
+      )
+    )
+  );
+  &__h4 {
+    @extend %h4;
+  }
+  &__caption2 {
+    @extend %caption2;
+  }
+  &__caption {
+    @extend %caption1;
+  }
+  &__description-service {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    margin-bottom: 24px;
+    @include min-breakpoint("md") {
+      margin-bottom: 32px;
+      margin-top: 40px;
+    }
+    @include min-breakpoint("xl") {
+      margin-bottom: 32px;
+      margin-top: 48px;
+    }
+    .opened {
+      .er-icon {
+        svg {
+          transform: rotateX(180deg);
+        }
+      }
+    }
+    &__text {
+      opacity: 0.8;
+      @extend %caption1;
+      border-bottom: dashed 1px rgba(map-get($shades, "black"), 0.5);
+      @include color-black(0.5);
+    }
+    .er-icon {
+      svg {
+        transition: $primary-transition;
+        width: 16px;
+        @include color-black(0.2);
+      }
+    }
+  }
+  &__description-slider {
+    padding-bottom: 40px;
+    @include min-breakpoint("md") {
+      padding-bottom: 48px;
+      display: flex;
+      flex-wrap: wrap;
+    }
+    @include min-breakpoint("lg") {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-column-gap: 40px;
+    }
+  }
+  &__description-item {
+    &:last-child {
+      .icon {
+        @include min-breakpoint("md") {
+          padding-top: 32px;
+        }
+        @include min-breakpoint("lg") {
+          padding-top: 0px;
+        }
+      }
+    }
+    @include min-breakpoint("md") {
+      flex-basis: 50%;
+      &:nth-child(odd) {
+        padding-right: 16px;
+      }
+      &:nth-child(even) {
+        padding-left: 16px;
+      }
+    }
+    @include min-breakpoint("lg") {
+      flex-basis: 33.33%;
+      &:nth-child(odd) {
+        padding-right: 0;
+      }
+      &:nth-child(even) {
+        padding-left: 0px;
+      }
+    }
+
+    .title {
+      @extend %h3;
+      padding-bottom: 8px;
+      @include min-breakpoint("md") {
+        padding-bottom: 16px;
+      }
+    }
+    .icon {
+      padding-bottom: 16px;
+      @include max-breakpoint("md") {
+        padding-top: 24px;
+      }
+
+      .er-icon {
+        svg {
+          width: 48px;
+          color: map-get($yellow, "base");
+        }
+      }
+    }
+    .content {
+      opacity: 0.8;
+    }
+  }
+  &__packages {
+    margin-bottom: 32px;
+    @include min-breakpoint("md") {
+      display: flex;
+    }
+    @include min-breakpoint("md") {
+      display: grid;
+      grid-column-gap: 16px;
+      grid-template-columns: repeat(2, 1fr);
+    }
+    @include min-breakpoint("lg") {
+      grid-template-columns: repeat(3, 1fr);
+      grid-column-gap: 24px;
+    }
+    @include min-breakpoint("xl") {
+      grid-column-gap: 16px;
+    }
+    .er-card {
+      height: auto;
+    }
+    .er-card__content {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+    .chosen {
+      #{$pre}__card-header {
+        background-color: map-get($green, "base");
+      }
+      #{$pre}__card-header_title {
+        color: map-get($shades, "white");
+      }
+      #{$pre}__card-header_icon {
+        opacity: 0.2;
+      }
+      .er-button {
+        background-color: map-get($green, "base");
+      }
+      .er-button__content {
+        color: map-get($shades, "white");
+      }
+    }
+  }
+  &__card {
+
+    margin-bottom: 16px;
+    &:last-child {
+      margin-bottom: 0;
+    }
+    @include min-breakpoint("md") {
+      margin-bottom: 0px;
+      margin-right: 24px;
+      &:last-child {
+        margin-right: 0;
+      }
+    }
+    &-header {
+      padding: 16px;
+      display: flex;
+      align-items: center;
+      @include min-breakpoint("md") {
+        min-height: 80px;
+      }
+      @include min-breakpoint("lg") {
+        padding-left: 24px;
+        padding-top: 24px;
+        padding-right: 24px;
+        min-height: 90px;
+      }
+      background-color: map-get($gray, "4");
+      position: relative;
+      overflow: hidden;
+      &_title {
+        width: 70%;
+        @extend %h3;
+      }
+      &_icon {
+        .er-icon {
+          svg {
+            color: white;
+            width: 80px;
+          }
+        }
+        right: 0;
+        bottom: -20px;
+        position: absolute;
+        opacity: 0.5;
+      }
+    }
+    &-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding-bottom: 16px;
+      padding-right: 16px;
+      padding-left: 16px;
+      padding-top: 24px;
+      @include min-breakpoint("lg") {
+        padding: 24px;
+      }
+      &_text {
+        flex: 1;
+        @include color-black(0.8);
+      }
+      &_cost {
+        @extend %h2;
+        margin: 0 8px;
+        @include color-black(0.8);
+      }
+      &_price-title {
+        margin-top: 24px;
+        @extend %caption2;
+        margin-bottom: 8px;
+      }
+      &_price {
+        margin-bottom: 32px;
+        display: flex;
+        align-items: center;
+        .er-icon {
+          cursor: pointer;
+          &:hover {
+            svg {
+              @include color-black(0.4);
+            }
+          }
+          svg {
+            transition: $primary-transition;
+            @include color-black(0.2);
+          }
+        }
+      }
+    }
+  }
+  &__chosen-packets {
+    color: map-get($green, "base");
+    display: flex;
+    align-items: center;
+    padding-bottom: 24px;
+    @extend %caption1;
+    .ok {
+      padding-right: 8px;
+      svg {
+        width: 24px;
+      }
+    }
+    &_sticky {
+      background-color: map-get($gray, "9");
+      box-shadow: 0px 0px 16px rgba(0, 0, 0, 0.04), 0px 0px 24px rgba(0, 0, 0, 0.06);
+      opacity: 1;
+      transition: $primary-transition;
+      position: fixed;
+      bottom: 0;
+      padding: 16px;
+      margin-left: -16px;
+      @include min-breakpoint("sm") {
+        margin-left: -24px;
+      }
+      @include min-breakpoint("md") {
+        display: none;
+      }
+      width: 100%;
+      &-content {
+        color: map-get($green, "base");
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        text-decoration: underline dashed;
+        @extend %caption1;
+        .arrow {
+          svg {
+            transition: $primary-transition;
+            width: 20px;
+            @include color-black(0.5);
+          }
+        }
+        .arrow-down {
+          svg {
+            transform: rotate(180deg);
+          }
+        }
+      }
+      &-buttons {
+        margin-top: 16px;
+        @include min-breakpoint("sm") {
+          display: flex;
+        }
+        .er-button {
+          &:first-child {
+            @include max-breakpoint("sm") {
+              margin-bottom: 8px;
+            }
+          }
+          @include min-breakpoint("sm") {
+            margin-right: 8px;
+          }
+        }
+      }
+      .ok {
+        padding-right: 8px;
+        svg {
+          width: 24px;
+        }
+      }
+    }
+    &_hide {
+      opacity: 0;
+    }
+  }
+  &__buttons {
+    margin-bottom: 48px;
+    display: grid;
+    grid-row-gap: 8px;
+    @include min-breakpoint("sm") {
+      grid-template-columns: repeat(2, 1fr);
+      grid-column-gap: 16px;
+      grid-row-gap: 0;
+    }
+    @include min-breakpoint("md") {
+      margin-bottom: 56px;
+    }
+    @include min-breakpoint("lg") {
+      grid-template-columns: repeat(3, 1fr);
+      grid-column-gap: 24px;
+    }
+    @include min-breakpoint("xl") {
+      grid-column-gap: 16px;
+    }
+  }
+  &__call-cost {
+    @include min-breakpoint("md") {
+      display: flex;
+      align-items: baseline;
+    }
+  }
+  &__call-cost-title {
+    @extend %h2;
+    margin-bottom: 8px;
+    @include min-breakpoint("md") {
+      margin-bottom: 0px;
+      margin-right: 24px;
+    }
+  }
+  &__table {
+    @include max-breakpoint("sm") {
+      padding-bottom: 8px;
+      overflow-x: scroll;
+      padding-left: 16px;
+      padding-right: 16px;
+    }
+    @include max-breakpoint("md") {
+      padding-left: 24px;
+      padding-right: 24px;
+    }
+  }
+  &__table-wrapper {
+    @include max-breakpoint("sm") {
+      margin-left: -16px;
+      margin-right: -16px;
+    }
+    @include max-breakpoint("md") {
+      margin-left: -24px;
+      margin-right: -24px;
+      position: relative;
+    }
+    padding-top: 16px;
+    padding-bottom: 16px;
+  }
+  &__table-gradient {
+    @include max-breakpoint("md") {
+      position: absolute;
+      display: block;
+    }
+    display: none;
+    width: 65px;
+    height: 100%;
+    right: 0;
+    background: linear-gradient(270deg, #f3f3f3 0%, rgba(243, 243, 243, 0) 100%);
+  }
+  &__table-price {
+    border-spacing: 0;
+    width: 100%;
+    max-width: 670px;
+    min-width: 450px;
+    &__main-column-title {
+      @extend %caption2;
+      padding-bottom: 16px;
+    }
+    &__title {
+      white-space: nowrap;
+      display: flex;
+      padding-right: 8px;
+      @include min-breakpoint("sm") {
+        padding-right: 16px;
+      }
+      padding-bottom: 16px;
+      align-items: center;
+      justify-content: center;
+      @include color-black(0.5);
+      .er-icon {
+        padding-right: 4px;
+        svg {
+          @include color-black(0.2);
+        }
+      }
+    }
+    &__row-title {
+      white-space: nowrap;
+      @include color-black(0.8);
+      padding-bottom: 8px;
+      padding-top: 8px;
+      @include min-breakpoint("lg") {
+        padding-left: 13px;
+      }
+    }
+    &__row {
+      background-color: transparent;
+      transition: $primary-transition;
+      &:hover {
+        background-color: map-get($shades, "white");
+        td {
+          &:first-child {
+            border-top-left-radius: 8px;
+            border-bottom-left-radius: 8px;
+          }
+          &:last-child {
+            border-top-right-radius: 8px;
+            border-bottom-right-radius: 8px;
+          }
+        }
+      }
+    }
+    &__standart {
+      @extend %h4;
+      text-align: center;
+      @include color-black(0.8);
+      padding-bottom: 8px;
+      padding-top: 8px;
+    }
+    &__sale {
+      padding-bottom: 8px;
+      padding-top: 8px;
+      text-align: center;
+      @extend %h4;
+      color: map-get($green, "base");
+    }
+    &__economy {
+      color: map-get($green, "base");
+      text-align: center;
+      padding: 0 20px;
+    }
+  }
+}

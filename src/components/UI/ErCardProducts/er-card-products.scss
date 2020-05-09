@@ -58,6 +58,9 @@
   }
   .active {
     position: relative;
+    .er-card-products__point-content {
+      background-color: map-get($shades, 'white');
+    }
     .er-card-products__active-line {
       opacity: 1;
     }
@@ -109,6 +112,19 @@
 
   .stopped {
     background: map_get($gray, "3");
+    &:hover {
+      .er-card-products__point-content {
+        background: map_get($gray, "9");
+      }
+    }
+    &.active {
+      .er-card-products__point-content {
+        background: map_get($gray, "9");
+      }
+      .er-card-products__point-name {
+        @include color-black(0.8);
+      }
+    }
     .er-card-products__point-content {
       background: map_get($gray, "3");
     }
@@ -227,7 +243,7 @@
         ),
         padding-right: (
           sm: $padding-x6,
-          lg: $padding-x8
+          xl: $padding-x8
         )
       )
     );
@@ -261,6 +277,18 @@
       right: 20px;
       bottom: 20px;
       padding-top: 0;
+    }
+    &:hover {
+      /deep/.icon {
+        @include color-black(0.5);
+      }
+      .wide {
+        @include color-black(0.8);
+      }
+      .er-card-products__service-count {
+        border-color: rgba(map_get($shades, "black"), 0.5);
+      }
+
     }
     /deep/.icon {
       @include media-query(

@@ -20,16 +20,10 @@
     }
   }
   &__banner {
-    width: 448px;
+    width: 100%;
     padding: $padding-x6 0;
     @include media-query(
       (
-        width: (
-          sm: 430px,
-          md: 592px,
-          lg: 896px,
-          xl: 860px
-        ),
         padding: (
           md: $padding-x8 0
         )
@@ -37,17 +31,8 @@
     );
   }
   &__download-offer-text {
+    @extend %caption1;
     border-bottom: 1px dashed;
-    br {
-      display: none;
-      @include media-query(
-        (
-          display: (
-            sm: block
-          )
-        )
-      );
-    }
   }
   &__download-offer-wrapper {
     color: rgba(map_get($shades, "black"), 0.5);

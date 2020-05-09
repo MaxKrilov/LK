@@ -1,0 +1,41 @@
+.telephony-blacklist-page
+  .telephony-blacklist-page__content.main-content--top-menu-fix
+    er-page-header(
+      linkText="Назад в Телефонию"
+      title="Чёрный список"
+      backlink="/lk/telephony"
+    )
+
+  template(v-if="addMode")
+    .telephony-blacklist-page__content
+      blacklist-form
+  template(v-else)
+    .telephony-blacklist-page__table
+      table.blacklist-table
+        thead
+          tr
+            th.col-phone Номер телефона
+            th.col-comment Комментарий
+            th.col-action
+              .title Действие
+
+        tbody
+          template(v-for="item in list")
+            blacklist-row(
+              :key="item.id"
+              :id="item.id"
+              :phone="item.phone|formatPhone"
+              :comment="item.comment"
+              @delete="onDelete(item.id)"
+              @change="onChangePhone"
+            )
+        tfoot
+          tr
+            td(colspan="3")
+              er-container.full.container--no-padding
+                er-row
+                  er-flex.xs12.sm6.md4.lg3.xl4
+                    er-button(
+                      :color="'blue'"
+                      @click="onClickAdd"
+                    ) Добавить

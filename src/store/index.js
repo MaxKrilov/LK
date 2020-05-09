@@ -24,6 +24,7 @@ import fileinfo from './modules/fileinfo'
 import productnservices from './modules/productnservices'
 import payments from './modules/payments'
 import salesOrder from './modules/sales-order'
+import telephony from './modules/telephony'
 import chat from './modules/chat'
 
 const debug = process.env.NODE_ENV !== 'production'
@@ -54,6 +55,7 @@ export default new Vuex.Store({
     productnservices,
     payments,
     salesOrder,
+    telephony,
     chat
   },
   strict: debug,

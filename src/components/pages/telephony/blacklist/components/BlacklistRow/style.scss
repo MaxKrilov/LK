@@ -1,0 +1,13 @@
+.blacklist-row {
+  .er-input {
+    &__slot {
+      border: none !important;
+    }
+
+    .er-text-field__slot {
+      input {
+        @extend %h4;
+      }
+    }
+  }
+}

@@ -1,0 +1,26 @@
+.telephony-blacklist-form
+  er-container.full.container--no-padding
+    er-row
+      er-flex.xs12
+        p Звонящий вам услышит в телефонной трубке фразу:
+          strong "Абонент просил не беспокоить"
+
+    er-row
+      er-flex.blacklist-form__input-hint.xs11.sm10.md6.lg5
+        er-text-field(
+          label="Введите номер телефона"
+        )
+      er-flex.xs1.sm2.align-items-center.d--flex
+        er-hint
+          phone-hint
+
+    er-row
+      er-flex.xs12.lg6
+        er-textarea(
+          label="Ваш комментарий"
+          :rows="6"
+        )
+
+    er-row
+      er-flex.xs12.sm6.lg4
+        er-button(:color="'yellow'") Заблокировать

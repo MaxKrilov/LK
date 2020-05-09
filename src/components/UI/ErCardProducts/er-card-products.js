@@ -25,6 +25,12 @@ export default {
     icon: {
       type: String,
       default: 'geolocation'
+    // },
+    // productData: {
+    //   type: Object,
+    //   default: function () {
+    //     return {}
+    //   }
     }
   },
 

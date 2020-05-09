@@ -325,26 +325,6 @@ $connections-block_box-shadow:
     padding-right: $padding-x4;
     padding-left: $padding-x6;
     text-align: right;
-
-    .delete-action {
-      cursor: pointer;
-      display: inline-block;
-
-      .er-icon {
-        @include color-black(.2);
-      }
-
-      .label {
-        margin-left: $padding-x2;
-        @extend %caption1;
-        border-bottom: 1px dashed;
-        display: none;
-
-        @include min-breakpoint('md') {
-          display: inherit;
-        }
-      }
-    }
   }
 }
 

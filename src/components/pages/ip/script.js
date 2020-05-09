@@ -1,4 +1,3 @@
-import ErCornerButton from '@/components/blocks/ErCornerButton/index'
 import SubnetExpander from './components/SubnetExpander'
 import Price from './components/Price'
 
@@ -61,7 +60,6 @@ const ipAddressList = [
 
 export default {
   components: {
-    ErCornerButton,
     Price,
     SubnetExpander
   },

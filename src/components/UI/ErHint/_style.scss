@@ -2,6 +2,8 @@
   &__activator {
     cursor: pointer;
     position: relative;
+    display: flex;
+    align-items: center;
     i { color: rgba(map_get($shades, 'black'), 0.2); }
     &::before {
       content: '';

@@ -1,0 +1,40 @@
+/*
+Используется когда необходимо задать отступы между
+колонками в конструкции
+
+  er-container
+    er-row
+      er-flex
+      ...
+      er-flex
+
+  Пример:
+  Надо выставить отступ 8пкс между колонками на разрешении 'sm'
+
+  В стилях прописываем:
+
+  .container {
+    @include min-breakpoint('sm') {
+      @include container-padding(8px)
+    }
+  }
+*/
+
+/* задаёт половину отступа */
+@mixin container-padding-half($padding) {
+  .row {
+    margin-left: -$padding;
+    margin-right: -$padding;
+  }
+
+  .flex {
+    padding-left: $padding;
+    padding-right: $padding;
+  }
+}
+
+@mixin container-padding($padding) {
+  $padding: $padding / 2;
+
+  @include container-padding-half($padding);
+}
