@@ -15,22 +15,7 @@
       div.main-content.main-content--top-menu-fix
   */
   @extend %main-content-width;
-
-  margin: {
-    left: auto;
-    right: auto;
-  }
-
-  @include min-breakpoint('xl') {
-    margin-left: $left-menu-width;
-  }
-
-  @include media-min-width( ($left-menu-width * 2) + $content-max-width ) {
-    margin: {
-      left: auto;
-      right: auto;
-    }
-  }
+  @extend %margin-left--menu-width;
 
   &--left-padding {
     @include content-padding('left');

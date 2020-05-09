@@ -37,6 +37,7 @@ $padding-x7: $min-indentation * 7px;
 $padding-x8: $min-indentation * 8px;
 $padding-x10: $min-indentation * 10px;
 $padding-x12: $min-indentation * 12px;
+$padding-x14: $min-indentation * 14px;
 $padding-x16: $max-indentation * 1px;
 $padding-x32: $max-indentation * 2px;
 $padding-x40: $min-indentation * 40px;
@@ -50,6 +51,12 @@ $main-content-padding: (
   'md': $padding-x6,
   'lg': $padding-x8,
   'xl': $padding-x6
+);
+
+$main-content-padding-top: (
+  'xs': $padding-x10,
+  'md': $padding-x12,
+  'xl': $padding-x8,
 );
 
 $z-index: (

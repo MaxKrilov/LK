@@ -1,0 +1,9 @@
+.period-select {
+  @extend %main-content-padding;
+
+  padding: $padding-x4 0;
+
+  &--active {
+    background-color: map_get($shades, 'white');
+  }
+}

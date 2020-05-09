@@ -83,6 +83,34 @@ const MenuItemList: MenuItem[] = [
         url: '/lk/oats'
       }
     ]
+  },
+  {
+    name: 'Телефония',
+    icon: 'telephone',
+    isOpen: false,
+    url: '/lk/telephony',
+    subitem: [
+      {
+        name: 'Промо страница',
+        url: '/lk/telephony/promo'
+      },
+      {
+        name: 'Пакет минут',
+        url: '/lk/telephony/plug'
+      },
+      {
+        name: 'Статистика',
+        url: '/lk/telephony/statistic'
+      },
+      {
+        name: 'Переадресация',
+        url: '/lk/telephony/redirections'
+      },
+      {
+        name: 'Чёрный список',
+        url: '/lk/telephony/blacklist'
+      }
+    ]
   }
 ]
 

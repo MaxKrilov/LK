@@ -17,7 +17,7 @@
           span.ip-label IP:
           span.ip-address {{ connectionIpAddress }}
         er-corner-button(
-          @click="onToggleConnections"
+          v-model="isConnectionsShow"
         )
 
       er-slide-up-down(
@@ -77,9 +77,7 @@
                   span Бесплатно
 
               td.col-actions
-                .delete-action
-                  er-icon(name="trashbox")
-                  .label Удалить
+                er-delete-button()
 
             tr.t-row2(v-if="addr.subnet")
               td(colspan="5")

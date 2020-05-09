@@ -73,6 +73,10 @@ import DMPFormPage from './components/pages/dmp-form/index'
 
 import OATSMainPage from './components/pages/oats/index'
 
+// Телефония
+import TelephonyPromoPage from './components/pages/telephony/promo/index'
+import TelephonyPlugPage from './components/pages/telephony/plug/index'
+import TelephonyPage from './components/pages/telephony/index'
 // Интернет
 import IpPage from './components/pages/ip/index'
 // Интернет Контент-фильтрация
@@ -84,6 +88,12 @@ import OATSPromoPage from './components/pages/oats/promo/index'
 
 // Опрос
 import SurveyPage from './components/pages/survey/index'
+
+// Телефония
+import TelephonyTemplate from './components/pages/telephony/TelephonyTemplate'
+import TelephonyStatisticPage from './components/pages/telephony/statistic/index'
+import TelephonyRedirectionsPage from './components/pages/telephony/redirection/index'
+import TelephonyBlacklistPage from './components/pages/telephony/blacklist/index'
 
 // Страницы с ошибками
 import OldBrowserPage from './components/pages/errors/old-browsers'
@@ -197,6 +207,18 @@ const router = new Router({
           component: OATSMainPage
         },
         {
+          path: 'telephony/promo',
+          component: TelephonyPromoPage
+        },
+        {
+          path: 'telephony/plug',
+          component: TelephonyPlugPage
+        },
+        {
+          path: 'telephony',
+          component: TelephonyPage
+        },
+        {
           path: 'oats/promo',
           component: OATSPromoPage
         },
@@ -207,6 +229,24 @@ const router = new Router({
             {
               path: '/',
               component: SupportIndexPage
+            }
+          ]
+        },
+        {
+          path: 'telephony',
+          component: TelephonyTemplate,
+          children: [
+            {
+              path: 'statistic',
+              component: TelephonyStatisticPage
+            },
+            {
+              path: 'redirections',
+              component: TelephonyRedirectionsPage
+            },
+            {
+              path: 'blacklist',
+              component: TelephonyBlacklistPage
             }
           ]
         },

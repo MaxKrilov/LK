@@ -1,0 +1,32 @@
+.er-address-block
+  .er-address-block__wrap
+    .er-address-block__head
+      .er-address-block__address-title
+        .title-icon
+          er-icon(name="geolocation")
+        .title-text {{ currentItem.title }}
+
+      .er-address-block__address-info
+        span {{ currentItem.type }}
+
+      er-corner-button(
+        v-model="isOpened"
+      )
+
+    er-slide-up-down(
+      :active="isOpened"
+      :duration="200"
+    )
+      .er-address-block__content
+        template(v-for="item,idx in list")
+          div(@click="onItemClick(idx)")
+            | {{ item.title }}
+
+  .er-address-block__big-expander(@click="onToggleConnections")
+    .big-expander-button(
+      :class="{'big-expander-button--active': isOpened}"
+    )
+      er-icon(name="corner_down")
+
+    .er-address-block__total-count
+      | Все подключения ({{ totalCount }})

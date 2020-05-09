@@ -1,0 +1,101 @@
+$col-comment-max-breakpoint: 250px;
+
+.telephony-blacklist-page {
+  &__content {
+    @extend %main-content-padding-top;
+    @extend %main-content-width;
+    @extend %main-content-padding-h;
+  }
+
+  &__table {
+    @extend %main-content-width;
+
+    margin-top: $padding-x8;
+
+    @include min-breakpoint('') {
+      margin-top: $padding-x10;
+    }
+  }
+
+  table.blacklist-table {
+    @extend %primary-table;
+    @extend %table-content-padding;
+    @extend %table-striped;
+
+    th, td {
+      text-align: left;
+    }
+
+    thead {
+      th, td {
+        padding-bottom: $padding-x4;
+      }
+
+      .col-action {
+        .title {
+          visibility: hidden;
+
+          @include min-breakpoint('md') {
+            visibility: visible;
+          }
+        }
+      }
+    }
+
+    tbody {
+      td {
+        height: $padding-x14;
+
+        @include min-breakpoint('md') {
+          height: $padding-x12;
+        }
+      }
+
+      .col-phone {
+        @extend %h4;
+      }
+
+      .col-comment {
+        @extend %body;
+      }
+    }
+
+    .col-phone {
+      white-space: nowrap;
+    }
+
+    .col-comment {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      padding-left: $padding-x6;
+
+      @include max-breakpoint('md') {
+        max-width: $col-comment-max-breakpoint;
+      }
+
+      @include max-breakpoint('sm') {
+        display: none;
+      }
+    }
+
+    .col-action {
+      @extend %min-col-width;
+      text-align: right;
+
+      @include min-breakpoint('md') {
+        text-align: left;
+      }
+    }
+
+    tfoot {
+      td {
+        padding-top: $padding-x8;
+
+        @include min-breakpoint('md') {
+          padding-top: $padding-x10;
+        }
+      }
+    }
+  }
+}

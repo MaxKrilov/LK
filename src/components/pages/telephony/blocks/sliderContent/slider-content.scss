@@ -1,0 +1,295 @@
+.slider-content {
+  &__h4 {
+    @extend %h4;
+  }
+
+  &__caption2 {
+    @extend %caption2;
+  }
+
+  &__caption {
+    @extend %caption1;
+  }
+
+  &__units {
+    @extend %caption2;
+    @include color-black(0.5);
+  }
+
+  &__slider {
+
+    &__tariff-wrapper,
+    &__date-wrapper {
+      display: flex;
+
+      @include max-breakpoint("lg") {
+        flex-basis: 50%;
+      }
+
+      /deep/svg {
+        @include color-black(0.2);
+      }
+    }
+
+    &__tariff-wrapper {
+      @include max-breakpoint("sm") {
+        padding-bottom: 24px;
+      }
+    }
+
+    &__date-wrapper {
+      @include max-breakpoint("sm") {
+        padding-bottom: 32px;
+      }
+
+      @include min-breakpoint("sm") {
+        margin-left: 40px;
+      }
+    }
+
+    &__tariff,
+    &__date {
+      padding-left: 8px;
+    }
+
+    &__info-wrapper {
+      @include min-breakpoint("sm") {
+        display: flex;
+        padding-bottom: 32px;
+      }
+
+      @include min-breakpoint("md") {
+        padding-bottom: 40px;
+      }
+    }
+
+    &-buttons {
+      display: grid;
+      grid-gap: 8px;
+      padding-top: $padding-x6;
+
+      @include min-breakpoint("sm") {
+        grid-template-columns: repeat(1, 264px);
+      }
+
+      @include min-breakpoint("md") {
+        grid-template-columns: repeat(2, 264px);
+        grid-gap: 16px;
+      }
+
+      @include min-breakpoint("lg") {
+        grid-template-columns: repeat(3, 1fr);
+        padding-top: $padding-x8;
+      }
+
+      @include min-breakpoint("xl") {
+        grid-template-columns: repeat(2, 287px);
+        grid-gap: 32px;
+      }
+
+      .er-button {
+        @include color-black(0.8);
+      }
+    }
+  }
+
+  &__packages {
+    @include min-breakpoint("sm") {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      grid-gap: 16px;
+    }
+
+    @include min-breakpoint("md") {
+      grid-template-columns: repeat(2, 264px);
+    }
+
+    @include min-breakpoint("lg") {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    @include min-breakpoint("xl") {
+      grid-template-columns: repeat(2, 287px);
+      grid-gap: 32px;
+    }
+
+    @include min-breakpoint("sm") {
+      .er-card {
+        height: auto;
+
+        &__content {
+          height: 100%;
+        }
+      }
+    }
+
+    &-title {
+      margin-top: 32px;
+      margin-bottom: 24px;
+    }
+  }
+
+  &__package {
+    @include max-breakpoint("sm") {
+      margin-bottom: 16px;
+    }
+
+    &__header {
+      padding: 16px;
+
+      @include min-breakpoint("md") {
+        padding-left: 24px;
+        padding-top: 24px;
+        padding-right: 24px;
+      }
+
+      @include min-breakpoint("xl") {
+        padding-left: 32px;
+        padding-top: 32px;
+        padding-right: 32px;
+      }
+
+      position: relative;
+      overflow: hidden;
+      background-color: map-get($gray, "4");
+
+      &_title {
+        width: 60%;
+        @extend %h3;
+
+        @include min-breakpoint("xl") {
+          width: 70%;
+        }
+      }
+
+      &_icon {
+        .er-icon {
+          svg {
+            color: white;
+            width: 80px;
+          }
+        }
+
+        right: 0;
+        bottom: -20px;
+        position: absolute;
+        opacity: 0.5;
+      }
+    }
+
+    &__line {
+      background-color: rgba(map-get($shades, "black"), 0.2);
+      height: 8px;
+
+      &_used {
+        background-color: map-get($yellow, "base");
+        height: 100%;
+        width: 80%;
+      }
+    }
+
+    &__content {
+      padding-top: 24px;
+      padding-bottom: 16px;
+      padding-left: 16px;
+      padding-right: 16px;
+
+      @include min-breakpoint("md") {
+        padding: 24px;
+      }
+    }
+
+    &__count-minutes {
+      @include color-black(0.2);
+    }
+
+    &__renewal {
+      color: map-get($green, "base");
+      @extend %caption2;
+      padding-top: 16px;
+      padding-bottom: 24px;
+    }
+
+    &__buttons {
+      .er-button:first-child() {
+        margin-bottom: 8px;
+      }
+    }
+  }
+
+  &__plug-package {
+    .er-card__content {
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+
+      @include min-breakpoint("md") {
+        padding: 24px;
+      }
+
+      @include min-breakpoint("xl") {
+        padding: 32px;
+      }
+    }
+
+    &__title {
+      width: 50%;
+      @extend %h3;
+
+      @include min-breakpoint("sm") {
+        width: 70%;
+      }
+    }
+
+    &__footer {
+      margin-top: 73px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      position: relative;
+
+      .er-icon {
+        transition: $primary-transition;
+        position: absolute;
+        bottom: 0px;
+        right: 0px;
+
+        svg {
+          transition: $primary-transition;
+          width: 48px;
+          color: map-get($yellow, "base");
+        }
+      }
+    }
+
+    &:hover {
+      cursor: pointer;
+
+      .er-card__content {
+        background: radial-gradient(50% 50% at 50% 50%, #ffdd00 55.5%, #fcd300 100%);
+      }
+
+      .er-icon {
+        bottom: -80px;
+        right: -80px;
+
+        svg {
+          color: rgba(map-get($shades, "white"), 0.8);
+          width: 200px;
+        }
+      }
+    }
+  }
+
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 1s;
+}
+
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
+}

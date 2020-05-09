@@ -1,0 +1,139 @@
+$pre: '.phone-statistic';
+$head-col-height: 80px;
+
+#{$pre} {
+  padding-top: $padding-x8;
+
+  @include min-breakpoint('md') {
+    padding-top: $padding-x10;
+  }
+
+  table {
+    @extend %primary-table;
+    @extend %table-striped-gray-first;
+  }
+
+  thead {
+    td {
+      padding-bottom: $padding-x4;
+    }
+
+    .col-type {
+      padding-left: 0;
+      text-align: center;
+    }
+
+    .col-date {
+      .er-table-filter {
+        .title {
+          width: $padding-x10;
+          display: inline-block;
+          white-space: normal;
+        }
+      }
+    }
+
+    .col-duration {
+      padding-left: 0;
+    }
+  }
+
+  .col-type {
+    width: $min-indentation * 20px;
+    text-align: center;
+
+    @include min-breakpoint('md') {
+      padding-left: $padding-x6;
+      text-align: left;
+    }
+  }
+
+  .col-date {
+    &__time {
+      @include color-black(.8);
+    }
+  }
+
+  .col-phone {
+    white-space: nowrap;
+    width: auto;
+  }
+
+  .col-region,
+  .col-date {
+    @include max-breakpoint('md') {
+      display: none;
+    }
+  }
+
+  .col-duration {
+    padding-left: $padding-x6;
+    width: auto;
+
+    text-align: center;
+  }
+
+  .col-price {
+    display: none;
+    white-space: nowrap;
+
+    @include min-breakpoint('lg') {
+      display: table-cell;
+    }
+
+    .rub {
+      display: inline-block;
+    }
+  }
+
+  .col-price2 {
+    // white-space: nowrap;
+    text-align: center;
+
+    .er-table-filter {
+      .title {
+        white-space: normal;
+      }
+    }
+  }
+
+  .statistic-table {
+    tr:nth-child(odd) {
+      background-color: map_get($gray, '3');
+    }
+
+    tr:nth-child(even) {
+      background-color: map_get($shades, 'white');
+    }
+  }
+
+  &__footer {
+    height: 90px;
+    display: flex;
+    align-items: center;
+    padding: 0 $padding-x8;
+
+    flex-direction: column;
+    justify-content: space-around;
+
+    @include min-breakpoint('sm') {
+      flex-direction: row;
+      justify-content: space-between;
+    }
+
+    #{$pre}__collapser {
+      display: flex;
+      align-items: center;
+
+      .er-corner-button {
+        @include color-black(.5);
+      }
+    }
+  }
+}
+
+.link--dashed {
+  @extend %caption2-font;
+  @include color-black(.5);
+  border-bottom: 1px dashed;
+}

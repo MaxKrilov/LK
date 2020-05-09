@@ -3,6 +3,9 @@ $pre: '.er-corner-button';
 #{$pre} {
   cursor: pointer;
   @include color-black(.2);
+  display: inline-flex;
+  align-items: center;
+  flex-direction: row;
 
   &:hover {
     @include color-black(.5);
@@ -10,6 +13,10 @@ $pre: '.er-corner-button';
     #{$pre}__label {
       @include color-black(.5);
     }
+  }
+
+  &--reversed {
+    flex-direction: row-reverse;
   }
 
   &--active {

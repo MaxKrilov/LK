@@ -1,0 +1,34 @@
+$pre: '.telephony-redirection';
+
+#{$pre} {
+  &__head {
+    @extend %main-content-width;
+    @extend %main-content-padding;
+  }
+
+  &__content,
+  &__address {
+    @extend %main-content-width;
+    @extend %main-content-padding-h;
+
+    @include max-breakpoint('md') {
+      padding: {
+        left: 0;
+        right: 0;
+      }
+    }
+  }
+
+  &__content,
+  &__w-content {
+    margin-top: $padding-x10;
+
+    @include min-breakpoint('md') {
+      margin-top: $padding-x14;
+    }
+
+    @include min-breakpoint('xl') {
+      margin-top: $padding-x8;
+    }
+  }
+}

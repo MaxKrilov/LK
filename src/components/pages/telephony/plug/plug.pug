@@ -1,0 +1,125 @@
+div(:class="`${pre} main-content main-content--top-menu-fix`")
+  er-page-header(title="Подключить пакет минут")
+  div(:class="`${pre}__description-service`" @click="isOpenDescription = !isOpenDescription")
+    span(:class="`${pre}__description-service__text`") Описание услуги
+    div(:class="[{ opened: isOpenDescription }]")
+      er-icon(name="corner_down")
+  er-slide-up-down(:active="isOpenDescription")
+    div(:class="`${pre}__description-slider`")
+      div(:class="`${pre}__description-item`")
+        div(class="icon")
+          er-icon(name="minute_pack")
+        div(class="title") Пакет минут
+        div(class="content")
+          | Пакет минут — это скидка за предоплаченый трафик. Звонки без пакетов минут оплачиваются по стандартным тарифам, при подключении пакета минут вы получаете существенную скидку.
+      div(:class="`${pre}__description-item`")
+        div(class="icon")
+          er-icon(name="time")
+        div(class="title") Порядок предоставления
+        div(class="content")
+          | Пакет предоставляется в полном объеме в момент подключения , далее — каждый месяц, начиная со второго, в полном объеме, в день, соответствующий дате подключения опции. Не использованные в текущем месяце минуты на следующий не переносятся.
+      div(:class="`${pre}__description-item`")
+        div(class="icon")
+          er-icon(name="rouble")
+        div(class="title") Порядок оплаты
+        div(class="content")
+          | Его стоимость списывается 1-го числа каждого месяца. И действует следующий месяц.
+
+  div(:class="`${pre}__packages`")
+    er-card(:class="`${pre}__card chosen`")
+      div(:class="`${pre}__card-header`")
+        div(:class="`${pre}__card-header_title`") За границу / По России
+        div(:class="`${pre}__card-header_icon`")
+          er-icon(name="minute_pack" :shadow="shadowIcon")
+      div(:class="`${pre}__card-content`")
+        div(:class="`${pre}__card-content_text`") Звоните клиентам в другой город/страну по доступной цене. Экономия на звонках до 50%
+        div(:class="`${pre}__card-content_price-title`") Стоимость пакета
+        div(:class="`${pre}__card-content_price`")
+          er-icon(name="no")
+          div(:class="`${pre}__card-content_cost`") 500
+          er-icon(name="add_round")
+        er-button() Выбрать
+
+    er-card(:class="`${pre}__card`")
+      div
+        div(:class="`${pre}__card-header`")
+          div(:class="`${pre}__card-header_title`") Местные звноки
+          div(:class="`${pre}__card-header_icon`")
+            er-icon(name="minute_pack" :shadow="shadowIcon")
+      div(:class="`${pre}__card-content`")
+        div(:class="`${pre}__card-content_text`") Звоните клиентам в вашем городе по доступной цене. Экономия на звонках до	25%
+        div(:class="`${pre}__card-content_price-title`") Стоимость пакета
+        div(:class="`${pre}__card-content_price`")
+          er-icon(name="no")
+          div(:class="`${pre}__card-content_cost`") 500
+          er-icon(name="add_round")
+        er-button() Выбрать
+
+  div(:class="`${pre}__chosen-packets`" id="chosen-packets")
+    er-icon(name="ok" class="ok")
+    | Выбран пакет: За границу / По России Премиум — 500 ₽
+  div(:class="[`${pre}__chosen-packets_sticky`, {[`${pre}__chosen-packets_hide`]:hideButtons}]" id="chosen-packets-sticky")
+    div(:class="`${pre}__chosen-packets_sticky-content`")
+      er-icon(name="ok_round" class="ok")
+      div Выбран пакет: За границу / По России Премиум — 500 ₽
+      div(@click="isOpenStickyButtons = !isOpenStickyButtons")
+        er-icon(name="corner_down" :class="[`arrow`, {[`arrow-down`]: !isOpenStickyButtons}]")
+    er-slide-up-down(:active="isOpenStickyButtons" :duration="100")
+      div(:class="`${pre}__chosen-packets_sticky-buttons`")
+        er-button(color="blue") Подключить пакет минут
+        er-button(flat) Отмена
+
+  div(:class="`${pre}__buttons`")
+    er-button(color="blue") Подключить пакет минут
+    er-button(flat) Отмена
+  div(:class="`${pre}__call-cost`")
+    div(:class="`${pre}__call-cost-title`") Стоимость звонков
+    div(:class="`${pre}__caption`") ₽/мин на выбранном тарифе
+  div(:class="`${pre}__table-wrapper`")
+    div(:class="`${pre}__table-gradient`")
+    div(:class="`${pre}__table`")
+      table(:class="`${pre}__table-price`")
+        tr
+          td(:class="`${pre}__table-price__main-column-title`") Направление
+          td
+            div(:class="`${pre}__table-price__title`")
+              er-hint
+                template(v-slot:activator-text) Через «+7»
+          td
+            div(:class="`${pre}__table-price__title`")
+              er-hint
+                template(v-slot:activator-text) Через «8»
+                | Стоимость соединения за минуту по традиционной телефонии
+          td
+            div(:class="`${pre}__table-price__title`")
+              er-hint
+                template(v-slot:activator-text) С пакетом
+        tr(:class="`${pre}__table-price__row`")
+          td(:class="`${pre}__table-price__row-title`") По городу Пермь
+          td(:class="`${pre}__table-price__standart`") 0,60
+          td(:class="`${pre}__table-price__standart`") 0,60
+          td(:class="`${pre}__table-price__sale`") 0,48
+        tr(:class="`${pre}__table-price__row`")
+          td(:class="`${pre}__table-price__row-title`") По Пермскому краю
+          td(:class="`${pre}__table-price__standart`")  -
+          td(:class="`${pre}__table-price__standart`") 1,80
+          td(:class="`${pre}__table-price__sale`") 1,78
+        tr(:class="`${pre}__table-price__row`")
+          td
+            er-select(placeholder="Москва")
+          td(:class="`${pre}__table-price__standart`") 4,27
+          td(:class="`${pre}__table-price__standart`") 3,60
+          td(:class="`${pre}__table-price__sale`") 0,83
+        tr(:class="`${pre}__table-price__row`")
+          td
+            er-select(placeholder="Великобритания")
+          td(:class="`${pre}__table-price__standart`") 22,68
+          td(:class="`${pre}__table-price__standart`") 9,15
+          td(:class="`${pre}__table-price__sale`") 0,41
+      //- tr
+      //-   td
+      //-   td
+      //-   td
+      //-   td(:class="`${pre}__table-price__economy`") Экономия до	52	%
+
+

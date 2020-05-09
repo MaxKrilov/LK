@@ -1,0 +1,35 @@
+.add-redirection-form
+  .add-redirection-form__content
+    p.hint Номер для переадресации необходимо указывать после +7, с	кодом города для стационарных телефонов. Например для телефона +7	912	345	67	89 указывать:	912	345	67	89
+
+  .add-redirection-form__content
+    .add-redirection-form__form
+      er-container.container--full.container--no-padding
+        er-row
+          er-flex.xs10.sm5
+            er-select
+          er-flex.xs10.sm1
+            er-select
+          er-flex.xs10.sm5
+            er-select
+
+  .add-redirection-form__content
+    .add-redirection-form__period
+      h2 Выберите период переадресации
+
+  period-list(:list="periodList")
+  period-select
+
+  .add-redirection-form__actions
+    er-container.container--full.container--no-padding
+      er-row
+        er-flex.xs12.sm6.lg4
+          er-button(
+            color="blue"
+            @click=""
+          ) Подключить
+        er-flex.xs12.sm6.lg4
+          er-button(
+            color="white"
+            @click="onCancel"
+          ) Отмена

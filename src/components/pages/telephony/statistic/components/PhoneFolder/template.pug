@@ -1,0 +1,15 @@
+.phone-folder(:class="getCSSClass()")
+  .phone-folder__head_wrap(@click="onToggle")
+    .phone-folder__head
+      .phone-folder__head-begin
+        er-icon(name='telephone')
+        span {{ phone|formatPhone }}
+
+      .phone-folder__head-end(v-show="!disabled")
+        er-corner-button(
+          :value="isOpened"
+        )
+
+  .phone-folder__body(:class="{'phone-folder__body--active': isOpened}")
+    er-slide-up-down(:active="isOpened")
+      slot

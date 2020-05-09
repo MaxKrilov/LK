@@ -1,6 +1,6 @@
 .er-corner-button(
   @click="onClick"
-  :class="{'corner-button--active': active}"
+  v-class-mod="{active: value, reversed}"
 )
   er-icon(name="corner_down")
   span.corner-button__label

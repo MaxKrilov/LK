@@ -1,0 +1,25 @@
+div(:class="`${pre} main-content main-content--top-menu-fix`")
+  er-page-header(title="Телефония")
+  template(v-if="isLoading")
+    er-card-products(:loading="true")
+    er-card-products(:loading="true")
+    er-card-products(:loading="true")
+  template(v-else)
+    div(:class="`${pre}__points`")
+      er-card-products(v-for="(item, index) in data" :key="index" :stopped="item.status ==='Suspended'" :price="item.price" :date="item.tariff")
+        | {{ item.fulladdress}}
+        template(#date-title)
+          | Тариф:
+        template(#slider-content)
+          slider-content(:parent-id="item.bpi")
+
+          
+      div(:class="`${pre}__total`")
+        div(:class="`${pre}__h4`") Итого:
+        div(class="price")
+          div(:class="`${pre}__h4`") {{ amount }}
+          span(class="units") &nbsp₽/месяц
+    .button
+      er-button(color="blue") Подключить
+
+

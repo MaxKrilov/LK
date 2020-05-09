@@ -1,0 +1,26 @@
+.telephony-redirection
+  .telephony-redirection__head.main-content--top-menu-fix
+    er-page-header(
+      linkText="Назад в Телефонию"
+      title="Переадресация"
+      backlink="/lk/telephony"
+    )
+
+  .telephony-redirection__address
+    er-address-block(
+      :list="addressList"
+      v-model="currentAddress"
+    )
+
+  .telephony-redirection__w-content
+    template(v-if="addRedirectionMode")
+      add-redirection-form(
+        @add="onAddRedirection"
+        @cancel="onHideAddForm"
+      )
+
+    template(v-else)
+      redirection-table(
+        :list="redirectionList"
+        @add="onShowAddForm"
+      )
