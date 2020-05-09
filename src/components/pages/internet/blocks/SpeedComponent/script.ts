@@ -8,6 +8,9 @@ const END_PIE_ANGLE = 5.757
 
 // eslint-disable-next-line no-use-before-define
 @Component<InstanceType<typeof SpeedComponent>>({
+  model: {
+    event: 'change'
+  },
   props: {
     currentSpeed: {
       type: [String, Number],
@@ -24,13 +27,17 @@ const END_PIE_ANGLE = 5.757
     currencyCode: {
       type: String,
       default: ''
-    }
+    },
+    value: Number,
+    isTurboActivation: Boolean
   }
 })
 export default class SpeedComponent extends Vue {
   // Props
   readonly currentSpeed!: string | number
   readonly listAvailableSpeed!: any[]
+  readonly value!: number
+  readonly isTurboActivation!: boolean
   // Data
   chartHeight = 0
   strokeWidth = STROKE_WIDTH
@@ -43,9 +50,10 @@ export default class SpeedComponent extends Vue {
   }
   // Methods
   init () {
+    document.querySelector(`#${this.computedId}`)!.innerHTML = ''
     const svg = d3.select(`#${this.computedId}`)
-    const width = Number(svg.attr('width'))
-    const height = Number(svg.attr('height'))
+    const width = 319
+    const height = 317
     const margin = {
       top: 45,
       left: 45,
@@ -317,7 +325,7 @@ export default class SpeedComponent extends Vue {
 
   draw () {
     let isTariffChaining = false
-    const isTurboActivation = false // todo props
+    const isTurboActivation = this.isTurboActivation
     const currentSpeed = Number(this.currentSpeed)
     const listSpeed = this.listAvailableSpeed.map(speed => speed.speed) // todo Для бонуса ускорения другие скорости
     listSpeed.unshift(currentSpeed)
@@ -334,7 +342,9 @@ export default class SpeedComponent extends Vue {
       ? lastAvailableSpeed
       : isOnTurbo
         ? turboSpeedActivated
-        : currentSpeed
+        : this.value && this.value !== currentSpeed
+          ? this.value
+          : currentSpeed
     const addedSpeedModel = {
       value: addedSpeed,
       get index (): number {
@@ -351,7 +361,7 @@ export default class SpeedComponent extends Vue {
       }
     }
     if (addedSpeed !== currentSpeed) {
-      this.$emit('change', { isChanged: true, speed: addedSpeed })
+      this.$emit('change', addedSpeed)
     }
     const ticks = d3.ticks(0, lastAvailableSpeedVal, 99)
     const mainGradient = 'url(#gradientYellow)'
@@ -571,7 +581,7 @@ export default class SpeedComponent extends Vue {
       setScaleAnimation()
       setCenterSpeedValue()
       isTariffChaining = speed !== currentSpeed
-      this.$emit('change', { isChanged: isTariffChaining, speed })
+      this.$emit('change', speed)
       setCursorStyle()
       isTariffChaining && setScaleNumbersColors()
     }

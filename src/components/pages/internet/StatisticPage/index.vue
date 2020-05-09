@@ -34,7 +34,7 @@
             .value
               span 000.0
               | КБ.
-    .statistic-internet-page__table
+    .statistic-internet-page__table.mb-24
       .statistic-internet-page__head.main-content.main-content--h-padding.py-8
         .filter--ip
           template(v-if="isLoading")
@@ -81,6 +81,14 @@
             :key="index"
             v-bind="item"
           )
+    .statistic-internet-page__files.main-content.main-content--h-padding
+      h2 Список файлов
+      .statistic-internet-page__list-file
+        file-component(
+          v-for="(document, index) in getListFileStatistic"
+          :key="index"
+          :document="document"
+        )
     er-activation-modal(
       v-model="isShowDialogForFile"
       type="question"
@@ -90,6 +98,14 @@
       :is-loading-confirm="isLoadingFile"
       @confirm="getFileStatistic"
     )
+    er-activation-modal(
+      v-model="isShowDialogForFileSuccess"
+      type="success"
+      title="Запрос на формирование файла успешно отправлен!"
+      :is-show-action-text="false"
+      cancel-button-text="Закрыть"
+    )
+      .caption1 Файл будет сформирован в ближайшее время и появится в списке файлов статистики
 </template>
 <script lang="ts" src="./script.ts"></script>
 <style lang="scss" src="./style.scss"></style>

@@ -25,16 +25,22 @@ export default Vue.extend({
       this.isOpenQuestion = true
     },
     isDeletedConfirm () {
-      this.isOpenQuestion = false
-      this.isDeleted = true
-      const elementHeight = this.$el.scrollHeight
-      this.$el.setAttribute('style', `height: ${elementHeight}px`)
-      setTimeout(() => {
-        this.$el.setAttribute('style', `height: 0`)
-        setTimeout(() => {
-          this.$emit('delete')
-        }, 400)
-      }, 1000)
+      this.$store.dispatch('internet/deleteReverceZone', {
+        ip: this.ip,
+        domain: this.reverceZone
+      })
+        .then(() => {
+          this.isOpenQuestion = false
+          this.isDeleted = true
+          const elementHeight = this.$el.scrollHeight
+          this.$el.setAttribute('style', `height: ${elementHeight}px`)
+          setTimeout(() => {
+            this.$el.setAttribute('style', `height: 0`)
+            setTimeout(() => {
+              this.$emit('delete')
+            }, 400)
+          }, 1000)
+        })
     }
   },
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -62,7 +68,7 @@ export default Vue.extend({
               <div class={'delete'}>
                 <button onclick={this.openConfirmDialogDelete}>
                   <er-icon name={'trashbox'}/>
-                  <span>
+                  <span class={'text'}>
                     Удалить
                   </span>
                 </button>

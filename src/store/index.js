@@ -18,7 +18,6 @@ import loading from './modules/loading'
 import orders from './modules/orders'
 import campaign from './modules/campaign'
 import survey from './modules/survey'
-import internet from './modules/internet'
 import documents from './modules/documents'
 import fileinfo from './modules/fileinfo'
 import productnservices from './modules/productnservices'
@@ -26,6 +25,8 @@ import payments from './modules/payments'
 import salesOrder from './modules/sales-order'
 import telephony from './modules/telephony'
 import chat from './modules/chat'
+import internet from './modules/internet'
+import timer from './modules/timer'
 
 const debug = process.env.NODE_ENV !== 'production'
 
@@ -49,14 +50,15 @@ export default new Vuex.Store({
     orders,
     campaign,
     survey,
-    internet,
     documents,
     fileinfo,
     productnservices,
     payments,
+    chat,
+    internet,
     salesOrder,
-    telephony,
-    chat
+    timer,
+    telephony
   },
   strict: debug,
   plugins: [createPersistedState({

@@ -33,6 +33,9 @@
       margin-bottom: 0;
     }
   }
+  .reverce-zone {
+    width: 100%;
+  }
   .reverce-zone .caption {
     @extend %caption2;
     @include color-black(0.3);
@@ -50,11 +53,12 @@
     padding-left: 16px;
     text-align: right;
     transition: $primary-transition;
+    width: 100%;
     @include min-breakpoint('md') {
       padding-left: 0;
       margin-left: auto;
     }
-    span {
+    span.text {
       @extend %caption1;
       @include color-black(0.5);
       border-bottom: 1px dashed;
@@ -66,7 +70,7 @@
     }
     &:hover {
       @include color-black(0.5);
-      span {
+      span.text {
         @include color-black(0.8);
       }
     }

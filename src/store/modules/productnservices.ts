@@ -51,12 +51,13 @@ const actions = {
         .catch((err: AxiosError) => reject(err))
     })
   },
-  billingPacket (context: ActionContext<IState, any>, { api, id, product }: { api: API, id: string | number, product: string | number }) {
+  billingPacket (context: ActionContext<IState, any>, { api, product }: { api: API, product: string | number }) {
+    const billingAccountId = context.rootGetters['user/getActiveBillingAccount']
     return new Promise<any>((resolve, reject) => {
       api
         .setWithCredentials()
         .setData({
-          id,
+          id: billingAccountId,
           product
         })
         .query('/billing/packets/index')
@@ -69,6 +70,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       api
         .setWithCredentials()
+        .setResponseType('blob')
         .setData({
           clientId,
           id

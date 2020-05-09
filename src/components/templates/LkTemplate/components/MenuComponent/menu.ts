@@ -52,7 +52,7 @@ const MenuItemList: MenuItem[] = [
     subitem: [
       {
         name: 'Статистика',
-        url: '/lk/statistic'
+        url: '/lk/internet/statistic'
       },
       {
         name: 'Контент-фильтрация',
@@ -61,6 +61,10 @@ const MenuItemList: MenuItem[] = [
       {
         name: 'Скорость',
         url: '/lk/speed'
+      },
+      {
+        name: 'Обратные зоны',
+        url: '/lk/internet/reverce-zones'
       },
       {
         name: 'Дополнительные IP-адреса',

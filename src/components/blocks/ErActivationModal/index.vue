@@ -24,7 +24,7 @@
               er-button(@click="closeDialog" flat :disabled="isLoadingConfirm")
                 | {{ cancelButtonText }}
             .er-activation-modal__action.mb-8.mb-sm-0.pl-sm-8(v-if="isShowActionButton")
-              er-button(@click="confirmDialog" :loading="isLoadingConfirm")
+              er-button(@click="confirmDialog" :loading="isLoadingConfirm" :disabled="disabledActionButton")
                 | {{ actionButtonText }}
 </template>
 

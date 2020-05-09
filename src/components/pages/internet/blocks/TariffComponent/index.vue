@@ -5,43 +5,123 @@
     .content(:class="{ blur: isBlur }")
       .tariff-component__tariff-name
         .activation-date
-          | Тариф активен с:&nbsp;
-          span {{ computedActualStartDate }}
+          template(v-if="isLoadingCustomerProduct")
+            PuSkeleton
+          template(v-else)
+            | Тариф активен с:&nbsp;
+            span {{ actualStartDate }}
         .name
-          | {{ computedOriginalName }}
+          template(v-if="isLoadingCustomerProduct")
+            PuSkeleton
+          template(v-else)
+            | {{ offerOriginalName }}
       .tariff-component__speed
-        .chart
-        .title
-          | Скорость соединения
-        .button
-          button(@click="openFormChangingSpeed")
-            | Изменить
+        .chart-loading(v-show="isLoadingCustomerProduct")
+        .chart(v-show="!isLoadingCustomerProduct")
+        template(v-if="isLoadingCustomerProduct")
+          PuSkeleton
+        template(v-else)
+          .title
+            | Скорость соединения
+        template(v-if="isLoadingCustomerProduct")
+          PuSkeleton
+        template(v-else)
+          .button
+            button(@click="() => { openBlur(false) }")
+              | Изменить
       .tariff-component__limit
-        .chart
-        .title
-          | Порог доступного трафика
-        .button
-          button
-            | Изменить
+        .chart-loading(v-show="isLoadingCustomerProduct")
+        .chart(v-show="!isLoadingCustomerProduct")
+        template(v-if="isLoadingCustomerProduct")
+          PuSkeleton
+        template(v-else)
+          .title
+            | Порог доступного трафика
+        template(v-if="isLoadingCustomerProduct")
+          PuSkeleton
+        template(v-else)
       .tariff-component__turbo-activation
-        er-button(pre-icon="speedup")
-          | Турбо-режим
+        template(v-if="isLoadingCustomerProduct")
+          PuSkeleton
+        template(v-else)
+          template(v-if="isOnTurbo")
+            er-button(pre-icon="speedup" color="green")
+              | Отключить турбо-режим
+            .date-activate.mt-24.mb-16
+              .caption.mb-4
+                | Активен на период
+              .value
+                er-icon.mr-8(name="calendar")
+                | 10.08.18 - 11.08.18
+            .price
+              .caption.mb-4
+                | Стоимость за период
+              .value
+                span.mr-4 {{ turboPrice }}
+                | {{ currencyCode }}
+          template(v-else)
+            er-button(pre-icon="speedup" @click="() => { openBlur(true) }" :disabled="!isAvailableTurbo")
+              | Турбо-режим
       .tariff-component__price
-        .caption
-          | Абонентская плата
-        .price
-          span {{ computedCurrentPrice | price }}
-          | &nbsp;{{ computedCurrencyCode }}/месяц
+        template(v-if="isLoadingCustomerProduct")
+          PuSkeleton
+        template(v-else)
+          .caption
+            | Абонентская плата
+          .price
+            span {{ recurrentTotal | price }}
+            | &nbsp;{{ currencyCode }}/месяц
       .tariff-component__turbo-price
-        .caption
-          | Турбо-режим
-        .price
-          span 225,55
-          | &nbsp;₽/месяц
+        template(v-if="isLoadingCustomerProduct")
+          PuSkeleton
+        template(v-else)
+          template(v-if="isOnTurbo")
+            .caption
+              | Турбо-режим
+            .price
+              span {{ turboPrice }}
+              | &nbsp;{{ currencyCode }}/период
       .tariff-component__settings
-        er-icon(name="settings")
-        button
-          | Настройки соединения
+        template(v-if="isLoadingCustomerProduct")
+          PuSkeleton
+        template(v-else)
+          er-icon(name="settings")
+          button(@click="getInfoList")
+            | Настройки соединения
+    infolist-viewer(
+      v-model="isShowInfolistViewer"
+      :id="parentId"
+    )
+    er-activation-modal(
+      v-model="isShowOfferDialog"
+      type="question"
+      :title="connectTitle"
+      persistent
+      :action-button-text="connectActionButtonText"
+      :disabled-action-button="!isOffer"
+      :is-loading-confirm="isOfferAccepting"
+      @confirm="sendSailOrder"
+    )
+      template(slot="description")
+        .tariff-component__offer.d--flex.align-items-center.mb-8
+          er-toggle(
+            view="radio-check"
+            v-model="isOffer"
+          )
+          .text
+            span
+              | Вы должны принять
+            | &nbsp;
+            a(href="#") условия оферты
+        .tariff-component__connect-price
+          | Стоимость услуги составит <span>{{ (isTurboActivation ? turboPriceAfterIncrease : priceAfterIncrease) | price }}</span>&nbsp;{{ currencyCode }}/месяц
+    er-activation-modal(
+      v-model="isShowErrorDialog"
+      type="error"
+      title="Произошла ошибка! Повторите попытку позже"
+      :is-show-action-button="false"
+      cancel-button-text="Закрыть"
+    )
 </template>
 
 <script lang="ts" src="./script.ts"></script>

@@ -1,4 +1,4 @@
-import { TYPES } from '@/constants/document'
+import { TYPES, OTHER_DOCUMENTS } from '@/constants/document'
 
 function isBlankDocument (document) {
   document = Array.isArray(document) ? document[0] : document
@@ -20,9 +20,15 @@ function isReportDocument (document) {
   return TYPES.REPORT.includes(document.type.id)
 }
 
+function isOtherDocument (document) {
+  document = Array.isArray(document) ? document[0] : document
+  return document.type.id === OTHER_DOCUMENTS
+}
+
 export {
   isBlankDocument,
   isContractDocument,
   isUserListDocument,
-  isReportDocument
+  isReportDocument,
+  isOtherDocument
 }

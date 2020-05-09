@@ -1,12 +1,12 @@
-import Vue from 'vue'
-import Component from 'vue-class-component'
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { getFirstElement } from '@/functions/helper'
+import Component, { mixins } from 'vue-class-component'
 import ErTableFilter from '@/components/blocks/ErTableFilter'
 import InternetStatisticComponent from './blocks/InternetStatisticComponent'
-import { IBillingStatisticResponse, ICustomerProduct } from '@/tbapi'
+import { DocumentInterface, IBillingStatisticResponse, ICustomerProduct } from '@/tbapi'
 import moment from 'moment'
 import ErActivationModal from '@/components/blocks/ErActivationModal/index.vue'
+import FileComponent from './blocks/FileComponent/index.vue'
+import ErFileGetStatisticMixin from '@/mixins/ErFileGetStatisticMixin'
+import { Cookie } from '@/functions/storage'
 
 const getHtmlVolume = (volume: number) => {
   const tb = 2 ** 40
@@ -31,7 +31,8 @@ const getHtmlVolume = (volume: number) => {
   components: {
     ErTableFilter,
     InternetStatisticComponent,
-    ErActivationModal
+    ErActivationModal,
+    FileComponent
   },
   watch: {
     customerProduct (val) {
@@ -55,7 +56,7 @@ const getHtmlVolume = (volume: number) => {
     }
   }
 })
-export default class StatisticPage extends Vue {
+export default class StatisticPage extends mixins(ErFileGetStatisticMixin) {
   // Props
   readonly customerProduct!: ICustomerProduct | null
   /**
@@ -77,9 +78,13 @@ export default class StatisticPage extends Vue {
   isLoadingFile = false
 
   isShowDialogForFile = false
+  isShowDialogForFileSuccess = false
 
   sortField = ''
   sortDirection = 'asc'
+
+  // Getters Vuex
+  readonly allOtherDocuments!: (DocumentInterface | DocumentInterface[])[]
 
   get getTloName () {
     return this.customerProduct?.tlo.name || ''
@@ -144,9 +149,13 @@ export default class StatisticPage extends Vue {
       productInstance: this.customerProduct!.tlo.id
     })
       .then((response: any) => {
-        console.log(response)
+        this.isShowDialogForFileSuccess = true
+        Cookie.set('is-loading', '1', { expires: 30 * 24 * 60 * 60 })
+        Cookie.set('statistic-file', response.fileName, { expires: 30 * 24 * 60 * 60 });
+        (this as any).setIntervalForFile()
       })
       .finally(() => {
+        this.isShowDialogForFile = false
         this.isLoadingFile = false
       })
   }

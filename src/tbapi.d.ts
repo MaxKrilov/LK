@@ -54,166 +54,293 @@ export type typeYesOrNo = 'Да' | 'Нет'
 
 export interface ICustomerProduct {
   tlo: {
-    pointAmount: string
+    actualStartDate: string
     billingAccountId: string
-    purchasedPrices: {
-      recurrentTotal: {
-        currency: { name: string, currencyCode: string },
-        value: string
-      }
-      recurrentDiscount: {
-        currency: { name: string, currencyCode: string },
-        value: string
-      }
-      recurrent: {
-        currency: { name: string, currencyCode: string },
-        value: string
-      }
-    }
+    chars: any
+    href: string
+    id: string
     locationId: string
     name: string
-    id: string,
-    chars: {
-      ['Метод назначения IP-адреса']?: string
-      ['Выделенная IP-адресация']?: typeYesOrNo
-      ['Имя в счете']?: string
-      ['Тип авторизации']?: string
-      ['Возможность сделать прямой запрет-разрешение']?: typeYesOrNo
-      ['Скорость доступа, до (Мбит/с)']?: string
-      ['Идентификатор сервиса']?: string
-      ['Тип IPv4 адреса']?: string
-      ['Проверка технической возможности (ТЭО)']?: string
-    }
-    status: string
     offer: {
-      orderNumber: number
-      code: string
-      isRoot: boolean
-      description: string
       availableFrom: string
-      originalName: string
-      suspenable: boolean
-      customerCategory: {
-        originalName: string
-        code: string
-        name: string
-        id: string
-        tomsId: string
-        href: string
-      }
-      id: string
-      originalDescription: string
-      requiresContract: boolean
       availableTo: string
+      canBeActivatedInSSP: false
+      categoryRelationships: [{
+        maxCount: number
+        minCount: number
+        offeringCategoryId: number
+        orderNumber: number
+      }]
+      code: string
+      customerCategory: {
+        code: string
+        href: string
+        id: string
+        name: string
+        originalName: string
+        tomsId: string
+      }
+      description: string
+      feasibilityCheckRequired: boolean
+      href: string
+      id: string
+      isEquipment: boolean
+      isRoot: boolean
       market: {
         code: string
-        marketingBrands: {
-          [index: number]: { name: string, id: string }
-        }
+        href: string
+        id: string
+        marketingBrands: [{
+          id: string
+          name: string
+        }]
+        name: string
         originalName: string
+        tomsId: string
+      }
+      name: string
+      offeringCategories: [{
+        code: string
+        id: string
+        isTop: boolean
+        name: string
+        orderNumber: string
+        originalName: string
+        parent: { id: string, code: string }
+        reconciliationId: string
+        tomsId: string
+        visible: boolean
+      }]
+      originalDescription: string
+      originalName: string
+      prices: [{
+        amount: string
+        chars: Record<string, string>
+        id: string
+        productOfferingIds: string[]
+        startDate: string
+        tax: string
+        type: string
+      }]
+      requiresContract: boolean
+      status: string
+      suspendable: boolean
+      visibleInSSP: boolean
+    }
+    pointAmount: string | number
+    purchasedPrices: {
+      recurrent: IPriceItem
+      recurrentDisacount: IPriceItem
+      recurrentTotal: IPriceItem
+    }
+    status: string
+  }
+  slo: [{
+    activated: boolean
+    availableFrom: string
+    availableTo: string
+    canBeActivatedInSSP: boolean
+    categoryRelationships: [{
+      maxCount: number
+      minCount: number
+      offeringCategoryId: number
+      orderNumber: number
+    }]
+    chars: any
+    code: string
+    customerCategories: [{
+      code: string
+      href: string
+      id: string
+      name: string
+      originalName: string
+      tomsId: string
+    }]
+    description: string
+    distributionChannels: [{
+      code: string
+      href: string
+      id: string
+      name: string
+      originalName: string
+      tomsId: string
+    }]
+    feasibilityCheckRequired: boolean
+    href: string
+    id: string
+    isEquipment: boolean
+    isRoot: boolean
+    marketingBrands: [{
+      name: string
+      id: string
+    }]
+    markets: [{
+      code: string
+      href: string
+      id: string
+      marketingBrands: {
         name: string
         id: string
-        tomsId: string
-        href: string
       }
-      canBeActivatedInSSP: boolean
       name: string
-      feasibilityCheckRequired: boolean
-      visibleInSSP: boolean
-      status: string
-      maxCount: any
-      isEquipment: boolean
-      href: string
-    }
-    actualStartDate: string
-    href: string
-  }
-  slo: [
-    {
-      childMax: string
+      originalName: string
+      tomsId: string
+    }]
+    name: string
+    offeringCategories: [{
+      code: string
+      id: string
+      isTop: boolean
+      name: string
       orderNumber: string
+      originalName: string
+      reconciliationId: string
+      tomsId: string
+    }]
+    offeringRelationships: [{
+      childMax: string
+      childMin: string
       childProductOffering: {
-        code: string
-        isRoot: boolean
         availableFrom: string
-        originalName: string
-        suspendable: boolean
-        id: string
-        prices: [
-          {
-            amount: string
-            tax: string
-            id: string
-            startDate: string
-            chars: Record<string, string>,
-            productOfferingIds: Record<number, string>
-          }
-        ]
-        product: {
-          code: string
-          originalName: string
-          name: string
-          id: string
-          chars: {
-            [index: number]: {
-              orderNumber?: string
-              type?: string
-              tomsProductId?: string
-              isModifiable?: boolean
-              id: string
-              tomsId?: string
-              tomsOfferId?: string
-              isMandatory?: boolean
-              productId?: string
-              isMultiple?: boolean
-              isVisible?: boolean
-              mappingType?: string
-              name: string
-              visibleInSsp?: boolean
-              defaultListValue?: {
-                [index: number]: { id: string, name: string }
-              }
-              values?: {
-                [index: number]: { id: string, name: string }
-              }
-              isReference?: boolean
-            }
-          }
-          href: string
-        }
-        requiresContract: boolean
         availableTo: string
         canBeActivatedInSSP: boolean
-        name: string
+        code: string
+        customerCategories: [{
+          code: string
+          href: string
+          id: string
+          name: string
+          originalName: string
+          tomsId: string
+        }]
+        description: string
+        distributionChannels: [{
+          code: string
+          href: string
+          id: string
+          name: string
+          originalName: string
+          tomsId: string
+        }]
         feasibilityCheckRequired: boolean
-        visibleInSSP: boolean
-        status: string
-        isEquipment: boolean
         href: string
+        id: string
+        isEquipment: boolean
+        isRoot: boolean
+        marketingBrands: [{
+          name: string
+          id: string
+        }]
+        markets: [{
+          code: string
+          href: string
+          id: string
+          marketingBrands: {
+            name: string
+            id: string
+          }
+          name: string
+          originalName: string
+          tomsId: string
+        }]
+        name: string
+        originalDescription: string
+        originalName: string
+        prices: [{
+          amount: string
+          id: string
+          productOfferingIds: string[]
+          startDate: string
+          tax: string
+          type: string
+        }]
+        product: {
+          chars: [{
+            defaultListValue?: { id: string, name: string }
+            id: string
+            isMandatory?: boolean
+            isModifiable?: boolean
+            isMultiple?: boolean
+            isReference?: boolean
+            isVisible?: boolean
+            mappingType?: string
+            name: string
+            orderNumber?: string
+            productId?: string
+            tomsId?: string
+            tomsOfferId?: string
+            tomsProductId?: string
+            type?: string
+            values?: { id: string, name: string }[]
+            visibleInSsp?: boolean
+          }]
+          code: string
+          href: string
+          id: string
+          name: string
+          originalName: string
+        }
+        requiresContract: boolean
+        status: string
+        suspendable: boolean
+        visibleInSSP: boolean
       }
       defaultBehavior: string
-      name: string
-      reconciliationId: string
       id: string
+      name: string
+      orderNumber: string
       originalId: string
-      childMin: string
-      activated: boolean
-      purchasedPrices: string | {
-        recurrentTotal: {
-          currency: { name: string, currencyCode: string },
-          value: string
-        }
-        recurrentDiscount: {
-          currency: { name: string, currencyCode: string },
-          value: string
-        }
-        recurrent: {
-          currency: { name: string, currencyCode: string },
-          value: string
-        }
-      }
+      reconciliationId: string
+    }]
+    orderNumber: number
+    originalDescription: string
+    originalName: string
+    prices: [{
+      amount: string
+      chars: Record<string, string>
+      id: string
+      productOfferingIds: string[]
+      startDate: string
+      tax: string
+      type: string
+    }]
+    product: {
+      chars: [{
+        defaultListValue?: { id: string, name: string }
+        id: string
+        isMandatory?: boolean
+        isModifiable?: boolean
+        isMultiple?: boolean
+        isReference?: boolean
+        isVisible?: boolean
+        mappingType?: string
+        name: string
+        orderNumber?: string
+        productId?: string
+        tomsId?: string
+        tomsOfferId?: string
+        tomsProductId?: string
+        type?: string
+        values?: { id: string, name: string }[]
+        visibleInSsp?: boolean
+      }]
+      code: string
+      href: string
+      id: string
+      name: string
+      originalName: string
     }
-  ]
+    productId: string
+    purchasedPrices: {
+      recurrent: IPriceItem
+      recurrentDisacount: IPriceItem
+      recurrentTotal: IPriceItem
+    }
+    requiresContract: boolean
+    status: string
+    suspendable: boolean
+    visibleInSSP: boolean
+  }]
 }
 
 export interface IBillingStatisticResponse {
