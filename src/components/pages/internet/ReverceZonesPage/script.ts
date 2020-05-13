@@ -73,7 +73,7 @@ export default class ReverceZonePage extends Vue {
       })
   }
 
-  deleteReverceZone (reverceZone: string) {
+  deleteReverceZone () {
     // this.listReverceZone.splice(
     //   this.listReverceZone.findIndex(item => item === reverceZone),
     //   1
