@@ -25,7 +25,7 @@ import {
 import { GET_CHAT_TOKEN } from '@/store/actions/chat'
 
 import { GET_REQUEST } from '@/store/actions/request'
-import {Cookie} from './functions/storage'
+import { Cookie } from './functions/storage'
 
 const USE_SSO_AUTH = process.env.VUE_APP_USE_SSO_AUTH !== 'no'
 
