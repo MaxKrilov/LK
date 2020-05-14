@@ -148,7 +148,7 @@ div(
               :class="`${pre}__add-contact-method`"
               name="inputPhoneNumber"
               data-skip-validate="true"
-              label="Добавьте номер телефона"
+              :label="isMobile ? 'Добавить номер' : 'Добавьте номер телефона'"
               mask="phone"
               ref="phones"
               :rules="phoneRule"
@@ -196,8 +196,8 @@ div(
         er-flex(:class="`${preSection}`" xs12 sm6 lg4)
           div(:class="`${preSection}__action`")
             div(:class="`${preSection}__action__sign`")
-              er-toggle(v-model="showUploadDialog" v-if="!canSign")
-              er-toggle(v-model="canSign" v-else)
+              er-toggle(v-if="!canSign" v-model="showUploadDialog")
+              er-toggle(v-else v-model="canSign" @input="handleRemoveCanSignRole($event)")
             h3(:class="`${preSection}__title ${preSection}__action__title`") Право подписи
 
           div(:class="`${pre}__sign-intro`" v-if="!canSign")
@@ -206,51 +206,71 @@ div(
               | превышать&nbsp;4Мб. Формат: jpg, png, pdf, doc, docx.
 
           template(v-if="canSign")
-            div(:class="`${preInput}`")
-              er-select(
-                placeholder="На основании"
-                :isShowLabelRequired="isNewContact"
-                :items="signDocumentsList"
-                :rules="[value => erSelectValidate(value)]"
-                v-model="formData.registrationDocument"
-              )
+            template(v-if="isNewContact || isCanSignRoleAdd")
+              div(:class="`${preInput}`")
+                er-select(
+                  placeholder="На основании"
+                  isShowLabelRequired
+                  :items="signDocumentsList"
+                  :rules="[value => erSelectValidate(value)]"
+                  v-model="formData.registrationDocument"
+                )
 
-            div(:class="`${preInput}`")
-              er-text-field(
-                :class="`${preInput}__field`"
-                :rules="notEmptyRule"
-                label="Фамилия в род. падеже"
-                :isShowLabelRequired="isNewContact"
-                v-model.trim="formData.lastNameGenitive"
-              )
+              div(:class="`${preInput}`")
+                er-text-field(
+                  :class="`${preInput}__field`"
+                  :rules="notEmptyRule"
+                  label="Фамилия в род. падеже"
+                  isShowLabelRequired
+                  v-model.trim="formData.lastNameGenitive"
+                )
 
-            div(:class="`${preInput}`")
-              er-text-field(
-                :class="`${preInput}__field`"
-                :rules="notEmptyRule"
-                label="Имя в род. падеже"
-                :isShowLabelRequired="isNewContact"
-                v-model.trim="formData.firstNameGenitive"
-              )
+              div(:class="`${preInput}`")
+                er-text-field(
+                  :class="`${preInput}__field`"
+                  :rules="notEmptyRule"
+                  label="Имя в род. падеже"
+                  isShowLabelRequired
+                  v-model.trim="formData.firstNameGenitive"
+                )
 
-            div(:class="`${preInput}`")
-              er-text-field(
-                :class="`${preInput}__field`"
-                :rules="notEmptyRule"
-                label="Отчество  в род. падеже"
-                :isShowLabelRequired="isNewContact"
-                v-model.trim="formData.secondNameGenitive"
-              )
+              div(:class="`${preInput}`")
+                er-text-field(
+                  :class="`${preInput}__field`"
+                  :rules="notEmptyRule"
+                  label="Отчество  в род. падеже"
+                  isShowLabelRequired
+                  v-model.trim="formData.secondNameGenitive"
+                )
 
-            div(:class="`${preInput}`")
-              er-text-field(
-                :class="`${preInput}__field`"
-                :rules="notEmptyRule"
-                label="Должность  в род. падеже"
-                :isShowLabelRequired="isNewContact"
-                v-model.trim="formData.jobTitleGenitive"
-              )
+              div(:class="`${preInput}`")
+                er-text-field(
+                  :class="`${preInput}__field`"
+                  :rules="notEmptyRule"
+                  label="Должность  в род. падеже"
+                  isShowLabelRequired
+                  v-model.trim="formData.jobTitleGenitive"
+                )
+            template(v-else)
+              div(:class="[`${pre}__readonly`, `${preInput}`]")
+                div(:class="`${pre}__readonly__label`") На основании
+                div(:class="`${pre}__readonly__data`") {{ formData.registrationDocument }}
 
+              div(:class="[`${pre}__readonly`, `${preInput}`]")
+                div(:class="`${pre}__readonly__label`") Фамилия в род. падеже
+                div(:class="`${pre}__readonly__data`") {{ formData.lastNameGenitive }}
+
+              div(:class="[`${pre}__readonly`, `${preInput}`]")
+                div(:class="`${pre}__readonly__label`") Имя в род. падеже
+                div(:class="`${pre}__readonly__data`") {{ formData.firstNameGenitive }}
+
+              div(:class="[`${pre}__readonly`, `${preInput}`]")
+                div(:class="`${pre}__readonly__label`") Отчество  в род. падеже
+                div(:class="`${pre}__readonly__data`") {{ formData.secondNameGenitive }}
+
+              div(:class="[`${pre}__readonly`, `${preInput}`]")
+                div(:class="`${pre}__readonly__label`") Должность  в род. падеже
+                div(:class="`${pre}__readonly__data`") {{ formData.jobTitleGenitive }}
 
       er-row(
         :class="[`${pre}__error`, 'no-gutters', 'align-items-center']"
@@ -262,20 +282,27 @@ div(
       er-row(:class="[`${pre}__footer`, `${pre}__actions`]")
         er-flex(xs12 sm6 lg4
         :class="`${pre}__actions__btn`")
-          er-button(@click="handleSaveForm") Сохранить
+          er-button(
+            :loading="createContactState.isFetching"
+            :disabled="createContactState.isFetching"
+            @click.prevent="handleSaveForm"
+            ) Сохранить
+
         er-flex(xs12 sm6 lg4
         :class="`${pre}__actions__btn`")
           er-button(
             :flat="true"
             @click="handleClickClose"
             ) Отменить
-        template(v-if="!isNewContact && primaryContactId !== formData.id")
+        template(v-if="!isNewContact && primaryContactId !== formData.id && !isMobile")
           er-flex(xs12 sm6 lg4
           :class="`${pre}__actions__btn`")
             er-button(
               :flat="true"
+              :disabled="deleteContactState.isFetching"
+              :loading="deleteContactState.isFetching"
               @click="handleDeleteContact"
-            ) Удалить
+            ) Удалить контакт
 
     er-dialog(
       :value="showUploadDialog"

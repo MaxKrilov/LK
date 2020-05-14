@@ -1,6 +1,38 @@
 .contacts-list-item {
   @extend %body-font;
 
+  &__expand-wrap{
+    display: flex;
+    align-items: flex-start;
+
+    &__ico{
+      width: 16px;
+      height: 16px;
+      margin-right: $padding-x1;
+      flex-shrink: 0;
+
+      @include media-query((
+        padding-left: (lg: $padding-x1),
+        padding-right: (lg: 0),
+        margin-left: (md: auto)
+      ));
+
+      svg{
+        width: inherit !important;
+        height: inherit !important;
+      }
+
+      &--active{
+        transform: rotate(180deg);
+        transition: transform .2s ease;
+      }
+    }
+
+    &__col{
+      flex-grow: 2;
+    }
+  }
+
   &__name{
     @extend %caption1;
 
@@ -11,7 +43,7 @@
   }
 
   &__roles-list{
-
+    list-style-type: none;
     &__item{
       @extend %caption1;
       margin: $padding-x1 0;
@@ -19,7 +51,7 @@
   }
 
   &__contact-methods{
-    margin-top: $padding-x4;
+    margin-top: $padding-x6;
 
     &__title{
       @extend %h4;
@@ -29,7 +61,7 @@
     &__section{
 
       &:not(:last-child){
-        margin-bottom: $padding-x2;
+        margin-bottom: $padding-x3;
       }
 
       &__title{
@@ -40,10 +72,49 @@
   }
 
   &__methods-list{
+    list-style-type: none;
 
     &__item{
       @extend %body-font;
       margin: $padding-x1 0;
+
+      &.is-prefer{
+        color: map_get($green, 'base')
+      }
+
+      &__prefer-hint{
+        display: inline-block;
+        position: relative;
+
+        @at-root .is-prefer &{
+          &:after{
+            @extend %caption2-font;
+            content: 'Предпочтительный канал связи';
+            width: 200px;
+            color: map_get($shades, 'black');
+            padding: $padding-x4 $padding-x4 $padding-x2;
+            background-color: map_get($shades, 'white');
+            border-radius: 16px;
+            box-shadow: -8px 8px 16px rgba(map_get($shades, 'black'), 0.04), 0 8px 24px rgba(map_get($shades, 'black'), 0.06);
+            position: absolute;
+            top: 50%;
+            right: 0;
+            transform: translateX(100%) translateY(-50%);
+            z-index: 2;
+            display: none;
+          }
+        }
+      }
+    }
+  }
+
+  &__actions{
+    margin-top: $padding-x8;
+
+    &__btn{
+      &:not(:last-child) {
+        margin-bottom: $padding-x4;
+      }
     }
   }
 }

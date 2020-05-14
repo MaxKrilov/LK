@@ -1,8 +1,21 @@
 div(:class="`${pre}`")
   template(v-if="dataKey === 'firstName'")
-    p(:class="`${pre}__name`")
-      span(:class="`${pre}__name__last-name`") {{item.lastName}}
-      | {{item.firstName}} {{item.secondName}}
+    div(ref="firstName" :class="`${pre}__expand-wrap`")
+      template(v-if="isMobile || (isMD && expandedId !== item.id)")
+        er-icon(
+          name="corner_down",
+          :class="[`${pre}__expand-wrap__ico`, {[`${pre}__expand-wrap__ico--active`]: expandedId === item.id}]")
+      template(v-if="isMobile || ((isMD || isLG) && expandedId !== item.id)")
+        p(:class="[`${pre}__name`, `${pre}__expand-wrap__col`]")
+          span(:class="`${pre}__name__last-name`") {{item.lastName}}
+          | {{item.firstName}} {{item.secondName}}
+    item-state(
+      v-if="actionMessage.active && actionMessage.id === item.id"
+      :message="actionMessage.message"
+      :state="actionMessage.state"
+      :left="actionMessage.leftPos"
+      :isMobile="isMobile"
+      )
 
     template(v-if="isMobile")
       ul(:class="`${pre}__roles-list`")
@@ -10,37 +23,102 @@ div(:class="`${pre}`")
           li(
             :key="'role' + idx"
             :class="`${pre}__roles-list__item`"
-            ) {{role.name}}
+            ) {{ role.name }}
+        template(v-if="item.canSign")
+          li(:class="`${pre}__roles-list__item`") Лицо, имеющее право подписи
 
-    template(v-if="(isMobile || isMD) && expandedId === item.id")
-      div(:class="`${pre}__contact-methods`")
-        h4(:class="`${pre}__contact-methods__title`") Контактные данные
+  template(v-if="isMobile && expandedId === item.id")
+    div(:class="`${pre}__contact-methods`")
+      h4(:class="`${pre}__contact-methods__title`") Контактные данные
 
-        template(v-if="item.phones.length")
-          div(:class="`${pre}__contact-methods__section`")
-            h5(:class="`${pre}__contact-methods__section__title`") Номер телефона
-            ul(:class="`${pre}__methods-list`")
-              template(v-for="(method, idx) in item.phones")
-                li(
-                  :key="'method-phone' + idx"
-                  :class="`${pre}__methods-list__item`"
-                  ) {{method}}
+      template(v-if="item.phones.length")
+        div(:class="`${pre}__contact-methods__section`")
+          h5(:class="`${pre}__contact-methods__section__title`") Номер телефона
+          ul(:class="`${pre}__methods-list`")
+            template(v-for="(method, idx) in item.phones")
+              li(
+                :key="'method-phone' + idx"
+                :class="[`${pre}__methods-list__item`, { 'is-prefer': method.id === item.preferredContactMethodId }]"
+                ) {{ method.value }}
 
-        template(v-if="item.emails.length")
-          div(:class="`${pre}__contact-methods__section`")
-            h5(:class="`${pre}__contact-methods__section__title`") Электронная почта
-            ul(:class="`${pre}__methods-list`")
-              template(v-for="(method, idx) in item.emails")
-                li(
-                  :key="'method-email' + idx"
-                  :class="`${pre}__methods-list__item`"
-                  ) {{method}}
+      template(v-if="item.emails.length")
+        div(:class="`${pre}__contact-methods__section`")
+          h5(:class="`${pre}__contact-methods__section__title`") Электронная почта
+          ul(:class="`${pre}__methods-list`")
+            template(v-for="(method, idx) in item.emails")
+              li(
+                :key="'method-email' + idx"
+                :class="[`${pre}__methods-list__item`, { 'is-prefer': method.id === item.preferredContactMethodId }]"
+                ) {{ method.value }}
 
-  template(v-if="dataKey === 'phones'")
-    template(v-if="isMD && expandedId !== item.id")
+      er-row(:class="`${pre}__actions`")
+        er-flex(xs12 sm6
+        :class="`${pre}__actions__btn`")
+          er-button(@click.prevent.stop="handleEditContact") Редактировать
+
+        template(v-if="primaryContactId !== item.id")
+          er-flex(xs12 sm6
+          :class="`${pre}__actions__btn`")
+            er-button(
+              :flat="true"
+              :disabled="deleteContactState.isFetching"
+              :loading="deleteContactState.isFetching"
+              @click.prevent.stop="handleDeleteContact"
+            ) Удалить контакт
+
+  template(v-if="isMD")
+    template(v-if="dataKey === 'phones' && item.phones.length")
+      template(v-if="expandedId !== item.id")
+        ul(:class="`${pre}__methods-list`")
+          template(v-for="(method, idx) in item.phones")
+            li(
+              :key="'method-phone' + idx"
+              :class="[`${pre}__methods-list__item`, { 'is-prefer': method.id === item.preferredContactMethodId }]"
+            ) {{ method.value }}
+      template(v-else)
+        div(:class="`${pre}__expand-wrap`")
+          er-icon(
+            name="corner_down",
+            :class="[`${pre}__expand-wrap__ico`, `${pre}__expand-wrap__ico--active`]")
+
+  template(v-if="isLG && expandedId !== item.id")
+    template(v-if="dataKey === 'phones' && item.phones.length")
       ul(:class="`${pre}__methods-list`")
         template(v-for="(method, idx) in item.phones")
           li(
             :key="'method-phone' + idx"
-            :class="`${pre}__methods-list__item`"
-          ) {{method}}
+            :class="[`${pre}__methods-list__item`, { 'is-prefer': method.id === item.preferredContactMethodId }]"
+          )
+           span(:class="`${pre}__methods-list__item__prefer-hint`") {{ method.value }}
+
+    template(v-if="dataKey === 'emails' && item.emails.length")
+      div(:class="`${pre}__contact-methods__section`")
+        ul(:class="`${pre}__methods-list`")
+          template(v-for="(method, idx) in item.emails")
+            li(
+              :key="'method-email' + idx"
+              :class="[`${pre}__methods-list__item`, { 'is-prefer': method.id === item.preferredContactMethodId }]"
+            )
+              span(:class="`${pre}__methods-list__item__prefer-hint`") {{ method.value }}
+
+    template(v-if="dataKey === 'roles'")
+      div(:class="`${pre}__expand-wrap`")
+        ul(:class="[`${pre}__roles-list`, `${pre}__expand-wrap__col`]")
+          template(v-for="(role, idx) in item.roles")
+            li(
+              :key="'role' + idx"
+              :class="`${pre}__roles-list__item`"
+            ) {{ role.name }}
+          template(v-if="item.canSign")
+            li(:class="`${pre}__roles-list__item`") Лицо, имеющее право подписи
+        er-icon(
+          name="corner_down",
+          :class="`${pre}__expand-wrap__ico`")
+
+  template(v-else-if="isLG && expandedId === item.id")
+    template(v-if="dataKey === 'roles'")
+      div(:class="`${pre}__expand-wrap`")
+        er-icon(
+          name="corner_down",
+          :class="[`${pre}__expand-wrap__ico`, `${pre}__expand-wrap__ico--active`]")
+

@@ -1,10 +1,5 @@
-import { cloneDeep, find } from 'lodash'
-import {
-  generateUrl,
-  eachArray,
-  toDefaultPhoneNumber,
-  formatPhoneNumber
-} from '../../functions/helper'
+import { cloneDeep, find, remove } from 'lodash'
+import { eachArray, formatPhoneNumber, generateUrl, toDefaultPhoneNumber } from '../../functions/helper'
 import { USER_EXISTS_WITH_SAME } from '@/constants/status_response'
 import { TYPE_JSON } from '@/constants/type_request'
 
@@ -15,10 +10,20 @@ const CONTACTS_RESET = 'CONTACTS_RESET'
 const CONTACTS_SEARCH = 'CONTACTS_SEARCH'
 // получение контактов текущего клиента
 const CONTACTS_CLIENT_SUCCESS = 'CONTACTS_CLIENT_SUCCESS'
-// удалние контакта
+
+// установка выбранного (создание/изменение) контакта
 const RESET_CURRENT_CONTACTS = 'RESET_CURRENT_CONTACTS'
 const SET_CURRENT_CONTACTS = 'SET_CURRENT_CONTACTS'
+
 // удаление контакта
+const UPDATE_DELETE_CONTACT_STATE = 'UPDATE_DELETE_CONTACT_STATE'
+const CONTACT_DELETE_MESSAGE_TIMEOUT = 1500
+
+// создание/изменение контакта
+const UPDATE_CREATE_CONTACT_STATE = 'UPDATE_CREATE_CONTACT_STATE'
+const CONTACT_CREATE_MESSAGE_TIMEOUT = 1500
+
+// удаление контакта (учетка)
 const CONTACTS_REMOVE_MODAL = 'CONTACTS_REMOVE_MODAL'
 const CONTACTS_REMOVE_REQUEST = 'CONTACTS_REMOVE_REQUEST'
 const CONTACTS_REMOVE_SUCCESS = 'CONTACTS_REMOVE_SUCCESS'
@@ -44,7 +49,6 @@ const CREATE_CONTACT_ROLE_ERROR = 'CREATE_CONTACT_ROLE_ERROR'
 const CREATE_CONTACT_ROLE_ID = '9142343507913277484'
 
 // Contact id's
-const MIDDLE_NAME = '9134317459913190730'
 const CONTACT_ROLE_SIGNATORY_AUTH = '9142343507913277484'
 
 const CURRENT_CLIENT_CONTACTS = {
@@ -68,7 +72,10 @@ const CURRENT_CLIENT_CONTACTS = {
 const state = {
   contactsList: [],
   createdContact: {
-    content: {},
+    content: {
+      id: '',
+      name: ''
+    },
     isFetching: false,
     isFetched: false,
     error: null,
@@ -81,6 +88,18 @@ const state = {
     content: Object.assign({}, CURRENT_CLIENT_CONTACTS),
     isFetching: false,
     isFetched: false
+  },
+  deleteContactState: {
+    isFetching: false,
+    isFetched: false,
+    error: null,
+    id: null
+  },
+  createContactState: {
+    isFetching: false,
+    isFetched: false,
+    error: null,
+    id: null
   },
   usersQuery: '',
   sortField: null,
@@ -180,16 +199,20 @@ const getContactExtendedData = (contact) => {
 
 const makeCurrentClientContacts = (data) => {
   let contact = cloneDeep(data)
-  contact.secondName = data.extendedMap?.[MIDDLE_NAME]?.singleValue?.attributeValue
-  contact.roles = data.roles?.map(roleObj => ({
+  contact.roles = data?.roles?.map(roleObj => ({
     id: roleObj.role?.id,
     name: roleObj.role?.name
   })) || []
-  // contact.roles = data.roles?.map(roleObj => (roleObj.role?.name)) || []
   const contactMethods = getContactMethods(data.contactMethods)
   contact.phones = contactMethods.phones
   contact.emails = contactMethods.emails
-  contact.canSign = data.roles?.filter(roleObj => roleObj.role?.id === CONTACT_ROLE_SIGNATORY_AUTH).length > 0
+  contact.canSign = data?.roles?.filter(roleObj => roleObj.role?.id === CONTACT_ROLE_SIGNATORY_AUTH).length > 0
+  // эта роль в создании/редактировании включается отдельно
+  // по ТЗ должна быть исключена из списка
+  // здесь убираю чтобы не отображалось в списке ролей
+  remove(contact.roles, function (n) {
+    return n.id === CREATE_CONTACT_ROLE_ID
+  })
   contact = removeContactKeys(contact)
   contact = Object.assign(contact, getContactExtendedData(data))
   return contact
@@ -199,16 +222,7 @@ const getters = {
   getCurrentClientContacts (state) {
     return Object.assign({}, state?.currentClientContacts?.content)
   },
-  filteredContactsByName ({ usersQuery }, getters, rootState) {
-    // TODO ВЫНЕСТИ В ХЕЛПЕРЫ
-    // const checkPreferenceContact = (contactObject, value) => {
-    //   if (contactObject.hasOwnProperty('preferredContactMethodId')) {
-    //     return contactObject.preferredContactMethodId === value
-    //   } else {
-    //     return false
-    //   }
-    // }
-
+  filteredContactsByName (state, getters, rootState) {
     let contacts = cloneDeep(rootState.user.clientInfo?.contacts)
     if (!contacts.length) {
       return
@@ -218,13 +232,7 @@ const getters = {
       return makeCurrentClientContacts(it)
     })
 
-    if (!usersQuery.length) {
-      return contacts
-    }
-    return contacts.filter(({ firstName, lastName }) => {
-      return firstName?.toLowerCase().includes(usersQuery) ||
-        lastName?.toLowerCase().includes(usersQuery)
-    })
+    return contacts
   },
   getCreatedContactState (context) {
     const { isFetching, isFetched, error } = context.createdContact
@@ -260,12 +268,19 @@ const actions = {
 
       if (response) {
         // eslint-disable-next-line camelcase
-        return response?.contact?.contact_roles.filter((item) => {
+        let filteredDict = response?.contact?.contact_roles.filter((item) => {
           if (item.status === 'Активный') {
             delete item.status
             return item
           }
         })
+        // эта роль в создании/редактировании включается отдельно
+        // по ТЗ должна быть исключена из списка
+        // здесь убираю чтобы нельзя было выбрать в списке
+        remove(filteredDict, function (n) {
+          return n.id === CREATE_CONTACT_ROLE_ID
+        })
+        return filteredDict
       } else {
         return false
       }
@@ -274,13 +289,35 @@ const actions = {
     }
   },
 
+  searchContactsByName: ({ getters }, query) => {
+    let contacts = getters.filteredContactsByName
+
+    if (!query) {
+      return contacts
+    }
+
+    return contacts.filter(({ firstName, lastName }) => {
+      return firstName?.toLowerCase().includes(query) ||
+        lastName?.toLowerCase().includes(query)
+    })
+  },
+
   createContact: async ({ commit, dispatch, rootState, rootGetters }, { api, data }) => {
-    const { toms: clientId, name: clientName } = rootGetters['auth/user']
+    commit(UPDATE_CREATE_CONTACT_STATE, {
+      isFetching: true,
+      isFetched: false,
+      error: null
+    })
+    const { toms: clientId } = rootGetters['auth/user']
     const url = '/customer/account/edit-contact'
 
     // если не передан id - создание нового контакта
     const isCreate = !data?.id
-    console.log('action create? ', isCreate)
+    if (isCreate) {
+      commit(CREATE_CONTACT)
+    } else {
+      commit(EDIT_CONTACT)
+    }
 
     // перед отправкой удаляю пустые поля чтобы не было ошибок на беке
     Object.keys(data).map((item) => {
@@ -288,135 +325,213 @@ const actions = {
         delete data[item]
       }
     })
-    console.log('del keys', data)
-    // дальше нужно забрать что относится к созданию ролей контакта
-    let roles = data?.roles || undefined
-    delete data.roles
-    // теперь собрать обязательные для создания контакта данные
-    const contactFor = {
-      id: clientId,
-      name: clientName
-    }
-    console.log('contactFor', contactFor)
 
     // если у контакта есть право подписи
     // проверить можно по одному из обязательных полей для этой роли
-    let canSignRole = !!data.registrationDocument
+    let canSignRole = find(data.roles, (o) => { return o.id === CREATE_CONTACT_ROLE_ID })
+    let roleCreate = []
     let roleCreateRequests = []
-    console.log('canSignRole? ', canSignRole)
+    let roleDeleteRequests = []
+    let roleDelete = []
+    let existRoles = rootGetters['user/getContactById'](data.id)?.roles || []
+
     data.clientId = clientId
     // если редактирование контакта
     if (!isCreate) {
-      const existContact = rootGetters['user/getContactById'](data.id)
-      const existRoles = existContact.roles
-      // if (existRoles) по идее временно, т.к. сейчас есть контакты созданные с ошибками
-      if (existRoles) {
-        // роли которые надо удалить
-        let roleDelete = existRoles.filter((item) => {
-          return !find(roles, (o) => { return o.id === item.role.id })
-        })
-        // роли которые надо создать
-        roles = roles.filter((item) => {
-          return !find(existRoles, (o) => { return o.role.id === item.id })
-        })
+      // роли которые надо удалить
+      roleDelete = existRoles.filter((item) => {
+        return !find(data?.roles, (o) => { return o.id === item.role.id })
+      })
+      // роли которые надо создать
+      roleCreate = data?.roles?.filter((item) => {
+        return !find(existRoles, (o) => { return o.role.id === item.id })
+      })
 
-        console.log('roleDelete', roleDelete)
-        console.log('roleCreate', roles)
+      // если удаляется роль ЛПР нужно очистить связанные с ней данные
+      if (find(roleDelete, (o) => { return o.role.id === CREATE_CONTACT_ROLE_ID })) {
+        data.firstNameGenitive = ''
+        data.secondNameGenitive = ''
+        data.lastNameGenitive = ''
+        data.jobTitleGenitive = ''
+        data.registrationDocument = ''
       }
     } else {
+      roleCreate = data.roles ? [...data.roles] : roleCreate
       if (canSignRole) {
         roleCreateRequests.push(dispatch('createContactRole', { api: api }))
       }
     }
+    delete data?.roles
 
     try {
       const contactResponse = await api
         .setWithCredentials()
         .setType(TYPE_JSON)
+        .setBranch('fix-delete')
         .setData(data)
         .query(url)
-      console.log('contactResponse', contactResponse)
 
       if (contactResponse.id) {
         const contact = {
           id: contactResponse.id,
           name: contactResponse.name
         }
-
+        commit(UPDATE_CREATE_CONTACT_STATE, { id: contact.id })
         commit(CREATE_CONTACT_SUCCESS, contact)
-        // создание/изменение ролей контакта
-        if (roles) {
-          for (let i = 0; i < roles.length; i++) {
-            roleCreateRequests.push(dispatch('createContactRole', { api: api, role: roles[i] }))
+
+        // создание/изменение набора ролей контакта
+        if (roleCreate.length) {
+          for (let i = 0; i < roleCreate.length; i++) {
+            roleCreateRequests.push(dispatch('createContactRole', { api: api, role: roleCreate[i] }))
           }
         }
 
-        const roleResponse = await Promise.all(roleCreateRequests)
-        console.log('roleResponse', roleResponse)
+        // удаление ролей
+        if (roleDelete.length) {
+          for (let i = 0; i < roleDelete.length; i++) {
+            roleDeleteRequests.push(dispatch('deleteContactRole', { api: api, roleId: roleDelete[i].id }))
+          }
+        }
+
+        const roleCreateResponse = await Promise.all(roleCreateRequests)
+        const roleDeleteResponse = await Promise.all(roleDeleteRequests)
         // т.к. в ТЗ не описан ответ API при ошибке создания роли пока так
-        const checkRoleCreateError = roleResponse.filter((item) => {
+        const checkRoleCreateError = roleCreateResponse.filter((item) => {
           return !item.role
         })
 
         if (!checkRoleCreateError.length) {
-          contactResponse.roles = roleResponse
           if (isCreate) {
+            contactResponse.roles = roleCreateResponse
             commit(RESET_CURRENT_CONTACTS)
+            // добавить в список контактов на клиенте, без запроса client-info
+            commit('user/ADD_CLIENT_CONTACTS_STORE', contactResponse, { root: true })
+          } else {
+            if (roleDeleteResponse.length) {
+              existRoles = existRoles.filter((item) => {
+                return !find(roleDelete, function (v) {
+                  return item.id === v.id
+                })
+              })
+              contactResponse.roles = [...existRoles]
+            }
+            if (roleCreateResponse.length) {
+              contactResponse.roles = [...roleCreateResponse, ...existRoles]
+            }
+            // обновить в списке контактов на клиенте, без запроса client-info
+            setTimeout(() => {
+              commit(UPDATE_CREATE_CONTACT_STATE, { id: null })
+              dispatch('user/REPLACE_CLIENT_CONTACTS_STORE', contactResponse, { root: true })
+            }, CONTACT_CREATE_MESSAGE_TIMEOUT)
           }
-          // обновить список контактов на клиенте, без запроса client-info
-          commit('user/ADD_CLIENT_CONTACTS_STORE', contactResponse, { root: true })
         } else {
-          commit(CREATE_CONTACT_ERROR, `Ошибка создания роли контакта: ${contactResponse?.message?.toString()}`)
+          commit(UPDATE_CREATE_CONTACT_STATE, {
+            isFetching: false,
+            isFetched: false,
+            error: `Ошибка создания роли контакта`
+          })
           return false
         }
         return true
       } else {
-        commit(CREATE_CONTACT_ERROR, `Ошибка сохранения контакта: ${contactResponse?.message?.toString()}`)
+        commit(UPDATE_CREATE_CONTACT_STATE, {
+          isFetching: false,
+          isFetched: false,
+          error: `Ошибка создания роли контакта`
+        })
         return false
       }
     } catch (e) {
-      console.log(e)
-      commit(CREATE_CONTACT_ERROR, 'Сервер не отвечает. Попробуйте обновить страницу.')
+      commit(UPDATE_CREATE_CONTACT_STATE, {
+        isFetching: false,
+        isFetched: false,
+        error: `Ошибка создания контакта. Попробуйте позже`
+      })
+    } finally {
+      commit(UPDATE_CREATE_CONTACT_STATE, {
+        isFetching: false,
+        isFetched: true
+      })
     }
   },
 
-  deleteContact: async ({ state, dispatch, rootGetters }, { api }) => {
-    const toms = rootGetters['auth/getTOMS']
+  deleteContact: async ({ state, commit, dispatch, rootGetters }, { api }) => {
+    commit(UPDATE_DELETE_CONTACT_STATE, {
+      isFetching: true,
+      isFetched: false,
+      error: null
+    })
     const { id, roles } = state.currentClientContacts.content
-    console.log('delete for', id, roles)
+    const toms = rootGetters['auth/getTOMS']
+    const contact = rootGetters['user/getContactById'](id)
+    const contactRoles = contact?.roles || []
     // удаление ролей
-    /* let roleDeleteRequests = []
-    for (let i = 0; i < roles.length; i++) {
-      roleDeleteRequests.push(dispatch('deleteContactRole', { api: api, roleId: roles[i].id }))
+    let roleDeleteRequests = []
+    // т.к. нужен id роли контакта, а не id роли
+    for (let i = 0; i < contactRoles.length; i++) {
+      let item = contactRoles[i]
+      if (roles[i] && item.role.id === roles[i].id) {
+        roleDeleteRequests.push(dispatch('deleteContactRole', { api: api, roleId: item.id }))
+      }
     }
-    console.log(444, roleDeleteRequests)
-    const roleDeleteResponse = await Promise.all(roleDeleteRequests)
-    console.log(555, roleDeleteResponse) */
 
+    const roleDeleteResponse = await Promise.all(roleDeleteRequests)
+    if (roleDeleteResponse.includes(false)) {
+      commit(UPDATE_DELETE_CONTACT_STATE, {
+        isFetching: false,
+        isFetched: false,
+        error: `Ошибка удаления роли контакта`,
+        id: null
+      })
+      return false
+    }
     // удаление контакта
     try {
       let url = '/customer/account/delete-contact'
-      const result = await api
+      const deleteResponse = await api
         .setWithCredentials()
         .setType(TYPE_JSON)
-        .setData({ id: id, clientId: toms })
+        .setBranch('fix-delete')
+        .setData({
+          id: id,
+          clientId: toms
+        })
         .query(url)
-
-      console.log(777, result)
-      return result
+      // TODO: по ТЗ должно возвращаться true, сейчас в ветке 'fix-delete' - null;
+      //  уточнить, поправить условие если надо
+      if (deleteResponse === null) {
+        commit(UPDATE_DELETE_CONTACT_STATE, { id: id })
+        // удалить в списке контактов на клиенте, без запроса client-info
+        setTimeout(() => {
+          dispatch('user/DELETE_CLIENT_CONTACTS_STORE', id, { root: true })
+          commit(UPDATE_DELETE_CONTACT_STATE, {
+            isFetching: false,
+            isFetched: false,
+            id: null
+          })
+        }, CONTACT_DELETE_MESSAGE_TIMEOUT)
+      } else {
+        commit(UPDATE_DELETE_CONTACT_STATE, { error: 'Ошибка удаления контакта. Попробуйте позже' })
+      }
     } catch (e) {
-      console.log(e)
+      commit(UPDATE_DELETE_CONTACT_STATE, { error: 'Ошибка удаления контакта. Попробуйте позже' })
+    } finally {
+      commit(UPDATE_DELETE_CONTACT_STATE, {
+        isFetching: false,
+        isFetched: true
+      })
     }
   },
 
-  deleteContactRole: async ({ commit }, { api, roleId }) => {
-    let url = `/customerManagement/contactRole/` + roleId
+  deleteContactRole: async ({ commit, rootGetters }, { api, roleId }) => {
+    const toms = rootGetters['auth/getTOMS']
+    let url = '/customer/contact-role/delete'
 
     try {
       const result = await api
         .setWithCredentials()
-        // .setData({ id: roleId })
-        .setMethod('DELETE')
+        .setType(TYPE_JSON)
+        .setData({ id: roleId, clientId: toms })
         .query(url)
 
       if (result) {
@@ -432,9 +547,7 @@ const actions = {
 
   setCurrentClientContacts: ({ commit, rootGetters }, { contactId }) => {
     const contact = rootGetters['user/getContactById'](contactId)
-    console.log(contact)
     const currentContact = makeCurrentClientContacts(contact)
-    console.log(currentContact)
     commit(SET_CURRENT_CONTACTS, currentContact)
   },
 
@@ -496,6 +609,7 @@ const actions = {
       return false
     }
   },
+  // не ЛПР
   editContact: async ({ commit, dispatch, rootState, rootGetters }, { api, data }) => {
     commit(EDIT_CONTACT)
 
@@ -531,6 +645,7 @@ const actions = {
       return false
     }
   },
+
   resetProfileContacts: ({ commit }) => {
     commit(CONTACTS_RESET)
   },
@@ -538,7 +653,7 @@ const actions = {
   searchProfileContacts: ({ commit }, { query }) => {
     commit(CONTACTS_SEARCH, query)
   },
-  // не ЛПР редактирование контактов
+  // не ЛПР редактирование своего контакта
   getCurrentClientContacts: ({ commit, rootGetters }) => {
     const contactData = rootGetters['user/getPrimaryContact']
     const parsedData = {
@@ -596,7 +711,6 @@ const actions = {
 
       commit(CONTACTS_REMOVE_ERROR, `Ошибка удаления контакта: ${output.message.toString()}`)
     } catch (e) {
-      console.warn(e)
       commit(CONTACTS_REMOVE_ERROR, 'Не удалось удалить контакт')
     }
   },
@@ -633,16 +747,16 @@ const actions = {
    * @return {Promise<boolean>}
    */
 
-  createContactRole: async ({ commit, dispatch, rootState, rootGetters }, { api, role = null }) => {
+  createContactRole: async ({ commit, dispatch, state, rootGetters }, { api, role = null }) => {
     commit(CREATE_CONTACT_ROLE)
 
     const url = '/customer/contact-role/post'
-    const contact = rootState['contacts'].createdContact.content
+    const { id: contactId, name: contactName } = state.createdContact.content
     const { toms: clientId, name: clientName } = rootGetters['auth/user']
     const roleCreateRequire = {
       contact: {
-        id: contact.id,
-        name: contact.name
+        id: contactId,
+        name: contactName
       },
       contactFor: {
         id: clientId,
@@ -659,8 +773,6 @@ const actions = {
     }
 
     role = Object.assign({ role: role }, roleCreateRequire)
-
-    console.log('add role', role)
 
     try {
       const result = await api
@@ -796,6 +908,12 @@ const mutations = {
   },
   [RESET_CURRENT_CONTACTS]: (state) => {
     state.currentClientContacts.content = Object.assign({}, CURRENT_CLIENT_CONTACTS)
+  },
+  [UPDATE_DELETE_CONTACT_STATE]: (state, payload) => {
+    state.deleteContactState = Object.assign(state.deleteContactState, payload)
+  },
+  [UPDATE_CREATE_CONTACT_STATE]: (state, payload) => {
+    state.createContactState = Object.assign(state.createContactState, payload)
   }
 }
 

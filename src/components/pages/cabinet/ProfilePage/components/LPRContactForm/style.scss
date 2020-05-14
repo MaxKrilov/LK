@@ -4,6 +4,7 @@
   &--is-mobile{
     width: 100%;
     height: 100%;
+    padding: 0;
     position: fixed;
     top: 0;
     left: 0;
@@ -51,10 +52,19 @@
     @include media-query((
       padding: (
         sm: 20px 24px 16px,
-        md: 20px 16px 30px,
-        lg: 27px 30px 17px
+        md: 20px 0 30px,
+        lg: 27px 0 17px
       )
     ));
+
+    // редактирование контакта внутри списка контактов
+    @at-root .contacts-list &{
+      padding-top: 0;
+      @include media-query((
+        padding-right: (lg: 0),
+        padding-left: (lg: 0)
+      ));
+    }
   }
 
   &__method{
@@ -96,6 +106,14 @@
     }
   }
 
+  &__readonly{
+
+    &__label{
+      @extend %caption2;
+      margin-bottom: $padding-x1;
+    }
+  }
+
   &__error{
     margin-top: $padding-x4;
     color: map_get($red, 'base');
@@ -118,6 +136,12 @@
 
         @include media-query((
           margin-bottom: (md: 0)
+        ));
+      }
+
+      &:nth-child(n + 3) {
+        @include media-query((
+          margin-top: (md: $padding-x4, lg: 0)
         ));
       }
     }

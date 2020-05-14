@@ -1,8 +1,11 @@
-div(:class="`${pre}`")
+div(:class="[`${pre}`, stateClasses]")
   profile-table(
     :columns="listColumns"
     :tableData="contactsList",
-    :showAmount="showListAmount"
+    :dataItemId="'id'"
+    :expandedId="expandedId"
+    :actionRowId="actionRowId"
+    :showItemsNum="isMobile || isMD ? contactsNum : null"
     @clickRow="handleExpandContact($event)"
   )
     template(v-slot:cell="{ item, dataKey, index }")
@@ -10,11 +13,13 @@ div(:class="`${pre}`")
         :item="item"
         :dataKey="dataKey"
         :expandedId="expandedId"
+        :primaryContactId="getPrimaryContact.id"
+        @mobileEditContact="handleMobileEditContact"
         )
 
     template(v-slot:row="{ item }")
-      er-slide-up-down(:active="expandedId === item.id")
+      er-slide-up-down(:active="expandedId === item.id && isOpenEditContact")
         lpr-contact-form(
-          :isOpen="expandedId === item.id"
+          :isOpen="expandedId === item.id && isOpenEditContact"
           :primaryContactId="getPrimaryContact.id"
           @addContactClose="handleExpandContact")
