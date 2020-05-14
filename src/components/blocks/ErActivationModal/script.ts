@@ -59,6 +59,7 @@ export default class ErActivationModal extends Vue {
 
   closeDialog () {
     this.internalValue = false
+    this.$emit('close')
   }
 
   confirmDialog () {

@@ -490,7 +490,7 @@ const actions = {
         .query('/billing/promise/index')
       // commit(GET_PROMISED_PAYMENT_INFO, result)
     } catch (error) {
-      commit(ERROR_MODAL, true, { root: true })
+      // commit(ERROR_MODAL, true, { root: true })
       // todo Логирование
     } finally {
       commit('loading/loadingPromisedPayment', false, { root: true })

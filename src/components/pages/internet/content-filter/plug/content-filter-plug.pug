@@ -1,6 +1,6 @@
 div
-  div.main-content.main-content--padding.main-content--top-menu-fix
-    er-page-header(title="Подключить контент-фильтрацию")
+  div
+    ListPointComponent(v-model="activePoint" :list="points")
     div(:class="`${pre}__title-wrapper`")
       h3.title Выберите тариф
       div(:class="`${pre}__filters-wrapper`")
@@ -14,7 +14,7 @@ div
           span.text Схожие параметры
 
   template(v-if="detail")
-    div(:class="[`${pre}__tariffs-detail`, 'main-content']")
+    div(:class="[`${pre}__tariffs-detail`]")
       div(v-for="item in transformTariffs" :class="`${pre}__row`")
         div(:class="`${pre}__row-title`")
           | {{ item.propertyName }}
@@ -33,60 +33,86 @@ div
           :class="[`${pre}__button`, `${pre}__cell` ]"
           @mouseover="mouseover(index)"
           @mouseleave="mouseleave(index)")
-          //- | {{ cell.id }}
-          er-button(color="blue") Выбрать
+          er-button(
+            color="blue"
+            @click="createOrder(cell.chars, cell.price)"
+            :disabled="creatingOrder"
+            :loading="creatingOrder && selectedTariff.chars === cell.chars"
+            ) Выбрать
       div(:class="[`${pre}__row`]" ref="sbuttons")
         div(v-for="(cell, index) in tariffs"
           :class="[{active: index === hoveredColumn}, `${pre}__button`, `${pre}__cell` ]"
           @mouseover="mouseover(index)"
           @mouseleave="mouseleave(index)")
-          //- | {{ cell.id }}
-          er-button(color="blue") Выбрать
+          er-button(
+            color="blue"
+            @click="createOrder(cell.chars, cell.price)"
+            :disabled="creatingOrder"
+            :loading="creatingOrder && selectedTariff.chars === cell.chars"
+            ) Выбрать
+            
 
 
 
-  div.main-content.main-content--padding
-    template(v-if="!detail")
-      div(:class="`${pre}__tariffs`")
-        div(:class="`${pre}__card-wrapper`")
-          er-card(:class="`${pre}__card`")
-            div(:class="`${pre}__head`")
-              div(:class="`${pre}__caption`") Тариф:
-              div(:class="`${pre}__tariff-name`") Школа
-              er-icon(name="cloud_telephone")
-            div(:class="`${pre}__card-content`")
-              div(:class="`${pre}__description`") Тариф для учебных заведений и школ. Одним из преимуществ «Поддержка белого списка для школ», согласно которому будет открыт доступ только до ресурсов образовательных учреждений. Сайты школ, ВУЗов, библиотек и т.д.
-              div
-                div(:class="`${pre}__caption2`") Абонентская плата:
-                div(:class="`${pre}__price`")
-                  span.h3 450 &nbsp;
-                  span(:class="`${pre}__caption`") ₽/мес. с НДС
-                er-button(:color="'blue'") Выбрать
-        div(:class="`${pre}__card-wrapper`")
-          er-card(:class="`${pre}__card`")
-            div(:class="`${pre}__head`")
-              div(:class="`${pre}__caption`") Тариф:
-              div(:class="`${pre}__tariff-name`") Бизнес
-              er-icon(name="cloud_telephone")
-            div(:class="`${pre}__card-content`")
-              div(:class="`${pre}__description`") Стандартный Тариф для бизнеса. Позволяет сделать то и другое и может ещё и третье
-              div
-                div(:class="`${pre}__caption2`") Абонентская плата:
-                div(:class="`${pre}__price`")
-                  span.h3 450 &nbsp;
-                  span(:class="`${pre}__caption`") ₽/мес. с НДС
-                er-button(:color="'blue'") Выбрать
-        div(:class="`${pre}__card-wrapper`")
-          er-card(:class="`${pre}__card`")
-            div(:class="`${pre}__head`")
-              div(:class="`${pre}__caption`") Тариф:
-              div(:class="`${pre}__tariff-name`") Бизнес+
-              er-icon(name="cloud_telephone")
-            div(:class="`${pre}__card-content`")
-              div(:class="`${pre}__description`") Расширенный Тариф для бизнеса. Позволяет сделать то и другое и может ещё и третье четвертое и пятое
-              div
-                div(:class="`${pre}__caption2`") Абонентская плата:
-                div(:class="`${pre}__price`")
-                  span.h3 450 &nbsp;
-                  span(:class="`${pre}__caption`") ₽/мес. с НДС
-                er-button(:color="'blue'") Выбрать
+  template(v-if="!detail")
+    div(:class="`${pre}__tariffs`")
+      div(:class="`${pre}__card-wrapper`" v-for="item in tariffs")
+        er-card(:class="`${pre}__card`"  )
+          div(:class="`${pre}__head`")
+            div(:class="`${pre}__caption`") Тариф:
+            div(:class="`${pre}__tariff-name`") {{ item.name }}
+            er-icon(name="cloud_telephone")
+          div(:class="`${pre}__card-content`")
+            div(:class="`${pre}__description`") {{ item.description }}
+            div
+              div(:class="`${pre}__caption2`") Абонентская плата:
+              div(:class="`${pre}__price`")
+                span.h3 {{item.price}} &nbsp;
+                span(:class="`${pre}__caption`") ₽/мес. с НДС
+              er-button(
+                :color="'blue'"
+                @click="createOrder(item.chars, item.price)"
+                :disabled="creatingOrder"
+                :loading="creatingOrder && selectedTariff.chars === item.chars"
+                ) Выбрать
+
+  er-activation-modal(
+    type="question"
+    v-model="isShowModal"
+    title="Вы уверены, что хотите подключить"
+    cancel-button-text="Отменить"
+    actionButtonText="Подключить"
+    :isLoadingConfirm="sendingOrder"
+    :disabledActionButton="!offer"
+    @confirm="sendOrder"
+    @close="cancelOrder"
+  )
+    template(slot="description")
+      div(:class="`${pre}__modal__caption`") По адресу: {{ activePoint.fulladdress }}
+      div(:class="`${pre}__modal__text`") <b>Контент-фильтрацию</b> по тарифу <b>{{ selectedTariffName }}</b>, стоимостью <b>{{ selectedPrice }}</b> ₽/месяц?
+      div(:class="`${pre}__modal__caption`") После смены тарифа, вам нужно перезагрузить страницу и настроить фильтрацию
+      er-toggle(view="radio-check" v-model="offer") 
+        template(slot="label")
+          div Я ознакомился и принял условия оферты
+
+  er-activation-modal(
+    type="error"
+    title="Произошла ошибка"
+    v-model="isShowErrorModal"
+    :isShowActionButton="false"
+    cancel-button-text="Закрыть"
+  )
+    template(slot="description")
+      div Свяжитесь с менеджером
+ 
+  er-activation-modal(
+    title="Заказ успешно сформирован"
+    type="success"
+    :isShowCancelButton="false"
+    actionButtonText="Спасибо"
+    @confirm="isShowSuccessModal = false"
+    v-model="isShowSuccessModal"
+  )
+    template(slot="description")
+     div Благодарим Вас за заказ! Подробности выполнения можно отследить по номеру заказа: 567789
+

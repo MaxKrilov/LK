@@ -1,7 +1,7 @@
 import PnS from './productnservices'
 
 const TELEPHONY_PRODUCT_TYPE = 'Телефония'
-const VIRTUAL_PHONE_NUMBER_CODE = 'PHNUMBVN'
+// const VIRTUAL_PHONE_NUMBER_CODE = 'PHNUMBVN'
 
 const SET_TELEPHONY_POINTS = 'SET_TELEPHONY_POINTS'
 

@@ -89,6 +89,22 @@ const actions = {
         })
     })
   },
+  getContentFilterLink (context: ActionContext<any, any>, { login }: { login: string }) {
+    return new Promise((resolve, reject) => {
+      api()
+        .setWithCredentials()
+        .setData({
+          login
+        })
+        .setBranch('contentfilter')
+        .query('/internet/contentfilter-new/urlsettings')
+        .then(response => resolve(response))
+        .catch((err) => {
+          console.error(err)
+          reject(err)
+        })
+    })
+  },
   getFileStatistic (context: ActionContext<any, any>, { fromDate, toDate, productInstance }: { fromDate: string, toDate: string, productInstance: string }) {
     const billingAccountId = context.rootGetters['user/getActiveBillingAccount']
     const { toms: clientId } = context.rootGetters['auth/user']

@@ -56,7 +56,7 @@ const MenuItemList: MenuItem[] = [
       },
       {
         name: 'Контент-фильтрация',
-        url: '/lk/internet/content-filter/plug'
+        url: '/lk/internet/content-filter'
       },
       {
         name: 'Скорость',

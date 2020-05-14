@@ -13,7 +13,7 @@
             .icon(:class="[ type ]")
               er-icon(:name="getIconByType")
             .close
-              button
+              button(@click="closeDialog")
                 er-icon(name="close")
           .er-activation-modal__title.mb-8
             | {{ title }}
