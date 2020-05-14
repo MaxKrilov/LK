@@ -3,7 +3,8 @@ export default [
     label: `Сотрудник`,
     dataKey: 'firstName',
     display: true,
-    disableSort: false
+    disableSort: false,
+    showAmount: true
   }
 ]
 

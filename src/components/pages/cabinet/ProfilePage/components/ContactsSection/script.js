@@ -1,10 +1,11 @@
-import { mapGetters, mapActions } from 'vuex'
+import { mapGetters, mapActions, mapState } from 'vuex'
 import ResponsiveMixin from '@/mixins/ResponsiveMixin'
 import LPRContactForm from '../LPRContactForm'
 import ContactsList from './components/ContactsList'
 import { cloneDeep } from 'lodash'
+import { getNoun } from '@/functions/helper'
 
-const PAG_VISIBLE_ITEMS = 3
+const PAG_VISIBLE_ITEMS = 10
 
 export default {
   name: 'contacts-section',
@@ -20,13 +21,18 @@ export default {
       isOpenTitleHint: false,
       isOpenTitlePopupHint: false,
       isEditContactOpen: false,
-      hasError: false,
+      hasError: {
+        state: false,
+        message: null
+      },
       pagCurrentPage: 1,
-      contactsList: []
+      contactsList: [],
+      searchQuery: ''
     }
   },
   computed: {
     ...mapGetters('contacts', ['filteredContactsByName', 'getCreatedContactState']),
+    ...mapState('contacts', ['deleteContactState']),
     isMobile () {
       return this.isXS || this.isSM
     },
@@ -37,10 +43,18 @@ export default {
       const start = (this.pagCurrentPage - 1) * PAG_VISIBLE_ITEMS
       const end = start + PAG_VISIBLE_ITEMS
       return this.contactsList.slice(start, end)
+    },
+    showContactsTotalNum () {
+      const num = this.contactsList.length
+      return `Всего: ${num} ${getNoun(num, 'контакт', 'контакты', 'контактов')}`
     }
   },
   methods: {
-    ...mapActions('contacts', ['resetCurrentClientContacts', 'resetCreatedContactState']),
+    ...mapActions('contacts', [
+      'resetCurrentClientContacts',
+      'resetCreatedContactState',
+      'searchContactsByName'
+    ]),
     handleEditContactOpen (e) {
       this.isEditContactOpen = e === 'open'
       this.isOpenContactForm = false
@@ -53,24 +67,44 @@ export default {
       this.isOpenTitlePopupHint = state === 'open'
     },
     handleErrorPopup (state = 'open') {
-      this.hasError = state === 'open'
-      if (!this.hasError) {
-        this.resetCreatedContactState()
+      this.hasError.state = state === 'open'
+      if (!this.hasError.state) {
+        this.hasError.message = null
+      }
+    },
+    async handleSearch (query) {
+      if (query && query.length >= 3) {
+        let searchResult = await this.searchContactsByName(query)
+        if (searchResult.length) {
+          this.contactsList = searchResult
+        }
+      } else {
+        this.contactsList = await this.searchContactsByName()
       }
     }
   },
   watch: {
     filteredContactsByName: {
       immediate: true,
-      handler (val, prevVal) {
-        if (val && val !== prevVal) {
+      handler (val) {
+        if (val) {
           this.contactsList = cloneDeep(val)
         }
       }
     },
     getCreatedContactState (val) {
       if (val.error) {
-        this.hasError = true
+        this.hasError.state = true
+        this.hasError.message = val.error
+      }
+    },
+    deleteContactState: {
+      deep: true,
+      handler (val) {
+        if (val.error) {
+          this.hasError.state = true
+          this.hasError.message = val.error
+        }
       }
     }
   }

@@ -31,7 +31,19 @@ const ProfileTableProp = Vue.extend({
       type: Boolean,
       default: false
     },
+    showItemsNum: {
+      type: [String, Number],
+      default: null
+    },
     expandedId: {
+      type: String,
+      default: null
+    },
+    dataItemId: {
+      type: String,
+      default: 'userPostId'
+    },
+    actionRowId: {
       type: String,
       default: null
     }
@@ -169,7 +181,11 @@ export default class ProfileTable extends ProfileTableProp {
           key={index}
         >
           {label}
-          {showAmount && ` (${this.tableLength})`}
+          {showAmount && this.tableLength
+            ? this.showItemsNum
+              ? ` (${this.showItemsNum})`
+              : ` (${this.tableLength})`
+            : null}
           {!disableSort && (
             <er-button class={[`${this.pre}__filter`, this.setFilterActiveStyle(dataKey)]}>
               <er-icon
@@ -192,8 +208,12 @@ export default class ProfileTable extends ProfileTableProp {
           </div>
           <div class={`${this.pre}__content`}>
             {this.tableLength > 0 && this.sortedData.map((item: any, key: any) => (
-              <div class={`${this.pre}__content__row-wrapper ${this.expandedId === item.userPostId ? `${this.pre}__content__row-wrapper--active` : ''}`}
-                key={key}>
+              <div class={`${this.pre}__content__row-wrapper ${this.expandedId === item[this.dataItemId]
+                ? `${this.pre}__content__row-wrapper--active`
+                : ''} ${this.actionRowId === item.id
+                ? `${this.pre}__content__row-wrapper--action`
+                : ''}`}
+              key={key}>
                 <div
                   class={`${this.pre}__content__row`}
                   onClick={() => this.handleClickRow(item)}

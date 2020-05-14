@@ -1,0 +1,70 @@
+.item-state{
+  padding: $padding-x4 $padding-x4 0 0;
+  display: flex;
+  flex: 1 1 100%;
+  justify-content: flex-end;
+  box-sizing: border-box;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 30%;
+  right: 0;
+  z-index: 2;
+
+  @include media-query((
+    align-items: (
+      md: center
+    ),
+    justify-content: (
+      md: flex-start
+    ),
+    padding: (
+      md: 0
+    )
+  ));
+
+  &--change {
+    color: map_get($green, 'base');
+
+    @include media-query((
+      background: (
+        md: map_get($green, 'other-4') !important
+      )
+    ));
+  }
+
+  &--delete {
+    color: map_get($red, 'base');
+
+    @include media-query((
+      background: (
+        md: map_get($red, 'other-2') !important
+      )
+    ));
+  }
+
+  &__icon{
+    width: 14px;
+    height: 14px;
+    margin-top: -1px;
+    margin-right: $padding-x1;
+
+    svg{
+      width: inherit !important;
+      height: inherit !important;
+    }
+
+    @include media-query((
+      width: (
+        md: 24px
+      ),
+      height: (
+        md: 24px
+      )
+    ));
+  }
+
+  &__message{
+    line-height: 1;
+  }
+}

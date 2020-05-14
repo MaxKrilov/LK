@@ -16,12 +16,16 @@
   }
   &__form {
     box-sizing: border-box;
+    position: absolute;
+    width: 95px;
+    display: block;
+    margin-right: 30px;
+    top: 5px;
     @include media-query((
-      position: (xs: absolute, md: relative),
-      width: (xs: 95px, sm: 210px, md: 264px),
-      display: (xs: block, lg: none),
-      margin-right: (xs: 30px),
-      top: (xs: 5px, md: 2px)
+      position: (md: relative),
+      width: (sm: 210px, md: 264px),
+      display: (lg: none),
+      top: (md: 2px)
     ));
     right: 0;
     z-index: map_get($z-index, 'search-field');
@@ -29,17 +33,16 @@
       transition: width .2s cubic-bezier(0.000, 0.795, 0.000, 1.000), right .05s ease;
     }
     &--active {
+      right: 5px;
+      width: calc(100% - 67px);
       @include media-query((
-        right: (xs: 5px, sm: 15px, md: 0),
-        width: (xs: calc(100% - 67px), sm: 57%)
+        right: (sm: 15px, md: 0),
+        width: (sm: 57%)
       ));
       & > .er-text-field > .er-input__control > .er-input__slot {
+        border: 1px solid map_get($yellow, 'base') !important;
         @include media-query((
-          border: (
-            xs: 1px solid map_get($yellow, 'base') !important,
-            lg: none,
-            xl: none
-          )
+          border: (lg: none)
         ));
       }
     }
@@ -56,31 +59,35 @@
       }
       &.er-text-field > .er-input__control > .er-input__slot {
         label {
+          top: -1px;
           @include media-query((
-            top: (xs: -1px, md: 0)
+            top: (md: 0)
           ))
         }
+        border: 0;
+        min-height: 32px;
         @include media-query((
           border: (
-            xs: none,
             md: 1px solid rgba(map_get($shades, 'black'), 0.2)
           ),
-          min-height: (xs: 32px, sm: 34px, md: 40px)
+          min-height: (sm: 34px, md: 40px)
         ));
         .main-profile-page & {
-          @include media-query((
-            min-height: (xs: 40px)
-          ));
+          min-height: 40px;
         }
         margin-bottom: 0;
         & .er-input__append-inner {
+          margin-right: -10px;
           @include media-query((
-            margin-right: (xs: -10px, sm: 0, md: -10px)
+            margin-right: (sm: 0, md: -10px)
           ));
         }
         & input {
           @include media-query((
-            font: (sm: map_get($text, 'xs'), md: map_get($text, 'small'))
+            font: (
+              sm: map_get($text, 'xs'),
+              md: map_get($text, 'small')
+            )
           ));
         }
       }

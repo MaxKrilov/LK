@@ -1,0 +1,12 @@
+div(:class="[`${pre}`, `${pre}--${state}`]" :style="{ left: styleLeft }")
+  er-icon(
+    v-if="state === 'change'"
+    :class="`${pre}__icon`"
+    :name="changeIco"
+    )
+  er-icon(
+    v-if="state === 'delete'"
+    :class="`${pre}__icon`"
+    :name="deleteIco"
+    )
+  p(:class="`${pre}__message`") {{ message }}

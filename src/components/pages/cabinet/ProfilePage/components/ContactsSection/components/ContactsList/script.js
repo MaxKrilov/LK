@@ -1,4 +1,4 @@
-import { mapActions, mapGetters } from 'vuex'
+import { mapActions, mapGetters, mapState } from 'vuex'
 import ProfileTable from '@/components/pages/cabinet/ProfilePage/components/ProfileTable/'
 import ResponsiveMixin from '@/mixins/ResponsiveMixin'
 import ContactsListItem from './components/Item'
@@ -12,6 +12,10 @@ export default {
     contactsList: {
       type: Array,
       default: () => ([])
+    },
+    contactsNum: {
+      type: [String, Number],
+      default: null
     }
   },
   components: {
@@ -21,29 +25,45 @@ export default {
   },
   data: () => ({
     pre: 'contacts-list',
-    expandedId: null
+    expandedId: null,
+    isMobileEditContactOpen: false
   }),
   computed: {
     ...mapGetters('user', ['getPrimaryContact']),
+    ...mapState('contacts', ['deleteContactState', 'createContactState']),
+    stateClasses () {
+      return {
+        [`${this.pre}--deleted`]: this.deleteContactState.isFetched,
+        [`${this.pre}--changed`]: this.createContactState.isFetched
+      }
+    },
+    actionRowId () {
+      return this.createContactState.id || this.deleteContactState.id
+    },
     isMobile () {
       return this.isXS || this.isSM
     },
+    isOpenEditContact () {
+      return !this.isMobile || this.isMobileEditContactOpen
+    },
     listColumns () {
+      columns[0].showAmount = true
       let result = columns
       if (this.isMD) {
         result = [...columns, ...tablet]
       }
       if (this.isLG) {
+        columns[0].showAmount = false
         result = [...columns, ...tablet, ...desktop]
       }
       return result
-    },
-    showListAmount () {
-      return this.isLG
     }
   },
   methods: {
     ...mapActions('contacts', ['setCurrentClientContacts']),
+    handleMobileEditContact () {
+      this.isMobileEditContactOpen = true
+    },
     handleExpandContact (contactId) {
       if (contactId) {
         const { id } = contactId.item
@@ -52,8 +72,19 @@ export default {
         const isExpand = this.expandedId ? 'open' : 'close'
         this.$emit('editContactOpen', isExpand)
       } else {
+        this.isMobileEditContactOpen = false
         this.expandedId = null
         this.$emit('editContactOpen', 'close')
+      }
+    }
+  },
+  watch: {
+    deleteContactState: {
+      deep: true,
+      handler (val) {
+        if (val.isFetched && !val.error) {
+          this.handleExpandContact()
+        }
       }
     }
   }

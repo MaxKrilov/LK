@@ -63,7 +63,8 @@
           transform: scale(0.85) translateY(-37px);
           @include media-query((
             transform: (
-              md: scale(0.85) translateY(-45px)
+              md: scale(0.85) translateY(-36px),
+              lg: scale(0.85) translateY(-45px)
             )
           ));
         }

@@ -20,11 +20,12 @@ import {
   GET_PAYMENT_INFO_SUCCESS,
   SET_ACTIVE_BILLING_ACCOUNT_NUMBER,
   GET_PROMISED_PAYMENT_INFO, GET_CLIENT_INFO_ERROR,
-  ADD_CLIENT_CONTACTS_STORE
+  ADD_CLIENT_CONTACTS_STORE, REPLACE_CLIENT_CONTACTS_STORE, DELETE_CLIENT_CONTACTS_STORE
 } from '../actions/user'
 import { ERROR_MODAL } from '../actions/variables'
 import { logError } from '@/functions/logging.ts'
 import { eachArray, eachObject } from '../../functions/helper'
+import { findIndex } from 'lodash'
 import {
   isContractDocument,
   isBlankDocument,
@@ -494,6 +495,24 @@ const actions = {
     } finally {
       commit('loading/loadingPromisedPayment', false, { root: true })
     }
+  },
+  /**
+   * Обновление/удаление контакта в clientInfo.contacts
+   * @param state
+   * @param commit
+   * @param payload { Object } - объект контакта
+   */
+  [REPLACE_CLIENT_CONTACTS_STORE]: ({ state, commit }, payload) => {
+    let contacts = [...state.clientInfo?.contacts]
+    const index = findIndex(contacts, function (o) { return o.id === payload.id })
+    contacts.splice(index, 1, payload)
+    commit(REPLACE_CLIENT_CONTACTS_STORE, contacts)
+  },
+  [DELETE_CLIENT_CONTACTS_STORE]: ({ state, commit }, payload) => {
+    let contacts = [...state.clientInfo?.contacts]
+    const index = findIndex(contacts, function (o) { return o.id === payload })
+    contacts.splice(index, 1)
+    commit(REPLACE_CLIENT_CONTACTS_STORE, contacts)
   }
 }
 
@@ -534,6 +553,9 @@ const mutations = {
   },
   [ADD_CLIENT_CONTACTS_STORE]: (state, payload) => {
     state.clientInfo.contacts = [...state.clientInfo.contacts, payload]
+  },
+  [REPLACE_CLIENT_CONTACTS_STORE]: (state, payload) => {
+    state.clientInfo.contacts = [...payload]
   }
 }
 

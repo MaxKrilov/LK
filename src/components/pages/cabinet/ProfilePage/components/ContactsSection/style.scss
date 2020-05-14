@@ -12,16 +12,71 @@
   background: map_get($gray, '9');
   color: rgba(map_get($shades, 'black'), 0.8);
 
+  &__search{
+    .er-input__slot{
+      margin-bottom: 0;
+      border-color: transparent !important;
+
+      @include media-query((
+        border-color: (md: rgba(map_get($shades, 'black'), 0.2) !important)
+      ));
+
+      label{
+        right: $padding-x1;
+        left: auto;
+
+        @include media-query((
+          right: (md: auto),
+          left: (md: 0)
+        ));
+      }
+    }
+
+    width: 55%;
+    position: absolute;
+    top: calc(100% + 16px);
+    right: 0;
+    z-index: 2;
+
+    @include media-query((
+      width: (md: auto),
+      position: (md: static),
+      top: (sm: calc(100% + 17px))
+    ));
+  }
+
+  &__total-num{
+    @extend %caption2;
+    width: 100%;
+    display: block;
+    text-align: right;
+  }
+
   &__header,
   &__footer{
-    padding: 22px 16px 16px;
+    padding: 24px 16px 16px;
     @include media-query((
       padding: (
-        sm: 20px 24px 16px,
-        md: 20px 16px 30px,
-        lg: 27px 30px 17px
+        sm: 24px 24px 16px,
+        md: 24px 24px 30px,
+        lg: 32px 30px 17px
       )
     ));
+  }
+
+  &__header{
+
+    &__aside{
+      display: inline-flex;
+      align-items: flex-end;
+      position: relative;
+
+      @include media-query((
+        align-items: (
+          lg: center
+        )
+      ));
+    }
   }
 
   &__title-wrap{
@@ -113,6 +168,13 @@
 
   &__footer{
     flex-direction: column;
+    padding-top: $padding-x4;
+    @include media-query((
+      padding-top: (
+        md: $padding-x8,
+        lg: $padding-x10
+      )
+    ));
 
     #{$root}__paginator {
       margin-bottom: $padding-x6;

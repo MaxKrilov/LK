@@ -7,6 +7,11 @@ import { CyrName } from '@/functions/declination'
 import ContactMethodsList from './components/ContactMethodsList'
 import UploadFileDialog from './components/UploadFileDialog'
 
+const CAN_SIGN_ROLE = {
+  id: '9142343507913277484',
+  name: 'Лицо, имеющее право подписи'
+}
+
 export default {
   name: 'lpr-contact-form',
   components: {
@@ -30,6 +35,7 @@ export default {
       preSection: 'contact-form-section',
       preInput: 'contact-form-input',
       canSign: false,
+      isCanSignRoleAdd: false,
       formData: {},
       isFormValid: false,
       formErrors: {
@@ -37,6 +43,7 @@ export default {
         save: 'При создании контакта произошла ошибка. Попробуйте сохранить позже.',
         current: null
       },
+      formState: {},
       cyrNameObj: new CyrName(),
       showUploadDialog: false,
       currentValue: {
@@ -51,7 +58,7 @@ export default {
   },
   mounted () {
     this.$store.dispatch('contacts/getRolesDictionary', { api: this.$api }).then((result) => {
-      this.fetchedContactRoles = result
+      this.fetchedContactRoles = result || []
     })
   },
   updated () {
@@ -69,7 +76,7 @@ export default {
     }
   },
   computed: {
-    ...mapState('contacts', ['currentClientContacts']),
+    ...mapState('contacts', ['currentClientContacts', 'createContactState', 'deleteContactState']),
     isNewContact () {
       return !this.currentClientContacts.content?.id
     },
@@ -93,12 +100,18 @@ export default {
     ...mapActions('contacts', ['getRolesDictionary', 'createContact', 'deleteContact']),
     handleClickClose () {
       this.$emit('addContactClose')
+      this.formErrors.current = null
+      this.isCanSignRoleAdd = false
     },
     handleUploadDialog (e) {
       // закрыли не загрузив файл e === 'cancel'
       // файл загружен
       this.canSign = e === 'ok'
+      this.isCanSignRoleAdd = e === 'ok'
       this.showUploadDialog = false
+    },
+    handleRemoveCanSignRole (e) {
+      this.isCanSignRoleAdd = false
     },
     handleBlurFIO (field) {
       if (!this.canSign) {
@@ -141,19 +154,27 @@ export default {
     validateForm () {
       const { formData, formErrors } = this
       formErrors.current = null
+      let checkContactMethods = false
+      let checkCanSignRole = false
+      let checkForm = false
       const { LPRContactForm, contactRoles } = this.$refs
-      this.isFormValid = LPRContactForm.validate()
+
       if (!formData.phones.length && !formData.emails.length) {
         formErrors.current = formErrors.contacts
-        this.isFormValid = false
+      } else {
+        checkContactMethods = true
       }
       // поле Роль контакта надо проверять
       // только если не включено Право подписи
       if (this.canSign) {
         contactRoles.reset()
+        checkCanSignRole = true
       } else {
-        this.isFormValid = contactRoles.validate()
+        checkCanSignRole = contactRoles.validate()
       }
+
+      checkForm = LPRContactForm.validate()
+      this.isFormValid = checkContactMethods && checkCanSignRole && checkForm
 
       return this.isFormValid
     },
@@ -163,14 +184,16 @@ export default {
     handleSaveForm () {
       this.validateForm()
       if (this.isFormValid) {
-        this.createContact({ api: this.$api, data: cloneDeep(this.formData) }).then((result) => {
+        let data = cloneDeep(this.formData)
+        if (this.canSign) {
+          data.roles.push(CAN_SIGN_ROLE)
+        }
+        this.createContact({ api: this.$api, data: data }).then((result) => {
           if (result) {
-            console.log('reset form')
             this.handleClickClose()
           }
         })
       }
-      console.log('save', this.isFormValid)
     },
     handleDeleteContact () {
       this.deleteContact({ api: this.$api })
@@ -200,7 +223,11 @@ export default {
       immediate: true,
       handler (val) {
         if (val) {
-          this.formData = cloneDeep(val.content)
+          let clone = cloneDeep(val)
+          this.formData = clone.content
+          this.canSign = this.formData?.canSign || false
+          delete clone.content
+          this.formState = clone
         }
       }
     },

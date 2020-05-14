@@ -16,12 +16,29 @@ div(:class="`${pre}`")
               div
                 h3(:class="`${pre}__title-hint__title`") Контакты
                 p(:class="`${pre}__title-hint__txt`") Вы&nbsp;можете добавить контакты сотрудников, чтобы они были в&nbsp;курсе работы ваших сервисов в&nbsp;Дом.ru&nbsp;Бизнес
-    er-flex(xs12 md6)
+    er-flex(xs12 md6 :class="`${pre}__header__aside`")
+        template(v-if="isLG")
+          span(:class="`${pre}__total-num`") {{ showContactsTotalNum }}
+        template(v-else)
+          er-text-field(
+            :class="`${pre}__search`"
+            :label="isXS ? 'Искать' : 'Искать контакт'"
+            appendInnerIcon="lens"
+            v-model="searchQuery"
+            @input="handleSearch($event)"
+            @blur="handleSearch()"
+            @keydown.enter.prevent="handleSearch($event.target.value)"
+          )
   div(:class="`${pre}__body`")
-    contacts-list(:contactsList="pagData" @editContactOpen="handleEditContactOpen")
-    lpr-contact-form(:isOpen="isOpenContactForm" @addContactClose="handleClickAddContact")
+    contacts-list(
+      :contactsList="pagData"
+      :contactsNum="filteredContactsByName ? filteredContactsByName.length : null"
+      @editContactOpen="handleEditContactOpen")
+    lpr-contact-form(
+      :isOpen="isOpenContactForm"
+      @addContactClose="handleClickAddContact")
   er-row(:class="`${pre}__footer`")
-    er-flex(xs12 md6 lg4)
+    er-flex(xs12 sm6 lg4)
       er-button(
         :class="`${pre}__add-btn`"
         :disabled="isOpenContactForm || isEditContactOpen"
@@ -58,7 +75,7 @@ div(:class="`${pre}`")
         span(:class="`${pre}__dialog__close`") Спасибо
 
   er-dialog(
-    :value="hasError"
+    :value="hasError.state"
     :maxWidth="544"
     @update:returnValue="handleErrorPopup('close')"
   )
@@ -69,7 +86,7 @@ div(:class="`${pre}`")
         :width="52"
         :height="52"
       )
-      p(:class="`${pre}__dialog__txt`") {{ getCreatedContactState.error }}
+      p(:class="`${pre}__dialog__txt`") {{ hasError.message }}
       div(
         :class="`${pre}__dialog__close-wrap`"
         @click="handleErrorPopup('close')")
