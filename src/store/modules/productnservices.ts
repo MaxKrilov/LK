@@ -2,6 +2,7 @@ import { ActionContext } from 'vuex'
 import { API } from '@/functions/api'
 import { ICustomerProduct, ILocationOfferInfo } from '@/tbapi'
 import { AxiosError } from 'axios'
+import { TYPE_ARRAY } from '@/constants/type_request'
 
 interface IState {}
 
@@ -37,16 +38,39 @@ const actions = {
    * @param context
    * @param payload
    */
-  customerProduct (context: ActionContext<IState, any>, payload: { api: API, parentId?: string | number, locationId?: string | number }) {
+  customerProduct (context: ActionContext<IState, any>, payload: { api: API, parentId?: string | number, locationId?: string | number, code?: string }) {
     const { toms: clientId } = context.rootGetters['auth/user']
     const data: any = { clientId, id: clientId }
     payload.parentId && (data.parentId = payload.parentId)
+    payload.code && (data.code = payload.code)
     payload.locationId && (data.locationId = payload.locationId)
     return new Promise<ICustomerProduct>((resolve, reject) => {
       payload.api
         .setWithCredentials()
         .setData(data)
         .query('/customer/product/all')
+        .then((response: ICustomerProduct) => resolve(response))
+        .catch((err: AxiosError) => reject(err))
+    })
+  },
+  /**
+   * Получение клиентских продуктов (по массиву точек)
+   * @param context
+   * @param payload
+   */
+  customerProducts (context: ActionContext<IState, any>, payload: { api: API, parentIds?: Array<string | number>, code?: string }) {
+    const { toms: clientId } = context.rootGetters['auth/user']
+    const data: any = {
+      clientId
+    }
+    payload.parentIds && (data.parentIds = payload.parentIds)
+    payload.code && (data.code = payload.code)
+    return new Promise<ICustomerProduct>((resolve, reject) => {
+      payload.api
+        .setWithCredentials()
+        .setData(data)
+        .setType(TYPE_ARRAY)
+        .query('/customer/product/all-slo')
         .then((response: ICustomerProduct) => resolve(response))
         .catch((err: AxiosError) => reject(err))
     })

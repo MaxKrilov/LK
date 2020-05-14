@@ -96,7 +96,7 @@ export default {
         this.view === 'radio-check' && this.generateRadioCheck(),
         this.label && this.$createElement('div', {
           staticClass: `${this.pre}__label-text`
-        }, [this.label])
+        }, [this.$slots['label'] || this.label])
       ])
     },
     generateSwitch () {

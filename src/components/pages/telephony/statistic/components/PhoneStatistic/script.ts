@@ -5,8 +5,8 @@ import { MISSED_CALL, INCOMING_CALL, OUTGOING_CALL } from '@/constants/telephony
 import ErTableFilter from '@/components/blocks/ErTableFilter/index'
 
 const REGION_01 = 'Москва'
-const REGION_02 = 'Санкт-Петербург'
-const REGION_03 = 'Владивосток'
+// const REGION_02 = 'Санкт-Петербург'
+// const REGION_03 = 'Владивосток'
 
 const MockupCallItemMissed = {
   type: MISSED_CALL,

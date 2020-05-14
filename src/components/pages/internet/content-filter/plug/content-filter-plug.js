@@ -1,13 +1,24 @@
 /**
- * Компонент для промостраниц продуктов
+ * Компонент для подключения КФ
  */
-import ErPromo from '@/components/blocks/ErPromo'
+import ListPointComponent from '@/components/templates/InternetTemplate/blocks/ListPointComponent/index.vue'
+import { mapGetters } from 'vuex'
+import { CODE_CONTENT_FILTER } from '@/constants/internet.ts'
+import BreakpointMixin from '@/mixins/BreakpointMixin'
+import ErActivationModal from '@/components/blocks/ErActivationModal/index'
 
 export default {
   name: 'content-filter-plug-page',
   components: {
-    ErPromo
+    ListPointComponent,
+    ErActivationModal
   },
+  props: {
+    points: {
+      default: []
+    }
+  },
+  mixins: [BreakpointMixin],
   data () {
     return {
       detail: false,
@@ -15,11 +26,22 @@ export default {
       hoveredColumn: null,
       isShowDifferent: true,
       pre: 'content-filter-plug-page',
+      prices: [],
+      activePoint: {},
+      offerId: '',
+      isShowModal: false,
+      isShowErrorModal: false,
+      isShowSuccessModal: false,
+      selectedTariff: {},
+      offer: false,
+      offerAcceptedOn: null,
+      creatingOrder: false,
+      sendingOrder: false,
       tariffs: [
         {
           id: 101161,
           name: 'Бизнес',
-          price: '460',
+          price: '0',
           profileCount: '5',
           networkCount: '5',
           schedule: true,
@@ -32,12 +54,14 @@ export default {
           editCodePageLock: true,
           whiteListModeCount: '500',
           blackListModeCount: '500',
-          safeModeSearch: true
+          safeModeSearch: true,
+          chars: {},
+          description: 'Тариф для учебных заведений и школ. Одним из преимуществ «Поддержка белого списка для школ», согласно которому будет открыт доступ только до ресурсов образовательных учреждений. Сайты школ, ВУЗов, библиотек и т.д.'
         },
         {
           id: 101170,
           name: 'Бизнес+',
-          price: '760,00',
+          price: '0',
           profileCount: '100',
           networkCount: '9',
           schedule: true,
@@ -50,12 +74,14 @@ export default {
           editCodePageLock: true,
           whiteListModeCount: '9999',
           blackListModeCount: '9999',
-          safeModeSearch: true
+          chars: {},
+          safeModeSearch: true,
+          description: 'Стандартный Тариф для бизнеса. Позволяет сделать то и другое и может ещё и третье'
         },
         {
           id: 101169,
           name: 'Школа',
-          price: '460,00',
+          price: '0',
           profileCount: '10',
           networkCount: '10',
           schedule: true,
@@ -68,12 +94,33 @@ export default {
           editCodePageLock: false,
           whiteListModeCount: '200',
           blackListModeCount: '200',
-          safeModeSearch: true
+          chars: {},
+          safeModeSearch: true,
+          description: 'Расширенный Тариф для бизнеса. Позволяет сделать то и другое и может ещё и третье четвертое и пятое'
         }
       ]
     }
   },
+  watch: {
+    activePoint (val) {
+      if (val) {
+        this.getProduct(val.bpi)
+      }
+    },
+    offer (val) {
+      this.offerAcceptedOn = val ? this.$moment().format() : null
+    }
+  },
   computed: {
+    ...mapGetters({
+      billingAccountId: 'user/getActiveBillingAccount'
+    }),
+    selectedPrice () {
+      return this.selectedTariff.price || 0
+    },
+    selectedTariffName () {
+      return this.selectedTariff?.chars?.['Имя тарифного плана'] || ''
+    },
     transformTariffs () {
       if (this.tariffs.length < 1) {
         return [
@@ -195,10 +242,80 @@ export default {
     mouseleave (index) {
       this.hoveredColumn = null
     },
-    handleScroll: function () {
-      const staticButtonsTop = this.$refs.sbuttons.getBoundingClientRect().top
-      const buttonsTop = this.$refs.buttons.getBoundingClientRect().top
-      this.hideButtons = staticButtonsTop < buttonsTop + 50
+    handleScroll () {
+      if (this.isMobile) {
+        const staticButtonsTop = this.$refs.sbuttons.getBoundingClientRect().top
+        const buttonsTop = this.$refs.buttons.getBoundingClientRect().top
+        this.hideButtons = staticButtonsTop < buttonsTop + 50
+      }
+    },
+    getProduct (bpi) {
+      this.$store.dispatch('productnservices/customerProduct', {
+        api: this.$api,
+        parentId: bpi,
+        code: CODE_CONTENT_FILTER
+      }).then(answer => {
+        const contentFilter = answer?.slo.find(el => el?.code === CODE_CONTENT_FILTER)
+        if (contentFilter) {
+          this.prices = contentFilter?.prices || []
+          this.offerId = contentFilter?.id
+          if (this.prices) {
+            this.prices.forEach(el => {
+              const tariff = this.tariffs.find(t => t.name === el.chars['Имя тарифного плана'])
+              tariff.price = el.amount
+              tariff.chars = el.chars
+            })
+          }
+        }
+      })
+    },
+    createOrder (chars, price) {
+      this.selectedTariff = {
+        chars,
+        price
+      }
+      this.creatingOrder = true
+      this.$store.dispatch('salesOrder/createSaleOrder',
+        {
+          locationId: this.activePoint.id,
+          bpi: this.activePoint.bpi,
+          offerId: this.offerId,
+          chars
+        })
+        .then((e) => {
+          this.isShowModal = true
+        })
+        .catch(() => {
+        })
+        .finally(() => {
+          this.creatingOrder = false
+        })
+    },
+    cancelOrder () {
+      this.offer = false
+      this.$store.dispatch('salesOrder/cancel')
+    },
+    sendOrder () {
+      this.sendingOrder = true
+      this.$store.dispatch('salesOrder/send', { offerAcceptedOn: this.offerAcceptedOn })
+        .then(() => {
+          this.sendingOrder = false
+          this.isShowSuccessModal = true
+          this.isShowModal = false
+        })
+        .catch(() => {
+          this.isShowModal = false
+          this.isShowErrorModal = true
+        })
+        .finally(() => {
+          this.sendingOrder = false
+          this.offer = false
+        })
+    }
+  },
+  mounted () {
+    if (this.points) {
+      this.activePoint = this.points[0]
     }
   },
   created: function () {

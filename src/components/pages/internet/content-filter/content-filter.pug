@@ -1,11 +1,76 @@
 div(:class="`${pre} main-content main-content--top-menu-fix`")
   er-page-header(title="Контент-фильтрация")
-  div(:class="`${pre}__points`")
-    point-component(:item="item" v-for="(item, index) in data" :key="index")
-    div(:class="`${pre}__total`")
-      div(:class="`${pre}__h4`") Итого:
-      div(class="price")
-        div(:class="`${pre}__h4`") 8300
-        span(class="units") &nbsp₽/месяц
-  .button
-    er-button(color="blue" @click="$router.push('/lk/internet/content-filter/plug')") Подключить Контент-фильтрацию
+  template(v-if="isLoading")
+    er-card-products(loading)
+    er-card-products(loading)
+    er-card-products(loading)
+  template(v-else)
+    template(v-if="data.length")
+      div(:class="`${pre}__points`")
+        er-card-products(
+          v-for="(item, index) in data"
+          :key="index"
+          :price="item.price"
+          :date="item.date"
+          )
+          | {{ item.fulladdress}}
+          template(#slider-content)
+            div(:class="`${pre}__slider-content`")
+              div(:class="`${pre}__tariff`")
+                er-icon(class="icon" name="filter")
+                div(:class="`${pre}__caption2`") Тариф:
+                div(:class="`${pre}__h4`") {{ item.tariff }}
+              div(:class="`${pre}__login`")
+                er-icon(class="icon" name="profile")
+                div(:class="`${pre}__caption2`") Логин:
+                div() {{ item.login }}
+            div(:class="`${pre}__slider-buttons`")
+              a(:href="item.link"  target="_blank" v-if="item.link")
+                er-button(color="yellow") Настроить фильтрацию
+              er-button(
+                :disabled="isCreatingOrder"
+                :loading="isCreatingOrder"
+                flat
+                @click="disconnect(item.offerId, item.locationId, item.bpi, item.productId)"
+                ) Отключить фильтрацию
+        div(:class="`${pre}__total`")
+          div(:class="`${pre}__h4`") Итого:
+          div(class="price")
+            div(:class="`${pre}__h4`") {{ amountPrice }}
+            span(class="units") &nbsp₽/месяц
+
+    .button(v-if="!(!data.length || isShowConnecting)")
+      er-button(color="blue" @click="isShowConnecting = true") Подключить Контент-фильтрацию
+
+    plug(v-if="!data.length || isShowConnecting" :points="freePoints")
+
+  er-activation-modal(
+    type="error"
+    title="Произошла ошибка"
+    v-model="isShowErrorModal"
+    :isShowActionButton="false"
+    cancel-button-text="Закрыть"
+  )
+    template(slot="description")
+      div Свяжитесь с менеджером
+
+  er-activation-modal(
+    type="question"
+    v-model="isShowDisconnectModal"
+    title="Вы уверены, что хотите подключить"
+    cancel-button-text="Отменить"
+    actionButtonText="Отключить"
+    persistent
+    :isLoadingConfirm="sendingOrder"
+    :disabledActionButton="!offer"
+    @confirm="sendOrder"
+    @close="cancelOrder"
+  )
+    template(slot="description")
+      //- оставить на время починки метода по оферте
+      //-   div(:class="`${pre}__modal__caption`") По адресу: {{ activePoint.fulladdress }}
+      //-   div(:class="`${pre}__modal__text`") <b>Контент-фильтрацию</b> по тарифу <b>{{ selectedTariffName }}</b>, стоимостью <b>{{ selectedPrice }}</b> ₽/месяц?
+      //-   div(:class="`${pre}__modal__caption`") После смены тарифа, вам нужно перезагрузить страницу и настроить фильтрацию
+      er-toggle(view="radio-check" v-model="offer") 
+        template(slot="label")
+          div Я ознакомился и принял условия оферты

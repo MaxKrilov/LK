@@ -144,10 +144,17 @@
     }
   }
   &__title-wrapper {
+    margin-bottom: 16px;
     @include min-breakpoint("sm") {
       display: flex;
       justify-content: space-between;
       align-items: center;
+    }
+    @include min-breakpoint("md") {
+      margin-bottom: 24px;
+    }
+    @include min-breakpoint("xl") {
+      margin-bottom: 32px;
     }
   }
   &__filters-wrapper {
@@ -273,6 +280,15 @@
     }
     @include min-breakpoint("md") {
       padding-bottom: 16px;
+    }
+  }
+  &__modal {
+    &__caption {
+      @extend %caption1;      
+    }
+    &__text {
+      padding-top: 8px;
+      padding-bottom: 8px;
     }
   }
 }

@@ -11,6 +11,7 @@ const QUERY = {
   ADD_ELEMENT: '/order/management/add-element',
   SAVE: '/order/management/save',
   UPDATE_ELEMENT: '/order/management/update-element',
+  DELETE_ELEMENT: '/order/management/delete-element',
   CANCEL: '/order/management/cancel',
   SEND_ORDER: '/order/management/send-order'
 }
@@ -169,6 +170,54 @@ const actions = {
         })
     })
   },
+  deleteElement (
+    context: ActionContext<IState, any>,
+    { productId, disconnectDate }: { productId: string, disconnectDate: string }
+  ) {
+    const currentResponse = context.getters.currentResponse as ISaleOrder
+    function finder (data:any, id:string) {
+      let result = null
+      const rec = (data:any, id:any, f:any) => {
+        data.forEach((el:any) => {
+          if (el.customerProductId === id) {
+            result = el?.id
+          }
+          if (el?.orderItems) {
+            f(el.orderItems, id, f)
+          }
+        })
+      }
+      rec(data, id, rec)
+      return result
+    }
+    const orderItemId = finder(currentResponse.orderItems, productId)
+    const clientId = getClientId(context)
+    const orderId = context.getters.orderId
+
+    return new Promise((resolve, reject) => {
+      api()
+        .setWithCredentials()
+        .setType(TYPE_JSON)
+        .setData({
+          clientId,
+          id: orderId,
+          orderItemIds: [orderItemId],
+          disconnectDate,
+          primaryDisconnectReason: '9154707822713202000',
+          secondaryDisconnectReason: '9154707827913202000'
+
+        })
+        .query(QUERY.DELETE_ELEMENT)
+        .then((response: ISaleOrder) => {
+          context.commit('responseSuccess', response)
+          resolve(response)
+        })
+        .catch((error: AxiosError) => {
+          context.commit('responseError')
+          reject(error)
+        })
+    })
+  },
   cancel (
     context: ActionContext<IState, any>
   ) {
@@ -239,6 +288,24 @@ const actions = {
                   })
                   .catch(err => reject(err))
               }
+            })
+            .catch(err => reject(err))
+        })
+        .catch(err => reject(err))
+    })
+  },
+  createDisconnectOrder (
+    context: ActionContext<IState, any>,
+    { locationId, bpi, productId, disconnectDate }: { locationId: string, bpi: string, offerId?: string, productId?: string, disconnectDate: string }
+  ) {
+    return new Promise((resolve, reject) => {
+      context.dispatch('create', { locationId, bpi })
+        .then(() => {
+          context.dispatch('deleteElement', { productId, disconnectDate })
+            .then(() => {
+              context.dispatch('save')
+                .then(response => resolve(response))
+                .catch(err => reject(err))
             })
             .catch(err => reject(err))
         })

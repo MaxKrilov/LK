@@ -42,7 +42,7 @@ const getHtmlVolume = (volume: number) => {
         })
       }
     },
-    period (val, oldVal) {
+    period (val) {
       if (!this.customerProduct) return
       const diff = Math.abs(moment(val[0]).diff(val[1], 'days'))
       // Если меньше 30 дней, то перезапрашиваем данные

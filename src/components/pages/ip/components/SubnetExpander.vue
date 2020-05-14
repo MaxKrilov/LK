@@ -8,7 +8,7 @@
       .subnet__list
         er-container
           er-row.justify-content-start
-            er-flex.d--flex.xs6.sm4.md3(v-for="ip in list")
+            er-flex.d--flex.xs6.sm4.md3(v-for="(ip, index) in list" :key="index")
               .subnet__ip {{ ip }}
 </template>
 

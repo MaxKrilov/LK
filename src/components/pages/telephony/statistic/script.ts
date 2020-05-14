@@ -1,7 +1,7 @@
 import { Vue, Component, Prop } from 'vue-property-decorator'
 import PhoneStatistic from './components/PhoneStatistic/index.vue'
 import PhoneFolder from './components/PhoneFolder/index.vue'
-import { MockupPhoneList, MockupAddressList } from './mockupData'
+import { MockupPhoneList } from './mockupData'
 
 const components = {
   PhoneFolder,
