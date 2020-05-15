@@ -76,7 +76,7 @@ export default {
     // Проверяем - есть ли в GET параметрах сумма. Если да, то устанавливаем её
     const sumPay = this.$route.query.total_amount
     if (sumPay) {
-      this.sumPay = `${sumPay},00`
+      this.sumPay = Number(sumPay).toFixed(2).replace('.', ',')
     }
     if (this.sum) {
       this.sumPay = this.sum.toFixed(2).replace('.', ',')
