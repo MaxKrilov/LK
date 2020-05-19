@@ -1,0 +1,26 @@
+.prefer-hint{
+  @extend %caption2-font;
+  width: 200px;
+  color: map_get($shades, 'black');
+  padding: $padding-x4;
+  background-color: map_get($shades, 'white');
+  box-shadow: 0 0 16px rgba(map_get($shades, 'black'), 0.2);
+  border-radius: 4px;
+  position: fixed;
+  top: 50%;
+  right: 50%;
+  transform: translateX(16px) translateY(-50%);
+  z-index: 2;
+
+  &:before{
+    content: '';
+    width: 24px;
+    height: 16px;
+    background-color: map_get($shades, 'white');
+    border-radius: 60% 0 0 60%;
+    position: absolute;
+    top: 50%;
+    left: -8px;
+    transform: translateY(-50%);
+  }
+}

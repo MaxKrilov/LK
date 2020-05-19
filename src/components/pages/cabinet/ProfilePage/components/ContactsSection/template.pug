@@ -35,17 +35,19 @@ div(:class="`${pre}`")
       :contactsNum="filteredContactsByName ? filteredContactsByName.length : null"
       @editContactOpen="handleEditContactOpen")
     lpr-contact-form(
+      v-if="isLPR"
       :isOpen="isOpenContactForm"
       @addContactClose="handleClickAddContact")
   er-row(:class="`${pre}__footer`")
     er-flex(xs12 sm6 lg4)
-      er-button(
-        :class="`${pre}__add-btn`"
-        :disabled="isOpenContactForm || isEditContactOpen"
-        :loading="getCreatedContactState.isFetching"
-        preIcon="add"
-        @click="handleClickAddContact"
-        ) Добавить контакт
+      template(v-if="isLPR")
+        er-button(
+          :class="`${pre}__add-btn`"
+          :disabled="isOpenContactForm || isEditContactOpen"
+          :loading="getCreatedContactState.isFetching"
+          preIcon="add"
+          @click="handleClickAddContact"
+          ) Добавить контакт
 
     template(v-if="pagLength > 1")
       er-flex(xs12 md6 lg8 :class="`${pre}__paginator`")

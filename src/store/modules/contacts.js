@@ -99,7 +99,8 @@ const state = {
     isFetching: false,
     isFetched: false,
     error: null,
-    id: null
+    id: null,
+    type: null
   },
   usersQuery: '',
   sortField: null,
@@ -132,11 +133,20 @@ const getContactMethods = (methods) => {
   if (methods) {
     methods.map((item) => {
       if (item['@type'] === 'PhoneNumber') {
-        phones.push(item)
+        // phones.push(getMethodData(item))
+        phones.push(
+          {
+            id: item.id,
+            value: formatPhoneNumber(toDefaultPhoneNumber(item.value))
+          }
+        )
       }
 
       if (item['@type'] === 'Email') {
-        emails.push(item)
+        emails.push({
+          id: item.id,
+          value: item.value
+        })
       }
     })
   }
@@ -152,7 +162,8 @@ const removeContactKeys = (contact) => {
     'contactMethods',
     'extendedMap',
     'name',
-    'primaryEmailId'
+    'primaryEmailId',
+    'status'
   ]
 
   keys.map((item) => {
@@ -335,6 +346,14 @@ const actions = {
     let roleDelete = []
     let existRoles = rootGetters['user/getContactById'](data.id)?.roles || []
 
+    // привожу номера телефонов к формату который принимает бекенд
+    // toDefaultPhoneNumber
+    if (data?.phones.length) {
+      for (let i = 0; i < data.phones.length; i++) {
+        data.phones[i].value = toDefaultPhoneNumber(data.phones[i].value)
+      }
+    }
+
     data.clientId = clientId
     // если редактирование контакта
     if (!isCreate) {
@@ -367,7 +386,6 @@ const actions = {
       const contactResponse = await api
         .setWithCredentials()
         .setType(TYPE_JSON)
-        .setBranch('fix-delete')
         .setData(data)
         .query(url)
 
@@ -396,6 +414,7 @@ const actions = {
         const roleCreateResponse = await Promise.all(roleCreateRequests)
         const roleDeleteResponse = await Promise.all(roleDeleteRequests)
         // т.к. в ТЗ не описан ответ API при ошибке создания роли пока так
+
         const checkRoleCreateError = roleCreateResponse.filter((item) => {
           return !item.role
         })
@@ -403,10 +422,27 @@ const actions = {
         if (!checkRoleCreateError.length) {
           if (isCreate) {
             contactResponse.roles = roleCreateResponse
-            commit(RESET_CURRENT_CONTACTS)
             // добавить в список контактов на клиенте, без запроса client-info
-            commit('user/ADD_CLIENT_CONTACTS_STORE', contactResponse, { root: true })
+            dispatch('user/ADD_CLIENT_CONTACTS_STORE', contactResponse, { root: true }).then(() => {
+              commit(UPDATE_CREATE_CONTACT_STATE, {
+                id: contact.id,
+                type: 'created'
+              })
+              setTimeout(() => {
+                commit(UPDATE_CREATE_CONTACT_STATE, {
+                  isFetching: false,
+                  isFetched: false,
+                  id: null
+                })
+              }, CONTACT_CREATE_MESSAGE_TIMEOUT)
+              commit(RESET_CURRENT_CONTACTS)
+            })
           } else {
+            commit(UPDATE_CREATE_CONTACT_STATE, {
+              id: contact.id,
+              type: 'updated'
+            })
+
             if (roleDeleteResponse.length) {
               existRoles = existRoles.filter((item) => {
                 return !find(roleDelete, function (v) {
@@ -415,20 +451,26 @@ const actions = {
               })
               contactResponse.roles = [...existRoles]
             }
+
             if (roleCreateResponse.length) {
               contactResponse.roles = [...roleCreateResponse, ...existRoles]
             }
             // обновить в списке контактов на клиенте, без запроса client-info
-            setTimeout(() => {
-              commit(UPDATE_CREATE_CONTACT_STATE, { id: null })
-              dispatch('user/REPLACE_CLIENT_CONTACTS_STORE', contactResponse, { root: true })
-            }, CONTACT_CREATE_MESSAGE_TIMEOUT)
+            dispatch('user/REPLACE_CLIENT_CONTACTS_STORE', contactResponse, { root: true }).then(() => {
+              setTimeout(() => {
+                commit(UPDATE_CREATE_CONTACT_STATE, {
+                  isFetching: false,
+                  isFetched: false,
+                  id: null
+                })
+              }, CONTACT_CREATE_MESSAGE_TIMEOUT)
+            })
           }
         } else {
           commit(UPDATE_CREATE_CONTACT_STATE, {
             isFetching: false,
             isFetched: false,
-            error: `Ошибка создания роли контакта`
+            error: `Ошибка создания роли контакта. Попробуйте позже`
           })
           return false
         }
@@ -437,7 +479,7 @@ const actions = {
         commit(UPDATE_CREATE_CONTACT_STATE, {
           isFetching: false,
           isFetched: false,
-          error: `Ошибка создания роли контакта`
+          error: `Ошибка создания контакта. Попробуйте позже`
         })
         return false
       }
@@ -491,15 +533,13 @@ const actions = {
       const deleteResponse = await api
         .setWithCredentials()
         .setType(TYPE_JSON)
-        .setBranch('fix-delete')
         .setData({
           id: id,
           clientId: toms
         })
         .query(url)
-      // TODO: по ТЗ должно возвращаться true, сейчас в ветке 'fix-delete' - null;
-      //  уточнить, поправить условие если надо
-      if (deleteResponse === null) {
+
+      if (deleteResponse === true) {
         commit(UPDATE_DELETE_CONTACT_STATE, { id: id })
         // удалить в списке контактов на клиенте, без запроса client-info
         setTimeout(() => {
@@ -785,10 +825,18 @@ const actions = {
         commit(CREATE_CONTACT_ROLE_SUCCESS)
         return result
       }
-      commit(CREATE_CONTACT_ROLE_ERROR, `Ошибка создания роли контакта: ${result?.message?.toString()}`)
+      commit(UPDATE_CREATE_CONTACT_STATE, {
+        isFetching: false,
+        isFetched: false,
+        error: `Ошибка создания роли контакта. Попробуйте позже`
+      })
       return false
     } catch (error) {
-      commit(CREATE_CONTACT_ROLE_ERROR, 'Сервер не отвечает. Попробуйте обновить страницу.')
+      commit(UPDATE_CREATE_CONTACT_STATE, {
+        isFetching: false,
+        isFetched: false,
+        error: `Ошибка создания роли контакта. Попробуйте позже`
+      })
       return false
     }
   }

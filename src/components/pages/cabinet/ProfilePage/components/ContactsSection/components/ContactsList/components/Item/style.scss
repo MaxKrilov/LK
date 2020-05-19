@@ -85,25 +85,6 @@
       &__prefer-hint{
         display: inline-block;
         position: relative;
-
-        @at-root .is-prefer &{
-          &:after{
-            @extend %caption2-font;
-            content: 'Предпочтительный канал связи';
-            width: 200px;
-            color: map_get($shades, 'black');
-            padding: $padding-x4 $padding-x4 $padding-x2;
-            background-color: map_get($shades, 'white');
-            border-radius: 16px;
-            box-shadow: -8px 8px 16px rgba(map_get($shades, 'black'), 0.04), 0 8px 24px rgba(map_get($shades, 'black'), 0.06);
-            position: absolute;
-            top: 50%;
-            right: 0;
-            transform: translateX(100%) translateY(-50%);
-            z-index: 2;
-            display: none;
-          }
-        }
       }
     }
   }

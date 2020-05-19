@@ -1,4 +1,4 @@
-import { mapActions, mapState } from 'vuex'
+import {mapActions, mapGetters, mapState} from 'vuex'
 import ResponsiveMixin from '@/mixins/ResponsiveMixin'
 import ItemState from './components/State'
 
@@ -28,6 +28,7 @@ export default {
     pre: 'contacts-list-item'
   }),
   computed: {
+    ...mapGetters('auth', ['isLPR']),
     ...mapState('contacts', ['deleteContactState', 'createContactState']),
     actionMessage () {
       let action = {
@@ -40,9 +41,16 @@ export default {
         action.id = this.deleteContactState.id
       }
       if (this.createContactState.isFetched) {
+        let message = ''
+        if (this.createContactState.type === 'created') {
+          message = this.isMobile ? 'Создан' : 'Контакт сотрудника создан'
+        } else {
+          message = this.isMobile ? 'Изменен' : 'Контакт сотрудника изменен'
+        }
         action.active = true
-        action.message = this.isMobile ? 'Изменен' : 'Контакт сотрудника изменен'
+        action.message = message
         action.state = 'change'
+        action.type = this.createContactState.type
         action.id = this.createContactState.id
       }
       return action
@@ -53,6 +61,9 @@ export default {
   },
   methods: {
     ...mapActions('contacts', ['deleteContact']),
+    handlePreferHint (e) {
+      this.$emit('showPreferHint', e)
+    },
     handleEditContact () {
       this.$emit('mobileEditContact')
     },

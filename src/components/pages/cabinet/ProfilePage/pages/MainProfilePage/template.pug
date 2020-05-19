@@ -43,7 +43,7 @@ div(:class="`${pre}`")
 
   div(v-if="isLPR && !serverErrorMessage", :class="`${pre}__accounts`")
     accounts-section
-  div(v-if="isLPR", :class="`${pre}__accounts`")
+  div(:class="`${pre}__accounts`")
     contacts-section
   change-password
   modal-accounts-info
