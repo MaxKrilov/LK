@@ -47,9 +47,8 @@
       v-model="isError"
     )
       template(slot="description")
-        | Текст ошибки:
         .error-block
-          code {{ errorText }}
+          code(v-html="errorText")
 </template>
 
 <script lang="ts" src="./script.ts"></script>

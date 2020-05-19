@@ -144,7 +144,7 @@ export default class ErDocumentViewer extends Vue {
     }, 0)
   }
   __toBase64 (file: Blob, fileName: string) {
-    const mime = _mime.lookup(fileName)
+    // const mime = _mime.lookup(fileName)
     const reader = new FileReader()
     return new Promise<string>((resolve) => {
       reader.readAsDataURL(file)
@@ -152,7 +152,7 @@ export default class ErDocumentViewer extends Vue {
         const result = (reader.result as string)
           .replace(
             'application/octet-stream',
-            mime
+            'application/pdf'
           )
         resolve(result)
       }
