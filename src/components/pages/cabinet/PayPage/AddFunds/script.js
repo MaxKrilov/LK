@@ -4,6 +4,7 @@ import Confirm from '../components/Confirm/index.vue'
 import { mapGetters, mapState } from 'vuex'
 import { SCREEN_WIDTH } from '@/store/actions/variables'
 import { PATTERN_EMAIL } from '@/constants/regexp'
+import {roundUp} from '../../../../../functions/helper'
 
 export default {
   name: 'add-funds',
@@ -76,7 +77,7 @@ export default {
     // Проверяем - есть ли в GET параметрах сумма. Если да, то устанавливаем её
     const sumPay = this.$route.query.total_amount
     if (sumPay) {
-      this.sumPay = Number(sumPay).toFixed(2).replace('.', ',')
+      this.sumPay = Number(roundUp(sumPay, 2)).toFixed(2).replace('.', ',')
     }
     if (this.sum) {
       this.sumPay = this.sum.toFixed(2).replace('.', ',')

@@ -642,3 +642,8 @@ export function uniq (a, f) {
   // eslint-disable-next-line no-return-assign
   return a.filter(i => r.hasOwnProperty(i[f]) ? !1 : r[i[f]] = !0)
 }
+
+export function roundUp (num, precision) {
+  precision = Math.pow(10, precision)
+  return Math.ceil(num * precision) / precision
+}
