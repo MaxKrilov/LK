@@ -1,8 +1,9 @@
 .item-state{
-  padding: $padding-x4 $padding-x4 0 0;
+  padding-right: $padding-x4;
   display: flex;
   flex: 1 1 100%;
   justify-content: flex-end;
+  align-items: center;
   box-sizing: border-box;
   position: absolute;
   top: 0;
@@ -12,13 +13,10 @@
   z-index: 2;
 
   @include media-query((
-    align-items: (
-      md: center
-    ),
     justify-content: (
       md: flex-start
     ),
-    padding: (
+    padding-right: (
       md: 0
     )
   ));

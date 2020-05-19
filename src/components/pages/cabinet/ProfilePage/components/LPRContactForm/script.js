@@ -89,7 +89,7 @@ export default {
       return {
         phones: phones,
         emails: emails,
-        filled: phones && emails
+        filled: phones || emails
       }
     },
     formTitle () {
@@ -104,8 +104,6 @@ export default {
       this.isCanSignRoleAdd = false
     },
     handleUploadDialog (e) {
-      // закрыли не загрузив файл e === 'cancel'
-      // файл загружен
       this.canSign = e === 'ok'
       this.isCanSignRoleAdd = e === 'ok'
       this.showUploadDialog = false
@@ -152,14 +150,14 @@ export default {
       }
     },
     validateForm () {
-      const { formData, formErrors } = this
+      const { formErrors } = this
       formErrors.current = null
       let checkContactMethods = false
       let checkCanSignRole = false
       let checkForm = false
       const { LPRContactForm, contactRoles } = this.$refs
 
-      if (!formData.phones.length && !formData.emails.length) {
+      if (!this.hasContactsMethods.filled) {
         formErrors.current = formErrors.contacts
       } else {
         checkContactMethods = true
@@ -182,12 +180,29 @@ export default {
       return !!value.length || 'Выберите вариант из списка'
     },
     handleSaveForm () {
-      this.validateForm()
+      let formValid = this.validateForm()
+      let currentValueCheck = []
+
+      if (this.currentValue.phones.length) {
+        currentValueCheck.push(this.addContactMethod(this.currentValue.phones, 'phones'))
+      }
+
+      if (this.currentValue.emails.length) {
+        currentValueCheck.push(this.addContactMethod(this.currentValue.emails, 'emails'))
+      }
+
+      if (currentValueCheck.length) {
+        formValid = this.validateForm()
+        this.isFormValid = !currentValueCheck.includes(false) && formValid
+      }
+
       if (this.isFormValid) {
         let data = cloneDeep(this.formData)
+
         if (this.canSign) {
           data.roles.push(CAN_SIGN_ROLE)
         }
+
         this.createContact({ api: this.$api, data: data }).then((result) => {
           if (result) {
             this.handleClickClose()
@@ -200,15 +215,16 @@ export default {
     },
     addContactMethod (val, type) {
       const isValid = this.$refs[type] && this.$refs[type].validate()
-      const { formData } = this
 
       if (val && isValid) {
         if (type === 'phones') {
           val = formatPhoneNumber(toDefaultPhoneNumber(val))
         }
-        formData[type].push({ value: val })
+        this.formData[type].push({ value: val })
         this.currentValue[type] = ''
       }
+
+      return isValid
     },
     removeContactMethod (arrayIdx, type) {
       this.formData[type].splice(arrayIdx, 1)

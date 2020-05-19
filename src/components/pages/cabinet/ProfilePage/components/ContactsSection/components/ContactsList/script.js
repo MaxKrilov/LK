@@ -2,6 +2,7 @@ import { mapActions, mapGetters, mapState } from 'vuex'
 import ProfileTable from '@/components/pages/cabinet/ProfilePage/components/ProfileTable/'
 import ResponsiveMixin from '@/mixins/ResponsiveMixin'
 import ContactsListItem from './components/Item'
+import PreferMethodHint from './components/PreferMethodHint'
 import LPRContactForm from '../../../LPRContactForm'
 import columns, { tablet, desktop } from './columns'
 
@@ -21,14 +22,20 @@ export default {
   components: {
     ProfileTable,
     ContactsListItem,
+    'prefer-hint': PreferMethodHint,
     'lpr-contact-form': LPRContactForm
   },
   data: () => ({
     pre: 'contacts-list',
     expandedId: null,
-    isMobileEditContactOpen: false
+    isMobileEditContactOpen: false,
+    preferHint: {
+      open: false,
+      pos: {}
+    }
   }),
   computed: {
+    ...mapGetters('auth', ['isLPR']),
     ...mapGetters('user', ['getPrimaryContact']),
     ...mapState('contacts', ['deleteContactState', 'createContactState']),
     stateClasses () {
@@ -61,10 +68,23 @@ export default {
   },
   methods: {
     ...mapActions('contacts', ['setCurrentClientContacts']),
+    handlePreferHint (e) {
+      if (e.type === 'mouseenter') {
+        this.preferHint = {
+          open: true,
+          target: e.target
+        }
+      } else {
+        this.preferHint.open = false
+      }
+    },
     handleMobileEditContact () {
       this.isMobileEditContactOpen = true
     },
     handleExpandContact (contactId) {
+      if (!this.isLPR && this.isLG) {
+        return false
+      }
       if (contactId) {
         const { id } = contactId.item
         this.expandedId = this.expandedId === id ? null : id

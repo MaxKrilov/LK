@@ -31,8 +31,9 @@ export default {
     }
   },
   computed: {
+    ...mapGetters('auth', ['isLPR']),
     ...mapGetters('contacts', ['filteredContactsByName', 'getCreatedContactState']),
-    ...mapState('contacts', ['deleteContactState']),
+    ...mapState('contacts', ['deleteContactState', 'createContactState']),
     isMobile () {
       return this.isXS || this.isSM
     },
@@ -46,7 +47,7 @@ export default {
     },
     showContactsTotalNum () {
       const num = this.contactsList.length
-      return `Всего: ${num} ${getNoun(num, 'контакт', 'контакты', 'контактов')}`
+      return `Всего: ${num} ${getNoun(num, 'контакт', 'контакта', 'контактов')}`
     }
   },
   methods: {
@@ -92,6 +93,11 @@ export default {
         }
       }
     },
+    pagData (val) {
+      if (!val.length && this.pagCurrentPage > 1) {
+        this.pagCurrentPage = this.pagCurrentPage - 1
+      }
+    },
     getCreatedContactState (val) {
       if (val.error) {
         this.hasError.state = true
@@ -99,6 +105,15 @@ export default {
       }
     },
     deleteContactState: {
+      deep: true,
+      handler (val) {
+        if (val.error) {
+          this.hasError.state = true
+          this.hasError.message = val.error
+        }
+      }
+    },
+    createContactState: {
       deep: true,
       handler (val) {
         if (val.error) {

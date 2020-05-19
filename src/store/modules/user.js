@@ -496,6 +496,9 @@ const actions = {
       commit('loading/loadingPromisedPayment', false, { root: true })
     }
   },
+  [ADD_CLIENT_CONTACTS_STORE]: ({ commit }, payload) => {
+    commit(ADD_CLIENT_CONTACTS_STORE, payload)
+  },
   /**
    * Обновление/удаление контакта в clientInfo.contacts
    * @param state

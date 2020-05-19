@@ -14,12 +14,21 @@ div(:class="[`${pre}`, stateClasses]")
         :dataKey="dataKey"
         :expandedId="expandedId"
         :primaryContactId="getPrimaryContact.id"
+        @showPreferHint="handlePreferHint"
         @mobileEditContact="handleMobileEditContact"
         )
 
-    template(v-slot:row="{ item }")
-      er-slide-up-down(:active="expandedId === item.id && isOpenEditContact")
+    template(v-slot:row="{ item }" v-if="isLPR")
+      er-slide-up-down(
+        :active="expandedId === item.id && isOpenEditContact"
+        )
         lpr-contact-form(
           :isOpen="expandedId === item.id && isOpenEditContact"
           :primaryContactId="getPrimaryContact.id"
           @addContactClose="handleExpandContact")
+
+  prefer-hint(
+    :isOpen="preferHint.open"
+    :pos="preferHint.pos"
+    :targetEl="preferHint.target"
+  )
