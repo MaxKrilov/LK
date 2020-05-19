@@ -2,7 +2,7 @@ div.px-32.py-64(:class="`${pre}`")
   h1.mb-64.fonts--demi
     | Карточка клиента
   er-slide-up-down(:active="isInputInn")
-    er-form(@submit="submitInn", ref="inn_form")
+    er-form(@submit="submitInn", ref="inn_form" key="inn_form")
       div.mb-40.d--flex(:class="`${pre}__input-inn`")
         er-text-field(
           label="Введите ИНН",
@@ -30,7 +30,7 @@ div.px-32.py-64(:class="`${pre}`")
         er-flex(xs6)
           h2
             | Лицо, имеющее право подписи
-      er-form(ref="form", @submit="submitFormCreate")
+      er-form(ref="form", @submit="submitFormCreate" key="form")
         er-row
           er-flex(xs6)
             er-text-field(

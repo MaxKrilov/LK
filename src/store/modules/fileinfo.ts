@@ -45,7 +45,14 @@ const getters = {
    * Получение отчётных документов и/или пакетов документов
    * @param state
    */
-  getListReportDocument: (state: IState) => state.listReportDocument,
+  getListReportDocument: (state: IState) => {
+    const listReportDocument = JSON.parse(JSON.stringify(state.listReportDocument))
+    return listReportDocument.sort((a: any, b: any) => {
+      const _a = Array.isArray(a) ? a[0] : a
+      const _b = Array.isArray(b) ? b[0] : b
+      return _a.creationDate - _b.creationDate
+    })
+  },
   /**
    * Получение контрактных докуметов и/или пакетов документов
    * @param state
@@ -92,7 +99,8 @@ const actions = {
         .setResponseType('blob')
         .setData({
           bucket: payload.bucket,
-          key: payload.key
+          key: payload.key,
+          asPdf: 1
         })
         .query('/docs/s3/get')
         .then((response: Blob) => {
@@ -115,13 +123,9 @@ const actions = {
             status: payload.status
           })
           .query('/order/contract/edit')
-          .then(() => { resolve(true) })
+          .then((resp) => { resolve(resp) })
           .catch((err: AxiosError) => {
-            if (err.message.toLowerCase().match(/заказ не может быть отправлен в исполнение автоматически/ig)) {
-              resolve(true)
-            } else {
-              reject(false)
-            }
+            reject(err)
           })
       }, 2000)
     })
@@ -134,7 +138,8 @@ const actions = {
         .setData({
           bucket,
           file,
-          key: filePath
+          key: filePath,
+          asPdf: 1
         })
         .query('/docs/s3/set')
         .then(() => resolve(true))

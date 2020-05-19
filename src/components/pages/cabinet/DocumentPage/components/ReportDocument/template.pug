@@ -11,7 +11,7 @@ common-document(
         v-model="selected"
         @input="onSelect"
       )
-    h3.er-document__title-sm Счёт-фактура
+    h3.er-document__title-sm {{ document.type.id | typeName }}
     h3.er-document__title {{ document.number }}
 
   div(slot="body")
@@ -19,7 +19,7 @@ common-document(
     h3.er-document__content {{ document.type.id | typeName }}
 
     .document-date.caption2
-      | {{ document.fileName }}
+      | {{ document.attachmentName }}
 
   template(v-slot:footer)
     er-document-viewer(

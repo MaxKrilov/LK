@@ -57,6 +57,9 @@ export default class DigitalSignature {
    * @return {Promise<boolean | Array<{ id: string, value: string, version: number, thumbprint: string, subjectName: string, serialNumber: string, issuerName: string, validFromDate: string, validToDate: string }>>}
    */
   public static async getCertificatesList (cadesplugin: CADESPluginAsync): Promise<iCertificate[]> {
+    if (!cadesplugin || !cadesplugin.CreateObjectAsync) {
+      throw new Error('Для подписания ЭЦП установите плагин Крипто ПРО')
+    }
     let store
     try {
       store = await cadesplugin.CreateObjectAsync('CAPICOM.Store')
@@ -397,9 +400,9 @@ export default class DigitalSignature {
       TemplateId: 1,
       Page: 1,
       Rect: {
-        LowerLeftX: 290,
+        LowerLeftX: 10,
         LowerLeftY: 10,
-        UpperRightX: 560,
+        UpperRightX: 280,
         UpperRightY: 95,
         BorderRadius: 0,
         BorderWeight: 1,

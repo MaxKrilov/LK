@@ -1,4 +1,5 @@
 export interface DocumentInterface {
+  attachmentName: string
   fileName: string
   relatedTo: {
     name: string
@@ -14,8 +15,8 @@ export interface DocumentInterface {
   contractNumber?: string
   contractStatus?: 'Готов для клиента' | 'Подписан' | 'Активный' | 'Отменён' | 'Расторгнут' | 'Истёк',
   amount?: string
-  modifiedWhen: string | number
-  creationDate: string | number
+  modifiedWhen: number
+  creationDate: number
   type: {
     name: string
     id: string | number

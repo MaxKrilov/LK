@@ -108,16 +108,25 @@ export default class DigitalSigningDocument extends Vue {
    * Получение списка сертификатов
    */
   getListCertificate () {
-    if (!cadesplugin) return
-    DigitalSignature
-      .getCertificatesList(cadesplugin as CADESPluginAsync)
-      .then((response: iCertificate[]) => {
-        this.listCertificate = response
-        this.isShowListCertificateDialog = true
-        // Хотя бы один сертификат есть, так как при их отсутствии выбрасывается исключение
-        this.selectedCertificate = getFirstElement(this.listCertificate)
+    cadesplugin
+      .then(() => {
+        DigitalSignature
+          .getCertificatesList(cadesplugin as CADESPluginAsync)
+          .then((response: iCertificate[]) => {
+            this.listCertificate = response
+            this.isShowListCertificateDialog = true
+            // Хотя бы один сертификат есть, так как при их отсутствии выбрасывается исключение
+            this.selectedCertificate = getFirstElement(this.listCertificate)
+          })
+          .catch(error => this.errorHandler(error.message as string))
       })
-      .catch(error => this.errorHandler(error.message as string))
+      .catch(() => {
+        this.errorHandler(
+          `Плагин недоступен или не установлен! 
+            Убедитесь в правильности работы плагина или <a href="https://www.cryptopro.ru/" target="_blank">установите</a> его`
+        )
+        throw Error
+      })
   }
 
   /**
