@@ -125,15 +125,11 @@ export default {
             this.isCancelError = true
             return
           }
-          if (result.submit_statuses.submitStatus.toLowerCase() === 'success') {
+          if (['success', 'not_executed'].includes(result.submit_statuses.submitStatus.toLowerCase())) {
             this.isCancelSuccess = true
             this.$store.dispatch('fileinfo/downloadListDocument', { api: this.$api })
           } else {
-            if (result.submit_statuses.submitStatus.toLowerCase() === 'not_executed') {
-              this.cancelErrorText = 'Подписаны не все договора'
-            } else {
-              this.cancelErrorText = result.submit_statuses.submitError
-            }
+            this.cancelErrorText = result.submit_statuses.submitError
             this.isCancelError = true
           }
         })

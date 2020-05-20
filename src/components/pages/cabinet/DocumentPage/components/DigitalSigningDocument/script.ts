@@ -190,7 +190,7 @@ export default class DigitalSigningDocument extends Vue {
       this.errorHandler('Ошибка при прикреплении файла в системе')
       return false
     }
-    if (_changeStatusResult.submit_statuses.submitStatus.toLowerCase() === 'success') {
+    if (['success', 'not_executed'].includes(_changeStatusResult.submit_statuses.submitStatus.toLowerCase())) {
       this.internalValue = false
       this.isSigningDocument = false
       this.linkDownload = `data:${mime.lookup(this.signingDocument.fileName)};base64,${_signDocument}`
@@ -198,11 +198,7 @@ export default class DigitalSigningDocument extends Vue {
       this.isSuccess = true
       this.$emit('success')
     } else {
-      if (_changeStatusResult.submit_statuses.submitStatus.toLowerCase() === 'not_executed') {
-        this.errorHandler('Подписаны не все договора')
-      } else {
-        this.errorHandler(_changeStatusResult.submit_statuses.submitError)
-      }
+      this.errorHandler(_changeStatusResult.submit_statuses.submitError)
     }
   }
 }
