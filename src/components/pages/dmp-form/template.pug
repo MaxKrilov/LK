@@ -1,7 +1,10 @@
 div.px-32.py-64(:class="`${pre}`")
   h1.mb-64.fonts--demi
     | Карточка клиента
-  er-slide-up-down(:active="isInputInn")
+  er-slide-up-down(:active="loadingClientInfo || loadingInnScreen")
+    .loading-client-info
+      | Проверка ИНН пользователя
+  er-slide-up-down(:active="isInputInn && !loadingClientInfo && !loadingInnScreen")
     er-form(@submit="submitInn", ref="inn_form" key="inn_form")
       div.mb-40.d--flex(:class="`${pre}__input-inn`")
         er-text-field(
@@ -13,13 +16,13 @@ div.px-32.py-64(:class="`${pre}`")
         )
           template(slot="append-outer")
             er-hint.pt-8.ml-16
-              | Текст подсказки
+              | По указанному ИНН будет заполнена информация о вашей организации
       div.mb-44(:class="`${pre}__description-inn`")
-        | Если вы не помните свой ИНН, вы можете узнать его на <a href="https://www.nalog.ru" target="_blank">сайте ФНС</a> или другом ресурсе для самозанятых
+        | ИНН вашей организации вы можете узнать на <a href="https://www.nalog.ru" target="_blank">сайте ФНС</a>
       div(:class="`${pre}__submit-inn`")
         er-button(type="submit" :loading="loadingInn")
           | Заполнить
-  er-slide-up-down(:active="!isInputInn")
+  er-slide-up-down(:active="!isInputInn && !loadingClientInfo && !loadingInnScreen")
     er-container(full)
       er-row.mb-36(align-items-end)
         er-flex(xs6)
@@ -28,11 +31,11 @@ div.px-32.py-64(:class="`${pre}`")
           p(:class="`${pre}__check-text`")
             | Проверьте, пожалуйста, Ваши данные
         er-flex(xs6)
-          h2
+          //- h2
             | Лицо, имеющее право подписи
       er-form(ref="form", @submit="submitFormCreate" key="form")
         er-row
-          er-flex(xs6)
+          er-flex.mb-32(xs6)
             er-text-field(
               label="Юридическое название",
               v-model="modelData.nameCompany",
@@ -41,15 +44,15 @@ div.px-32.py-64(:class="`${pre}`")
               key="nameCompany"
             )
           er-flex(xs6)
-            er-text-field(
-              label="Должность",
-              v-model="modelData.post",
-              :rules="[rules.isRequired]",
-              tabIndex="7",
-              key="post"
-              )
+            //-er-text-field(
+            //-  label="Должность",
+            //-  v-model="modelData.post",
+            //-  :rules="[rules.isRequired]",
+            //-  tabIndex="7",
+            //-  key="post"
+            //-  )
         er-row
-          er-flex(xs6)
+          er-flex.mb-32(xs6)
             er-text-field(
               label="Юридический адрес",
               v-model="modelData.addressCompany",
@@ -58,14 +61,14 @@ div.px-32.py-64(:class="`${pre}`")
               key="addressCompany"
               )
           er-flex(xs6)
-            er-text-field(
-              label="Должность в род. падеже",
-              v-model="modelData.gPost",
-              :rules="[rules.isRequired]",
-              tabIndex="8",
-              key="gPost"
-              )
-        er-row
+            //-er-text-field(
+            //-  label="Должность в род. падеже",
+            //-  v-model="modelData.gPost",
+            //-  :rules="[rules.isRequired]",
+            //-  tabIndex="8",
+            //-  key="gPost"
+            //-  )
+        er-row.mb-32
           template(v-if="isEntity")
             er-flex(xs6)
               er-text-field(
@@ -106,23 +109,23 @@ div.px-32.py-64(:class="`${pre}`")
                 key="departmentCode"
                 )
           er-flex(xs3)
-            er-text-field(
-              label="Фамилия",
-              v-model="modelData.surname",
-              :rules="[rules.isRequired]",
-              tabIndex="9",
-              key="surname",
-              @blur="onBlurFIO"
-              )
+            //er-text-field(
+            //  label="Фамилия",
+            //  v-model="modelData.surname",
+            //  :rules="[rules.isRequired]",
+            //  tabIndex="9",
+            //  key="surname",
+            //  @blur="onBlurFIO"
+            //  )
           er-flex(xs3)
-            er-text-field(
-              label="Фамилия в род. падеже (автоматически)",
-              v-model="modelData.gSurname",
-              :rules="[rules.isRequired]",
-              tabIndex="10",
-              key="gSurname",
-              readonly
-              )
+            //er-text-field(
+            //  label="Фамилия в род. падеже (автоматически)",
+            //  v-model="modelData.gSurname",
+            //  :rules="[rules.isRequired]",
+            //  tabIndex="10",
+            //  key="gSurname",
+            //  readonly
+            //  )
         er-row
           template(v-if="!isEntity")
             er-flex(xs6)
@@ -134,64 +137,64 @@ div.px-32.py-64(:class="`${pre}`")
                 key="passportIssuedBy"
                 )
           er-flex(xs3, :offset-xs6="isEntity")
-            er-text-field(
-              label="Имя",
-              v-model="modelData.name",
-              :rules="[rules.isRequired]",
-              tabIndex="11",
-              key="name",
-              @blur="onBlurFIO"
-              )
+            //er-text-field(
+            //  label="Имя",
+            //  v-model="modelData.name",
+            //  :rules="[rules.isRequired]",
+            //  tabIndex="11",
+            //  key="name",
+            //  @blur="onBlurFIO"
+            //  )
           er-flex(xs3)
-            er-text-field(
-              label="Имя в род. падеже (автоматически)",
-              v-model="modelData.gName",
-              :rules="[rules.isRequired]",
-              tabIndex="12",
-              key="gName",
-              readonly
-              )
+            //er-text-field(
+            //  label="Имя в род. падеже (автоматически)",
+            //  v-model="modelData.gName",
+            //  :rules="[rules.isRequired]",
+            //  tabIndex="12",
+            //  key="gName",
+            //  readonly
+            //  )
         er-row
           er-flex(xs3, offset-xs6)
-            er-text-field(
-              label="Отчество",
-              v-model="modelData.patronymic",
-              :rules="[rules.isRequired]",
-              tabIndex="13",
-              key="patronymic",
-              @blur="onBlurFIO"
-              )
+            //er-text-field(
+            //  label="Отчество",
+            //  v-model="modelData.patronymic",
+            //  :rules="[rules.isRequired]",
+            //  tabIndex="13",
+            //  key="patronymic",
+            //  @blur="onBlurFIO"
+            //  )
           er-flex(xs3)
-            er-text-field(
-              label="Отчество в род. падеже (автоматически)",
-              v-model="modelData.gPatronymic",
-              :rules="[rules.isRequired]",
-              tabIndex="14",
-              key="gPatronymic",
-              readonly
-              )
+            //er-text-field(
+            //  label="Отчество в род. падеже (автоматически)",
+            //  v-model="modelData.gPatronymic",
+            //  :rules="[rules.isRequired]",
+            //  tabIndex="14",
+            //  key="gPatronymic",
+            //  readonly
+            //  )
         er-row
           er-flex(xs3 offset-xs6)
-            er-text-field(
-              label="Номер телефона"
-              v-model="modelData.phoneNumber"
-              :rules="[rules.isRequired]"
-              tabIndex="15"
-              key="phoneNumber",
-              mask="+7 999 999 9999"
-            )
+            //er-text-field(
+            //  label="Номер телефона"
+            //  v-model="modelData.phoneNumber"
+            //  :rules="[rules.isRequired]"
+            //  tabIndex="15"
+            //  key="phoneNumber",
+            //  mask="+7 999 999 9999"
+            //)
         er-row
-          er-flex(xs6, offset-xs6)
-            .file-input
-              .top(v-show="!issetFile") Для подтверждения права подписи
-              label(
-                :class="{ 'success': issetFile, 'error': !isValidFile }"
-              )
-                input(type="file" @change="onChangeFile")
-                | {{ issetFile ? getFileName : 'загрузите скан документа' }}
-              .description(v-show="!issetFile" :class="{ 'error': !isValidFile }")
-                template(v-if="isValidFile")
-                  | Это может быть: Устав предприятия, Доверенность. Размер файла не должен превыщать 2Мб. Формат: JPG, PNG, PDF
-                template(v-else)
-                  | Документ не загружен
+          //er-flex(xs6, offset-xs6)
+          //  .file-input
+          //    .top(v-show="!issetFile") Для подтверждения права подписи
+          //    label(
+          //      :class="{ 'success': issetFile, 'error': !isValidFile }"
+          //    )
+          //      input(type="file" @change="onChangeFile")
+          //      | {{ issetFile ? getFileName : 'загрузите скан документа' }}
+          //    .description(v-show="!issetFile" :class="{ 'error': !isValidFile }")
+          //      template(v-if="isValidFile")
+          //        | Это может быть: Устав предприятия, Доверенность. Размер файла не должен превыщать 2Мб. Формат: JPG, PNG, PDF
+          //      template(v-else)
+          //        | Документ не загружен
   er-error-modal

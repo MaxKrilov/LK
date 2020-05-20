@@ -99,3 +99,5 @@ common-document(
         :is-show-action-button="false"
         cancel-button-text="Понятно"
       )
+        template(slot="description")
+          | {{ cancelErrorText }}
