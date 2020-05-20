@@ -172,6 +172,15 @@ export default class DigitalSigningDocument extends Vue {
     //   return false
     // }
     // Смена статуса
+    if (this.signingDocument?.letterOfGuarantee?.toLowerCase() === 'yes') {
+      this.internalValue = false
+      this.isSigningDocument = false
+      this.linkDownload = `data:${mime.lookup(this.signingDocument.fileName)};base64,${_signDocument}`
+      this.isShowListCertificateDialog = false
+      this.isSuccess = true
+      this.$emit('success')
+      return
+    }
     const _changeStatusResult = await this.$store.dispatch(`fileinfo/changeContractStatus`, {
       api: this.$api,
       contractId: this.signingDocument.relatedTo.id,
