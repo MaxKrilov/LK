@@ -125,7 +125,6 @@ export default class DigitalSigningDocument extends Vue {
           `Плагин недоступен или не установлен! 
             Убедитесь в правильности работы плагина или <a href="https://www.cryptopro.ru/" target="_blank">установите</a> его`
         )
-        throw Error
       })
   }
 

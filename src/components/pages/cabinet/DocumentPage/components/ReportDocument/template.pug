@@ -19,7 +19,7 @@ common-document(
     h3.er-document__content {{ document.type.id | typeName }}
 
     .document-date.caption2
-      | {{ document.attachmentName }}
+      | {{ document.attachmentName | attachName }}
 
   template(v-slot:footer)
     er-document-viewer(
