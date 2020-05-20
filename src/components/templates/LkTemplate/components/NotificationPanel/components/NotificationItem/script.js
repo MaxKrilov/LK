@@ -220,9 +220,7 @@ export default {
         })
     },
     getDateTime () {
-      const date = this.notification.date
-      const moment = this.$moment(date)
-      return moment
+      return this.notification.date
     },
     getDate () {
       return this.getDateTime().format('DD.MM.YYYY')

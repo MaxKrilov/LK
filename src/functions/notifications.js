@@ -7,6 +7,7 @@ import {
   T_PPR,
   T_PPR_CODE
 } from '@/constants/campaign.ts'
+import moment from 'moment'
 import { strToTimestampInMs } from '@/functions/date'
 
 function getNotificationType (communicationType) {
@@ -51,8 +52,9 @@ function campaignShitToNotification (campaign) {
 
   // local function
   const dateConvert = str => {
-    const date = new Date(strToTimestampInMs(str))
-    return date
+    const mdate = moment(strToTimestampInMs(str))
+    mdate.utcOffset(0)
+    return mdate
   }
 
   const { data } = campaign
