@@ -105,7 +105,7 @@ $notification-link-margin: 56px;
     margin-top: $padding-x4;
 
     .slide-up-down-activator {
-      display: inline-block;
+      display: inline-flex;
       @extend %caption2-font;
       @include color-black(.5);
 
@@ -113,12 +113,6 @@ $notification-link-margin: 56px;
         @extend %notification-item-action;
 
         margin-right: $padding-x1;
-      }
-
-      .er-icon {
-        svg {
-          width: 16px;
-        }
       }
     }
   }

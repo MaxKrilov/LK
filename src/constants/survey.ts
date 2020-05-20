@@ -9,6 +9,13 @@ const QUESTION_NOT_REQUIRED = MANDATORY_02
 
 const QUESTION_SENDED = 'Отправлен'
 const QUESTION_CANCELED = 'Отменен'
+const QUESTION_TYPES = {
+  NPS_INDEX: 'Индекс NPS',
+  TEXT: 'Произвольный Ответ',
+  CSAT_INDEX: 'Индекс CSAT',
+  LIST: 'Список'
+}
+const QUESTION_TYPE_TEXT = QUESTION_TYPES.TEXT
 
 // анкета пройдена
 const SURVEY_STATUS_DONE = 'Отвечен'
@@ -22,7 +29,6 @@ const SURVEY_STATUS_SENDED = 'Отправлен'
 const SURVEY_PUTOFF_DAYS = 10
 
 const SURVEY_MAX_POSTPONED_TIMES = 3
-const QUESTION_TYPE_TEXT = 'Произвольный Ответ'
 
 export {
   SHOW_IN_SSP_EN,
@@ -33,6 +39,7 @@ export {
   QUESTION_TYPE_TEXT,
   QUESTION_NOT_REQUIRED,
   QUESTION_IS_REQUIRED,
+  QUESTION_TYPES,
   SURVEY_STATUS_CANCELED,
   SURVEY_STATUS_DONE,
   SURVEY_STATUS_OPENED,

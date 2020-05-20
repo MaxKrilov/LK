@@ -56,9 +56,10 @@
       v-if="isLongDescription || isPPR"
       @click="onShowDescription"
     )
-      template(v-if="showDescription")
-        span.slide-up-down-activator__label Свернуть
-        er-icon(name="corner_up")
-      template(v-else)
-        span.slide-up-down-activator__label Подробнее
-        er-icon(name="corner_down")
+      span.slide-up-down-activator__label
+        template(v-if="showDescription")
+          | Свернуть
+        template(v-else)
+          | Подробнее
+
+      er-corner-button(:value="showDescription")

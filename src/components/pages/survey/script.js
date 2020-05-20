@@ -62,22 +62,16 @@ export default {
       actualSurveyCount: 'survey/getActualSurveyCount',
       allActualSurveyCount: 'survey/getAllActualSurveyCount'
     }),
-    async actualSurveyCount () {
-      // кол-во актуальных анкет кроме текущей
-      const filteredSurveyList = await this.allActualSurveyList
-      return filteredSurveyList.filter(
-        el => el.id !== this.id
-      ).length > 0
-    },
     maxPage () {
       const count = this.survey.surveyQuestion.length
       return count
     },
-    isQuestionVisibleInSSP () {
-      return questionIsVisibleInSSP(this.getCurrentQuestion())
+    async isQuestionVisibleInSSP () {
+      const result = await questionIsVisibleInSSP(this.getCurrentQuestion())
+      return result
     },
-    isNextActive () {
-      const currentQuestion = this.getCurrentQuestion()
+    async isNextActive () {
+      const currentQuestion = await this.getCurrentQuestion()
       const isRequired = isRequiredQuestion(currentQuestion)
       return !isRequired || this.isAnswerSelected
     },
@@ -169,8 +163,9 @@ export default {
 
       this.getSurveyByClient({ api: this.$api })
     },
-    getCurrentQuestion () {
-      return this.survey.surveyQuestion[this.currentQuestionIndex]
+    async getCurrentQuestion () {
+      const survey = await this.survey
+      return survey.surveyQuestion[this.currentQuestionIndex]
     },
     onQuestionSelected (answer) {
       this.isAnswerSelected = true
