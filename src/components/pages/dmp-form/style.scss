@@ -59,4 +59,13 @@
       margin-top: 20px;
     }
   }
+  .loading-client-info {
+    @extend %h3;
+    &::after {
+      content: '';
+      display: inline-block;
+      animation: waitDots 1s;
+      animation-iteration-count: infinite;
+    }
+  }
 }

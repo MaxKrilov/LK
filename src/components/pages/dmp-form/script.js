@@ -7,8 +7,10 @@ import { CyrName } from '../../../functions/declination'
 import { ERROR_MODAL } from '../../../store/actions/variables'
 import ErErrorModal from '../../blocks/ErErrorModal'
 import { GET_CLIENT_INFO, UPDATE_CLIENT_INFO } from '../../../store/actions/user'
-import { mapGetters } from 'vuex'
+import { mapGetters, mapState } from 'vuex'
 import { ATTACH_SIGNED_DOCUMENT, UPLOAD_FILE } from '../../../store/actions/documents'
+
+const EXTENDED_MAP_INN = '9148328342013670726'
 
 export default {
   name: 'dmp-form-page',
@@ -49,8 +51,20 @@ export default {
     rules: {
       isRequired: value => !!value || 'Поле обязательно к заполнению'
     },
-    loadingInn: false
+    loadingInn: false,
+    loadingInnScreen: false
   }),
+  watch: {
+    INN (val) {
+      if (val) {
+        this.modelINN = val
+        this.loadingInnScreen = true
+        this.$nextTick(() => {
+          this.submitInn()
+        })
+      }
+    }
+  },
   computed: {
     issetFile () {
       return !!this.modelData.file
@@ -58,11 +72,21 @@ export default {
     getFileName () {
       return this.issetFile ? this.modelData.file.name : false
     },
-    ...mapGetters('auth', ['user'])
+    ...mapGetters('auth', ['user']),
+    ...mapState({
+      clientInfo: state => state.user.clientInfo,
+      loadingClientInfo: state => state.loading.clientInfo
+    }),
+    INN () {
+      return this.clientInfo.extendedMap && this.clientInfo.extendedMap[EXTENDED_MAP_INN] &&
+        this.clientInfo.extendedMap[EXTENDED_MAP_INN].singleValue
+        ? this.clientInfo.extendedMap[EXTENDED_MAP_INN].singleValue.attributeValue
+        : false
+    }
   },
   methods: {
     submitInn (e) {
-      e.preventDefault()
+      e && e.preventDefault()
       if (!this.$refs.inn_form.validate()) {
         return false
       }
@@ -87,6 +111,7 @@ export default {
         })
         .finally(() => {
           this.loadingInn = false
+          this.loadingInnScreen = false
         })
     },
     onBlurDepartmentCode () {
@@ -99,13 +124,13 @@ export default {
         })
     },
     async __actionSubmit () {
-      const formValid = this.$refs.form.validate()
-      const fileValid = this.modelData.file !== null
-      if (!fileValid) {
-        this.isValidFile = false
-        return false
-      }
-      if (!formValid) return false
+      if (!this.$refs.form.validate()) return
+      // const fileValid = this.modelData.file !== null
+      // if (!fileValid) {
+      //   this.isValidFile = false
+      //   return false
+      // }
+      // if (!formValid) return false
       // Изменяем данные клиента
       const editData = {
         inn: this.modelINN,
@@ -126,48 +151,48 @@ export default {
         return false
       }
       // Создаём контакт с ролью "Лицо, имеющее право подписи"
-      const contactData = {
-        position: this.modelData.post,
-        gPosition: this.modelData.gPost,
-        name: this.modelData.name,
-        gName: this.modelData.gName,
-        surname: this.modelData.surname,
-        gSurname: this.modelData.gSurname,
-        patronymic: this.modelData.patronymic,
-        gPatronymic: this.modelData.gPatronymic,
-        phone: this.modelData.phoneNumber
-      }
-      const responseContact = await this.$store.dispatch('contacts/createSignContact', { api: this.$api, data: contactData })
-      if (!responseContact) {
-        this.$store.commit(ERROR_MODAL, true)
-        return false
-      }
-      const responseRole = await this.$store.dispatch('contacts/createContactRole', { api: this.$api })
-      if (!responseRole) {
-        this.$store.commit(ERROR_MODAL, true)
-        return false
-      }
-      const fileBlob = await (await fetch(this.modelData.file)).blob()
-      const filePath = this.$moment.utc().format('YYYY-MM-DD_HH:mm') + '/' + this.user.toms
-      const fileData = {
-        api: this.$api,
-        bucket: 'customer-docs',
-        file: fileBlob,
-        fileName: this.getFileName,
-        filePath,
-        type: '9154452676313182650',
-        relatedTo: this.user.toms
-      }
-      const sendFile = await this.$store.dispatch('documents/' + UPLOAD_FILE, fileData)
-      if (!sendFile) {
-        this.$store.commit(ERROR_MODAL, true)
-        return false
-      }
-      const connectFileToClient = await this.$store.dispatch('documents/' + ATTACH_SIGNED_DOCUMENT, fileData)
-      if (!connectFileToClient) {
-        this.$store.commit(ERROR_MODAL, true)
-        return false
-      }
+      // const contactData = {
+      //   position: this.modelData.post,
+      //   gPosition: this.modelData.gPost,
+      //   name: this.modelData.name,
+      //   gName: this.modelData.gName,
+      //   surname: this.modelData.surname,
+      //   gSurname: this.modelData.gSurname,
+      //   patronymic: this.modelData.patronymic,
+      //   gPatronymic: this.modelData.gPatronymic,
+      //   phone: this.modelData.phoneNumber
+      // }
+      // const responseContact = await this.$store.dispatch('contacts/createSignContact', { api: this.$api, data: contactData })
+      // if (!responseContact) {
+      //   this.$store.commit(ERROR_MODAL, true)
+      //   return false
+      // }
+      // const responseRole = await this.$store.dispatch('contacts/createContactRole', { api: this.$api })
+      // if (!responseRole) {
+      //   this.$store.commit(ERROR_MODAL, true)
+      //   return false
+      // }
+      // const fileBlob = await (await fetch(this.modelData.file)).blob()
+      // const filePath = this.$moment.utc().format('YYYY-MM-DD_HH:mm') + '/' + this.user.toms
+      // const fileData = {
+      //   api: this.$api,
+      //   bucket: 'customer-docs',
+      //   file: fileBlob,
+      //   fileName: this.getFileName,
+      //   filePath,
+      //   type: '9154452676313182650',
+      //   relatedTo: this.user.toms
+      // }
+      // const sendFile = await this.$store.dispatch('documents/' + UPLOAD_FILE, fileData)
+      // if (!sendFile) {
+      //   this.$store.commit(ERROR_MODAL, true)
+      //   return false
+      // }
+      // const connectFileToClient = await this.$store.dispatch('documents/' + ATTACH_SIGNED_DOCUMENT, fileData)
+      // if (!connectFileToClient) {
+      //   this.$store.commit(ERROR_MODAL, true)
+      //   return false
+      // }
       this.$store.dispatch(`user/${GET_CLIENT_INFO}`, { api: this.$api })
       return true
     },
@@ -176,6 +201,7 @@ export default {
       this.__actionSubmit()
     },
     async listenersDMP (e) {
+      if (e.data !== 'saveForm') return
       const resultSubmit = await this.__actionSubmit()
       if (!this.isInputInn && resultSubmit) {
         window.top.postMessage({ eventType: 'ertUserForm', state: 'registered' }, '*')

@@ -18,7 +18,8 @@ export default {
     isOpenViewer: false,
     isOpenConfirm: false,
     isCancelSuccess: false,
-    isCancelError: false
+    isCancelError: false,
+    cancelErrorText: ''
   }),
   components: {
     CommonDocument,
@@ -119,10 +120,20 @@ export default {
       })
         .then(result => {
           this.isOpenConfirm = false
-          if (result) {
+          if (!result || !result.submit_statuses) {
+            this.cancelErrorText = ''
+            this.isCancelError = true
+            return
+          }
+          if (result.submit_statuses.submitStatus.toLowerCase() === 'success') {
             this.isCancelSuccess = true
             this.$store.dispatch('fileinfo/downloadListDocument', { api: this.$api })
           } else {
+            if (result.submit_statuses.submitStatus.toLowerCase() === 'not_executed') {
+              this.cancelErrorText = 'Подписаны не все договора'
+            } else {
+              this.cancelErrorText = result.submit_statuses.submitError
+            }
             this.isCancelError = true
           }
         })

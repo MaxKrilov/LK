@@ -36,6 +36,7 @@ export default class ManualSigningDocument extends Vue {
   inProgress: boolean = false
   isSuccess: boolean = false
   isError: boolean = false
+  errorText: string = ''
 
   get internalValue () {
     return this.value
@@ -125,9 +126,22 @@ export default class ManualSigningDocument extends Vue {
               contractId: this.relatedTo,
               status: 1
             })
-              .then(() => {
-                this.successHandler()
-                this.inProgress = false
+              .then((result: any) => {
+                if (!result || !result.submit_statuses) {
+                  this.errorHandler()
+                  return false
+                }
+                if (result.submit_statuses.submitStatus.toLowerCase() === 'success') {
+                  this.successHandler()
+                  this.inProgress = false
+                } else {
+                  if (result.submit_statuses.submitStatus.toLowerCase() === 'not_executed') {
+                    this.errorText = 'Подписаны не все договора'
+                  } else {
+                    this.errorText = result.submit_statuses.submitError
+                  }
+                  this.errorHandler()
+                }
               })
           })
       })

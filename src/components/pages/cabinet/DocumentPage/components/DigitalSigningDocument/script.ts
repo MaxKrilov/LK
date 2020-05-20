@@ -171,7 +171,6 @@ export default class DigitalSigningDocument extends Vue {
     //   this.errorHandler('Ошибка при прикреплении файла в системе')
     //   return false
     // }
-    // Смена статуса
     if (this.signingDocument?.letterOfGuarantee?.toLowerCase() === 'yes') {
       this.internalValue = false
       this.isSigningDocument = false
@@ -181,12 +180,17 @@ export default class DigitalSigningDocument extends Vue {
       this.$emit('success')
       return
     }
+    // Смена статуса
     const _changeStatusResult = await this.$store.dispatch(`fileinfo/changeContractStatus`, {
       api: this.$api,
       contractId: this.signingDocument.relatedTo.id,
       status: 1
     })
-    if (_changeStatusResult) {
+    if (!_changeStatusResult || _changeStatusResult.submit_statuses) {
+      this.errorHandler('Ошибка при прикреплении файла в системе')
+      return false
+    }
+    if (_changeStatusResult.submit_statuses.submitStatus.toLowerCase() === 'success') {
       this.internalValue = false
       this.isSigningDocument = false
       this.linkDownload = `data:${mime.lookup(this.signingDocument.fileName)};base64,${_signDocument}`
@@ -194,8 +198,11 @@ export default class DigitalSigningDocument extends Vue {
       this.isSuccess = true
       this.$emit('success')
     } else {
-      this.errorHandler('Ошибка при прикреплении файла в системе')
-      return false
+      if (_changeStatusResult.submit_statuses.submitStatus.toLowerCase() === 'not_executed') {
+        this.errorHandler('Подписаны не все договора')
+      } else {
+        this.errorHandler(_changeStatusResult.submit_statuses.submitError)
+      }
     }
   }
 }
