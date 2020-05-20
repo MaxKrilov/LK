@@ -15,7 +15,8 @@ export default {
   filters: {
     typeName: val => {
       return TYPE_REPORT.find(item => item.id === val)?.value || 'Неизвестный документ'
-    }
+    },
+    attachName: val => val.replace(/(,[\s]*дог.#\d+)/ig, '')
   },
   components: {
     CommonDocument,
