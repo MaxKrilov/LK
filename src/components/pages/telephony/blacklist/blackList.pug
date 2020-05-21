@@ -1,0 +1,61 @@
+.telephony-blacklist-page
+  .telephony-blacklist-page__content.main-content--top-menu-fix
+    er-page-header(
+      linkText="Назад в Телефонию"
+      title="Чёрный список"
+      backlink="/lk/telephony"
+    )
+    ListPointComponent(:list="addressList" v-model="currentAddress")
+  
+  
+  template(v-if="isLoadingPhones")
+    .telephony-blacklist-page__phones
+      blackListCard(:isLoading="isLoadingPhones")
+      blackListCard(:isLoading="isLoadingPhones")
+      blackListCard(:isLoading="isLoadingPhones")
+  
+  
+  template(v-if="!isLoading && blackList.length")
+    .telephony-blacklist-page__phones
+      blackListCard(v-for="item in blackList" :data="item" :key="item.id" @update="update")
+      .telephony-blacklist-page__button
+        er-button(color="blue" v-if="freePhonesList.length && !isConnectNewBlackList" @click="isConnectNewBlackList = true") Добавить черный список
+  .telephony-blacklist-page__content.main-content--top-menu-fix(v-if="isConnectNewBlackList")
+    h2 Новый черный список на номер:
+    .telephony-blacklist-page__plug(v-for="phone in freePhonesList")
+      .telephony-blacklist-page__plug__item
+        er-toggle(
+          type="radio"
+          view="radio-check"
+          :value="phone.id"
+          v-model="selectedNewPhones"
+          :label="phone.phone"
+        ) 
+    .telephony-blacklist-page__plug__button
+      er-button(:disabled="!selectedNewPhones" @click="plugBlackList" :loading="creatingOrder") Добавить черный список
+      er-button(flat v-if="blackList.length" @click="isConnectNewBlackList=false") Отмена
+  
+  er-activation-modal(
+    type="question"
+    v-model="isShowModal"
+    title="Вы уверены, что хотите подключить на номере услугу черный список?"
+    @confirm="sendOrder"
+    @close="cancelOrder"
+    :isLoadingConfirm="sendingOrder"
+    actionButtonText="Подключить"
+  )
+  er-activation-modal(
+    type="error"
+    v-model="isShowErrorModal"
+    title="Ошибка"
+    cancel-button-text="Закрыть"
+    :isShowActionButton="false"
+  )
+  er-activation-modal(
+    type="success"
+    v-model="isShowSuccessModal"
+    title="Заказ создан успешно"
+    :isShowActionButton="false"
+    cancel-button-text="Спасибо"
+  )
+      

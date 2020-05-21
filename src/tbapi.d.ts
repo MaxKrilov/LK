@@ -450,6 +450,14 @@ export interface ISaleOrder {
   }]
 }
 
+export interface IOrderItem {
+  action: string
+  chars: any
+  customerProductId?: string
+  id: string
+  orderItems: IOrderItem[]
+  parentId: string
+}
 export interface ISurveyQuestion {
   id: string
   orderNumber: string // number in string

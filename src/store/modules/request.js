@@ -192,7 +192,7 @@ const actions = {
     }
     try {
       return await api
-        .setData({ clientId, locationId })
+        .setData(data)
         .query('/customer/product/client')
     } catch (e) {
       return []

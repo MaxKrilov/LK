@@ -1,0 +1,46 @@
+.telephony-blacklist-page {
+  &__content {
+    @extend %main-content-padding-top;
+    @extend %main-content-width;
+    @extend %main-content-padding-h;
+  }
+
+  &__phones {
+    @extend %main-content-width;
+  }
+
+  &__button {
+    @extend %main-content-padding-top;
+    @extend %main-content-padding-h;
+
+    @include min-breakpoint("sm") {
+      width: 60%;
+    }
+
+    @include min-breakpoint("lg") {
+      width: 33%;
+    }
+  }
+
+  &__plug {
+    &__button {
+      margin-top: 32px;
+      display: grid;
+      grid-gap: 8px;
+
+      @include min-breakpoint("sm") {
+        grid-gap: 16px;
+        grid-template-columns: 1fr 1fr;
+      }
+
+      @include min-breakpoint("md") {
+        grid-template-columns: 30% 30%;
+        margin-top: 40px;
+      }
+
+      @include min-breakpoint("lg") {
+        grid-gap: 24px;
+      }
+    }
+  }
+}

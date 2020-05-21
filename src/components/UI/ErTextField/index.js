@@ -23,6 +23,10 @@ export default {
     isShowLabelRequired: Boolean,
     labelChanged: String,
     disabled: Boolean,
+    isHideMask: {
+      type: Boolean,
+      default: true
+    },
     mask: String,
     id: {
       type: String,
@@ -194,7 +198,7 @@ export default {
         return false
       }
       let data = {}
-      data['jitMasking'] = true
+      data['jitMasking'] = this.isHideMask
       switch (mask) {
         case 'phone':
           mask = '+7 (999) 999-99-99'

@@ -8,7 +8,7 @@ import { ERROR_MODAL } from '../../../store/actions/variables'
 import ErErrorModal from '../../blocks/ErErrorModal'
 import { GET_CLIENT_INFO, UPDATE_CLIENT_INFO } from '../../../store/actions/user'
 import { mapGetters, mapState } from 'vuex'
-import { ATTACH_SIGNED_DOCUMENT, UPLOAD_FILE } from '../../../store/actions/documents'
+// import { ATTACH_SIGNED_DOCUMENT, UPLOAD_FILE } from '../../../store/actions/documents'
 
 const EXTENDED_MAP_INN = '9148328342013670726'
 

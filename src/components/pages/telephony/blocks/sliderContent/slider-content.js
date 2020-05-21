@@ -1,6 +1,7 @@
 import BreakpointMixin from '@/mixins/BreakpointMixin'
 import ConnectedPhone from '../ConnectedPhone'
 import moment from 'moment'
+import { CODE_PHONE, CODE_PHONE_VPN } from '@/constants/product-code'
 
 export default {
   name: 'slider-content',
@@ -32,10 +33,11 @@ export default {
   },
   computed: {
     phones () {
-      return this.slo.filter(el => el.id === '4557').map(el => {
+      return this.slo.filter(el => el.code === CODE_PHONE || el.code === CODE_PHONE_VPN).map(el => {
         return {
           number: el.chars['Номер телефона'],
-          price: el?.purchasedPrices?.recurrentTotal?.value
+          price: el?.purchasedPrices?.recurrentTotal?.value,
+          productId: el?.productId
         }
       })
     },

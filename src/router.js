@@ -93,7 +93,7 @@ import SurveyPage from './components/pages/survey/index'
 import TelephonyTemplate from './components/pages/telephony/TelephonyTemplate'
 import TelephonyStatisticPage from './components/pages/telephony/statistic/index'
 import TelephonyRedirectionsPage from './components/pages/telephony/redirection/index'
-import TelephonyBlacklistPage from './components/pages/telephony/blacklist/index'
+import TelephonyBlacklistPage from '@/components/pages/telephony/blacklist/index'
 
 // Страницы с ошибками
 import OldBrowserPage from './components/pages/errors/old-browsers'

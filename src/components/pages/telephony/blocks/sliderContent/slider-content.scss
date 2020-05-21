@@ -50,6 +50,9 @@
     &__tariff,
     &__date {
       padding-left: 8px;
+      @include min-breakpoint("md") {
+        padding-left: 16px;
+      }
     }
 
     &__info-wrapper {

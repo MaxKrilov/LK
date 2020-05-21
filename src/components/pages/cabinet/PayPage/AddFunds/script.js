@@ -4,7 +4,7 @@ import Confirm from '../components/Confirm/index.vue'
 import { mapGetters, mapState } from 'vuex'
 import { SCREEN_WIDTH } from '@/store/actions/variables'
 import { PATTERN_EMAIL } from '@/constants/regexp'
-import {roundUp} from '../../../../../functions/helper'
+import { roundUp } from '../../../../../functions/helper'
 
 export default {
   name: 'add-funds',

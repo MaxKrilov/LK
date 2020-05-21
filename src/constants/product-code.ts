@@ -1,0 +1,5 @@
+export const CODE_PHONE_VPN = 'PHNUMBVN'
+export const CODE_PHONE = 'PHNUMBUNCM'
+export const CODE_PHONE_CHANNEL = 'SERSELCHAN'
+export const CODE_BLACKLIST = 'BLACKLIST'
+export const CODE_CALLFORWRD = 'CALLFORWRD'

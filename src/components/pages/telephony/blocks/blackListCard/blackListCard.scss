@@ -1,0 +1,320 @@
+.black-list-card {
+  margin: 0 -12px;
+
+  @include min-breakpoint("md") {
+    margin: 0 24px;
+  }
+
+  @include min-breakpoint("lg") {
+    margin: 0 32px;
+  }
+
+  @include min-breakpoint("xl") {
+    margin: 0 24px;
+  }
+
+  &__caption1 {
+    @extend %caption1;
+  }
+
+  &__caption2 {
+    @extend %caption2;
+    white-space: nowrap;
+  }
+
+  &__h4 {
+    @extend %h4;
+  }
+
+  &__point-content {
+    background: map_get($gray, "9");
+    display: flex;
+    overflow: hidden;
+    transition: 0.15s ease-in;
+    border-radius: inherit;
+  }
+
+  &__icon {
+    opacity: 0.2;
+    width: 24px;
+  }
+
+  &__number {
+    padding-top: 4px;
+  }
+
+  &__title {
+    padding-left: 8px;
+
+    @include min-breakpoint("md") {
+      padding-left: 16px;
+    }
+  }
+
+  &__remove-icon {
+    &:hover {
+      .text {
+        @include color-black(0.8);
+      }
+      /deep/svg {
+        @include color-black(0.5);
+      }
+    }
+    /deep/svg {
+      transition: 300ms;
+      @include color-black(0.2);
+    }
+
+    display: flex;
+    align-items: center;
+
+    .text {
+      @extend %caption1;
+      transition: 300ms;
+      @include max-breakpoint("sm") {
+        display: none;
+      }
+    }
+  }
+
+  &__count {
+    cursor: pointer;
+    padding-left: 16px;
+    padding-right: 8px;
+    @extend %caption2;
+
+    @include min-breakpoint("sm") {
+      padding-left: 32px;
+    }
+
+    @include min-breakpoint("lg") {
+      padding-left: 64px;
+    }
+
+    .text {
+      @include max-breakpoint("sm") {
+        display: none;
+      }
+    }
+  }
+
+  &__corner {
+    cursor: pointer;
+    opacity: 0.2;
+    width: 24px;
+  }
+
+  &__active-line {
+    width: 20px;
+    opacity: 0;
+    background-color: map_get($yellow, "base");
+    margin-right: -4px;
+
+    @include min-breakpoint("md") {
+      width: 8px;
+    }
+  }
+
+  &__point-item {
+    cursor: pointer;
+    overflow: hidden;
+    margin-bottom: $padding-x1;
+    border-radius: 12px;
+    box-shadow: 0 12px 16px rgba(map_get($shades, "black"), 0), 0 2px 12px rgba(map_get($shades, "black"), 0.1),
+      0 2px 2px rgba(map_get($shades, "black"), 0.05);
+    transition: 0.15s ease-in;
+    background: linear-gradient(to top, map_get($gray, "26") 28.65%, map_get($shades, "white") 90.63%);
+    padding: 1px;
+  }
+
+  .active {
+    position: relative;
+
+    .black-list-card__point-content {
+      background-color: map-get($shades, 'white');
+    }
+
+    .black-list-card__active-line {
+      opacity: 1;
+    }
+  }
+
+  &__point-item:hover {
+    position: relative;
+    box-shadow: 0 12px 16px rgba(map_get($shades, "black"), 0.1), 0 12px 16px rgba(map_get($shades, "black"), 0),
+      0 2px 2px rgba(map_get($shades, "black"), 0);
+    background: map_get($shades, "white");
+
+    .black-list-card__point-content {
+      background: map_get($shades, "white");
+    }
+  }
+
+
+  &__point-wrapper {
+    display: grid;
+    grid-template-columns: auto 1fr auto auto auto;
+    width: 100%;
+    align-items: center;
+    padding-right: $padding-x3;
+    padding-left: 24px;
+    padding-top: 20px;
+    padding-bottom: $padding-x4;
+
+    @include media-query((padding-left: (sm: 24px,
+          md: 16px),
+        padding-bottom: (md: 16px),
+        padding-top: (md: 16px),
+        padding-right: (sm: $padding-x6,
+          md: 16px,
+          xl: $padding-x8)));
+  }
+
+  &__slider {
+    margin: 0 10px;
+    padding-bottom: 24px;
+    padding-top: 32px;
+    background: map_get($gray, "2");
+
+    @include min-breakpoint("md") {
+      border-radius: 0 0 20px 20px;
+      padding-bottom: 32px;
+    }
+  }
+
+  &__table {
+    &__row {
+      padding: 10px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: map_get($gray, "3");
+
+      @include min-breakpoint("sm") {
+        padding: 10px 24px;
+      }
+
+      &:nth-child(odd) {
+        background: map_get($gray, "9");
+
+      }
+
+      .phone {
+        @include color-black(.8)
+      }
+
+      .delete-button {
+
+        /deep/ .er-input__slot {
+          min-height: 20px !important;
+        }
+      }
+    }
+  }
+
+  &__add-numbers {
+    margin-top: 32px;
+    margin-left: 16px;
+    margin-right: 16px;
+
+    @include min-breakpoint("md") {
+      margin-top: 40px;
+    }
+
+    &__list {
+      margin-bottom: 16px;
+      margin-top: 16px;
+
+      @include min-breakpoint("md") {
+        margin-bottom: 24px;
+        margin-top: 24px;
+      }
+      &__delete {
+        cursor: pointer;
+      }
+      .item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: 8px;
+
+        /deep/svg {
+          @include color-black(0.2);
+          width: 16px;
+        }
+      }
+    }
+
+    &__form {
+      display: grid;
+      grid-gap: 16px;
+      align-items: center;
+      grid-template-columns: 1fr 20px 40px;
+      /deep/.er-text-field__success-icon {
+        display: none;
+      }
+      @include min-breakpoint("sm") {
+        grid-template-columns: 50% 20px auto;
+        align-content: center;
+      }
+
+      @include min-breakpoint("md") {
+        grid-gap: 24px;
+      }
+      @include min-breakpoint("lg") {
+        width: 70%;
+      }
+
+      .hint {
+        justify-self: center;
+
+      }
+
+      &__button {
+        @include min-breakpoint("sm") {
+          margin-left: 16px;
+        }
+
+        .text {
+          @include max-breakpoint("sm") {
+            display: none;
+          }
+
+        }
+
+        @include max-breakpoint("sm") {
+          /deep/.er-button__icon--prev {
+            margin-right: 0;
+          }
+        }
+
+        /deep/svg {
+          @include color-black(0.2);
+        }
+
+
+      }
+    }
+  }
+
+  .button {
+    margin: 0 16px;
+    margin-top: 32px;
+    display: grid;
+    grid-gap: 8px;
+
+    @include min-breakpoint("sm") {
+      grid-gap: 16px;
+      grid-template-columns: 1fr 1fr;
+    }
+
+    @include min-breakpoint("md") {
+      grid-template-columns: 30% 30%;
+      margin-top: 40px;
+    }
+
+    @include min-breakpoint("lg") {
+      grid-gap: 24px;
+    }
+  }
+}

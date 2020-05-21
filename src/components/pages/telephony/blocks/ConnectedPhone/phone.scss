@@ -1,6 +1,5 @@
 .connected-phone {
   transition: $primary-transition;
-  cursor: pointer;
   border-bottom: solid 1px;
   border-color: rgba(map-get($shades, "black"), 0.2);
   &__h4 {
@@ -48,6 +47,7 @@
     min-width: 75px;
   }
   &__icon-more {
+    cursor: pointer;
     padding-right: 8px;
     .er-icon {
       svg {

@@ -88,20 +88,22 @@ const mutations = {
       }
       return rec(data, rec, 0)
     }
-    const res = [...payload].map(el => {
-      const orderItems = transformOrder(el.orderItems)
-      return {
-        status: el?.status,
-        orderItems,
-        cities: el?.cities,
-        id: el?.id,
-        locationIds: el?.locationIds,
-        sequenceNo: el?.sequenceNo,
-        createdWhen: el?.createdWhen,
-        price: el?.price?.recurrentTotal?.value,
-        salesOrderOwner: el?.salesOrderOwner
-      }
-    })
+    const res = [...payload]
+      .filter(el => el?.orderItems)
+      .map(el => {
+        const orderItems = transformOrder(el.orderItems)
+        return {
+          status: el?.status,
+          orderItems,
+          cities: el?.cities,
+          id: el?.id,
+          locationIds: el?.locationIds,
+          sequenceNo: el?.sequenceNo,
+          createdWhen: el?.createdWhen,
+          price: el?.price?.recurrentTotal?.value,
+          salesOrderOwner: el?.salesOrderOwner
+        }
+      })
     state.listOrders = res
     state.cities = [...new Set(payload.reduce((acc, current) => [...acc, ...current.cities], []))]
     state.statuses = [...new Set(res.map(el => el.status))]

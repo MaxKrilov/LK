@@ -3,7 +3,7 @@ import Component from 'vue-class-component'
 import { Watch } from 'vue-property-decorator'
 import { API } from '@/functions/api'
 import * as Document from '@/constants/document'
-const _mime = require('mime-types')
+// const _mime = require('mime-types')
 
 interface IDocumentForDownload {
   id: string | number
@@ -118,8 +118,8 @@ export default class ErDocumentViewer extends Vue {
             resolve('')
           } else if (response instanceof Blob) {
             if (!this.listFile.has(downloadDocument.id.toString())) {
-              this.__toBase64(response, downloadDocument.fileName)
-                .then(base64File => {
+              this.__toBase64(response)
+                .then((base64File: any) => {
                   this.listFile.set(
                     downloadDocument.id.toString(),
                     base64File
@@ -143,7 +143,7 @@ export default class ErDocumentViewer extends Vue {
       document.body.removeChild(tempLink)
     }, 0)
   }
-  __toBase64 (file: Blob, fileName: string) {
+  __toBase64 (file: Blob) {
     // const mime = _mime.lookup(fileName)
     const reader = new FileReader()
     return new Promise<string>((resolve) => {
