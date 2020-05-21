@@ -80,7 +80,7 @@ const actions = {
           dateFrom: fromDate,
           dateTo: toDate,
           productInstance,
-          eventSource: productInstance
+          eventSource: 'INTLIMIT-07042020-032000'
         })
         .query('/billing/packets/events')
         .then(response => resolve(response))
