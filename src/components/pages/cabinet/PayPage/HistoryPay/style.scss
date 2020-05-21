@@ -1,18 +1,9 @@
 .history-pay {
-  //position: relative;
-  //left: -17px;
   &__container-main {
     min-width: 320px;
     margin-left: -16px;
-    margin-top: -14px;
     margin-bottom: -7px;
     @include media-query((
-      margin-top: (
-        sm: -25px,
-        md: -24px,
-        lg: -21px,
-        xl: -23px,
-      ),
       margin-left: (
         sm: -24px,
         md: 0,

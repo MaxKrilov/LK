@@ -1,136 +1,19 @@
 // Filters Pay
 
 div(:class="`${pre}`")
-  div(:class="`${pre}__title`")
-    | Фильтровать
-  er-row.no-gutters(v-if="!isFiltersVisible")
-    div.mr-16( style="cursor: pointer" @click="filtersVisible(true)")
-      er-icon.caption(name="filter_1")
-    div.mr-16.no-gutters(:class="`${pre}__info-row`" @click="filtersVisible(true)")
-      div(:class="`${pre}__infoFilter`")
-        span(:class="`${pre}__infoFilter__date`" v-if="!isFiltersMonthVisible")
-          | {{ datePeriod }}
-        span(:class="`${pre}__infoFilter__date`" v-if="isFiltersMonthVisible")
-          | {{ date }}
-        span(:class="`${pre}__infoFilter__year`" v-if="isFiltersMonthVisible")
-          | {{ year }}
-    div.mr-16.justify-content.between.no-gutters(
-      v-if="isCloseService"
-      :class="`${pre}__info-row`"
-    )
-      div
-        span(:class="`${pre}__infoFilter`" @click="filtersVisible(true)")
-          | {{ typeFindLabel }}
-        span(:class="`${pre}__close`" @click="closeService()")
-          er-icon(name="close")
-    div.justify-content.between.no-gutters(
-      v-if="isCloseTypePay"
-      :class="`${pre}__info-row`"
-    )
-      div
-        span(
-          :class="`${pre}__infoFilter ${pre}__infoFilter__ml${zero}`"
-          @click="filtersVisible(true)"
-        )
-          | {{ typePayLabel }}
-        span(:class="`${pre}__close`" @click="closeTypePay()")
-          er-icon(name="close" :class="`${pre}__close`")
-
-  er-overlay(
-    v-model="openFilterMob"
-    :z-index="6"
-    :class="`${pre}__left`"
+  er-report-filter.mb-64(
+    :period="reportPeriod"
+    :typesFind="typeFind"
+    :servicesOrCities="selected"
+    :typesPay="typePay"
+    :typeFind="firstTypeFind"
+    :servOrCit="typeSelect"
+    :typePay="firstTypePay"
+    @change-period="changePeriod($event)"
+    @change-typeFind="changeType($event)"
+    @change-servOrCit="e => { typeSelect = Object.assign({}, e) }"
+    @change-typePay="e => { firstTypePay = Object.assign({}, e) }"
   )
-
-  div(:class="`${pre}__filter-wrapper__relative`" v-if="isFiltersVisible")
-  div(:class="`${pre}__filter-wrapper`")
-    div(:class="`${pre}__container`" v-if="isFiltersVisible")
-      div.d--flex.align-items-end(:class="`${pre}__back-arr`")
-        div.pb-4(
-          :class="`${pre}__back-main-xs`"
-          @click="filtersVisible(false)"
-        )
-          er-icon(name="left")
-        h3(:class="`${pre}__titleMob`")
-          | Фильтровать платежи
-      er-row.justify-content.between(no-gutters :class="`${pre}__row`")
-        er-flex(xs12 sm6 md5 lg3 xl3 :class="`${pre}__find`")
-          div(:class="`${pre}__select__over`")
-          er-select(
-            :class="`${pre}__typeFind ${pre}__select`"
-            :placeholder="typeFindLabel"
-            :items="typeFind"
-            @input="typeFindValue"
-            v-model="select1"
-          )
-        er-flex(xs12 sm6 md6 lg3 xl3 :class="`${pre}__services`")
-          div.main-content--top-padding(:class="`${pre}__top-padding2`")
-          div(v-if="service")
-            div(:class="`${pre}__select__over${xs1}`")
-            div(:class="`${pre}__services__title`")
-              | Услуга
-            er-select(
-              :class="`${pre}__select`"
-              :placeholder="servicesLabel"
-              :items="services"
-              @input="servicesValue"
-              v-model="select2"
-            )
-          div(v-else)
-            div(:class="`${pre}__select__over${xs1}`")
-            div(:class="`${pre}__services__title`")
-              | Город
-            er-select(
-              :class="`${pre}__select`"
-              :placeholder="cityLabel"
-              :items="cities"
-              @input="citiesValue"
-              v-model="select2"
-            )
-        er-flex(xs12 sm6 md5 lg3 xl3 :class="`${pre}__period`")
-          div.main-content--top-padding(:class="`${pre}__top-padding34`")
-          div(:class="`${pre}__period__title`")
-            | Период
-          er-date-picker(
-            format="DD.MM.YY",
-            v-model="period",
-            @datename="dateName($event)",
-            @yearname="yearName($event)",
-            @input="inp($event)"
-            :periodInfo="periodInfo"
-          )
-        er-flex(xs12 sm6 md6 lg2 xl2 :class="`${pre}__typePay`" @click="visTitleTypePay")
-          div.main-content--top-padding(:class="`${pre}__top-padding34`")
-          div(:class="`${pre}__typePay__over`")
-            div(:class="`${pre}__select__over${xs2}`")
-            div(:class="`${pre}__typePay__title`")
-              | Тип операции
-            er-select(
-              :class="`${pre}__select`"
-              :placeholder="typePayLabel",
-              :items="typePay",
-              @input="typePayValue"
-              v-model="select3"
-            )
-        er-flex(xs1 xl1 :class="`${pre}__close-filter`")
-          er-filter-close(@click="filtersVisible(false)")
-
-        div(:class="`${pre}__container-button`")
-          er-row(no-gutters)
-            er-flex.mt-16.mb-20.d--flex.justify-content-center(xs12)
-              er-icon.mr-8.color--green-base(name="lens" :class="`${pre}__icon-height`")
-              span.caption.color--green-base(:class="`${pre}__icon-span`")
-                | Найдено 2 платежа
-
-            er-flex.mb-8(xs12 sm6 :class="`${pre}__butt-filter`")
-              er-button(type="submit" @click="filtersVisible(false)")
-                | Фильтровать
-
-            er-flex(xs12 sm6 :class="`${pre}__butt-clean`")
-              er-button(type="submit", flat=true, @click="")
-                | Сбросить фильтр
-
-  div(:class="`${pre}__arr__wrapper`")
   div(
     :class="`${pre}__arr${padding} ${pre}__arr${topFilter}`"
     :style="'width: ' + widthContainer"
@@ -142,10 +25,10 @@ div(:class="`${pre}`")
     )
       er-icon(name="corner_down" :class="`${pre}__left_big`")
 
-    div(:class="`${pre}__months-filter1`")
+    div(:class="`${pre}__months-filter-container`" id="bgg")
       div(
         :style="'margin-left: ' + margLeft"
-        :class="`${pre}__months-filter2`"
+        :class="`${pre}__months-filter-move`"
       )
         span(
           v-for="month in typePeriod"
