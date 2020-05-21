@@ -1,12 +1,11 @@
 .add-redirection-form {
-  @extend %main-content-width;
-
   .hint {
     @extend %body;
   }
 
   &__content {
     @extend %main-content-padding-h;
+    @extend %main-content-width;
   }
 
   &__form {
@@ -20,8 +19,76 @@
       margin-top: $padding-x14;
     }
 
+    &__table {
+      width: 100%;
+      background-color: map_get($shades, 'white');
+
+      .item {
+        text-align: center;
+        padding-right: 8px;
+
+        @include min-breakpoint('sm') {
+          padding-right: 24px;
+        }
+      }
+
+      .wrapper {
+        @extend %main-content-width;
+        @extend %main-content-padding-h;
+        @include min-breakpoint('md') {
+          display: flex;
+        }
+
+        padding-top: 16px;
+        padding-bottom: 16px;
+        padding: 16px;
+      }
+
+      .days {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-top: 16px;
+        padding-bottom: 24px;
+
+        @include min-breakpoint('sm') {
+          justify-content: flex-start;
+        }
+
+        @include min-breakpoint('sm') {
+          padding-top: 4px;
+        }
+
+        @include min-breakpoint('md') {
+          padding-right: 48px;
+        }
+      }
+
+      .time {
+        padding-top: 16px;
+        display: flex;
+        align-items: center;
+
+        @include min-breakpoint('sm') {
+          padding-top: 10px;
+        }
+
+        .field {
+          width: 82px;
+        }
+      }
+
+      .line {
+        opacity: .5;
+        padding: 8px;
+      }
+    }
+
     .title {
       @extend %h2;
+      @extend %main-content-padding-h;
+
+      @extend %main-content-width;
     }
 
     .period-select {
@@ -30,6 +97,9 @@
   }
 
   &__actions {
+    @extend %main-content-width;
+    @extend %main-content-padding-h;
+
     margin-top: $padding-x12;
 
     @include min-breakpoint('md') {

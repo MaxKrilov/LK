@@ -1,15 +1,11 @@
 div(:class="`${pre}`" )
-  div(:class="`${pre}__wrapper`" @click="isOpen = !isOpen")
+  div(:class="`${pre}__wrapper`" )
     div(:class="`${pre}__row`")
-      div(:class="`${pre}__icon-more`")
+      div(:class="`${pre}__icon-more`" @click="getMoreInfo")
         er-icon(name="corner_down" :class="{openned: isOpen}")
 
       div(:class="`${pre}__number`")
         | {{ number }}
-      //- div(:class="`${pre}__channels`")
-      //-   er-icon(name="integration")
-      //-   div(:class="`${pre}__channels_text`") Канал связи: &nbsp;
-      //-   div(:class="`${pre}__h4`") 1
       div(:class="`${pre}__price`")
         div(:class="`${pre}__h4`") {{ price }} &nbsp;
         div(:class="`${pre}__units`") ₽/мес
@@ -19,5 +15,5 @@ div(:class="`${pre}`" )
       div(:class="`${pre}__slider`" )
         er-icon(name="stat")
         div(class="statistic") Статистика
-        div(class="channels") Канал связи:
-          span(class="count") 1
+        div(class="channels" v-if="ksi") Канал связи:
+          span(class="count") {{ ksi }}

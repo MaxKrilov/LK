@@ -47,5 +47,8 @@ div(:class="`${pre}`" )
         //-         span(:class="`${pre}__units`") &nbsp; ₽
         //-       er-icon(name="minute_pack")
         div(:class="`${pre}__slider-buttons`")
-          er-button(color="yellow" v-if="!isStopped") Приостановить Телефонию
-          er-button(flat) Отключить Телефонию
+          template(v-if="isStopped")
+            er-button(color="yellow") Восстановить
+          template(v-else)
+            er-button(color="yellow") Приостановить Телефонию
+            er-button(flat) Отключить Телефонию

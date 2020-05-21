@@ -1,4 +1,4 @@
-import {mapActions, mapGetters, mapState} from 'vuex'
+import { mapActions, mapGetters, mapState } from 'vuex'
 import ResponsiveMixin from '@/mixins/ResponsiveMixin'
 import ItemState from './components/State'
 

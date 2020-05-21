@@ -38,15 +38,27 @@ const actions = {
    * @param context
    * @param payload
    */
-  customerProduct (context: ActionContext<IState, any>, payload: { api: API, parentId?: string | number, locationId?: string | number, code?: string }) {
+  customerProduct (context: ActionContext<IState, any>, payload: {
+    api: API,
+    parentId?: string | number,
+    parentIds?: string[]
+    locationId?: string | number,
+    code?: string
+  }) {
     const { toms: clientId } = context.rootGetters['auth/user']
-    const data: any = { clientId, id: clientId }
-    payload.parentId && (data.parentId = payload.parentId)
-    payload.code && (data.code = payload.code)
+    const data: any = { clientId }
+
+    if (payload.parentId) {
+      data.parentId = payload.parentId
+    } else {
+      payload.parentIds && (data.parentIds = payload.parentIds)
+    }
+
     payload.locationId && (data.locationId = payload.locationId)
     return new Promise<ICustomerProduct>((resolve, reject) => {
       payload.api
         .setWithCredentials()
+        .setType(TYPE_ARRAY)
         .setData(data)
         .query('/customer/product/all')
         .then((response: ICustomerProduct) => resolve(response))

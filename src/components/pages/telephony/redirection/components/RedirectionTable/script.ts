@@ -1,23 +1,62 @@
 import { Vue, Component, Prop } from 'vue-property-decorator'
-import CONST from '../../constants'
+import ErActivationModal from '@/components/blocks/ErActivationModal/index.vue'
 
+const components = {
+  ErActivationModal
+}
 @Component({
-  name: 'redirection-table'
+  name: 'redirection-table',
+  components
 })
 export default class RedirectionTable extends Vue {
   @Prop({ type: Array, default: () => ([]) }) readonly list!: any[]
+  deleting:boolean = false
+  isShowDeletModal: boolean = false
+  isShowErrorModal: boolean = false
+  isShowSuccessModal: boolean = false
+  sendingOrderDeleteRedirection: boolean = false
 
-  onClickAdd () {
-    this.$emit('add')
+  onDelete (item: any) {
+    this.deleting = true
+    this.$store.dispatch('salesOrder/createDisconnectOrder',
+      {
+        locationId: item?.tlo?.locationId,
+        bpi: item?.tlo?.bpi,
+        productId: item?.id,
+        disconnectDate: this.$moment().format()
+      })
+      .then(() => {
+        this.isShowDeletModal = true
+      })
+      .catch(() => {
+        this.cancelOrder()
+      })
+      .finally(() => {
+        this.deleting = false
+      })
   }
 
-  getRowCSSClass (row: any): string[] {
-    const cssClass = []
+  cancelOrder () {
+    this.$store.dispatch('salesOrder/cancel')
+  }
 
-    if (row.status === CONST.S_ADDED) {
-      cssClass.push('t-b-row--added')
-    }
-
-    return cssClass
+  sendDeleteOrder () { // отправка заказа в раоту на удаление услуги пеедадресация
+    this.sendingOrderDeleteRedirection = true
+    this.$store.dispatch('salesOrder/send')
+      .then(() => {
+        this.isShowDeletModal = false
+        this.isShowSuccessModal = true
+        this.sendingOrderDeleteRedirection = false
+        this.$emit('update')
+      })
+      .catch(() => {
+        this.cancelOrder()
+        this.isShowDeletModal = false
+        this.isShowErrorModal = true
+      })
+      .finally(() => {
+        this.isShowDeletModal = false
+        this.sendingOrderDeleteRedirection = false
+      })
   }
 }

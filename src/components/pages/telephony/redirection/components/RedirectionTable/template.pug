@@ -15,39 +15,51 @@
 
     tbody
       template(v-for="item in list")
-        tr.t-b-row(
-          :key="item.id"
-          :class="getRowCSSClass(item)"
-        )
-          td.col-from-phone
-            .phone-wrap
-              .phone-wrap__col
-                .phone-wrap__from {{ item.from }}
-                .phone-wrap__to {{ item.to }}
-                .phone-wrap__arrow_1
-                  er-icon(name="arrow_r_long")
+          tr.t-b-row(
+            :key="item.id"
+          )
+            td.col-from-phone
+              .phone-wrap
+                .phone-wrap__col
+                  .phone-wrap__from {{ item.from }}
+                  .phone-wrap__to {{ item.to }}
+                  .phone-wrap__arrow_1
+                    er-icon(name="arrow_r_long")
 
-              .phone-wrap__col
-                .phone-wrap__arrow_2
-                  er-icon(name="arrow_r_u_turn")
+                .phone-wrap__col
+                  .phone-wrap__arrow_2
+                    er-icon(name="arrow_r_u_turn")
 
-          td.col-to-phone
-            | {{ item.to }}
-          td.col-status
-            | {{ item.status }}
-          td.col-period
-            | {{ item.period }}
-          td.col-action
-            er-delete-button(@click="onDelete(item.id)")
+            td.col-to-phone
+              | {{ item.to }}
+            td.col-status
+              | {{ item.status }}
+            td.col-period
+              | {{ item.period }}
+            td.col-action
+              er-preloader(:active="deleting" icon icon-type="2")
+                er-delete-button(@click="onDelete(item)")
 
-    tfoot
-      tr.t-f-row
-        td(colspan="5")
-          er-container.container--no-padding.full
-            er-row
-              er-flex.d-flex.xs12.sm6.lg4
-                er-button(
-                  @click="onClickAdd"
-                  color="blue"
-                )
-                  | Добавить
+  er-activation-modal(
+    type="question"
+    v-model="isShowDeletModal"
+    title="Вы уверены, что хотите отключить на номере услугу переадресация?"
+    @confirm="sendDeleteOrder"
+    @close="cancelOrder"
+    :isLoadingConfirm="sendingOrderDeleteRedirection"
+    actionButtonText="Отключить"
+  )
+  er-activation-modal(
+    type="error"
+    v-model="isShowErrorModal"
+    title="Ошибка"
+    cancel-button-text="Закрыть"
+    :isShowActionButton="false"
+  )
+  er-activation-modal(
+    type="success"
+    v-model="isShowSuccessModal"
+    title="Заказ создан успешно"
+    :isShowActionButton="false"
+    cancel-button-text="Спасибо"
+  )

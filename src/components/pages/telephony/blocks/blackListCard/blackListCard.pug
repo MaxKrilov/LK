@@ -1,0 +1,83 @@
+div(:class="`${pre}`")
+  div(
+    :class="[{active: isOpen && !isLoading }, `${pre}__point-item`]",
+    )
+    div(:class="`${pre}__point-content`")
+      div(:class="`${pre}__point-wrapper`")
+        div(:class="`${pre}__icon`")
+          er-icon(name="doc")
+        
+        div(:class="`${pre}__title`" @click="isOpen = !isOpen")
+          div(:class="`${pre}__caption2`") Черный список на номере:
+          PuSkeleton(:loading="isLoading" width="200px")  
+            div(:class="`${pre}__number`") {{ phoneNumber }}
+        PuSkeleton(:loading="isLoading")
+          er-preloader(:active="creatingOrderDeleteBlackList" icon icon-type="2")   
+            div(:class="`${pre}__remove-icon`" @click="deleteBlackList")
+              er-icon(name="trashbox")
+              span(class="text")  Удалить
+        PuSkeleton(:loading="isLoading")
+          div(:class="`${pre}__count`" @click="isOpen = !isOpen")
+            | {{ countBlockedPhones }}
+            span(class="text")  записей
+        PuSkeleton(:loading="isLoading")
+          div(@click="isOpen = !isOpen")
+            er-corner-button()
+        
+
+      div(:class="`${pre}__active-line`")
+  er-slide-up-down(:active="isOpen && !isLoading" :duration="200")
+    div(:class="[`${pre}__slider`, { [`${pre}__slider_active`]: isOpen }]")
+      div(:class="`${pre}__table`")
+        div(:class="`${pre}__table__row`" v-for="item in blockedPhones")
+          .phone {{ item }}
+          .delete-button
+            er-toggle(
+              type="checkbox"
+              view="radio-check"
+              :value="item"
+              v-model="checkedNumbersForDelete"
+            )
+      div(:class="`${pre}__add-numbers`" v-if="isAddRecord")
+        div Звонящий вам услышит в телефонной трубке фразу: «<b>Абонент просил не беспокоить</b>»
+        div(:class="`${pre}__add-numbers__list`")
+          .item(v-for="newPhone in addedPhones")
+            div {{ newPhone }}
+            div(:class="`${pre}__add-numbers__list__delete`"  @click="deleteAddedNumber(newPhone)")
+              er-icon(name="close" @click="deleteAddedNumber(newPhone)")
+        er-form(:class="`${pre}__add-numbers__form`" ref="addingForm")
+          er-text-field(v-model="newNumber" mask="phone" :rules="phoneRule" :is-show-success="true")
+          .hint
+            er-hint
+              phone-hint
+          div(:class="`${pre}__add-numbers__form__button`")
+            er-button(pre-icon="add_round" @click="addNewNumber" :disabled="!isCorrectPhone")
+              .text Добавить
+      .button  
+        er-button(v-if="!isAddRecord" @click="isAddRecord = true" :disabled="modifyingOrder") Добавить запись
+        er-button(v-if="!isAddRecord && blockedPhones.length" flat @click="deleteNumbersOrder" :disabled="modifyingOrder" :loading="modifyingOrder") Удалить запись
+        er-button(v-if="isAddRecord" :disabled="!addedPhones.length" @click="addNewNumbersOrder" :loading="modifyingOrder") Сохранить
+        er-button(v-if="isAddRecord" flat @click="cancelAdded" :disabled="modifyingOrder") Отмена
+  er-activation-modal(
+    type="question"
+    v-model="isShowDeletBlackListModal"
+    title="Вы уверены, что хотите отключить на номере услугу черный список?"
+    @confirm="sendDeleteBlackListOrder"
+    @close="cancelOrder"
+    :isLoadingConfirm="sendingOrderDeleteBlackList"
+    actionButtonText="Отключить"
+  )
+  er-activation-modal(
+    type="error"
+    v-model="isShowErrorModal"
+    title="Ошибка"
+    cancel-button-text="Закрыть"
+    :isShowActionButton="false"
+  )
+  er-activation-modal(
+    type="success"
+    v-model="isShowSuccessModal"
+    title="Заказ создан успешно"
+    :isShowActionButton="false"
+    cancel-button-text="Спасибо"
+  )

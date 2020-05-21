@@ -31,4 +31,22 @@ $pre: '.telephony-redirection';
       margin-top: $padding-x8;
     }
   }
+  .button {
+    @extend %main-content-width;
+    display: grid;
+
+    @include min-breakpoint("sm") {
+      grid-gap: 16px;
+      grid-template-columns: 1fr 1fr;
+    }
+
+    @include min-breakpoint("md") {
+      grid-template-columns: 30% 30%;
+      margin-top: 40px;
+    }
+
+    @include min-breakpoint("lg") {
+      grid-gap: 24px;
+    }
+  }
 }

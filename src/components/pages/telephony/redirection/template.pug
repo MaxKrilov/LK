@@ -5,22 +5,27 @@
       title="Переадресация"
       backlink="/lk/telephony"
     )
-
-  .telephony-redirection__address
-    er-address-block(
-      :list="addressList"
-      v-model="currentAddress"
-    )
-
+  er-preloader(:active="isLoading" icon)
+    .telephony-redirection__address
+      ListPointComponent(:list="addressList" v-model="currentAddress")
   .telephony-redirection__w-content
     template(v-if="addRedirectionMode")
       add-redirection-form(
-        @add="onAddRedirection"
+        :phonesList="freePhonesList"
+        :locationId="locationId"
         @cancel="onHideAddForm"
       )
 
-    template(v-else)
+    er-preloader(:active="isLoadingRedirections" v-if="!addRedirectionMode") 
       redirection-table(
+        v-if="isLoadingRedirections || redirectionList.length"
         :list="redirectionList"
-        @add="onShowAddForm"
+        @update="update"
       )
+
+  .button
+    er-button(
+      v-if="!addRedirectionMode && freePhonesList.length"
+      @click="addRedirectionMode = true"
+      color="blue"
+    ) Добавить
