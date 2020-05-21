@@ -1,0 +1,66 @@
+div
+  //-сделать еще для мобилки ширину правильную and height
+  er-dialog(
+    :max-width="470" 
+    v-model="isShowRequestModal"
+    :persistent="true"
+
+  )
+    .er-plug-product__request-modal
+      .er-plug-product__request-modal__content
+        div.content-wrapper
+          .title
+            h3 Представьтесь пожалуйста
+            .close
+              button(@click="closeCreatingRequest")
+                er-icon(name="close")
+          .wrapper.mt-8
+            .round
+            .caption2 — Поля обязательные к заполнению
+          .caption.mb-8.mt-16 {{ requestModalDescrition }}
+          er-form.mt-24
+
+            er-phone-select(
+              :items="getPhoneList"
+              v-model="phoneNumber"
+              placeholder="Телефон для связи"
+              is-show-required-label
+              :rules="requiredRule"
+            )
+            er-text-field.mt-32(
+              label="Как к Вам обращаться?"
+              is-show-required-label
+              v-model="name"
+              :rules="requiredRule"
+              :readonly="isReadonlyName"
+            )
+
+          .caption2.mt-32 Нажимая на кнопку вы соглашаетесь на обработку данных
+        .footer  
+          .buttons
+            er-button(@click="sendRequest" :disabled="isValidateRequestForm" :loading="isCreatingRequest") Отправить
+            er-button(flat @click="closeCreatingRequest") Отменить
+
+  er-activation-modal(
+    type="success"
+    v-model="isShowSuccessRequestModal"
+    title="Заявка отправлена"
+    :isShowCancelButton="false"
+    actionButtonText="Спасибо"
+    :persistent="true"
+    @confirm="closeSuccessRequestModal"
+  )
+    template(slot="description")
+      | Заявка отправлена вашему персональному менеджеру. Статус заявки {{ requestId }} можно отследить в разделе Поддержка
+  er-activation-modal(
+    type="error"
+    v-model="isShowErrorRequestModal"
+    title="Возникла ошибка"
+    :isShowActionButton="false"
+    :persistent="true"
+    cancelButtonText="Закрыть"
+    @close="onCloseErrorModal"
+  ) 
+    template(slot="description")
+      | Нам очень жаль, произошла ошибка при отправке заявки на подключение. Свяжитесь с Вашим персональным менеджером
+

@@ -9,8 +9,8 @@ div(:class="`${pre}`" )
       div(:class="`${pre}__price`")
         div(:class="`${pre}__h4`") {{ price }} &nbsp;
         div(:class="`${pre}__units`") ₽/мес
-      div(:class="`${pre}__remove`")
-        er-icon(name="trashbox")
+      div(:class="`${pre}__remove`" @click="remove")
+        er-icon(name="trashbox" @click="remove")
     er-slide-up-down(:active="isOpen")
       div(:class="`${pre}__slider`" )
         er-icon(name="stat")

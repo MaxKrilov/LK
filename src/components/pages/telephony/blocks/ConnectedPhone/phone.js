@@ -26,6 +26,9 @@ export default {
     }
   },
   methods: {
+    remove () {
+      this.$emit('disconnect')
+    },
     getMoreInfo () {
       if (this.isOpen) {
         this.isOpen = false
