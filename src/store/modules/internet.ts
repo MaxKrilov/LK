@@ -79,7 +79,8 @@ const actions = {
           id: billingAccountId,
           dateFrom: fromDate,
           dateTo: toDate,
-          productInstance
+          productInstance,
+          eventSource: productInstance
         })
         .query('/billing/packets/events')
         .then(response => resolve(response))
