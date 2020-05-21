@@ -131,11 +131,11 @@ export default class ManualSigningDocument extends Vue {
                   this.errorHandler()
                   return false
                 }
-                if (['success', 'not_executed'].includes(result.submit_statuses.submitStatus.toLowerCase())) {
+                if (['success', 'not_executed'].includes(result.submit_statuses[0].submitStatus.toLowerCase())) {
                   this.successHandler()
                   this.inProgress = false
                 } else {
-                  this.errorText = result.submit_statuses.submitError
+                  this.errorText = result.submit_statuses[0].submitError
                   this.errorHandler()
                 }
               })

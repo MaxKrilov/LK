@@ -28,7 +28,8 @@ interface IDocument extends DocumentInterface {
   },
   computed: {
     ...mapState({
-      screenWidth: (state: any) => state.variables[SCREEN_WIDTH]
+      screenWidth: (state: any) => state.variables[SCREEN_WIDTH],
+      clientInfo: (state: any) => state.user.clientInfo
     })
   }
 })
@@ -41,6 +42,7 @@ export default class DigitalSigningDocument extends Vue {
   readonly value!: boolean
   readonly signingDocument!: IDocument
   readonly screenWidth!: number
+  readonly clientInfo!: any
   /**
    * Список сертификатов
    */
@@ -134,71 +136,75 @@ export default class DigitalSigningDocument extends Vue {
   async signDocument () {
     if (!this.$refs.certificate_form.validate()) return
     this.isSigningDocument = true
-    const visibleSignature = DigitalSignature.createVisibleSignature('Пушистый котик', this.selectedCertificate as iCertificate)
-    let _signDocument
+    const visibleSignature = DigitalSignature.createVisibleSignature(this.clientInfo.name || '', this.selectedCertificate as iCertificate)
     const header = ';base64,'
     const data = this.signingDocument.data.substr(this.signingDocument.data.indexOf(header) + header.length)
-    try {
-      _signDocument = await DigitalSignature
-        .signDocument(cadesplugin, data, this.selectedCertificate as iCertificate, visibleSignature)
-    } catch (error) {
-      this.errorHandler(error.message)
-      return false
-    }
-    const _binaryFile = dataURLtoFile(_signDocument, this.signingDocument.fileName)
-    const _filePath = `${moment().format('MMYYYY')}/${this.signingDocument.id}`
-    // Загрузка файла в хранилище
-    const _resultUploadedFile = await this.$store.dispatch(`documents/${UPLOAD_FILE}`, {
-      api: this.$api,
-      file: _binaryFile,
-      bucket: this.signingDocument.bucket,
-      filePath: _filePath
-    })
-    if (!_resultUploadedFile) {
-      this.errorHandler('Ошибка при отправке файла в хранилище')
-      return false
-    }
-    // Прикрепляем вложение
-    await this.$store.dispatch(`documents/${ATTACH_SIGNED_DOCUMENT}`, {
-      api: this.$api,
-      id: this.signingDocument.id,
-      fileName: this.signingDocument.fileName,
-      relatedTo: this.signingDocument.relatedTo.id,
-      type: this.signingDocument.type.id,
-      filePath: _filePath
-    })
-    // if (!_attachResult) {
-    //   this.errorHandler('Ошибка при прикреплении файла в системе')
-    //   return false
-    // }
-    if (this.signingDocument?.letterOfGuarantee?.toLowerCase() === 'yes') {
-      this.internalValue = false
-      this.isSigningDocument = false
-      this.linkDownload = `data:${mime.lookup(this.signingDocument.fileName)};base64,${_signDocument}`
-      this.isShowListCertificateDialog = false
-      this.isSuccess = true
-      this.$emit('success')
-      return
-    }
-    // Смена статуса
-    const _changeStatusResult = await this.$store.dispatch(`fileinfo/changeContractStatus`, {
-      api: this.$api,
-      contractId: this.signingDocument.relatedTo.id,
-      status: 1
-    })
-    if (!_changeStatusResult || _changeStatusResult.submit_statuses) {
-      this.errorHandler('Ошибка при прикреплении файла в системе')
-      return false
-    }
-    if (['success', 'not_executed'].includes(_changeStatusResult.submit_statuses.submitStatus.toLowerCase())) {
-      this.internalValue = false
-      this.isSigningDocument = false
-      this.linkDownload = `data:${mime.lookup(this.signingDocument.fileName)};base64,${_signDocument}`
-      this.isShowListCertificateDialog = false
-      this.isSuccess = true
-      this.$emit('success')
-    } else {
-      this.errorHandler(_changeStatusResult.submit_statuses.submitError)
-    }
+    DigitalSignature.signDocument(cadesplugin, data, this.selectedCertificate as iCertificate, visibleSignature)
+      .then(_signDocument => {
+        const _binaryFile = dataURLtoFile(_signDocument, this.signingDocument.fileName)
+        const _filePath = `${moment().format('MMYYYY')}/${this.signingDocument.id}`
+
+        // Загрузка файла в хранилище
+        this.$store.dispatch(`documents/${UPLOAD_FILE}`, {
+          api: this.$api,
+          file: _binaryFile,
+          bucket: this.signingDocument.bucket,
+          filePath: _filePath
+        })
+          .then(() => {
+            // Прикрепляем вложение
+            this.$store.dispatch(`documents/${ATTACH_SIGNED_DOCUMENT}`, {
+              api: this.$api,
+              id: this.signingDocument.id,
+              fileName: this.signingDocument.fileName,
+              relatedTo: this.signingDocument.relatedTo.id,
+              type: this.signingDocument.type.id,
+              filePath: _filePath
+            })
+              .then(() => {
+                const successHandler = () => {
+                  this.internalValue = false
+                  this.isSigningDocument = false
+                  this.linkDownload = `data:${mime.lookup(this.signingDocument.fileName)};base64,${_signDocument}`
+                  this.isShowListCertificateDialog = false
+                  this.isSuccess = true
+                  this.$emit('success')
+                }
+                if (this.signingDocument?.letterOfGuarantee?.toLowerCase() === 'yes') {
+                  successHandler()
+                  return
+                }
+                this.$store.dispatch(`fileinfo/changeContractStatus`, {
+                  api: this.$api,
+                  contractId: this.signingDocument.relatedTo.id,
+                  status: 1
+                })
+                  .then((response) => {
+                    if (!response || !response.submit_statuses) {
+                      this.errorHandler('Ошибка при смене статуса')
+                      return
+                    }
+                    const submitStatus = response.submit_statuses[0]
+                    if (['success', 'not_executed'].includes(submitStatus.submitStatus.toLowerCase())) {
+                      successHandler()
+                    } else {
+                      this.errorHandler(submitStatus.submitError?.replace(/<\/?[^>]+>/g, '') || 'Ошибка при смене статуса')
+                    }
+                  })
+                  .catch(() => {
+                    this.errorHandler('Ошибка при смене статуса')
+                  })
+              })
+              .catch(() => {
+                this.errorHandler('Ошибка при прикреплении файла')
+              })
+          })
+          .catch(() => {
+            this.errorHandler('Ошибка при загрузке файла в хранилище')
+          })
+      })
+      .catch(error => {
+        this.errorHandler(error.message)
+      })
   }
 }

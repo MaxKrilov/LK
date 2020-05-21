@@ -125,11 +125,11 @@ export default {
             this.isCancelError = true
             return
           }
-          if (['success', 'not_executed'].includes(result.submit_statuses.submitStatus.toLowerCase())) {
+          if (['success', 'not_executed'].includes(result.submit_statuses[0].submitStatus.toLowerCase())) {
             this.isCancelSuccess = true
             this.$store.dispatch('fileinfo/downloadListDocument', { api: this.$api })
           } else {
-            this.cancelErrorText = result.submit_statuses.submitError
+            this.cancelErrorText = result.submit_statuses[0].submitError
             this.isCancelError = true
           }
         })
