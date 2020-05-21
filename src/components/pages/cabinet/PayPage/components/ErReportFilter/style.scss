@@ -1,0 +1,120 @@
+.er-report-filter {
+  &__filter {
+    margin-left: -292px;
+  }
+  &__filterOpen {
+    margin-left: 313px;
+  }
+  &__list {
+    margin-left: -43px;
+
+    padding-top: $padding-x4;
+    padding-bottom: $padding-x4;
+
+    @include min-breakpoint('md') {
+      background-color: map_get($shades, 'white');
+    }
+  }
+  &__close svg {
+    cursor: pointer;
+    width: 16px !important;
+    opacity: 0.3;
+    margin-left: 8px;
+  }
+
+  &__wrap {
+    @include min-breakpoint('md') {
+      background-color: map_get($shades, 'white');
+    }
+  }
+
+  .er-messages {
+    display: none;
+  }
+
+  .er-date-picker {
+    @include max-breakpoint('sm') {
+      max-width: inherit;
+    }
+  }
+
+  .er-filter-group {
+    margin-top: $padding-x4;
+
+    @include min-breakpoint('md') {
+      margin-top: 0;
+    }
+  }
+
+  .filter-search {
+    .er-filter-group__title {
+      @include min-breakpoint('md') {
+        color: map_get($shades, 'transparent');
+      }
+    }
+  }
+
+  .er-filter-close {
+    display: none;
+
+    @include min-breakpoint('md') {
+      display: inherit;
+      order: -1;
+    }
+  }
+
+  // reset component height
+  .er-date-picker,
+  .er-select,
+  .er-toggle {
+    .er-dialog__container {
+      display: block !important;
+    }
+
+    .er-messages {
+      display: none;
+    }
+
+    .er-input__slot {
+      margin-bottom: $padding-x2;
+    }
+  }
+  .er-select__slot input {
+    max-width: 0;
+  }
+}
+
+
+.ordered-items {
+  *:nth-child(1) {
+    order: 1;
+  }
+
+  *:nth-child(2) {
+    order: 2;
+  }
+
+  *:nth-child(3) {
+    order: 3;
+
+    @include min-breakpoint('md') {
+      order: 4;
+    }
+
+    @include min-breakpoint('lg') {
+      order: 3;
+    }
+  }
+
+  *:nth-child(4) {
+    order: 4;
+
+    @include min-breakpoint('md') {
+      order: 3;
+    }
+
+    @include min-breakpoint('lg') {
+      order: 4;
+    }
+  }
+}

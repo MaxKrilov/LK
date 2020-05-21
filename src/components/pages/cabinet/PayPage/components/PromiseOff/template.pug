@@ -14,20 +14,14 @@ div(:class="`${pre}`")
             | Вы уже активировали сервис
           div(:class="`${pre}__label__manager`")
             | Ваш личный менеджер
-          h4(:class="`${pre}__fio`")
-            | Константин Константинопольский
-          div(:class="`${pre}__label`")
-            | Телефон
-          div(:class="`${pre}__value`")
-            | +7 922 333 9000
-          div(:class="`${pre}__label`")
-            | Почта:
-          div(:class="`${pre}__value`")
-            | Konstantinopolsky@domru.ru
+          h4(:class="`${pre}__fio`") {{ getManagerInfo.name }}
+          div(:class="`${pre}__label`") Телефон
+          div(:class="`${pre}__value`") {{ getManagerInfo.phone }}
+          div(:class="`${pre}__label`") Почта:
+          div(:class="`${pre}__value`") {{ getManagerInfo.email }}
 
     er-container(:class="`${pre}__butt__container`")
       er-button(
         type="submit"
         @click="paypage"
-      )
-        | Перейти в платежи
+      ) Перейти в платежи
