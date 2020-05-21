@@ -1,0 +1,36 @@
+div
+
+  er-activation-modal(
+    type="question"
+    v-model="isShowRequestModal"
+    title="Вы уверены, что хотите отправить заявку на отключение?"
+    cancel-button-text="Отменить"
+    actionButtonText="Отключить"
+    :isLoadingConfirm="isCreatingRequest"
+    @confirm="sendRequest"
+    @close="closeCreatingRequest"
+
+  ) Заявка будет отправлена вашему персональному менеджеру
+  er-activation-modal(
+    type="success"
+    v-model="isShowSuccessRequestModal"
+    title="Заявка отправлена"
+    :isShowCancelButton="false"
+    actionButtonText="Спасибо"
+    :persistent="true"
+    @confirm="closeSuccessRequestModal"
+  )
+    template(slot="description")
+      | Заявка отправлена вашему персональному менеджеру. Статус заявки {{ requestId }} можно отследить в разделе Поддержка
+  er-activation-modal(
+    type="error"
+    v-model="isShowErrorRequestModal"
+    title="Возникла ошибка"
+    :isShowActionButton="false"
+    :persistent="true"
+    cancelButtonText="Закрыть"
+    @close="onCloseErrorModal"
+  ) 
+    template(slot="description")
+      | Нам очень жаль, произошла ошибка при отправке заявки на подключение. Свяжитесь с Вашим персональным менеджером
+

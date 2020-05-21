@@ -30,7 +30,7 @@ interface iItemService extends standardSelectItem {
   typeAuth?: string
 }
 
-interface iContactListItem {
+export interface iContactListItem {
   id?: string | number,
   firstName?: string,
   name?: string,

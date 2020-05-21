@@ -1,0 +1,62 @@
+.er-plug-product {
+  &__request-modal {
+    height: 460px;
+    box-shadow: -8px 8px 16px rgba(map_get($shades, 'black'), 0.04),
+      0 8px 24px rgba(map_get($shades, 'black'), 0.06);
+    border-radius: 12px;
+    background: linear-gradient(to top, map_get($gray, '26') 28.65%, map_get($shades, 'white') 90.63%);
+    padding: 1px;
+
+    &__content {
+      background-color: map-get($shades, 'white');
+      width: 100%;
+      padding: 32px;
+      height: 100%;
+      border-radius: inherit;
+      display: flex;
+      justify-content: space-between;
+      flex-direction: column;
+
+      .title {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .close {
+        button {
+          background: map_get($shades, 'transparent');
+          border: none;
+          outline: none;
+          color: rgba(map_get($shades, 'black'), 0.2);
+          cursor: pointer;
+
+          svg {
+            width: 16px;
+          }
+        }
+      }
+      .er-form {
+        width: 260px;
+      }
+      .wrapper {
+        display: flex;
+        align-items: center;
+      }
+      .round {
+        border-radius: 50%;
+        padding: 4px;
+        background: map_get($yellow, 'base');
+        width: 8px;
+        height: 8px;
+        margin-right: 4px;
+      }
+      .buttons {
+        margin-top: 24px;
+        display: grid;
+        grid-gap: 32px;
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+  }
+}

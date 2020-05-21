@@ -50,6 +50,7 @@ export default {
             const result = {}
             result.price = `${+el?.amount?.value}`
             result.fulladdress = el?.fulladdress
+            result.addressId = el?.address?.id
             result.tariff = el?.offer?.name
             result.bpi = el?.bpi
             result.status = el?.status

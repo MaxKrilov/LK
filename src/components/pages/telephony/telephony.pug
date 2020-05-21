@@ -12,7 +12,7 @@ div(:class="`${pre} main-content main-content--top-menu-fix`")
         template(#date-title)
           | Тариф:
         template(#slider-content)
-          slider-content(:parent-id="item.bpi")
+          slider-content(:parent-id="item.bpi" :addressId="item.addressId" :fulladdress="item.fulladdress")
 
           
       div(:class="`${pre}__total`")

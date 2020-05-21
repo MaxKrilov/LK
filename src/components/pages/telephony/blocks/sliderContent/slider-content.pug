@@ -18,7 +18,11 @@ div(:class="`${pre}`" )
 
         template(v-if="phones.length")
           h3(:class="`${pre}__phone-title`") Подключенные телефоны
-          connected-phone(v-for="(phone, index) in phones" :key="index" :phone="phone")
+          connected-phone(v-for="(phone, index) in phones" :key="index" :phone="phone" @disconnect="disconnectNumber(phone.number)")
+        
+        div(:class="`${pre}__slider-buttons`").add-button
+          er-button(pre-icon="add_round" color="yellow" @click="connectNewNumber" :loading="isConnection") Добавить телефон
+        
 
         //- h3(:class="`${pre}__packages-title`") Пакеты минут
         //- div(:class="`${pre}__packages`")
@@ -52,3 +56,12 @@ div(:class="`${pre}`" )
           template(v-else)
             er-button(color="yellow") Приостановить Телефонию
             er-button(flat) Отключить Телефонию
+  
+  ErPlugProduct(
+    v-model="isConnection"
+    :requestData="requestData"
+    )
+  ErDisconnectProduct(
+    v-model="isDisconnection"
+    :requestData="disconnectRequestData"
+    )
