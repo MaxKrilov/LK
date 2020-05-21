@@ -68,7 +68,17 @@ const actions = {
         .catch((error: AxiosError) => reject(error))
     })
   },
-  getStatistic (context: ActionContext<any, any>, { fromDate, toDate, productInstance }: { fromDate: string, toDate: string, productInstance: string }) {
+  getStatistic (context: ActionContext<any, any>, {
+    fromDate,
+    toDate,
+    productInstance,
+    eventSource
+  }: {
+    fromDate: string,
+    toDate: string,
+    productInstance: string,
+    eventSource: string
+  }) {
     const billingAccountId = context.rootGetters['user/getActiveBillingAccount']
     const { toms: clientId } = context.rootGetters['auth/user']
     return new Promise((resolve, reject) => {
@@ -80,7 +90,7 @@ const actions = {
           dateFrom: fromDate,
           dateTo: toDate,
           productInstance,
-          eventSource: 'INTLIMIT-07042020-032000'
+          eventSource
         })
         .query('/billing/packets/events')
         .then(response => resolve(response))

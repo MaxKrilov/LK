@@ -124,7 +124,8 @@ export default class StatisticPage extends mixins(ErFileGetStatisticMixin) {
     this.$store.dispatch('internet/getStatistic', {
       fromDate,
       toDate,
-      productInstance: this.customerProduct!.tlo.id
+      productInstance: this.customerProduct!.tlo.id,
+      eventSource: this.customerProduct!.tlo.chars?.['Идентификатор сервиса'] || ''
     })
       .then((response: IBillingStatisticResponse[]) => {
         this.listStatistic = response.map(item => ({
