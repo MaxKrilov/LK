@@ -107,7 +107,12 @@ export default class ErDocumentViewer extends Vue {
       this.$store.dispatch('fileinfo/downloadFile', {
         api: this.$api,
         bucket: downloadDocument.bucket,
-        key: downloadDocument.filePath
+        key: downloadDocument.filePath,
+        ext: downloadDocument.fileName
+          .substring(
+            downloadDocument.fileName.lastIndexOf('.') + 1,
+            downloadDocument.fileName.length) ||
+          downloadDocument.fileName
       })
         .then(response => {
           if (
