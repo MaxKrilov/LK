@@ -52,7 +52,12 @@ export default {
       isRequired: value => !!value || 'Поле обязательно к заполнению'
     },
     loadingInn: false,
-    loadingInnScreen: false
+    loadingInnScreen: false,
+    readonly: {
+      nameCompany: false,
+      registrationReasonCode: false,
+      addressCompany: false
+    }
   }),
   watch: {
     INN (val) {
@@ -98,10 +103,24 @@ export default {
           this.isEntity = this.modelINN.length === 10
           if (this.isEntity) {
             this.modelData.nameCompany = response.orgname
+            if (response.orgname) {
+              this.readonly.nameCompany = true
+            }
+
             this.modelData.registrationReasonCode = response.kpp
+            if (response.kpp) {
+              this.readonly.registrationReasonCode = true
+            }
+
             this.modelData.addressCompany = response.legalAddressText
+            if (response.legalAddressText) {
+              this.readonly.addressCompany = true
+            }
           } else {
-            this.modelData.nameCompany = `ИП ${response.fio.surName} ${response.fio.name} ${response.fio.lastName}`
+            if (response.fio.surName || response.fio.name || response.fio.lastName) {
+              this.modelData.nameCompany = `ИП ${response.fio.surName} ${response.fio.name} ${response.fio.lastName}`
+              this.readonly.nameCompany = true
+            }
           }
           this.modelData.type = response.type
           this.isInputInn = false

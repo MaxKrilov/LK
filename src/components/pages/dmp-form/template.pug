@@ -42,6 +42,7 @@ div.px-32.py-64(:class="`${pre}`")
               :rules="[rules.isRequired]",
               tabIndex="1",
               key="nameCompany"
+              :readonly="readonly.nameCompany"
             )
           er-flex(xs6)
             //-er-text-field(
@@ -59,6 +60,7 @@ div.px-32.py-64(:class="`${pre}`")
               :rules="[rules.isRequired]",
               tabIndex="2",
               key="addressCompany"
+              :readonly="readonly.addressCompany"
               )
           er-flex(xs6)
             //-er-text-field(
@@ -78,6 +80,7 @@ div.px-32.py-64(:class="`${pre}`")
                 tabIndex="3",
                 key="registrationReasonCode",
                 mask="999999999"
+                :readonly="readonly.registrationReasonCode"
                 )
           template(v-else)
             er-flex(xs2)
