@@ -250,6 +250,7 @@ export default {
         this.$store.dispatch('payments/payment', { api: this.$api, payload })
           .finally(() => {
             this.isLoadingPayment = false
+            this.openConfirmPay = false
           })
       } else {
         const cvv = this.numCard === 0 ? this.cvc[0] : this.cvc[this.numCard - 1]
@@ -264,9 +265,11 @@ export default {
         this.$store.dispatch('payments/bindpay', { api: this.$api, payload })
           .finally(() => {
             this.isLoadingPayment = false
+            setTimeout(() => {
+              this.openConfirmPay = false
+            }, 1000)
           })
       }
-      this.openConfirmPay = false
     },
     paymentsOff () {
       this.openConfirmPay = false

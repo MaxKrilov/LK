@@ -122,6 +122,7 @@ const actions = {
   },
   payment: ({ commit }, { api, payload }) => {
     return new Promise((resolve, reject) => {
+      commit('isLoading')
       api
         .setWithCredentials()
         .setData(payload)
@@ -146,6 +147,7 @@ const actions = {
   },
   bindpay: ({ commit }, { api, payload }) => {
     return new Promise((resolve, reject) => {
+      commit('isLoading')
       api
         .setWithCredentials()
         .setData(payload)
@@ -533,9 +535,7 @@ const mutations = {
     } else {
       state.isPromisePay = true
     }
-
     state.isLoading = true
-
     if (!result[1].paymentCanBeCreated) {
       state.isDebt = true
       state.errPromisePay = true
