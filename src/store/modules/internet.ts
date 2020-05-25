@@ -107,7 +107,6 @@ const actions = {
         .setData({
           login
         })
-        .setBranch('contentfilter')
         .query('/internet/contentfilter-new/urlsettings')
         .then(response => resolve(response))
         .catch((err) => {
