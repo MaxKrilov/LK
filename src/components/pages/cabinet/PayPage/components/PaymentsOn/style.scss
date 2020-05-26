@@ -195,9 +195,6 @@
     display: none;
     &__text {
       text-decoration: none;
-      &:hover {
-        color: map_get($shades, 'black');
-      }
     }
     @include media-query((
       margin-top: (
@@ -207,9 +204,6 @@
       display: (xl: block),
       padding-right: (lg: 16px !important)
     ));
-    &:hover {
-      color: map_get($yellow, 'base');
-    }
   }
   &__container-main {
     padding: 0 !important;
@@ -296,79 +290,6 @@
         lg: 37px,
         xl: 28px
       )
-    ))
-  }
-  &__description {
-    @extend %body-font;
-    color: rgba(map_get($shades, 'black'), 0.8);
-  }
-  &__loading {
-    position: relative;
-    top: -65px;
-    width: 48px;
-    @include media-query((
-      width: (
-        sm: 40px,
-        md: 56px,
-        lg: 30px,
-        xl: 56px
-      ),
-      top: (
-        sm: -61px,
-        md: -58px,
-        lg: -63px,
-        xl: -21px
-      )
-    ));
-  }
-  &__button-time {
-    display: inline-block;
-    position: absolute;
-    left: 108px;
-    top: 11px;
-  }
-}
-#preloaderGeneral .er-button__loading svg {
-  height: 56px;
-  width: 56px;
-  color: map_get($yellow, 'base');
-  @include media-query((
-    height: (
-      md: 64px,
-      lg: 78px,
-      xl: 100px
-    ),
-    width: (
-      md: 64px,
-      lg: 78px,
-      xl: 100px
-    )
-  ))
-}
-#preloaderButton {
-  position: absolute;
-  left: -29px;
-  display: inline-block;
-  height: 36px;
-  width: 156px;
-  color: map_get($shades, 'black');
-  background: map_get($shades, 'transparent');
-  @include media-query((
-    height: (
-      md: 64px,
-      lg: 78px,
-      xl: 32px
-    ),
-  ));
-  & .er-button__loading svg {
-    height: 36px;
-    color: map_get($shades, 'black');
-    @include media-query((
-      height: (
-        md: 64px,
-        lg: 78px,
-        xl: 32px
-      ),
     ))
   }
 }

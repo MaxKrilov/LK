@@ -38,57 +38,32 @@ er-row(no-gutters)
                     div.ml-auto
                       er-icon.color--yellow-base(name="score" :class="`${pre}__card-icon`")
 
-      er-flex.mb-16(
-        xs6
-        lg3
-        :class="`${pre}__card-scale ${pre}__card-scale__left`"
-      )
+      er-flex.mb-16(xs6 lg3 :class="`${pre}__card-scale ${pre}__card-scale__left`")
         er-card(:class="`${pre}__card-shadow`")
           div(:class="`${pre}__card-height`")
             router-link(to="promise-pay")
-              div.h4(:class="`${pre}__card-title__promise`") Обещанный платёж
-                div.color--red-base(
-                  v-if="isLoading && isPromisePay"
-                  :class="`${pre}__inf-promise`"
-                ) Услуга не подключена
-              div.d--flex.align-items-end.mt-auto(
-                v-if="isLoading && isPromisePay"
-              )
+              h4(:class="`${pre}__card-title__promise`")
+                | Обещанный платёж
+              div.d--flex.align-items-end.mt-auto(v-if="!timer")
                 div.ml-auto
-                  er-icon.color--yellow-base(
-                    name="trast_pay"
-                    :class="`${pre}__card-icon`"
-                  )
-              div(
-                :class="`${pre}__timer`"
-                v-if="isLoading && !isPromisePay"
-              )
-                div(:class="`${pre}__timer__label`") Осталось дд.чч.мм
+                  er-icon.color--yellow-base(name="trast_pay" :class="`${pre}__card-icon`")
+              div(:class="`${pre}__timer`" v-if="timer")
+                div(:class="`${pre}__timer__label`")
+                  | Осталось дд.чч.мм
                 div(:class="`${pre}__timer__day`")
                   h2(:class="`${pre}__timer__day__value`") {{ day }}
                 div(:class="`${pre}__timer__hour`")
                   h2(:class="`${pre}__timer__hour__value`") {{ hour }}
                 div(:class="`${pre}__timer__min`")
                   h2(:class="`${pre}__timer__min__value`") {{ minute }}
-              div(
-                :class="`${pre}__expired`"
-                v-if="!isExpired && !isPromisePay"
-              )
+              div(:class="`${pre}__expired`")
                 er-icon(name="close" :class="`${pre}__icon-height`")
                 span.color--red-base(
                 :class="`${pre}__icon-span`"
               ) Просрочен
-              er-button(id="preloaderPromisePay"
-                :loading="true"
-                flat
-                v-if="!isLoading"
-              )
-            div(:class="`${pre}__progressbar`" v-if="isLoading && !isPromisePay")
+            div(:class="`${pre}__progressbar`")
               div(:class="`${pre}__progressbar__wrapper`")
-                div(id="bgg"
-                  :class="`${pre}__progressbar__width`"
-                  :style="'width: ' + widthPgsBar + '%'"
-                )
+                div(:class="`${pre}__progressbar__width`")
 
       er-flex.mb-16(xs6 lg3 :class="`${pre}__card-scale`")
         er-card(:class="`${pre}__card-shadow`")

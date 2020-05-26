@@ -5,7 +5,7 @@
     height: 92px !important;
     background: map_get($gray, '13');
     border-radius: 12px;
-    z-index: 4;
+    z-index: 3;
     cursor: pointer;
     &__lateral-left {
       position: absolute;
@@ -349,19 +349,14 @@
     &__text {
       position: relative;
       top: -10px;
-      @extend %caption1-font;
+      font: 11px/16px $fedra-demi;
       color: rgba(map_get($shades, 'black'), 0.8) !important;
-      margin-top: -3px;
-      margin-left: 0;
-      margin-bottom: 0;
+      margin-top: -3px !important;
+      margin-left: 0 !important;
       @include media-query((
+        margin-top: (md: 0 !important),
         top: (md: 0),
-        margin-top: (md: 0),
-        margin-bottom: (
-          md: -2px,
-          xl: -4px,
-        ),
-        margin-left: (md: 4px),
+        margin-left: (md: 4px !important),
       ));
     }
     &__over {
@@ -393,7 +388,7 @@
         ));
       }
       &__text {
-        @extend %caption1-font;
+        font: 11px/16px $fedra-demi !important;
         color: rgba(map_get($shades, 'black'), 0.5) !important;
         height: min-content;
         margin-top: 2px;
@@ -472,10 +467,12 @@
         top: (md: 22px),
         font-size: (
           md: 13px,
+          lg: 13px,
           xl: 14px,
         ),
         line-height: (
           md: 16px,
+          lg: 16px,
           xl: 19px
         ),
         letter-spacing: (md: normal),
@@ -590,7 +587,7 @@
       display: flex;
       background: map_get($gray, '13');
       padding-top: 15px;
-      top: 0;
+      top: -177px;
       height: 248px;
       width: 100%;
       left: -27px;
@@ -602,6 +599,9 @@
         height: (
           sm: 236px,
           md: 387px
+        ),
+        top: (
+          md: 0
         ),
         left: (
           sm: -15px,
@@ -762,43 +762,6 @@
   }
   &__height {
     height: 0
-  }
-  &__loading {
-    position: absolute;
-    width: 336px;
-    height: 92px;
-    background: map_get($gray, '3');
-    border-radius: 12px;
-    z-index: 4;
-    cursor: pointer;
-    margin-top: 320px;
-    padding-top: 22px;
-    text-align: center;
-    display: none;
-    @include media-query((
-      display: (md: block),
-    ));
-    &__sm {
-      position: absolute;
-      right: 18px;
-      z-index: 3;
-      top: 21px;
-      display: block;
-      @include media-query((
-        display: (md: none),
-      ));
-    }
-    &__del {
-      position: relative;
-      top: -147px;
-      right: -14px;
-      width: 56px;
-      height: 56px;
-      @include media-query((
-        right: (md: -265px),
-        top: (md: -68px)
-      ));
-    }
   }
 }
 .er-hint__message {
