@@ -8,6 +8,7 @@ import { ERROR_MODAL } from '../../../store/actions/variables'
 import ErErrorModal from '../../blocks/ErErrorModal'
 import { GET_CLIENT_INFO, UPDATE_CLIENT_INFO } from '../../../store/actions/user'
 import { mapGetters, mapState } from 'vuex'
+import {logInfo} from '../../../functions/logging'
 // import { ATTACH_SIGNED_DOCUMENT, UPLOAD_FILE } from '../../../store/actions/documents'
 
 const EXTENDED_MAP_INN = '9148328342013670726'
@@ -143,7 +144,9 @@ export default {
         })
     },
     async __actionSubmit () {
+      logInfo('Before Validate')
       if (!this.$refs.form.validate()) return
+      logInfo('Validate has been successed')
       // const fileValid = this.modelData.file !== null
       // if (!fileValid) {
       //   this.isValidFile = false
@@ -220,6 +223,7 @@ export default {
       this.__actionSubmit()
     },
     async listenersDMP (e) {
+      logInfo('ListenMessage', e)
       if (e.data !== 'saveForm') return
       const resultSubmit = await this.__actionSubmit()
       if (!this.isInputInn && resultSubmit) {
