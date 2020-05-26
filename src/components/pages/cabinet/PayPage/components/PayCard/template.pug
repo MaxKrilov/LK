@@ -47,8 +47,6 @@ er-container(
         :class="`${pre}__card-pos`"
         :style="'margin-right: ' + delta[0] + 'px'"
       )
-        div(:class="`${pre}__loading__sm`" v-if="!isLoading")
-          img(:src="require('@/assets/images/preloaders/4.svg')")
         er-row(no-gutters)
           er-flex
             er-card(
@@ -93,14 +91,14 @@ er-container(
               :class="`${pre}__card-butt ${pre}__card-butt__bottom ${pre}__card-butt__bottom__first`"
               :style="'opacity: ' + valOpacity"
             )
-              div(v-if="isLoading"
+              div(
                 :class="`${pre}__card-butt__left`"
                 @click="move('Up')"
               )
                 div(:class="`${pre}__logo`")
-                  img(:src="ButtBottImgFirst")
+                  img(:src="buttbottimg0")
                   h2(:class="`${pre}__logo__bottom`")
-                    | {{ LastFourDigitsFirst }}
+                    | {{ numbuttbott0 }}
                   div(
                     :class="`${pre}__auto-pay`"
                     @click.stop
@@ -255,10 +253,6 @@ er-container(
                         @blur="changeCVC",
                       )
 
-    div(:class="`${pre}__loading`" v-if="!isLoading")
-      img(:src="require('@/assets/images/preloaders/2.svg')")
-
-
   div(
     :class="`${pre}__card__deleted`"
     v-if="delCard"
@@ -274,10 +268,6 @@ er-container(
               )
             div(:class="`${pre}__card__deleted__text`")
               | Карта удалена
-
-      div(:class="`${pre}__loading__del`" v-if="isLoading" id="bgg")
-        img(:src="require('@/assets/images/preloaders/3.svg')")
-
 
     div(:class="`${pre}__card__deleted__bg__size`")
       div(:class="`${pre}__card__deleted__bg`")

@@ -21,7 +21,7 @@ div(:class="`${pre}`").main-content.main-content--h-padding
 
     div(:class="`${pre}__main`")
       div(:class="`${pre}__line`")
-      div(:class="`${pre}__sum`" )
+      div(:class="`${pre}__sum`")
         div.d--flex(:class="`${pre}__sum__left ${pre}__sum__left__direct`")
           er-flex.mb-16.pr-8(
             xs12
@@ -29,7 +29,6 @@ div(:class="`${pre}`").main-content.main-content--h-padding
             lg4 xl5
             order-xs2
             order-lg1
-            ref="sum"
             :class="`${pre}__sum__pos`"
           )
             h4(:class="`${pre}__sum__title`")
@@ -77,8 +76,10 @@ div(:class="`${pre}`").main-content.main-content--h-padding
               er-button(
                 width="100%",
                 @click="paymentConfirm"
+                :loading="isLoadingPayment"
               ) Пополнить счёт
-            div(:class="`${pre}__sum__text`") Нажимая на кнопку, Вы принимаете&ensp;
+            div(:class="`${pre}__sum__text`")
+              | Нажимая на кнопку, Вы принимаете&ensp;
               a(
                 href="https://console.ertelecom.ru/files/upload/d/1/0/d108447fbf9c5d88c2801d14a6e76725.pdf",
                 target="_blank"
@@ -116,7 +117,7 @@ div(:class="`${pre}`").main-content.main-content--h-padding
               name="question"
               :class="`${pre}__sum__confirm__check`"
             )
-        div(:class="`${pre}__check__body ${pre}__check__body${borderCheck}`")
+        div(:class="`${pre}__check__body`")
           div.caption(:class="`${pre}__check__input`")
             | на электронную почту:
           div(:class="`${pre}__check__input__over`")
@@ -148,7 +149,7 @@ div(:class="`${pre}`").main-content.main-content--h-padding
     )
 
     // Удалить карту
-    Confirm(v-if="openConfirmDel"
+    Confirm(
       :vis="openConfirmDel"
       title="Вы уверены, что хотите удалить карту ?"
       :subText="nameCard"
@@ -226,7 +227,7 @@ div(:class="`${pre}`").main-content.main-content--h-padding
     )
 
     // Запомнить карту
-    Confirm(v-if="openConfirmDataCard"
+    Confirm( v-if="openConfirmDataCard"
       :vis="openConfirmDataCard"
       title="Данные карты"
       :subText="textRemcard"

@@ -8,17 +8,15 @@ export default {
     color: '',
     height: '',
     email: '',
-    infoPay: 'Платёж в обработке',
-    pay: false,
-    isVisible: false,
-    oneLoad: false,
-    time: 10
+    infoPay: 'Идет проверка статуса платежа...',
+    pay: false
   }),
   created () {
-    setTimeout(() => {
-      this.oneLoad = true
-    }, 10000)
-    this.currentStatus()
+    const payload = {
+      transaction: this.$route.query.transaction,
+      billingAccount: this.$route.query.billing_account
+    }
+    this.$store.dispatch('payments/status', { api: this.$api, payload: payload })
   },
   watch: {
     statusPay () {
@@ -34,6 +32,7 @@ export default {
         this.infoPay = 'Оплата не прошла'
       }
       this.email = localStorage.getItem('email')
+      return this.statusPay
     }
   },
   computed: {
@@ -48,22 +47,6 @@ export default {
     },
     paypage () {
       this.$router.push('/lk/payments')
-    },
-    currentStatus () {
-      this.time = 10
-      this.isVisible = false
-      let timerId = setInterval(() => {
-        this.time--
-        if (this.time === 0) {
-          clearInterval(timerId)
-          this.isVisible = true
-        }
-      }, 1000)
-      const payload = {
-        transaction: this.$route.query.transaction,
-        billingAccount: this.$route.query.billing_account
-      }
-      this.$store.dispatch('payments/status', { api: this.$api, payload })
     }
   }
 }

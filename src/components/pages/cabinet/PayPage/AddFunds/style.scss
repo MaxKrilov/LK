@@ -10,7 +10,7 @@
     @include media-query((
       height: (
         sm: 253px,
-        md: 383px,
+        md: 386px,
       ),
     ));
   }
@@ -53,9 +53,6 @@
     display: none;
     &__text {
       text-decoration: none;
-      &:hover {
-        color: map_get($shades, 'black');
-      }
     }
     @include media-query((
       margin-top: (
@@ -65,9 +62,6 @@
       display: (xl: block),
       padding-right: (lg: 16px !important)
     ));
-    &:hover {
-      color: map_get($yellow, 'base');
-    }
   }
   &__back-main-xs svg {
     display: block;
@@ -233,25 +227,22 @@
       ));
     }
     &__text {
-      position: relative;
-      margin-left: 11px;
-      cursor: pointer;
-      @extend %caption1-font;
+      @extend .add-funds__sum__autopay;
       width: 288px;
-      left: 0;
-      top: 18px;
-      border-bottom: none;
-      color: rgba(map_get($shades, 'black'), 0.5);
+      left: 0 !important;
+      top: 18px !important;
+      border-bottom: none !important;
+      color: rgba(map_get($shades, 'black'), 0.5) !important;
       @include media-query((
         top: (
-          sm: -37px,
-          md: -41px,
-          lg: 30px
+          sm: -37px !important,
+          md: -41px !important,
+          lg: 30px !important,
         ),
         left: (
-          sm: 219px,
-          md: 286px,
-          lg: -11px,
+          sm: 219px !important,
+          md: 286px !important,
+          lg: -11px !important,
         ),
         width: (
           sm: 249px,
@@ -259,10 +250,7 @@
         ),
       ));
       & a {
-        color: rgba(map_get($shades, 'black'), 0.5);
-        &:hover {
-          color: map_get($shades, 'black');
-        }
+        color: rgba(map_get($shades, 'black'), 0.5) !important;
       }
     }
     &__move-card {
@@ -389,10 +377,6 @@
             xl: 165px,
           ),
         ));
-      }
-      &:hover {
-        color: map_get($shades, 'black');
-        border-bottom: 1px dashed map_get($yellow, 'base');
       }
     }
     &__left {

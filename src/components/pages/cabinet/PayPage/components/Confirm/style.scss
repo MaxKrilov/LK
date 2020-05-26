@@ -37,7 +37,8 @@
         ),
         left: (
           sm: 75px,
-          md: 0,
+          md: 0px,
+          lg: 0px
         ),
       ));
     }
@@ -119,7 +120,6 @@
     color: map_get($shades, 'black');
     border-bottom: 1px dashed map_get($green, 'base');
     opacity: 0.3;
-    pointer-events: none;
     @include media-query((
       font-size: (
         md: 14px,
@@ -133,11 +133,6 @@
         md: normal
       ),
     ));
-    &__visButt {
-      @extend .confirm__no-text;
-      pointer-events: auto;
-      opacity: 1;
-    }
   }
   &__yes-text {
     display: inline-block;
@@ -319,49 +314,9 @@
     @include media-query((
       margin-top: (
         sm: -70px,
+        //md: 78px
       ),
     ));
-  }
-  &__loading {
-    width: 56px;
-    height: 56px;
-    left: 0;
-    top: 0;
-    position: relative;
-    margin-bottom: 57px;
-    @include media-query((
-      margin-bottom: (
-        sm: 48px,
-        md: 57px
-      ),
-    ));
-  }
-}
-#preloaderButton {
-  position: absolute;
-  left: -50px;
-  top: -15px;
-  display: inline-block;
-  height: 36px;
-  width: 156px;
-  color: map_get($shades, 'black');
-  background: map_get($shades, 'transparent');
-  @include media-query((
-    height: (
-      md: 64px,
-      lg: 78px,
-      xl: 32px
-    ),
-  ));
-  & .er-button__loading svg {
-    height: 36px;
-    color: map_get($shades, 'black');
-    @include media-query((
-      height: (
-        md: 64px,
-        lg: 78px,
-        xl: 32px
-      ),
-    ))
+
   }
 }

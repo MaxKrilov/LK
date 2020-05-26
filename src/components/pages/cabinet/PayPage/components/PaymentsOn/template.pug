@@ -12,7 +12,8 @@ div.main-content.main-content--h-padding(
         href="#"
         :class="`${pre}__back-main__text`"
         @click="paypage"
-      ) Назад в платежи и начисления
+        )
+          | Назад в платежи и начисления
 
     div.d--flex.align-items-start(:class="`${pre}__back-arr`")
       div(:class="`${pre}__back-main-xs`" @click="paypage")
@@ -59,11 +60,8 @@ div.main-content.main-content--h-padding(
           :class="`${pre}__status__icon-height ${pre}__${color}` "
         )
       div(:class="`${pre}__status__pos`")
-        h2.mb-4 {{ infoPay }}
-          div(
-            :class="`${pre}__description`"
-            v-if="!pay"
-          ) Оплата будет произведена в течении нескольких минут
+        h2.mb-4(style="")
+          | {{ infoPay }}
         // todo-er Временно отключили (разбираемся...)
         //div(:class="`${pre}__status__info ${pre}__${color}`" v-if="pay")
         //  er-icon(name="close" :class="`${pre}__status__info__icon`")
@@ -73,35 +71,15 @@ div.main-content.main-content--h-padding(
         //  er-icon(name="close" :class="`${pre}__status__info__icon`")
         //  span.caption(:class="`${pre}__status__info__span ${pre}__${color}`")
         //    | Карта не сохранена
-      er-container(:class="`${pre}__butt__container`" )
+
+      er-container(:class="`${pre}__butt__container`" v-if="pay")
         er-row.no-gutters.justify-content-between
-          er-flex.no-gutters(
-            xs12 sm6 lg3 xl3
-            :class="`${pre}__butt__left`"
-            v-if="oneLoad"
-          )
-            er-button(v-if="pay"
+          er-flex.no-gutters(xs12 sm6 lg3 xl3 :class="`${pre}__butt__left`")
+            er-button(
               type="submit"
               @click="addfunds"
-            ) Попробовать снова
-            er-button(v-if="!pay && isVisible"
-              type="submit"
-              @click="currentStatus"
-            ) Запросить статус
-            er-button(v-if="!pay && !isVisible"
-              type="submit"
-              @click="currentStatus"
-              disabled
             )
-            er-button(id="preloaderButton"
-              :loading="true"
-              flat
-              v-if="!pay && !isVisible"
-            )
-            div(
-              :class="`${pre}__button-time`"
-              v-if="!pay && !isVisible"
-            ) {{time}} сек
+              | Попробовать снова
 
           er-flex.no-gutters(xs12 sm6 lg9 xl3 offset-xs1 :class="`${pre}__butt__right`")
             .er-attach(:class="`${pre}__butt__icon`")
@@ -110,13 +88,4 @@ div.main-content.main-content--h-padding(
                 @click="addfunds"
                 :class="`${pre}__butt__text`"
               ) Спросить в чате
-
-      div(
-        :class="`${pre}__loading`"
-        v-if="statusPay !== '1' && statusPay !== '2' && !isVisible"
-      )
-        er-button(id="preloaderGeneral"
-          :loading="true"
-          flat
-        )
 

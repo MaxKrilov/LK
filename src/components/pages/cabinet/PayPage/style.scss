@@ -14,13 +14,13 @@
   ));
   &__container-main {
     min-width: 320px;
-    margin-top: 3px;
+    margin-top: -14px;
     @include media-query((
       margin-top: (
-        sm: -4px,
-        md: 3px,
-        lg: -6px,
-        xl: 0
+        sm: -17px,
+        md: -26px,
+        lg: -23px,
+        xl: -23px,
       ),
     ));
   }
@@ -167,9 +167,6 @@
     display: none;
     &__text {
       text-decoration: none;
-      &:hover {
-        color: map_get($shades, 'black');
-      }
     }
     @include media-query((
       margin-top: (
@@ -179,9 +176,6 @@
       display: (xl: block),
       padding-right: (lg: 16px !important)
     ));
-    &:hover {
-      color: map_get($yellow, 'base');
-    }
   }
   &__back-main-xs svg {
     display: block;

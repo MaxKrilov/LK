@@ -29,21 +29,6 @@
       )
     ));
   }
-  &__inf-promise {
-    bottom: 70px;
-    left: 18px;
-    top: 68px;
-    width: min-content;
-    display: inline-block;
-    position: absolute;
-    vertical-align: top;
-    z-index: 1;
-    @include media-query((
-      left: (sm: 27px),
-      top: (sm: auto)
-    ));
-    @extend %caption2-font;
-  }
   &__card-height {
     height: 147px;
     @include media-query((
@@ -317,21 +302,11 @@
         xl: -88px
       ),
     ));
-    & svg {
-      margin-top: 0;
-      @include media-query((
-        margin-top: (
-          md: -80px,
-          lg: -109px,
-          xl: 2px
-        ),
-      ));
-    }
   }
   &__progressbar {
     position: absolute;
     width: 94%;
-    height: 4px;
+    height: 4px; //12px;
     bottom: 0;
     left: 6px;
     overflow: hidden;
@@ -357,29 +332,10 @@
       @extend .button-pay__progressbar;
       left: 0;
       height: 4px;
+      width: 80% !important;
       border-bottom-left-radius: 0;
       border-bottom-right-radius: 0;
       background: map_get($red, 'base');
     }
   }
 }
-#preloaderPromisePay {
-  position: relative;
-  text-align: start;
-  left: 28px;
-  top: 17px;
-  @include media-query((
-    left: (
-      sm: 27px,
-      md: 39px,
-      lg: 64px,
-      xl: 55px
-    ),
-    top: (
-      md: 23px,
-      lg: 52px,
-      xl: 22px
-    ),
-  ));
-}
-

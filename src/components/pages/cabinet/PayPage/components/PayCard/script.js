@@ -18,18 +18,24 @@ export default {
     isButtTop: [],
     isButtBott: [],
     moveInd: 0,
-    textDataCard: `Данные карты вы заполняете на следующем шаге. В целях вашей безопасности мы не храним все данные карты. Данные карты хранит банк, мы храним только ссылку на данные карты. Если вы запомните карту, в следующий раз можно будет ввести только CVC`,
+    textDataCard: `Данные карты вы заполняете
+    на следующем шаге.
+    В целях вашей безопасности
+    мы не храним все данные карты.
+    Данные карты хранит банк,
+    мы храним только ссылку на данные карты.
+    Если вы запомните карту, в следующий раз
+    можно будет ввести только CVC`,
     openConfirmDel: false,
     isButtLeft: false,
     isButtRight: true,
     rightNext: '',
     delta: [],
     valOpacity: 0,
-    ButtBottImgFirst: '',
-    LastFourDigitsFirst: ''
+    buttbottimg0: '',
+    numbuttbott0: ''
   }),
   created () {
-    this.$store.dispatch('payments/isLoadingClean')
     this.$parent.$on('updateCardDel', this.cardDel)
     this.$parent.$on('updateButtLeft', this.updateSelectLeft)
     this.$parent.$on('updateButtRight', this.updateSelectRight)
@@ -67,11 +73,19 @@ export default {
     cards () {
       if (this.cards.length !== 0) {
         this.changeWidth()
-        this.ButtBottImgFirst = require('@/assets/images/paycard/' + this.cards[0].name + '-butt-1200.png')
-        this.LastFourDigitsFirst = this.cards[0].maskedPan.slice(-4)
+        this.buttbottimg0 = require('@/assets/images/paycard/' + this.cards[0].name + '-butt-1200.png')
+        this.numbuttbott0 = this.cards[0].maskedPan.slice(-4)
+        let autopay
         for (let i = 0; i < this.cards.length; i++) {
           if (this.cards[i].autopay === 1) {
-            this.$store.dispatch('payments/updateAutoPay', { payload: this.cards[i].autopay })
+            autopay = i + 1
+            const payload = {
+              billingAccount: this.activeBillingAccountId,
+              bindingId: this.cards[i].bindingId,
+              activate: 1,
+              load: autopay
+            }
+            this.$store.dispatch('payments/autoPay', { api: this.$api, payload: payload })
           }
         }
       }
@@ -109,8 +123,7 @@ export default {
       numCard: state => state.payments.numCard,
       errDelCard: state => state.payments.errDelCard,
       sel_save: state => state.payments.save,
-      listCard: state => state.payments.listCard,
-      isLoading: state => state.payments.isLoading
+      listCard: state => state.payments.listCard
     })
   },
   methods: {
@@ -266,13 +279,11 @@ export default {
       this.openConfirmDel = true
     },
     cardDel () {
-      if (this.numCard > 0) {
-        const payload = {
-          billingAccount: this.activeBillingAccountId,
-          bindingId: this.cards[this.numCard - 1].bindingId
-        }
-        this.$store.dispatch('payments/delCard', { api: this.$api, payload })
+      const payload = {
+        billingAccount: this.activeBillingAccountId,
+        bindingId: this.cards[this.numCard - 1].bindingId
       }
+      this.$store.dispatch('payments/delCard', { api: this.$api, payload: payload })
     },
     openRemcard () {
       this.$emit('openRemcard')
