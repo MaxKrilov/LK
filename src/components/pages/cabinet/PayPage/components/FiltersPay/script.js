@@ -1,106 +1,128 @@
 import { mapGetters } from 'vuex'
 import ErFilterClose from '../ErFilterClose'
+import ErReportFilter from '../ErReportFilter'
 import ListAddress from '../ListAddress/index.vue'
 import { SCREEN_WIDTH } from '@/store/actions/variables'
+import { BREAKPOINT_MD } from '@/constants/breakpoint'
+import { BREAKPOINT_XL } from '@/constants/breakpoint'
 
 export default {
   name: 'filters-pay',
   data: () => ({
     pre: 'filters-pay',
-    typeFind: ['По услуге', 'По адресу'],
+    monthsNames: [
+      'январь',
+      'февраль',
+      'март',
+      'апрель',
+      'май',
+      'июнь',
+      'июль',
+      'август',
+      'сентябрь',
+      'октябрь',
+      'ноябрь',
+      'декабрь'
+    ],
+    typeFind: [
+      { 'value': 'По услуге' },
+      { 'value': 'По адресу' }
+    ],
     services: [
-      'Все услуги',
-      'Интернет',
-      'Видеонаблюдение',
-      'Wi-Fi для бизнеса',
-      'Антивирусы'
+      { 'value': 'Интернет' },
+      { 'value': 'Видеонаблюдение' },
+      { 'value': 'Wi-Fi для бизнеса' },
+      { 'value': 'Антивирусы' },
+      { 'value': 'Все услуги' }
     ],
-    cities: ['Все города', 'Абакан', 'Москва', 'Санкт-Петербург'],
-    typePay: ['Все платежи', 'Списание', 'Начисление'],
-    years: [
-      { month: 'Январь', active: 'active' },
-      { month: 'Февраль', active: 'none' },
-      { month: 'Март', active: 'none' },
-      { month: 'Апрель', active: 'none' },
-      { month: 'Май', active: 'none' },
-      { month: 'Июнь', active: 'none' },
-      { month: 'Июль', active: 'none' },
-      { month: 'Август', active: 'none' },
-      { month: 'Сентябрь', active: 'none' },
-      { month: 'Октябрь', active: 'none' },
-      { month: 'Ноябрь', active: 'none' },
-      { month: 'Декабрь', active: 'none' }
+    cities: [
+      { 'value': 'Все города' },
+      { 'value': 'Абакан' },
+      { 'value': 'Москва' },
+      { 'value': 'Санкт-Петербург' }
     ],
-    quarter1: [
-      { month: 'Январь', active: 'active' },
-      { month: 'Февраль', active: 'none' },
-      { month: 'Март', active: 'none' }
+    typePay: [
+      { 'value': 'Списание' },
+      { 'value': 'Начисление' },
+      { 'value': 'Все платежи' }
     ],
-    quarter2: [
-      { month: 'Апрель', active: 'active' },
-      { month: 'Май', active: 'none' },
-      { month: 'Июнь', active: 'none' }
-    ],
-    quarter3: [
-      { month: 'Июль', active: 'active' },
-      { month: 'Август', active: 'none' },
-      { month: 'Сентябрь', active: 'none' }
-    ],
-    quarter4: [
-      { month: 'Октябрь', active: 'active' },
-      { month: 'Ноябрь', active: 'none' },
-      { month: 'Декабрь', active: 'none' }
-    ],
-    firstHalfYear: [
-      { month: 'Январь', active: 'active' },
-      { month: 'Февраль', active: 'none' },
-      { month: 'Март', active: 'none' },
-      { month: 'Апрель', active: 'none' },
-      { month: 'Май', active: 'none' },
-      { month: 'Июнь', active: 'none' }
-    ],
-    secondHalfYear: [
-      { month: 'Июль', active: 'active' },
-      { month: 'Август', active: 'none' },
-      { month: 'Сентябрь', active: 'none' },
-      { month: 'Октябрь', active: 'none' },
-      { month: 'Ноябрь', active: 'none' },
-      { month: 'Декабрь', active: 'none' }
-    ],
-    typeFindLabel: 'По услуге',
-    servicesLabel: 'Все услуги',
-    cityLabel: 'Все города',
-    typePayLabel: 'Все платежи',
+    isFiltersMonthVisible: true,
+
     xs1: '',
     xs2: '',
-    service: true,
-    period: ['2019-01-01', '2019-03-31'],
-    isFiltersVisible: true,
-    isFiltersMonthVisible: true,
     isCloseService: true,
     isCloseTypePay: true,
-    datePeriod: '',
-    date: '1-й квартал',
-    year: ' 2019',
     zero: '',
     topTypePay: 'initial',
-    typePeriod: [
-      { month: 'Январь', active: 'active' },
-      { month: 'Февраль', active: 'none' },
-      { month: 'Март', active: 'none' }
-    ],
+    typePeriod: [],
     openFilterMob: false,
     visArr: false,
     padding: '',
     margLeft: '0px',
     topFilter: '',
     widthContainer: '113%',
-    select1: '',
-    select2: '',
-    select3: '',
+    reportPeriod: [],
+    firstTypeFind: { 'id': '-1', 'value': 'По услуге' },
+    firstTypePay: { 'id': '-1', 'value': 'Все платежи' },
+    typeSelect: { 'id': '-1', 'value': 'Все услуги' },
+    selected: [],
+    isFiltersVisible: false
+  }),
+  components: {
+    ErFilterClose,
+    ErReportFilter,
+    ListAddress
+  },
+  mounted () {
+    this.selected = this.services
+    this.changeWidth()
+    const today = new Date()
+    const beforeMonth = new Date(new Date().setDate(1))
+    this.reportPeriod = [
+      beforeMonth,
+      today
+    ]
+    this.changePeriod(this.reportPeriod)
+  },
+  computed: {
+    ...mapGetters([SCREEN_WIDTH]),
+    periodInfo () {
+      return this.isFiltersMonthVisible ? this.date + this.year : this.datePeriod
+    }
+  },
+  watch: {
+    SCREEN_WIDTH () {
+      this.changeArr()
+      // todo-er убрать в css
+/*
+      this.widthContainer = (this[SCREEN_WIDTH] >= 1600) ? this.widthContainer = '62% !important'
+        : (this[SCREEN_WIDTH] >= 1440) ? this.widthContainer = '80% !important'
+          : (this[SCREEN_WIDTH] >= 900) ? this.widthContainer = '109% !important'
+            : (this[SCREEN_WIDTH] >= 770) ? this.widthContainer = '110% !important'
+              : (this[SCREEN_WIDTH] > 680) ? this.widthContainer = '112% !important'
+                : this.widthContainer = '113% !important'
+*/
+    }
+  },
+  methods: {
+    changeType (e) {
+      this.reportType1 = { 'id': '-1', 'value': 'Все услуги' }
+      this.reportType11 = { 'id': '-1', 'value': 'Все города' }
+      if (e.value === 'По услуге') {
+        this.typeSelect = this.reportType1
+        this.selected = this.services
+        this.servicesValue('services')
+      } else {
+        this.typeSelect = this.reportType11
+        this.selected = this.cities
+        this.citiesValue('cities')
+      }
+      this.typeFindValue(e.value)
+      this.firstTypeFind = Object.assign({}, e)
+    },
     changeArr () {
-      this.isFiltersVisible = this[SCREEN_WIDTH] >= 640
-      const delta = this[SCREEN_WIDTH] >= 1200 ? 378 : 72
+      this.isFiltersVisible = this[SCREEN_WIDTH] >= BREAKPOINT_MD
+      const delta = this[SCREEN_WIDTH] >= BREAKPOINT_XL ? 378 : 72
       if (this.typePeriod.length * 82 > this[SCREEN_WIDTH] - delta) {
         this.visArr = true
         this.padding = '__padding'
@@ -117,33 +139,7 @@ export default {
         this.xs1 = ''
         this.xs2 = ''
       }
-    }
-  }),
-  components: {
-    ErFilterClose,
-    ListAddress
-  },
-  mounted () {
-    this.changeWidth()
-  },
-  computed: {
-    ...mapGetters([SCREEN_WIDTH]),
-    periodInfo () {
-      return this.isFiltersMonthVisible ? this.date + this.year : this.datePeriod
-    }
-  },
-  watch: {
-    SCREEN_WIDTH () {
-      this.changeArr()
-      this.widthContainer = (this[SCREEN_WIDTH] >= 1600) ? this.widthContainer = '62% !important'
-        : (this[SCREEN_WIDTH] >= 1440) ? this.widthContainer = '80% !important'
-          : (this[SCREEN_WIDTH] >= 900) ? this.widthContainer = '109% !important'
-            : (this[SCREEN_WIDTH] >= 770) ? this.widthContainer = '110% !important'
-              : (this[SCREEN_WIDTH] > 680) ? this.widthContainer = '112% !important'
-                : this.widthContainer = '113% !important'
-    }
-  },
-  methods: {
+    },
     filtersVisible (select) {
       this.openFilterMob = this[SCREEN_WIDTH] < 640 ? select : false
       this.isFiltersVisible = select
@@ -174,7 +170,6 @@ export default {
     },
     typeFindValue (item) {
       this.typeFindLabel = item
-      this.service = item === 'По услуге'
       this.isCloseService = true
       this.$emit('typeFind', item)
       this.servicesLabel = 'Все услуги'
@@ -196,28 +191,26 @@ export default {
     visTitleTypePay () {
       this.topTypePay = 'initial'
     },
-    inp (payload) {
-      const date1 = payload[0]
-      const zeroDay1 = date1.getDate() > 10 ? '' : '0'
-      const zeroMonth1 = date1.getMonth() + 1 > 10 ? '' : '0'
-      const period1 = `${zeroDay1}${date1.getDate()}.${zeroMonth1}${date1.getMonth() + 1}.${String(date1.getFullYear()).slice(-2)}`
-      const date2 = payload[1]
-      const zeroDay2 = date2.getDate() > 10 ? '' : '0'
-      const zeroMonth2 = date2.getMonth() + 1 > 10 ? '' : '0'
-      const period2 = `${zeroDay2}${date2.getDate()}.${zeroMonth2}${date2.getMonth() + 1}.${String(date2.getFullYear()).slice(-2)}`
-      this.datePeriod = `${period1} - ${period2}`
+    changePeriod (payload) {
+      this.typePeriod = []
+      this.reportPeriod = [payload[0], payload[1]]
+      this.selectMonth(this.reportPeriod)
+      this.dateName(this.reportPeriod)
     },
     dateName (payload) {
-      if (payload && payload.indexOf(' - ') === -1) {
-        this.date = payload
-        if (payload === '1-й квартал') this.typePeriod = this.quarter1
-        if (payload === '2-й квартал') this.typePeriod = this.quarter2
-        if (payload === '3-й квартал') this.typePeriod = this.quarter3
-        if (payload === '4-й квартал') this.typePeriod = this.quarter4
-        if (payload === '1-е полугодие') this.typePeriod = this.firstHalfYear
-        if (payload === '2-е полугодие') this.typePeriod = this.secondHalfYear
-        if (payload === 'За год') this.typePeriod = this.years
+      const data1 = payload[0].getMonth()
+      const data2 = payload[1].getMonth() + 1
+      let n = 0
+      for (let i = 0; i < this.monthsNames.length + 1; i++) {
+        if (i >= data1 && i < data2) {
+          let active = i === data1 ? 'active' : 'none'
+          this.typePeriod[n] = { month: this.monthsNames[i], active: active }
+          n++
+        }
+      }
 
+      // todo-er ??? разобраться
+      if (payload && payload.indexOf(' - ') === -1) {
         this.isFiltersMonthVisible = true
       } else {
         this.isFiltersMonthVisible = false

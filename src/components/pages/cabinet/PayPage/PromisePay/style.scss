@@ -3,15 +3,8 @@
   &__container-main {
     padding: 0 !important;
     margin-left: 0;
-    margin-bottom: -7px; //
+    margin-bottom: -7px;
     @include media-query((
-      margin-top: (
-        xs: -14px,
-        sm: -25px,
-        md: 71px !important,
-        lg: -21px,
-        xl: -23px,
-      ),
       margin-left: (
         sm: 0,
         md: 0,
@@ -61,15 +54,23 @@
     display: none;
     &__text {
       text-decoration: none;
+      &:hover {
+        color: map_get($shades, 'black');
+      }
     }
     @include media-query((
       margin-top: (
         xl: 11px
       ),
-      margin-bottom: (lg: 14px),
+      margin-bottom: (
+        lg: 14px,
+      ),
       display: (xl: block),
       padding-right: (lg: 16px !important)
     ));
+    &:hover {
+      color: map_get($yellow, 'base');
+    }
   }
   &__back-main-xs svg {
     display: block;
@@ -129,7 +130,6 @@
         xl: -0.5px
       ),
       width: (
-        //sm: 432px,
         md: 448px,
         lg: 568px,
         xl: 568px,
@@ -196,10 +196,9 @@
           sm: 0,
         ),
       ));
-
     }
   }
-  &__content1 {
+  &__content-left {
     min-width: 245px;
     &__text {
       @extend .promise-pay__subtitle;
@@ -225,31 +224,27 @@
       ));
     }
   }
-  &__content2 {
+  &__content-middle {
     min-width: 259px;
-    padding-left: 0px;
+    padding-left: 0;
     &__text {
       @extend .promise-pay__subtitle;
       margin-top: 8px;
       @include media-query((
-        padding-left: (
-          lg: 0px,
+        margin-top: (
+          md: 16px,
           xl: 0px
         ),
-        margin-top: (
-            md: 16px,
-            xl: 0px
-          ),
-          width: (
+        width: (
           md: 259px,
           lg: auto,
           xl: auto,
-          xxl: 307px,
-        ),
+          xxl: 307px
+        )
       ));
     }
   }
-  &__content3 {
+  &__content-right {
     min-width: 224px;
     &__text {
       @extend .promise-pay__subtitle;

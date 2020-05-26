@@ -292,6 +292,7 @@
   &__typeFind {
     margin-top: 23px;
     padding-right: 7px;
+    max-width: 357px;
     @include media-query((
       padding-right: (
         md: 37px,
@@ -604,7 +605,7 @@
       ));
     }
   }
-  &__months-filter1 {
+  &__months-filter-container {
     display: inline-block;
     width: 99%;
     height: 37px;
@@ -612,10 +613,11 @@
     margin-right: -32px;
     overflow: hidden;
   }
-  &__months-filter2 {
+  &__months-filter-move {
     margin-top: 0;
     display: inline-block;
     height: 40px;
+    transition: 1s;
   }
   &__left_big {
     transform: rotate(90deg)
@@ -666,4 +668,7 @@
       xl: 50px !important
     ),
   ));
+}
+.er-filter-container__selected {
+  margin-left: -24px;
 }
