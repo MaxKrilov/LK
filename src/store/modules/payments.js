@@ -6,7 +6,6 @@ const state = {
   delCard: false,
   cvc: [],
   listCard: [],
-  // todo-er дорисовать карту МАЭСТРО (согласовать с дизайнером)
   card_img: [
     {
       nameRU: 'МИР',
@@ -37,19 +36,22 @@ const state = {
     },
     {
       nameRU: 'МАЭСТРО',
-      name: 'mc',
+      name: 'maestro',
       num: '6',
-      butttopimg: require('@/assets/images/paycard/visa-butt-1200.png'),
-      cardimg: require('@/assets/images/paycard/mc-1200.png'),
-      cardbgimg: require('@/assets/images/paycard/mc-bg-1200.png'),
-      buttbottimg: require('@/assets/images/paycard/mc-butt-1200.png')
+      butttopimg: require('@/assets/images/paycard/maestro-butt-1200.png'),
+      cardimg: require('@/assets/images/paycard/maestro-1200.png'),
+      cardbgimg: require('@/assets/images/paycard/maestro-bg-1200.png'),
+      buttbottimg: require('@/assets/images/paycard/maestro-butt-1200.png')
     }
   ],
   pay_status: '',
   visAutoPay: 0,
   errAutoPay: false,
   errDelCard: false,
+  errPromisePay: false,
   bindingId: '',
+  isLoading: null,
+  isLoadingButt: false,
   invPaymentsForViewer: [
     {
       id: 0,
@@ -61,7 +63,12 @@ const state = {
         name: ''
       }
     }
-  ]
+  ],
+  promisePayInterval: '',
+  isPromisePay: false,
+  isExpired: false,
+  isDebt: false,
+  appCreation: ''
 }
 const getters = {}
 const actions = {
@@ -74,6 +81,18 @@ const actions = {
   clearCVC: ({ commit }) => {
     commit('clearCVC')
   },
+  updateAutoPay: ({ commit }, payload) => {
+    commit('updateAutoPay', payload)
+  },
+  isLoadingClean: ({ commit }) => {
+    commit('isLoadingClean')
+  },
+  isExpired: ({ commit }, payload) => {
+    commit('isExpired', payload)
+  },
+  isLoadingTrue: ({ commit }) => {
+    commit('isLoadingTrue')
+  },
   clearErr: ({ commit }) => {
     commit('clearErr')
   },
@@ -82,6 +101,25 @@ const actions = {
   },
   hideDelCard: async ({ commit }) => {
     commit('hideDelCard')
+  },
+  history: async ({ commit, rootGetters, rootState }, { api, payload }) => {
+    const { toms } = rootGetters['auth/user']
+    const { activeBillingAccount } = rootState.user
+    try {
+      const result = await api
+        .setWithCredentials()
+        .setData({
+          clientId: toms,
+          dateFrom: payload[0],
+          dateTo: payload[1],
+          id: activeBillingAccount
+        })
+        .query('/payment/billing/history')
+      console.log('result', result)
+      return result
+    } catch (e) {
+      commit(ERROR_MODAL, true, { root: true })
+    }
   },
   payment: ({ commit }, { api, payload }) => {
     return new Promise((resolve, reject) => {
@@ -152,6 +190,7 @@ const actions = {
     }
   },
   autoPay: async ({ commit }, { api, payload }) => {
+    commit('isLoading')
     try {
       let result = await api
         .setWithCredentials()
@@ -232,6 +271,7 @@ const actions = {
     }
   },
   delCard: async ({ commit }, { api, payload }) => {
+    commit('isLoading')
     try {
       const result = await api
         .setWithCredentials()
@@ -261,12 +301,137 @@ const actions = {
       return result
     } catch (e) {
       commit(ERROR_MODAL, true, { root: true })
-    } finally {
-      commit('loading/loadingInvoiceForPayment', false, { root: true })
+    }
+  },
+  promisePayInfo: async ({ commit, rootGetters, rootState }, { api }) => {
+    const { toms } = rootGetters['auth/user']
+    const { activeBillingAccount } = rootState.user
+    try {
+      const checkPromisePay = await api
+        .setWithCredentials()
+        .setData({
+          clientId: toms,
+          id: activeBillingAccount
+        })
+        .query('/billing/promise/index')
+
+      const checkDebt = await api
+        .setWithCredentials()
+        .setData({
+          clientId: toms,
+          promiseCode: 1,
+          id: activeBillingAccount
+        })
+        .query('/payment/billing/check-promise-payment')
+
+      commit('promisePayInfo', [checkPromisePay, checkDebt])
+    } catch (e) {
+      commit('isLoadingClean')
+      commit(ERROR_MODAL, true, { root: true })
+    }
+  },
+  appCreation: async ({ commit, rootGetters, rootState }, { api, payload }) => {
+    const { toms } = rootGetters['auth/user']
+    const { activeBillingAccount } = rootState.user
+    commit('isLoading')
+    try {
+      const result = await api
+        .setWithCredentials()
+        .setData({
+          clientId: toms,
+          marketingBrandId: payload.marketingBrandId
+        })
+        .query('/order/management/create')
+
+      await api
+        .setWithCredentials()
+        .setData({
+          clientId: toms,
+          billingAccountId: activeBillingAccount,
+          locationId: result.locationIds,
+          id: result.id
+        })
+        .query('/order/management/promised-payment')
+
+      await api
+        .setWithCredentials()
+        .setData({
+          clientId: toms,
+          id: result.id
+        })
+        .query('/order/management/save')
+
+      const res = [result, payload.date]
+      commit('appCreation', res)
+      return result
+    } catch (e) {
+      commit('promisePayErr')
+    }
+  },
+  appSend: async ({ commit, rootGetters }, { api, date }) => {
+    const { toms } = rootGetters['auth/user']
+    commit('isLoadingButt')
+    try {
+      const result = await api
+        .setWithCredentials()
+        .setData({
+          clientId: toms,
+          id: state.appCreation
+        })
+        .query('/order/management/send-order')
+
+      commit('isLoadingButtClean')
+      return result
+    } catch (e) {
+      commit(ERROR_MODAL, true, { root: true })
+    }
+  },
+  appCancel: async ({ commit, rootGetters }, { api }) => {
+    const { toms } = rootGetters['auth/user']
+    try {
+      const result = await api
+        .setWithCredentials()
+        .setData({
+          clientId: toms,
+          id: state.appCreation
+        })
+        .query('/order/management/cancel')
+
+      return result
+    } catch (e) {
+      commit(ERROR_MODAL, true, { root: true })
     }
   }
 }
 const mutations = {
+  updateAutoPay: (state, payload) => {
+    state.visAutoPay = payload
+  },
+  isLoadingClean: (state) => {
+    state.isLoading = false
+  },
+  isLoadingButtClean: (state) => {
+    state.isLoadingButt = false
+    state.isLoading = true
+  },
+  isLoadingTrue: (state) => {
+    state.isLoading = true
+  },
+  isLoading: (state) => {
+    state.isLoading = true
+  },
+  isExpired: (state, payload) => {
+    state.isExpired = payload
+  },
+  isLoadingButt: (state) => {
+    state.isLoadingButt = true
+  },
+  appCreation: (state, result) => {
+    state.appCreation = result[0].id
+    state.isPromisePay = false
+    state.promisePayInterval = result[1]
+    state.isLoading = false
+  },
   status: (state, result) => {
     state.pay_status = result.pay_status
     state.bindingId = result.bindingId
@@ -319,6 +484,9 @@ const mutations = {
   autoPayErr: () => {
     state.errAutoPay = true
   },
+  promisePayErr: () => {
+    state.errPromisePay = true
+  },
   hideDelCard: (state) => {
     state.delCard = false
     state.numCard = 0
@@ -344,6 +512,7 @@ const mutations = {
   },
   clearErr: (state) => {
     state.errAutoPay = false
+    state.errPromisePay = false
     state.errDelCard = false
   },
   changeCurrentNumCard: (state, num) => {
@@ -351,6 +520,27 @@ const mutations = {
   },
   listCard: (state, result) => {
     state.listCard = result
+    state.isLoading = true
+  },
+  promisePayInfo: (state, result) => {
+    const len = Object.keys(result[0]).length
+    if (len > 1) {
+      state.isPromisePay = false
+      if (result[0].promisePaymentActive !== undefined) {
+        state.promisePayInterval = result[0].promisePaymentActive
+          .promisePaymentDetails[0].schdPymtDueDt
+      } else {
+        state.promisePayInterval = result[0].promisePaymentHistory[0]
+          .promisePaymentDetails[0].schdPymtDueDt
+      }
+    } else {
+      state.isPromisePay = true
+    }
+    state.isLoading = true
+    if (!result[1].paymentCanBeCreated) {
+      state.isDebt = true
+      state.errPromisePay = true
+    }
   },
   invPayment: (state, result) => {
     let invPayment = []

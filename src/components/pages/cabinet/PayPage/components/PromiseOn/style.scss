@@ -82,7 +82,7 @@
     &__time-title {
       position: absolute;
       top: 88px;
-      left: 399px;
+      left: 86px;
       width: 128px;
       font: 13px/18px $fedra-book;
       letter-spacing: 0.25px;
@@ -92,11 +92,12 @@
         top: (
           sm: 22px,
           md: 26px,
+          xl: 44px
         ),
         right: (
-          sm: -298px,
-          md: -292px,
-          xl: -236px
+          sm: -18px,
+          md: 14px,
+          lg: 25px
         ),
         font-size: (
           md: 14px,
@@ -177,4 +178,20 @@
       ),
     ));
   }
+}
+#preloaderPromiseOn {
+  position: relative;
+  background: transparent;
+  text-align: start;
+  left: 14px;
+  top: 3px;
+  @include media-query((
+    left: (
+      md: 17px,
+      xl: 22px
+    ),
+    top: (
+      md: 9px
+    ),
+  ));
 }

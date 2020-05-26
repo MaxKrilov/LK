@@ -30,17 +30,8 @@ export default {
     openConfirmCheck: false,
     openConfirmDel: false,
     openConfirmDataCard: false,
-    textRemcard: `Данные карты вы заполняете
-    на следующем шаге.
-    В целях вашей безопасности
-    мы не храним все данные карты.
-    Данные карты хранит банк,
-    мы храним только ссылку на данные карты.
-    Если вы запомните карту, в следующий раз
-    можно будет ввести только CVC`,
-    textCheck: `Мы обязаны отправить вам чек
-    об оплате услуг. Для получения чека
-    введите электронную почту.`,
+    textRemcard: `Данные карты вы заполняете на следующем шаге. В целях вашей безопасности мы не храним все данные карты. Данные карты хранит банк, мы храним только ссылку на данные карты. Если вы запомните карту, в следующий раз можно будет ввести только CVC`,
+    textCheck: `Мы обязаны отправить вам чек об оплате услуг. Для получения чека введите электронную почту.`,
     autopayOff: 'При отключении автоплатежа вам необходимо самостоятельно пополнять баланс на сумму равной ежемесячной абонентской плате до 1 числа отчетного месяца. Денежные средства будут списаны с 20 по последнее число месяца, предшествующего отчетному (например авансовый платеж за апрель будет списан с 20 по 31 марта).',
     autopayOn: 'Автоплатеж может быть активирован только на одной карте. Если вы активируете на этой карте он будет снят с другой. При подключении автоплатежа вы соглашаетесь на автоматическое списание суммы равной ежемесячной абонентской плате. Денежные средства будут списаны с 20 по последнее число месяца, предшествующего отчетному (например авансовый платеж за апрель будет списан с 20 по 31 марта).',
     textAutopay: '',
@@ -158,13 +149,15 @@ export default {
       this.visConfirmAutoPay = true
     },
     payAutoRequest (act) {
-      const payload = {
-        billingAccount: this.activeBillingAccountId,
-        bindingId: this.listCard[this.numCard - 1].bindingId,
-        activate: act,
-        load: 0
+      if (this.numCard > 0) {
+        const payload = {
+          billingAccount: this.activeBillingAccountId,
+          bindingId: this.listCard[this.numCard - 1].bindingId,
+          activate: act,
+          load: 0
+        }
+        this.$store.dispatch('payments/autoPay', { api: this.$api, payload })
       }
-      this.$store.dispatch('payments/autoPay', { api: this.$api, payload: payload })
     },
     autopayButtRight () {
       this.payAutoRequest(1)
@@ -184,13 +177,15 @@ export default {
     },
     paymentConfirm () {
       if (this.currentEmail === '' || !this.currentEmail.match(this.regexEmail)) {
+        const el = this.$refs.sum
+        el.scrollIntoView({ behavior: 'smooth' })
         this.isEmptyEmail = true
         this.borderCheck = '__border'
       } else {
         this.isEmptyEmail = false
         this.borderCheck = ''
       }
-      if (this.currentEmail !== '' &&
+      if (
         this.$refs.form.validate() &&
         this.currentEmail.match(this.regexEmail)
       ) {
@@ -252,7 +247,7 @@ export default {
           email: this.currentEmail,
           returnUrl: `${location.origin}/lk/payment-result`
         }
-        this.$store.dispatch('payments/payment', { api: this.$api, payload: payload })
+        this.$store.dispatch('payments/payment', { api: this.$api, payload })
           .finally(() => {
             this.isLoadingPayment = false
             this.openConfirmPay = false
@@ -267,7 +262,7 @@ export default {
           cvv: cvv,
           returnUrl: `${location.origin}/lk/payment-result`
         }
-        this.$store.dispatch('payments/bindpay', { api: this.$api, payload: payload })
+        this.$store.dispatch('payments/bindpay', { api: this.$api, payload })
           .finally(() => {
             this.isLoadingPayment = false
             setTimeout(() => {

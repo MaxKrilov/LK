@@ -1,15 +1,15 @@
 // Confirm
 
-er-dialog(v-model="internalVisible" :maxWidth="maxWidth")
+er-dialog(
+  v-model="internalVisible"
+  :maxWidth="maxWidth"
+  :persistent="persistent"
+)
   div(:class="`${pre}__content d--flex flex-column`")
-    div(
-      :class="`${pre}__close`"
-      @click="closeConfirm"
-    )
-      er-icon(name="close")
-    div(:class="`${pre}__content__size`")
+    div(:class="`${pre}__content__size`" v-if="!isLoading")
       er-icon(name="question" :class="`${pre}__icon-height`")
-
+    div(:class="`${pre}__loading`" v-else)
+      img(:src="require('@/assets/images/preloaders/3.svg')")
     div(:class="`${pre}__content__pos`" v-if="hint")
       h4 {{ title }}
         span.h3.ml-8(
@@ -37,32 +37,42 @@ er-dialog(v-model="internalVisible" :maxWidth="maxWidth")
       div(:class="`${pre}__text__header`") {{description}}
       div(:class="`${pre}__text${styleTitle}`") {{subText}}
 
-
-    div.caption(:class="`${pre}__err`" v-if="hasErr && err !== ''")
-      | {{err}}
+    div.caption(
+      :class="`${pre}__err`"
+      v-if="hasErr && err !== ''"
+    ) {{err}}
+    div.caption(
+      :class="`${pre}__err`"
+      v-if="!isLoading && sumPay === 'promisePay' && !hasErr"
+    ) {{errText}}
 
     div(:class="`${pre}__container-button`")
       div(:class="`${pre}__butt__xl`")
         er-flex.pr-28(xl7)
           er-button(
-            type="submit"
             flat=true
+            :disabled="disabled_l"
             @click="buttLeft"
           ) {{buttLeftText}}
         er-flex.pr-24.pl-4(xl6)
           er-button.align-items-center(
-            type="submit"
             @click="buttRight"
-          ) {{buttRightText}}
-
+            :disabled="disabled_r"
+          )
+            er-button(id="preloaderButton"
+              :loading="true"
+              flat
+              v-if="isLoadingButt"
+            )
+            | {{buttRightText}}
       div(:class="`${pre}__butt`")
-        //er-flex(sm9 md8 xl5)
         a.mr-16(
           @click="buttLeft"
-          :class="`${pre}__no-text`"
+          :class="`${pre}__no-text${visButt}`"
         ) {{buttLeftText}}
-        //er-flex(sm3 md4 xl6)
         a.ml-16(
           @click="buttRight"
+          :style="'pointer-events: ' + valDisable_r"
           :class="`${pre}__yes-text`"
         ) {{buttRightText}}
+

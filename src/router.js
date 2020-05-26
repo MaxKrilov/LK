@@ -37,6 +37,11 @@ import SupportIndexPage from './components/pages/cabinet/SupportPages/IndexPage/
 // Страница платежи
 import PayPage from './components/pages/cabinet/PayPage/index'
 
+/*
+// Обещанный платеж
+import PromiseOn from './components/pages/cabinet/PayPage/components/PromiseOn/index'
+*/
+
 // Успешный платеж
 import PaymentsOn from './components/pages/cabinet/PayPage/components/PaymentsOn/index'
 
