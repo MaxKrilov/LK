@@ -547,6 +547,9 @@ const mutations = {
   },
   [GET_PAYMENT_INFO_SUCCESS]: (state, payload) => {
     state.paymentInfo = payload
+    state.paymentInfo.balance = Number(payload.balance) > 0
+      ? (0 - Number(payload.balance)).toFixed(2)
+      : Math.abs(Number(payload.balance)).toFixed(2)
   },
   [GET_COMPANY_INFO_SUCCESS]: (state, payload) => {
     state.companyInfo = { ...state.companyInfo, ...payload }
