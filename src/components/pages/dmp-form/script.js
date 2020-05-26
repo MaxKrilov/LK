@@ -224,7 +224,7 @@ export default {
     },
     async listenersDMP (e) {
       logInfo('ListenMessage', e)
-      if (e.data !== 'saveForm') return
+      if (e.data.action !== 'saveForm') return
       const resultSubmit = await this.__actionSubmit()
       if (!this.isInputInn && resultSubmit) {
         window.top.postMessage({ eventType: 'ertUserForm', state: 'registered' }, '*')
