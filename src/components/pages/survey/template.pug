@@ -32,7 +32,7 @@
             :key="question.id"
             :id="question.id"
             :title="question.questionText"
-            :variants="question.possibleAnswers"
+            :variants="sortPossibleAnswers(question.possibleAnswers)"
             :type="question.questionType"
             @selected="onQuestionSelected"
             @input-text="onInputText"

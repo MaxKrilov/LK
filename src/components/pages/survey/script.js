@@ -17,6 +17,10 @@ import {
   isPostponedTillExpired
 } from '@/functions/survey.ts'
 
+function isNumber (val) {
+  return !isNaN(val)
+}
+
 export default {
   name: 'survey',
   components: {
@@ -166,6 +170,24 @@ export default {
     async getCurrentQuestion () {
       const survey = await this.survey
       return survey.surveyQuestion[this.currentQuestionIndex]
+    },
+    allAnswersIsNumber (answerList) {
+      return answerList.every(el => isNumber(el.name))
+    },
+    backsortAnswers (answerList) {
+      return [...answerList]
+        .sort(
+          (a, b) => parseInt(b.name) - parseInt(a.name)
+        )
+    },
+    sortPossibleAnswers (answers) {
+      if (this.allAnswersIsNumber(answers)) {
+        const newAnswerList = this.backsortAnswers(answers)
+        logInfo(newAnswerList)
+        return newAnswerList
+      }
+
+      return [...answers]
     },
     onQuestionSelected (answer) {
       this.isAnswerSelected = true
