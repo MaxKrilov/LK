@@ -1,8 +1,8 @@
 /* eslint-disable */
 import axios, { AxiosRequestConfig, Method, ResponseType } from 'axios'
 import { TYPE_OBJECT, TYPE_ARRAY, TYPE_JSON, TYPE_FILE } from '@/constants/type_request'
-import { eachArray, eachObject, isCombat, wrapHttps } from '@/functions/helper'
-import { BACKEND_COMBAT, BACKEND_TESTING } from '@/constants/url'
+import { eachArray, eachObject, isCombat, isStaging, wrapHttps } from '@/functions/helper'
+import { BACKEND_COMBAT, BACKEND_STAGING, BACKEND_TESTING } from '@/constants/url'
 import { API_DADATA } from '@/store/actions/api'
 import store from '../store'
 
@@ -24,6 +24,8 @@ export class API {
 
     if (isCombat()) {
       return wrapHttps(`${BACKEND_COMBAT}${query}`)
+    } else if (isStaging()) {
+      return wrapHttps(`${BACKEND_STAGING}${query}`)
     }
     return wrapHttps(`${branch}${BACKEND_TESTING}${query}`)
   }
