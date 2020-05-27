@@ -503,7 +503,7 @@ const actions = {
       isFetched: false,
       error: null
     })
-    const { id, roles } = state.currentClientContacts.content
+    const { id } = state.currentClientContacts.content
     const toms = rootGetters['auth/getTOMS']
     const contact = rootGetters['user/getContactById'](id)
     const contactRoles = contact?.roles || []
@@ -512,9 +512,10 @@ const actions = {
     // т.к. нужен id роли контакта, а не id роли
     for (let i = 0; i < contactRoles.length; i++) {
       let item = contactRoles[i]
-      if (roles[i] && item.role.id === roles[i].id) {
-        roleDeleteRequests.push(dispatch('deleteContactRole', { api: api, roleId: item.id }))
-      }
+      // if (roles[i] && item.role.id === roles[i].id) {
+      // if (roles.map(el => el.id).include(item.role.id)) {
+      roleDeleteRequests.push(dispatch('deleteContactRole', { api: api, roleId: item.id }))
+      // }
     }
 
     const roleDeleteResponse = await Promise.all(roleDeleteRequests)
