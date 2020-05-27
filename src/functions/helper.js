@@ -1,4 +1,4 @@
-import { FRONTEND_TESTING } from '../constants/url'
+import {FRONTEND_STAGING, FRONTEND_TESTING} from '../constants/url'
 import { COMBAT_DOMAIN, LOCALHOST_DOMAIN, TESTING_DOMAIN } from '../constants/domain'
 import { ENDPOINTS_API } from '../constants/endpoints'
 import { BREAKPOINT_XL, BREAKPOINT_MD } from '@/constants/breakpoint'
@@ -155,12 +155,16 @@ export function isTesting () {
   return ~location.origin.indexOf(FRONTEND_TESTING)
 }
 
+export function isStaging () {
+  return ~location.origin.indexOf(FRONTEND_STAGING)
+}
+
 /**
  * Функция, проверяющая, является ли текущий сервер боевым
  * @return {number|boolean}
  */
 export function isCombat () {
-  return !isLocalhost() && !isTesting()
+  return !isLocalhost() && !isTesting() && !isStaging()
 }
 
 export function isDeveloper () {
