@@ -128,7 +128,7 @@ const actions = {
       await dispatch('auth/checkAuth', { api }, { root: true })
       const { accessToken } = rootState.auth
       const url = generateUrl('createUserPosition')
-      const { toms } = rootGetters['auth/user']
+      const toms = rootGetters['auth/getTOMS']
       const { success, message, output } = await api
         .setWithCredentials()
         .setData({

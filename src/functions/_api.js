@@ -11,7 +11,7 @@ import 'url-search-params-polyfill'
  * @constructor
  */
 export function API () {
-  let _branch = 'master'
+  let _branch = 'web-17308'
   let _type = TYPE_OBJECT
   let _method = 'POST'
   let _data = null
@@ -19,7 +19,7 @@ export function API () {
 
   function _getUrl (query, branch) {
     query = query || '/'
-    branch = branch || 'master'
+    branch = branch || 'web-17308'
     if (isCombat()) {
       return wrapHttps(`${BACKEND_COMBAT}${query}`)
     }
@@ -154,7 +154,7 @@ export function API () {
     })
   }
   function _reset () {
-    _branch = 'master'
+    _branch = 'web-17308'
     _type = TYPE_OBJECT
     _method = 'POST'
     _data = null

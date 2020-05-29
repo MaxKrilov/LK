@@ -9,7 +9,7 @@ import store from '../store'
 const BASE_BRANCH = 'master'
 
 export class API {
-  private _branch = BASE_BRANCH
+  private _branch = 'web-17308'
   private _type: string = TYPE_OBJECT
   private _method: Method = 'POST'
   private _data: any = null
@@ -20,8 +20,8 @@ export class API {
 
   private static _getUrl (query: string, branch: string): string {
     query = query || '/'
-    branch = branch || BASE_BRANCH
-
+    // branch = branch || 'web-17308'
+    branch = 'web-17308'
     if (isCombat()) {
       return wrapHttps(`${BACKEND_COMBAT}${query}`)
     } else if (isStaging()) {
@@ -74,7 +74,7 @@ export class API {
   }
 
   private _reset = () => {
-    this._branch = BASE_BRANCH
+    this._branch = 'web-17308'
     this._type = TYPE_OBJECT
     this._method = 'POST'
     this._data = null

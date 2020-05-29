@@ -1,7 +1,16 @@
 import { generateUrl, copyObject } from '@/functions/helper'
-import { authParamsAfterRedirect, makeTokens, validationToken } from '@/functions/auth'
-import { USER_ROLES } from '../mock/profile'
-import { ERROR_MODAL } from '../actions/variables'
+import { makeTokens, validationToken } from '@/functions/auth'
+import { USER_ROLES } from '@/store/mock/profile'
+import { ERROR_MODAL } from '@/store/actions/variables'
+
+import {
+  actions as userActions,
+  getters as userGetters
+} from './user'
+import {
+  actions as managerActions,
+  getters as managerGetters
+} from './manager'
 
 const AUTH_REQUEST = 'AUTH_REQUEST'
 const AUTH_SUCCESS = 'AUTH_SUCCESS'
@@ -11,6 +20,9 @@ const AUTH_LOGOUT = 'AUTH_LOGOUT'
 const SET_AUTH_TOKENS = 'SET_AUTH_TOKENS'
 const UPDATE_USER_INFO = 'UPDATE_USER_INFO'
 const REMOVE_AUTH_TOKENS = 'REMOVE_AUTH_TOKENS'
+
+const SET_USER_TOMS = 'SET_USER_TOMS'
+const SET_MANAGER_AUTH = 'SET_MANAGER_AUTH'
 
 const REFRESH_REQUEST = 'REFRESH_REQUEST'
 const REFRESH_SUCCESS = 'REFRESH_SUCCESS'
@@ -30,7 +42,9 @@ const INITIAL_STATE = {
   userInfo: {},
   isFetching: false,
   isFetched: false,
-  error: null
+  error: null,
+  isManager: false,
+  toms: null
 }
 
 const mappingResourceAccess = (rawAccess, bSystems) => {
@@ -54,6 +68,7 @@ const state = INITIAL_STATE
 
 const getters = {
   isLPR (state, { user }) {
+    if (state.isManager) return true
     const roles = user?.postRole
     if (!roles) {
       return false
@@ -61,14 +76,17 @@ const getters = {
     return roles.includes(USER_ROLES.LPR.code)
   },
   hasAccess (state, { user }) {
-    const resources = user?.postAccess
-    if (!resources) {
-      return false
+    let getters = userGetters
+    if (state.isManager) {
+      getters = managerGetters
     }
-    return resources.includes(LKB2B_ACCESS)
+
+    return getters.hasAccess(state, { user })
   },
   realmRoles (state, { user }) {
-    const role = user?.postRole || ''
+    const role = state.isManager
+      ? 'LPR'
+      : user?.postRole || ''
     return USER_ROLES[role]?.label
   },
   /**
@@ -79,11 +97,19 @@ const getters = {
     if (!state.userInfo) {
       return null
     }
-    return {
+    const ret = {
       ...state.userInfo
     }
+    if (state.isManager) {
+      ret.toms = state.toms
+    }
+    return ret
   },
   getTOMS (state) {
+    if (state.isManager) {
+      return state.toms
+    }
+
     return state.userInfo.toms
   },
   userResourceAccess (state, getters, rootState, rootGetters) {
@@ -111,30 +137,14 @@ const actions = {
     return tokens
   },
 
-  signIn: async ({ commit, dispatch, state }, { api }) => {
-    commit(AUTH_REQUEST)
-    try {
-      const params = authParamsAfterRedirect()
-      const url = generateUrl('authUser')
+  signIn: async (context, payload) => {
+    let actions = userActions
 
-      const response = await api
-        .setWithCredentials()
-        .setData(params)
-        .query(url)
-
-      try {
-        const tokens = await makeTokens(response)
-        commit(SET_AUTH_TOKENS, tokens)
-        commit(AUTH_SUCCESS, response)
-        return tokens
-      } catch (e) {
-        commit(REMOVE_AUTH_TOKENS)
-        commit(AUTH_ERROR, `Не удалось авторизоваться: ${e.toString()}`)
-        return false
-      }
-    } catch (e) {
-      commit(AUTH_ERROR, `Ошибка сервера ${e.toString()}`)
+    if (context.state.isManager) {
+      actions = managerActions
     }
+
+    return actions.signIn(context, payload)
   },
 
   fetchRefreshToken: async ({ commit, dispatch, state: { error, refreshToken } }, { api }) => {
@@ -196,6 +206,15 @@ const actions = {
       email: data.email
     }
     commit(UPDATE_USER_INFO, fData)
+  },
+  setUserToms ({ commit }, payload) {
+    commit(SET_USER_TOMS, payload)
+  },
+  enableManagerAuth ({ commit }) {
+    commit(SET_MANAGER_AUTH, true)
+  },
+  disableManagerAuth ({ commit }) {
+    commit(SET_MANAGER_AUTH, false)
   }
 }
 
@@ -247,6 +266,13 @@ const mutations = {
   },
   [UPDATE_USER_INFO]: (state, payload) => {
     state.userInfo = { ...state.userInfo, ...payload }
+  },
+  [SET_USER_TOMS]: (state, payload) => {
+    state.toms = payload
+  },
+  [SET_MANAGER_AUTH]: (state, payload) => {
+    console.log('set isManager', payload)
+    state.isManager = payload
   }
 }
 

@@ -54,7 +54,7 @@ const getters = {
 const actions = {
   _fetchNotifications: ({ rootGetters }, { api }) => {
     const url = '/campaign/notification/all'
-    const { toms } = rootGetters['auth/user']
+    const toms = rootGetters['auth/getTOMS']
 
     return apiWrap(api)
       .setData({
@@ -74,7 +74,7 @@ const actions = {
   },
   fetchNotifications: ({ commit, rootGetters, dispatch }, { api }) => {
     const url = '/campaign/notification/all'
-    const { toms } = rootGetters['auth/user']
+    const toms = rootGetters['auth/getTOMS']
 
     return apiWrap(api)
       .setData({
@@ -123,7 +123,7 @@ const actions = {
   },
   fetchPPR: ({ commit, rootGetters }, { api }) => {
     const url = '/campaign/ppr/client'
-    const { toms } = rootGetters['auth/user']
+    const toms = rootGetters['auth/getTOMS']
 
     return apiWrap(api)
       .setData({
@@ -140,7 +140,7 @@ const actions = {
   },
   response: ({ rootGetters }, payload) => {
     const url = '/campaign/notification/response'
-    const { toms } = rootGetters['auth/user']
+    const toms = rootGetters['auth/getTOMS']
     const { api, response, ...newPayload } = payload
 
     newPayload.customer_id = toms
@@ -188,7 +188,7 @@ const actions = {
     return dispatch('response', payload)
   },
   delete: ({ dispatch, rootGetters }, { api, id }) => {
-    const { toms } = rootGetters['auth/user']
+    const toms = rootGetters['auth/getTOMS']
     const url = '/campaign/notification/delete'
     const payload = {
       id,

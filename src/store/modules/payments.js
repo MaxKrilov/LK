@@ -287,7 +287,7 @@ const actions = {
     }
   },
   invPayment: async ({ commit, rootGetters, rootState }, { api }) => {
-    const { toms } = rootGetters['auth/user']
+    const toms = rootGetters['auth/getTOMS']
     const { activeBillingAccount } = rootState.user
     try {
       const result = await api

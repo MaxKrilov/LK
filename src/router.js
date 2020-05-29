@@ -105,6 +105,7 @@ import OldBrowserPage from './components/pages/errors/old-browsers'
 
 Vue.use(Router)
 
+const MANAGER_AUTH_PATH = '/manager'
 const api = new API()
 
 const router = new Router({
@@ -332,6 +333,13 @@ const router = new Router({
       path: '/old-browser',
       component: OldBrowserPage,
       meta: { requiresAuth: true }
+    },
+    {
+      path: MANAGER_AUTH_PATH,
+      meta: { requiresAuth: true },
+      beforeEnter: (to, from, next) => {
+        next('/lk')
+      }
     }
   ],
   scrollBehavior (to, from, savedPosition) {
@@ -346,6 +354,13 @@ const router = new Router({
 router.beforeEach((to, from, next) => {
   const hasAccess = store.getters['auth/hasAccess']
 
+  if (to.path === MANAGER_AUTH_PATH && Object.keys(to.query).includes('customerId')) {
+    const customerId = to.query.customerId
+    store.dispatch('auth/enableManagerAuth')
+    store.dispatch('auth/setUserToms', customerId)
+  }
+
+  console.log({ hasAccess })
   if (to.matched.some(r => r.meta.requiresAuth)) {
     if (!hasAccess) {
       const tokenIsFetching = store.state.auth.refreshedToken.isFetching

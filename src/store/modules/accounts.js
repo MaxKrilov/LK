@@ -137,11 +137,14 @@ const actions = {
         throw new Error('Токен невалидный')
       }
       const user = rootGetters['auth/user']
-      const url = generateUrl('getListlk')
+
+      const url = !rootState.auth.isManager
+        ? generateUrl('getListlk')
+        : '/user/list'
       if (!user?.toms) {
         return commit(ACCOUNTS_ERROR, 'Нет toms')
       }
-      const { success, output, message } = await api
+      const result = await api
         .setWithCredentials()
         .setData({
           toms: user?.toms,
@@ -149,13 +152,16 @@ const actions = {
         })
         .query(url)
 
-      if (success) {
+      if (result.success || rootState.auth.isManager) {
         const baseSystems = rootGetters['directories/systemsDirectory']
-        const usersInfo = generateFormattedList(output.results['users-info'], baseSystems)
+        const usersInfo = generateFormattedList(
+          result?.output?.results['users-info'] || result,
+          baseSystems
+        )
         return commit(ACCOUNTS_SUCCESS, sortByPriorityId(usersInfo, user?.userId))
       }
 
-      commit(ACCOUNTS_ERROR, message)
+      commit(ACCOUNTS_ERROR, result.message)
     } catch (e) {
       commit(ACCOUNTS_ERROR, 'Не удалось получить список УЗ')
     }

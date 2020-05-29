@@ -1,6 +1,7 @@
 module.exports = {
   transpileDependencies: ['vue-loading-skeleton'],
   css: {
+    sourceMap: true,
     loaderOptions: {
       sass: {
         data: '@import "~@/assets/scss/_import.scss";'
