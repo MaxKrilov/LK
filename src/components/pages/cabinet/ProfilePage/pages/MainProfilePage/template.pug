@@ -26,8 +26,8 @@ div(:class="`${pre}`")
       person-card(
         v-if="user",
         :class="`${pre}__cards__item`",
-        :first-name="user.firstName",
-        :last-name="user.lastName",
+        :first-name="user.firstName || user.givenName",
+        :last-name="user.lastName || user.familyName",
         :middle-name="user.middleName",
         :roles="realmRoles",
         :can-edit="!isLPR"

@@ -35,7 +35,7 @@ const getters = {
 
 const actions = {
   [GET_REQUEST]: async ({ rootState, rootGetters, commit }, { api }) => {
-    const { toms } = rootGetters['auth/user']
+    const toms = rootGetters['auth/getTOMS']
     try {
       const result = await api
         .setData({
@@ -54,7 +54,7 @@ const actions = {
     }
   },
   [CANCEL_REQUEST]: async ({ rootGetters, commit }, { api, requestId, description }) => {
-    const { toms } = rootGetters['auth/user']
+    const toms = rootGetters['auth/getTOMS']
     try {
       const result = await api
         .setData({

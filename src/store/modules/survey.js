@@ -63,7 +63,7 @@ const actions = {
   },
   fetchSurveyById: ({ rootGetters }, { api, id }) => {
     const url = '/customer/survey/get-by-id'
-    const { toms } = rootGetters['auth/user']
+    const toms = rootGetters['auth/getTOMS']
 
     return apiWrap(api)
       .setData({
@@ -78,7 +78,7 @@ const actions = {
   },
   fetchSurveyByClient: ({ commit, rootGetters }, { api }) => {
     const url = '/customer/survey/get-by-client'
-    const { toms } = rootGetters['auth/user']
+    const toms = rootGetters['auth/getTOMS']
 
     return apiWrap(api)
       .setData({
@@ -93,7 +93,7 @@ const actions = {
   },
   response: ({ commit, rootGetters }, payload) => {
     const url = '/customer/survey/create'
-    const { toms } = rootGetters['auth/user']
+    const toms = rootGetters['auth/getTOMS']
 
     const { api, ...newPayload } = payload
     newPayload.clientId = toms

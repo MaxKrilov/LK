@@ -3,6 +3,8 @@ export const ENDPOINTS_API = {
   endpoints: {
     // Аутентификация пользователя в SSO
     authUser: 'auth-user',
+
+    authManager: 'auth-manager',
     // Обновление токена
     refreshToken: 'refresh-token',
     /**

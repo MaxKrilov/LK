@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import createPersistedState from 'vuex-persistedstate'
 
-import auth from './modules/auth'
+import auth from './modules/auth/index'
 import accounts from './modules/accounts'
 import contacts from './modules/contacts'
 import modal from './modules/modal'
@@ -63,6 +63,13 @@ export default new Vuex.Store({
   strict: debug,
   plugins: [createPersistedState({
     key: 'lkb2b',
-    paths: ['auth.userToken', 'auth.accessToken', 'auth.refreshToken', 'auth.userInfo']
+    paths: [
+      'auth.userToken',
+      'auth.accessToken',
+      'auth.refreshToken',
+      'auth.userInfo',
+      'auth.toms',
+      'auth.isManager'
+    ]
   })]
 })
