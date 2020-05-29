@@ -1,4 +1,10 @@
 .digital-products-index-page {
+  margin-bottom: -160px;
+
+  @include min-breakpoint('xl') {
+    padding-left: 271px;
+  }
+
   iframe {
     width: 100%;
     max-height: 100vh;
