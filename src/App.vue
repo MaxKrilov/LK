@@ -121,7 +121,6 @@ export default {
                   this.$store.dispatch(`user/${GET_PAYMENT_INFO}`, context)
                   this.$store.dispatch(`chat/${GET_CHAT_TOKEN}`, context)
                   this.$store.dispatch(`user/${GET_PROMISED_PAYMENT_INFO}`, context)
-                  this.$store.dispatch(`payments/invPayment`, context)
                   this.$store.dispatch(`user/${GET_LIST_PRODUCT_BY_ADDRESS}`, context)
                     .then(() => {
                       this.$store.dispatch(`user/${GET_LIST_PRODUCT_BY_SERVICE}`, context)

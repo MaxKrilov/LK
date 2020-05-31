@@ -104,6 +104,7 @@ export default class ErDocumentViewer extends Vue {
   // Methods
   downloadFile (downloadDocument: IDocumentForDownload) {
     return new Promise<string>((resolve) => {
+      if (!downloadDocument.filePath) return
       this.$store.dispatch('fileinfo/downloadFile', {
         api: this.$api,
         bucket: downloadDocument.bucket,

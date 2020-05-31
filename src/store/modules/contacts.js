@@ -622,7 +622,7 @@ const actions = {
           secondName: data.patronymic,
           secondNameGenitive: data.gPatronymic,
           phones: [{
-            value: '+7(' + data.phone.slice(3, 6) + ')' + data.phone.slice(6),
+            value: ('+7(' + data.phone.slice(3, 6) + ')' + data.phone.slice(6)).replace(/[\D]+/g, ''),
             name: data.name
           }],
           phoneContactHours

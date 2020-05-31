@@ -80,5 +80,12 @@ export default {
     onClickToast (id) {
       // ещё не реализовано
     }
+  },
+  watch: {
+    isOpenViewer (val) {
+      if (val && this.invPaymentsForViewer[0].filePath === '') {
+        this.$store.dispatch(`payments/invPayment`, { api: this.$api })
+      }
+    }
   }
 }
