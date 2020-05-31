@@ -21,8 +21,6 @@ const PROBLEM_REASON_THIRD = '9154741760013186143'
 
 const CHANNEL_OF_NOTIFICATION_VIBER = '9130635331813922067'
 
-const CHANNEL_DMP = '9156762963913869573'
-
 const state = {
   listRequest: {}
 }
@@ -228,8 +226,7 @@ const actions = {
 
 const mutations = {
   [GET_REQUEST_SUCCESS]: (state, payload) => {
-    state.listRequest.cities = payload.cities
-    state.listRequest.request = payload.request.filter(item => item.channel.id !== CHANNEL_DMP)
+    state.listRequest = payload
   },
   [CREATE_REQUEST_SUCCESS]: (state, payload) => {
     state.listRequest.request.push(payload)

@@ -16,6 +16,8 @@ const SORT_DESC = 'desc'
 const VISIBLE_REQUEST = 6
 const TOTAL_VISIBLE_PAGINATION = 7
 
+const CHANNEL_DMP = '9156762963913869573'
+
 @Component({
   components: {
     CardInstructionsComponent,
@@ -205,26 +207,29 @@ export default class SupportIndexPage extends Vue {
     }
   }
   setListRequest (listRequest) {
-    this.listRequest = listRequest.map(item => {
-      const result = {}
-      result.ticketId = item.ticket_id
-      result.ticketName = item.ticket_name
-      result.ticketType = item.ticket_type
-      // eslint-disable-next-line camelcase
-      result.affectedProduct = item?.affected_product?.[0]?.name
-      result.location = item.location
-      result.createdWhen = item.created_when ? Number(item.created_when) : undefined
-      result.inProgressWhen = item.in_progress_when ? Number(item.in_progress_when) : undefined
-      result.onHoldWhen = item.on_hold_when ? Number(item.on_hold_when) : undefined
-      result.resolvedWhen = item.resolved_when ? Number(item.resolved_when) : undefined
-      result.closedWhen = item.closed_when ? Number(item.closed_when) : undefined
-      result.modifiedWhen = item.modified_when ? Number(item.modified_when) : undefined
-      result.cancelledWhen = item.cancelled_when ? Number(item.cancelled_when) : undefined
-      result.type = item.type
-      result.status = item.status
-      result.listFile = item.attachmentIds
-      return result
-    })
+    this.listRequest = listRequest
+      .map(item => {
+        const result = {}
+        result.ticketId = item.ticket_id
+        result.ticketName = item.ticket_name
+        result.ticketType = item.ticket_type
+        // eslint-disable-next-line camelcase
+        result.affectedProduct = item?.affected_product?.[0]?.name
+        result.location = item.location
+        result.createdWhen = item.created_when ? Number(item.created_when) : undefined
+        result.inProgressWhen = item.in_progress_when ? Number(item.in_progress_when) : undefined
+        result.onHoldWhen = item.on_hold_when ? Number(item.on_hold_when) : undefined
+        result.resolvedWhen = item.resolved_when ? Number(item.resolved_when) : undefined
+        result.closedWhen = item.closed_when ? Number(item.closed_when) : undefined
+        result.modifiedWhen = item.modified_when ? Number(item.modified_when) : undefined
+        result.cancelledWhen = item.cancelled_when ? Number(item.cancelled_when) : undefined
+        result.type = item.type
+        result.status = item.status
+        result.listFile = item.attachmentIds
+        result.channel = item.channel
+        return result
+      })
+      .filter(item => item.channel.id !== CHANNEL_DMP)
   }
   cancelRequest (e) {
     const { id } = e

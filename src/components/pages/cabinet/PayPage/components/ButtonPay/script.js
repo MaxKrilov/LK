@@ -44,7 +44,10 @@ export default {
     isPromisePay () {
       this.infoPromisePay()
     },
-    isExpired () {
+    isOpenViewer (val) {
+      if (val && this.invPaymentsForViewer[0].filePath === '') {
+        this.$store.dispatch(`payments/invPayment`, { api: this.$api })
+      }
     }
   },
   methods: {
