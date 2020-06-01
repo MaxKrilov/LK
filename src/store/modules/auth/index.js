@@ -44,7 +44,8 @@ const INITIAL_STATE = {
   isFetched: false,
   error: null,
   isManager: false,
-  toms: null
+  toms: null,
+  dmpId: null
 }
 
 const mappingResourceAccess = (rawAccess, bSystems) => {
@@ -215,6 +216,9 @@ const actions = {
   },
   disableManagerAuth ({ commit }) {
     commit(SET_MANAGER_AUTH, false)
+  },
+  setDmpId ({ commit }, payload) {
+    commit('setDmpId', payload)
   }
 }
 
@@ -273,6 +277,9 @@ const mutations = {
   [SET_MANAGER_AUTH]: (state, payload) => {
     console.log('set isManager', payload)
     state.isManager = payload
+  },
+  setDmpId: (state, payload) => {
+    state.dmpId = payload
   }
 }
 
