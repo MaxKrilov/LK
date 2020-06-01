@@ -170,10 +170,10 @@ export default class DigitalSigningDocument extends Vue {
                   this.isSuccess = true
                   this.$emit('success')
                 }
-                if (this.signingDocument?.letterOfGuarantee?.toLowerCase() === 'yes') {
+                /* if (this.signingDocument?.letterOfGuarantee?.toLowerCase() === 'yes') {
                   successHandler()
                   return
-                }
+                } */
                 this.$store.dispatch(`fileinfo/changeContractStatus`, {
                   api: this.$api,
                   contractId: this.signingDocument.relatedTo.id,

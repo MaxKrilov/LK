@@ -358,6 +358,8 @@ router.beforeEach((to, from, next) => {
     const customerId = to.query.customerId
     store.dispatch('auth/enableManagerAuth')
     store.dispatch('auth/setUserToms', customerId)
+    Object.keys(to.query).includes('dmpID') &&
+      store.dispatch('auth/setDmpId', to.query.dmpID)
   }
 
   console.log({ hasAccess })
