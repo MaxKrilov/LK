@@ -2,6 +2,8 @@ import { mapState } from 'vuex'
 import ErDocumentViewer from '../../../../../blocks/ErDocumentViewer/index'
 import moment from 'moment'
 
+const IS_ENABLED_AUTOPAY = '9149184122213604836'
+
 export default {
   name: 'button-pay',
   components: {
@@ -28,8 +30,12 @@ export default {
       promisePayInterval: state => state.payments.promisePayInterval,
       invPaymentsForViewer: state => state.payments.invPaymentsForViewer,
       isLoading: state => state.payments.isLoading,
-      isPromisePay: state => state.payments.isPromisePay
-    })
+      isPromisePay: state => state.payments.isPromisePay,
+      balanceInfo: state => state.user.paymentInfo
+    }),
+    isAutopay () {
+      return this.balanceInfo?.paymentMethod?.id === IS_ENABLED_AUTOPAY
+    }
   },
   watch: {
     invPaymentsForViewer () {

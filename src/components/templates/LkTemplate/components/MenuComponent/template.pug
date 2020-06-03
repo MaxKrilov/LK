@@ -103,7 +103,7 @@ div(:class="`${pre}`")
       er-preloader(:active="menuComponentBalance")
         div.info
           a(href="#").link--solid--yellow {{ balanceInfo.balance | price }}
-          span.caption(:class="{ 'autopay': balanceInfo.autoPay }") Автоплатеж
+          span.caption(:class="{ 'autopay': isAutopay }") Автоплатеж
 
     div(:class="`${pre}__top__manager ${pre}__top__link--desktop`")
       div.icon.mr-8

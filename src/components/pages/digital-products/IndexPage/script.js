@@ -19,7 +19,7 @@ export default {
       const getParams = getAllUrlParams()
       getParams.hiddenFooter = true
       getParams.hiddenHeader = true
-      if (this.dmpId) {
+      if (vm.dmpId) {
         getParams.customerId = this.dmpId
       }
       let getParamsStr = ''

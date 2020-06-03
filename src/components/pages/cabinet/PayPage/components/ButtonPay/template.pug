@@ -11,7 +11,7 @@ er-row(no-gutters)
                 | Оплата картой
                 div.new
                   div.mb-4
-                    div.mt-16.ml-auto.color--green-base
+                    div.mt-16.ml-auto.color--green-base(v-if="isAutopay")
                       er-icon(name="ok" :class="`${pre}__icon-height`")
                       span.color--green-base(
                         :class="`${pre}__icon-span`"
