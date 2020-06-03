@@ -11,6 +11,8 @@ import { SET_ACTIVE_BILLING_ACCOUNT, SET_ACTIVE_BILLING_ACCOUNT_NUMBER } from '.
 import { Cookie } from '../../../../../functions/storage'
 import MenuItemList from './menu'
 
+const IS_ENABLED_AUTOPAY = '9149184122213604836'
+
 export default {
   name: 'menu-component',
   components: {
@@ -58,6 +60,9 @@ export default {
     },
     isDesktop () {
       return this[SCREEN_WIDTH] >= BREAKPOINT_XL
+    },
+    isAutopay () {
+      return this.balanceInfo?.paymentMethod?.id === IS_ENABLED_AUTOPAY
     }
   },
   methods: {

@@ -353,16 +353,19 @@ const router = new Router({
 
 router.beforeEach((to, from, next) => {
   const hasAccess = store.getters['auth/hasAccess']
+  const queryKeys = Object.keys(to.query)
 
-  if (to.path === MANAGER_AUTH_PATH && Object.keys(to.query).includes('customerId')) {
+  if (
+    (to.path === MANAGER_AUTH_PATH || (to.path === '/create-client' && queryKeys.includes('as_manager'))) &&
+    queryKeys.includes('customerId')
+  ) {
     const customerId = to.query.customerId
     store.dispatch('auth/enableManagerAuth')
     store.dispatch('auth/setUserToms', customerId)
     Object.keys(to.query).includes('dmpID') &&
-      store.dispatch('auth/setDmpId', to.query.dmpID)
+    store.dispatch('auth/setDmpId', to.query.dmpID)
   }
 
-  console.log({ hasAccess })
   if (to.matched.some(r => r.meta.requiresAuth)) {
     if (!hasAccess) {
       const tokenIsFetching = store.state.auth.refreshedToken.isFetching
