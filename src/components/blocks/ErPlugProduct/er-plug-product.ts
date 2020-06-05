@@ -1,10 +1,29 @@
-import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
+import { Component, Watch } from 'vue-property-decorator'
 import { mapGetters } from 'vuex'
-import { IRequestData } from '@/components/blocks/ErPlugProduct/interfaces'
 import { iContactListItem } from '@/components/pages/cabinet/SupportPages/blocks/CreateRequestComponent/script'
 import { CREATE_REQUEST } from '@/store/actions/request'
 import ErPhoneSelect from '@/components/blocks/ErPhoneSelect'
 import ErActivationModal from '@/components/blocks/ErActivationModal/index.vue'
+import ErPlugMixin from '@/mixins/ErPlugMixin'
+
+// Данный компонент позволяет создавать простые заказы, состоящие из одного элемента
+// и отправлять заявки на менеджера
+// v-model="isConnection" при установке true начинается работа компонета, после завершения, компонент возвращает  false
+// isSendOrder этот параметр отвечает за выбор по умолчанию, что делать создавать заявку или заказ
+//
+// orderData=
+//    locationId - location id
+//    bpi - id продукта,
+//    productCode - код продукта,
+//    chars,
+//    offer: есть или нет оферты,
+//    title: заголвок модалки
+//
+// requestData=
+//   descriptionModal: описание модалки,
+//   addressId: addressId,
+//   services: описание действия для менедера пр. подключение номера,
+//   fulladdress: полный адресс
 
 const components = {
   ErActivationModal,
@@ -21,15 +40,7 @@ const components = {
     ...mapGetters('user', ['getListContact'])
   }
 })
-export default class ErPlugProduct extends Vue {
-  @Prop({ type: Boolean, default: false }) readonly isSendManagerRequest!: boolean
-  @Prop({ type: Boolean, default: false }) readonly isConnection!: boolean // v-modal внешний
-  @Prop({ type: Object, default: () => { return {} } }) readonly requestData!: IRequestData
-  isShowModal: boolean = false
-  isShowRequestModal: boolean = false
-  isShowSuccessRequestModal: boolean = false
-  isShowErrorRequestModal: boolean = false
-  isCreatingRequest: boolean = false
+export default class ErPlugProduct extends ErPlugMixin {
   name: string = ''
   requestId: string = ''
   phoneNumber: string = ''
@@ -38,10 +49,6 @@ export default class ErPlugProduct extends Vue {
     (v: any) => !!v || 'Пожалуйста, заполните поле'
   ]
 
-  @Watch('isShowModal')
-  onIsShowModalChange (val: boolean) {
-    !val && this.endConnection()
-  }
   @Watch('isConnection')
   onIsConnectionChange (val: boolean) {
     val && this.startConnection()
@@ -76,8 +83,14 @@ export default class ErPlugProduct extends Vue {
   get isValidateRequestForm () {
     return !(this.phoneNumber && this.name)
   }
+
   startConnection () {
-    this.isShowRequestModal = true
+    if (this.isSendManagerRequest) {
+      this.isShowRequestModal = true
+    }
+    if (this.isSendOrder) {
+      this.createOrder()
+    }
   }
   sendRequest () {
     this.isCreatingRequest = true
@@ -142,8 +155,5 @@ export default class ErPlugProduct extends Vue {
   onCloseErrorModal () {
     this.isShowErrorRequestModal = false
     this.endConnection()
-  }
-  endConnection () {
-    this.$emit('changeStatusConnection', false)
   }
 }

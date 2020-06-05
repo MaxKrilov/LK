@@ -34,3 +34,34 @@ div
     template(slot="description")
       | Нам очень жаль, произошла ошибка при отправке заявки на подключение. Свяжитесь с Вашим персональным менеджером
 
+  er-activation-modal(
+    type="question"
+    v-if="isSendOrder"
+    v-model="isShowDeleteOrderModal"
+    :title="deleteOrderData.title"
+    @confirm="sendOrder"
+    :persistent="true"
+    @close="cancelOrder"
+    :isLoadingConfirm="sendingOrder"
+    actionButtonText="Отключить"
+    )
+  er-activation-modal(
+    type="success"
+    v-model="isShowSuccessOrderModal"
+    title="Заявка отправлена"
+    :isShowCancelButton="false"
+    actionButtonText="Спасибо"
+    :persistent="true"
+    @confirm="closeSuccessOrderModal"
+  )
+    template(slot="description")
+      | Заказ успешно создан
+  er-activation-modal(
+    type="error"
+    v-model="isShowErrorOrderModal"
+    title="Возникла ошибка"
+    :isShowActionButton="false"
+    :persistent="true"
+    cancelButtonText="Закрыть"
+    @close="closeErrorOrderModal"
+  ) 

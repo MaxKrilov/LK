@@ -50,4 +50,21 @@
       }
     }
   }
+  &__offer {
+    .er-input {
+      flex: 0 1 auto;
+      margin-right: 8px;
+    }
+    .text {
+      @include color-black(0.3);
+      span {
+        border-bottom: 1px dashed;
+      }
+      a {
+        @include color-black(0.5);
+        text-decoration: none;
+        border-bottom: 1px dashed;
+      }
+    }
+  }
 }

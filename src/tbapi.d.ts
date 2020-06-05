@@ -445,11 +445,29 @@ export interface ISaleOrder {
     id: string
     prices: IPrice
     suggestions?: any[]
-    offer: any
+    offer: IOffer
     chars: any
   }]
 }
 
+export interface IOffer {
+  code: string
+  id: string
+  offeringRelationships: IOfferingRelationship[]
+}
+export interface IOfferingRelationship {
+  childProductOffering?: {
+    code: string
+    id: string
+  }
+  offerings?: [
+    {
+      code: string
+      id: string
+    }
+  ]
+
+}
 export interface IOrderItem {
   action: string
   chars: any
@@ -457,6 +475,8 @@ export interface IOrderItem {
   id: string
   orderItems: IOrderItem[]
   parentId: string
+  offer: IOffer
+  prices?: IPrice
 }
 export interface ISurveyQuestion {
   id: string

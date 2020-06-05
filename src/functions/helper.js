@@ -1,4 +1,4 @@
-import {FRONTEND_STAGING, FRONTEND_TESTING} from '../constants/url'
+import { FRONTEND_STAGING, FRONTEND_TESTING } from '../constants/url'
 import { COMBAT_DOMAIN, LOCALHOST_DOMAIN, TESTING_DOMAIN } from '../constants/domain'
 import { ENDPOINTS_API } from '../constants/endpoints'
 import { BREAKPOINT_XL, BREAKPOINT_MD } from '@/constants/breakpoint'

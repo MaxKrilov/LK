@@ -19,12 +19,23 @@
             | {{ title }}
           .er-activation-modal__description
             slot(name="description")
+
+          .er-activation-modal__offer.d--flex.align-items-center.mb-8(v-if="isOffer")
+            er-toggle(
+              view="radio-check"
+              v-model="isAcceptOffer"
+            )
+            .text
+              span
+                | Вы должны принять
+              | &nbsp;
+              a(href="#") условия оферты
           .er-activation-modal__actions.d--flex.mt-auto.flex-column-reverse.flex-sm-row
             .er-activation-modal__action.pr-sm-8(v-if="isShowCancelButton")
               er-button(@click="closeDialog" flat :disabled="isLoadingConfirm")
                 | {{ cancelButtonText }}
             .er-activation-modal__action.mb-8.mb-sm-0.pl-sm-8(v-if="isShowActionButton")
-              er-button(@click="confirmDialog" :loading="isLoadingConfirm" :disabled="disabledActionButton")
+              er-button(@click="confirmDialog" :loading="isLoadingConfirm" :disabled="isDisabledActionButton")
                 | {{ actionButtonText }}
 </template>
 

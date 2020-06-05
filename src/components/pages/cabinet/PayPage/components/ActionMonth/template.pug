@@ -16,12 +16,14 @@ div
         :month="month"
         :index="index"
         v-for="(value, index) in 5"
+        :key="index"
       )
 
     er-flex.mb-16(xs12 v-else)
       Operations(
         :month="month"
         :index="index + 5"
+        :key="index"
         v-for="(value, index) in 5"
       )
 
