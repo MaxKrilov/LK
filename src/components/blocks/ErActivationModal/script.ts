@@ -21,9 +21,11 @@ export default class ErActivationModal extends Vue {
   @Prop(Boolean) readonly isLoadingConfirm!: boolean
   @Prop(Boolean) readonly persistent!: boolean
   @Prop(Boolean) readonly disabledActionButton!: boolean
+  @Prop({ type: Boolean, default: false }) readonly isOffer!: boolean
 
   screenWidth!: number
 
+  isAcceptOffer: boolean = false
   internalValue: boolean = this.value
 
   @Watch('internalValue')
@@ -36,6 +38,9 @@ export default class ErActivationModal extends Vue {
     this.internalValue = val
   }
 
+  get isDisabledActionButton () {
+    return this.isOffer ? !this.isAcceptOffer : this.disabledActionButton
+  }
   get getMaxWidth () {
     return this.screenWidth >= BREAKPOINT_XL
       ? 470
@@ -59,6 +64,7 @@ export default class ErActivationModal extends Vue {
 
   closeDialog () {
     this.$emit('close')
+    this.isAcceptOffer = false
     this.internalValue = false
   }
 

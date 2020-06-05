@@ -11,7 +11,7 @@ export default {
       isFiltersVisible: false,
       isCloseCategory: false,
       isCloseService: false,
-      isClosePay: false,
+      isClosePay: false
     }
   },
   props: {
