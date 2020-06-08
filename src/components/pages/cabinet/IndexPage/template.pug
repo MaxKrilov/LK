@@ -52,15 +52,15 @@ div(:class="`${pre}`").main-content.main-content--padding.main-content--top-menu
                   .title
                     | Обещанный платёж
                   .footer.d--flex.align-items-end.mt-auto
-                    template(v-if="false")
+                    template(v-if="isPromisePay")
                       .new
                         .caption.mb-4
                           | Осталось:
                         .promised-payment-left
-                          span 03
-                          span :12
-                          span :60
-                      .promised-payment-left__line
+                          span {{ getToDatePromisePay.day }}
+                          span :{{ getToDatePromisePay.hour }}
+                          span :{{ getToDatePromisePay.minute }}
+                      //-.promised-payment-left__line
                         .promised-payment-left__passed(:style="{ width: '25%' }")
                     template(v-else)
                       .icon.ml-auto

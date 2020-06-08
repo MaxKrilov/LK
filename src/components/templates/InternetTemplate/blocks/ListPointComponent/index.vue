@@ -30,7 +30,7 @@
             .list-point-component__body
               .list-point-component__item(
                 v-for="point in list"
-                :key="point.id"
+                :key="point.bpi"
                 @click="setActivePoint(point)"
               )
                 .icon
@@ -54,8 +54,8 @@
       template(v-else)
         .list-point-component__item(
           v-for="point in list"
-          :key="point.id"
-          :class="{ 'active': value && point.id === value.id }"
+          :key="point.bpi"
+          :class="{ 'active': value && point.bpi === value.bpi }"
           @click="setActivePoint(point)"
         )
           .content

@@ -446,9 +446,9 @@ export default class CreateRequestComponent extends Vue {
   }
 
   mounted () {
-    if (this.$route.query && this.$route.query.open && this.$route.query.open === 'document') {
+    if (this.$route.query && this.$route.query.form) {
       (this as any)[this.screenWidth <= BREAKPOINT_XL ? 'isOpenForm' : 'isOpenFormDesktop'] = true
-      this.requestTheme = this.listRequestTheme.find((item: iRequestTheme) => item.form === 'order_a_document')!
+      this.requestTheme = this.listRequestTheme.find((item: iRequestTheme) => item.form === this.$route.query.form)!
       this.$nextTick(() => {
         this.screenWidth >= BREAKPOINT_XL && this.$scrollTo('.create-request-component')
       })

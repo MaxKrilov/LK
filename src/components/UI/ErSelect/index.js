@@ -153,7 +153,7 @@ export default class ErSelect extends mixins(ErTextField) {
   }
 
   onClick () {
-    if (this.disabled) {
+    if (this.disabled || this.readonly) {
       return
     }
     ErTextField.methods.onClick.call(this)

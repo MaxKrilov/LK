@@ -27,6 +27,7 @@ import telephony from './modules/telephony'
 import chat from './modules/chat'
 import internet from './modules/internet'
 import timer from './modules/timer'
+import address from './modules/address'
 
 const debug = process.env.NODE_ENV !== 'production'
 
@@ -58,7 +59,8 @@ export default new Vuex.Store({
     internet,
     salesOrder,
     timer,
-    telephony
+    telephony,
+    address
   },
   strict: debug,
   plugins: [createPersistedState({

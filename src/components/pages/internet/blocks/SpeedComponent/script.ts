@@ -327,7 +327,9 @@ export default class SpeedComponent extends Vue {
     let isTariffChaining = false
     const isTurboActivation = this.isTurboActivation
     const currentSpeed = Number(this.currentSpeed)
-    const listSpeed = this.listAvailableSpeed.map(speed => speed.speed) // todo Для бонуса ускорения другие скорости
+    const listSpeed = this.listAvailableSpeed
+      .map(speed => speed.speed)
+      .filter(speed => speed > currentSpeed)
     listSpeed.unshift(currentSpeed)
     const isOnTurbo = false // todo props
     const turboSpeedActivated = 0 // todo props
