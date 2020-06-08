@@ -189,7 +189,7 @@ const getters = {
     return state.listBillingAccount.find(item => item.billingAccountId === state.activeBillingAccount)?.contractNumber
   },
   getPrimaryContact (state) {
-    return state.clientInfo.contacts.filter(item => item.id === state.clientInfo.primaryContact.id)[0]
+    return state.clientInfo.contacts?.filter(item => item.id === state.clientInfo.primaryContact.id)[0]
   },
   getContactById: (state) => (contactId) => {
     return state.clientInfo.contacts.filter(item => item.id === contactId)[0]
