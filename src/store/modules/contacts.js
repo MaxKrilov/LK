@@ -696,7 +696,7 @@ const actions = {
   },
   // не ЛПР редактирование своего контакта
   getCurrentClientContacts: ({ commit, rootGetters }) => {
-    const contactData = rootGetters['user/getPrimaryContact']
+    const contactData = rootGetters['user/getPrimaryContact'] || {}
     const parsedData = {
       role: rootGetters['auth/realmRoles'],
       emails: [],
@@ -707,7 +707,8 @@ const actions = {
       lastName: contactData.lastName,
       preferredContactMethodId: contactData.preferredContactMethodId
     }
-    contactData.contactMethods.forEach(contact => {
+    // eslint-disable-next-line no-unused-expressions
+    contactData?.contactMethods?.forEach(contact => {
       switch (contact['@type']) {
         case 'Email':
           parsedData.emails.push({
