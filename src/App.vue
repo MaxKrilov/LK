@@ -114,10 +114,10 @@ export default {
           if (Object.keys(clientInfo).length !== 0) {
             this.$store.dispatch(`user/${GET_MANAGER_INFO}`, context)
             this.$store.dispatch(`request/${GET_REQUEST}`, context)
+            this.$store.dispatch(`fileinfo/downloadListDocument`, context)
             this.$store.dispatch(`user/${GET_LIST_BILLING_ACCOUNT}`, { ...context, route: this.$route })
               .then(isValid => {
                 if (isValid) {
-                  this.$store.dispatch(`fileinfo/downloadListDocument`, context)
                   this.$store.dispatch(`user/${GET_PAYMENT_INFO}`, context)
                   this.$store.dispatch(`chat/${GET_CHAT_TOKEN}`, context)
                   this.$store.dispatch(`user/${GET_PROMISED_PAYMENT_INFO}`, context)
