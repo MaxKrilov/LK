@@ -18,7 +18,7 @@ er-container(:class="`${pre}__container`")
       )
         div.caption
           er-icon(name="wallet_auto")
-        h2.mr-8.ml-8() {{ balance }}
+        h2.mr-8.ml-8 {{ balance | price }}
         div.rub.mt-4(:class="`${pre}__balance-score__currency`")
       er-button(id="preloaderBalance"
         :loading="true"
@@ -28,7 +28,7 @@ er-container(:class="`${pre}__container`")
 
       div.caption2.mb-4(
         :class="`${pre}__balance-score__subtitle`"
-        v-if="!isLoading && info"
+        v-if="!isLoading && info && false"
       ) На счете недостаточно средств для списания
 
         div(:class="`${pre}__balance-score__dop`")
@@ -60,7 +60,7 @@ er-container(:class="`${pre}__container`")
           div.mb-24.d--flex.align-items-center(v-if="!isLoading")
             div.caption
               er-icon(name="rouble")
-            h2.mr-8.ml-8(:class="`${pre}__balance-score__line`") {{ summToPay }}
+            h2.mr-8.ml-8(:class="`${pre}__balance-score__line`") {{ summToPay | price }}
             div.rub.mt-4(:class="`${pre}__balance-score__currency`")
           er-button(id="preloaderSumm"
             :loading="true"

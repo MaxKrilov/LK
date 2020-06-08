@@ -43,7 +43,9 @@ export default {
     ...mapState({
       clientName: state => state.user.clientInfo.name,
       balanceInfo: state => state.user.paymentInfo,
-      invPaymentsForViewer: state => state.payments.invPaymentsForViewer
+      invPaymentsForViewer: state => state.payments.invPaymentsForViewer,
+      promisePayInterval: state => state.payments.promisePayInterval,
+      isPromisePay: state => state.payments.isPromisePay
     }),
     ...mapGetters({
       listProductByAddress: 'user/getListProductByAddress',
@@ -61,6 +63,17 @@ export default {
 
     isEmptyListProduct () {
       return this.listProductByAddress.length === 0
+    },
+
+    getToDatePromisePay () {
+      if (!this.isPromisePay) return { day: '', hour: '', minute: '' }
+      const dateTo = this.$moment(this.promisePayInterval)
+      const current = this.$moment()
+      return {
+        day: dateTo.diff(current, 'days'),
+        hour: dateTo.diff(current, 'hours'),
+        minute: dateTo.diff(current, 'minutes')
+      }
     }
   },
   filters: {

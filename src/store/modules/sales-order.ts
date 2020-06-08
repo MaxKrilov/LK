@@ -351,8 +351,8 @@ const actions = {
       isReturnPrice
     }: {
       locationId: string,
-      bpi: string, productCode:
-      string,
+      bpi: string,
+      productCode: string,
       chars?: Record<string, string> | Record<string, string>[],
       isReturnPrice?: boolean
     }

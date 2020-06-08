@@ -14,7 +14,7 @@ const SPEED_N_LIMIT_WIDTH = 104
 const STROKE_WIDTH = 2
 
 const CURRENT_SPEED_IN_CHARS = 'Скорость доступа, до (Мбит/с)'
-// const OFFER_CODE_SPEED_INCREASE = 'LOCMMSPEED'
+const OFFER_CODE_SPEED_INCREASE = 'INTBEZLIM'
 const OFFER_CODE_TEMP_SPEED_INCREASE = 'SPEEDUP'
 
 const CHARS_SPEED_INCREASE = CURRENT_SPEED_IN_CHARS
@@ -268,6 +268,8 @@ export default class TariffComponent extends Vue {
     const speed = this.currentSpeed!
     let speedPercentage = speed * 0.875 / this.maxAvailableSpeedIncrease!
     speedPercentage = speedPercentage > 0.875 ? 0.875 : speedPercentage
+    // Следует очистить предыдущий график
+    document.querySelector('.tariff-component__speed .chart')!.innerHTML = ''
     const svg = d3.select('.tariff-component__speed .chart')
       .append('svg')
       .attr('viewBox', `0 0 ${SPEED_N_LIMIT_WIDTH} ${SPEED_N_LIMIT_WIDTH}`)
@@ -325,6 +327,8 @@ export default class TariffComponent extends Vue {
   generateLimitChart () {
     // todo После реализации метода - убрать все заглушки
     const wastedPercentage = 0.875 // todo Вычислять
+    // Следует очистить предыдущий график
+    document.querySelector('.tariff-component__limit .chart')!.innerHTML = ''
     const svg = d3.select('.tariff-component__limit .chart')
       .append('svg')
       .attr('viewBox', `0 0 ${SPEED_N_LIMIT_WIDTH} ${SPEED_N_LIMIT_WIDTH}`)
@@ -451,13 +455,13 @@ export default class TariffComponent extends Vue {
         .find(price => price.chars && price.chars.hasOwnProperty(CHARS_TURBO_SPEED_INCREASE) &&
           Number(price.chars[CHARS_TURBO_SPEED_INCREASE].replace(/[\D]+/g, '')) === choosingInternetSpeed)
       if (!price) return
-      char = []
-      char.push({ [CHARS_TURBO_SPEED_INCREASE]: price.chars[CHARS_TURBO_SPEED_INCREASE] })
+      char = {
+        [CHARS_TURBO_SPEED_INCREASE]: price.chars[CHARS_TURBO_SPEED_INCREASE]
+      }
       if (!this.isInfinity) {
         const [from, to] = this.turboPeriod
-        char.push(
-          { [CHAR_START_DATE_TURBO]: moment(from).format() },
-          { [CHAR_STOP_DATE_TURBO]: moment(to).format() })
+        char[CHAR_START_DATE_TURBO] = moment(from).format()
+        char[CHAR_STOP_DATE_TURBO] = moment(to).format()
       }
     } else {
       if (!this.isAvailableSpeedIncrease) return
@@ -474,7 +478,10 @@ export default class TariffComponent extends Vue {
       locationId,
       bpi,
       offerId,
-      chars: char
+      chars: char,
+      productCode: this.isTurboActivation
+        ? OFFER_CODE_TEMP_SPEED_INCREASE
+        : OFFER_CODE_SPEED_INCREASE
     })
       .then(() => {
         this.isShowOfferDialog = true

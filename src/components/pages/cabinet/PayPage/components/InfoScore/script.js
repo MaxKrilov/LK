@@ -1,15 +1,19 @@
 import { mapState } from 'vuex'
+import { price } from '../../../../../../functions/filters'
 
 export default {
   name: 'info-score',
   data: () => ({
     pre: 'info-score',
-    balance: '',
-    summToPay: '',
+    balance: 0,
+    summToPay: 0,
     nextDate: '',
     isLoading: true,
     info: true
   }),
+  filters: {
+    price
+  },
   created () {
     this.getValuesAccount()
   },
@@ -27,9 +31,7 @@ export default {
     getValuesAccount () {
       if (this.paymentInfo.nextDate !== undefined) {
         this.summToPay = Number(this.paymentInfo.summToPay).toLocaleString('ru-RU')
-        this.balance = -this.paymentInfo.balance
-        if (this.balance > 0) this.info = false
-        this.balance = Number(this.balance).toLocaleString('ru-RU')
+        this.balance = Number(this.paymentInfo.balance)
         const d = this.paymentInfo.nextDate
         this.nextDate = d.slice(0, -4) + d.slice(-2)
         this.isLoading = false

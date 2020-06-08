@@ -18,7 +18,7 @@ const transformListPoint = (listPoint: ILocationOfferInfo[]): iPointItem[] => un
   fulladdress: item.fulladdress,
   bpi: item.bpi,
   offerName: item.offer.name
-})), 'id')
+})), 'bpi')
 
 // eslint-disable-next-line no-use-before-define
 @Component<InstanceType<typeof InternetTemplate>>({
@@ -43,6 +43,9 @@ const transformListPoint = (listPoint: ILocationOfferInfo[]): iPointItem[] => un
       if (oldVal !== '') {
         this.init()
       }
+    },
+    activePoint () {
+      this.getCustomerProduct()
     }
   }
 })

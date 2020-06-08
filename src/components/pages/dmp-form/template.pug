@@ -54,8 +54,8 @@ div.px-32.py-64(:class="`${pre}`")
             //-  )
         er-row
           er-flex.mb-32(xs6)
-            er-text-field(
-              label="Юридический адрес",
+            er-dadata-select(
+              placeholder="Юридический адрес",
               v-model="modelData.addressCompany",
               :rules="[rules.isRequired]",
               tabIndex="2",
@@ -64,6 +64,7 @@ div.px-32.py-64(:class="`${pre}`")
               )
           er-flex(xs6)
             //-er-text-field(
+            //
             //-  label="Должность в род. падеже",
             //-  v-model="modelData.gPost",
             //-  :rules="[rules.isRequired]",
@@ -80,7 +81,6 @@ div.px-32.py-64(:class="`${pre}`")
                 tabIndex="3",
                 key="registrationReasonCode",
                 mask="999999999"
-                :readonly="readonly.registrationReasonCode"
                 )
           template(v-else)
             er-flex(xs2)

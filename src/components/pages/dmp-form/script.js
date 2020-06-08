@@ -9,6 +9,7 @@ import ErErrorModal from '../../blocks/ErErrorModal'
 import { GET_CLIENT_INFO, UPDATE_CLIENT_INFO } from '../../../store/actions/user'
 import { mapGetters, mapState } from 'vuex'
 import { logInfo } from '../../../functions/logging'
+import ErDadataSelect from '../../blocks/ErDadataSelect/index'
 // import { ATTACH_SIGNED_DOCUMENT, UPLOAD_FILE } from '../../../store/actions/documents'
 
 const EXTENDED_MAP_INN = '9148328342013670726'
@@ -16,7 +17,8 @@ const EXTENDED_MAP_INN = '9148328342013670726'
 export default {
   name: 'dmp-form-page',
   components: {
-    ErErrorModal
+    ErErrorModal,
+    ErDadataSelect
   },
   data: () => ({
     pre: 'dmp-form-page',
@@ -30,7 +32,7 @@ export default {
     isValidFile: true,
     modelData: {
       nameCompany: '',
-      addressCompany: '',
+      addressCompany: null,
       registrationReasonCode: '',
       passport: '',
       dateOfPassport: '',
@@ -47,7 +49,8 @@ export default {
       cyrNameObj: null,
       phoneNumber: '',
       file: null,
-      type: ''
+      type: '',
+      addressCompanyId: ''
     },
     rules: {
       isRequired: value => !!value || 'Поле обязательно к заполнению'
@@ -58,7 +61,8 @@ export default {
       nameCompany: false,
       registrationReasonCode: false,
       addressCompany: false
-    }
+    },
+    fiasId: ''
   }),
   watch: {
     INN (val) {
@@ -124,7 +128,29 @@ export default {
             }
           }
           this.modelData.type = response.type
-          this.isInputInn = false
+          if (!response.legalAddressText) {
+            this.isInputInn = false
+            return
+          }
+          apiDadata({
+            count: 1,
+            query: response.legalAddressText
+          })
+            .then(dadataResponse => {
+              // eslint-disable-next-line camelcase
+              const fiasId = dadataResponse?.suggestions?.[0]?.data?.fias_id
+              if (!fiasId) {
+                this.isInputInn = false
+                return
+              }
+              this.$store.dispatch('address/getAddressByFiasId', {
+                fiasId
+              })
+                .then(addressResponse => {
+                  this.modelData.addressCompanyId = addressResponse.id
+                  this.isInputInn = false
+                })
+            })
         })
         .catch(() => {
           this.$store.commit(ERROR_MODAL, true)
@@ -147,6 +173,12 @@ export default {
       logInfo('Before Validate')
       if (!this.$refs.form.validate()) return
       logInfo('Validate has been successed')
+      let addressId
+      if (!this.modelData.addressCompanyId) {
+        addressId = await this.$store.dispatch('address/getAddressByFiasId', {
+          fiasId: this.modelData.addressCompany.data.fias_id
+        })?.id
+      }
       // const fileValid = this.modelData.file !== null
       // if (!fileValid) {
       //   this.isValidFile = false
@@ -157,7 +189,7 @@ export default {
       const editData = {
         inn: this.modelINN,
         name: this.modelData.nameCompany,
-        legalAddress: this.modelData.addressCompany,
+        legalAddress: this.modelData.addressCompanyId || addressId,
         type: this.modelData.type
       }
       if (this.isEntity) {
