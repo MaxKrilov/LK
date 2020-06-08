@@ -21,7 +21,6 @@
               er-select(
                 :items="listCertificate"
                 v-model="selectedCertificate"
-                readonly
                 :rules="[ v => !!v || 'Выберите сертификат' ]"
               )
           .actions.mt-auto.d--flex.flex-column-reverse.flex-sm-row
