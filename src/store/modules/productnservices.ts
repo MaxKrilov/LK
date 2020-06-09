@@ -2,7 +2,7 @@ import { ActionContext } from 'vuex'
 import { API } from '@/functions/api'
 import { ICustomerProduct, ILocationOfferInfo } from '@/tbapi'
 import { AxiosError } from 'axios'
-import { TYPE_ARRAY } from '@/constants/type_request'
+import { TYPE_JSON, TYPE_ARRAY } from '@/constants/type_request'
 
 interface IState {}
 
@@ -114,6 +114,22 @@ const actions = {
         .query('/customer/product/infolist')
         .then((response: any) => resolve(response))
         .catch((err: AxiosError) => reject(err))
+    })
+  },
+  getAllSlo (context: ActionContext<IState, any>, { api, parentIds, code }: { api: API, parentIds: string, code: string }) {
+    const { toms: clientId } = context.rootGetters['auth/user']
+    return new Promise((resolve, reject) => {
+      api
+        .setWithCredentials()
+        .setData({
+          clientId,
+          parentIds,
+          code
+        })
+        .setType(TYPE_JSON)
+        .query('/customer/product/all-slo')
+        .then((response: Record<string, ICustomerProduct>) => resolve(response))
+        .catch(error => reject(error))
     })
   }
 }

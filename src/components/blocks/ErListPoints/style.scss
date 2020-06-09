@@ -1,0 +1,377 @@
+.list-point-component {
+  $root: &;
+  &--mobile {
+    #{$root} {
+      &__point {
+        width: calc(100% + 64px);
+        margin: 0 -32px;
+        height: 56px;
+        background: linear-gradient(to top, map_get($gray, '26') 28.65%, map_get($shades, 'white') 90.63%);
+        border-radius: 12px;
+        padding: 1px;
+        cursor: pointer;
+        @include min-breakpoint('md') {
+          width: 100%;
+          margin: 0;
+        }
+        @include min-breakpoint('xl') {
+          display: none;
+        }
+      }
+      &__content {
+        width: 100%;
+        height: 100%;
+        background-color: map_get($gray, '9');
+        border-radius: inherit;
+        padding: 0 32px;
+        display: flex;
+        align-items: center;
+        &.preloader img {
+          margin: 0 auto;
+        }
+        &.not-found {
+          display: flex;
+          align-items: center;
+          @extend %body-font;
+          @include color-black(0.3);
+          i {
+            margin-right: 8px;
+          }
+          svg {
+            width: 24px;
+          }
+        }
+        @include min-breakpoint('sm') {
+          padding: 0 24px;
+        }
+        @include min-breakpoint('md') {
+          padding: 0 16px;
+        }
+        .icon {
+          color: map_get($yellow, 'base');
+          margin-right: 4px;
+        }
+        .address {
+          @extend %caption1;
+          padding-right: 16px;
+          user-select: none;
+        }
+        .ip {
+          display: none;
+          margin-left: auto;
+          @include min-breakpoint('md') {
+            display: flex;
+          }
+          .caption {
+            @extend %caption2;
+          }
+          .value {
+            @extend %caption1;
+          }
+        }
+        .toggle {
+          @include color-black(0.2);
+          margin-left: auto;
+          svg {
+            width: 16px;
+          }
+        }
+      }
+    }
+  }
+  &__modal {
+    background-color: map_get($gray, '3');
+    #{$root} {
+      &__head {
+        width: 100%;
+        height: 48px;
+        background-color: map_get($shades, 'white');
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 16px;
+        .title {
+          @extend %h3;
+        }
+        button {
+          @extend %transparent-button;
+          margin-left: auto;
+          @include color-black(0.3);
+          cursor: pointer;
+          svg {
+            width: 16px;
+          }
+        }
+      }
+      &__body {
+        padding: 16px 0;
+      }
+      &__item {
+        padding: 8px 12px 8px 16px;
+        display: flex;
+        cursor: pointer;
+        margin-bottom: 4px;
+        border-right: 4px solid map_get($shades, 'transparent');
+        .icon,
+        .content,
+        .address,
+        .ip,
+        .tariff {
+          transition: $primary-transition;
+          user-select: none;
+        }
+        .icon {
+          @include color-black(0.15);
+          margin-right: 4px;
+        }
+        .content {
+          padding-top: 8px;
+        }
+        .address {
+          @extend %body-font;
+          @include color-black(0.8);
+          margin-bottom: 4px;
+        }
+        .ip,
+        .tariff {
+          @extend %caption2;
+          span {
+            @extend %body-font;
+            @include color-black(0.5);
+            transition: inherit;
+          }
+        }
+        .ip {
+          margin-bottom: 4px;
+        }
+        .need-activate,
+        .stoped {
+          @extend %body-font;
+        }
+        .need-activate {
+          color: map_get($blue, 'base');
+        }
+        .stoped {
+          color: map_get($red, 'base');
+        }
+        &:active {
+          background-color: map_get($yellow, 'base');
+          .icon {
+            @include color-white(1);
+          }
+          .address {
+            @include color-black(1);
+          }
+          .ip,
+          .tariff {
+            span {
+              @include color-black(0.8);
+            }
+          }
+        }
+        &.active {
+          background-color: map_get($shades, 'white');
+          border-right-color: map_get($yellow, 'base');
+          .icon {
+            color: map_get($yellow, 'base');
+          }
+        }
+      }
+    }
+  }
+  &--desktop {
+    display: none;
+    @include min-breakpoint('xl') {
+      display: block;
+    }
+    #{$root} {
+      &__item {
+        width: 100%;
+        height: 0;
+        overflow: hidden;
+        cursor: pointer;
+        user-select: none;
+        border-radius: 12px;
+        transition: $primary-transition;
+        &.preloader,
+        &.not-found {
+          .content {
+            display: flex;
+            align-items: center;
+          }
+        }
+        &.preloader img {
+          margin: 0 auto;
+        }
+        &.not-found {
+          @extend %body-font;
+          @include color-black(0.3);
+        }
+        .content {
+          display: flex;
+          border-radius: inherit;
+          height: 100%;
+          width: 100%;
+          padding: 0 12px 0 16px;
+          border-right: 4px solid map_get($shades, 'transparent');
+        }
+        .content,
+        .icon,
+        .address,
+        .tariff,
+        .ip {
+          transition: $primary-transition;
+        }
+        .icon {
+          @include color-black(0.15);
+          margin-top: 8px;
+        }
+        .address {
+          @extend %caption1;
+          @include color-black(0.8);
+          margin-top: 16px;
+        }
+        .ip {
+          margin-top: 16px;
+        }
+        .tariff,
+        .ip {
+          @extend %caption2;
+          span {
+            @extend %caption1;
+            transition: inherit;
+          }
+        }
+        .need-activate,
+        .stoped {
+          @extend %caption1;
+        }
+        .need-activate {
+          color: map_get($blue, 'base');
+        }
+        .stoped {
+          color: map_get($red, 'base');
+        }
+        .tariff,
+        .need-activate,
+        .stoped {
+          height: 0;
+          overflow: hidden;
+          transition: $primary-transition;
+        }
+        &:hover {
+          .content {
+            background-color: map_get($gray, '9');
+          }
+          .icon {
+            @include color-black(0.3);
+          }
+          .address {
+            @include color-black();
+          }
+          .tariff,
+          .ip {
+            span {
+              @include color-black(0.8);
+            }
+          }
+        }
+        &.active,
+        &.preloader,
+        &.not-found {
+          background: linear-gradient(to top, map_get($gray, '26') 28.65%, map_get($shades, 'white') 90.63%);
+          box-shadow:
+                  0 2px 12px rgba(map_get($shades, 'black'), 0.1),
+                  0 2px 2px rgba(map_get($shades, 'black'), 0.05);
+          height: 48px;
+          padding: 1px;
+          .content {
+            background-color: map_get($gray, '9');
+          }
+          .icon {
+            color: map_get($yellow, 'base');
+          }
+          .address {
+            @include color-black(0.8);
+          }
+          .tariff,
+          .ip {
+            span {
+              @include color-black(0.8);
+            }
+          }
+        }
+      }
+      &__toggle {
+        text-align: center;
+        .line {
+          width: 200vw;
+          height: 0;
+          background: linear-gradient(0deg, map_get($gray, '4') 0%, rgba(map_get($gray, '4'), 0) 100%);
+          margin-left: -100vw;
+          transition: $primary-transition;
+        }
+        button {
+          display: block;
+          width: 64px;
+          height: 16px;
+          line-height: 16px;
+          border: none;
+          outline: none;
+          background: radial-gradient(50% 50% at 50% 50%, map_get($yellow, 'base') 55.5%, map_get($yellow, 'other-4') 100%);
+          margin: 0 auto 0;
+          border-radius: 0 0 4px 4px;
+          @include color-white();
+          cursor: pointer;
+          transition: $primary-transition;
+          i {
+            vertical-align: top;
+          }
+          svg {
+            width: 16px;
+            transition: $primary-transition;
+          }
+        }
+        .text {
+          display: block;
+          margin: 8px auto 0;
+          @extend %caption2;
+          text-decoration: underline;
+          text-decoration-style: dashed;
+          user-select: none;
+        }
+      }
+    }
+    &.open {
+      #{$root} {
+        &__item {
+          height: 74px;
+          padding: 1px;
+          .content {
+            align-items: flex-start;
+          }
+          .address {
+            margin-bottom: 4px;
+          }
+          .tariff,
+          .need-activate,
+          .stoped {
+            height: auto;
+          }
+        }
+        &__toggle {
+          .line {
+            height: 16px;
+          }
+          button {
+            margin-top: -16px;
+            border-radius: 4px 4px 0 0;
+            svg {
+              transform: rotate(180deg);
+            }
+          }
+        }
+      }
+    }
+  }
+}
