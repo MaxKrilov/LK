@@ -9,28 +9,34 @@
     )
 
   .telephony-page__address
-    er-address-block(
-      :list="addressList"
-      v-model="currentAddress"
+    er-list-points(
+      :list="listPoint"
+      v-model="currentPoint"
+      :is-loading="isLoadingPoints"
     )
 
   .telephony-page__download-form
     .download-form
-      er-container.full.container--no-padding
-        er-row
-          er-flex.xs12.lg8
-            p Вы можете посмотреть статистику звонков с 1-го числа до текущего. Скачать всю статистику можно за выбраный период в формате *.xls
-        er-row
-          er-flex.xs12.sm6.lg4.download-form__input
-            er-select(
-              :items="filterList"
-              v-model="currentPhone"
-            )
-          er-flex.xs12.sm6.lg4.download-form__input
-            er-date-picker
-          er-flex.xs12.sm6.lg4.download-form__input
-            er-button.download-form__download-button
-              | Скачать *.xls
+      er-form(ref="file-statistic-form")
+        er-container.full.container--no-padding
+          er-row
+            er-flex.xs12.lg8
+              p Вы можете заказать статистику звонков с 1-го числа до текущего. Скачать всю статистику можно за выбраный период в формате *.csv
+          er-row
+            er-flex.xs12.sm6.lg4.download-form__input
+              er-select(
+                :items="listPhone"
+                v-model="currentPhone"
+                :rules="[v => !!v || 'Выберите номер']"
+              )
+            er-flex.xs12.sm6.lg4.download-form__input
+              er-date-picker(v-model="periodDate")
+            er-flex.xs12.sm6.lg4.download-form__input
+              er-button.download-form__download-button(
+                @click="generateFileStatistic"
+                :loading="isGeneratingFile"
+                )
+                | Заказать *.csv
 
     .download-files(
       v-class-mod="{updated: hasNewFile}"
@@ -55,13 +61,15 @@
 
     .statistic__phones
       phone-folder(
-        phone="01001001010"
-        :disabled="true"
+        v-for="phone in listPhone"
+        :key="phone.id"
+        :phone="phone.value"
+        v-slot="{ opened }"
       )
-        phone-statistic
-
-      phone-folder(phone="+7(342)2315402")
-        phone-statistic
+        phone-statistic(
+          :is-opened="opened"
+          :product="phone.product"
+          )
 
   .telephony-page__legend.legend
     .legend__title Условные обозначения:

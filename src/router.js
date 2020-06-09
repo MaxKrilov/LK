@@ -95,7 +95,7 @@ import OATSPromoPage from './components/pages/oats/promo/index'
 import SurveyPage from './components/pages/survey/index'
 
 // Телефония
-import TelephonyTemplate from './components/pages/telephony/TelephonyTemplate'
+import TelephonyTemplate from './components/templates/TelephonyTemplate/index'
 import TelephonyStatisticPage from './components/pages/telephony/statistic/index'
 import TelephonyRedirectionsPage from './components/pages/telephony/redirection/index'
 import TelephonyBlacklistPage from '@/components/pages/telephony/blacklist/index'

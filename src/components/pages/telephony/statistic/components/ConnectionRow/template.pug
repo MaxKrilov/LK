@@ -5,19 +5,23 @@ tr.connection-row(
     er-icon(:name="iconName")
 
   td.col-date
-    .col-date__date 02.02.20
-    .col-date__time 07:53
+    .col-date__date {{ computedDate }}
+    .col-date__time {{ computedTime }}
 
   td.col-phone
     .datetime
-      .datetime__date 02.02.20
-      .datetime__time 08:52
-    .phone +7 922 1184320
-    .region {{ region }}
+      .datetime__date {{ computedDate }}
+      .datetime__time {{ computedTime }}
+    .phone {{ statistic.calledNumber | formatPhone }}
+    .region {{ statistic.destination }}
 
-  td.col-region {{ region }}
+  td.col-region {{ statistic.destination }}
 
-  td.col-duration 14:28
+  td.col-duration {{ computedDuration }}
 
-  td.col-price 0,20
-  td.col-price2 0,22
+  td.col-price
+    | {{ statistic.prebillingCost || 0 | price }}
+    span ₽
+  td.col-price2
+    | {{ statistic.billedCost | price }}
+    span ₽

@@ -9,13 +9,18 @@
 
         td.col-date
           er-table-filter(
-            :value="true"
             title="Дата, время"
+            :value="sortField === 'date'"
+            :order="sortOrder"
+            @change-filter="setSort('date')"
           )
 
         td.col-phone
           er-table-filter(
             title="Номер"
+            :value="sortField === 'phone'"
+            :order="sortOrder"
+            @change-filter="setSort('phone')"
           )
 
         td.col-region Регион
@@ -23,41 +28,49 @@
         td.col-duration
           er-table-filter(
             title="Длител."
+            :value="sortField === 'duration'"
+            :order="sortOrder"
+            @change-filter="setSort('duration')"
           )
 
         td.col-price
           er-table-filter(
             title="С пакетом"
+            :value="sortField === 'price'"
+            :order="sortOrder"
+            @change-filter="setSort('price')"
           )
         td.col-price2
           er-table-filter(
             title="Цена факт."
+            :value="sortField === 'price2'"
+            :order="sortOrder"
+            @change-filter="setSort('price2')"
           )
           span.rub
 
-    tbody-collapser(
-      title="01.02.2020"
+    tbody-collapser.statistic-table(
+      v-for="(statistics, date) in listSortingStaticGroupByDate"
+      :key="date"
+      :title="date"
       :columns="7"
       :startOpened="true"
-    ).statistic-table
-      template(v-for="call in log")
-        connection-row(:type="call.type")
-
-    tbody-collapser(
-      title="02.02.2020"
-      :columns="7"
-      :startOpened="true"
-    ).statistic-table
-      template(v-for="call in log")
-        connection-row(:type="call.type")
+    )
+      template(
+        v-for="statistic in statistics"
+        )
+        connection-row(
+          :key="statistic.costedEventName"
+          :statistic="statistic"
+        )
 
   .phone-statistic__footer
-    er-pagination(
-      :total-visible="5"
-      :length="20"
-      v-model="currentPhonePage"
-      :value="1"
-    )
+    //er-pagination(
+    //  :total-visible="5"
+    //  :length="20"
+    //  v-model="currentPhonePage"
+    //  :value="1"
+    //)
 
     .phone-statistic__collapser
       span.link--dashed Свернуть

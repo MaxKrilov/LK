@@ -12,4 +12,4 @@
 
   .phone-folder__body(:class="{'phone-folder__body--active': isOpened}")
     er-slide-up-down(:active="isOpened")
-      slot
+      slot(:opened="isOpened")

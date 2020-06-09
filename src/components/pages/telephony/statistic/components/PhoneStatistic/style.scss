@@ -88,7 +88,8 @@ $head-col-height: 80px;
 
   .col-price2 {
     // white-space: nowrap;
-    text-align: center;
+    text-align: right;
+    padding-right: 16px;
 
     .er-table-filter {
       .title {
