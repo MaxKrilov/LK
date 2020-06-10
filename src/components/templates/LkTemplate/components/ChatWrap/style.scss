@@ -70,6 +70,7 @@ $xl-max-chat-width: 300px;
 
   &__container {
     flex-grow: 1;
+    height: calc(100% - 102px);
   }
 
   &__close {
