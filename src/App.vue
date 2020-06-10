@@ -163,6 +163,10 @@ export default {
     width: 100%;
     min-height: 100vh;
     overflow-x: hidden;
+
+    &__height-auto {
+      min-height: auto;
+    }
   }
 }
 </style>

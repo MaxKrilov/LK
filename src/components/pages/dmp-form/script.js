@@ -286,8 +286,10 @@ export default {
   mounted () {
     window.addEventListener('message', this.listenersDMP)
     this.cyrNameObj = new CyrName()
+    document.querySelector('.app__content').classList.add('app__content__height-auto')
   },
   beforeDestroy () {
     window.removeEventListener('message', this.listenersDMP)
+    document.querySelector('.app__content').classList.remove('app__content__height-auto')
   }
 }
