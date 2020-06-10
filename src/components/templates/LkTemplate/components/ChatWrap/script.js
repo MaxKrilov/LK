@@ -11,7 +11,7 @@ export default {
   data () {
     return {
       isOnline: false,
-      operatorName: 'Людмила Закамская'
+      operatorName: ''
     }
   },
   watch: {
@@ -51,8 +51,10 @@ export default {
           agreementNumber: this.getActiveBillingAccountNumber,
           clientId: this.getTOMS,
           agreementId: this.getActiveBillingAccount,
-          billingId: this.getActiveBillingAccount
-        }
+          userType: 'bss'
+        },
+        operatorNameHook: (name) => { if (name) this.operatorName = name },
+        onlineStatusHook: (status) => { this.isOnline = status }
       })
       this.chat.attach(this.$refs.chatWrap)
     }
