@@ -310,10 +310,9 @@ export default class DigitalSignature {
     } catch (ex) {
       throw new Error(ex.response.statusText)
     }
-    const { СacheObjectId, HashValue } = result.data
     return {
-      CacheObjectId: СacheObjectId,
-      HashValue
+      CacheObjectId: result.data['СacheObjectId'] || result.data.CacheObjectId,
+      HashValue: result.data.HashValue
     }
   }
 
