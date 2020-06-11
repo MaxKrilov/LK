@@ -47,7 +47,7 @@ div(:class="`${pre}`").main-content.main-content--padding.main-content--top-menu
                       er-icon(name="lifebuoy")
           er-flex.mb-16.pr-8(xs6 xl3)
             er-preloader(:active="loadingPromisedPayment" icon)
-              router-link.index-page__fast-link(to="/")
+              router-link.index-page__fast-link(to="/lk/promise-pay")
                 .content
                   .title
                     | Обещанный платёж
@@ -60,8 +60,8 @@ div(:class="`${pre}`").main-content.main-content--padding.main-content--top-menu
                           span {{ getToDatePromisePay.day }}
                           span :{{ getToDatePromisePay.hour }}
                           span :{{ getToDatePromisePay.minute }}
-                      //-.promised-payment-left__line
-                        .promised-payment-left__passed(:style="{ width: '25%' }")
+                      .promised-payment-left__line
+                        .promised-payment-left__passed(:style="{ width: `${getWidthPromisePayLine}%` }")
                     template(v-else)
                       .icon.ml-auto
                         er-icon(name="trast_pay")

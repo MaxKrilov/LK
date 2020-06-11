@@ -1,5 +1,5 @@
 import { mapState, mapGetters } from 'vuex'
-import { price } from '../../../../functions/filters'
+import { leadingZero, price } from '../../../../functions/filters'
 import ProductItemComponent from './blocks/ProductItemComponent/index.vue'
 import ErDocumentViewer from '../../../blocks/ErDocumentViewer/index.vue'
 import ErToastStack from '@/components/blocks/ErToastStack/index'
@@ -21,7 +21,9 @@ export default {
       { label: 'По услугам', value: 'service' }
     ],
     tmpActive: false,
-    isOpenViewer: false
+    isOpenViewer: false,
+    trackerIntervalPromisePay: 1,
+    idIntervalPromisePay: 0
   }),
   computed: {
     getCarouselItem () {
@@ -44,8 +46,9 @@ export default {
       clientName: state => state.user.clientInfo.name,
       balanceInfo: state => state.user.paymentInfo,
       invPaymentsForViewer: state => state.payments.invPaymentsForViewer,
-      promisePayInterval: state => state.payments.promisePayInterval,
-      isPromisePay: state => state.payments.isPromisePay
+      isPromisePay: state => state.user.isPromisePay,
+      promisePayStart: state => state.user.promisePayStart,
+      promisePayEnd: state => state.user.promisePayEnd
     }),
     ...mapGetters({
       listProductByAddress: 'user/getListProductByAddress',
@@ -67,13 +70,22 @@ export default {
 
     getToDatePromisePay () {
       if (!this.isPromisePay) return { day: '', hour: '', minute: '' }
-      const dateTo = this.$moment(this.promisePayInterval)
       const current = this.$moment()
+      const diff = this.promisePayEnd.diff(current)
+      const duration = this.$moment.duration(diff)
       return {
-        day: dateTo.diff(current, 'days'),
-        hour: dateTo.diff(current, 'hours'),
-        minute: dateTo.diff(current, 'minutes')
+        day: this.trackerIntervalPromisePay ? leadingZero(duration.days(), 2) : '0',
+        hour: this.trackerIntervalPromisePay ? leadingZero(duration.hours(), 2) : '0',
+        minute: this.trackerIntervalPromisePay ? leadingZero(duration.minutes(), 2) : '0'
       }
+    },
+
+    getWidthPromisePayLine () {
+      if (!this.isPromisePay) return 0
+      const current = this.$moment()
+      return this.trackerIntervalPromisePay
+        ? (1 - (current - this.promisePayStart) / (this.promisePayEnd - this.promisePayStart)) * 100
+        : 0
     }
   },
   filters: {
@@ -98,6 +110,20 @@ export default {
     isOpenViewer (val) {
       if (val && this.invPaymentsForViewer[0].filePath === '') {
         this.$store.dispatch(`payments/invPayment`, { api: this.$api })
+      }
+    },
+    isPromisePay (val) {
+      if (val) {
+        this.idIntervalPromisePay = setInterval(() => {
+          this.trackerIntervalPromisePay === 1
+            ? this.trackerIntervalPromisePay++
+            : this.trackerIntervalPromisePay--
+          const current = this.$moment().unix()
+          const end = this.promisePayEnd.unix()
+          if (current >= end) {
+            clearInterval(this.idIntervalPromisePay)
+          }
+        }, 1000)
       }
     }
   }
