@@ -20,7 +20,8 @@ import {
   GET_PAYMENT_INFO_SUCCESS,
   SET_ACTIVE_BILLING_ACCOUNT_NUMBER,
   GET_PROMISED_PAYMENT_INFO, GET_CLIENT_INFO_ERROR,
-  ADD_CLIENT_CONTACTS_STORE, REPLACE_CLIENT_CONTACTS_STORE, DELETE_CLIENT_CONTACTS_STORE
+  ADD_CLIENT_CONTACTS_STORE, REPLACE_CLIENT_CONTACTS_STORE, DELETE_CLIENT_CONTACTS_STORE,
+  SET_PROMISED_PAYMENT_INFO
 } from '../actions/user'
 import { ERROR_MODAL } from '../actions/variables'
 import { logError } from '@/functions/logging.ts'
@@ -33,6 +34,7 @@ import {
   isReportDocument
 } from '@/functions/document'
 import { Cookie } from '../../functions/storage'
+import moment from 'moment'
 
 const ACCOUNT_MANAGER_ID = '9134601279613203712'
 const INN_ID = '9148328342013670726'
@@ -55,7 +57,10 @@ const state = {
   activeBillingAccountNumber: '',
   listProductByAddress: [],
   listProductByService: [],
-  paymentInfo: {}
+  paymentInfo: {},
+  isPromisePay: false,
+  promisePayStart: null,
+  promisePayEnd: null
 }
 
 const getters = {
@@ -481,16 +486,16 @@ const actions = {
     const activeBillingAccount = getters.getActiveBillingAccount
     const toms = rootGetters['auth/getTOMS']
     try {
-      await api
+      const result = await api
         .setWithCredentials()
         .setData({
           id: activeBillingAccount,
           clientId: toms
         })
         .query('/billing/promise/index')
-      // commit(GET_PROMISED_PAYMENT_INFO, result)
+      commit(SET_PROMISED_PAYMENT_INFO, result)
     } catch (error) {
-      // commit(ERROR_MODAL, true, { root: true })
+      commit(ERROR_MODAL, true, { root: true })
       // todo Логирование
     } finally {
       commit('loading/loadingPromisedPayment', false, { root: true })
@@ -562,6 +567,14 @@ const mutations = {
   },
   [REPLACE_CLIENT_CONTACTS_STORE]: (state, payload) => {
     state.clientInfo.contacts = [...payload]
+  },
+  [SET_PROMISED_PAYMENT_INFO]: (state, payload) => {
+    if (!payload.hasOwnProperty('promisePaymentActive')) return
+    const { pymtSchdCreateDt, schdPymtDueDt } = payload.promisePaymentActive.promisePaymentDetails[0]
+    if (!pymtSchdCreateDt || !schdPymtDueDt) return
+    state.isPromisePay = true
+    state.promisePayStart = moment(pymtSchdCreateDt, 'YYYYMMDD')
+    state.promisePayEnd = moment(schdPymtDueDt, 'YYYYMMDD')
   }
 }
 
