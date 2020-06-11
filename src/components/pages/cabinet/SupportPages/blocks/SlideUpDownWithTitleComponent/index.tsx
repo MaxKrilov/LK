@@ -17,7 +17,7 @@ export default class SlideUpDownWithTitleComponent extends SlideUpDownWithTitleC
   toggle () {
     this.isOpen = !this.isOpen
   }
-
+  // eslint-disable-next-line
   render (h: CreateElement): VNode {
     const pre = this.pre
     return (<div class={[pre, { 'open': this.isOpen }]}>

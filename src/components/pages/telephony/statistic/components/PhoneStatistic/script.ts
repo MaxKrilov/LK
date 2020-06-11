@@ -1,7 +1,6 @@
 import { Vue, Component } from 'vue-property-decorator'
 import ConnectionRow from '../ConnectionRow/index.vue'
 import TBodyCollapser from '../TBodyCollapser/index.vue'
-import { MISSED_CALL, INCOMING_CALL, OUTGOING_CALL } from '@/constants/telephony_statistic'
 import ErTableFilter from '@/components/blocks/ErTableFilter/index'
 import moment from 'moment'
 import { IBillingStatisticResponse } from '@/tbapi'
