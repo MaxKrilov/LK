@@ -9,7 +9,7 @@ export default class ErTimePickerRange extends Vue {
   @Prop({ type: Array, default: () => ([]) }) readonly value!: any[]
 
   disabled = false
-
+  // eslint-disable-next-line
   render (h: CreateElement): VNode {
     return (
       <div class={'er-time-picker-range'}>
