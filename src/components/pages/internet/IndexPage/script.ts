@@ -37,4 +37,9 @@ export default class IndexPage extends Vue {
   readonly customerProduct!: ICustomerProduct | null
   readonly isLoadingCustomerProduct!: boolean
   readonly locationId!: number | string
+
+  // Methods
+  updateData () {
+    this.$emit('update')
+  }
 }

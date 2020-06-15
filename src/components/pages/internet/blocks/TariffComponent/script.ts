@@ -80,10 +80,13 @@ export default class TariffComponent extends Vue {
   isLoadingConnect = false
   isShowOfferDialog = false
   isShowErrorDialog = false
+  isShowSuccessDialog = false
 
   isOffering = false
   isOffer = false
   isOfferAccepting = false
+
+  errorText = ''
 
   // Computed
   /**
@@ -500,8 +503,15 @@ export default class TariffComponent extends Vue {
     const offerAcceptedOn = moment().format()
     this.isOfferAccepting = true
     this.$store.dispatch('salesOrder/send', { offerAcceptedOn })
-      .then(() => {
-        // Success
+      .then((response) => {
+        const result = response.submit_statuses[0]
+        if (result.submitStatus.toLowerCase() === 'success') {
+          this.isShowSuccessDialog = true
+          this.$emit('update')
+        } else if (result.submitStatus.toLowerCase() === 'failed') {
+          this.errorText = result.submitError?.replace(/<\/?[^>]+>/g, '')
+          this.isShowErrorDialog = true
+        }
       })
       .catch(() => {
         this.isShowErrorDialog = true

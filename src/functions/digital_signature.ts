@@ -1,5 +1,6 @@
 import moment from 'moment'
 import axios from 'axios'
+import { hexEncode } from '@/functions/helper'
 
 export interface iCertificate {
   readonly id: string
@@ -414,6 +415,15 @@ export default class DigitalSignature {
     return btoa(unescape(encodeURIComponent(jsonSerialize)))
   }
 
+  public static async initializeHashedData (cadesplugin: CADESPluginAsync,
+    hashAlg: number,
+    sHashValue: string) {
+    const oHashedData = await cadesplugin.CreateObjectAsync('CAdESCOM.HashedData')
+    await oHashedData.SetHashValue(sHashValue)
+
+    return oHashedData
+  }
+
   /**
    * Подписание документа
    * @param {CADESPlugin | CADESPluginAsync | CADESPluginSync} cadesplugin
@@ -439,6 +449,12 @@ export default class DigitalSignature {
       if (!resultPresign.CacheObjectId || !resultPresign.HashValue) {
         throw new Error('Undefined CacheObjectId and HashValue')
       }
+      // const oHashedData = await DigitalSignature.initializeHashedData(
+      //   cadesplugin as CADESPluginAsync,
+      //   cadesplugin.CADESCOM_HASH_ALGORITHM_CP_GOST_3411_2012_256,
+      //   hexEncode(resultPresign.HashValue)
+      // )
+      // console.log(oHashedData)
       const resultSignCreateSecond = await DigitalSignature
         .signCreate(cadesplugin as CADESPluginAsync, certificate.thumbprint, resultPresign.HashValue)
       const result = await DigitalSignature

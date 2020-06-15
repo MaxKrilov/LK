@@ -19,15 +19,15 @@ export default class ServicesComponent extends Vue {
   // Computed
   get listService () {
     const result = [
-      { icon: 'stat', name: 'Статистика', isOn: true },
-      { icon: 'reload', name: 'Обратные зоны', isOn: true }
+      { icon: 'stat', name: 'Статистика', isOn: true, link: '/lk/internet/statistic' },
+      { icon: 'reload', name: 'Обратные зоны', isOn: true, link: '/lk/internet/reverce-zones' }
     ]
     const additionalServices = [SERVICE_CONTENT_FILTER, SERVICE_DDOS_PROTECT, SERVICE_ADDITIONAL_IP]
     if (this.customerProduct === null) {
       result.push(
-        { icon: 'filter', name: 'Контент-фильтрация', isOn: false },
-        { icon: 'deffence_ddos', name: 'Защита от DDoS-атак', isOn: false },
-        { icon: 'add_ip', name: 'Дополнитель. IP адреса', isOn: false }
+        { icon: 'filter', name: 'Контент-фильтрация', isOn: false, link: '/lk/internet/content-filter' },
+        { icon: 'deffence_ddos', name: 'Защита от DDoS-атак', isOn: false, link: '/lk/internet/ddos' },
+        { icon: 'add_ip', name: 'Дополнитель. IP адреса', isOn: false, link: '/lk/ip' }
       )
       return result
     }
@@ -50,11 +50,11 @@ export default class ServicesComponent extends Vue {
   getIconNNameByService (service: string) {
     switch (service) {
       case SERVICE_DDOS_PROTECT:
-        return { icon: 'deffence_ddos', name: 'Защита от DDoS-атак' }
+        return { icon: 'deffence_ddos', name: 'Защита от DDoS-атак', link: '/lk/internet/ddos' }
       case SERVICE_CONTENT_FILTER:
-        return { icon: 'filter', name: 'Контент-фильтрация' }
+        return { icon: 'filter', name: 'Контент-фильтрация', link: '/lk/internet/content-filter' }
       case SERVICE_ADDITIONAL_IP:
-        return { icon: 'add_ip', name: 'Дополнитель. IP адреса' }
+        return { icon: 'add_ip', name: 'Дополнитель. IP адреса', link: '/lk/ip' }
       default:
         return undefined
     }

@@ -15,7 +15,7 @@ declare namespace CAdESCOM {
     KeyPin: string;
     //OCSPResponses
     Options: CAPICOM.CAPICOM_CERTIFICATE_INCLUDE_OPTION;
-    //SignatureStatus
+    //SignatureStatusCADESCOM_HASH_ALGORITHM_CP_GOST_3411
     readonly SignatureTimeStampTime: VarDate;
     readonly SigningTime: VarDate;
     TSAAddress: string;

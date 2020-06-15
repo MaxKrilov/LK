@@ -201,3 +201,12 @@ div.px-32.py-64(:class="`${pre}`")
           //      template(v-else)
           //        | Документ не загружен
   er-error-modal
+  er-activation-modal(
+    type="error"
+    v-model="isFiasError"
+    title="Произошла ошибка при получении информации об адресе"
+    cancel-button-text="Закрыть"
+    :isShowActionButton="false"
+  )
+    template(slot="description")
+      | Пожалуйста, обратитесь к персональному менеджеру

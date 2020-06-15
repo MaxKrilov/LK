@@ -651,3 +651,15 @@ export function roundUp (num, precision) {
   precision = Math.pow(10, precision)
   return Math.ceil(num * precision) / precision
 }
+
+export function hexEncode (str) {
+  let hex, i
+
+  var result = ''
+  for (i = 0; i < str.length; i++) {
+    hex = str.charCodeAt(i).toString(16)
+    result += ('0' + hex).slice(-2)
+  }
+
+  return result
+}
