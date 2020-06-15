@@ -29,6 +29,7 @@ export default {
       prices: [],
       activePoint: {},
       offerId: '',
+      isLoadingProduct: false,
       isShowModal: false,
       isShowErrorModal: false,
       isShowSuccessModal: false,
@@ -250,24 +251,29 @@ export default {
       }
     },
     getProduct (bpi) {
+      this.isLoadingProduct = true
       this.$store.dispatch('productnservices/customerProduct', {
         api: this.$api,
         parentId: bpi,
         code: CODE_CONTENT_FILTER
-      }).then(answer => {
-        const contentFilter = answer?.slo.find(el => el?.code === CODE_CONTENT_FILTER)
-        if (contentFilter) {
-          this.prices = contentFilter?.prices || []
-          this.offerId = contentFilter?.id
-          if (this.prices) {
-            this.prices.forEach(el => {
-              const tariff = this.tariffs.find(t => t.name === el.chars['Имя тарифного плана'])
-              tariff.price = el.amount
-              tariff.chars = el.chars
-            })
-          }
-        }
       })
+        .then(answer => {
+          const contentFilter = answer?.slo.find(el => el?.code === CODE_CONTENT_FILTER)
+          if (contentFilter) {
+            this.prices = contentFilter?.prices || []
+            this.offerId = contentFilter?.id
+            if (this.prices) {
+              this.prices.forEach(el => {
+                const tariff = this.tariffs.find(t => t.name === el.chars['Имя тарифного плана'])
+                tariff.price = el.amount
+                tariff.chars = el.chars
+              })
+            }
+          }
+        })
+        .finally(() => {
+          this.isLoadingProduct = false
+        })
     },
     createOrder (chars, price) {
       this.selectedTariff = {
@@ -279,7 +285,7 @@ export default {
         {
           locationId: this.activePoint.id,
           bpi: this.activePoint.bpi,
-          offerId: this.offerId,
+          productCode: CODE_CONTENT_FILTER,
           chars
         })
         .then((e) => {

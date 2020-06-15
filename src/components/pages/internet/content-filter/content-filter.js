@@ -59,7 +59,7 @@ export default {
         if (answer) {
           // преобразуем в объект ключ - bpi,   значене - полный адрес
           const points = answer.reduce((acc, el) => {
-            acc[el.bpi] = el.fulladdress
+            acc[el.bpi] = el?.fulladdress
             return acc
           }, {})
 
@@ -81,31 +81,35 @@ export default {
             code: 'CONTENTFIL'
           })
             .then(answer => {
-              const data = Object.values(answer)
               this.connectedBpis = Object.keys(answer)
-              this.data = data.map(el => {
-                const _el = {}
-                _el['fulladdress'] = points[el?.slo[0]?.parentId]
-                _el['date'] = moment(el?.slo[0]?.actualStartDate).format('DD.MM.YY')
-                _el['price'] = el?.slo[0]?.purchasedPrices?.recurrentTotal?.value
-                _el['login'] = el?.slo[0]?.chars?.['Реквизиты доступа']
-                _el['tariff'] = el?.slo[0]?.chars?.['Имя тарифного плана']
-                _el['offerId'] = el?.slo[0]?.offer?.id
-                _el['productId'] = el?.slo[0]?.id
-                _el['locationId'] = el?.tlo?.locationId
-                _el['bpi'] = el?.tlo?.id
-                _el['link'] = ''
-                this.getLink(_el['login']).then((e) => {
-                  _el['link'] = e?.url
-                }).catch(() => {
+              this.data = this.connectedBpis
+                .map(
+                  (el) => answer[el].slo?.filter((slo) => slo.status === 'Active' || slo.status === 'Suspended')?.[0] // отфильтровали точки, где нет активных
+                )
+                .filter(el => el)
+                .map(el => {
+                  const _el = {}
+                  _el['fulladdress'] = points[el?.parentId]
+                  _el['date'] = moment(el?.actualStartDate).format('DD.MM.YY')
+                  _el['price'] = el?.purchasedPrices?.recurrentTotal?.value
+                  _el['login'] = el?.chars?.['Реквизиты доступа']
+                  _el['tariff'] = el?.chars?.['Имя тарифного плана']
+                  _el['offerId'] = el?.offer?.id
+                  _el['productId'] = el?.id
+                  _el['locationId'] = el?.locationId
+                  _el['bpi'] = el?.parentId
                   _el['link'] = ''
+                  this.getLink(_el['login']).then((e) => {
+                    _el['link'] = e?.url
+                  }).catch(() => {
+                    _el['link'] = ''
+                  })
+                  return _el
                 })
-                return _el
-              })
             })
             .finally(() => {
               this.isLoading = false
-              this.freePoints = freePoints.filter(el => !this.connectedBpis.includes(el.bpi))
+              this.freePoints = freePoints.filter(el => !this.data.map(_el => _el.bpi).includes(el.bpi))
             })
         }
       })
