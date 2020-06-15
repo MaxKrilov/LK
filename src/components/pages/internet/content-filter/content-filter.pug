@@ -52,25 +52,17 @@ div(:class="`${pre} main-content main-content--top-menu-fix`")
     cancel-button-text="Закрыть"
   )
     template(slot="description")
-      div Свяжитесь с менеджером
+      div Уважаемый Клиент, в данный момент операция не доступна, обратитесь к персональному менеджеру
 
   er-activation-modal(
     type="question"
     v-model="isShowDisconnectModal"
-    title="Вы уверены, что хотите подключить"
+    title="Вы уверены, что хотите отключить контент-фильтрацию?"
     cancel-button-text="Отменить"
     actionButtonText="Отключить"
     persistent
     :isLoadingConfirm="sendingOrder"
-    :disabledActionButton="!offer"
+    isOffer
     @confirm="sendOrder"
     @close="cancelOrder"
   )
-    template(slot="description")
-      //- оставить на время починки метода по оферте
-      //-   div(:class="`${pre}__modal__caption`") По адресу: {{ activePoint.fulladdress }}
-      //-   div(:class="`${pre}__modal__text`") <b>Контент-фильтрацию</b> по тарифу <b>{{ selectedTariffName }}</b>, стоимостью <b>{{ selectedPrice }}</b> ₽/месяц?
-      //-   div(:class="`${pre}__modal__caption`") После смены тарифа, вам нужно перезагрузить страницу и настроить фильтрацию
-      er-toggle(view="radio-check" v-model="offer") 
-        template(slot="label")
-          div Я ознакомился и принял условия оферты

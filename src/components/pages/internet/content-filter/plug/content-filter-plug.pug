@@ -1,6 +1,8 @@
 div
   div
     ListPointComponent(v-model="activePoint" :list="points")
+  
+  er-preloader(:active="isLoadingProduct" icon)
     div(:class="`${pre}__title-wrapper`")
       h3.title Выберите тариф
       div(:class="`${pre}__filters-wrapper`")
@@ -13,68 +15,68 @@ div
             er-toggle(view="radio-check" v-model="isShowDifferent")
           span.text Схожие параметры
 
-  template(v-if="detail")
-    div(:class="[`${pre}__tariffs-detail`]")
-      div(v-for="item in transformTariffs" :class="`${pre}__row`")
-        div(:class="`${pre}__row-title`")
-          | {{ item.propertyName }}
-        div(v-for="(cell, index) in item.property"
-          :class="[{active: index === hoveredColumn}, `${pre}__cell` ]"
-          @mouseover="mouseover(index)"
-          @mouseleave="mouseleave(index)")
-          template(v-if="cell === true")
-            er-icon(name="ok" :class="`${pre}__icon-ok`")
-          template(v-else-if="cell === false")
-            er-icon(name="close" :class="`${pre}__icon-not`")
-          template(v-else)
-            | {{ cell }}
-      div(:class="[`${pre}__row`, `${pre}__buttons-wrapper`, {'content-filter-plug-page__buttons-wrapper_hidden': hideButtons} ]" ref="buttons")
-        div(v-for="(cell, index) in tariffs"
-          :class="[`${pre}__button`, `${pre}__cell` ]"
-          @mouseover="mouseover(index)"
-          @mouseleave="mouseleave(index)")
-          er-button(
-            color="blue"
-            @click="createOrder(cell.chars, cell.price)"
-            :disabled="creatingOrder"
-            :loading="creatingOrder && selectedTariff.chars === cell.chars"
-            ) Выбрать
-      div(:class="[`${pre}__row`]" ref="sbuttons")
-        div(v-for="(cell, index) in tariffs"
-          :class="[{active: index === hoveredColumn}, `${pre}__button`, `${pre}__cell` ]"
-          @mouseover="mouseover(index)"
-          @mouseleave="mouseleave(index)")
-          er-button(
-            color="blue"
-            @click="createOrder(cell.chars, cell.price)"
-            :disabled="creatingOrder"
-            :loading="creatingOrder && selectedTariff.chars === cell.chars"
-            ) Выбрать
-            
+    template(v-if="detail")
+      div(:class="[`${pre}__tariffs-detail`]")
+        div(v-for="item in transformTariffs" :class="`${pre}__row`")
+          div(:class="`${pre}__row-title`")
+            | {{ item.propertyName }}
+          div(v-for="(cell, index) in item.property"
+            :class="[{active: index === hoveredColumn}, `${pre}__cell` ]"
+            @mouseover="mouseover(index)"
+            @mouseleave="mouseleave(index)")
+            template(v-if="cell === true")
+              er-icon(name="ok" :class="`${pre}__icon-ok`")
+            template(v-else-if="cell === false")
+              er-icon(name="close" :class="`${pre}__icon-not`")
+            template(v-else)
+              | {{ cell }}
+        div(:class="[`${pre}__row`, `${pre}__buttons-wrapper`, {'content-filter-plug-page__buttons-wrapper_hidden': hideButtons} ]" ref="buttons")
+          div(v-for="(cell, index) in tariffs"
+            :class="[`${pre}__button`, `${pre}__cell` ]"
+            @mouseover="mouseover(index)"
+            @mouseleave="mouseleave(index)")
+            er-button(
+              color="blue"
+              @click="createOrder(cell.chars, cell.price)"
+              :disabled="creatingOrder"
+              :loading="creatingOrder && selectedTariff.chars === cell.chars"
+              ) Выбрать
+        div(:class="[`${pre}__row`]" ref="sbuttons")
+          div(v-for="(cell, index) in tariffs"
+            :class="[{active: index === hoveredColumn}, `${pre}__button`, `${pre}__cell` ]"
+            @mouseover="mouseover(index)"
+            @mouseleave="mouseleave(index)")
+            er-button(
+              color="blue"
+              @click="createOrder(cell.chars, cell.price)"
+              :disabled="creatingOrder"
+              :loading="creatingOrder && selectedTariff.chars === cell.chars"
+              ) Выбрать
+              
 
 
 
-  template(v-if="!detail")
-    div(:class="`${pre}__tariffs`")
-      div(:class="`${pre}__card-wrapper`" v-for="item in tariffs")
-        er-card(:class="`${pre}__card`"  )
-          div(:class="`${pre}__head`")
-            div(:class="`${pre}__caption`") Тариф:
-            div(:class="`${pre}__tariff-name`") {{ item.name }}
-            er-icon(name="cloud_telephone")
-          div(:class="`${pre}__card-content`")
-            div(:class="`${pre}__description`") {{ item.description }}
-            div
-              div(:class="`${pre}__caption2`") Абонентская плата:
-              div(:class="`${pre}__price`")
-                span.h3 {{item.price}} &nbsp;
-                span(:class="`${pre}__caption`") ₽/мес. с НДС
-              er-button(
-                :color="'blue'"
-                @click="createOrder(item.chars, item.price)"
-                :disabled="creatingOrder"
-                :loading="creatingOrder && selectedTariff.chars === item.chars"
-                ) Выбрать
+    template(v-if="!detail")
+      div(:class="`${pre}__tariffs`")
+        div(:class="`${pre}__card-wrapper`" v-for="item in tariffs")
+          er-card(:class="`${pre}__card`"  )
+            div(:class="`${pre}__head`")
+              div(:class="`${pre}__caption`") Тариф:
+              div(:class="`${pre}__tariff-name`") {{ item.name }}
+              er-icon(name="cloud_telephone")
+            div(:class="`${pre}__card-content`")
+              div(:class="`${pre}__description`") {{ item.description }}
+              div
+                div(:class="`${pre}__caption2`") Абонентская плата:
+                div(:class="`${pre}__price`")
+                  span.h3 {{item.price}} &nbsp;
+                  span(:class="`${pre}__caption`") ₽/мес. с НДС
+                er-button(
+                  :color="'blue'"
+                  @click="createOrder(item.chars, item.price)"
+                  :disabled="creatingOrder || isLoadingProduct"
+                  :loading="creatingOrder && selectedTariff.chars === item.chars"
+                  ) Выбрать
 
   er-activation-modal(
     type="question"
@@ -83,17 +85,14 @@ div
     cancel-button-text="Отменить"
     actionButtonText="Подключить"
     :isLoadingConfirm="sendingOrder"
-    :disabledActionButton="!offer"
     @confirm="sendOrder"
+    isOffer
     @close="cancelOrder"
   )
     template(slot="description")
       div(:class="`${pre}__modal__caption`") По адресу: {{ activePoint.fulladdress }}
       div(:class="`${pre}__modal__text`") <b>Контент-фильтрацию</b> по тарифу <b>{{ selectedTariffName }}</b>, стоимостью <b>{{ selectedPrice }}</b> ₽/месяц?
-      div(:class="`${pre}__modal__caption`") После смены тарифа, вам нужно перезагрузить страницу и настроить фильтрацию
-      er-toggle(view="radio-check" v-model="offer") 
-        template(slot="label")
-          div Я ознакомился и принял условия оферты
+      div(:class="`${pre}__modal__caption`") После подключения Контент-фильтрации, вам нужно перезагрузить страницу и настроить фильтрацию
 
   er-activation-modal(
     type="error"
@@ -103,7 +102,7 @@ div
     cancel-button-text="Закрыть"
   )
     template(slot="description")
-      div Свяжитесь с менеджером
+      div Уважаемый Клиент, в данный момент операция не доступна, обратитесь к персональному менеджеру
  
   er-activation-modal(
     title="Заказ успешно сформирован"
