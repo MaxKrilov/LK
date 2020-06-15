@@ -153,6 +153,11 @@ export default class InternetTemplate extends Vue {
           locationId: this.activePoint?.id,
           customerProduct: this.customerProduct,
           isLoadingCustomerProduct: this.isLoadingCustomerProduct
+        },
+        on: {
+          update: () => {
+            this.getCustomerProduct()
+          }
         }
       })
     ])

@@ -11,6 +11,7 @@ import { mapGetters, mapState } from 'vuex'
 import { logInfo } from '../../../functions/logging'
 import ErDadataSelect from '../../blocks/ErDadataSelect/index'
 // import { ATTACH_SIGNED_DOCUMENT, UPLOAD_FILE } from '../../../store/actions/documents'
+import ErActivationModal from '../../blocks/ErActivationModal/index'
 
 const EXTENDED_MAP_INN = '9148328342013670726'
 
@@ -18,7 +19,8 @@ export default {
   name: 'dmp-form-page',
   components: {
     ErErrorModal,
-    ErDadataSelect
+    ErDadataSelect,
+    ErActivationModal
   },
   data: () => ({
     pre: 'dmp-form-page',
@@ -30,6 +32,7 @@ export default {
     isInputInn: true,
     isEntity: false,
     isValidFile: true,
+    isFiasError: false,
     modelData: {
       nameCompany: '',
       addressCompany: null,
@@ -150,6 +153,12 @@ export default {
                   this.modelData.addressCompanyId = addressResponse.id
                   this.isInputInn = false
                 })
+                .catch(() => {
+                  this.$store.commit(ERROR_MODAL, false)
+                  this.$nextTick(() => {
+                    this.isFiasError = true
+                  })
+                })
             })
         })
         .catch(() => {
@@ -175,9 +184,13 @@ export default {
       logInfo('Validate has been successed')
       let addressId
       if (!this.modelData.addressCompanyId) {
-        addressId = await this.$store.dispatch('address/getAddressByFiasId', {
-          fiasId: this.modelData.addressCompany.data.fias_id
-        })?.id
+        try {
+          addressId = await this.$store.dispatch('address/getAddressByFiasId', {
+            fiasId: this.modelData.addressCompany.data.fias_id
+          })?.id
+        } catch (er) {
+          this.isFiasError = true
+        }
       }
       // const fileValid = this.modelData.file !== null
       // if (!fileValid) {

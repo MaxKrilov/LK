@@ -28,7 +28,7 @@
   .space-before-footer {
     // Спец блок для отступа от контента до футера
     // т.к. у футера уже есть margin-top: auto
-    padding-top: $padding-x40;
+    margin-top: $padding-x40;
   }
   .space-after-top-menu {
     // Наполняет место верхнего меню,

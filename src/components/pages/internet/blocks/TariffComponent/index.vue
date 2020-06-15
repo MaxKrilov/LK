@@ -122,6 +122,15 @@
       :is-show-action-button="false"
       cancel-button-text="Закрыть"
     )
+      template(slot="description")
+        | {{ errorText }}
+    er-activation-modal(
+      v-model="isShowSuccessDialog"
+      type="success"
+      title="Подключение успешно выполнено"
+      :is-show-action-button="false"
+      cancel-button-text="Закрыть"
+    )
 </template>
 
 <script lang="ts" src="./script.ts"></script>

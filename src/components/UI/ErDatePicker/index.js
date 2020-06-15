@@ -35,7 +35,8 @@ export default {
       type: String,
       default: 'DD.MM.YYYY'
     },
-    isShowRequiredLabel: Boolean
+    isShowRequiredLabel: Boolean,
+    isHidePeriodBlock: Boolean
   },
   computed: {
     valueForTextInput () {
@@ -100,7 +101,7 @@ export default {
             }, 'Произвольный период')
           ]
         ),
-        this._.isArray(this.internalValue) && this.$createElement('div',
+        this._.isArray(this.internalValue) && !this.isHidePeriodBlock && this.$createElement('div',
           { staticClass: `${this.pre}__head__slider-item` },
           [
             this.$createElement('a', {
