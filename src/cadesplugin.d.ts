@@ -120,7 +120,7 @@ declare namespace CAdESCOM {
     Display(hwndParent?: number, title?: string): Promise<void>;
     EnhanceCades(cadesType?: CADESCOM_CADES_TYPE, TSAAddress?: string, encodingType?: CAPICOM.CAPICOM_ENCODING_TYPE): Promise<string>;
     //Sign
-    //SignHash
+    SignHash(signer?: CPSignerAsync, CadesType?: CADESCOM_CADES_TYPE, bDetached?: boolean, EncodingType?: CAPICOM.CAPICOM_ENCODING_TYPE): Promise<string>
     //Verify
     //VerifyHash
     readonly Certificates: Promise<CAPICOM.ICertificates>;
@@ -378,6 +378,7 @@ declare namespace CAPICOM {
     // GetInfo(infoType: CAPICOM_CERT_INFO_TYPE): string;
     IsValid(): ICertificateStatus;
     Display(): void;
+    PublicKey(): any;
   }
 
   interface ICertificateStatus {
@@ -426,6 +427,7 @@ declare namespace CAPICOM {
     // GetInfo(infoType: CAPICOM_CERT_INFO_TYPE): string;
     IsValid(): ICertificateStatus;
     Display(): void;
+    PublicKey(): any;
   }
 
   interface ICertificatesAsync {

@@ -33,6 +33,7 @@ export default {
     isEntity: false,
     isValidFile: true,
     isFiasError: false,
+    isDisabledInn: false,
     modelData: {
       nameCompany: '',
       addressCompany: null,
@@ -150,13 +151,20 @@ export default {
                 fiasId
               })
                 .then(addressResponse => {
-                  this.modelData.addressCompanyId = addressResponse.id
+                  this.modelData.addressCompanyId = {
+                    name: addressResponse.name,
+                    description: '',
+                    id: addressResponse.id
+                  }
                   this.isInputInn = false
                 })
                 .catch(() => {
                   this.$store.commit(ERROR_MODAL, false)
                   this.$nextTick(() => {
                     this.isFiasError = true
+                    if (this.INN) {
+                      this.isDisabledInn = true
+                    }
                   })
                 })
             })
@@ -187,7 +195,12 @@ export default {
         try {
           addressId = await this.$store.dispatch('address/getAddressByFiasId', {
             fiasId: this.modelData.addressCompany.data.fias_id
-          })?.id
+          })
+          addressId = {
+            name: addressId.name,
+            description: '',
+            id: addressId.id
+          }
         } catch (er) {
           this.isFiasError = true
         }

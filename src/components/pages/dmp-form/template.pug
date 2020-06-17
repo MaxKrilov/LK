@@ -13,6 +13,7 @@ div.px-32.py-64(:class="`${pre}`")
           autocomplete="off",
           mask="999999999999",
           :rules="validateInn"
+          :disabled="isDisabledInn"
         )
           template(slot="append-outer")
             er-hint.pt-8.ml-16
