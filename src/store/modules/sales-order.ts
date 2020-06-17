@@ -1,7 +1,7 @@
 import { ActionContext } from 'vuex'
 import { API } from '@/functions/api'
 import { AxiosError } from 'axios'
-import { ISaleOrder, IOrderItem, IOffer, IOfferingRelationship } from '@/tbapi'
+import { ISaleOrder, IOrderItem, IOffer, IOfferingRelationship, IUpdateElement } from '@/tbapi'
 import { TYPE_JSON } from '@/constants/type_request'
 
 const ACTION_ADD = 'add'
@@ -42,6 +42,19 @@ function offerIdFinder (offer: IOffer, productCode: string) : string | null {
         const _offerId = el.offerings.find(el => el.code === productCode)?.id
         if (_offerId) offerId = _offerId
       }
+      if (el?.childProductOffering) {
+        if (el.childProductOffering.code === productCode && el.childProductOffering?.id) {
+          offerId = el.childProductOffering.id
+        }
+        if (el.childProductOffering?.offeringRelationships) {
+          el.childProductOffering?.offeringRelationships.map((el: IOfferingRelationship) => {
+            if (el?.offerings) {
+              const _offerId = el.offerings.find(el => el.code === productCode)?.id
+              if (_offerId) offerId = _offerId
+            }
+          })
+        }
+      }
     }
   })
   return offerId
@@ -51,9 +64,6 @@ const api = () => new API()
 
 interface IState {
   orderId: null | string,
-  orderItemId: null | string,
-  bpi: null | string
-  offerId?: null | string
   currentResponse: null | ISaleOrder
 }
 
@@ -61,26 +71,20 @@ const getClientId = (context: ActionContext<IState, any>) => context.rootGetters
 
 const state: IState = {
   orderId: null,
-  orderItemId: null,
-  bpi: null,
-  offerId: null,
   currentResponse: null
 }
 
 const getters = {
   orderId: (state: IState) => state.orderId,
-  orderItemId: (state: IState) => state.orderItemId,
-  offerId: (state: IState) => state.offerId,
-  bpi: (state: IState) => state.bpi,
   currentResponse: (state: IState) => state.currentResponse
 }
 
 const actions = {
   create (
     context: ActionContext<IState, any>,
-    { locationId, bpi, productCode }: { locationId: string, bpi: string, productCode? :string }
+    { locationId }: { locationId: string }
   ) {
-    if (!locationId || !bpi) throw new Error('Missing required parameter')
+    if (!locationId) throw new Error('Missing required parameter')
     const clientId = getClientId(context)
     const marketingBrandId = context.rootGetters['user/getMarketingBrandId']
     return new Promise((resolve, reject) => {
@@ -94,9 +98,7 @@ const actions = {
         .query(QUERY.CREATE)
         .then((response: ISaleOrder) => {
           context.commit('createSuccess', {
-            ...response,
-            bpi,
-            productCode
+            ...response
           })
           context.commit('responseSuccess', response)
           resolve(response)
@@ -104,18 +106,26 @@ const actions = {
         .catch((error: AxiosError) => {
           context.commit('createError')
           context.commit('responseError')
-          reject(error)
+          reject(error?.response?.data)
         })
     })
   },
   addElement (
-    context: ActionContext<IState, any>
+    context: ActionContext<IState, any>,
+    { productId, productCode }: { productId: string, productCode: string }
   ) {
-    const offerId = context.getters.offerId
-    if (!offerId) throw new Error('Missing required parameter')
+    if (!productId && !productCode) throw new Error('Missing required parameter')
+    const currentResponse = context.getters.currentResponse as ISaleOrder
     const clientId = getClientId(context)
-    const orderItemId = context.getters.orderItemId
+
+    const orderItem = finder(currentResponse.orderItems, productId)
+
+    const offerId = orderItem?.offer && productCode ? offerIdFinder(orderItem.offer, productCode) : null
+    if (!offerId) throw new Error('Offer ID not found')
+
+    const orderItemId = orderItem?.id || null
     if (!orderItemId) throw new Error('Order Item ID not found')
+
     return new Promise((resolve, reject) => {
       api()
         .setWithCredentials()
@@ -131,16 +141,15 @@ const actions = {
         })
         .catch((error: AxiosError) => {
           context.commit('responseError')
-          reject(error)
+          reject(error?.response?.data)
         })
     })
   },
   save (
-    context: ActionContext<IState, any>, payload : { isReturnPrice? : boolean }
+    context: ActionContext<IState, any>, payload : { isReturnPrice? : boolean, productId? : string }
   ) {
     const clientId = getClientId(context)
     const orderId = context.getters.orderId
-    const productId = context.getters.bpi
     if (!orderId) throw new Error('Order ID not found')
     return new Promise((resolve, reject) => {
       api()
@@ -152,8 +161,8 @@ const actions = {
         .query(QUERY.SAVE)
         .then((response: ISaleOrder) => {
           context.commit('responseSuccess', response)
-          if (payload?.isReturnPrice) {
-            const orderItem: IOrderItem | null = finder(response.orderItems, productId)
+          if (payload?.isReturnPrice && payload?.productId) {
+            const orderItem: IOrderItem | null = finder(response.orderItems, payload.productId)
             const orderItemElement = orderItem!.orderItems
               .find(item => item.action && item.action.toLowerCase() === ACTION_ADD)
             resolve(orderItemElement?.prices?.recurrentTotal?.value)
@@ -163,33 +172,28 @@ const actions = {
         })
         .catch((error: AxiosError) => {
           context.commit('responseError')
-          reject(error)
+          reject(error?.response?.data)
         })
     })
   },
   updateElement (
     context: ActionContext<IState, any>,
-    { chars }: { chars: Record<string, string> | Record<string, string>[] }
+    { updateElements }: { updateElements: IUpdateElement[] }
   ) {
-    if (!chars) throw new Error('Missing required parameter')
+    if (!updateElements) throw new Error('Missing required parameter')
     const clientId = getClientId(context)
     const currentResponse = context.getters.currentResponse as ISaleOrder
-    const bpi = context.getters.bpi as string
-    const orderItemElement = finder(currentResponse.orderItems, bpi)
     const orderId = context.getters.orderId
-    if (orderItemElement === null) throw new Error('Unknown error')
-    const elementId = orderItemElement!.id
-
-    if (!elementId) throw new Error('Unknown error')
-    const elements = Array.isArray(chars)
-      ? chars.map(char => ({
+    const elements = updateElements.map((el: IUpdateElement) => {
+      const orderItemElement = finder(currentResponse.orderItems, el.productId)
+      if (orderItemElement === null) throw new Error('Не найден элемент заказа')
+      const elementId = orderItemElement!.id
+      if (!elementId) throw new Error('Не найден идентификатор заказа')
+      return {
         id: elementId,
-        chars: char
-      }))
-      : [{
-        id: elementId,
-        chars
-      }]
+        chars: el.chars
+      }
+    })
 
     return new Promise((resolve, reject) => {
       api()
@@ -207,20 +211,19 @@ const actions = {
         })
         .catch((error: AxiosError) => {
           context.commit('responseError')
-          reject(error)
+          reject(error?.response?.data)
         })
     })
   },
 
   updateNewElement (
     context: ActionContext<IState, any>,
-    { chars }: { chars: Record<string, string> | Record<string, string>[] }
+    { chars, productId }: { chars: Record<string, string> | Record<string, string>[], productId: string }
   ) {
     if (!chars) throw new Error('Missing required parameter')
     const clientId = getClientId(context)
     const currentResponse = context.getters.currentResponse as ISaleOrder
-    const bpi = context.getters.bpi as string
-    const orderItem = finder(currentResponse.orderItems, bpi)
+    const orderItem = finder(currentResponse.orderItems, productId)
     const orderId = context.getters.orderId
     const orderItemElement = orderItem!.orderItems
       .find(item => item.action && item.action.toLowerCase() === ACTION_ADD)
@@ -229,15 +232,10 @@ const actions = {
     const elementId = orderItemElement!.id
 
     if (!elementId) throw new Error('Unknown error')
-    const elements = Array.isArray(chars)
-      ? chars.map(char => ({
-        id: elementId,
-        chars: char
-      }))
-      : [{
-        id: elementId,
-        chars
-      }]
+    const elements = [{
+      id: elementId,
+      chars
+    }]
 
     return new Promise((resolve, reject) => {
       api()
@@ -255,7 +253,7 @@ const actions = {
         })
         .catch((error: AxiosError) => {
           context.commit('responseError')
-          reject(error)
+          reject(error?.response?.data)
         })
     })
   },
@@ -289,7 +287,7 @@ const actions = {
         })
         .catch((error: AxiosError) => {
           context.commit('responseError')
-          reject(error)
+          reject(error?.response?.data)
         })
     })
   },
@@ -313,7 +311,7 @@ const actions = {
         })
         .catch((error: AxiosError) => {
           context.commit('responseError')
-          reject(error)
+          reject(error?.response?.data)
         })
     })
   },
@@ -337,7 +335,7 @@ const actions = {
         })
         .catch((error: AxiosError) => {
           context.commit('responseError')
-          reject(error)
+          reject(error?.response?.data)
         })
     })
   },
@@ -358,18 +356,18 @@ const actions = {
     }
   ) {
     return new Promise((resolve, reject) => {
-      context.dispatch('create', { locationId, bpi, productCode })
+      context.dispatch('create', { locationId })
         .then(() => {
-          context.dispatch('addElement')
+          context.dispatch('addElement', { productId: bpi, productCode })
             .then(() => {
               if (!chars) {
-                context.dispatch('save', { isReturnPrice })
+                context.dispatch('save', { isReturnPrice, productId: bpi })
                   .then(response => resolve(response))
                   .catch(err => reject(err))
               } else {
-                context.dispatch('updateNewElement', { chars })
+                context.dispatch('updateNewElement', { productId: bpi, chars })
                   .then(() => {
-                    context.dispatch('save', { isReturnPrice })
+                    context.dispatch('save', { isReturnPrice, productId: bpi })
                       .then(response => resolve(response))
                       .catch(err => reject(err))
                   })
@@ -386,9 +384,10 @@ const actions = {
     { locationId, bpi, chars }: { locationId: string, bpi: string, chars?: Record<string, string> | Record<string, string>[] }
   ) {
     return new Promise((resolve, reject) => {
-      context.dispatch('create', { locationId, bpi })
+      context.dispatch('create', { locationId })
         .then(() => {
-          context.dispatch('updateElement', { chars })
+          const updateElements = [{ chars, productId: bpi }]
+          context.dispatch('updateElement', { updateElements })
             .then(() => {
               context.dispatch('save')
                 .then(response => resolve(response))
@@ -401,10 +400,10 @@ const actions = {
   },
   createDisconnectOrder (
     context: ActionContext<IState, any>,
-    { locationId, bpi, productId, disconnectDate }: { locationId: string, bpi: string, productId?: string, disconnectDate: string }
+    { locationId, productId, disconnectDate }: { locationId: string, bpi: string, productId?: string, disconnectDate: string }
   ) {
     return new Promise((resolve, reject) => {
-      context.dispatch('create', { locationId, bpi })
+      context.dispatch('create', { locationId })
         .then(() => {
           context.dispatch('deleteElement', { productId, disconnectDate })
             .then(() => {
@@ -420,18 +419,11 @@ const actions = {
 }
 
 const mutations = {
-  createSuccess (state: IState, payload: ISaleOrder & { bpi: string, productCode?: string }) {
-    state.orderId = payload.id
-    state.bpi = payload.bpi
-    const orderItem = finder(payload.orderItems, payload.bpi)
-    if (orderItem?.offer && payload?.productCode) state.offerId = offerIdFinder(orderItem.offer, payload.productCode)
-
-    if (orderItem?.id) state.orderItemId = orderItem!?.id
+  createSuccess (state: IState, payload: ISaleOrder) {
+    state.orderId = payload?.id
   },
   createError (state: IState) {
     state.orderId = null
-    state.bpi = null
-    state.orderItemId = null
   },
   responseSuccess (state: IState, payload: ISaleOrder) {
     state.currentResponse = payload

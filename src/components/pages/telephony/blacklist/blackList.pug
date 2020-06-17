@@ -17,7 +17,7 @@
   
   template(v-if="!isLoading && blackList.length")
     .telephony-blacklist-page__phones
-      blackListCard(v-for="item in blackList" :data="item" :key="item.id" @update="update")
+      blackListCard(v-for="item in blackList" :data="item" :key="item.id")
       .telephony-blacklist-page__button
         er-button(color="blue" v-if="freePhonesList.length && !isConnectNewBlackList" @click="isConnectNewBlackList = true") Добавить черный список
   .telephony-blacklist-page__content.main-content--top-menu-fix(v-if="isConnectNewBlackList")

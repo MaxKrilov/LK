@@ -459,6 +459,7 @@ export interface IOfferingRelationship {
   childProductOffering?: {
     code: string
     id: string
+    offeringRelationships?: IOfferingRelationship[]
   }
   offerings?: [
     {
@@ -467,6 +468,11 @@ export interface IOfferingRelationship {
     }
   ]
 
+}
+
+export interface IUpdateElement {
+  chars: Record<string, string> | Record<string, string>[]
+  productId: string
 }
 export interface IOrderItem {
   action: string
