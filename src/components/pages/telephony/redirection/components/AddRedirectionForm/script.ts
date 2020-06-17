@@ -2,6 +2,7 @@ import { Vue, Component, Prop } from 'vue-property-decorator'
 import { IPhone } from '@/components/pages/telephony/telephony'
 import ErActivationModal from '@/components/blocks/ErActivationModal/index.vue'
 import Validators from '@/mixins/ValidatorsMixin'
+import { CODE_CALLFORWRD } from '@/constants/product-code'
 
 const components = {
   ErActivationModal
@@ -54,7 +55,7 @@ export default class AddRedirectionForm extends Vue {
       {
         locationId: this.locationId,
         bpi: this.selectedPhoneId,
-        offerId: '5850',
+        productCode: CODE_CALLFORWRD,
         chars: this.chars
       })
       .then(() => {

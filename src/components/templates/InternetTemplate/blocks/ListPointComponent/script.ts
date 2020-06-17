@@ -5,6 +5,7 @@ import { iPointItem } from '@/components/pages/internet/IndexPage/script'
 export default class ListPointComponent extends Vue {
   @Prop({ type: Array, default: () => ([]) }) readonly list!: iPointItem[]
   @Prop({ type: Object }) readonly value!: iPointItem
+  @Prop({ type: Boolean, default: false }) readonly isLoading!: boolean
 
   isOpen: boolean = false
   isOpenModal: boolean = false
@@ -26,7 +27,7 @@ export default class ListPointComponent extends Vue {
   }
 
   get getIsLoadingListPoint (): boolean {
-    return this.$parent && (this.$parent as any).isLoadingListPoint
+    return (this.$parent && (this.$parent as any).isLoadingListPoint) || this.isLoading
   }
 
   setActivePoint (point: iPointItem) {

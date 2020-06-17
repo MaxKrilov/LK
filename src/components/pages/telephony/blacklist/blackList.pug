@@ -5,7 +5,7 @@
       title="Чёрный список"
       backlink="/lk/telephony"
     )
-    ListPointComponent(:list="addressList" v-model="currentAddress")
+    ListPointComponent(:list="addressList" v-model="currentAddress" :isLoading="isLoading")
   
   
   template(v-if="isLoadingPhones")
