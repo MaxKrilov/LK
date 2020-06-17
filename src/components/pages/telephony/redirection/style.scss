@@ -34,15 +34,19 @@ $pre: '.telephony-redirection';
   .button {
     @extend %main-content-width;
     display: grid;
-
+    margin-top: 32px;
+    padding: 0 16px;
+    
     @include min-breakpoint("sm") {
       grid-gap: 16px;
       grid-template-columns: 1fr 1fr;
     }
-
+    
     @include min-breakpoint("md") {
+      padding: 0;
       grid-template-columns: 30% 30%;
       margin-top: 40px;
+      padding-left: 32px;
     }
 
     @include min-breakpoint("lg") {

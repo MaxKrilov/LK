@@ -124,6 +124,9 @@ export default class TelephonyBlacklistPage extends Vue {
         })
       // добавить проверку по статусу disconected так как могут приходить уже отключенные slo
     })
+      .finally(() => {
+        this.isLoading = false
+      })
   }
 
   cancelOrder () {
@@ -137,7 +140,7 @@ export default class TelephonyBlacklistPage extends Vue {
       {
         locationId: this.currentAddress?.id,
         bpi: this.selectedNewPhones,
-        offerId: '6683',
+        productCode: CODE_BLACKLIST,
         chars: {
           'Заблокированные номера': ['']
         }
@@ -160,7 +163,7 @@ export default class TelephonyBlacklistPage extends Vue {
         this.sendingOrder = false
         this.isShowSuccessModal = true
         this.isShowModal = false
-        this.update()
+        // this.update() пока не отрабатывает бекенд
       })
       .catch(() => {
         this.isShowModal = false
@@ -171,9 +174,9 @@ export default class TelephonyBlacklistPage extends Vue {
         this.selectedNewPhones = ''
       })
   }
-  update () {
-    if (this.currentAddress?.bpi) this.getPhones(this.currentAddress?.bpi)
-  }
+  // update () { // оставим, пока работает с ошибкой
+  //   if (this.currentAddress?.bpi) this.getPhones(this.currentAddress?.bpi)
+  // }
   mounted () {
     if (this.billingAccountId) {
       this.getPoints()
