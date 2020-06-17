@@ -71,7 +71,8 @@ export default new Vuex.Store({
       'auth.refreshToken',
       'auth.userInfo',
       'auth.toms',
-      'auth.isManager'
+      'auth.isManager',
+      'auth.dmpId'
     ]
   })]
 })
