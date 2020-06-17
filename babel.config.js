@@ -8,5 +8,12 @@ module.exports = {
     ['@babel/plugin-proposal-class-properties', { 'loose': true }],
     '@babel/plugin-proposal-optional-chaining',
     '@babel/plugin-proposal-nullish-coalescing-operator'
-  ]
+  ],
+  'env': {
+    'test': {
+      'plugins': [
+        '@babel/plugin-transform-modules-commonjs'
+      ]
+    }
+  }
 }

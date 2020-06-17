@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "vue-cli-service serve --http --host localhost.frontend2.b2bweb.t2.ertelecom.ru",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "test": "jest"
   },
   "dependencies": {
     "@chenfengyuan/create-vue-component": "^1.1.0",
@@ -51,10 +52,12 @@
     "@vue/eslint-config-standard": "^4.0.0",
     "@vue/eslint-config-typescript": "^4.0.0",
     "babel-eslint": "^10.0.1",
+    "babel-jest": "^26.0.1",
     "babel-plugin-transform-decorators-legacy": "^1.3.5",
     "eslint": "^5.16.0",
     "eslint-plugin-vue": "^5.0.0",
     "husky": "^4.2.5",
+    "jest": "^26.0.1",
     "node-sass": "^4.14.1",
     "postcss-pxtorem": "^4.0.1",
     "pug": "^2.0.4",
@@ -64,18 +67,20 @@
     "svgo-loader": "^2.2.1",
     "typescript": "~3.7.2",
     "vue-cli-plugin-svg-sprite": "^1.0.0",
+    "vue-jest": "^3.0.5",
     "vue-svg-inline-loader": "^1.3.0",
     "vue-template-compiler": "^2.6.10"
   },
-  "husky": {    
-    "hooks": {      
-      "pre-push": "npm run lint"   
-    }  
+  "husky": {
+    "hooks": {
+      "pre-push": "npm run lint"
+    }
   },
   "eslintConfig": {
     "root": true,
     "env": {
-      "node": true
+      "node": true,
+      "jest": true
     },
     "extends": [
       "plugin:vue/essential",
