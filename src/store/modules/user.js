@@ -35,6 +35,7 @@ import {
 } from '@/functions/document'
 import { Cookie } from '../../functions/storage'
 import moment from 'moment'
+import { TYPE_JSON } from '../../constants/type_request'
 
 const ACCOUNT_MANAGER_ID = '9134601279613203712'
 const INN_ID = '9148328342013670726'
@@ -248,6 +249,7 @@ const actions = {
         .setData({
           ...preparedData
         })
+        .setType(TYPE_JSON)
         .query(url)
 
       if (response.id) {
