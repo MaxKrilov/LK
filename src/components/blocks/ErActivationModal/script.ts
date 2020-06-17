@@ -30,6 +30,9 @@ export default class ErActivationModal extends Vue {
 
   @Watch('internalValue')
   onInternalValueChange (val: boolean) {
+    if (!val) {
+      this.isAcceptOffer = false
+    }
     this.$emit('input', val)
   }
 
@@ -63,8 +66,8 @@ export default class ErActivationModal extends Vue {
   }
 
   closeDialog () {
-    this.$emit('close')
     this.isAcceptOffer = false
+    this.$emit('close')
     this.internalValue = false
   }
 
