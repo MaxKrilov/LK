@@ -6,7 +6,6 @@ export default {
   name: 'digital-products-index-page',
   data: () => ({
     pre: 'digital-products-index-page',
-    // link: 'https://service-portal-dmp-int2.nonprod.cloud-bss.loc/products?'
     link: 'https://service-portal-dmp-uat1.nonprod.cloud-bss.loc/products?'
   }),
   computed: {
@@ -20,7 +19,7 @@ export default {
       getParams.hiddenFooter = true
       getParams.hiddenHeader = true
       if (vm.dmpId) {
-        getParams.customerId = this.dmpId
+        getParams.customerId = vm.dmpId
       }
       let getParamsStr = ''
       eachObject(getParams, (item, key) => {
