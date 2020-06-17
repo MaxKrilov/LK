@@ -1,6 +1,6 @@
 import moment from 'moment'
 import axios from 'axios'
-import { hexEncode } from '@/functions/helper'
+import { logInfo } from '@/functions/logging'
 
 export interface iCertificate {
   readonly id: string
@@ -12,6 +12,7 @@ export interface iCertificate {
   readonly issuerName: string
   readonly validFromDate: string
   readonly validToDate: string
+  readonly algoOid?: string
 }
 
 export interface iSignCreateResult {
@@ -87,6 +88,9 @@ export default class DigitalSignature {
     for (let i = 1; i <= certCount; i++) {
       try {
         const certificate = await certificates.Item(i)
+        const publicKey = await certificate.PublicKey()
+        const algorithm = await publicKey.Algorithm
+        const algoOid = await algorithm.Value
         const validFromDate = new Date(await certificate.ValidFromDate)
         const subjectName = DigitalSignature.getCertName(await certificate.SubjectName)
         const otherData = {
@@ -96,7 +100,8 @@ export default class DigitalSignature {
           thumbprint: await certificate.Thumbprint,
           validFromDate: (await certificate.ValidFromDate).toString(),
           validToDate: (await certificate.ValidToDate).toString(),
-          version: await certificate.Version
+          version: await certificate.Version,
+          algoOid
         }
         // Не показываем сертификаты, которые уже просрочены
         if (today < new Date(otherData.validToDate)) {
@@ -169,7 +174,12 @@ export default class DigitalSignature {
    * @param {string} dataToSign
    * @return {Promise<{result: boolean, message: string}>}
    */
-  public static async signCreate (cadesplugin: CADESPluginAsync, thumbprint: string, dataToSign: string): Promise<iSignCreateResult> {
+  public static async signCreate (
+    cadesplugin: CADESPluginAsync,
+    thumbprint: string,
+    dataToSign: string,
+    isHash: boolean = false
+  ): Promise<iSignCreateResult> {
     let store
     try {
       store = await cadesplugin.CreateObjectAsync('CAPICOM.Store')
@@ -193,8 +203,13 @@ export default class DigitalSignature {
     await signedData.propset_Content(dataToSign)
     let signedMessage = ''
     try {
-      signedMessage = await signedData.SignCades(signer, cadesplugin.CADESCOM_CADES_BES)
+      if (isHash) {
+        signedMessage = await signedData.SignHash(signer, cadesplugin.CADESCOM_CADES_BES)
+      } else {
+        signedMessage = await signedData.SignCades(signer, cadesplugin.CADESCOM_CADES_BES)
+      }
     } catch (error) {
+      logInfo('Error')
       throw new Error(cadesplugin.getLastError(error))
     }
     await store.Close()
@@ -415,13 +430,34 @@ export default class DigitalSignature {
     return btoa(unescape(encodeURIComponent(jsonSerialize)))
   }
 
-  public static async initializeHashedData (cadesplugin: CADESPluginAsync,
-    hashAlg: number,
-    sHashValue: string) {
-    const oHashedData = await cadesplugin.CreateObjectAsync('CAdESCOM.HashedData')
-    await oHashedData.SetHashValue(sHashValue)
+  public static async initializeHashedData (
+    cadesplugin: CADESPluginAsync,
+    certificate: iCertificate,
+    hashValue: string
+  ) {
+    let hashAlgorithm: number | undefined
+    if (certificate.algoOid === '1.2.643.7.1.1.1.1') { // алгоритм подписи ГОСТ Р 34.10-2012 с ключом 256 бит
+      hashAlgorithm = cadesplugin.CADESCOM_HASH_ALGORITHM_CP_GOST_3411_2012_256
+    } else if (certificate.algoOid === '1.2.643.7.1.1.1.2') {
+      hashAlgorithm = cadesplugin.CADESCOM_HASH_ALGORITHM_CP_GOST_3411_2012_512
+    } else if (certificate.algoOid === '1.2.643.2.2.19') {
+      hashAlgorithm = cadesplugin.CADESCOM_HASH_ALGORITHM_CP_GOST_3411
+    }
+    if (!hashAlgorithm) {
+      logInfo(`Сообщите это значение программисту: ${certificate.algoOid}`)
+      throw new Error('Неизвестный алгоритм подписи сертификата')
+    }
+    let hashedData
+    try {
+      hashedData = await cadesplugin.CreateObjectAsync('CAdESCOM.HashedData')
+      await hashedData.propset_Algorithm(hashAlgorithm)
+      await hashedData.Hash(hashValue)
+    } catch (ex) {
+      logInfo(ex)
+    }
 
-    return oHashedData
+    const result = await hashedData
+    return result
   }
 
   /**
@@ -445,20 +481,18 @@ export default class DigitalSignature {
         .signCreate(cadesplugin as CADESPluginAsync, certificate.thumbprint, document)
       const resultPresign = await DigitalSignature
         .requestToPresign(document, resultSignCreate.message, visibleSignature)
-      // @ts-ignore
       if (!resultPresign.CacheObjectId || !resultPresign.HashValue) {
         throw new Error('Undefined CacheObjectId and HashValue')
       }
-      // const oHashedData = await DigitalSignature.initializeHashedData(
-      //   cadesplugin as CADESPluginAsync,
-      //   cadesplugin.CADESCOM_HASH_ALGORITHM_CP_GOST_3411_2012_256,
-      //   hexEncode(resultPresign.HashValue)
-      // )
-      // console.log(oHashedData)
+      const hash = await DigitalSignature.initializeHashedData(
+        cadesplugin as CADESPluginAsync,
+        certificate,
+        resultPresign.HashValue
+      )
+      const hashValue = await hash!.Value
       const resultSignCreateSecond = await DigitalSignature
-        .signCreate(cadesplugin as CADESPluginAsync, certificate.thumbprint, resultPresign.HashValue)
+        .signCreate(cadesplugin as CADESPluginAsync, certificate.thumbprint, hashValue, true)
       const result = await DigitalSignature
-        // @ts-ignore
         .requestToPostsign(resultPresign.HashValue, resultSignCreateSecond.message, resultPresign.CacheObjectId, visibleSignature)
       return result
     } catch (ex) {

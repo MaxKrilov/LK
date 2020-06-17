@@ -303,6 +303,37 @@ export default class TariffComponent extends Vue {
           return arc(interpolate(t))
         }
       })
+
+    if (this.isOnTurbo) {
+      if (!this.isAvailableTurbo) return
+      const speedTurbo = Number(this.isAvailableTurbo.chars[CHARS_TURBO_SPEED_INCREASE].replace(/[\D]+/, ''))
+      let speedPercentageTurbo = speedTurbo * 0.875 / this.maxAvailableSpeedIncrease!
+      speedPercentageTurbo = speedPercentageTurbo > 0.875 ? 0.875 : speedPercentageTurbo
+      const foregroundTurbo = svg.append('path')
+        .datum({
+          startAngle: speedPercentage * 2 * Math.PI
+        })
+        .datum({
+          endAngle: speedPercentageTurbo * 2 * Math.PI
+        })
+        .attr('fill', 'none')
+        .attr('stroke-width', STROKE_WIDTH)
+        .attr('stroke', '#69BE28')
+        // @ts-ignore
+        .attr('d', arc)
+      foregroundTurbo
+        .transition()
+        .delay(1300)
+        .duration(1000)
+        .attrTween('d', function (d: any) {
+          const start = { startAngle: 0, endAngle: 0 }
+          const interpolate = d3.interpolate(start, d)
+          return function (t: number) {
+            return arc(interpolate(t))
+          }
+        })
+    }
+
     const text = svg.append('g')
       .classed('text', true)
 
@@ -317,7 +348,11 @@ export default class TariffComponent extends Vue {
       .transition()
       .delay(300)
       .duration(1000)
-      .tween('text', tweenText(speed))
+      .tween('text', tweenText(
+        this.isOnTurbo && this.isAvailableTurbo
+          ? Number(this.isAvailableTurbo.chars[CHARS_TURBO_SPEED_INCREASE].replace(/[\D]+/, ''))
+          : speed
+      ))
 
     text.append('text')
       .attr('x', 0)
