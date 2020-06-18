@@ -1,6 +1,6 @@
 upstream {{ env "FQDN" }} {
     {{$project_name := env "COMPOSE_PROJECT_NAME" }}
-    {{range service $project_name}}server {{.Address}}:{{ env "CONTAINER_PORT" }};
+    {{range service $project_name}}server {{.Address}}:80;
     {{else}}server 127.0.0.1:65535; # force a 502{{end}}
 }
 
