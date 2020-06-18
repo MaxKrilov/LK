@@ -1,12 +1,16 @@
 import 'iframe-resizer'
-import { eachObject, getAllUrlParams } from '../../../../functions/helper'
+import { eachObject, getAllUrlParams, isCombat } from '../../../../functions/helper'
 import { mapState } from 'vuex'
+
+const getLink = () => isCombat()
+  ? 'https://self-service-online.domru.ru/'
+  : 'https://service-portal-dmp-uat1.nonprod.cloud-bss.loc/'
 
 export default {
   name: 'digital-products-index-page',
   data: () => ({
     pre: 'digital-products-index-page',
-    link: 'https://service-portal-dmp-uat1.nonprod.cloud-bss.loc/products?'
+    link: `${getLink()}/products?`
   }),
   computed: {
     ...mapState({
