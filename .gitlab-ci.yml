@@ -4,7 +4,7 @@ before_script:
 #
     - export BUILD_DIR='/var/www/builds'
     - export BUILD_HOST='t2.ertelecom.ru'
-    - export DHUB_ADDRESS="harbor.ertelecom.ru"
+    - export REGISTRY_ADDRESS="harbor.ertelecom.ru"
     - export LOG_DIR='/var/log/services/nginx'
 #
 # USER
@@ -16,7 +16,7 @@ before_script:
     - export PROJECT_DIR_SUFFIX=${PROJECT_GROUP}/${PROJECT_NAME}/${CI_BUILD_REF_NAME}
     - export PROJECT_DIR=${BUILD_DIR}/${PROJECT_DIR_SUFFIX}
     - export CONTAINER_PORT=40037
-    - export IMAGE_ADDRESS="${DHUB_ADDRESS}/${PROJECT_GROUP}/${PROJECT_NAME}:${CI_COMMIT_REF_NAME}"
+    - export IMAGE_ADDRESS="${REGISTRY_ADDRESS}/${PROJECT_GROUP}/${PROJECT_NAME}:${CI_COMMIT_REF_NAME}"
     - export ADD_GROUP="groupadd -g $(id -g) group"
     - export ADD_USER="useradd -u $(id -u) -g $(id -g) -d /app user"
     - export INSTALL_DEPS="su user -c \"npm install --quiet\""
@@ -29,7 +29,8 @@ stages:
     - deploy_dev_image    # Развёртывание образа для dev
     - build_prod_image    # Сборка образа для prod
     - save_dhub           # Размещение в магазине приложений
-    - deploy_prod         # Развёртывание в продакшне
+    - deploy_on_kuber_cc1
+    - deploy_on_kuber_cc3 # Развёртывание в продакшне
 
 Build Dev Image:
     stage: build_dev_image
@@ -100,33 +101,27 @@ Save dhub:
     only:
         - /^\d+\.\d+\.\d+$/
 
-Production:
-    environment: production
-    stage: deploy_prod
-    when: manual
-      # зависимость от stage создания образа, статус stage-a должен быть success
-    dependencies:
-        - Save dhub
+.job_template: &k8s_deployment
+    image: harbor.ertelecom.ru/devops/kubectl:1.16.3
     script:
-        # Название сервиса в manager
-        - export FULL_PROJECT_NAME=$(echo ${PROJECT_GROUP}_${PROJECT_NAME}|sed -e 's/[^A-Z,a-z,0-9,_]//g')
-        # Определяем команды создания сервиса и обновления
-        - export cmdCreate="docker service create --name ${FULL_PROJECT_NAME}
-            --with-registry-auth
-            --replicas 1
-            --network network_webcluster
-            -p ${CONTAINER_PORT}:${CONTAINER_PORT}
-            --mount type=bind,source=/srv/shared/lk-admin.lkb2b.domru.ru/files,destination=${CONTAINER_FILES_DIR}
-            ${IMAGE_ADDRESS}"
-        - export cmdUpdate="docker service update
-            --with-registry-auth
-            --image ${IMAGE_ADDRESS} ${FULL_PROJECT_NAME}"
-        # Проверка есть такой сервис или нет
-        - export strAction=`docker service ps ${FULL_PROJECT_NAME} > /dev/null 2> /dev/null|| echo Create`
-        - env | sort
-        # Действия по сервису
-        - if [ "x${strAction}" == "xCreate" ]; then ${cmdCreate}; else ${cmdUpdate}; fi
+        - export FULL_PROJECT_NAME=$(echo ${PROJECT_GROUP}-${PROJECT_NAME}|sed -e 's/\W//g')
+        - helm repo add base-images http://harbor.ertelecom.ru/chartrepo/base-images
+        - envsubst < build_env/values.yaml.template > build_env/values.yaml
+        - helm upgrade -i ${FULL_PROJECT_NAME} --values build_env/values.yaml base-images/deploy -n b2bweb-prod
+        - helm list
     only:
         - /^\d+\.\d+\.\d+$/
+
+Deploy on cc1:
+    stage: deploy_on_kuber_cc1
+    <<: *k8s_deployment
+    when: manual
     tags:
-        - manager1.site1
+        - k8s-cc1-b2bweb-prod
+
+Deploy on cc3:
+    stage: deploy_on_kuber_cc3
+    <<: *k8s_deployment
+    when: manual
+    tags:
+        - k8s-cc3-b2bweb-prod

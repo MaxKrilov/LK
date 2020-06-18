@@ -1,0 +1,41 @@
+image:
+  repository: "${REGISTRY_ADDRESS}/${PROJECT_GROUP}/${PROJECT_NAME}"
+  tag: ${CI_BUILD_TAG}
+  pullPolicy: IfNotPresent
+
+imagePullSecrets:
+  - name: harbor-registry
+
+# количество реплик приложения (контейнеров)
+replicaCount: 2
+
+# можно отключить liveness и rediness пробы
+livenessProbe:
+  enabled: true
+redinessProbe:
+  enabled: true
+
+service:
+  port: 80
+container:
+  port: 80
+
+ingress:
+  enabled: true
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/proxy-buffering: "on"
+  hosts:
+    - host: newlkb2b.domru.ru
+  tls:
+    - secretName: wildcard-domru-ru
+      hosts:
+        - newlkb2b.domru.ru
+
+resources:
+  limits:
+    cpu: 300m
+    memory: 256Mi
+  requests:
+    cpu: 100m
+    memory: 256Mi
