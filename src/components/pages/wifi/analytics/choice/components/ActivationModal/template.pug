@@ -1,0 +1,38 @@
+.er-activation-modal
+  wifi-analytics-activation-dialog(
+    :max-width="getMaxWidth"
+    v-model="internalValue"
+    :persistent="persistent"
+  )
+    template()
+      slot(name="activator" v-bind="{ on }")
+    .wifi-analytics-activation-modal.er-activation-modal--modal
+      .wifi-analytics-activation-modal.er-activation-modal__content
+        .wifi-analytics-activation-modal.er-activation-modal__head
+          .icon(:class="[ type ]")
+            er-icon(:name="getIconByType")
+          .close
+            button(@click="closeDialog")
+              er-icon(name="close")
+        .wifi-analytics-activation-modal.er-activation-modal__title
+          | {{ title }}
+        .wifi-analytics-activation-modal.er-activation-modal__description
+          slot(name="description")
+        .wifi-analytics-activation-modal.er-activation-modal__offer(v-if="isOffer")
+          er-toggle(
+            view="radio-check"
+            v-model="isAcceptOffer"
+          )
+          .text
+            span
+              | Вы должны принять
+            | &nbsp;
+            a(href="#") условия оферты
+        .wifi-analytics-activation-modal.er-activation-modal__buttom
+        .wifi-analytics-activation-modal.er-activation-modal__actions
+          .wifi-analytics-activation-modal.er-activation-modal__action(v-if="isShowActionButton")
+            er-button(@click="confirmDialog" :loading="isLoadingConfirm" :disabled="isDisabledActionButton")
+              | {{ actionButtonText }}
+          .wifi-analytics-activation-modal.er-activation-modal__action(v-if="isShowCancelButton")
+            er-button(@click="closeDialog" flat :disabled="isLoadingConfirm")
+              | {{ cancelButtonText }}

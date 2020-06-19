@@ -9,10 +9,6 @@ export default {
     banner: {
       type: String
     },
-    plugText: {
-      type: String,
-      default: 'Подключить'
-    },
     featureList: {
       type: Array,
       default: () => []

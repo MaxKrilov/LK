@@ -1,0 +1,37 @@
+div.main-content.main-content--padding.main-content--top-menu-fix.wifi-analytics-choice-page
+  img(:class=("`${pre}__banner`") :src="getImg('wi-fi.png')" alt="")
+  er-page-header(title="Аналитика" linkText="Назад в WiFi зона" backlink="/lk/wifi/analytics/promo")
+  p(:class="`${pre}__points-title`") Вы можете подключить аналитику на следующие точки:
+  div(:class="`${pre}__points`")
+    template(v-for="item in points")
+      div(:class="`${pre}__point`")
+        er-toggle(
+          type="radio"
+          view="radio-check"
+          name="point"
+          :value="item.id"
+          :id="`id-point-${item.id}`"
+          :modelValue="point"
+          v-model="point"
+        )
+          template(slot="append-outer")
+            label(:for="`id-point-${item.id}`") {{ item.address }}
+  div(:class="`${pre}__buttons`")
+    er-button(color="blue" @click="toggleAccept") Подключить аналитику
+    er-button(:flat="true" @click="backward") Отмена
+  activation-modal(
+    type="question"
+    v-model="isAccept"
+    title="Вы уверены, что хотите подключить аналитику?"
+    cancel-button-text="Отменить"
+    actionButtonText="Подключить"
+    @confirm="toggleAccept"
+    @close="toggleAccept"
+  )
+    template(slot="description")
+      div(:class="`${pre}__modal-caption`") {{ getCaptionText }}
+      div(:class="`${pre}__modal-text`") {{ selectedPoint.address }}
+      div(:class="`${pre}__modal-caption`")
+        | Стоимость:
+        b  450
+        |  ₽/мес

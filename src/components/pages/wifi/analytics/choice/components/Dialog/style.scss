@@ -1,0 +1,16 @@
+.wifi-analytics-choice-dialog {
+  margin: 16px;
+  @include media-query((
+    margin: (md: 64px)
+  ));
+
+  &:not(.er-dialog--fullscreen) {
+    max-height: 480px;
+    height: calc(100% - 32px);
+    @include media-query((
+      max-height: (sm: 288px, md: 390px, xl: 383px),
+      max-width: (md: 512px),
+      margin-left: (xl: 336px),
+    ));
+  }
+}

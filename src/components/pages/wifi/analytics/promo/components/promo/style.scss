@@ -1,0 +1,134 @@
+.promo-component {
+
+  &__title h2 {
+    padding-bottom: 0;
+  }
+
+  &__cost {
+    @extend %h4;
+    margin-bottom: 32px;
+    align-items: center;
+    @include media-query((
+      display: (sm: flex)
+    ));
+  }
+
+  &__download-offer-wrapper {
+    align-items: start;
+    @include media-query((
+      align-items: (sm: start)
+    ));
+
+    .icon {
+      padding-top: 4px;
+
+      svg {
+        height: 16px;
+      }
+    }
+  }
+
+  &__download-offer-text br {
+    display: none;
+    @include media-query((
+      display: (sm: block, lg: none)
+    ));
+  }
+
+  &__banner {
+    @extend %h4;
+    position: relative;
+    padding-bottom: 0;
+    left: -60px;
+    width: calc(100% + 76px);
+    @include media-query((
+      position: (sm: static),
+      width: (sm: 100%),
+      padding-top: (xl: 42px)
+    ));
+  }
+
+  &__feature-item {
+    @include media-query((
+      margin-top: (md: 32px, xl: 42px)
+    ));
+
+    &:nth-child(even) {
+      @include media-query((
+        padding-left: (md: 20px)
+      ));
+    }
+
+    &:nth-child(odd) {
+      @include media-query((
+        padding-right: (md: 20px)
+      ));
+    }
+
+    &:nth-child(3n+3) {
+      @include media-query((
+        padding-right: (lg: 0)
+      ));
+    }
+
+    .icon svg {
+      width: 48px;
+      height: 48px;
+      @include media-query((
+        width: (md: 64px),
+        height: (md: 64px)
+      ));
+    }
+  }
+
+  &__feature-description {
+    @extend %body;
+    width: 287.75px;
+    @include media-query((
+      width: (sm: 428px, md: 263.5px, lg: 266.5px, xl: 251.5px)
+    ));
+
+    b {
+      letter-spacing: 0;
+    }
+
+    .stat-filter {
+      max-width: 286px;
+      @include media-query((
+        max-width: (sm: 100%)
+      ));
+    }
+
+    .create-filter {
+      @include media-query((
+        letter-spacing: (sm: 0, lg: inherit)
+      ));
+    }
+  }
+
+  &__feature-name {
+    @include media-query((
+      margin: (xl: 24px 0 16px)
+    ));
+  }
+
+  &__feature {
+    margin-bottom: 24px;
+  }
+
+  &__cost {
+    @include media-query((
+      margin-bottom: (md: 40px)
+    ));
+  }
+
+  &__buttons .er-button {
+    margin-bottom: 0;
+    width: 100%;
+    height: 40px;
+    @include media-query((
+      width: (sm: 264px, md: 288px, lg: 283px, xl: 275px),
+      height: (xl: 48px)
+    ));
+  }
+}
