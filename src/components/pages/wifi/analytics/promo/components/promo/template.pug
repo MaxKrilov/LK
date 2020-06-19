@@ -1,0 +1,36 @@
+div(:class="`${pre}`")
+  div(:class="`${pre}__title`")
+    h2 {{ title }}
+    div(:class="`${pre}__download-offer-wrapper`")
+      er-icon(
+        name="download"
+        class="icon"
+      )
+      div
+        span(:class="`${pre}__download-offer-text`") Скачать комерческое<br> предложение
+  img(:class=("`${pre}__banner`") :src="getImg(banner)" alt="")
+  div(:class="`${pre}__feature`")
+    div(:class="`${pre}__feature-item`" v-for="item in featureList" :key="item.id")
+      div(:class="`${pre}__feature-icon`")
+        er-icon(
+          class="icon"
+          :name="item.icon"
+        )
+      h3(:class="`${pre}__feature-name`") {{ item.name }}
+      template(v-if="item.isComponent")
+        div(
+          :class="`${pre}__feature-description`"
+          v-class-mod="['html']"
+        )
+          component(:is="item.component")
+      template(v-else-if="item.isHTML")
+        div(
+          :class="`${pre}__feature-description`"
+          v-class-mod="['html']"
+          v-html="item.description"
+        )
+      template(v-else)
+        div(:class="`${pre}__feature-description`") {{ item.description }}
+  div(:class="`${pre}__cost`") {{ cost }}
+  div(:class="`${pre}__buttons`")
+    er-button(:class="`${pre}__buttons-item`" color="blue" @click="forward") Подключить фильтрацию

@@ -1,0 +1,26 @@
+.wifi-analytics-promo-page {
+
+  &.main-content {
+    overflow: hidden;
+    padding: 40px 16px 0;
+    @include media-query((
+      padding: (sm: 40px 16px 0, md: 48px 24px 0, lg: 32px 24px 0, xl: 32px 24px 0 45px),
+      width: (xl: 860px),
+      box-sizing: (xl: content-box),
+    ));
+  }
+
+  &__header {
+    margin-bottom: 24px;
+    @include media-query((
+      margin-bottom: (md: 32px, xl: 48px)
+    ));
+  }
+
+  .page-header .er-icon svg {
+    height: 20px;
+    @include media-query((
+      height: (xl: 16px)
+    ));
+  }
+}

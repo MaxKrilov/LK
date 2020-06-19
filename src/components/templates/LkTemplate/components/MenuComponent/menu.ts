@@ -89,6 +89,30 @@ const MenuItemList: MenuItem[] = [
     ]
   },
   {
+    name: 'WiFi зона',
+    icon: 'wifi',
+    isOpen: false,
+    url: '/lk/wifi',
+    subitem: [
+      {
+        name: 'Сервисы авторизации',
+        url: '/lk/wifi/auth'
+      },
+      {
+        name: 'Конструктор страницы авторизации',
+        url: '/lk/wifi/constructor'
+      },
+      {
+        name: 'Контент-фильтрация',
+        url: '/lk/wifi/content'
+      },
+      {
+        name: 'Аналитика',
+        url: '/lk/wifi/analytics'
+      }
+    ]
+  },
+  {
     name: 'Телефония',
     icon: 'telephone',
     isOpen: false,
