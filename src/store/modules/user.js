@@ -249,7 +249,7 @@ const actions = {
         .setData({
           ...preparedData
         })
-        .setType(TYPE_JSON)
+        // .setType(TYPE_JSON)
         .query(url)
 
       if (response.id) {
