@@ -9,6 +9,7 @@ import InfolistViewer from './components/InfolistViewer/index.vue'
 import { getLastElement, uniq } from '@/functions/helper'
 import SpeedComponent from '@/components/pages/internet/blocks/SpeedComponent/index.vue'
 import ErActivationModal from '@/components/blocks/ErActivationModal/index.vue'
+import ErDisconnectProduct from '@/components/blocks/ErDisconnectProduct/index.vue'
 
 const SPEED_N_LIMIT_WIDTH = 104
 const STROKE_WIDTH = 2
@@ -33,7 +34,8 @@ const arc = d3.arc()
   components: {
     InfolistViewer,
     SpeedComponent,
-    ErActivationModal
+    ErActivationModal,
+    ErDisconnectProduct
   },
   filters: {
     price
@@ -81,6 +83,8 @@ export default class TariffComponent extends Vue {
   isShowOfferDialog = false
   isShowErrorDialog = false
   isShowSuccessDialog = false
+
+  isDisconnectionTurbo = false
 
   isOffering = false
   isOffer = false
@@ -239,6 +243,16 @@ export default class TariffComponent extends Vue {
       : ''
   }
 
+  get turboDetails (): Record<string, string> {
+    if (!this.isOnTurbo || !this.isAvailableTurbo) return {}
+    return {
+      locationId: this.locationId as string,
+      bpi: this.parentId,
+      productId: this.isAvailableTurbo.productId,
+      title: 'Вы уверены, что хотите отключить Турбо-режим?'
+    }
+  }
+
   // Methods
   generateLoadingDonut (selector: string) {
     const svg = d3.select(selector)
@@ -268,10 +282,25 @@ export default class TariffComponent extends Vue {
   }
 
   generateSpeedChart () {
+    // Текущая скорость
     const speed = this.currentSpeed!
-    let speedPercentage = speed * 0.875 / this.maxAvailableSpeedIncrease!
+    // Скорость турбо-режима
+    const turboSpeed = this.isOnTurbo && this.isAvailableTurbo
+      ? Number(this.isAvailableTurbo.chars[CHARS_TURBO_SPEED_INCREASE].replace(/[\D]+/, ''))
+      : 0
+    // Время отрисовки текста
+    const textDuration = 1000
+    // Время отрисовки скорости
+    const speedDuration = !this.isAvailableTurbo
+      ? 1000
+      : speed / turboSpeed * 1000
+    // Время отрисовки Турбо-режима
+    const turboDuration = !this.isAvailableTurbo
+      ? 0
+      : 1000 - speedDuration
+    let speedPercentage = speed * 0.875 / (this.maxAvailableSpeedIncrease || speed)
     speedPercentage = speedPercentage > 0.875 ? 0.875 : speedPercentage
-    // Следует очистить предыдущий график
+    // // Следует очистить предыдущий график
     document.querySelector('.tariff-component__speed .chart')!.innerHTML = ''
     const svg = d3.select('.tariff-component__speed .chart')
       .append('svg')
@@ -294,10 +323,9 @@ export default class TariffComponent extends Vue {
       .attr('d', arc)
     foreground
       .transition()
-      .delay(300)
-      .duration(1000)
+      .duration(speedDuration)
       .attrTween('d', function (d: any) {
-        const start = { startAngle: 0, endAngle: 0 }
+        const start = { startAngle: 0, endAngle: speedPercentage * 2 * Math.PI }
         const interpolate = d3.interpolate(start, d)
         return function (t: number) {
           return arc(interpolate(t))
@@ -306,30 +334,31 @@ export default class TariffComponent extends Vue {
 
     if (this.isOnTurbo) {
       if (!this.isAvailableTurbo) return
-      const speedTurbo = Number(this.isAvailableTurbo.chars[CHARS_TURBO_SPEED_INCREASE].replace(/[\D]+/, ''))
-      let speedPercentageTurbo = speedTurbo * 0.875 / this.maxAvailableSpeedIncrease!
-      speedPercentageTurbo = speedPercentageTurbo > 0.875 ? 0.875 : speedPercentageTurbo
-      const foregroundTurbo = svg.append('path')
-        .datum({
-          startAngle: speedPercentage * 2 * Math.PI
-        })
-        .datum({
-          endAngle: speedPercentageTurbo * 2 * Math.PI
-        })
+      let turboSpeedPercentage = turboSpeed * 0.875 / (this.maxAvailableSpeedIncrease || turboSpeed)
+      turboSpeedPercentage = turboSpeedPercentage > 0.875 ? 0.875 : turboSpeedPercentage
+
+      const tArc = d3.arc()
+        .startAngle(speedPercentage * 2 * Math.PI)
+        .innerRadius(SPEED_N_LIMIT_WIDTH / 2 - 2 * STROKE_WIDTH)
+        .outerRadius(SPEED_N_LIMIT_WIDTH / 2 - STROKE_WIDTH)
+
+      const turboForeground = svg.append('path')
+        .datum({ endAngle: turboSpeedPercentage * 2 * Math.PI })
         .attr('fill', 'none')
         .attr('stroke-width', STROKE_WIDTH)
         .attr('stroke', '#69BE28')
         // @ts-ignore
-        .attr('d', arc)
-      foregroundTurbo
+        .attr('d', tArc)
+
+      turboForeground
         .transition()
-        .delay(1300)
-        .duration(1000)
+        .delay(speedDuration)
+        .duration(turboDuration)
         .attrTween('d', function (d: any) {
           const start = { startAngle: 0, endAngle: 0 }
           const interpolate = d3.interpolate(start, d)
           return function (t: number) {
-            return arc(interpolate(t))
+            return tArc(interpolate(t))
           }
         })
     }
@@ -346,8 +375,8 @@ export default class TariffComponent extends Vue {
 
     text.select('.top')
       .transition()
-      .delay(300)
-      .duration(1000)
+      // .delay(300)
+      .duration(textDuration)
       .tween('text', tweenText(
         this.isOnTurbo && this.isAvailableTurbo
           ? Number(this.isAvailableTurbo.chars[CHARS_TURBO_SPEED_INCREASE].replace(/[\D]+/, ''))
@@ -542,7 +571,10 @@ export default class TariffComponent extends Vue {
         const result = response.submit_statuses[0]
         if (result.submitStatus.toLowerCase() === 'success') {
           this.isShowSuccessDialog = true
-          this.$emit('update')
+          setTimeout(() => {
+            this.$emit('update')
+            this.isBlur = false
+          }, 1000)
         } else if (result.submitStatus.toLowerCase() === 'failed') {
           this.errorText = result.submitError?.replace(/<\/?[^>]+>/g, '')
           this.isShowErrorDialog = true
