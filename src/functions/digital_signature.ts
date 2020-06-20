@@ -1,6 +1,7 @@
 import moment from 'moment'
 import axios from 'axios'
 import { logInfo } from '@/functions/logging'
+import { base64ToHex, hexToBase64 } from '@/functions/helper'
 
 export interface iCertificate {
   readonly id: string
@@ -177,8 +178,7 @@ export default class DigitalSignature {
   public static async signCreate (
     cadesplugin: CADESPluginAsync,
     thumbprint: string,
-    dataToSign: string,
-    isHash: boolean = false
+    dataToSign: string
   ): Promise<iSignCreateResult> {
     let store
     try {
@@ -203,14 +203,47 @@ export default class DigitalSignature {
     await signedData.propset_Content(dataToSign)
     let signedMessage = ''
     try {
-      if (isHash) {
-        signedMessage = await signedData.SignHash(signer, cadesplugin.CADESCOM_CADES_BES)
-      } else {
-        signedMessage = await signedData.SignCades(signer, cadesplugin.CADESCOM_CADES_BES)
-      }
+      signedMessage = await signedData.SignCades(signer, cadesplugin.CADESCOM_CADES_BES)
     } catch (error) {
       logInfo('Error')
       throw new Error(cadesplugin.getLastError(error))
+    }
+    await store.Close()
+    return {
+      result: true,
+      message: signedMessage
+    }
+  }
+
+  public static async hashSignCreate (
+    cadesplugin: CADESPluginAsync,
+    thumbprint: string,
+    hash: CAdESCOM.CPHashedDataAsync
+  ) {
+    let store
+    try {
+      store = await cadesplugin.CreateObjectAsync('CAPICOM.Store')
+      await store.Open(
+        cadesplugin.CAPICOM_CURRENT_USER_STORE,
+        cadesplugin.CAPICOM_MY_STORE,
+        cadesplugin.CAPICOM_STORE_OPEN_MAXIMUM_ALLOWED
+      )
+    } catch (ex) {
+      throw new Error(cadesplugin.getLastError(ex))
+    }
+    const certificates = await store.Certificates
+    const result = await certificates.Find(cadesplugin.CAPICOM_CERTIFICATE_FIND_SHA1_HASH, thumbprint)
+    if (await result.Count < 1) {
+      throw new Error('Certificate not found')
+    }
+    const certificate = await result.Item(1)
+    const rawSignature = await cadesplugin.CreateObjectAsync('CAdESCOM.RawSignature')
+    let signedMessage = ''
+    try {
+      // @ts-ignore
+      signedMessage = await rawSignature.SignHash(hash, certificate)
+    } catch (e) {
+      throw new Error(cadesplugin.getLastError(e))
     }
     await store.Close()
     return {
@@ -448,10 +481,12 @@ export default class DigitalSignature {
       throw new Error('Неизвестный алгоритм подписи сертификата')
     }
     let hashedData
+    const hexHashValue = base64ToHex(hashValue)
+    console.log(hexHashValue, hashValue)
     try {
       hashedData = await cadesplugin.CreateObjectAsync('CAdESCOM.HashedData')
       await hashedData.propset_Algorithm(hashAlgorithm)
-      await hashedData.Hash(hashValue)
+      await hashedData.SetHashValue(hexHashValue)
     } catch (ex) {
       logInfo(ex)
     }
@@ -489,11 +524,12 @@ export default class DigitalSignature {
         certificate,
         resultPresign.HashValue
       )
-      const hashValue = await hash!.Value
+      const hashValue = await hash!
       const resultSignCreateSecond = await DigitalSignature
-        .signCreate(cadesplugin as CADESPluginAsync, certificate.thumbprint, hashValue, true)
+        .hashSignCreate(cadesplugin as CADESPluginAsync, certificate.thumbprint, hashValue)
+      const base64ResultSignCreateSecond = hexToBase64(resultSignCreateSecond.message)
       const result = await DigitalSignature
-        .requestToPostsign(resultPresign.HashValue, resultSignCreateSecond.message, resultPresign.CacheObjectId, visibleSignature)
+        .requestToPostsign(resultPresign.HashValue, base64ResultSignCreateSecond, resultPresign.CacheObjectId, visibleSignature)
       return result
     } catch (ex) {
       throw new Error(ex.message)

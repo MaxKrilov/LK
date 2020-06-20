@@ -120,7 +120,7 @@ declare namespace CAdESCOM {
     Display(hwndParent?: number, title?: string): Promise<void>;
     EnhanceCades(cadesType?: CADESCOM_CADES_TYPE, TSAAddress?: string, encodingType?: CAPICOM.CAPICOM_ENCODING_TYPE): Promise<string>;
     //Sign
-    SignHash(signer?: CPSignerAsync, CadesType?: CADESCOM_CADES_TYPE, bDetached?: boolean, EncodingType?: CAPICOM.CAPICOM_ENCODING_TYPE): Promise<string>
+    // SignHash
     //Verify
     //VerifyHash
     readonly Certificates: Promise<CAPICOM.ICertificates>;

@@ -44,8 +44,8 @@ const transformListPoint = (listPoint: ILocationOfferInfo[]): iPointItem[] => un
         this.init()
       }
     },
-    activePoint () {
-      this.getCustomerProduct()
+    activePoint (val, oldVal) {
+      oldVal !== null && this.getCustomerProduct()
     }
   }
 })

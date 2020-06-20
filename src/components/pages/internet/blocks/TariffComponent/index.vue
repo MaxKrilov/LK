@@ -45,7 +45,11 @@
           PuSkeleton
         template(v-else)
           template(v-if="isOnTurbo")
-            er-button(pre-icon="speedup" color="green")
+            er-button(
+              pre-icon="speedup"
+              color="green"
+              @click="() => { isDisconnectionTurbo = true }"
+            )
               | Отключить турбо-режим
             .date-activate.mt-24.mb-16
               .caption.mb-4
@@ -57,7 +61,7 @@
               .caption.mb-4
                 | Стоимость за период
               .value
-                span.mr-4 {{ turboPrice }}
+                span.mr-4 {{ turboPrice | price }}
                 | {{ currencyCode }}
           template(v-else)
             er-button(pre-icon="speedup" @click="() => { openBlur(true) }" :disabled="!isAvailableTurbo")
@@ -130,6 +134,11 @@
       title="Подключение успешно выполнено"
       :is-show-action-button="false"
       cancel-button-text="Закрыть"
+    )
+    er-disconnect-product(
+      v-model="isDisconnectionTurbo"
+      :delete-order-data="turboDetails"
+      is-send-order
     )
 </template>
 
