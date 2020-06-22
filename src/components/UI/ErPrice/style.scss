@@ -1,0 +1,20 @@
+.er-price {
+  display: inline-block;
+
+  &__sum {
+    @extend %h4;
+  }
+
+  &__units {
+    white-space: nowrap;
+    @extend %caption1;
+
+    margin-left: $padding-x1;
+  }
+
+  &__month {
+    &::before {
+      content: '/'
+    }
+  }
+}
