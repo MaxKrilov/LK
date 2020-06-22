@@ -3,6 +3,7 @@ import {
   GET_ORDERS_SUCCESS,
   CREATE_TASK
 } from '../actions/orders'
+import moment from 'moment'
 import { ERROR_MODAL } from '../actions/variables'
 
 const state = {
@@ -19,7 +20,9 @@ const actions = {
       const result = await api
         .setData({
           clientId,
-          status: statuses
+          status: statuses,
+          dateFrom: moment().add('months', -3).format('YYYY-MM-DDTHH:mm:ss') + 'Z',
+          dateTo: moment().format('YYYY-MM-DDTHH:mm:ss') + 'Z'
         })
         .setType('array')
         .query('/order/products/group')
@@ -104,7 +107,10 @@ const mutations = {
           salesOrderOwner: el?.salesOrderOwner
         }
       })
-    state.listOrders = res
+
+    state.listOrders = res.sort((a, b) => {
+      return moment(b.createdWhen).unix() - moment(a.createdWhen).unix()
+    })
     state.cities = [...new Set(payload.reduce((acc, current) => [...acc, ...current.cities], []))]
     state.statuses = [...new Set(res.map(el => el.status))]
   }
