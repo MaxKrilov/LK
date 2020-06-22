@@ -1,0 +1,124 @@
+.er-ip-page
+  .main-content.main-content--top-menu-fix.main-content--padding
+    .er-ip-page__head
+      er-page-header(
+        linkText="Назад в Интернет"
+        title="Дополнительные IP-адреса"
+      )
+
+  .main-content.main-content--h-paddings.main-content--padding
+    ListPointComponent(v-model="activePoint" :list="points" :isLoading="isLoadingPoints")
+  template(v-if="!isLoadingPoints")
+    template(v-if="isLoadingIps")
+      .main-content.main-content--h-padding.er-ip-page__loader
+        img(:src="require('@/assets/images/preloaders/2.svg')")
+    template(v-else)
+      template(v-if="ipAddressList.length")
+        .main-content.main-content--h-padding
+          .er-ip-page__body
+            table.ip-table
+              thead
+                tr
+                  th.col-static-ip
+                    | Статические IP-адреса
+                  th.col-protocol
+                    | Протокол
+                  th.col-active-date
+                    | 
+                  th.col-price
+                    | Стоимость
+                  th.col-actions
+              tbody
+                template(v-for="addr in ipAddressList")
+                  tr.t-row
+                    td.col-static-ip
+                      | {{ addr.ip }}
+
+                    td.col-protocol.ip-table__protocol
+                      | {{ addr.auth }}
+                    td.col-active-date.ip-table__active-date
+                      | {{ addr.activationDate }}
+                    td.col-price
+                      price(
+                        v-if="addr.price"
+                        :sum="addr.price"
+                      )
+                      .no-price(v-else)
+                        span Бесплатно
+
+                    td.col-actions
+                      template(v-if="isDisconnection"  v-show="addr.price")
+                        | Удаляем
+                      template(v-else)
+                        er-delete-button(@click="deleteIp(addr.productId)" v-show="addr.price")
+                  //- TODO
+                  //- tr.t-row2(v-if="addr.subnet")
+                  //-   td(colspan="5")
+                  //-     subnet-expander(:list="addr.subnet")
+
+        .main-content.main-content--x-padding
+          .er-ip-page__total.total-block
+            .total-block__label Итого
+            .total-block__sum
+              price(:sum="totalPrice")
+
+      .main-content.main-content--h-padding
+        .er-ip-page__footer
+          .er-ip-page__actions(v-show="!showAddIpForm")
+            er-container.container--full.container--no-padding.full
+              er-row
+                er-flex.d--flex.xs12.sm6.md4
+                  er-button(
+                    color="blue"
+                    @click="onShowAddIpForm"
+                  ) Добавить IP-адрес
+
+          .er-ip-page__add-ip-form.add-ip-form(v-show="showAddIpForm")
+            .add-ip-form__title Добавить IP-адрес
+            .add-ip-form__inputs
+              .input-row.columns
+              er-container.full.container--no-padding
+                er-row
+                  er-flex.column.xs12.sm4
+                    .column__label
+                      | Протокол
+                    er-select(
+                      :isSelectFirst="true"
+                      value="addProtocol"
+                      :items="protocolList"
+                      v-model="addProtocol"
+                    )
+                  er-flex.column.xs12.sm4
+                      .column__label
+                        | Кол-во IP-адресов
+                      er-select(
+                        :isSelectFirst="true"
+                        value="ipCountList"
+                        :items="ipCountList"
+                        v-model="addIpCount"
+                      )
+                  er-flex.column.xs12.sm4
+                    .column__label
+                      | Стоимость
+                    price(:sum="ipCost")
+
+            .add-ip-form__actions
+              er-container.full.container--no-padding
+                er-row
+                  er-flex.d--flex.xs12.sm4.md3
+                    er-button(@click="onAddIp" :loading="isConnection" :disabled="isDisabledAddButton") Добавить
+                  er-flex.d--flex.xs12.sm4.md3
+                    er-button(
+                      color="gray"
+                      @click="onCancelAddIp"
+                    ) Отмена
+      ErPlugProduct(
+        v-model="isConnection"
+        :orderData="orderData"
+        isSendOrder
+        )
+      ErDisconnectProduct(
+        v-model="isDisconnection"
+        :deleteOrderData="disconnectionOrderData"
+        isSendOrder
+        )

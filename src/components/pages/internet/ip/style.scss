@@ -1,10 +1,6 @@
 
 $pre: '.er-ip-page';
 
-$connections-block_box-shadow:
-  0px 2px 12px rgba(map_get($shades, 'black'), 0.1),
-  0px 2px 2px rgba(map_get($shades, 'black'), 0.05);
-
 #{$pre} {
   &__actions {
     margin-top: $padding-x8;
@@ -17,175 +13,8 @@ $connections-block_box-shadow:
   &__add-ip-form {
     margin-top: $padding-x16;
   }
-}
-
-.connections-wrap {
-  display: flex;
-  flex-direction: column;
-  padding: 0;
-  align-items: center;
-  margin-bottom: $padding-x6;
-
-  box-shadow: $connections-block_box-shadow;
-
-  @extend %main-content-width;
-
-  @include min-breakpoint('sm') {
-    padding: 0;
-    box-shadow: none;
-  }
-
-  @include min-breakpoint('md') {
-    @extend %main-content-padding-h;
-    margin-bottom: $padding-x8;
-  }
-
-  @include min-breakpoint('xl') {
-    margin-left: $left-menu-width;
-  }
-
-  @include media-min-width( ($left-menu-width * 2) + $content-max-width ) {
-    margin: {
-      left: auto;
-      right: auto;
-    }
-  }
-}
-
-.connections {
-  position: relative; // for big-expander only
-  background-color: map_get($shades, 'white');
-  border-radius: 0;
-  width: 100%;
-  padding: $padding-x4 map_get($main-content-padding, 'xs');
-
-  @include min-breakpoint('sm') {
-    padding-left: map_get($main-content-padding, 'sm');
-    padding-right: map_get($main-content-padding, 'sm');
-    box-shadow: $connections-block_box-shadow;
-  }
-
-  @include min-breakpoint('md') {
-    border-radius: 12px;
-    padding: $padding-x2 $padding-x4;
-  }
-
-  &__head {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-  }
-
-  &__title {
-    @extend %caption1;
-    display: flex;
-    flex-grow: 1;
-    flex-direction: row;
-    justify-content: flex-start;
-    align-items: center;
-
-    .er-icon {
-      color: map_get($yellow, 'base');
-    }
-  }
-
-  &__ip-address {
-    display: none;
-
-    @include min-breakpoint('md') {
-      display: inherit;
-    }
-
-    .ip-address {
-      @extend %caption1;
-    }
-
-    .ip-label {
-      @extend %caption2;
-      margin-right: $padding-x1;
-    }
-  }
-
-  .er-corner-button {
-    margin-left: $padding-x2;
-
-    @include min-breakpoint('xl') {
-      display: none;
-    }
-  }
-
-  &__content {
-    padding-top: $padding-x4;
-  }
-
-  &__big-expander {
-    cursor: pointer;
-    flex-direction: column;
-    align-items: center;
-    display: none;
-
-    @include min-breakpoint('xl') {
-      display: flex;
-    }
-
-    .big-expander-button {
-      display: flex;
-      width: 64px;
-      justify-content: center;
-      background-color: map_get($yellow, 'base');
-      border-bottom-left-radius: 4px;
-      border-bottom-right-radius: 4px;
-      margin-bottom: $padding-x2;
-
-      .er-icon {
-        transition: all $primary-transition;
-        color: map_get($shades, 'white');
-        svg {
-          width: 16px;
-        }
-      }
-
-      &--active {
-        .er-icon {
-          transform: rotate(-180deg);
-        }
-      }
-    }
-  }
-
-  &__total-connections {
-    @extend %caption2;
-    white-space: nowrap;
-    border-bottom: 1px dashed;
-  }
-}
-
-
-.login-block {
-  margin-bottom: $padding-x4;
-
-  @include min-breakpoint('md') {
-    margin-bottom: $padding-x8;
-  }
-
-  &__icon {
-    .er-icon {
-      margin-right: $padding-x2;
-      @include color-black(.2);
-
-      svg {
-        width: $padding-x6;
-      }
-    }
-  }
-
-  &__label {
-    @extend %caption2;
-    margin-bottom: $padding-x1;
-  }
-
-  &__name {
-    @extend %h4;
+  &__loader {
+    text-align: center;
   }
 }
 
@@ -390,6 +219,7 @@ $connections-block_box-shadow:
 .add-ip-form {
   &__title {
     margin-bottom: $padding-x8;
+    @extend %h2;
   }
 
   &__inputs {

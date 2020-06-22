@@ -134,6 +134,10 @@ export default class ErDisconnectProduct extends ErPlugMixin {
     this.isShowRequestModal = false
     this.endConnection()
   }
+  closeDisconnectingOrder () {
+    this.cancelOrder()
+    this.endConnection()
+  }
 
   onCloseErrorModal () {
     this.isShowErrorRequestModal = false

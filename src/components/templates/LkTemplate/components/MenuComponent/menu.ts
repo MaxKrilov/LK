@@ -68,7 +68,7 @@ const MenuItemList: MenuItem[] = [
       },
       {
         name: 'Дополнительные IP-адреса',
-        url: '/lk/ip'
+        url: '/lk/internet/ip'
       },
       {
         name: 'Защита от DDoS атак',

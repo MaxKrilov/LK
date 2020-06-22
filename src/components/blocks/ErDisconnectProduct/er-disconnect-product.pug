@@ -41,7 +41,7 @@ div
     :title="deleteOrderData.title"
     @confirm="sendOrder"
     :persistent="true"
-    @close="cancelOrder"
+    @close="closeDisconnectingOrder"
     :isLoadingConfirm="sendingOrder"
     actionButtonText="Отключить"
     )

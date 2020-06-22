@@ -1,20 +1,71 @@
-div(:class="`${pre}`").main-content.main-content--padding.main-content--top-menu-fix
-  er-page-header(title="Подключить защиту от DDoS атак")
+div(:class="`${pre}`").main-content--padding
+  div.mb-md-48.mb-40 Защита от DDoS атак подключается на месяц. Если вам нужно будет отключить сервис, вы можете его отключить и вам будет произведён перерасчет в соответствии со сроком использования.
+  h2.mb-md-32.mb-24 Выберите адрес подключения
+  ListPointComponent(v-model="activePoint" :list="points")
+  er-preloader(:active="isLoadingConnection" icon icon-type="2")
 
-  div(:class="`${pre}__check-ip-title`") Выберите IP-адреса для защиты
-  div(v-for="ip in ips" :class="`${pre}__ip-item`")
-    er-toggle(view="radio-check")
-    span(:class="`${pre}__ip-text`") {{ ip }}
 
-  h3(:class="`${pre}__duration-title`") Выберите период защиты
-  div(:class="`${pre}__duration`")
-    er-date-picker(placeholder="период")
-    er-toggle(view="radio-check" label="Бессрочно" :class="`${pre}__duration-check`")
-  div(:class="`${pre}__cost-title`") Стоимость выбраной защиты:
-  div(:class="`${pre}__cost-wrapper`")
-    span(:class="`${pre}__cost`") 9000
-    span(:class="`${pre}__unit`") ₽
-  div(:class="`${pre}__buttons`")
-    er-button(color="blue" :class="`${pre}__connect-button`") Подключить Защиту от DDoS атак
-    er-button(flat :class="`${pre}__cancel-button`") Отменить
+    //- пока что нельзя выбрать отдельный адрес для подключения, только на точку
+    //- div(:class="`${pre}__check-ip-title`" v-if="ips.length") Выберите IP-адреса для защиты
+    //- div(v-for="ip in ips" :class="`${pre}__ip-item`")
+    //-   er-toggle(view="radio-check" v-model="checkedIps" :value="ip")
+    //-   span(:class="`${pre}__ip-text`") {{ ip }}
 
+    div.mt-md-48.mt-40 Точную стоимость защиты, вы увидите на этапе формирования заявки. Она зависит от скорости соединения. Вы можете её отменить если вас не устроит стоимость. Если вас всё устроит заявка исполняется моментально.
+    div(:class="`${pre}__buttons`")
+      er-button(
+        color="blue"
+        :class="`${pre}__connect-button`"
+        :loading="creatingOrder"
+        @click="plugDdos"
+        ) Сформировать заявку
+      er-button(flat :class="`${pre}__cancel-button`" @click="$emit('cancel')") Отменить
+    h3(:class="`${pre}__price-title`") Примерная стоимость защиты
+    div(:class="`${pre}__prices-table`")
+      .head.position
+        div Скорость интернета:
+        div Примерная стоимость:
+      
+      div(v-for="price in prices").row.position
+        div.price-cel
+          h4 до {{ price.speed }}
+          span(:class="`${pre}__unit`") Мбит/с
+        div.price-cel
+          h4 {{ price.price }}
+          span(:class="`${pre}__unit`") ₽/мес
+
+
+  er-activation-modal(
+    type="question"
+    v-model="isShowModal"
+    title="Вы уверены, что хотите активировать защиту?"
+    @confirm="sendOrder"
+    @close="cancelOrder"
+    :isLoadingConfirm="sendingOrder"
+    actionButtonText="Активировать"
+    isOffer
+  )
+    template(slot="description")
+      .caption По адресу:{{ activePoint.fulladdress }}
+      .d--flex.justify-content-between.mt-8
+        div().d--flex.align-items-baseline
+          .caption Ваша скорость: &nbsp;
+          div <b>{{ currentSpeed }}</b>
+        div(v-if="ddosPrice").d--flex.align-items-baseline.mr-24
+          .caption Стоимость:&nbsp;
+          div <b>{{ ddosPrice }}</b> 	₽/мес
+      .caption.mt-8 После смены тарифа, вам нужно перезагрузить страницу и настроить фильтрацию
+  er-activation-modal(
+    type="error"
+    v-model="isShowErrorModal"
+    title="Ошибка"
+    cancel-button-text="Закрыть"
+    :isShowActionButton="false"
+  )
+  er-activation-modal(
+    type="success"
+    v-model="isShowSuccessModal"
+    title="Заказ создан успешно"
+    :isShowActionButton="false"
+    cancel-button-text="Спасибо"
+  )

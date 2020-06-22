@@ -83,7 +83,7 @@ import TelephonyPromoPage from './components/pages/telephony/promo/index'
 import TelephonyPlugPage from './components/pages/telephony/plug/index'
 import TelephonyPage from './components/pages/telephony/index'
 // Интернет
-import IpPage from './components/pages/ip/index'
+import IpPage from './components/pages/internet/ip/index'
 // Интернет Контент-фильтрация
 import ContentFilterPromoPage from './components/pages/internet/content-filter/promo/index'
 import ContentFilterPlugPage from './components/pages/internet/content-filter/plug/index'
@@ -261,10 +261,6 @@ const router = new Router({
           ]
         },
         {
-          path: 'ip',
-          component: IpPage
-        },
-        {
           name: 'survey',
           path: 'survey/:id',
           component: SurveyPage,
@@ -320,6 +316,10 @@ const router = new Router({
         {
           path: 'internet/ddos',
           component: DDoSPage
+        },
+        {
+          path: 'internet/ip',
+          component: IpPage
         },
         {
           path: 'internet/ddos/promo',

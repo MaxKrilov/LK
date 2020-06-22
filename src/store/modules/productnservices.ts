@@ -47,7 +47,7 @@ const actions = {
   }) {
     const { toms: clientId } = context.rootGetters['auth/user']
     const data: any = { clientId }
-
+    if (payload.code) data.code = payload.code
     if (payload.parentId) {
       data.parentId = payload.parentId
     } else {
