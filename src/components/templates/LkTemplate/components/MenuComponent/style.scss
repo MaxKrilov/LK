@@ -177,23 +177,23 @@
         }
       }
       &__sub-item {
-        height: 32px;
+        $sub-item-border-width: $padding-x1;
+        @extend %menu-item;
         width: 100%;
-        font: 14px/32px $fedra-demi;
-        color: rgba(map_get($shades, 'black'), 0.6);
-        padding-left: 16px;
-        border-left: 4px solid map_get($shades, 'transparent');
+        padding-top: $padding-x2;
+        padding-bottom: $padding-x2;
+        padding-right: $padding-x6;
+        padding-left: $padding-x6 - $sub-item-border-width;
+
+        border-left: $sub-item-border-width solid map_get($shades, 'transparent');
         transition: $primary-transition;
         cursor: pointer;
         text-decoration: none;
+
         &.main {
-          height: 48px;
-          font: 18px/48px $fedra-demi;
-          @include media-query((
-                  height: (xl: 56px),
-                  line-height: (xl: 56px)
-          ))
+          @extend %menu-head-font;
         }
+
         &:hover {
           background-color: map_get($gray, '2');
           border-left-color: map_get($yellow, 'base');
