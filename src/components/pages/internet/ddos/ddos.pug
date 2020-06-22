@@ -14,27 +14,26 @@ div(:class="`${pre} main-content main-content--top-menu-fix`")
           :date="item.date"
           )
           | {{ item.fulladdress}}
-          template(#count-connection)
-            | Подключено {{ index }} IP-адресов
+
           template(#slider-content)
             div(:class="`${pre}__slider`")
-              | заглушка
-              div(:class="`${pre}__slider__date-wrapper`")
-                er-icon(name="time")
-                div(class="date")
-                  div(:class="`${pre}__caption2`") Период защиты:
-                  div {{ item.date }}
-              div(:class="`${pre}__slider__ips-wrapper`")
-                er-icon(name="ip")
-                div
-                  div(:class="`${pre}__caption2`") IP адреса:
-                  div 10.95.217.183
+              //- заглушка пока оставим 
+              //- div(:class="`${pre}__slider__date-wrapper`")
+              //-   er-icon(name="time")
+              //-   div(class="date")
+              //-     div(:class="`${pre}__caption2`") Период защиты:
+              //-     div {{ item.date }}
+              //- div(:class="`${pre}__slider__ips-wrapper`")
+              //-   er-icon(name="ip")
+              //-   div
+              //-     div(:class="`${pre}__caption2`") IP адреса:
+              //-     div 10.95.217.183
 
             div(:class="`${pre}__slider-buttons`")
               er-button(color="yellow")
                 div(class="content-text") Настроить защиту
 
-              er-button(flat)
+              er-button(flat  @click="deleteDdos(item.deleteData)" :loading="isDisconnection")
                 div(class="content-text") Отключить защиту
 
         div(:class="`${pre}__total`")
@@ -42,9 +41,13 @@ div(:class="`${pre} main-content main-content--top-menu-fix`")
           div(class="price")
             div(:class="`${pre}__h4`") {{ amountPrice }}
             span(class="units") &nbsp₽/месяц
-    template(v-else)
-      | нет подключенных
-    .button
-      er-button(color="blue" @click="$router.push('/lk/internet/ddos/plug')") Подключить Защиту от DDoS атак
+    .button(v-if="!isShowConnection && freePoints.length")
+      er-button(color="blue" @click="isShowConnection=true") Подключить Защиту от DDoS атак
 
+  PlugDdos(v-if="isShowConnection" :points="freePoints" @cancel="cancelConnection")
+  ErDisconnectProduct(
+    v-model="isDisconnection"
+    :deleteOrderData="deleteData"
+    isSendOrder
+    )
 
