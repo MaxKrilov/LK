@@ -180,7 +180,6 @@
   transition: all $primary-transition;
 }
 
-
 %menu-head-font {
   // в типографике макета 'menu head'
   font: 18px/22px $fedra-demi;
@@ -189,8 +188,14 @@
 
 %menu-item-font {
   // в типографике макета 'menu'
+  font-family: $fedra-demi;
   font-size: 14px;
   line-height: 120%;
+}
+
+%menu-item {
+  @extend %menu-item-font;
+  @include color-black(.5);
 }
 
 
@@ -370,7 +375,6 @@
   background-color: map_get($shades, 'transparent');
 }
 
-
 %primary-table {
   width: 100%;
   border-collapse: collapse;
@@ -417,7 +421,6 @@
 %table-striped {
   @extend %table-striped-white-first;
 }
-
 
 %table-content-padding {
   th:first-child,
