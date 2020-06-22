@@ -455,6 +455,7 @@ export interface IOffer {
   id: string
   offeringRelationships: IOfferingRelationship[]
 }
+
 export interface IOfferingRelationship {
   childProductOffering?: {
     code: string
@@ -474,6 +475,7 @@ export interface IUpdateElement {
   chars: Record<string, string> | Record<string, string>[]
   productId: string
 }
+
 export interface IOrderItem {
   action: string
   chars: any
@@ -484,6 +486,7 @@ export interface IOrderItem {
   offer: IOffer
   prices?: IPrice
 }
+
 export interface ISurveyQuestion {
   id: string
   orderNumber: string // number in string
@@ -497,4 +500,31 @@ export interface ISurveyQuestion {
     id: string
     name: string
   }
+}
+
+export interface IAddressUnit {
+  'latitude': string
+  'addressUnitSubtypeId': string
+  'validationDate': string
+  'addressUnitSubtypeName': string
+  'formattedAddress': string
+  'id': string
+  'validationStatus': string
+  'isFias': string
+  'longitude': string
+  'validationResult': string
+  'fiasId': string
+  'name': string
+  'postCode': string
+  'addressUnitChain': [
+    {
+      'id': string
+      'formattedAddress': string
+      'name': string
+      'addressUnitTypeId'?: string
+      'addressUnitSubtypeId'?: string
+      'addressUnitSubtypeName'?: string
+      'abbreviation'?: string
+    }
+  ]
 }
