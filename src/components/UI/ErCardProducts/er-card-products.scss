@@ -205,6 +205,7 @@
   &__price {
     @include color-black(0.8);
     text-align: right;
+    white-space: nowrap;
     @include max-breakpoint("sm") {
       text-align: left;
     }

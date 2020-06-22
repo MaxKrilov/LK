@@ -1,0 +1,121 @@
+.wifi-index-page {
+  &__map {
+    height: 604px;
+  }
+
+  &__map-popup {
+    .leaflet-popup-content-wrapper {
+      background-color: map-get($gray, '9');
+      box-shadow: -8px 8px 16px rgba(map-get($shades, 'black'), 0.04),
+                  0 8px 24px rgba(map-get($shades, 'black'), 0.06);
+    }
+
+    .leaflet-popup-content {
+      margin: 24px;
+    }
+
+    .leaflet-popup-tip-container {}
+
+    &__head {
+      display: flex;
+      align-items: center;
+
+      button {
+        line-height: 32px;
+        width: 32px;
+        height: 32px;
+        text-align: center;
+        border-radius: 8px;
+        @include color-black(0.8);
+        outline: none;
+        background-color: map-get($yellow, 'base');
+
+        svg {
+          width: 16px;
+        }
+
+        &.left svg {
+          transform: rotate(90deg);
+        }
+
+        &.right svg {
+          transform: rotate(-90deg);
+        }
+
+        &[disabled] {
+          cursor: not-allowed;
+          @include color-black(0.3);
+          background-color: rgba(map-get($shades, 'black'), 0.05);
+        }
+      }
+
+      span.order {
+        @extend %caption1-font;
+        @include color-black(0.8);
+        user-select: none;
+
+        span {
+          @include color-black(0.2);
+        }
+      }
+    }
+
+    &__title {
+      @extend %body-font;
+      font-family: $fedra-med;
+      font-weight: 500;
+      margin-bottom: 8px;
+    }
+
+    &__address {
+      @extend %caption2-font;
+      @include color-black(0.5);
+    }
+
+    &__services {
+      display: flex;
+      align-items: center;
+
+      button {
+        color: map-get($yellow, 'base');
+
+        &.on {
+          color: map-get($green, 'base');
+        }
+      }
+
+      .count {
+        @extend %caption1-font;
+        @include color-black(0.8);
+        user-select: none;
+
+        span {
+          @include color-black(0.2);
+        }
+      }
+    }
+  }
+
+  &__points {
+    &__head {
+      .icon {
+        @include color-black(0.2);
+      }
+
+      .caption {
+        @extend %caption2-font;
+        @include color-black(0.3);
+      }
+
+      .title {
+        @extend %h4;
+        @include color-black(0.8);
+
+        span {
+          @extend %caption2-font;
+          @include color-black(0.5);
+        }
+      }
+    }
+  }
+}

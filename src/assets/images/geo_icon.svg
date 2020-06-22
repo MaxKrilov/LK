@@ -1,0 +1,15 @@
+<svg width="50" height="50" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <ellipse opacity="0.4" cx="25" cy="44.2702" rx="9.375" ry="2.60417" fill="url(#paint0_radial)"/>
+    <path fill-rule="evenodd" clip-rule="evenodd" d="M41.25 21.875C41.25 34.375 28.25 43.75 25 43.75C21.75 43.75 8.75 34.375 8.75 21.875C8.75 13.2456 16.0254 6.25 25 6.25C33.9746 6.25 41.25 13.2456 41.25 21.875ZM25 27.5C27.7614 27.5 30 25.2615 30 22.5C30 19.7386 27.7614 17.5 25 17.5C22.2386 17.5 20 19.7386 20 22.5C20 25.2615 22.2386 27.5 25 27.5Z" fill="#6688C9"/>
+    <path fill-rule="evenodd" clip-rule="evenodd" d="M35 22.5C35 28.0228 30.5229 32.5 25 32.5C19.4772 32.5 15 28.0228 15 22.5C15 16.9772 19.4772 12.5 25 12.5C30.5229 12.5 35 16.9772 35 22.5ZM25 27.5C27.7614 27.5 30 25.2614 30 22.5C30 19.7386 27.7614 17.5 25 17.5C22.2386 17.5 20 19.7386 20 22.5C20 25.2614 22.2386 27.5 25 27.5Z" fill="url(#paint1_linear)"/>
+    <defs>
+        <radialGradient id="paint0_radial" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(25 44.2702) rotate(90) scale(2.60417 9.375)">
+            <stop/>
+            <stop offset="1" stop-color="#C4C4C4" stop-opacity="0"/>
+        </radialGradient>
+        <linearGradient id="paint1_linear" x1="25" y1="19.2857" x2="25" y2="27.5" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#4568AA"/>
+            <stop offset="1" stop-color="#7B9FE3"/>
+        </linearGradient>
+    </defs>
+</svg>

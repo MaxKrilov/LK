@@ -1,9 +1,13 @@
 import { Skeleton } from 'vue-loading-skeleton'
+import { price as priceFormatted } from '../../../functions/filters'
 
 export default {
   name: 'er-card-products',
   components: {
     Skeleton
+  },
+  filters: {
+    priceFormatted
   },
   props: {
     stopped: {
@@ -38,6 +42,11 @@ export default {
     return {
       pre: 'er-card-products',
       isOpen: false
+    }
+  },
+  watch: {
+    isOpen (val) {
+      this.$emit('open', val)
     }
   }
 }

@@ -100,6 +100,9 @@ import TelephonyStatisticPage from './components/pages/telephony/statistic/index
 import TelephonyRedirectionsPage from './components/pages/telephony/redirection/index'
 import TelephonyBlacklistPage from '@/components/pages/telephony/blacklist/index'
 
+import WifiTemplate from './components/templates/WiFiTemplate/index'
+import WifiIndexPage from './components/pages/wifi/index/index'
+
 // WiFi аналитика
 import WifiAnalyticsPromo from './components/pages/wifi/analytics/promo'
 import WifiAnalyticsChoice from './components/pages/wifi/analytics/choice'
@@ -324,6 +327,16 @@ const router = new Router({
         {
           path: 'internet/ddos/promo',
           component: DDoSPromoPage
+        },
+        {
+          path: 'wifi',
+          component: WifiTemplate,
+          children: [
+            {
+              path: '/',
+              component: WifiIndexPage
+            }
+          ]
         },
         {
           name: 'wifi-analytics-promo',
