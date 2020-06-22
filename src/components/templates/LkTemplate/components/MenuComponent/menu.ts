@@ -59,10 +59,6 @@ const MenuItemList: MenuItem[] = [
         url: '/lk/internet/content-filter'
       },
       {
-        name: 'Скорость',
-        url: '/lk/speed'
-      },
-      {
         name: 'Обратные зоны',
         url: '/lk/internet/reverce-zones'
       },
