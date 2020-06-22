@@ -234,8 +234,8 @@ const actions = {
     { api, formData }) => {
     const { toms: clientId } = rootGetters['auth/user']
     const id = clientId
-    const { inn: INN, isFetched, type, legalAddress, ...requestData } = formData
-    let preparedData = { INN, id, clientId, legalAddress, ...requestData }
+    const { inn, isFetched, type, legalAddress, ...requestData } = formData
+    let preparedData = { inn, id, clientId, legalAddress, ...requestData }
     eachObject(preparedData, (value, key) => {
       if (!preparedData[key]) {
         delete preparedData[key]
