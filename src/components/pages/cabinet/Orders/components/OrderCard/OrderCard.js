@@ -102,6 +102,7 @@ export default {
             description: 'Ваш заказ принят в работу'
           }
         case 'Отменено':
+        case 'Заменено':
           return {
             name: CANCELLED,
             type: this.card.status,
