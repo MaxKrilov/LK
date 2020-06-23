@@ -184,6 +184,10 @@ export default class DigitalSigningDocument extends Vue {
                       this.errorHandler('Ошибка при смене статуса')
                       return
                     }
+                    if (response.submit_statuses.length === 0) {
+                      successHandler()
+                      return
+                    }
                     const submitStatus = response.submit_statuses[0]
                     if (['success', 'not_executed'].includes(submitStatus.submitStatus.toLowerCase())) {
                       successHandler()
