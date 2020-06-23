@@ -30,7 +30,7 @@ export const authParamsAfterRedirect = () => {
   const urlParams = getAllUrlParams()
   let data = { redirect: window.location.href }
   if (urlParams.code && urlParams.state) {
-    data = { code: urlParams.code, state: urlParams.state }
+    data = { code: urlParams.code, state: urlParams.state, redirect: window.location.href }
     // Cookie.set('openid_connect_state', urlParams.state)
     // Cookie.set('openid_connect_nonce', urlParams.code)
   }
