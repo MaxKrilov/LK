@@ -122,3 +122,8 @@ export const BrowserDetect = {
 }
 
 export const isMobileDevice = () => /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
+
+export const isIE11 = () => {
+  const result = !!window.MSInputMethodContext && !!document.documentMode
+  return result
+}

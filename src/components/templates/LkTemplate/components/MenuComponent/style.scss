@@ -319,6 +319,12 @@
         }
       }
     }
+    &__personal-account {
+      .er-preloader__preloader {
+        pointer-events: none;
+      }
+    }
+
     &__dropdown {
       width: 100%;
       height: 100%;

@@ -1,0 +1,29 @@
+er-dialog(
+  :value="active"
+  @update:returnValue="onClose"
+).change-org-popup
+
+  .change-org-popup__body
+    .change-org-popup__close
+      er-close-button(@click="onClose")
+
+    .change-org-popup__content(v-if="isIE11")
+      h2 Ваш браузер устарел
+      br
+      p Просим вас воспользоваться другим браузером для отображения данной страницы
+
+    .change-org-popup__content(v-else)
+      iframe(
+        :src="frameUrl"
+        ref="iframe"
+        width="100%"
+        height="350px"
+        frameBorder="0"
+      )
+
+    .change-org-popup__actions
+      .col
+        er-button(
+          color="gray"
+          @click="onClose"
+        ) Отмена

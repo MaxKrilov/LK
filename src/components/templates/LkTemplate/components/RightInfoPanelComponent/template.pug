@@ -1,7 +1,7 @@
 div(:class="[`${pre}`, { open: value }]")
   div(:class="`${pre}__exit`")
     er-icon.profile(name="profile")
-    a.link--solid--yellow(@click="signOut") Выйти
+    a.link--solid--yellow.logout(@click="signOut") Выйти
     div.close(@click="closeRightPanel")
       er-icon.close(name="close")
   h3.title.pl-32.mb-8

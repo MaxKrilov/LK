@@ -31,6 +31,9 @@
     a {
       font-size: 13px;
     }
+    .logout {
+      cursor: pointer;
+    }
     .close {
       margin-left: auto;
       color: rgba(map_get($shades, 'black'), 0.5);
