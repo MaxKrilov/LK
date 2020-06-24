@@ -1,12 +1,14 @@
 $change-org-popup-lg-height: 480px;
 $change-org-popup-lg-max-width: 729px;
-$change-org-content-wrap-max-height: 408px;
 
 .change-org-popup {
   position: absolute;
-  z-index: map_get($z-index, right-modal);
+  z-index: map_get($z-index, 'right-modal');
 
-  &__content {
+  &__body {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
     position: fixed;
     left: 50%;
     top: 50%;
@@ -32,12 +34,25 @@ $change-org-content-wrap-max-height: 408px;
     }
   }
 
-  &__content-wrap {
+  &__actions {
+    display: flex;
+    flex-direction: row;
+
+    .col {
+      width: 100%;
+
+      @include min-breakpoint('sm') {
+        width: 33%;
+      }
+    }
+  }
+
+  &__content {
     display: flex;
     flex-direction: column;
     flex-grow: 1;
     height: 100%;
-    max-height: $change-org-content-wrap-max-height;
+    padding-bottom: $padding-x6;
   }
 
   &__close {
@@ -55,6 +70,10 @@ $change-org-content-wrap-max-height: 408px;
     @include min-breakpoint('lg') {
       top: $padding-x8;
       right: $padding-x8;
+    }
+
+    .er-icon {
+      height: $padding-x4;
     }
   }
 }
