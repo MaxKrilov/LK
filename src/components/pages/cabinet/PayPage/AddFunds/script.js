@@ -6,6 +6,8 @@ import { SCREEN_WIDTH } from '@/store/actions/variables'
 import { PATTERN_EMAIL } from '@/constants/regexp'
 import { roundUp } from '../../../../../functions/helper'
 
+const OFFER_LINK = 'https://console.ertelecom.ru/files/upload/d/1/0/d108447fbf9c5d88c2801d14a6e76725.pdf'
+
 export default {
   name: 'add-funds',
   components: {
@@ -60,7 +62,19 @@ export default {
       cvc: state => state.payments.cvc,
       numCard: state => state.payments.numCard,
       clientInfo: state => state.user.clientInfo
-    })
+    }),
+    rulesPaymentSum () {
+      return [
+        v => !!v || 'Поле не заполнено',
+        v => {
+          const sum = Number(v.replace(',', '.').replace(/[\s]+/g, ''))
+          return (sum >= 1 && sum <= 100000) || `
+            <span>Уважаемый клиент, введенная сумма не соответствует</span>
+            <a href="${OFFER_LINK}" target="_blank">условиям оплаты и безопасности</a>
+            `
+        }
+      ]
+    }
   },
   mounted () {
     this.changeWidth()

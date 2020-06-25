@@ -37,7 +37,7 @@ div(:class="`${pre}`").main-content.main-content--h-padding
             div(:class="`${pre}__sum__input ${pre}__sum__input${borderSum}`")
               er-form(ref="form")
                 er-text-field(
-                  :rules="[v => !!v || 'Поле не заполнено']"
+                  :rules="rulesPaymentSum"
                   v-model="sumPay"
                   mask="moneynorub"
                 )
