@@ -88,15 +88,13 @@ const actions = {
     })
   },
   billingPacket (context: ActionContext<IState, any>, { api, product }: { api: API, product: string | number }) {
-    const billingAccountId = context.rootGetters['user/getActiveBillingAccount']
     const { toms: clientId } = context.rootGetters['auth/user']
     return new Promise<any>((resolve, reject) => {
       api
         .setWithCredentials()
         .setData({
           clientId,
-          id: billingAccountId,
-          product
+          id: product
         })
         .query('/billing/packets/index')
         .then((response: any) => resolve(response))

@@ -51,6 +51,8 @@
     cancel-button-text="Закрыть"
     :isShowActionButton="false"
   )
+    template(slot="description")
+      div Уважаемый Клиент, в данный момент операция не доступна, обратитесь к персональному менеджеру
   er-activation-modal(
     type="success"
     v-model="isShowSuccessModal"

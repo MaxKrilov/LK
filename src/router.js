@@ -231,8 +231,10 @@ const router = new Router({
           component: TelephonyPromoPage
         },
         {
+          name: 'plug-packages',
           path: 'telephony/plug',
-          component: TelephonyPlugPage
+          component: TelephonyPlugPage,
+          props: true
         },
         {
           path: 'telephony',

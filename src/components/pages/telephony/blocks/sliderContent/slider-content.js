@@ -3,7 +3,9 @@ import ConnectedPhone from '../ConnectedPhone'
 import moment from 'moment'
 import ErPlugProduct from '@/components/blocks/ErPlugProduct'
 import ErDisconnectProduct from '@/components/blocks/ErDisconnectProduct'
-import { CODE_PHONE, CODE_PHONE_VPN } from '@/constants/product-code'
+import ErActivationModal from '@/components/blocks/ErActivationModal/index.vue'
+import PackageMinuteCard from '@/components/pages/telephony/blocks/packageMinute/index.vue'
+import { CODE_PHONE, CODE_PHONE_VPN, CODE_PACGLOCMIN, CODE_PACGMIN } from '@/constants/product-code'
 
 export default {
   name: 'slider-content',
@@ -11,7 +13,9 @@ export default {
   components: {
     ConnectedPhone,
     ErPlugProduct,
-    ErDisconnectProduct
+    ErDisconnectProduct,
+    ErActivationModal,
+    PackageMinuteCard
   },
   props: {
     parentId: {
@@ -32,9 +36,16 @@ export default {
       pre: 'slider-content',
       slo: [],
       tlo: {},
+      local: undefined,
+      global: undefined,
+      localPlug: undefined,
+      globalPlug: undefined,
+      globalConnected: undefined,
+      localConnected: undefined,
       isConnection: false,
       isDisconnection: false,
       isLoading: true,
+
       requestData: {
         descriptionModal: 'Для подключения телефонного номера нужно сформировать заявку на вашего персонального менеджера',
         addressId: this.addressId,
@@ -46,14 +57,6 @@ export default {
         addressId: this.addressId,
         services: 'Отключение дополнительного номера',
         fulladdress: this.fulladdress
-      },
-      shadowIcon: {
-        shadowColor: 'rgba(0, 0, 0, 0.08)',
-        shadowOffset: {
-          x: '-4px',
-          y: '4px'
-        },
-        shadowRadius: '4px'
       }
     }
   },
@@ -84,9 +87,27 @@ export default {
     connectNewNumber () {
       this.isConnection = true
     },
+    plugPackages () {
+      this.$router.push({
+        name: 'plug-packages',
+        params: {
+          local: this.localPlug,
+          global: this.globalPlug
+        }
+      })
+    },
     disconnectNumber (number) {
       this.disconnectRequestData.services += number
       this.isDisconnection = true
+    },
+    getPackageMinute (productId) {
+      return this.$store.dispatch('productnservices/billingPacket', {
+        api: this.$api,
+        product: productId
+      })
+    },
+    cancelOrder () {
+      this.$store.dispatch('salesOrder/cancel')
     }
   },
   mounted () {
@@ -97,6 +118,37 @@ export default {
       this.isLoading = false
       this.slo = answer?.slo
       this.tlo = answer?.tlo
+
+      this.local = answer?.slo.find(el => el.code === CODE_PACGLOCMIN)
+      this.global = answer?.slo.find(el => el.code === CODE_PACGMIN)
+      if (this.local) {
+        if (this.local?.status === 'Active') {
+          this.localConnected = { ...this.local, locationId: this.tlo?.locationId }
+        } else {
+          this.localPlug = {
+            locationId: this.tlo?.locationId,
+            bpi: this.tlo?.id,
+            amount: this.local?.prices
+              .find(el => el?.chars?.['Категория продукта'] === this.tlo?.chars?.['Категория продукта']).amount,
+            chars: this.local?.prices
+              .find(el => el?.chars?.['Категория продукта'] === this.tlo?.chars?.['Категория продукта']).chars
+          }
+        }
+      }
+      if (this.global) {
+        if (this.global?.status === 'Active') {
+          this.globalConnected = { ...this.global, locationId: this.tlo?.locationId }
+        } else {
+          this.globalPlug = {
+            locationId: this.tlo?.locationId,
+            bpi: this.tlo?.id,
+            amount: this.global?.prices
+              .find(el => el?.chars?.['Категория продукта'] === this.tlo?.chars?.['Категория продукта'])?.amount,
+            chars: this.global?.prices
+              .find(el => el?.chars?.['Категория продукта'] === this.tlo?.chars?.['Категория продукта']).chars
+          }
+        }
+      }
     }).catch(() => {
       this.isLoading = false
     })
