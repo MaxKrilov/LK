@@ -23,3 +23,5 @@ export type TouchValue = TouchHandlers & {
   parent?: boolean
   options?: AddEventListenerOptions
 }
+
+export type NumberAsString = string

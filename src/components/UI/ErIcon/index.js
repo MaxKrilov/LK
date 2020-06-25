@@ -43,6 +43,9 @@ export default {
     }
   },
   computed: {
+    CSSClass () {
+      return `${this.pre} ${this.pre}--${this.name}`
+    },
     getStyleShadow () {
       if (
         Object.keys(this.shadow).length === 0 ||

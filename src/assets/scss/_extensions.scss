@@ -170,14 +170,26 @@
   }
 }
 
-%link {
-  @extend %link-font;
-  @extend %link-color;
+%link-behaviour {
   cursor: pointer;
 
   display: inline;
   border-bottom: 1px solid;
   transition: all $primary-transition;
+
+  &:active {
+    color: map_get($yellow, 'base');
+  }
+}
+
+%link-povedenie { // alias
+  @extend %link-behaviour;
+}
+
+%link {
+  @extend %link-font;
+  @extend %link-color;
+  @extend %link-behaviour;
 }
 
 %menu-head-font {
@@ -375,6 +387,16 @@
   background-color: map_get($shades, 'transparent');
 }
 
+// some blocks
+
+%rounded-block {
+  border-radius: $border-radius;
+}
+
+%shadow-block {
+  box-shadow: $card-shadow;
+}
+
 %primary-table {
   width: 100%;
   border-collapse: collapse;
@@ -439,4 +461,11 @@
 %min-col-width {
   white-space: nowrap;
   width: .1%;
+}
+
+%disabled-input {
+  transition: opacity $primary-transition;
+  opacity: 0.4;
+
+  cursor: not-allowed;
 }

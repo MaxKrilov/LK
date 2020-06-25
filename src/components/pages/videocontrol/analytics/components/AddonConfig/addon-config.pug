@@ -1,0 +1,18 @@
+.vc-addon-config
+  .vc-addon-config__head
+    .d--flex.align-items-center
+      .title {{ location.name }}
+
+    .count {{ list.length }}&nbsp;камеры
+
+  .vc-addon-config__content
+    template(v-if="true")
+      template(v-for="(camera,idx) in list")
+        camera-checkbox(
+          :camera="camera"
+          :value="isCameraWithService(camera.parentId)"
+          @input="onPlugAddon"
+        )
+
+    template(v-else)
+      pu-skeleton(width="300px")

@@ -1,0 +1,123 @@
+$pre: '.analytic-item';
+
+#{$pre} {
+  @extend %rounded-block;
+  height: $padding-x1 * 28;
+  background-color: map_get($gray, '9');
+
+  display: flex;
+  justify-content: space-between;
+  box-shadow: $card-shadow;
+  padding: $padding-x4;
+
+  flex-direction: column;
+
+  @mixin grid-col-name($name) {
+    .#{$name} {
+      grid-area: #{$name};
+    }
+  }
+
+  @include min-breakpoint('md') {
+    flex-direction: row;
+    height: $padding-x12;
+    padding: $padding-x2 $padding-x3;
+  }
+
+  &__head {
+    display: grid;
+    grid-template-columns: $padding-x6 1fr;
+    grid-gap: $padding-x1 $padding-x2;
+    grid-template-areas:
+      "col-1 col-2"
+      "col-1 col-3";
+
+    @include min-breakpoint('md') {
+      margin-right: $padding-x6;
+      width: 100%;
+      grid-template-columns: $padding-x6 4fr .5fr;
+      grid-template-areas: "col-1 col-2 col-3"
+    }
+
+    .er-icon {
+      transition: color $primary-transition;
+      @include color-black(.2);
+      svg {
+        width: $padding-x6;
+        height: $padding-x6;
+      }
+    }
+
+    .title {
+      @extend %h4;
+
+      @include min-breakpoint('md') {
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+      }
+    }
+
+    .l-link {
+      @extend %caption1;
+    }
+
+    .col {
+      display: flex;
+      flex-direction: row;
+
+      @include min-breakpoint('md') {
+        align-items: center;
+      }
+
+      &--title {
+        overflow: hidden;
+      }
+    }
+
+    @include grid-col-name('col-1');
+    @include grid-col-name('col-2');
+    @include grid-col-name('col-3');
+  }
+
+  &__body {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+
+    @include min-breakpoint('md') {
+      width: 180px;
+      min-width: 180px;
+    }
+
+    .er-input {
+      margin-left: $padding-x4;
+      flex-grow: 0;
+
+      &__slot {
+        margin-bottom: 0;
+      }
+
+      input:disabled + label {
+        @extend %disabled-input;
+      }
+    }
+
+    .price__sum {
+      transition: color $primary-transition;
+    }
+  }
+
+  &--active {
+    .er-icon {
+      color: map_get($green, 'base');
+    }
+  }
+
+  &:not(&--active) {
+    .price__sum {
+      @include color-black(.5);
+    }
+  }
+}

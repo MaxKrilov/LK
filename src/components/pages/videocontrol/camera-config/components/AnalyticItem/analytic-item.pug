@@ -1,0 +1,36 @@
+.analytic-item(
+  v-class-mod="{active}"
+)
+  .analytic-item__head
+    .col.col-1
+      template(v-if="!isLoading")
+        er-icon(:name="iconName")
+      template(v-else)
+        er-icon(name="question")
+
+    .col.col-2.col--title
+      template(v-if="!isLoading")
+        //- TODO: здесь слишком много title
+        .title(
+          :title="title"
+        ) {{ title }}
+      template(v-else)
+        pu-skeleton(width="200px")
+
+    .col.col-3
+      template(v-if="!isLoading")
+        router-link(:to="linkToDetailPage").l-link Подробно
+      template(v-else)
+        pu-skeleton(width="70px")
+
+  .analytic-item__body
+    template(v-if="!isLoading")
+      er-price {{ price }}
+      er-toggle(
+        :checked="value"
+        :value="value"
+        :disabled="disabled"
+        @input="onInput"
+      )
+    template(v-else)
+      pu-skeleton(width="160px")

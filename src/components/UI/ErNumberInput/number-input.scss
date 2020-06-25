@@ -1,0 +1,82 @@
+.er-number-input {
+  $input-width: 68px;
+
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  border: 1px solid;
+  border-radius: $padding-x2;
+  height: $padding-x10;
+  @include color-black(.2);
+  transition: all $primary-transition;
+  width: 136px;
+  padding: 0 $padding-x1;
+
+  &:hover {
+    @include color-black(1);
+  }
+
+  &--focus {
+    border-color: map_get($yellow, 'base');
+  }
+
+  @include min-breakpoint('md') {
+    width: 147px;
+  }
+
+  @include min-breakpoint('xl') {
+    height: $padding-x12;
+  }
+
+  input {
+    text-align: center;
+    flex-grow: 1;
+    display: inline-flex;
+    width: $input-width;
+    appearance: textfield;
+
+    @extend %h3-font;
+
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+      appearance: none;
+      margin: 0;
+    }
+
+    outline: 0;
+
+    &:focus {
+      outline: 0;
+    }
+  }
+
+  &__plus,
+  &__minus {
+    cursor: pointer;
+
+    &:focus {
+      outline: 0;
+
+      .er-icon {
+        color: map_get($yellow, 'base');
+      }
+    }
+
+    &:active {
+      color: map_get($yellow, 'base');
+    }
+
+    &:disabled {
+      cursor: not-allowed;
+      color: map_get($gray, '4');
+
+      .er-icon {
+        color: map_get($gray, '4');
+      }
+    }
+  }
+
+  .er-icon {
+    @include color-black(.2);
+  }
+}

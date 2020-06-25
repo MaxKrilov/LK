@@ -1,0 +1,172 @@
+$pre: '.vc-addon-detail-page';
+
+#{$pre} {
+  @extend %main-content-width;
+  @extend %margin-left--menu-width;
+
+  &__header {
+    @extend %main-content-padding;
+    .page-header {
+      margin-bottom: 0;
+    }
+
+    .head-info {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      margin-top: $padding-x8;
+
+      @include min-breakpoint('sm') {
+        flex-direction: row;
+      }
+
+      .price-title {
+        margin-top: $padding-x4;
+
+        @include min-breakpoint('sm') {
+          margin-top: 0;
+        }
+      }
+    }
+
+    .er-corner-button {
+      @include color-black(.5);
+      &__label {
+        border-bottom: 1px dashed;
+      }
+    }
+  }
+
+  &__config {
+    @include content-padding-breakpoint('left', 'md');
+    @include content-padding-breakpoint('right', 'md');
+
+    @include content-padding-breakpoint('left', 'lg');
+    @include content-padding-breakpoint('right', 'lg');
+
+    @include content-padding-breakpoint('left', 'xl');
+    @include content-padding-breakpoint('right', 'xl');
+
+    .vc-addon-config + .vc-addon-config {
+      margin-top: $padding-x1;
+    }
+  }
+
+  &__footer {
+    @extend %main-content-padding-h;
+    margin-top: $padding-x8;
+    display: grid;
+    grid-template-columns: 1fr;
+
+    grid-gap: $padding-x6;
+
+    @include min-breakpoint('sm') {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    @include min-breakpoint('md') {
+      margin-top: $padding-x10;
+      grid-gap: $padding-x8 $padding-x10;
+    }
+
+    @include min-breakpoint('lg') {
+      grid-template-columns: 1fr 1fr 1fr;
+    }
+  }
+
+  .addon-config-head {
+    @include content-padding-breakpoint('left', 'xs');
+    @include content-padding-breakpoint('right', 'xs');
+
+    @include content-padding-breakpoint('left', 'sm');
+    @include content-padding-breakpoint('right', 'sm');
+
+    @include min-breakpoint('md') {
+      padding-left: 0;
+      padding-right: 0;
+    }
+
+    display: flex;
+    & > *:first-child {
+      display: flex;
+      flex-grow: 1;
+    }
+
+    .select-all {
+      display: inline-flex;
+      align-items: center;
+
+      &__label {
+        @extend %caption2;
+        @extend %link-behaviour;
+        margin-left: $padding-x3;
+        border-bottom-style: dashed;
+      }
+    }
+  }
+
+  .addon-config-body {
+    margin-top: $padding-x6;
+
+    @include min-breakpoint('md') {
+      margin-top: $padding-x8;
+    }
+  }
+
+  .addon-config-total {
+    @include content-padding-breakpoint('left', 'xs');
+    @include content-padding-breakpoint('right', 'xs');
+
+    @include content-padding-breakpoint('left', 'sm');
+    @include content-padding-breakpoint('right', 'sm');
+
+    @include min-breakpoint('md') {
+      padding-left: 0;
+      padding-right: 0;
+    }
+
+    margin-top: $padding-x6;
+
+    @include min-breakpoint('sm') {
+      margin-top: $padding-x8;
+    }
+
+    .title {
+      @extend %h4;
+    }
+
+    .old-price {
+      @extend %h3;
+      @include color-black(.5);
+    }
+
+    .prices {
+      display: flex;
+      align-items: center;
+      margin-top: $padding-x2;
+    }
+
+    .er-price {
+      margin-left: $padding-x3;
+      &__sum {
+        @extend %h2;
+      }
+    }
+  }
+}
+
+
+.red-deprecation-line {
+  display: inline-block;
+  position: relative;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: -6%;
+    right: -6%;
+    border: 1px solid map_get($red, 'base');
+    transform: translateY(-50%) rotate(-20deg);
+  }
+}

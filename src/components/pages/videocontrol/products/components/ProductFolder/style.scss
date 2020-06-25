@@ -1,0 +1,45 @@
+$card: '.er-card-products';
+$watch-icon-fix-pos: -10px;
+
+.product-folder > .er-card-products {
+  #{$card}__point-item {
+    @include max-breakpoint('md') {
+      border-radius: 0;
+    }
+  }
+
+  #{$card}__price-content {
+    justify-content: flex-start;
+  }
+
+  #{$card}__point-item.active {
+    #{$card}__active-line {
+      max-width: $padding-x1;
+      margin: 0;
+    }
+  }
+
+  #{$card}__point-icon {
+    margin-left: $watch-icon-fix-pos;
+
+    .er-icon--watch {
+      transform: scaleX(-1);
+    }
+  }
+
+  #{$card}__slider {
+    margin: 0;
+    margin-top: -$padding-x1;
+
+    padding: {
+      top: $padding-x8;
+      left: 0;
+      right: 0;
+      bottom: 0;
+    }
+
+    @include min-breakpoint('sm') {
+      padding-top: $padding-x14;
+    }
+  }
+}

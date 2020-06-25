@@ -1,0 +1,9 @@
+.product-folder
+  er-card-products(
+    icon="watch"
+    v-bind="$props"
+    :loading="loading"
+  )
+    strong {{ name }}
+    template(v-slot:slider-content)
+      slot

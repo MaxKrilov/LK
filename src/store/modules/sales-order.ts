@@ -215,7 +215,6 @@ const actions = {
         })
     })
   },
-
   updateNewElement (
     context: ActionContext<IState, any>,
     { chars, productId }: { chars: Record<string, string> | Record<string, string>[], productId: string }

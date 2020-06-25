@@ -1,0 +1,17 @@
+.er-empty-message {
+  display: flex;
+  align-items: center;
+
+  .er-icon {
+    @include color-black(.1);
+    svg {
+      width: $padding-x32;
+    }
+  }
+
+  &__text {
+    @extend %h4;
+    margin-left: $padding-x6;
+    min-width: $padding-x40;
+  }
+}

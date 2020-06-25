@@ -1,0 +1,110 @@
+$pre: '.camera';
+
+#{$pre} {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height: $padding-x12;
+
+  border-top: 1px solid rgba(map_get($shades, 'black'), .2);
+
+  &:last-child {
+    border-bottom: 1px solid rgba(map_get($shades, 'black'), .2);
+  }
+
+  &__title {
+    @extend %body;
+    display: flex;
+    flex-grow: 1;
+
+    .title {
+      @extend %caption1;
+      cursor: pointer;
+      @include color-black(.8);
+      border-bottom: 1px solid transparent;
+      transition: all $primary-transition;
+
+      &:hover {
+        @include color-black(1);
+        border-bottom-color: map_get($yellow, 'base');
+      }
+    }
+  }
+
+  #{$pre}__price + #{$pre}__watch {
+    margin-left: $padding-x4;
+
+    @include min-breakpoint('md') {
+      margin-left: $padding-x6;
+    }
+  }
+
+  &__count,
+  &__price,
+  &__config {
+    margin-left: $padding-x4;
+
+    @include min-breakpoint('md') {
+      margin-left: $padding-x6;
+    }
+  }
+
+  &__count {
+    display: none;
+    @extend %caption2;
+    @include max-breakpoint('sm') {
+      display: none;
+    }
+  }
+
+  &__price {
+    .price,
+    .price__units,
+    .price__sum {
+      @include max-breakpoint('sm') {
+        display: block;
+        margin-left: 0;
+      }
+    }
+  }
+
+  &__watch,
+  &__config {
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+
+    &:hover {
+      .title {
+        @include color-black(.8);
+      }
+
+      .er-icon {
+        color: map_get($yellow, 'base');
+      }
+    }
+
+    .title {
+      @extend %link-behaviour;
+      @include color-black(.5);
+      transition: all $primary-transition;
+    }
+
+    .er-icon {
+      transition: all $primary-transition;
+      @include color-black(.2);
+      @include min-breakpoint('sm') {
+        margin-right: $padding-x1;
+      }
+    }
+  }
+
+  &__config {
+    .title {
+      @include max-breakpoint('lg') {
+        display: none;
+      }
+    }
+  }
+}

@@ -28,6 +28,7 @@ import chat from './modules/chat'
 import internet from './modules/internet'
 import timer from './modules/timer'
 import address from './modules/address'
+import videocontrol from './modules/videocontrol'
 
 const debug = process.env.NODE_ENV !== 'production'
 
@@ -60,7 +61,8 @@ export default new Vuex.Store({
     salesOrder,
     timer,
     telephony,
-    address
+    address,
+    videocontrol
   },
   strict: debug,
   plugins: [createPersistedState({

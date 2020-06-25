@@ -1,0 +1,28 @@
+.er-number-input(
+  v-class-mod="{focus}"
+)
+  button(
+    type="button"
+    @click="onMinus"
+    @focus="onInputFocus"
+    @blur="onInputBlur"
+    :disabled="value <= min"
+  ).er-number-input__minus
+    er-icon(name="no")
+  input(
+    :id="id"
+    type="number"
+    :value="value"
+    @change="onChange"
+    @focus="onInputFocus"
+    @blur="onInputBlur"
+  )
+  button(
+    type="button"
+    @click="onPlus"
+    @focus="onInputFocus"
+    @blur="onInputBlur"
+    :disabled="value >= max"
+    v-class-mod="{disabled: value >= max}"
+  ).er-number-input__plus
+    er-icon(name="add_round")

@@ -13,6 +13,7 @@ $pre: '.er-ip-page';
   &__add-ip-form {
     margin-top: $padding-x16;
   }
+
   &__loader {
     text-align: center;
   }
@@ -172,15 +173,11 @@ $pre: '.er-ip-page';
     bottom: $padding-x2;
   }
 
-  margin-top: $padding-x4;
-
   @include min-breakpoint('md') {
     padding: {
       left: $padding-x6;
       right: $padding-x6;
     }
-
-    margin-top: $padding-x8;
   }
 
   @include min-breakpoint('xl') {
@@ -196,22 +193,6 @@ $pre: '.er-ip-page';
 
     &::after {
       content: ":";
-    }
-  }
-
-  .price__sum {
-    @extend %h4;
-  }
-
-  .total-points {
-    margin-left: $padding-x2;
-    @extend %caption2;
-    @include color-black(.5);
-
-    .month {
-      &::before {
-        content: "/";
-      }
     }
   }
 }

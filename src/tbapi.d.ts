@@ -114,15 +114,7 @@ export interface ICustomerProduct {
       }]
       originalDescription: string
       originalName: string
-      prices: [{
-        amount: string
-        chars: Record<string, string>
-        id: string
-        productOfferingIds: string[]
-        startDate: string
-        tax: string
-        type: string
-      }]
+      prices: ISLOPricesItem[]
       requiresContract: boolean
       status: string
       suspendable: boolean
@@ -296,15 +288,7 @@ export interface ICustomerProduct {
     orderNumber: number
     originalDescription: string
     originalName: string
-    prices: [{
-      amount: string
-      chars: Record<string, string>
-      id: string
-      productOfferingIds: string[]
-      startDate: string
-      tax: string
-      type: string
-    }]
+    prices: ISLOPricesItem[]
     product: {
       chars: [{
         defaultListValue?: { id: string, name: string }
@@ -367,6 +351,16 @@ export interface IBillingStatisticResponse {
     id: string
     customerReference: string
   }
+}
+
+export interface ISLOPricesItem {
+  amount: string
+  chars: Record<string, string>
+  id: string
+  productOfferingIds: string[]
+  startDate: string
+  tax: string
+  type: string
 }
 
 export interface IPriceItem {

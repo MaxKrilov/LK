@@ -67,7 +67,7 @@ export default {
   },
   computed: {
     isRouble () {
-      return this.currency.startsWith('ру')
+      return !this.currency.length || this.currency.startsWith('руб')
     }
   }
 }

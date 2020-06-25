@@ -1,0 +1,65 @@
+.vc-addon-detail-page
+  .vc-addon-detail-page__header
+    template(v-if="isLoaded")
+      er-page-header(
+        :title="analyticItem.name"
+        link-text="Назад в видеонаблюдение"
+        backlink="/lk/videocontrol/analytics"
+      )
+      .head-info
+        .col
+          er-corner-button(
+            :activeDown="true"
+            v-model="isPromoOpened"
+          ) Описание услуги
+        .col
+          .price-title
+            | Стоимость услуги &mdash;
+            er-price {{ price }}
+
+    template(v-else)
+      pu-skeleton(width="300px")
+
+  er-slide-up-down(:active="isPromoOpened")
+    addon-description(
+      :cover="coverPath"
+      :advantages="advantages"
+    )
+
+  .vc-addon-detail-page__config
+    .addon-config-head
+      h2.title Выбрать камеры
+
+    .addon-config-body
+      template(v-for="location in locationList")
+        addon-config(
+          :code="code"
+          :location="location"
+          :list="getPointCameraList(location.id)"
+          @plug-camera="onPlugAddonToCamera"
+        )
+
+    .addon-config-total
+      .title Общая стоимость
+      template(v-if="isLoaded")
+        .prices
+          //- .old-price.red-deprecation-line {{ oldTotalPrice }}
+          er-price {{ totalPrice }}
+
+      template(v-else)
+        pu-skeleton(width="300px")
+
+  .vc-addon-detail-page__footer(v-if="isLoadedX")
+    er-button(color="blue") Подключить {{ name }}
+    er-button(
+      color="gray"
+      @click="$router.push('/lk/videocontrol/analytics')"
+    ) Отмена
+
+  er-plug-product(
+    v-model="isOrderModalVisible"
+    :orderData="orderData"
+    :requestData="requestData"
+    :isSendOrder="!isManagerRequest"
+    :isSendManagerRequest="isManagerRequest"
+  )
