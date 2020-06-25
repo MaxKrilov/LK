@@ -1,6 +1,7 @@
 import BreakpointMixin from '@/mixins/BreakpointMixin'
 import ErChat from 'er-chat/dist/er-chat.esm'
 import { mapGetters } from 'vuex'
+import { isCombat } from '@/functions/helper'
 
 export default {
   name: 'chat-wrap',
@@ -46,6 +47,7 @@ export default {
         nickname: this.getClientInfo.name,
         subject: 'Обращение из ЛК',
         city: 'perm',
+        isProd: isCombat,
         userData: {
           token: this.getChatToken,
           agreementNumber: this.getActiveBillingAccountNumber,
