@@ -6,17 +6,18 @@ er-side-modal(
   .chat__wrap
     .chat__header
       .chat-header__caption
-        .chat-header__status(
-          :class="{'chat-header__status--online': isOnline}"
-        )
-          span.label
-            | Оператор
+        //- сказали скрыть, пока не придумают решение получше
+        //- .chat-header__status(
+        //-   :class="{'chat-header__status--online': isOnline}"
+        //- )
+        //-   span.label
+        //-     | Оператор
 
-          span.indicator
-            template(v-if="isOnline")
-              | online
-            template(v-else)
-              | offline
+        //-   span.indicator
+        //-     template(v-if="isOnline")
+        //-       | online
+        //-     template(v-else)
+        //-       | offline
 
         .chat-header__operator-name
           | {{ operatorName }}
