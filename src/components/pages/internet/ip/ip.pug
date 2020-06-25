@@ -81,22 +81,13 @@
                 er-row
                   er-flex.column.xs12.sm4
                     .column__label
-                      | Протокол
+                      | Кол-во IP-адресов
                     er-select(
                       :isSelectFirst="true"
-                      value="addProtocol"
-                      :items="protocolList"
-                      v-model="addProtocol"
+                      value="ipCountList"
+                      :items="ipCountList"
+                      v-model="addIpCount"
                     )
-                  er-flex.column.xs12.sm4
-                      .column__label
-                        | Кол-во IP-адресов
-                      er-select(
-                        :isSelectFirst="true"
-                        value="ipCountList"
-                        :items="ipCountList"
-                        v-model="addIpCount"
-                      )
                   er-flex.column.xs12.sm4
                     .column__label
                       | Стоимость

@@ -62,7 +62,7 @@ export default class Ip extends Vue {
     }
   }
   get isDisabledAddButton () {
-    return !(this.addIpCount && this.addProtocol)
+    return !this.addIpCount
   }
   get orderData () {
     return {
