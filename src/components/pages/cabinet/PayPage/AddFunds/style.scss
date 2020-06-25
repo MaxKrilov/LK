@@ -185,12 +185,21 @@
       & .er-text-field .er-input__control .er-input__slot {
         min-height: 39px !important;
       }
+      .er-text-field > .er-input__control > .er-messages > .er-messages__wrapper > .er-messages__message {
+        word-break: normal;
+        a {
+          display: block;
+          pointer-events: auto;
+        }
+      }
     }
     &__on-autopay {
       margin-top: 20px;
       display: flex;
       align-items: center;
       width: 280px;
+      position: relative;
+
       @include media-query((
         margin-top: (
           lg: 13px,
