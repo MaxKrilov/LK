@@ -1,0 +1,68 @@
+.vc-addon-description {
+  $cover-height: 320px;
+
+  &__cover {
+    height: $cover-height;
+    overflow: hidden;
+    position: relative;
+
+    img {
+      height: auto;
+      width: 100%;
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+    }
+  }
+
+  &__content {
+    @extend %main-content-padding-h;
+    margin-top: $padding-x6;
+    padding-bottom: $padding-x10;
+
+    display: grid;
+    grid-template-columns: 1fr;
+
+    grid-gap: $padding-x6;
+
+    @include min-breakpoint('md') {
+      grid-template-columns: 1fr 1fr;
+      grid-gap: $padding-x8 $padding-x10;
+    }
+
+    @include min-breakpoint('lg') {
+      grid-template-columns: 1fr 1fr 1fr;
+    }
+  }
+
+  .addon-feature {
+    &__icon {
+      color: map_get($yellow, 'base');
+
+      svg {
+        width: $padding-x12;
+        height: $padding-x12;
+
+        @include min-breakpoint('md') {
+          width: $padding-x16;
+          height: $padding-x16;
+        }
+      }
+    }
+
+    &__title {
+      @extend %h3;
+      margin-top: $padding-x4;
+    }
+
+    &__description {
+      @extend %body;
+      margin-top: $padding-x2;
+
+      @include min-breakpoint('md') {
+        margin-top: $padding-x4;
+      }
+    }
+  }
+}

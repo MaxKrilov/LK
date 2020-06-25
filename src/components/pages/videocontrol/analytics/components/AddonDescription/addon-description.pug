@@ -1,0 +1,13 @@
+.vc-addon-description
+  .vc-addon-description__cover
+    er-image(:src="cover")
+
+  .vc-addon-description__content
+    template(v-for="item in advantages")
+      .addon-feature
+        .addon-feature__icon
+          er-icon(:name="item.iconName")
+        .addon-feature__title
+          h3 {{ item.title }}
+        .addon-feature__description
+          | {{ item.text }}

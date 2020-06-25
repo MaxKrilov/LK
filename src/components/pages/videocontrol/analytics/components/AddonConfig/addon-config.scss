@@ -1,0 +1,81 @@
+$pre: '.vc-addon-config';
+
+#{$pre} {
+  &__head {
+    @extend %shadow-block;
+    @extend %rounded-block;
+
+    position: relative;
+    z-index: 1;
+
+    background-color: map_get($gray, '9');
+    display: flex;
+    justify-content: space-between;
+    padding-top: $padding-x3;
+    padding-bottom: $padding-x3;
+    flex-direction: column;
+
+    @include content-padding-breakpoint('left', 'xs');
+    @include content-padding-breakpoint('right', 'xs');
+    @include content-padding-breakpoint('left', 'sm');
+    @include content-padding-breakpoint('right', 'sm');
+
+    @include min-breakpoint('sm') {
+      flex-direction: row;
+      align-items: center;
+    }
+
+    @include max-breakpoint('md') {
+      border-radius: 0;
+    }
+
+    .title {
+      @extend %body;
+      margin-left: $padding-x3;
+    }
+
+    .count {
+      @extend %caption2;
+
+      @include max-breakpoint('sm') {
+        margin-left: $padding-x10;
+        margin-top: $padding-x1;
+      }
+    }
+  }
+
+  &__content {
+    @extend %rounded-block;
+    $top-offset: $padding-x3;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-gap: $padding-x2;
+    padding-top: $padding-x6 + $top-offset;
+    padding-bottom: $padding-x6;
+    background-color: map_get($gray, '9');
+    margin-top: -$top-offset;
+
+    @include content-padding-breakpoint('left', 'xs');
+    @include content-padding-breakpoint('right', 'xs');
+    @include content-padding-breakpoint('left', 'sm');
+    @include content-padding-breakpoint('right', 'sm');
+
+    @include max-breakpoint('md') {
+      border-radius: 0;
+    }
+
+    @include min-breakpoint('md') {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .camera-config {
+      display: inline-flex;
+      align-items: center;
+
+      &__label {
+        @extend %body;
+        margin-left: $padding-x2;
+      }
+    }
+  }
+}

@@ -85,6 +85,22 @@ const MenuItemList: MenuItem[] = [
     ]
   },
   {
+    name: 'Видеонаблюдение',
+    icon: 'watch',
+    isOpen: false,
+    url: '/lk/videocontrol/',
+    subitem: [
+      {
+        name: 'Видеоаналитика',
+        url: '/lk/videocontrol/analytics'
+      },
+      {
+        name: 'Портал видеонаблюдения',
+        url: ''
+      }
+    ]
+  },
+  {
     name: 'WiFi зона',
     icon: 'wifi',
     isOpen: false,

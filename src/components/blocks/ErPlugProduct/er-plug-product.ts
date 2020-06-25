@@ -67,8 +67,8 @@ export default class ErPlugProduct extends ErPlugMixin {
   }
   get descriptionRequestText () {
     return `Заявка сформирована из ЛК B2B:
-    Услуги: ${this.requestData.services}; 
-    Адрес: ${this.requestData.fulladdress}, 
+    Услуги: ${this.requestData.services};
+    Адрес: ${this.requestData.fulladdress},
     Контактный номер телефона: ${this.phoneNumber};
     Как обращаться к клиенту: ${this.name}.`
   }

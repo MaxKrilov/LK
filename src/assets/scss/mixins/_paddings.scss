@@ -1,3 +1,26 @@
+@mixin content-padding-breakpoint($p-dir, $bp) {
+  /*
+  вставляет значение паддинга основного контента для точки останова
+
+  Пример:
+    @include content-padding-breakpoint('left', 'sm')
+
+  Результат:
+    @media screen and (min-width: 480px) {
+      padding-left: 24px
+    }
+  */
+  $padding: 'padding';
+
+  @if $p-dir != '' {
+    $padding: 'padding-#{$p-dir}';
+  }
+
+  @include min-breakpoint($bp) {
+    #{$padding}: map_get($main-content-padding, $bp);
+  }
+}
+
 @mixin content-padding($padding-direction: '') {
   $padding: 'padding';
 

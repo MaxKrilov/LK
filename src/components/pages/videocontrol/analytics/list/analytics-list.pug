@@ -1,0 +1,37 @@
+.vc-addon-list-page
+  .vc-addon-list-page__header
+    er-page-header(
+      title="Видеоаналитика"
+      link-text="Назад в видеонаблюдение"
+      backlink="/lk/videocontrol"
+    )
+    .header-info Стоимость указана с НДС
+
+  .vc-addon-list-page__content
+    template(v-if="isLoaded")
+      template(v-if="isEmpty")
+        er-empty-message(text="У вас нет подключенных камер для видеоаналитики")
+
+      template(v-else v-for="(addon,idx) in availableAnalyticsList")
+        addon-card(
+          :key="addon.id"
+          :code="addon.code"
+          :title="addon.name"
+          :price="addon.prices[0].amount"
+        )
+    template(v-else)
+      addon-card(
+        :isLoaded="isLoaded"
+      )
+      addon-card(
+        :isLoaded="isLoaded"
+      )
+      addon-card(
+        :isLoaded="isLoaded"
+      )
+
+  .vc-addon-list-page__footer(v-if="isLoaded && !isEmpty")
+    er-button(
+      color="yellow"
+      @click="$router.push('/lk/videocontrol/')"
+    ) Видеонаблюдение

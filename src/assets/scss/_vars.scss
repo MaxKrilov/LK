@@ -39,9 +39,9 @@ $padding-x10: $min-indentation * 10px;
 $padding-x12: $min-indentation * 12px;
 $padding-x14: $min-indentation * 14px;
 $padding-x16: $max-indentation * 1px;
+$padding-x24: $min-indentation * 24px;
 $padding-x32: $max-indentation * 2px;
 $padding-x40: $min-indentation * 40px;
-
 
 $browser-scrollbar-width: 48px;
 
@@ -60,13 +60,13 @@ $main-content-padding-top: (
 );
 
 $z-index: (
-        'top-menu': 5,
-        'left-menu': 7,
-        'right-modal': 100,
-        'side-modal': 100,
-        'search-field': 1,
-        'top-overlay': 6,
-        'toast-stack': 10
+  'top-menu': 5,
+  'left-menu': 7,
+  'right-modal': 100,
+  'side-modal': 100,
+  'search-field': 1,
+  'top-overlay': 6,
+  'toast-stack': 10
 );
 
 // Fonts
@@ -107,4 +107,11 @@ $main-content-width: (
   'lg': 100%
 );
 
-$border-gradient: linear-gradient(to top right, map_get($gray, '26') 28.65%, map_get($shades, 'white') 90.63%)
+$border-radius: $min-indentation * 3px;
+
+$border-gradient:
+  linear-gradient(
+    to top right,
+    map_get($gray, '26') 28.65%,
+    map_get($shades, 'white') 90.63%
+  )

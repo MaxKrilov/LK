@@ -1,0 +1,11 @@
+.address-folder(v-class-mod="{active: isOpened}")
+  .address-folder__head(@click="onClick")
+    .address-folder__title {{ title }}
+
+    .address-folder__toggle
+      er-corner-button(:reversed="true", :value="isOpened")
+        er-price {{ price }}
+
+  er-slide-up-down(:active="isOpened || active")
+    .address-folder__body
+      slot

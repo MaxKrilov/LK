@@ -1,0 +1,37 @@
+.vc-addon-card(v-class-mod="{'is-loading': !isLoaded}")
+  .vc-addon-card__cover
+    template(v-if="isLoaded")
+      er-image(:src="coverPath")
+
+  .vc-addon-card__content
+    .vc-addon-card__head
+      template(v-if="isLoaded")
+        h4.title {{ title }}
+        er-hint
+      template(v-else)
+        pu-skeleton(width="200px")
+
+    .vc-addon-card__body
+      .price-label
+        template(v-if="isLoaded")
+          .caption2 Стоимость:
+        template(v-else)
+          pu-skeleton(width="80px")
+
+      .price-value
+        template(v-if="isLoaded")
+          er-price {{ price }}
+        template(v-else)
+          pu-skeleton(width="100px")
+
+  .vc-addon-card__footer
+    template(v-if="isLoaded")
+      er-button(
+        :color="'blue'"
+        @click="onClick"
+      ) Подключить
+    template(v-else)
+      er-button(
+        :color="'blue'"
+      )
+        pu-skeleton(width="120px" style="opacity: .2")

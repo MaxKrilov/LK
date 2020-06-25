@@ -1,0 +1,48 @@
+$pre: '.vc-product-page';
+
+#{$pre} {
+  &__content {
+    @extend %main-content-width;
+    @extend %margin-left--menu-width;
+    @extend %main-content-padding;
+  }
+
+  &__list {
+    @extend %main-content-width;
+    @extend %margin-left--menu-width;
+    @extend %main-content-padding-h;
+
+    @include max-breakpoint('md') {
+      padding-left: 0;
+      padding-right: 0;
+    }
+
+    .total-block {
+      border-radius: $padding-x3;
+      align-items: center;
+
+      height: $padding-x12;
+      @include max-breakpoint('md') {
+        border-radius: 0;
+      }
+
+      @include content-padding-breakpoint('left', 'md');
+      @include content-padding-breakpoint('right', 'md');
+    }
+  }
+
+  &__footer {
+    .er-container {
+      outline: 1px dashed crimson;
+    }
+    @extend %main-content-width;
+    @extend %margin-left--menu-width;
+    @extend %main-content-padding-h;
+
+    margin-top: $padding-x8;
+
+    @include min-breakpoint('md') {
+      margin-top: $padding-x10;
+    }
+  }
+}

@@ -1,0 +1,69 @@
+.product
+  .product__head
+    .product__head-count
+      .product-top-head
+        .link-wrap
+          er-icon(name="watch")
+          a.link Перейти на портал
+
+        .user-count
+          .user-count__input
+            label.user-count__label(for="input-user-count") Пользователей портала
+
+            er-number-input(
+              id="input-user-count"
+              :min="1"
+              v-model="domainUserCount"
+              @input="onChangeUserCount"
+            )
+
+          .user-count__price
+            er-price {{ computedUserPrice }}
+
+          er-button.user-count__add-btn(
+            v-show="isUserCountChanged"
+            color="yellow"
+            @click="onSaveUserCount"
+          ) Изменить
+
+    .product__head-title
+      h2 Подключенные камеры
+
+  .product__body
+    template(v-for="item in addressList")
+      address-folder(
+        :title="item.address.name || ''"
+        :price="item.data.purchasedPrices.recurrentTotal.value"
+        :active="inSearchMode"
+      )
+        template(v-for="(cam, key, idx) in item.data.cameras")
+          camera(
+            :id="cam.id"
+            :title="cam.name"
+            :price="cam.purchasedPrices.recurrentTotal.value"
+            :services="item.data.bf[cam.parentId]"
+          )
+
+  .product__footer
+    er-button(
+      color="yellow"
+      @click="onClickAdd"
+    ) Добавить камеру
+
+    er-button(
+      color="gray"
+      @click="onClickPause"
+    ) Приостановить услугу
+
+    er-button(
+      color="gray"
+      @click="onClickPause"
+    ) Отключить услугу
+
+  er-plug-product(
+    v-model="isOrderModalVisible"
+    :orderData="orderData"
+    :requestData="requestData"
+    :isSendOrder="!isManagerRequest"
+    :isSendManagerRequest="isManagerRequest"
+  )

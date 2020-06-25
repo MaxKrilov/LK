@@ -1,0 +1,159 @@
+.vc-config-page
+  .vc-config-page__header
+    er-page-header(
+      title="Настроить камеру"
+      link-text="Назад к списку камер"
+      backlink="/lk/videocontrol/products"
+    )
+    .header-info Стоимость указана с НДС
+
+  .vc-config-page__edit-form.camera-edit-form
+    .camera-edit-form__head
+      .col.col--point
+        .caption2 Адрес
+
+        template(v-if="isLocationLoaded")
+          .value {{ locationName }}
+        template(v-else)
+          pu-skeleton(width="200px")
+
+        .caption1 Все камеры {{ allLocationCameraCount }}
+
+      .col.col--watch(v-if="isForpostProtalWorking")
+        .watch(
+          @click="onPlay"
+          title="Настроить"
+        )
+          er-icon(name="play")
+          span.title Смотреть
+
+    .camera-edit-form__body
+      .d--grid
+        .license-pay(v-if="licensePay")
+          .caption2 Лицензионный платёж
+          er-price {{ licensePay }}
+
+        .rent-pay(v-if="hasRentPay")
+          br
+          .caption2 Аренда
+          er-price {{ rentPay }}
+
+      .vc-camera-edit-form
+        .camera-main-fields
+          .col.col-name
+            .name-field
+              .name-field__input
+                | {{ cameraName }}
+
+              .name-field__button(v-if="isShowRenameButton")
+                er-button(
+                  color='yellow'
+                  @click="onRenameCamera"
+                ) Переименовать
+
+          .col.col-2
+            .camera-main-fields__field
+              er-select(
+                placeholder="Разрешение видеопотока"
+                :items="VIDEO_QUALITY_VALUE_LIST"
+                v-model="videoQualityValue"
+                @input="onVideoQualityInput"
+              )
+              er-price {{ videoQualityPrice }}
+
+          .col.col-3
+            .camera-main-fields__field(v-if="isAnalyticsLoaded")
+              er-select(
+                placeholder="Срок хранения видеоархива"
+                :items="videoArchiveValueList"
+                v-model="videoArchiveValue"
+                @input="onVideoArchiveInput"
+              )
+              er-price {{ videoArchivePrice }}
+
+        .addon__list
+          .addon
+            h4.addon__title Запись звука
+            .addon__text
+              | Активируйте на камере запись звука, чтобы не только видеть, но и слышать.
+            .addon__config
+              er-toggle(
+                :disabled="isOrderMode"
+                v-model="soundRecordValue"
+                @input="onSoundRecordInput"
+              )
+              er-price {{ soundRecordPrice }}
+
+          .addon(v-if="isAnalyticsLoaded")
+            h4.addon__title Поворотный модуль
+            .addon__text
+              | Управление направлением видоискателя камеры
+            .addon__config
+              er-toggle(
+                :disabled="!isPTZAvailable && isOrderMode"
+                v-model="PTZValue"
+                @input="onPTZInput"
+              )
+              er-price {{ getPTZPrice() }}
+
+  .vc-config-page__analitycs.analytics
+    .analytics__head
+      h2.analytics__title Аналитика
+      .analytics__subtitle
+        template(v-if="isAnalyticsLoaded")
+          | подключено {{ enabledAnalyticItems }} сервиса
+        template(v-else)
+          pu-skeleton(width="120px")
+
+    .analytics__content
+      template(v-if="isAnalyticsLoaded")
+        template(v-for="item in availableAnalyticsList")
+          analytic-item(
+            :key="item.id"
+            :title="item.originalName"
+            :price="getAnalyticItemPrice(item.code)"
+            :code="item.code"
+            :value="enabledServiceCode.includes(item.code)"
+            @input="onInputAnalyticItem(item.code, $event)"
+            :isLoading="false"
+            :disabled="isOrderMode"
+          )
+      template(v-else)
+        analytic-item(:isLoading="true")
+        analytic-item(:isLoading="true")
+        analytic-item(:isLoading="true")
+
+  er-plug-product(
+    v-model="isOrderModalVisible"
+    :orderData="orderData"
+    :requestData="requestData"
+    :isSendOrder="!isManagerRequest"
+    :isSendManagerRequest="isManagerRequest"
+  )
+
+  er-activation-modal(
+    type="question"
+    v-model="isShowDisconnectModal"
+    title="Вы уверены, что хотите отключить \"Дополнительных пользователей\"?"
+    cancelButtonText="Отменить"
+    actionButtonText="Отключить"
+    persistent
+    :isLoadingConfirm="isSendingOrder"
+    isOffer
+    @confirm="onApplyOrder"
+    @close="onCancelOrder"
+  )
+
+  .vc-config-page__actions
+    .total-info
+      .total-info__label Абонентская плата:
+      .total-info__price
+        er-price {{ totalPrice }}
+
+      .total-info__status(v-if="isChanged")
+        | Изменена
+        er-icon(name="ok")
+
+    .action-buttons(v-if="isActionButtonsVisible")
+      er-button(color="yellow") Сохранить
+      er-button(color="gray") Отмена

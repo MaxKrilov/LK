@@ -1,0 +1,132 @@
+$pre: ".address-folder";
+
+%local-content-padding {
+  @mixin cp($bp) {
+    $local-content-padding: (
+      "xs": $padding-x4,
+      "sm": $padding-x6,
+      "md": $padding-x6,
+      "lg": $padding-x6,
+      "xl": $padding-x8
+    );
+    @include min-breakpoint($bp) {
+      padding-left: map_get($local-content-padding, $bp);
+      padding-right: map_get($local-content-padding, $bp);
+    }
+  }
+
+  @include cp("xs");
+  @include cp("sm");
+  @include cp("md");
+  @include cp("lg");
+  @include cp("xl");
+}
+
+#{$pre} {
+  $addr-head-height: (
+    "xs": 96px,
+    "sm": 52px,
+    "md": 56px,
+    "lg": 48px
+  );
+
+  $head-color: map_get($gray, "4");
+  $active-head-color: map_get($gray, "9");
+
+  border-right: $padding-x1 solid $head-color;
+
+  &--active {
+    border-right-color: map_get($yellow, "base");
+
+    #{$pre}__head {
+      background-color: $active-head-color;
+      border-top-color: rgba(map_get($shades, "black"), 0.2);
+
+      .er-icon {
+        @include color-black(0.5);
+      }
+    }
+
+    #{$pre}__body {
+      border-bottom-color: rgba(map_get($shades, "black"), 0.2);
+    }
+  }
+
+  // -- HEAD  --
+  &__head {
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border-top: 1px solid transparent;
+    transition: all $primary-transition;
+
+    @extend %local-content-padding;
+
+    background-color: $head-color;
+    padding: {
+      top: $padding-x4;
+      bottom: $padding-x4;
+    }
+
+    height: map_get($addr-head-height, "xs");
+
+    @include min-breakpoint("sm") {
+      flex-direction: row;
+      align-items: center;
+      height: map_get($addr-head-height, "sm");
+      padding: {
+        top: $padding-x2;
+        bottom: $padding-x2;
+      }
+    }
+
+    &:hover {
+      background-color: map_get($gray, "9");
+    }
+  }
+
+  &__toggle {
+    display: flex;
+    flex-direction: row;
+    align-self: flex-end;
+
+    @include min-breakpoint("sm") {
+      align-self: center;
+    }
+  }
+
+  &__title {
+    @extend %body-font;
+    @include color-black(0.8);
+    margin-bottom: $padding-x2;
+
+    @include min-breakpoint("lg") {
+      margin-bottom: 0;
+    }
+  }
+
+  // -- BODY  --
+  &__body {
+    @extend %local-content-padding;
+
+    background-color: map_get($gray, "9");
+
+    padding-top: $padding-x2;
+    padding-bottom: $padding-x6;
+    border-bottom: 1px solid transparent;
+    transition: border $primary-transition;
+
+    @include min-breakpoint("sm") {
+      padding-top: $padding-x4;
+    }
+
+    @include min-breakpoint("md") {
+      padding-top: $padding-x6;
+    }
+
+    @include min-breakpoint("lg") {
+      padding-bottom: $padding-x10;
+    }
+  }
+}

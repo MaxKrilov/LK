@@ -1,0 +1,104 @@
+$pre: '.vc-addon-card';
+
+$card-head-height-small: 110px;
+$card-head-height-big: 152px;
+
+#{$pre} {
+  @extend %rounded-block;
+  box-shadow: $card-shadow;
+  background-color: map_get($gray, '9');
+  overflow: hidden;
+
+  display: flex;
+  flex-direction: column;
+  transition: all $primary-transition;
+
+  &--is-loading {
+    #{$pre}__cover {
+      background-color: rgba(rebeccapurple, .3);
+    }
+  }
+
+  &:hover {
+    background-color: map_get($shades, 'white');
+
+    #{$pre}__cover::after {
+      // убираем пелену над изображением
+      background-color: map_get($shades, 'transparent');
+    }
+  }
+
+  &__cover {
+    position: relative;
+    overflow: hidden;
+
+    .er-image {
+      width: 100%;
+      height: auto;
+    }
+
+    &::after {
+      // белая пелена над изображением
+      content: '';
+      background-color: rgba(map_get($shades, 'white'), .25);
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      transition: background $primary-transition;
+    }
+
+    height: $card-head-height-small;
+    @include min-breakpoint('md') {
+      height: $card-head-height-big;
+    }
+  }
+
+  &__head {
+    display: flex;
+    & > *:first-child {
+      display: flex;
+      flex-grow: 1;
+    }
+  }
+
+  &__body {
+    margin-top: auto;
+
+    .price-value {
+      margin-top: $padding-x1;
+    }
+  }
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+
+    padding: $padding-x4;
+
+    @include min-breakpoint('md') {
+      padding: $padding-x6;
+    }
+
+    @include min-breakpoint('xl') {
+      padding: $padding-x8;
+    }
+  }
+
+  &__footer {
+    padding: $padding-x4;
+    padding-top: 0;
+
+    @include min-breakpoint('md') {
+      padding: $padding-x6;
+      padding-top: 0;
+    }
+
+    @include min-breakpoint('xl') {
+      padding: $padding-x8;
+      padding-top: 0;
+    }
+  }
+}

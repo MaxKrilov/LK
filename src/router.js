@@ -91,6 +91,13 @@ import ContentFilterMainPage from './components/pages/internet/content-filter/in
 // import OATSMainPage from './components/pages/oats/index'
 import OATSPromoPage from './components/pages/oats/promo/index'
 
+// Видеоконтроль
+import VideocontrolTemplate from './components/pages/videocontrol/index'
+import VideocontrolProductPage from './components/pages/videocontrol/products/index'
+import VCCameraConfigPage from './components/pages/videocontrol/camera-config/index'
+import VCAddonListPage from './components/pages/videocontrol/analytics/list/index'
+import VCAddonDetailPage from './components/pages/videocontrol/analytics/detail/index'
+
 // Опрос
 import SurveyPage from './components/pages/survey/index'
 
@@ -327,6 +334,30 @@ const router = new Router({
         {
           path: 'internet/ddos/promo',
           component: DDoSPromoPage
+        },
+        {
+          path: 'videocontrol',
+          component: VideocontrolTemplate,
+          children: [
+            {
+              path: '/',
+              component: VideocontrolProductPage
+            },
+            {
+              path: 'analytics',
+              component: VCAddonListPage
+            },
+            {
+              path: 'analytics/:code',
+              component: VCAddonDetailPage,
+              props: true
+            },
+            {
+              path: 'camera/:id',
+              component: VCCameraConfigPage,
+              props: true
+            }
+          ]
         },
         {
           path: 'wifi',
