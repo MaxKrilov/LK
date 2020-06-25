@@ -1,0 +1,74 @@
+div(class="package") 
+  er-card()
+    div(class="package__header")
+      div(class="package__header_title") {{ name }}
+      div(class="package__header_icon")
+        er-icon(name="minute_pack" :shadow="shadowIcon")
+    div(class="package__line")
+      div(class="package__line_used" :width="`${spent / limit * 100}%`")
+    div(class="package__content")
+      template(v-if="isChanging")
+        div(class="package__change")
+          div(@click="minus")
+            er-icon(name="no")
+          div(class="package__change__price") {{ changed }}
+          div(@click="plus")
+            er-icon(name="add_round")
+        div(class="package__buttons")
+          er-button(color="yellow"  :loading="isCreatingUpdatePackage" @click="updatePackage" :disabled="limit === changed") Сохранить
+          er-button(flat @click="isChanging = false") Отменить
+      template(v-else)
+        h2() {{ limit - spent }}
+          span(class="package__count-minutes") /{{ limit }}
+        div(class="package__caption") рублей осталось
+        div(class="package__buttons")
+          er-button(color="yellow" @click="changePackage") Изменить
+          er-button(flat :loading="isCreatingDeletePackage" @click="disconnect") Отключить
+
+  er-activation-modal(
+    type="question"
+    v-model="isShowDeletePackageModal"
+    title="Вы уверены, что хотите отключить пакет минут?"
+    @confirm="sendDeletePackageOrder"
+    @close="cancelOrder"
+    :isLoadingConfirm="sendingOrderDeletePackage"
+    actionButtonText="Отключить"
+    isOffer
+  )
+  er-activation-modal(
+    type="question"
+    v-model="isShowChangeModal"
+    title="Вы уверены, что хотите обновить пакет минут?"
+    @confirm="sendUpdatePackageOrder"
+    @close="cancelOrder"
+    :isLoadingConfirm="sendingOrderUpdatePackage"
+    actionButtonText="Обновить"
+    isOffer
+  )
+
+  er-activation-modal(
+    type="error"
+    v-model="isShowErrorModal"
+    title="Ошибка"
+    cancel-button-text="Закрыть"
+    :isShowActionButton="false"
+  )
+    template(slot="description")
+      div Уважаемый Клиент, в данный момент операция не доступна, обратитесь к персональному менеджеру
+
+  er-activation-modal(
+    type="success"
+    v-model="isShowSuccessModal"
+    title="Заказ создан успешно"
+    :isShowActionButton="false"
+    cancel-button-text="Спасибо"
+  )
+  er-activation-modal(
+    type="error"
+    v-model="isShowManagerModal"
+    title="Не удается изменить пакет минут"
+    :isShowActionButton="false"
+    cancel-button-text="Понятно"
+  )
+    template(slot="description")
+      div Уважаемый клиент, автоматическая смена пакета доступна с 1 по 5 число месяца. Для смены пакета обратитесь к персональному менеджеру

@@ -10,7 +10,7 @@ div
       .er-plug-product__request-modal__content
         div.content-wrapper
           .title
-            h3 Представьтесь пожалуйста
+            h3 Представьтесь, пожалуйста
             .close
               button(@click="closeCreatingRequest")
                 er-icon(name="close")
@@ -35,7 +35,7 @@ div
               :readonly="isReadonlyName"
             )
 
-          .caption2.mt-32 Нажимая на кнопку вы соглашаетесь на обработку данных
+          .caption2.mt-32 Нажимая на кнопку, Вы соглашаетесь на обработку данных
         .footer  
           .buttons
             er-button(@click="sendRequest" :disabled="isValidateRequestForm" :loading="isCreatingRequest") Отправить

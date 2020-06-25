@@ -131,14 +131,6 @@ const MenuItemList: MenuItem[] = [
     url: '/lk/telephony',
     subitem: [
       {
-        name: 'Промо страница',
-        url: '/lk/telephony/promo'
-      },
-      {
-        name: 'Пакет минут',
-        url: '/lk/telephony/plug'
-      },
-      {
         name: 'Статистика',
         url: '/lk/telephony/statistic'
       },

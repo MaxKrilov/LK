@@ -23,33 +23,30 @@ div(:class="`${pre}`" )
         div(:class="`${pre}__slider-buttons`").add-button
           er-button(pre-icon="add_round" color="yellow" @click="connectNewNumber" :loading="isConnection") Добавить телефон
         
+        h3(:class="`${pre}__packages-title`") Пакеты минут
+        div(:class="`${pre}__packages`")
+          PackageMinuteCard(
+            v-if="localConnected"
+            :slo="localConnected"
+            :name="'Местные'"
+            :phones="phones"
+            :char="'Тип Пакета (Местные Минуты)'")
 
-        //- h3(:class="`${pre}__packages-title`") Пакеты минут
-        //- div(:class="`${pre}__packages`")
-        //-   er-card(:class="[`${pre}__package`, `${pre}__card-package`]")
-        //-     div(:class="`${pre}__package__header`")
-        //-       div(:class="`${pre}__package__header_title`") За границу/По России
-        //-       div(:class="`${pre}__package__header_icon`")
-        //-         er-icon(name="minute_pack" :shadow="shadowIcon")
-        //-     div(:class="`${pre}__package__line`")
-        //-       div(:class="`${pre}__package__line_used`")
-        //-     div(:class="`${pre}__package__content`")
-        //-       h2() 852
-        //-         span(:class="`${pre}__package__count-minutes`") /1000
-        //-       div(:class="`${pre}__caption`") минут осталось
-        //-       div(:class="`${pre}__package__renewal`") Автопродление: 01.03.2020 в 00:00
-        //-       div(:class="`${pre}__package__buttons`")
-        //-         er-button(color="yellow") Изменить
-        //-         er-button(flat) Отключить
+          PackageMinuteCard(
+            v-if="globalConnected"
+            :slo="globalConnected"
+            :name="'За границу/По России'"
+            :phones="phones"
+            :char="'Тип Пакета (Пакет Минут)'")
 
-
-        //-   er-card(:class="[`${pre}__plug-package`, `${pre}__card-package`]")
-        //-     div(:class="`${pre}__plug-package__title`") Подключить местный пакет минут
-        //-     div(:class="`${pre}__plug-package__footer`")
-        //-       div
-        //-         span(:class="`${pre}__h4`") от 500
-        //-         span(:class="`${pre}__units`") &nbsp; ₽
-        //-       er-icon(name="minute_pack")
+          div(@click="plugPackages" v-if="!(globalConnected && localConnected)")  
+            er-card(:class="[`${pre}__plug-package`, `${pre}__card-package`]")
+              div(:class="`${pre}__plug-package__title`") Подключить пакет минут
+              div(:class="`${pre}__plug-package__footer`")
+                div
+                  span(:class="`${pre}__h4`") от 500
+                  span(:class="`${pre}__units`") &nbsp; ₽
+                er-icon(name="minute_pack")
         div(:class="`${pre}__slider-buttons`")
           template(v-if="isStopped")
             er-button(color="yellow") Восстановить
@@ -60,8 +57,10 @@ div(:class="`${pre}`" )
   ErPlugProduct(
     v-model="isConnection"
     :requestData="requestData"
+    isSendManagerRequest
     )
   ErDisconnectProduct(
     v-model="isDisconnection"
     :requestData="disconnectRequestData"
+    isSendManagerRequest
     )
