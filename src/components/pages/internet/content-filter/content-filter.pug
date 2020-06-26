@@ -39,7 +39,7 @@ div(:class="`${pre} main-content main-content--top-menu-fix`")
             div(:class="`${pre}__h4`") {{ amountPrice }}
             span(class="units") &nbsp₽/месяц
 
-    .button(v-if="!(!data.length || isShowConnecting)")
+    .button(v-if="!(!data.length || isShowConnecting) && freePoints.length")
       er-button(color="blue" @click="isShowConnecting = true") Подключить Контент-фильтрацию
 
     plug(v-if="!data.length || isShowConnecting" :points="freePoints")

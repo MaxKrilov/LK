@@ -64,9 +64,13 @@ export default class ErPlugMixin extends Vue {
     if (this.orderData?.offer) data.offerAcceptedOn = this.$moment().toISOString()
 
     this.$store.dispatch('salesOrder/send', data)
-      .then(() => {
+      .then((answer: any) => {
         this.sendingOrder = false
-        this.isShowSuccessOrderModal = true
+        if (answer?.submit_statuses?.[0]?.submitStatus === 'FAILED') {
+          this.isShowErrorOrderModal = true
+        } else {
+          this.isShowSuccessOrderModal = true
+        }
         this.isShowOrderModal = false
         this.isShowDeleteOrderModal = false
       })

@@ -5,6 +5,7 @@ import { mapGetters } from 'vuex'
 import { CODE_PHONE, CODE_PHONE_VPN, CODE_BLACKLIST } from '@/constants/product-code'
 import ErActivationModal from '@/components/blocks/ErActivationModal/index.vue'
 import blackListCard from '@/components/pages/telephony/blocks/blackListCard/index.vue'
+import { ARRAY_STATUS_SHOWN } from '@/constants/status.ts'
 
 const components = {
   ListPointComponent,
@@ -94,7 +95,7 @@ export default class TelephonyBlacklistPage extends Vue {
           const keys = Object.keys(answer)
           this.blackList = keys
             .map(
-              (el: string) => answer[el].slo?.filter((slo:any) => slo.status === 'Active')?.[0] // отфильтровали точки, где нет активных ЧС
+              (el: string) => answer[el].slo?.filter((slo:any) => ARRAY_STATUS_SHOWN.includes(slo.status))?.[0] // отфильтровали точки, где нет активных ЧС
             )
             .filter(el => el)
             .map(el => {
