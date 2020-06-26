@@ -74,7 +74,7 @@ div(:class="`${pre}`").main-content.main-content--padding.main-content--top-menu
               ref="viewer"
             )
               template(v-slot:activator="{ on }")
-                a.index-page__fast-link(href="#", v-on="on")
+                a.index-page__fast-link(href="#", v-on="getEventsForInvPayments(on)")
                   .content
                     .title
                       | Счёт на оплату
@@ -150,3 +150,12 @@ div(:class="`${pre}`").main-content.main-content--padding.main-content--top-menu
   er-toast-stack(
     @click="onClickToast"
   )
+  er-activation-modal(
+    type="success"
+    v-model="isNotAccessInvPayment"
+    title="Запрос счёта на оплату недоступен недоступен"
+    :isShowActionButton="false"
+    cancel-button-text="Спасибо"
+  )
+    template(slot="description")
+      | У вас положительный баланс, поэтому запрос информационного счёта недоступен! Приятного пользования услугами Дом.ru
