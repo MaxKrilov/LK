@@ -14,8 +14,8 @@
   background: map_get($yellow, 'base');
 }
 
-html,
-body {
+html:not(.auto),
+body:not(.auto) {
   height: 100%;
 }
 

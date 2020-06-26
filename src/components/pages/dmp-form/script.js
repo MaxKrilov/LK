@@ -313,9 +313,13 @@ export default {
     window.addEventListener('message', this.listenersDMP)
     this.cyrNameObj = new CyrName()
     document.querySelector('.app__content').classList.add('app__content__height-auto')
+    document.querySelector('html').classList.add('auto')
+    document.querySelector('body').classList.add('auto')
   },
   beforeDestroy () {
     window.removeEventListener('message', this.listenersDMP)
     document.querySelector('.app__content').classList.remove('app__content__height-auto')
+    document.querySelector('html').classList.remove('auto')
+    document.querySelector('body').classList.remove('auto')
   }
 }
