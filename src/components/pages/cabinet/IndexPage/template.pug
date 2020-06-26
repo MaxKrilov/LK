@@ -1,9 +1,10 @@
-div(:class="`${pre}`").main-content.main-content--padding.main-content--top-menu-fix
+div(:class="`${pre}`")
   er-preloader(:active="loadingClientInfo")
     h4(:class="`${pre}__organisation-name`")
       | {{ clientName || 'Неизвестная организация' }}
-  h1.fonts--demi(:class="`${pre}__welcome-title`")
+  h1(:class="`${pre}__welcome-title`")
     | Добро пожаловать в личный кабинет
+
   div(:class="`${pre}__balance--mobile`")
     div.caption.mb-8
       | Ваш баланс
@@ -13,11 +14,12 @@ div(:class="`${pre}`").main-content.main-content--padding.main-content--top-menu
           er-icon(name="wallet_auto")
         a.link--solid--yellow.fonts--demi.rub {{ balanceInfo.balance || '0.0' }}
         span(v-if="balanceInfo.autoPay") Автоплатёж
-  er-container.mb-48(full)
+
+  er-container.mb-48(full).container--no-padding
     er-row(no-gutters)
       er-flex(xs12 :class="`${pre}__fast-links`")
         er-row()
-          er-flex.mb-16.pr-8(xs6 xl3)
+          er-flex.mb-16(xs6 xl3)
             er-preloader(:active="loadingDocuments" icon)
               router-link.index-page__fast-link(to="/lk/documents")
                 .content
@@ -31,7 +33,7 @@ div(:class="`${pre}`").main-content.main-content--padding.main-content--top-menu
                         | {{ getCountUnsignedDocument }}
                     .icon.ml-auto
                       er-icon(name="doc")
-          er-flex.mb-16.pr-8(xs6 xl3)
+          er-flex.mb-16(xs6 xl3)
             er-preloader(:active="loadingRequest" icon)
               router-link.index-page__fast-link(to="/lk/support")
                 .content
@@ -45,7 +47,7 @@ div(:class="`${pre}`").main-content.main-content--padding.main-content--top-menu
                         | {{ getCountRequestInWork }}
                     .icon.ml-auto
                       er-icon(name="lifebuoy")
-          er-flex.mb-16.pr-8(xs6 xl3)
+          er-flex.mb-16(xs6 xl3)
             er-preloader(:active="loadingPromisedPayment" icon)
               router-link.index-page__fast-link(to="/lk/promise-pay")
                 .content

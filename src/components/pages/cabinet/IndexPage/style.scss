@@ -1,8 +1,27 @@
 .index-page {
+  @extend %main-content;
+
+  &__welcome-title {
+    @extend %h1;
+
+    margin-bottom: $padding-x6;
+
+    @include min-breakpoint('md') {
+      margin-bottom: $padding-x8;
+    }
+
+    @include min-breakpoint('xl') {
+      margin-bottom: $padding-x12;
+      display: block;
+    }
+  }
+
   &__organisation-name {
+    @extend %body-font;
     color: rgba(map_get($shades, 'black'), 0.5);
     margin-bottom: 5px;
   }
+
   &__balance {
     &--mobile {
       margin-bottom: 34px;
@@ -38,9 +57,6 @@
     }
   }
   &__fast-links {
-    @include min-breakpoint('lg') {
-      padding-right: 16px !important;
-    }
   }
   &__fast-link {
     display: block;

@@ -1,12 +1,6 @@
 .pay-page {
   position: relative;
-  left: -17px;
   @include media-query((
-    left: (
-      sm: -24px,
-      md: 0,
-      xl: 24px
-    ),
     padding-right: (
       sm: 20px !important,
       md: 24px !important

@@ -170,15 +170,6 @@
     }
   }
   &__button.er-button {
-    display: flex;
-    justify-content: center;
-    min-width: 160px;
-    height: 40px;
-    @include media-query((
-    max-width: (
-      sm: 100%
-    )
-    ));
     .er-button__content {
       @include media-query((
         font: (
