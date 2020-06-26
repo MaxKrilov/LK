@@ -3,8 +3,6 @@ import ErDocumentViewer from '../../../../../blocks/ErDocumentViewer/index'
 import moment from 'moment'
 import ErActivationModal from '../../../../../blocks/ErActivationModal/index'
 
-import moment from 'moment'
-
 export default {
   name: 'button-pay',
   components: {
