@@ -111,7 +111,7 @@
     position: relative;
     width: calc(100% + 30px) !important;
     max-width: calc(100% + 30px) !important;
-    margin-left: -15px !important;
+
     padding: 0 !important;
     @include media-query((
       flex-wrap: (md: nowrap, lg: nowrap, xl: nowrap),

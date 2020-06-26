@@ -212,25 +212,38 @@
     }
   }
   &__top {
-    width: 100%;
     height: 56px;
     position: fixed;
     top: 0;
     left: 0;
+    right: 0;
     background: map_get($shades, 'white');
     box-shadow: 0 4px 8px rgba(map_get($shades, 'black'), 0.08);
     display: flex;
     align-items: center;
-    padding: 0 16px;
     z-index: map_get($z-index, 'top-menu');
+
     @include media-query((
-            height: (md: 64px, lg: 72px, xl: 96px),
-            box-shadow: (xl: none),
-            padding: (
-                    sm: 0 24px,
-                    xl: 0 32px 0 316px
-            )
+      height: (md: 64px, lg: 72px, xl: 96px),
+      box-shadow: (xl: none),
+      padding-left: (
+        xs: map_get($main-content-padding, xs),
+        sm: map_get($main-content-padding, sm),
+        md: map_get($main-content-padding, md),
+        lg: map_get($main-content-padding, lg),
+        xl: map_get($main-content-padding, xl)
+      ),
+      padding-right: (
+        xs: $padding-x4,
+        sm: $padding-x6,
+        lg: $padding-x8,
+        xl: $padding-x6,
+      ),
+      margin-left: (
+        xl: $left-menu-width
+      )
     ));
+
     &__burger {
       cursor: pointer;
       color: rgba(map_get($shades, 'black'), 0.5);
