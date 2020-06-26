@@ -2,6 +2,7 @@ import moment from 'moment'
 import { mapGetters } from 'vuex'
 import plug from '@/components/pages/internet/content-filter/plug'
 import ErActivationModal from '@/components/blocks/ErActivationModal/index'
+import { ARRAY_STATUS_SHOWN } from '@/constants/status.ts'
 
 export default {
   name: 'content-filter-page',
@@ -84,7 +85,7 @@ export default {
               this.connectedBpis = Object.keys(answer)
               this.data = this.connectedBpis
                 .map(
-                  (el) => answer[el].slo?.filter((slo) => slo.status === 'Active' || slo.status === 'Suspended')?.[0] // отфильтровали точки, где нет активных
+                  (el) => answer[el].slo?.filter((slo) => ARRAY_STATUS_SHOWN.includes(slo.status))?.[0] // отфильтровали точки, где нет активных
                 )
                 .filter(el => el)
                 .map(el => {
@@ -121,9 +122,14 @@ export default {
     sendOrder () {
       this.sendingOrder = true
       this.$store.dispatch('salesOrder/send', { offerAcceptedOn: this.offerAcceptedOn })
-        .then(() => {
+        .then((answer) => {
+          // eslint-disable-next-line camelcase
+          if (answer?.submit_statuses?.[0]?.submitStatus === 'FAILED') {
+            this.isShowErrorModal = true
+          } else {
+            this.isShowSuccessModal = true
+          }
           this.sendingOrder = false
-          this.isShowSuccessModal = true
           this.isShowDisconnectModal = false
         })
         .catch(() => {
