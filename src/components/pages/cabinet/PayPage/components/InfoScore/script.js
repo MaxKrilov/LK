@@ -30,7 +30,7 @@ export default {
   methods: {
     getValuesAccount () {
       if (this.paymentInfo.nextDate !== undefined) {
-        this.summToPay = Number(this.paymentInfo.summToPay).toLocaleString('ru-RU')
+        this.summToPay = Number(this.paymentInfo.summToPay)
         this.balance = Number(this.paymentInfo.balance)
         const d = this.paymentInfo.nextDate
         this.nextDate = d.slice(0, -4) + d.slice(-2)

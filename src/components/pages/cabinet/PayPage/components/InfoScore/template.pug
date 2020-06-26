@@ -18,7 +18,7 @@ er-container(:class="`${pre}__container`")
       )
         div.caption
           er-icon(name="wallet_auto")
-        h2.mr-8.ml-8 {{ balance }}
+        h2.mr-8.ml-8 {{ balance | price }}
         div.rub.mt-4(:class="`${pre}__balance-score__currency`")
       er-button(id="preloaderBalance"
         :loading="true"
