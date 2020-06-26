@@ -11,22 +11,11 @@
     position: absolute;
     vertical-align: top;
     width: 50px;
-    font: 11px/16px $fedra-demi;
-    letter-spacing: 0.35px;
+    @extend %caption1-font;
     @include media-query((
       width: (
         sm: 160px,
       ),
-      font-size: (
-        md: 13px,
-        xl: 14px,
-      ),
-      line-height: (xl: 19px),
-      letter-spacing: (
-        md: normal,
-        lg: 0.35px,
-        xl: normal
-      )
     ));
   }
   &__inf-promise {
@@ -159,9 +148,10 @@
           position: relative;
           transition: 0.15s transform;
           transform: scale(1, 1);
+          left: 11px;
+          top: 10px;
           @include media-query((
             left: (
-              xs: 11px,
               sm: 20px,
               md: 3px,
               lg: -3px,
@@ -169,7 +159,6 @@
               xxl: 1px
             ),
             top: (
-              xs: 10px,
               md: 2px,
               lg: 1px,
               xl: -2px
@@ -184,9 +173,11 @@
         &__card-icon {
           position: relative;
           color: map_get($yellow, 'other-9') !important;
+          left: 58px;
+          top: 26px;
+          transform: scale(8,8);
           @include media-query((
             left: (
-              xs: 58px,
               sm: 49px,
               md: 21px,
               lg: 11px,
@@ -194,14 +185,12 @@
               xxl: 51px,
             ),
             top: (
-              xs: 26px,
               sm: 20px,
               md: 30px,
               lg: 26px,
               xxl: 30px
             ),
             transform: (
-              xs: scale(8,8),
               md: scale(6,7),
               lg: scale(6,6.3),
               xxl: scale(8,8),

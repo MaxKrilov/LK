@@ -9,8 +9,6 @@ export default {
     return {
       pre: 'er-report-filter',
       isFiltersVisible: false,
-      isCloseCategory: false,
-      isCloseService: false,
       isClosePay: false
     }
   },
@@ -19,21 +17,11 @@ export default {
       type: Array,
       default: () => ([])
     },
-    typesFind: {
-      typeFind: Array,
-      default: () => ([])
-    },
-    servicesOrCities: {
-      servOrCit: Array,
-      default: () => ([])
-    },
     typesPay: {
       typePay: Array,
       default: () => ([])
     },
     type: Object,
-    typeFind: Object,
-    servOrCit: Object,
     typePay: Object
   },
   computed: {
@@ -43,23 +31,6 @@ export default {
       },
       set (val) {
         this.$emit('change-period', val)
-      }
-    },
-    internalTypeFind: {
-      get () {
-        return this.typeFind
-      },
-      set (val) {
-        this.$emit('change-typeFind', val)
-      }
-    },
-    internalServicesOrCities: {
-      get () {
-        return this.servOrCit
-      },
-      set (val) {
-        this.$emit('change-servOrCit', val)
-        this.isCloseService = true
       }
     },
     internalTypePay: {
@@ -84,13 +55,9 @@ export default {
     onCloseFilters () {
       this.isFiltersVisible = false
     },
-    closeCategory () {
-      this.isCloseCategory = false
-    },
-    closeService () {
-      this.isCloseService = false
-    },
     closePay () {
+      this.$emit('clear-filter-type', 'Все платежи')
+      this.$emit('first-period')
       this.isClosePay = false
     }
   }

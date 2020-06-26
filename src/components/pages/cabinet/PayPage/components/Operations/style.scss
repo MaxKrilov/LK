@@ -1,6 +1,5 @@
 .operations {
   width: 100%;
-  height: 80px;
   background: linear-gradient(to top right, map_get($gray, '26') 28.65%, map_get($shades, 'white') 90.63%);
   padding: 1px;
   overflow: hidden;
@@ -13,257 +12,83 @@
       md: 0,
       lg: 12px
     ),
-    height: (
-      sm: 80px,
-      md: 96px,
-      lg: 96px,
-      xl: 98px)
   ));
-  &:hover {
-    position: relative;
-    box-shadow: 0 12px 16px rgba(0, 0, 0, 0.1), 0 12px 16px rgba(0, 0, 0, 0), 0 2px 2px rgba(0, 0, 0, 0);
-    background: linear-gradient(0deg, map_get($gray, '9') 15.1%, map_get($shades, 'white') 94.27%);
-    & .operations__icon {
-      background: linear-gradient(360deg, map_get($gray, '4') 0%, rgba(226, 226, 226, 0) 170.74%);
-      & svg {
-        color: map_get($gray, '37');
-      }
-    }
-  }
   &__content {
-    cursor: pointer;
     height: 100%;
     width: 100%;
     background-color: map_get($shades, 'white');
     border-radius: inherit;
     border-right: 4px solid map_get($shades, 'transparent');
     display: flex;
-    margin-left: 24px;
-    @include media-query((
-      margin-left: (
-        sm: 0,
-        //lg: 12px
-      ),
-    ));
-
   }
   &__date {
     position: absolute;
-    left: 16px;
-    top: 20px;
-    @include media-query((
-      top: (
-        md: 27px,
-        lg: 27px
-      ),
-      left: (
-        md: 24px
-      )
-    ));
+    &__dm {
+      @extend %h4-font;
+      display: block;
+      @include media-query((
+        display: (md: inline-block)
+      ));
+    }
     &__yy {
+      position: absolute;
       display: block;
       opacity: 0.3;
+      top: 20px;
+      left: 0;
+      @extend %caption1-font;
+      @include media-query((
+        display: (md: none)
+      ));
     }
-  }
-  &__time {
-    $ff: $fedra-book;
-    position: absolute;
-    left: 16px;
-    top: 44px;
-    font: 13px/18px $ff;
-    color: rgba(map_get($shades, 'black'), 0.5);
-    @include media-query((
-      font: (
-        lg: 13px/16px $ff
-      ),
-      top: (
-        md: 51px,
-        lg: 57px
-      ),
-      left: (
-        md: 24px
-      )
-    ))
+    &__yy-str {
+      display: none;
+      opacity: 0.3;
+      @extend %h4-font;
+      @include media-query((
+        display: (md: inline-block)
+      ));
+    }
   }
   &__icon {
     background: map_get($gray, '4');
-    margin: 1px 0 0 0;
-    margin-left: -24px;
-    &__address {
-      background: map_get($gray, '4');
-      @include media-query((
-        width: (
-          xs: 49px !important,
-          lg: 57px !important
-        )
-      ));
-      svg {
-        width: 100px !important;
-        position: absolute;
-        left: -13px !important;
-        top: 0 !important;
-        color: map_get($gray, '3');
-        @include media-query((
-          top: (
-            md: 5px,
-            lg: 2px,
-            xl: 0
-          ),
-          left: (
-            md: -8px !important,
-            lg: 1px !important,
-            xl: -2px,
-            xxl: 50px
-          ),
-          width: (
-            md: 90px !important,
-            lg: 96px !important,
-            xl: 96px !important
-          )
-        ));
-      }
-    }
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 70px;
     svg {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
       width: 64px !important;
-      position: absolute;
-      left: 28px;
-      top: 11px;
       color: map_get($gray, '3');
       @include media-query((
-        top: (
-          sm: 10px,
-          md: 5px,
-          lg: 2px,
-          xl: 0
-        ),
-        left: (
-          sm: 58px,
-          md: 46px,
-          lg: 54px,
-          xl: 46px,
-          xxl: 50px
-        ),
         width: (
           md: 90px !important,
           xl: 96px !important
         )
       ));
     }
-    &__gray {
-      background:  map_get($gray, '4');
-    }
-    &__yellow {
-      background: map_get($yellow, 'base');
-    }
     @include media-query((
-      width: (
-        xs: 108px,
-        sm: 133px
+      min-width: (
+        sm: 94px,
+        md: 110px,
       ),
       flex-direction: (sm: row)
     ))
-  }
-  &__icon-yellow {
-    background: map_get($yellow, 'base');
-    margin: 1px 0 0 0;
-    @include media-query((
-      width: (
-        xs: 108px,
-        sm: 133px
-      ),
-      border-bottom-left-radius: (
-        xs: 0,
-        lg: 11px
-      ),
-      border-top-left-radius: (
-        xs: 0,
-        lg: 11px
-      ),
-      flex-direction: (sm: row)
-    ));
-    &__address {
-      @include media-query((
-        width: (
-          xs: 49px !important,
-          lg: 57px !important
-        ),
-        border-bottom-left-radius: (
-          xs: 0,
-          lg: 11px
-        ),
-        border-top-left-radius: (
-          xs: 0,
-          lg: 11px
-        ),
-    ));
-      svg {
-        width: 100px !important;
-        position: absolute;
-        left: -13px !important;
-        top: 0 !important;
-        color: map_get($gray, '3');
-        @include media-query((
-          top: (
-            md: 5px,
-            lg: 2px,
-            xl: 0
-          ),
-          left: (
-            md: -8px !important,
-            lg: 1px !important,
-            xl: -2px,
-            xxl: 50px
-          ),
-          width: (
-            md: 90px !important,
-            lg: 96px !important,
-            xl: 96px !important
-          )
-        ));
-      }
-    }
-    svg {
-      width: 64px !important;
-      position: absolute;
-      left: 28px;
-      top: 11px;
-      color: map_get($gray, '3');
-      @include media-query((
-        top: (
-          sm: 10px,
-          md: 5px,
-          lg: 2px,
-          xl: 0
-        ),
-        left: (
-          sm: 58px,
-          md: 46px,
-          lg: 54px,
-          xl: 46px,
-          xxl: 50px
-        ),
-        width: (
-          md: 90px !important,
-          xl: 96px !important
-        )
-      ));
-    }
-    &__gray {
-      background:  map_get($gray, '4');
-    }
-    &__yellow {
-      background: map_get($yellow, 'base');
-    }
-  }
-  &__icon__yellow svg {
-      color: map_get($yellow, 'other-10');
   }
   &__wrapper {
     display: flex;
     width: 100%;
     z-index: 0;
+    padding-left: 16px;
     background: map_get($shades, 'white');
     margin-top: 1px;
+    @include media-query((
+      padding-left: (
+        md: 24px
+      ),
+    ));
     &__red {
       border-left: 4px solid map_get($red, 'base');
     }
@@ -272,92 +97,41 @@
     }
   }
   &__info {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    @include media-query((
-      flex-direction: (sm: row)
-    ))
+    width: inherit;
   }
   &__title {
-    margin-top: 15px;
-    margin-left: 16px;
-    width: 220px;
+    @extend %h4-font;
+    margin-top: 17px;
+    margin-bottom: 0;
     @include media-query((
-      width: (
-        sm: 260px,
-        md: 400px,
-        lg: 520px,
-        xl: 600px
-      ),
-      margin-left: (
-        sm: 18px,
-        md: 28px,
-        lg: 28px,
-        xl: 28px
-      ),
       margin-top: (
-        sm: 18px,
-        md: 26px,
-        lg: 26px !important
+        sm: 20px,
+        md: 24px,
+        lg: 24px
       ),
+      margin-bottom: (
+        sm: 16px,
+        md: 23px,
+        lg: 28px
+      )
     ));
   }
-  &__message  {
-    font: 14px/19px $fedra-demi;
+  &__type-charge {
+    @extend %caption2-font;
     color: rgba(map_get($shades, 'black'), 0.3);
-    display: none;
-  }
-  &__toggle {
-    &--desktop {
-      display: none;
-      align-items: center;
-      cursor: pointer;
-      @include media-query((
-        font-size: (
-          md: 13px !important
-        ),
-        display: (
-          sm: flex
-        ),
-        margin-top: (
-          sm: 9px,
-          md: 7px,
-          lg: 3px
-        )
-      ));
-      svg {
-        color: rgba(map_get($shades, 'black'), 0.5);
-        width: 16px !important;
-      }
-      a {
-        font: 10px/12px $fedra-demi;
-        letter-spacing: 0.5px;
-        color: rgba(map_get($shades, 'black'), 0.5);
-        text-decoration: none;
-        border-bottom: 1px dashed rgba(map_get($shades, 'black'), 0.5);
-        cursor: pointer;
-        @include media-query((
-          font-size: (
-            sm: 11px,
-            md: 13px,
-            lg: 13px
-          ),
-          line-height: (
-            sm: 16px,
-            md: 16px,
-            lg: 16px
-          ),
-          margin-left: (sm: 4px, lg: 8px)
-        ))
-      }
-    }
+    align-items: center;
+    @include media-query((
+      margin-top: (
+        sm: 9px,
+        md: 7px,
+        lg: 3px
+      )
+    ));
     &--mobile {
       color: rgba(map_get($shades, 'black'), 0.5);
       position: relative;
       display: block;
       top: 24px;
-      right: 31px;
       @include media-query((
         top: (sm: -72px),
         left: (sm: 129px),
@@ -370,28 +144,21 @@
   }
   &__price {
     position: absolute;
+    display: flex;
+    align-items: center;
+    margin-bottom: 6px;
+    justify-content: flex-start;
+    padding-right: 24px !important;
+    @extend %h2-font;
     @include media-query((
-      border-radius: (
-        md: 0
-      ),
-      top: (
-        xs: 40px,
-        sm: 0 !important
-      ),
-      right: (
-        sm: 37px,
-        md: 58px
-      )
+      border-radius: (md: 0),
+      justify-content: (sm: flex-end),
     ));
     &__value {
-      margin-top: 0;
+      margin-left: 0;
       @include media-query((
-      margin-left: (sm: auto),
-      margin-top: (
-        sm: 28px
-      ),
+      margin-left: (sm: 16px),
     ));
-      margin-left: 16px;
       &__red {
         color: map_get($red, 'base');
       }
@@ -401,53 +168,19 @@
     }
     &__unit {
       position: relative;
-      top: -1px;
       opacity: 0.3;
-      font-size: 13px !important;
-      @include media-query((
-        top: (
-          sm: 13px
-        ),
-        font-size: (
-          md: 14px !important,
-          lg: 16px !important,
-        ),
-      ))
+      @extend %body-font;
     }
   }
-  &__list {
-    background-color: map_get($gray, '2');
-    border-radius: 0 0 12px 12px;
-    position: relative;
-    width: 100%;
-    margin-bottom: -7px;
-    margin-top: -7px;
-    padding-top: 7px;
-    box-shadow: none !important;
+  & i.er-icon--rouble {
+    position: absolute;
+    left: 22px;
     @include media-query((
-      width: (lg: 100%),
-      margin-left: (
-        lg: 120px,
+      left: (
+        sm: 48px,
+        md: 44px,
       ),
-      box-shadow: (lg: -4px 4px 4px rgba(0, 0, 0, 0.05)),
-      border: (lg: 1px solid  map_get($gray, '4')),
-      border-top: (lg: none),
-      border-right: (lg: none),
-      border-top-left-radius: (lg: 0 !important),
-      border-top-right-radius: (lg: 0 !important),
-      border-radius: (lg: 12px),
     ));
-    &__address {
-      background-color: map_get($gray, '2');
-      width: 100%;
-      margin-bottom: -7px;
-      margin-top: -7px;
-      padding-top: 7px;
-      @include media-query((
-        margin-left: (
-          lg: 55px,
-        )
-      ));
-    }
+
   }
 }

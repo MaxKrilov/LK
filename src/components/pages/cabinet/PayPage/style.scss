@@ -395,4 +395,24 @@
     ));
   }
 }
+#preloaderlistPayments {
+  position: relative;
+  text-align: start;
+  left: 236px;
+  top: -72px;
+  width: 0;
+  @include media-query((
+    left: (
+      sm: 243px,
+      md: 254px,
+      lg: 278px,
+      xl: 288px
+    ),
+    top: (
+      md: -77px,
+      lg: -79px,
+      xl: -90px
+    ),
+  ));
+}
 

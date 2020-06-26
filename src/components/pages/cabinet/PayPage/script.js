@@ -4,6 +4,8 @@ import ActionMonth from './components/ActionMonth/index.vue'
 import PaymentsOn from './components/PaymentsOn/index.vue'
 import HistoryPay from './HistoryPay/index.vue'
 import PromisePay from './PromisePay/index.vue'
+import { mapState } from 'vuex'
+import moment from 'moment'
 
 export default {
   name: 'pay-page',
@@ -19,9 +21,42 @@ export default {
     pre: 'pay-page',
     isOpenViewer: false,
     invPaymentsForViewer: [],
-    showPanel: false
+    showPanel: false,
+    currentMonth: '',
+    defaultMonth: 1,
+    listPayCurrMonth: [],
+    isVisEmpty: true
   }),
+  created () {
+    this.currentYear = moment().locale('ru').format('YY')
+    if (this.listPayments.length > 0) this.operationsLastMonth()
+  },
+  watch: {
+    listPayments () {
+      this.operationsLastMonth()
+    }
+  },
+  computed: {
+    ...mapState({
+      activeBillingAccountId: state => state.user.activeBillingAccountId,
+      isLoadingList: state => state.payments.isLoadingList,
+      listPayments: state => state.payments.listPayments
+    })
+  },
   methods: {
+    operationsLastMonth () {
+      this.currentMonth = []
+      for (let i = 0; i < this.listPayments.length; i++) {
+        let lp = this.listPayments[i]
+        const str = moment().locale('ru').format('MMMM')
+        let month = str[0].toUpperCase() + str.slice(1)
+        if (lp[0].month === month) {
+          this.currentMonth = lp[0].month
+          this.listPayCurrMonth[0] = lp
+        }
+      }
+      if (!this.isLoadingList) this.isVisEmpty = this.listPayCurrMonth.length !== 0
+    },
     history () {
       this.$router.push('history-pay')
     },

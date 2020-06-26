@@ -1,5 +1,6 @@
 import { mapGetters, mapState } from 'vuex'
 import { SCREEN_WIDTH } from '@/store/actions/variables'
+import { leadingZero } from '@/functions/filters'
 import PromiseOn from '../components/PromiseOn/index.vue'
 import PromiseOff from '../components/PromiseOff/index.vue'
 import PromiseExpired from '../components/PromiseExpired/index.vue'
@@ -30,14 +31,18 @@ export default {
     ...mapGetters([SCREEN_WIDTH]),
     ...mapState({
       marketingBrandId: state => state.user.paymentInfo.marketingBrandId,
+      listProductByAddress: state => state.user.listProductByAddress,
       errPromisePay: state => state.payments.errPromisePay,
       isExpired: state => state.payments.isExpired
     })
   },
   created () {
-    const date = moment().add(3, 'days')
-    this.date = date.format('YYYYMMDD')
-    this.dateWithDot = date.format('DD.MM.YYYY')
+    const date = new Date(new Date().setDate(new Date().getDate() + 3))
+    const dd = String(leadingZero(date.getDate()))
+    const mm = String(leadingZero(date.getMonth() + 1))
+    const yy = String(leadingZero(date.getFullYear() % 100))
+    this.date = '20' + yy + mm + dd
+    this.dateWithDot = moment(this.date).format('DD.MM.YYYY')
     const isPromisePay = this.$store.state.payments.isPromisePay
     const expired = this.$store.state.payments.isExpired
     if (isPromisePay) {
@@ -71,7 +76,8 @@ export default {
         this.err = 'Произошла ошибка. Попробуйте позднее или обратитесь в техническую поддержку'
         const payload = {
           date: this.date,
-          marketingBrandId: this.marketingBrandId
+          marketingBrandId: this.marketingBrandId,
+          locationId: this.listProductByAddress[0].id
         }
         this.$store.dispatch('payments/appCreation', { api: this.$api, payload })
       }

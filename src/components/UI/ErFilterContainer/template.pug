@@ -30,8 +30,10 @@
               er-container.full.container--no-padding
                 er-row
                   er-flex.xs12.sm6
-                    er-button(:color="'yellow'")
-                      | Фильтровать
+                    er-button(
+                      :color="'yellow'"
+                      @click="onClickOutsideFilter"
+                    ) Фильтровать
                   er-flex.xs12.sm6
-                    er-button(:color="'gray'")
+                    er-button(:color="'gray'" @click="clearFilter")
                       | Сбросить фильтр

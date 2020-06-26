@@ -34,6 +34,9 @@ export default {
     onClickOutsideFilter () {
       this.$set(this, 'isFiltersVisible', false)
       this.$emit('click-outside')
+    },
+    clearFilter () {
+      this.$emit('clear-filter-type', 'Все платежи')
     }
   }
 }

@@ -3,7 +3,7 @@ import ErDocumentViewer from '../../../../../blocks/ErDocumentViewer/index'
 import moment from 'moment'
 import ErActivationModal from '../../../../../blocks/ErActivationModal/index'
 
-const IS_ENABLED_AUTOPAY = '9149184122213604836'
+import moment from 'moment'
 
 export default {
   name: 'button-pay',
@@ -24,7 +24,16 @@ export default {
   }),
   created () {
     if (this.isLoading === false) this.$store.dispatch('payments/isLoadingTrue')
-    this.$store.dispatch('payments/promisePayInfo', { api: this.$api })
+    const billingAccount = this.$store.state.user.activeBillingAccount
+    if (billingAccount !== '') {
+      this.$store.dispatch('payments/promisePayInfo', { api: this.$api })
+    }
+
+    const ll = this.$store.state.payments.isLoadedList
+    if (!ll && billingAccount) {
+      const payload = [ moment().subtract('months', 6), +new Date() ]
+      this.$store.dispatch('payments/history', { api: this.$api, payload })
+    }
     this.infoPromisePay()
   },
   computed: {
@@ -34,11 +43,9 @@ export default {
       invPaymentsForViewer: state => state.payments.invPaymentsForViewer,
       isLoading: state => state.payments.isLoading,
       isPromisePay: state => state.payments.isPromisePay,
-      balanceInfo: state => state.user.paymentInfo
-    }),
-    isAutopay () {
-      return this.balanceInfo?.paymentMethod?.id === IS_ENABLED_AUTOPAY
-    }
+      visAutoPay: state => state.payments.visAutoPay,
+      listPayments: state => state.payments.listPayments
+    })
   },
   watch: {
     invPaymentsForViewer () {
@@ -46,6 +53,8 @@ export default {
     },
     id () {
       this.$store.dispatch('payments/promisePayInfo', { api: this.$api })
+      const payload = [ +new Date(new Date().setDate(1)), +new Date() ]
+      this.$store.dispatch('payments/history', { api: this.$api, payload })
     },
     promisePayInterval () {
       this.infoPromisePay()

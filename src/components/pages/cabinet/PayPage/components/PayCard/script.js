@@ -25,8 +25,8 @@ export default {
     rightNext: '',
     delta: [],
     valOpacity: 0,
-    ButtBottImgFirst: '',
-    LastFourDigitsFirst: ''
+    buttBottImgFirst: '',
+    lastFourDigitsFirst: ''
   }),
   created () {
     this.$store.dispatch('payments/isLoadingClean')
@@ -67,11 +67,11 @@ export default {
     cards () {
       if (this.cards.length !== 0) {
         this.changeWidth()
-        this.ButtBottImgFirst = require('@/assets/images/paycard/' + this.cards[0].name + '-butt-1200.png')
-        this.LastFourDigitsFirst = this.cards[0].maskedPan.slice(-4)
+        this.buttBottImgFirst = require('@/assets/images/paycard/' + this.cards[0].name + '-butt-1200.png')
+        this.lastFourDigitsFirst = this.cards[0].maskedPan.slice(-4)
         for (let i = 0; i < this.cards.length; i++) {
           if (this.cards[i].autopay === 1) {
-            this.$store.dispatch('payments/updateAutoPay', { payload: this.cards[i].autopay })
+            this.$store.dispatch('payments/updateAutoPay', this.cards[i].autopay)
           }
         }
       }

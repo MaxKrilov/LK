@@ -1,32 +1,39 @@
 // History-pay
-div.main-content.main-content--h-padding.main-content--top-menu-fix.main-content--top-padding(:class="`${pre}`")
-  div(:class="`${pre}__container-main`")
-    div.caption(:class="`${pre}__back-main`")
-      div.ml-auto
-        er-icon(name="arrow_l" :class="`${pre}__icon-height`")
-        a.caption(href="#" :class="`${pre}__back-main__text`")
-        router-link(to="/lk/payments") Назад
 
-    div.mb-8.d--flex.align-items-start(:class="`${pre}__back-arr`")
-      div(:class="`${pre}__back-main-xs`")
-        router-link(to="/lk/payments")
-          er-icon(name="left")
-
-      h1.fonts--demi(:class="`${pre}__welcome-title`")
-        | История платежей
-
+div(:class="`${pre}`")
+  div(:class="`${pre}__content`")
+    div(:class="`${pre}__container-main`")
+      div(:class="`${pre}__back-arr`")
+        er-page-header(
+        linkText="Назад"
+        title="История платежей и начислений"
+        backlink="/lk/payments"
+        )
+  .wide-content
     FiltersPay(
-      @typeFind="typeFind($event)"
-      @topOperation="topOperation($event)"
+      :year="currentYear"
+      @period="setPeriodFilter($event)"
+      @typePay="setTypePayFilter($event)"
+      :class="`${pre}__filter`"
     )
 
-    er-container.mb-24(full
-      :class="`${pre}__container-operation ${pre}__container-operation${visFilter}`"
-    )
-      ActionMonth(:month="valSelect" page="history")
-
-    div(:class="`${pre}__button-wrapper`")
-      div(:class="`${pre}__button`")
-        er-icon(name="download" :class="`${pre}__download-icon`")
-        er-button(type="submit")
-          | Скачать PDF
+  .main-content
+    div(:class="`${pre}__container-operation`")
+      ActionMonth(v-if="isVisEmpty"
+        :month="currentMonth[index]"
+        :year="currentYear"
+        :posMonth="index"
+        page="pay"
+        :key="value.key"
+        :listPayments="listPaymentsFilter[index]"
+        v-for="(value, index) in listPaymentsFilter"
+      )
+      div(
+        v-if="!isVisEmpty"
+        :class="`${pre}__text-empty`"
+      ) За выбранный период операции отсутствуют
+      er-button(id="preloaderPaymentsHistory"
+        :loading="true"
+        flat
+        v-if="isLoadingList"
+      )
