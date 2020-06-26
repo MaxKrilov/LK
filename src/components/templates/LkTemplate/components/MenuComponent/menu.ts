@@ -65,25 +65,25 @@ const MenuItemList: MenuItem[] = [
       {
         name: 'Дополнительные IP-адреса',
         url: '/lk/internet/ip'
-      },
-      {
-        name: 'Защита от DDoS атак',
-        url: '/lk/internet/ddos/'
       }
+      // {
+      //   name: 'Защита от DDoS атак',
+      //   url: '/lk/internet/ddos/'
+      // }
     ]
   },
-  {
-    name: 'Облачная телефония',
-    icon: 'cloud_telephone',
-    isOpen: false,
-    url: '/lk/oats/promo',
-    subitem: [
-      {
-        name: 'Портал ОАТС',
-        url: '/lk/oats'
-      }
-    ]
-  },
+  // {
+  //   name: 'Облачная телефония',
+  //   icon: 'cloud_telephone',
+  //   isOpen: false,
+  //   url: '/lk/oats/promo',
+  //   subitem: [
+  //     {
+  //       name: 'Портал ОАТС',
+  //       url: '/lk/oats'
+  //     }
+  //   ]
+  // },
   {
     name: 'Видеонаблюдение',
     icon: 'watch',
@@ -109,19 +109,19 @@ const MenuItemList: MenuItem[] = [
       {
         name: 'Сервисы авторизации',
         url: '/lk/wifi/auth'
-      },
-      {
-        name: 'Конструктор страницы авторизации',
-        url: '/lk/wifi/constructor'
-      },
-      {
-        name: 'Контент-фильтрация',
-        url: '/lk/wifi/content'
-      },
-      {
-        name: 'Аналитика',
-        url: '/lk/wifi/analytics'
       }
+      // {
+      //   name: 'Конструктор страницы авторизации',
+      //   url: '/lk/wifi/constructor'
+      // },
+      // {
+      //   name: 'Контент-фильтрация',
+      //   url: '/lk/wifi/content'
+      // },
+      // {
+      //   name: 'Аналитика',
+      //   url: '/lk/wifi/analytics'
+      // }
     ]
   },
   {

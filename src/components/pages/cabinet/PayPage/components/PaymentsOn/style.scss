@@ -1,374 +1,81 @@
 .payments-on {
-  position: relative;
-  background: map_get($gray, '3');
-  z-index: 2;
-  min-height: 395px;
-  @include media-query((
-    min-height: (
-      sm: 373px,
-      md: 462px,
-      lg: 460px,
-      xl: 533px,
-    ),
-  ));
-  &__height {
-    min-height: 336px;
-    @include media-query((
-      min-height: (
-        sm: 287px,
-        md: 373px,
-        xl: 475px,
-      ),
-    ));
-  }
-  &__green {
-    color: map_get($green, 'base') !important;
-  }
-  &__red {
-    color: map_get($red, 'base')  !important;
-  }
-  &__status {
-    &__container {
-      width: 100% !important;
-      position: relative;
-    }
-    &__icon {
-      display: inline-block;
-      position: absolute;
-    }
-    &__row {
-      position: relative;
-      height: 177px;
-      @include media-query((
-        height: (
-          sm: 101px,
-          md: 165px,
-        ),
-      ));
-    }
-    &__icon-height svg {
+  &__icon {
+    svg {
       width: 64px !important;
-      left: 0;
-      top: 0;
-      @include media-query((
-        width: (
-          md: 80px !important,
-          lg: 96px !important,
-          xl: 128px !important,
-        ),
-      ));
-    }
-    &__pos {
-      display: inline-block;
-      position: absolute;
-      margin-left: 73px;
-      top: 0;
-      @include media-query((
-        margin-left: (
-          sm: 78px,
-          md: 96px,
-          lg: 115px,
-          xl: 145px
-        ),
-        top: (md: 16px),
-      ));
-    }
-    &__info {
-      position: absolute;
-      font-family: $fedra-demi;
-      &__icon svg {
-        width: 16px !important;
-        margin-right: 5px;
+
+      @include min-breakpoint('md') {
+        width: 80px !important;
       }
-      &__span {
-        font-family: $fedra-demi !important;
+
+      @include min-breakpoint('lg') {
+        width: 96px !important;
+      }
+
+      @include min-breakpoint('xl') {
+        width: 128px !important;
       }
     }
-    &__butt {
-      position: relative;
-      top: 36px;
-      max-width: 127% !important;
-      width: 288px !important;
-      @include media-query((
-        max-width: (sm: 100% !important),
-        width: (
-          sm: 208px !important,
-          md: 205px !important,
-        ),
-        top: (
-          sm: 86px,
-          md: 59px,
-          xl: 61px,
-        ),
-      ));
+
+    &--green {
+      color: map-get($green, 'base');
     }
-    &__email {
-      font: 13px/18px $fedra-book;
-      color: rgba(map_get($shades, 'black'), 0.8);
-      letter-spacing: -0.25px;
-      @include media-query((
-        font-size: (
-          md: 14px,
-        ),
-        line-height: (
-          md: 19px,
-        ),
-        letter-spacing: (
-          md: -1px
-        )
-      ))
+
+    &--red {
+      color: map-get($red, 'base');
+    }
+
+    &--yellow {
+      color: map-get($yellow, 'base');
     }
   }
-  &__butt {
-    position: relative;
-    &__left {
-      position: relative;
-      top: -51px;
-      left: 10px;
-      max-width: 127% !important;
-      width: 360px !important;
-      @include media-query((
-        max-width: (sm: 100% !important),
-        width: (sm: 179px !important),
-        left: (
-          sm: -81px
-        ),
-        top: (sm: 86px),
-      ));
+
+  &__status {
+    &__title {
+      @extend %h2;
     }
-    &__right {
-      top: -30px;
-      left: 35px;
-      @include media-query((
-        left: (
-          sm: 109px,
-          md: 202px,
-          xl: -402px
-        ),
-        top: (
-          sm: 50px,
-          xl: 93px
-        ),
-      ));
-    }
-    &__text {
-      font: 14px/17px $fedra-demi !important;
-      color: rgba(map_get($shades, 'black'), 0.8) !important;
-      margin-top: 6px;
-      margin-bottom: 9px;
-      @include media-query((
-        font-size: (
-          md: 14px,
-        ),
-        line-height: (
-          md: 19px,
-        ),
-        letter-spacing: (
-          md: -1px
-        )
-      ))
-    }
-    &__icon svg {
-      width: 32px !important;
-      color: map_get($yellow, 'base');
-      margin-right: 16px;
-    }
-    &__container {
-      position: relative;
-      left: 0;
-      top: 156px;
-      padding-left: 0 !important;
-      @include media-query((
-        left: (
-          sm: 81px,
-        ),
-        top: (
-          sm: 18px,
-          md: 50px,
-          lg: 52px,
-          xl: 82px
-        ),
-      ));
-    }
-  }
-  &__back-main {
-    display: none;
-    &__text {
-      text-decoration: none;
-      &:hover {
-        color: map_get($shades, 'black');
+
+    &__description {
+      margin-left: #{64 + 16}px;
+
+      @include min-breakpoint('md') {
+        margin-left: #{80 + 16}px;
+      }
+
+      @include min-breakpoint('lg') {
+        margin-left: #{96 + 16}px;
+      }
+
+      @include min-breakpoint('xl') {
+        margin-left: #{128 + 16}px;
       }
     }
-    @include media-query((
-      margin-top: (
-        xl: 11px
-      ),
-      margin-bottom: (lg: 14px),
-      display: (xl: block),
-      padding-right: (lg: 16px !important)
-    ));
-    &:hover {
-      color: map_get($yellow, 'base');
+  }
+
+  &__button-chat {
+    text-align: center;
+
+    @include min-breakpoint('sm') {
+      text-align: left;
+    }
+
+    > i > svg {
+      width: 32px;
+      color: map-get($yellow, 'base');
+    }
+
+    a {
+      cursor: pointer;
     }
   }
-  &__container-main {
-    padding: 0 !important;
-    margin-left: 0;
-    margin-bottom: -7px;
-    @include media-query((
-      margin-left: (
-        sm: 0,
-        md: 0,
-        lg: 0,
-      ),
-      margin-bottom: (
-        sm: -7px,
-      ),
-      max-width: (
-        xs: 480px !important,
-        sm: 640px !important,
-        md: 960px !important,
-        lg: 1200px !important,
-      ),
-      width: (xl: 108%)
-    ));
+
+  &__action {
+    width: 100%;
   }
-  &__icon-height svg {
-    height: 16px;
-    margin-left: -7px;
-  }
-  &__back-arr {
-    position: relative;
-    margin-left: -4px;
-    margin-bottom: 23px;
-    @include media-query((
-      top: (
-        md: 29px,
-        lg: 12px,
-        xl: 0
-      ),
-      margin-left: (
-        sm: -6px,
-        md: -10px,
-        lg: -17px,
-        xl: 0,
-      ),
-      padding-left: (
-        xl: 0,
-      ),
-      margin-bottom: (
-        md: 58px,
-        lg: 32px,
-        xl: 36px,
-      )
-    ));
-  }
-  &__back-main-xs svg {
-    display: block;
-    height: 12px;
-    cursor: pointer;
-    margin-top: 25px;
-    color: rgba(map_get($yellow, 'base'), 0.8);
-    &__text {
-      text-decoration: none;
+
+  &__action.success,
+  &__action.error {
+    @include min-breakpoint('sm') {
+      max-width: 208px;
     }
-    @include media-query((
-      display: (xl: none),
-      margin-top: (
-        md: 27px,
-      ),
-    ));
-  }
-  &__welcome-title {
-    width: 256px;
-    margin-bottom: 22px;
-    margin-top: 15px;
-    letter-spacing: -1px;
-    @include media-query((
-      margin-top: (
-        xl: 0,
-      ),
-      width: (
-        sm: 456px
-      ),
-      margin-bottom: (
-        sm: 24px,
-        lg: 37px,
-        xl: 28px
-      )
-    ))
-  }
-  &__description {
-    @extend %body-font;
-    color: rgba(map_get($shades, 'black'), 0.8);
-  }
-  &__loading {
-    position: relative;
-    top: -65px;
-    width: 48px;
-    @include media-query((
-      width: (
-        sm: 40px,
-        md: 56px,
-        lg: 30px,
-        xl: 56px
-      ),
-      top: (
-        sm: -61px,
-        md: -58px,
-        lg: -63px,
-        xl: -21px
-      )
-    ));
-  }
-  &__button-time {
-    display: inline-block;
-    position: absolute;
-    left: 108px;
-    top: 11px;
-  }
-}
-#preloaderGeneral .er-button__loading svg {
-  height: 56px;
-  width: 56px;
-  color: map_get($yellow, 'base');
-  @include media-query((
-    height: (
-      md: 64px,
-      lg: 78px,
-      xl: 100px
-    ),
-    width: (
-      md: 64px,
-      lg: 78px,
-      xl: 100px
-    )
-  ))
-}
-#preloaderButton {
-  position: absolute;
-  left: -29px;
-  display: inline-block;
-  height: 36px;
-  width: 156px;
-  color: map_get($shades, 'black');
-  background: map_get($shades, 'transparent');
-  @include media-query((
-    height: (
-      md: 64px,
-      lg: 78px,
-      xl: 32px
-    ),
-  ));
-  & .er-button__loading svg {
-    height: 36px;
-    color: map_get($shades, 'black');
-    @include media-query((
-      height: (
-        md: 64px,
-        lg: 78px,
-        xl: 32px
-      ),
-    ))
   }
 }

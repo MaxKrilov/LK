@@ -541,15 +541,17 @@ export default class TariffComponent extends Vue {
     }
 
     this.isLoadingConnect = true
-    this.$store.dispatch('salesOrder/createSaleOrder', {
-      locationId,
-      bpi,
-      offerId,
-      chars: char,
-      productCode: this.isTurboActivation
-        ? OFFER_CODE_TEMP_SPEED_INCREASE
-        : OFFER_CODE_SPEED_INCREASE
-    })
+    this.$store.dispatch(
+      `salesOrder/${this.isTurboActivation ? 'createSaleOrder' : 'createModifyOrder'}`,
+      {
+        locationId,
+        bpi,
+        offerId,
+        chars: char,
+        productCode: this.isTurboActivation
+          ? OFFER_CODE_TEMP_SPEED_INCREASE
+          : OFFER_CODE_SPEED_INCREASE
+      })
       .then(() => {
         this.isShowOfferDialog = true
         this.isOffering = true

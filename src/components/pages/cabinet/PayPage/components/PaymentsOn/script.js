@@ -1,4 +1,10 @@
 import { mapState } from 'vuex'
+import { SCREEN_WIDTH } from '../../../../../../store/actions/variables'
+import {
+  BREAKPOINT_LG,
+  BREAKPOINT_SM,
+  BREAKPOINT_XL
+} from '../../../../../../constants/breakpoint'
 
 export default {
   name: 'payments-on',
@@ -39,8 +45,20 @@ export default {
   computed: {
     ...mapState({
       statusPay: state => state.payments.pay_status,
-      activeBillingAccountId: state => state.user.activeBillingAccountNumber
-    })
+      activeBillingAccountId: state => state.user.activeBillingAccountNumber,
+      screenWidth: state => state.variables[SCREEN_WIDTH]
+    }),
+    computedProgressCircular () {
+      if (this.screenWidth < BREAKPOINT_SM) {
+        return 64
+      } else if (this.screenWidth < BREAKPOINT_LG) {
+        return 80
+      } else if (this.screenWidth < BREAKPOINT_XL) {
+        return 96
+      } else {
+        return 128
+      }
+    }
   },
   methods: {
     addfunds () {
