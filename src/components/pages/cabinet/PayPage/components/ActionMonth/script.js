@@ -5,17 +5,19 @@ export default {
   components: {
     Operations
   },
-  props: ['month', 'page'],
+  props: ['month', 'posMonth', 'year', 'page', 'listPayments'],
   data: () => ({
     pre: 'action-month',
-    height: '',
-    year: '17'
+    number: 0
   }),
-  updated () {
-    if (this.month === 'Адрес') {
-      this.height = '__address'
-    } else {
-      this.height = ''
+  created () {
+    if (this.listPayments !== undefined) {
+      this.number = this.listPayments.length
+    }
+  },
+  watch: {
+    listPayments () {
+      this.number = this.listPayments.length
     }
   }
 }

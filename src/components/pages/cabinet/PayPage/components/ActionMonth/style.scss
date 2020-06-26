@@ -2,13 +2,9 @@
   &__service {
     &__date {
       position: absolute;
-      font: 13px/18px $fedra-book;
-      letter-spacing: 0.25px;
+      @extend %body-font;
       color: map_get($shades, 'black');
       @include media-query((
-        font-size: (lg: 16px),
-        line-height: (lg: 21px),
-        letter-spacing: (lg: -0.5px),
         margin-top: (
           xs: 20px,
           sm: 23px,

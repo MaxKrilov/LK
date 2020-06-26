@@ -2,14 +2,8 @@
   background: map_get($gray, '3');
   &__container-main {
     padding: 0 !important;
-    margin-left: 0;
     margin-bottom: -7px;
     @include media-query((
-      margin-left: (
-        sm: 0,
-        md: 0,
-        lg: 0,
-      ),
       margin-bottom: (
         sm: -7px,
       ),

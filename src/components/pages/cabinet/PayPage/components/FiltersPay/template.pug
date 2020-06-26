@@ -1,50 +1,49 @@
 // Filters Pay
 
 div(:class="`${pre}`")
-  er-report-filter.mb-64(
+  er-report-filter(
     :period="reportPeriod"
-    :typesFind="typeFind"
-    :servicesOrCities="selected"
     :typesPay="typePay"
-    :typeFind="firstTypeFind"
-    :servOrCit="typeSelect"
     :typePay="firstTypePay"
     @change-period="changePeriod($event)"
-    @change-typeFind="changeType($event)"
-    @change-servOrCit="e => { typeSelect = Object.assign({}, e) }"
-    @change-typePay="e => { firstTypePay = Object.assign({}, e) }"
+    @change-typePay="changeTypePay($event)"
+    @clear-filter-type="clearFilterType"
+    @first-period="firstPeriod"
   )
-  div(
-    :class="`${pre}__arr${padding} ${pre}__arr${topFilter}`"
-    :style="'width: ' + widthContainer"
-  )
+  .wide-content
     div(
-      :class="`${pre}__icon-arr`"
-      @click="moveMonth('left')"
-      v-if="visArr"
+      :class="`${pre}__arr`"
+      v-if="isVisibleListMonth"
     )
-      er-icon(name="corner_down" :class="`${pre}__left_big`")
-
-    div(:class="`${pre}__months-filter-container`" id="bgg")
       div(
-        :style="'margin-left: ' + margLeft"
-        :class="`${pre}__months-filter-move`"
+        :class="`${pre}__icon-arr`"
+        @click="moveMonth('left')"
+        v-if="visArr"
       )
-        span(
-          v-for="month in typePeriod"
-          :class="`${pre}__months-filter__span`"
+        div(:class="`${pre}__left_big__pos`")
+          er-icon(name="corner_down" :class="`${pre}__left_big`")
+
+      div(
+        :class="`${pre}__months-filter-container`"
+      ).main-content.main-content--h-padding
+        div(
+          :style="'margin-left: ' + margLeft"
+          :class="`${pre}__months-filter-move`"
         )
-          er-button(
-            type="button",
-            flat=true,
-            :class="`${pre}__months-filter__text ${pre}__months-filter__${month.active}`"
-            @click="selectMonth($event)"
+          span(
+            v-for="month in typePeriod"
+            :class="`${pre}__months-filter__span`"
           )
-            | {{ month.month }}
-    div(
-      :class="`${pre}__icon-arr ${pre}__icon-arr__right`"
-      @click="moveMonth('right')"
-      v-if="visArr"
-    )
-      er-icon(name="corner_down" :class="`${pre}__right_big`")
+            er-button(
+              type="button",
+              flat=true,
+              :class="`${pre}__months-filter__text ${pre}__months-filter__${month.active}`"
+              @click="selectMonth($event)"
+            ) {{ month.month }}
+      div(
+        :class="`${pre}__icon-arr ${pre}__icon-arr__right`"
+        @click="moveMonth('right')"
+        v-if="visArr"
+      )
+        er-icon(name="corner_down" :class="`${pre}__right_big`")
 

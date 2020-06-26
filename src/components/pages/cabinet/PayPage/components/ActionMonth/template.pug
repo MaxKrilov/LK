@@ -3,27 +3,20 @@
 div
   div.d--flex.align-items-center(
     :class="`${pre}__service__date`"
-    v-if="page === 'pay'"
   )
-    div.mr-8(:class="`${pre}__service__date__dm`")
-      | {{month}}
+    div.mr-8(
+      :class="`${pre}__service__date__dm`"
+    ) {{month}}
     div(:class="`${pre}__service__date__yy`")
       | '{{year}}
-  div(:class="`${pre}__height${height}`")
+  div(:class="`${pre}__height`")
   er-row(no-gutters)
-    er-flex.mb-16(xs12 v-if="month !=='Адрес'")
+    er-flex.mb-16(xs12)
       Operations(
         :month="month"
         :index="index"
-        v-for="(value, index) in 5"
         :key="index"
-      )
-
-    er-flex.mb-16(xs12 v-else)
-      Operations(
-        :month="month"
-        :index="index + 5"
-        :key="index"
-        v-for="(value, index) in 5"
+        :items="listPayments[index]"
+        v-for="(_, index) in number"
       )
 

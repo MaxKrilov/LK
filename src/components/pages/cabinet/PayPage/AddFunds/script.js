@@ -95,17 +95,6 @@ export default {
     visAutoPay () {
       this.openConfirmAutoPay = this.errDelAutoPay
       this.visConfirmAutoPay = this.errDelAutoPay
-      if (this.visAutoPay) {
-        if (!this.errDelAutoPay && this.visAutoPay === 0) {
-          this.checkAutoPay = 'Подключить автоплатёж'
-          this.visAutoPay = false
-        }
-      } else {
-        if (!this.errDelAutoPay && this.visAutoPay !== 0) {
-          this.checkAutoPay = 'Автоплатёж'
-          this.visAutoPay = true
-        }
-      }
     },
     clientInfo () {
       this.listEmail()

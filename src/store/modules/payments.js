@@ -1,4 +1,5 @@
 import { ERROR_MODAL } from '../actions/variables'
+import moment from 'moment'
 
 const state = {
   numCard: 0,
@@ -52,6 +53,8 @@ const state = {
   bindingId: '',
   isLoading: null,
   isLoadingButt: false,
+  isLoadingList: true,
+  isLoadedList: false,
   invPaymentsForViewer: [
     {
       id: 0,
@@ -68,7 +71,8 @@ const state = {
   isPromisePay: false,
   isExpired: false,
   isDebt: false,
-  appCreation: ''
+  appCreation: '',
+  listPayments: []
 }
 const getters = {}
 const actions = {
@@ -103,10 +107,11 @@ const actions = {
     commit('hideDelCard')
   },
   history: async ({ commit, rootGetters, rootState }, { api, payload }) => {
-    const { toms } = rootGetters['auth/user']
+    commit('isLoadingList')
+    const toms = rootGetters['auth/getTOMS']
     const { activeBillingAccount } = rootState.user
     try {
-      const result = await api
+      const listAccrual = await api
         .setWithCredentials()
         .setData({
           clientId: toms,
@@ -115,7 +120,17 @@ const actions = {
           id: activeBillingAccount
         })
         .query('/payment/billing/history')
-      console.log('result', result)
+
+      const listAccounts = await api
+        .setWithCredentials()
+        .setData({
+          clientId: toms,
+          accountId: activeBillingAccount
+        })
+        .query('/billing/management/bill')
+      const result = [listAccrual, listAccounts]
+      commit('history', result)
+
       return result
     } catch (e) {
       commit(ERROR_MODAL, true, { root: true })
@@ -304,7 +319,7 @@ const actions = {
     }
   },
   promisePayInfo: async ({ commit, rootGetters, rootState }, { api }) => {
-    const { toms } = rootGetters['auth/user']
+    const toms = rootGetters['auth/getTOMS']
     const { activeBillingAccount } = rootState.user
     try {
       const checkPromisePay = await api
@@ -327,11 +342,10 @@ const actions = {
       commit('promisePayInfo', [checkPromisePay, checkDebt])
     } catch (e) {
       commit('isLoadingClean')
-      commit(ERROR_MODAL, true, { root: true })
     }
   },
   appCreation: async ({ commit, rootGetters, rootState }, { api, payload }) => {
-    const { toms } = rootGetters['auth/user']
+    const toms = rootGetters['auth/getTOMS']
     const { activeBillingAccount } = rootState.user
     commit('isLoading')
     try {
@@ -348,7 +362,7 @@ const actions = {
         .setData({
           clientId: toms,
           billingAccountId: activeBillingAccount,
-          locationId: result.locationIds,
+          locationId: payload.locationId,
           id: result.id
         })
         .query('/order/management/promised-payment')
@@ -369,7 +383,7 @@ const actions = {
     }
   },
   appSend: async ({ commit, rootGetters }, { api, date }) => {
-    const { toms } = rootGetters['auth/user']
+    const toms = rootGetters['auth/getTOMS']
     commit('isLoadingButt')
     try {
       const result = await api
@@ -387,7 +401,7 @@ const actions = {
     }
   },
   appCancel: async ({ commit, rootGetters }, { api }) => {
-    const { toms } = rootGetters['auth/user']
+    const toms = rootGetters['auth/getTOMS']
     try {
       const result = await api
         .setWithCredentials()
@@ -404,11 +418,103 @@ const actions = {
   }
 }
 const mutations = {
+  history: (state, result) => {
+    const charge = result[0]
+    const bill = result[1]
+    const lenBill = bill.length
+    const lenCharge = charge.length
+    let listAccounts = []
+    let date, chargePeriod, year, title, descr, value, month, dateMlsec, j, lenDetail
+    for (let i = 0; i < lenBill; i++) {
+      lenDetail = bill[i].detail.length
+      month = moment(+bill[i].billDate).locale('ru').format('MMMM')
+      let posArrBill = listAccounts.findIndex((item, index) => item[index].month === month)
+      if (posArrBill === -1) {
+        posArrBill = listAccounts.length
+        listAccounts[posArrBill] = []
+      }
+      for (let n = 0; n < lenDetail; n++) {
+        const str = moment(+bill[i].billDate).locale('ru').format('MMMM')
+        month = str[0].toUpperCase() + str.slice(1)
+        dateMlsec = +bill[i].billDate
+        date = moment(+bill[i].billDate).format('DD.MM.')
+        year = moment(+bill[i].billDate).format('YY')
+        title = bill[i].detail[n].chargeName
+        chargePeriod = bill[i].detail[n].chargePeriod
+        descr = bill[i].detail[n].typeCharge
+        value = bill[i].detail[n].chargeCost
+        if (value > 0) {
+          value = '-' + value
+        } else {
+          value = '+' + String(value).slice(1)
+        }
+        listAccounts[posArrBill].unshift({
+          key: `${i}${n}`,
+          icon: 'rouble',
+          dateMlsec: dateMlsec,
+          date: date,
+          chargePeriod: chargePeriod,
+          year: year,
+          title: title,
+          descr: descr,
+          value: value,
+          month: month
+        })
+      }
+    }
+    for (let k = 0; k < lenCharge; k++) {
+      const str = moment(charge[k].paymentDate).locale('ru').format('MMMM')
+      month = str[0].toUpperCase() + str.slice(1)
+      dateMlsec = charge[k].paymentDate
+      date = moment(charge[k].paymentDate).format('DD.MM.')
+      year = moment(charge[k].paymentDate).format('YY')
+      title = 'Пополнение счета'
+      descr = charge[k].paymentMethod.name
+      value = '+' + charge[k].paymentAmount
+      let posArrCharge = listAccounts.findIndex((item, index) => item[index].month === month)
+      if (posArrCharge === -1) {
+        posArrCharge = listAccounts.length
+        listAccounts[posArrCharge] = []
+        j = 0
+      } else {
+        j = listAccounts[posArrCharge].length
+      }
+      listAccounts[posArrCharge][j] = {
+        key: `${posArrCharge}${j}`,
+        icon: 'rouble',
+        dateMlsec: dateMlsec,
+        date: date,
+        chargePeriod: '',
+        year: year,
+        title: title,
+        descr: descr,
+        value: value,
+        month: month
+      }
+    }
+    for (let i = 0; i < listAccounts.length; i++) {
+      listAccounts[i].sort(function (a, b) {
+        if (a.dateMlsec < b.dateMlsec) {
+          return 1
+        }
+        if (a.dateMlsec > b.dateMlsec) {
+          return -1
+        }
+        return 0
+      })
+    }
+    state.listPayments = listAccounts
+    state.isLoadingList = false
+    state.isLoadedList = true
+  },
   updateAutoPay: (state, payload) => {
     state.visAutoPay = payload
   },
   isLoadingClean: (state) => {
     state.isLoading = false
+  },
+  isLoadingList: (state) => {
+    state.isLoadingList = true
   },
   isLoadingButtClean: (state) => {
     state.isLoadingButt = false
