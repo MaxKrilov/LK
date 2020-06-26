@@ -1,13 +1,15 @@
 import { mapState } from 'vuex'
 import ErDocumentViewer from '../../../../../blocks/ErDocumentViewer/index'
 import moment from 'moment'
+import ErActivationModal from '../../../../../blocks/ErActivationModal/index'
 
 const IS_ENABLED_AUTOPAY = '9149184122213604836'
 
 export default {
   name: 'button-pay',
   components: {
-    ErDocumentViewer
+    ErDocumentViewer,
+    ErActivationModal
   },
   props: ['timer'],
   data: () => ({
@@ -17,7 +19,8 @@ export default {
     minute: '',
     widthPgsBar: '',
     isOpenViewer: false,
-    isExpired: true
+    isExpired: true,
+    isNotAccessInvPayment: false
   }),
   created () {
     if (this.isLoading === false) this.$store.dispatch('payments/isLoadingTrue')
@@ -51,14 +54,20 @@ export default {
       this.infoPromisePay()
     },
     isOpenViewer (val) {
-      if (val && this.invPaymentsForViewer[0].filePath === '') {
+      if (Number(this.balanceInfo.balance) >= 0) {
+        this.isNotAccessInvPayment = true
+      } else if (val && this.invPaymentsForViewer[0].filePath === '') {
         this.$store.dispatch(`payments/invPayment`, { api: this.$api })
       }
     }
   },
   methods: {
     invPayment () {
-      this.$store.dispatch('payments/invPayment', { api: this.$api })
+      if (Number(this.balanceInfo.balance) >= 0) {
+        this.isNotAccessInvPayment = true
+      } else {
+        this.$store.dispatch('payments/invPayment', { api: this.$api })
+      }
     },
     infoPromisePay () {
       if (!this.isPromisePay) {
@@ -74,6 +83,17 @@ export default {
         this.isExpired = interval > 0
         this.$store.dispatch('payments/isExpired', { payload: !this.isExpired })
       }
+    },
+    getEventsForInvPayments (on) {
+      if (Number(this.balanceInfo.balance) >= 0) {
+        return {
+          click: (e) => {
+            e.preventDefault()
+            this.isNotAccessInvPayment = true
+          }
+        }
+      }
+      return on
     }
   }
 }

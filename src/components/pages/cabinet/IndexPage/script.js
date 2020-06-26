@@ -3,13 +3,15 @@ import { leadingZero, price } from '../../../../functions/filters'
 import ProductItemComponent from './blocks/ProductItemComponent/index.vue'
 import ErDocumentViewer from '../../../blocks/ErDocumentViewer/index.vue'
 import ErToastStack from '@/components/blocks/ErToastStack/index'
+import ErActivationModal from '../../../blocks/ErActivationModal/index'
 
 export default {
   name: 'index-page',
   components: {
     ProductItemComponent,
     ErDocumentViewer,
-    ErToastStack
+    ErToastStack,
+    ErActivationModal
   },
   data: () => ({
     pre: 'index-page',
@@ -23,7 +25,8 @@ export default {
     tmpActive: false,
     isOpenViewer: false,
     trackerIntervalPromisePay: 1,
-    idIntervalPromisePay: 0
+    idIntervalPromisePay: 0,
+    isNotAccessInvPayment: false
   }),
   computed: {
     getCarouselItem () {
@@ -104,11 +107,24 @@ export default {
     },
     onClickToast (id) {
       // ещё не реализовано
+    },
+    getEventsForInvPayments (on) {
+      if (Number(this.balanceInfo.balance) >= 0) {
+        return {
+          click: (e) => {
+            e.preventDefault()
+            this.isNotAccessInvPayment = true
+          }
+        }
+      }
+      return on
     }
   },
   watch: {
     isOpenViewer (val) {
-      if (val && this.invPaymentsForViewer[0].filePath === '') {
+      if (Number(this.balanceInfo.balance) >= 0) {
+        this.isNotAccessInvPayment = true
+      } else if (val && this.invPaymentsForViewer[0].filePath === '') {
         this.$store.dispatch(`payments/invPayment`, { api: this.$api })
       }
     },

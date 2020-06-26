@@ -31,7 +31,7 @@ er-row(no-gutters)
               ref="viewer"
             )
               template(v-slot:activator="{ on }")
-                a(href="#", v-on="on")
+                a(href="#", v-on="getEventsForInvPayments(on)")
                   h4(:class="`${pre}__card-title`")
                     | Счет на оплату
                   div.d--flex.align-items-end.mt-auto
@@ -100,6 +100,12 @@ er-row(no-gutters)
                 div.ml-auto
                   er-icon.color--yellow-base(name="doc_edit" :class="`${pre}__card-icon`")
 
-
-
-
+    er-activation-modal(
+      type="success"
+      v-model="isNotAccessInvPayment"
+      title="Запрос счёта на оплату недоступен недоступен"
+      :isShowActionButton="false"
+      cancel-button-text="Спасибо"
+    )
+      template(slot="description")
+        | У вас положительный баланс, поэтому запрос информационного счёта недоступен! Приятного пользования услугами Дом.ru
