@@ -1,6 +1,6 @@
 import MenuComponent from './components/MenuComponent/index'
 import ErFooter from '@/components/blocks/ErFooter'
-import { mapGetters, mapState } from 'vuex'
+import { mapGetters, mapState, mapMutations } from 'vuex'
 import ErErrorModal from '@/components/blocks/ErErrorModal'
 
 import ChatWrap from './components/ChatWrap'
@@ -21,11 +21,14 @@ export default {
     showChatPanel: false
   }),
   methods: {
+    ...mapMutations('chat', [
+      'openChat', 'closeChat'
+    ]),
     onOpenChat () {
-      this.showChatPanel = true
+      this.openChat()
     },
     onCloseChat () {
-      this.showChatPanel = false
+      this.closeChat()
     },
     onCloseNotificationPanel () {
       this.showNotificationPanel = false
@@ -37,6 +40,9 @@ export default {
   computed: {
     ...mapGetters('auth', [
       'user'
+    ]),
+    ...mapGetters('chat', [
+      'isOpenChat'
     ]),
     ...mapState({
       'auth': state => state.auth

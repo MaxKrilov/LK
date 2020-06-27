@@ -34,7 +34,7 @@
           +contactsPhone
           .b-contact-info__chat
             .caption.mb-24 On-line обращение
-            er-button(flat pre-icon="chat")
+            er-button(flat pre-icon="chat" @click="openChat()")
               | Начать чат
         .b-contact-info--desktop__column.pl-32
           .icon.mb-24
