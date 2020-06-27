@@ -2,12 +2,16 @@ import { GET_CHAT_TOKEN, CHAT_TOKEN_SUCCESS, CHAT_TOKEN_ERROR } from '../actions
 
 const state = {
   chatToken: undefined,
+  isOpenChat: false,
   chatTokenError: false
 }
 
 const getters = {
   getChatToken (state) {
     return state.chatToken
+  },
+  isOpenChat (state) {
+    return state.isOpenChat
   }
 }
 
@@ -39,6 +43,12 @@ const mutations = {
   },
   [CHAT_TOKEN_ERROR]: (state, payload) => {
     state.chatTokenError = payload
+  },
+  closeChat: (state) => {
+    state.isOpenChat = false
+  },
+  openChat: (state) => {
+    state.isOpenChat = true
   }
 }
 

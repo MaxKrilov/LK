@@ -4,7 +4,7 @@ import ErPhoneSelect from '../../../../../blocks/ErPhoneSelect'
 import ErTimePickerRange from '../../../../../blocks/ErTimePickerRange'
 import ErTextareaWithFile from '../../../../../blocks/ErTextareaWithFile'
 import ErActivationModal from '../../../../../blocks/ErActivationModal/index'
-import { mapState, mapGetters } from 'vuex'
+import { mapState, mapGetters, mapMutations } from 'vuex'
 import { SCREEN_WIDTH } from '../../../../../../store/actions/variables'
 import { BREAKPOINT_XL } from '../../../../../../constants/breakpoint'
 import { CREATE_REQUEST } from '../../../../../../store/actions/request'
@@ -17,6 +17,11 @@ import { LIST_COMPLAINT_THEME } from '../../../../../../store/actions/dictionary
     ErTimePickerRange,
     ErTextareaWithFile,
     ErActivationModal
+  },
+  methods: {
+    ...mapMutations('chat', [
+      'openChat'
+    ])
   },
   computed: {
     ...mapGetters('user', [

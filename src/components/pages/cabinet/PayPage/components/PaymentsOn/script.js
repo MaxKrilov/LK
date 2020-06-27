@@ -1,4 +1,4 @@
-import { mapState } from 'vuex'
+import { mapState, mapMutations } from 'vuex'
 import { SCREEN_WIDTH } from '../../../../../../store/actions/variables'
 import {
   BREAKPOINT_LG,
@@ -61,6 +61,9 @@ export default {
     }
   },
   methods: {
+    ...mapMutations('chat', [
+      'openChat'
+    ]),
     addfunds () {
       this.$router.push('/lk/add-funds')
     },
