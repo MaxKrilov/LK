@@ -162,18 +162,15 @@ export default class DigitalSigningDocument extends Vue {
               filePath: _filePath
             })
               .then(() => {
-                const successHandler = () => {
+                const successHandler = (text?: string) => {
                   this.internalValue = false
                   this.isSigningDocument = false
                   this.linkDownload = `data:${mime.lookup(this.signingDocument.fileName)};base64,${_signDocument}`
                   this.isShowListCertificateDialog = false
                   this.isSuccess = true
+                  text && (this.errorText = text)
                   this.$emit('success')
                 }
-                /* if (this.signingDocument?.letterOfGuarantee?.toLowerCase() === 'yes') {
-                  successHandler()
-                  return
-                } */
                 this.$store.dispatch(`fileinfo/changeContractStatus`, {
                   api: this.$api,
                   contractId: this.signingDocument.relatedTo.id,
@@ -192,7 +189,7 @@ export default class DigitalSigningDocument extends Vue {
                     if (['success', 'not_executed'].includes(submitStatus.submitStatus.toLowerCase())) {
                       successHandler()
                     } else {
-                      this.errorHandler(submitStatus.submitError?.replace(/<\/?[^>]+>/g, '') || 'Ошибка при смене статуса')
+                      successHandler(submitStatus.submitError?.replace(/<\/?[^>]+>/g, '') || 'Ошибка при смене статуса')
                     }
                   })
                   .catch(() => {
