@@ -574,6 +574,7 @@ const mutations = {
     if (!payload.hasOwnProperty('promisePaymentActive')) return
     const { pymtSchdCreateDt, schdPymtDueDt } = payload.promisePaymentActive.promisePaymentDetails[0]
     if (!pymtSchdCreateDt || !schdPymtDueDt) return
+    if (Number(new Date()) > (new Date(moment(schdPymtDueDt, 'YYYYMMDD')))) return
     state.isPromisePay = true
     state.promisePayStart = moment(pymtSchdCreateDt, 'YYYYMMDD')
     state.promisePayEnd = moment(schdPymtDueDt, 'YYYYMMDD')

@@ -186,107 +186,88 @@ export default {
           this.modelData.passportIssuedBy = this._.head(response.suggestions)?.value
         })
     },
-    async __actionSubmit () {
-      logInfo('Before Validate')
-      if (!this.$refs.form.validate()) return
-      logInfo('Validate has been successed')
-      let addressId
-      if (!this.modelData.addressCompanyId) {
-        try {
-          addressId = await this.$store.dispatch('address/getAddressByFiasId', {
-            fiasId: this.modelData.addressCompany.data.fias_id
-          })
-          addressId = {
-            name: addressId.name,
-            description: '',
-            id: addressId.id
-          }
-        } catch (er) {
-          this.isFiasError = true
+    __actionSubmit () {
+      return new Promise((resolve, reject) => {
+        logInfo('Начало отправки формы')
+        if (!this.$refs.form.validate()) {
+          logInfo('Ошибка при валидации формы')
+          reject()
         }
-      }
-      // const fileValid = this.modelData.file !== null
-      // if (!fileValid) {
-      //   this.isValidFile = false
-      //   return false
-      // }
-      // if (!formValid) return false
-      // Изменяем данные клиента
-      const editData = {
-        inn: this.modelINN,
-        name: this.modelData.nameCompany,
-        legalAddress: this.modelData.addressCompanyId || addressId,
-        type: this.modelData.type
-      }
-      if (this.isEntity) {
-        editData['kpp'] = this.modelData.registrationReasonCode
-      } else {
-        editData['idSerialNumber'] = this.modelData.passport
-        editData['issuedDate'] = this.modelData.dateOfPassport
-        editData['issuedBy'] = this.modelData.passportIssuedBy
-      }
-      const responseClient = await this.$store.dispatch(`user/${UPDATE_CLIENT_INFO}`, { api: this.$api, formData: editData })
-      if (!responseClient) {
-        this.$store.commit(ERROR_MODAL, true)
-        return false
-      }
-      // Создаём контакт с ролью "Лицо, имеющее право подписи"
-      // const contactData = {
-      //   position: this.modelData.post,
-      //   gPosition: this.modelData.gPost,
-      //   name: this.modelData.name,
-      //   gName: this.modelData.gName,
-      //   surname: this.modelData.surname,
-      //   gSurname: this.modelData.gSurname,
-      //   patronymic: this.modelData.patronymic,
-      //   gPatronymic: this.modelData.gPatronymic,
-      //   phone: this.modelData.phoneNumber
-      // }
-      // const responseContact = await this.$store.dispatch('contacts/createSignContact', { api: this.$api, data: contactData })
-      // if (!responseContact) {
-      //   this.$store.commit(ERROR_MODAL, true)
-      //   return false
-      // }
-      // const responseRole = await this.$store.dispatch('contacts/createContactRole', { api: this.$api })
-      // if (!responseRole) {
-      //   this.$store.commit(ERROR_MODAL, true)
-      //   return false
-      // }
-      // const fileBlob = await (await fetch(this.modelData.file)).blob()
-      // const filePath = this.$moment.utc().format('YYYY-MM-DD_HH:mm') + '/' + this.user.toms
-      // const fileData = {
-      //   api: this.$api,
-      //   bucket: 'customer-docs',
-      //   file: fileBlob,
-      //   fileName: this.getFileName,
-      //   filePath,
-      //   type: '9154452676313182650',
-      //   relatedTo: this.user.toms
-      // }
-      // const sendFile = await this.$store.dispatch('documents/' + UPLOAD_FILE, fileData)
-      // if (!sendFile) {
-      //   this.$store.commit(ERROR_MODAL, true)
-      //   return false
-      // }
-      // const connectFileToClient = await this.$store.dispatch('documents/' + ATTACH_SIGNED_DOCUMENT, fileData)
-      // if (!connectFileToClient) {
-      //   this.$store.commit(ERROR_MODAL, true)
-      //   return false
-      // }
-      this.$store.dispatch(`user/${GET_CLIENT_INFO}`, { api: this.$api })
-      return true
+        logInfo('Валидация успешно выполнена')
+
+        const getAddressId = () => new Promise((resolve, reject) => {
+          if (this.modelData.addressCompanyId) {
+            logInfo('Адрес был получен ранее')
+            const { name, description, id } = this.modelData.addressCompanyId
+            resolve({ name, description, id })
+          } else {
+            logInfo('Получение адреса...')
+            this.$store.dispatch('address/getAddressByFiasId', {
+              fiasId: this.modelData.addressCompany.data.fias_id
+            })
+              .then(address => {
+                logInfo('Адрес получен успешно')
+                resolve({
+                  name: address.name,
+                  description: '',
+                  id: address.id
+                })
+              })
+              .catch(() => {
+                logInfo('Ошибка при получении адреса')
+                this.isFiasError = true
+                reject()
+              })
+          }
+        })
+
+        getAddressId()
+          .then(address => {
+            const editData = {
+              inn: this.modelINN,
+              name: this.modelData.nameCompany,
+              legalAddress: address,
+              type: this.modelData.type
+            }
+
+            if (this.isEntity) {
+              editData['kpp'] = this.modelData.registrationReasonCode
+            } else {
+              editData['idSerialNumber'] = this.modelData.passport
+              editData['issuedDate'] = this.modelData.dateOfPassport
+              editData['issuedBy'] = this.modelData.passportIssuedBy
+            }
+
+            logInfo('Изменение данных о клиенте: отправка запроса')
+
+            this.$store.dispatch(`user/${UPDATE_CLIENT_INFO}`, { api: this.$api, formData: editData })
+              .then(() => {
+                logInfo('Данные были успешно изменены')
+                this.$store.dispatch(`user/${GET_CLIENT_INFO}`, { api: this.$api })
+                resolve()
+              })
+              .catch(() => {
+                logInfo('Ошибка при изменении данных о клиенте')
+                reject()
+              })
+          })
+          .catch(() => {
+            reject()
+          })
+      })
     },
     submitFormCreate (e) {
       e.preventDefault()
       this.__actionSubmit()
     },
-    async listenersDMP (e) {
-      logInfo('ListenMessage', e)
+    listenersDMP (e) {
       if (e.data.action !== 'saveForm') return
-      const resultSubmit = await this.__actionSubmit()
-      if (!this.isInputInn && resultSubmit) {
-        window.top.postMessage({ eventType: 'ertUserForm', state: 'registered' }, '*')
-      }
+      logInfo('Слушаем событие')
+      this.__actionSubmit()
+        .then(() => {
+          logInfo('Всё выполнено успешно - сообщаем порталу')
+          !this.isInputInn && window.top.postMessage({ eventType: 'ertUserForm', state: 'registered' }, '*')
+        })
     },
     onBlurFIO () {
       if (this.modelData.surname !== '' && this.modelData.name !== '' && this.modelData.patronymic !== '') {
