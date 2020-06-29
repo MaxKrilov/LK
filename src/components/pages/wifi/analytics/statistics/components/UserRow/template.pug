@@ -1,0 +1,27 @@
+.user-row(@click="showCard")
+  .user-row__col.number
+    .content {{ user.number }}
+  .user-row__group
+    .user-row__col.phone
+      .content {{ user.phone }}
+      template(v-if="selected && isCardView")
+        .user-row__wrapper
+          user-card(:user="user" @close="hideCard")
+    .user-row__col.mac
+      .content {{ user.mac }}
+  .user-row__col.authorization
+    .content {{ user.authorization }}
+  .user-row__col.traffic
+    .content
+      span {{ user.traffic.value }}
+      |  {{ user.traffic.units }}
+  .user-row__col.datetime
+    .content
+      | {{ user.datetime.date }}
+      span  {{ user.datetime.time }}
+  .user-row__col.duration
+    .content
+      span {{ user.duration.hours }}
+      |  ч
+      span  {{ user.duration.minutes }}
+      |  м

@@ -1,4 +1,3 @@
-
 import { SUBPAGES } from '../../subpages'
 
 export default {

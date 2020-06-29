@@ -5,11 +5,10 @@
   ));
 
   &:not(.er-dialog--fullscreen) {
-    max-height: 480px;
-    height: calc(100% - 32px);
+    max-height: calc(100% - 32px);
     @include media-query((
-      max-height: (sm: 288px, md: 390px, xl: 383px),
-      max-width: (md: 512px),
+      max-height: (md: calc(100% - 128px)),
+      max-width: (md: 512px, xl: 544px),
       margin-left: (xl: 336px),
     ));
   }

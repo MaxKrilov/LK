@@ -1,6 +1,7 @@
 import Router from '@/router'
 import ActivationModal from './components/ActivationModal/index.vue'
 import { SCREEN_WIDTH } from '@/store/actions/variables'
+import { BREAKPOINT_MD } from '@/constants/breakpoint'
 import { mapState } from 'vuex'
 
 interface Point {
@@ -9,10 +10,10 @@ interface Point {
 }
 
 interface Component {
-  pre: string;
-  point: number;
+  selected: Point[];
   points: Point[];
   isAccept: boolean;
+  doConfirm(this: Component): void;
   toggleAccept(this: Component): void;
   backward(this: Component): void;
 }
@@ -23,6 +24,11 @@ export default {
     ActivationModal
   },
   methods: {
+    doConfirm () {
+      Router.push({
+        name: 'analytics-visitors'
+      })
+    },
     toggleAccept () {
       this.isAccept = !this.isAccept
     },
@@ -36,12 +42,11 @@ export default {
     }
   } as Partial<Component>,
   computed: {
-    selectedPoint () {
-      return this.points?.reduce((point, item) => item.id === this.point ? item : point)
-    },
     ...mapState({
       getCaptionText (state: any) {
-        return state.variables[SCREEN_WIDTH] >= 640 ? 'По адресу:' : 'Подключить по адресу:'
+        return this.selected.length > 1
+          ? (state.variables[SCREEN_WIDTH] >= BREAKPOINT_MD ? 'По адресам:' : 'Подключить по адресам:')
+          : (state.variables[SCREEN_WIDTH] >= BREAKPOINT_MD ? 'По адресу:' : 'Подключить по адресу:')
       }
     })
   } as Partial<Component>,
@@ -49,7 +54,7 @@ export default {
     return {
       pre: 'wifi-analytics-choice-page',
       isAccept: false,
-      point: 0,
+      selected: [],
       points: [
         {
           id: 0,

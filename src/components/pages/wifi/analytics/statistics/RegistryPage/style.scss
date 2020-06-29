@@ -1,3 +1,223 @@
 .stat-template {
   @extend %body-font;
+
+  &__table {
+
+    &-body .user-row:nth-child(odd),
+    &-foot .user-row {
+      background-color: map_get($gray, '9');
+    }
+
+    &-body .user-row:nth-child(even) {
+      background-color: map_get($gray, '3');
+    }
+
+    .user-row {
+      min-height: 48px;
+      padding: 0 16px;
+      @include media-query((
+        min-height: (sm: 40px),
+        padding: (sm: 0 24px, md: 0 8px, lg: 0 10px)
+      ));
+
+      &__col {
+        text-align: center;
+
+        &.number.title {
+          @extend %caption2;
+        }
+
+        &.phone.title {
+          @extend %caption2;
+          flex: 2;
+          padding-left: 8px;
+        }
+
+        &.mac {
+          @include media-query((
+            padding-left: (sm: 15px, lg: 56px, xl: 35px)
+          ));
+
+          &.title {
+            @extend %caption2;
+            flex: 2;
+            display: none;
+            @include media-query((
+              display: (sm: block),
+              padding: (sm: 0 30px 0 0)
+            ));
+          }
+        }
+
+        &.authorization {
+          width: 60px;
+          @include media-query((
+            width: (sm: 70px, md: 80px, lg: 100px)
+          ));
+
+          .icon {
+            min-width: 24px;
+          }
+
+          .title {
+            white-space: normal;
+            text-align: left;
+          }
+        }
+
+        &.traffic {
+          width: 60px;
+          @include media-query((
+            width: (sm: 70px, md: 80px, lg: 100px)
+          ));
+
+          .icon {
+            min-width: 24px;
+          }
+
+          .title {
+            white-space: normal;
+            text-align: left;
+          }
+        }
+
+        &.datetime {
+          width: 116px;
+          @include media-query((
+            width: (lg: 120px)
+          ));
+        }
+
+        &.duration {
+          width: 116px;
+          @include media-query((
+            width: (lg: 140px)
+          ));
+
+          .content {
+            padding-right: 27px;
+          }
+        }
+      }
+
+      &__group {
+        flex: 1;
+        padding: 0 9px;
+        @include min-breakpoint(sm) {
+          padding: 0 6px;
+        }
+      }
+    }
+
+    &-head {
+      display: flex;
+      flex-direction: column;
+      padding-bottom: 8px;
+      @include media-query((
+        padding-bottom: (md: 16px)
+      ));
+
+      &.fixed {
+        height: 48px;
+        @include media-query((
+          height: (sm: 40px)
+        ));
+
+        .user-row {
+          background: map_get($gray, '3');
+          position: fixed;
+          z-index: 1;
+          top: 56px;
+          width: 100%;
+          @include media-query((
+            top: (md: 64px, lg: 72px, xl: 96px),
+            width: (md: calc(100% - 48px), lg: calc(100% - 64px), xl: calc(100vw - 367px))
+          ));
+        }
+      }
+    }
+
+    &-body {
+      display: flex;
+      flex-direction: column;
+    }
+
+    &-foot {
+      display: flex;
+      flex-direction: column;
+    }
+
+    &-panel {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 16px;
+      @include media-query((
+        padding: (sm: 8px 24px, md: 16px 0, xl: 32px 0)
+      ));
+    }
+  }
+
+  &__preloader {
+    @extend %caption1;
+    min-width: 18px;
+  }
+
+  &__pagination {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
+    &-caption {
+      @extend %caption1;
+      @include color-black(.3);
+      margin-right: 16px;
+    }
+
+    &-link {
+      @extend %caption1;
+      text-decoration: none;
+      border-bottom: 1px dashed;
+      margin-right: 16px;
+    }
+  }
+
+  &__rollback {
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+
+    svg {
+      width: 16px;
+      height: 16px;
+      opacity: 0.5;
+    }
+  }
+
+  &__modal {
+    box-shadow: -8px 8px 16px rgba(map_get($shades, 'black'), 0.04),
+                0 8px 24px rgba(map_get($shades, 'black'), 0.06);
+    border-radius: 12px;
+    background: map_get($gray, '2');
+    padding: 1px;
+    @include media-query((
+      background: (md: linear-gradient(to top, map_get($gray, '26') 28.65%, map_get($shades, 'white') 90.63%))
+    ));
+
+    .er-dialog--fullscreen & {
+      border-radius: 0;
+    }
+
+    &-content {
+      width: 100%;
+      height: 100%;
+      border-radius: inherit;
+      background: map_get($gray, '2');
+      @include media-query((
+        background: (md: map-get($shades, 'white'))
+      ));
+    }
+  }
 }

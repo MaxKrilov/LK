@@ -279,3 +279,113 @@ export const CONNECTIONS = [
     ]
   }
 ]
+
+export const USERS_LIST = [{
+  'number': '1',
+  'phone': '+7 976 777 88 99',
+  'mac': 'a0:b0:44:d2:f8:62',
+  'authorization': '100',
+  'traffic': { 'value': '195,2', 'units': 'МБ' },
+  'datetime': { 'date': '01.04.20', 'time': '21:20' },
+  'duration': { 'hours': '3', 'minutes': '25' }
+}, {
+  'number': '2',
+  'phone': '+7 902 343 33 00',
+  'mac': 'a1:45:d4:d2:f8:62',
+  'authorization': '65',
+  'traffic': { 'value': '205,6', 'units': 'МБ' },
+  'datetime': { 'date': '05.03.20', 'time': '14:23' },
+  'duration': { 'hours': '0', 'minutes': '25' }
+}, {
+  'number': '3',
+  'phone': '+7 912 565 77 66',
+  'mac': '22:b0:f4:a2:48:62',
+  'authorization': '23',
+  'traffic': { 'value': '5,5', 'units': 'ГБ' },
+  'datetime': { 'date': '14.03.20', 'time': '11:56' },
+  'duration': { 'hours': '10', 'minutes': '12' }
+}, {
+  'number': '4',
+  'phone': '+7 999 000 11 33',
+  'mac': 'a2:b0:66:d2:f8:62',
+  'authorization': '10',
+  'traffic': { 'value': '565,2', 'units': 'МБ' },
+  'datetime': { 'date': '14.04.20', 'time': '15:45' },
+  'duration': { 'hours': '1', 'minutes': '45' }
+}, {
+  'number': '5',
+  'phone': '+7 976 777 88 99',
+  'mac': 'a0:b0:44:d2:f8:62',
+  'authorization': '9',
+  'traffic': { 'value': '195,2', 'units': 'МБ' },
+  'datetime': { 'date': '01.04.20', 'time': '21:20' },
+  'duration': { 'hours': '3', 'minutes': '25' }
+}, {
+  'number': '6',
+  'phone': '+7 902 343 33 00',
+  'mac': 'a1:45:d4:d2:f8:62',
+  'authorization': '9',
+  'traffic': { 'value': '25,6', 'units': 'МБ' },
+  'datetime': { 'date': '05.03.20', 'time': '14:23' },
+  'duration': { 'hours': '0', 'minutes': '25' }
+}, {
+  'number': '7',
+  'phone': '+7 912 565 77 66',
+  'mac': '22:b0:f4:a2:48:62',
+  'authorization': '7',
+  'traffic': { 'value': '5,5', 'units': 'ГБ' },
+  'datetime': { 'date': '14.03.20', 'time': '11:56' },
+  'duration': { 'hours': '10', 'minutes': '12' }
+}, {
+  'number': '8',
+  'phone': '+7 999 000 11 33',
+  'mac': 'a2:b0:66:d2:f8:62',
+  'authorization': '7',
+  'traffic': { 'value': '65,2', 'units': 'МБ' },
+  'datetime': { 'date': '14.04.20', 'time': '15:45' },
+  'duration': { 'hours': '1', 'minutes': '45' }
+}, {
+  'number': '9',
+  'phone': '+7 976 777 88 99',
+  'mac': 'a0:b0:44:d2:f8:62',
+  'authorization': '6',
+  'traffic': { 'value': '195,2', 'units': 'МБ' },
+  'datetime': { 'date': '01.04.20', 'time': '21:20' },
+  'duration': { 'hours': '3', 'minutes': '25' }
+}, {
+  'number': '10',
+  'phone': '+7 902 343 33 00',
+  'mac': 'a1:45:d4:d2:f8:62',
+  'authorization': '5',
+  'traffic': { 'value': '25,6', 'units': 'МБ' },
+  'datetime': { 'date': '05.03.20', 'time': '14:23' },
+  'duration': { 'hours': '0', 'minutes': '25' }
+}, {
+  'number': '11',
+  'phone': '+7 912 565 77 66',
+  'mac': '22:b0:f4:a2:48:62',
+  'authorization': '5',
+  'traffic': { 'value': '5,5', 'units': 'ГБ' },
+  'datetime': { 'date': '14.03.20', 'time': '11:56' },
+  'duration': { 'hours': '10', 'minutes': '12' }
+}, {
+  'number': '12',
+  'phone': '+7 999 000 11 33',
+  'mac': 'a2:b0:66:d2:f8:62',
+  'authorization': '5',
+  'traffic': { 'value': '65,2', 'units': 'МБ' },
+  'datetime': { 'date': '14.04.20', 'time': '15:45' },
+  'duration': { 'hours': '1', 'minutes': '45' }
+}, {
+  'number': '11 000',
+  'phone': '+7 947 565 77 66',
+  'mac': '22:b0:f4:a2:48:62',
+  'authorization': '1',
+  'traffic': { 'value': '0,5', 'units': 'ГБ' },
+  'datetime': { 'date': '10.03.19', 'time': '13:56' },
+  'duration': { 'hours': '2', 'minutes': '12' }
+}]
+
+export const USERS_MORE = [20, 50, 100];
+
+export const USERS_MAX = 128;

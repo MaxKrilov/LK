@@ -26,7 +26,7 @@
     @include media-query((
         grid-template-columns: (lg: $cols-lg),
         grid-template-rows: (
-          md: auto $padding-x6 auto $padding-x6 auto, 
+          md: auto $padding-x6 auto $padding-x6 auto,
           lg: auto $padding-x8 auto
         )
     ));
@@ -51,7 +51,7 @@
       @include grid-child(1, 2, 3, 4);
 
       @include media-min-width(map_get($grid-breakpoint, 'lg')) {
-        @include grid-child(3, 4, 1, 4);        
+        @include grid-child(3, 4, 1, 4);
       }
     }
   }

@@ -1,8 +1,61 @@
 div(:class="`${pre}`")
   stat-header(:title="'Реестр пользователей'")
+  div(:class="`${pre}__table`")
+    div(:class="`${pre}__table-head${fixedHeader ? ' fixed' : ''}`" ref="thead")
+      .user-row
+        .user-row__col.number.title №
+        .user-row__col.phone.title Телефон
+        .user-row__col.mac.title MAC адрес
+        .user-row__col.authorization.title
+          er-table-filter(
+            :title="getTotalText"
+            @change-filter="e => { sortBy('authorization', e) }"
+            :value="sortField === 'authorization'"
+            :order="sortField === 'authorization' ? sortOrder : 'desc'"
+          )
+        .user-row__col.traffic.title
+          er-table-filter(
+            title="Весь трафик"
+            @change-filter="e => { sortBy('traffic', e) }"
+            :value="sortField === 'traffic'"
+            :order="sortField === 'traffic' ? sortOrder : 'desc'"
+          )
+        .user-row__col.datetime.title
+          er-table-filter(
+            title="Посл. сессия"
+            @change-filter="e => { sortBy('datetime', e) }"
+            :value="sortField === 'datetime'"
+            :order="sortField === 'datetime' ? sortOrder : 'asc'"
+          )
+        .user-row__col.duration.title
+          er-table-filter(
+            title="Длит. сессии"
+            @change-filter="e => { sortBy('duration', e) }"
+            :value="sortField === 'duration'"
+            :order="sortField === 'duration' ? sortOrder : 'asc'"
+          )
+    div(:class="`${pre}__table-body`")
+      template(v-for="row in rows")
+        user-row(:user="row" :selected="row === currentRow" @select="selectRow")
+    div(:class="`${pre}__table-foot`")
+      div(:class="`${pre}__table-panel`")
+        div(:class="`${pre}__preloader`") &hellip;
+        div(:class="`${pre}__pagination`")
+          template(v-if="moreCounts && moreCounts.length > 0")
+            div(:class="`${pre}__pagination-caption`") Показать ещё:
+            template(v-for="count of moreCounts")
+              a(:class="`${pre}__pagination-link`" href="#" @click.prevent="showMore(count)") {{ count }}
+          er-button(:class="`${pre}__rollback`" @click="scrollTop")
+            er-icon(name="corner_up")
+      template(v-if="hasLastRow")
+        user-row(:user="lastRow" :selected="lastRow === currentRow" @select="selectRow")
   er-row(:class="[`${pre}__row`, `${pre}__footer`]")
     er-flex(:class="`${pre}__footer__action`" xs12 md5)
       er-button(:flat="true") Отключить аналитику
-    er-flex(:class="`${pre}__footer__nav`" xs12 lg7) 
+    er-flex(:class="`${pre}__footer__nav`" xs12 lg7)
       page-nav
+  er-dialog(v-model="showDialog" :fullscreen="isFullscreenDialog" :width="getWidth")
+    div(:class="`${pre}__modal`")
+      div(:class="`${pre}__modal-content`")
+        user-card(:user="currentRow" @close="toggleCardDialog")
 

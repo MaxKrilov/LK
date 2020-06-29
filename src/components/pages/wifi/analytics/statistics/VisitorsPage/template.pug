@@ -1,6 +1,6 @@
 div(:class="`${pre}`")
   stat-header(
-    :title="'Статистика по аудитории'" 
+    :title="'Статистика по аудитории'"
     @onPeriodSet="setPeriod"
   )
 
@@ -21,7 +21,7 @@ div(:class="`${pre}`")
         :title="'Пол/Возраст'"
         :period="period",
         :defaultChartType="'cluster-bar'"
-      )        
+      )
         template(v-slot:chart)
           simple-chart(:data="mock.ages")
 
@@ -51,7 +51,7 @@ div(:class="`${pre}`")
         :title="'Используемый язык'"
         :period="period",
         :chartTypes="[chartTypes.bar, chartTypes.pie]"
-        :defaultChartType="'pie'"        
+        :defaultChartType="'pie'"
       )
         template(v-slot:chart)
           simple-chart(:data="mock.langs")
@@ -59,6 +59,6 @@ div(:class="`${pre}`")
   er-row(:class="[`${pre}__row`, `${pre}__footer`]")
     er-flex(:class="`${pre}__footer__action`" xs12 sm6 md5 lg4)
       er-button(:flat="true") Отключить аналитику
-    er-flex(:class="`${pre}__footer__nav`" xs12 lg8) 
+    er-flex(:class="`${pre}__footer__nav`" xs12 lg8)
       page-nav
 

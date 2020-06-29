@@ -1,0 +1,100 @@
+.user-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+
+  &__col {
+    text-align: center;
+
+    &.number .content {
+      @extend %caption2;
+      min-width: 18px;
+    }
+
+    &.phone {
+      position: relative;
+
+      .content {
+        @extend %body;
+        text-align: left;
+      }
+    }
+
+    &.mac .content {
+      @extend %caption2;
+      text-align: left;
+      @include min-breakpoint(sm) {
+        @extend %body;
+      }
+    }
+
+    &.authorization .content {
+      @extend %body;
+    }
+
+    &.traffic .content {
+      @extend %caption2;
+
+      span {
+        @extend %body;
+      }
+    }
+
+    &.datetime {
+      display: none;
+      @include media-query((
+        display: (md: block)
+      ));
+
+      .content {
+        @extend %body;
+        @include color-black(.5);
+
+        span {
+          @extend %body-color;
+        }
+      }
+    }
+
+    &.duration {
+      display: none;
+      @include media-query((
+        display: (lg: block)
+      ));
+
+      .content {
+        @extend %body;
+        @include color-black(.3);
+        text-align: right;
+
+        span {
+          @extend %body-color;
+        }
+      }
+    }
+  }
+
+  &__group {
+    display: flex;
+    flex-direction: column;
+    @include min-breakpoint(sm) {
+      flex-direction: row;
+    }
+  }
+
+  &__wrapper {
+    position: absolute;
+    z-index: 1;
+    left: 100%;
+    top: 50%;
+    width: 553px;
+    height: 436px;
+    margin-top: -210px;
+    padding: 16px 24px 16px 35px;
+    background-image: url('../../../../../../../assets/images/user-card.svg');
+    background-repeat: no-repeat;
+    text-align: left;
+  }
+}
