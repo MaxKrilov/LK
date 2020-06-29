@@ -1,0 +1,9 @@
+div(:class="`${pre}`" lg10)
+    div(:class="`${pre}__outer`")
+        div(:class="`${pre}__wrap`")
+            template(v-for="(item, idx) in items")
+                div(
+                    :class="[`${pre}__item`, {[`${pre}__item--active`]: idx === currentItemIdx}]"
+                    @click="onSelect(item.value, idx, $event)"
+                    v-html="item.label"
+                    )

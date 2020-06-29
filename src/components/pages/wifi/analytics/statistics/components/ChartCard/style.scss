@@ -1,0 +1,83 @@
+.chart-card {
+  @extend %body-font;
+ 
+  padding-top: $padding-x8;
+  padding-bottom: $padding-x8;
+  background-color: map_get($gray, '9');
+  box-shadow: $card-shadow;
+
+  @include media-query((
+    border-radius: (md: 12px)
+  ));
+
+  &__head{
+    padding-right: $padding-x4;
+    padding-left: $padding-x4;
+
+    @include media-query((
+      padding-right: (sm: $padding-x6),
+      padding-left:(sm: $padding-x6)
+    ));
+
+    @include media-query((
+      padding-right: (lg: $padding-x8),
+      padding-left: (lg: $padding-x8)
+    ));    
+  }  
+
+  &__title{
+    @extend %h4;
+  }
+
+  &__period{
+    @extend %caption1
+  }
+
+  &__actions{
+    text-align: right;
+
+    &__item{
+      display: inline-block;
+      vertical-align: middle;
+      outline: 0;
+
+      @at-root :root & {
+        @include color-black(.2);
+      }
+
+      &:not(:last-child){
+        margin-right: $padding-x4;
+      }
+
+      &--active,
+      &:hover{
+        color: map_get($yellow, 'base') !important
+      }
+
+      svg{
+        width: 24px !important;
+        height: 24px !important;
+
+        @include media-query((
+            width: (md: 32px !important),
+            height: (md: 32px !important)
+        ));
+      }
+    }
+  }
+
+  &__body{
+    padding-right: $padding-x4;
+    padding-left: $padding-x4;
+
+    @include media-query((
+      padding-right: (sm: $padding-x6),
+      padding-left:(sm: $padding-x6)
+    ));
+
+    @include media-query((
+      padding-right: (lg: $padding-x8),
+      padding-left: (lg: $padding-x8)
+    ));
+  }
+}

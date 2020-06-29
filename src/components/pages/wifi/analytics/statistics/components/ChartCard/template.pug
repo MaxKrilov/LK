@@ -1,0 +1,15 @@
+div(:class="`${pre}`")
+    er-row.no-gutters(:class="`${pre}__head`")
+        er-flex(xs6 sm8)
+            h4(:class="`${pre}__title`") {{ title }}
+            span(:class="`${pre}__period`") {{ period }}
+        er-flex(xs6 sm4)
+            div(:class="`${pre}__actions`")
+                template(v-for="(item, idx) in chartTypes")
+                    button(
+                        type="button" 
+                        :class="[`${pre}__actions__item`, {[`${pre}__actions__item--active`]: item.type === currentChartType}]"
+                        @click="setChartType(item.type)")
+                        er-icon(:name="item.ico")
+    er-row.no-gutters(:class="`${pre}__body`")
+        slot(name="chart" :type="currentChartType" :defaultChartType="'pie'")

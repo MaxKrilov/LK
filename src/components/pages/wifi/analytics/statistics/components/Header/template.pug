@@ -1,0 +1,18 @@
+div(:class="`${pre}`")
+    er-row(:class="`${pre}__row`")
+        er-flex(xs8 sm8 md7 lg5)
+            h2(:class="`${pre}__title`") {{ title }}
+        er-flex(xs4 sm4 md5 lg7)
+            div(:class="`${pre}__actions`")
+                button(:class="[`${pre}__actions__item`, `${pre}__actions__item--btn`]")
+                    er-icon(name="printer")
+                    span(:class="`${pre}__actions__item__label`") Напечатать
+                a(href="#" :class="[`${pre}__actions__item`, `${pre}__actions__item--link`]")
+                    er-icon(name="doc_download")
+                    span(:class="`${pre}__actions__item__label`") Скачать                     
+                    span(:class="`${pre}__actions__item__label__ext`")  (*.pdf, *.xls, *.csv)
+    er-row(:class="`${pre}__row`")
+        er-flex(xs12 sm8 md6 lg5)
+            er-date-picker(
+                placeholder="Период"
+                v-model="period")

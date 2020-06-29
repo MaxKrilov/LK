@@ -1,0 +1,35 @@
+.auth-type-chart {
+  width: 100%;
+
+  .chart-holder {
+    min-height: 256px;
+    margin-top: $padding-x8;
+  }
+
+  .chart-legend{
+
+    &__item{
+      @extend %body-font;
+      display: flex;
+      justify-content: space-between;
+
+      &:not(:last-child){
+        margin-bottom: $padding-x2;
+      }
+
+      &__ico{        
+        margin-right: $padding-x2;
+
+        svg{
+          width: 18px !important;
+          height: 18px !important;
+
+          @include media-query((
+            width: (md: 24px !important, lg: 32px !important),
+            height: (md: 24px !important, lg: 32px !important)
+          ));
+        }
+      }
+    }
+  }
+}

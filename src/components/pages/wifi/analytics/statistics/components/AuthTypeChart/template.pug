@@ -1,0 +1,9 @@
+div(:class="`${pre}`")
+    div.chart-holder(ref="chartholder")
+    div.chart-legend(ref="chartlegend")
+    template(v-for="(item, idx) in legend")
+        div.chart-legend__item(:key="idx")
+            div.chart-legend__item__data
+                er-icon.chart-legend__item__ico(:name="item.icon" :style="{color: item.color}")
+                span.chart-legend__item__label {{ item.label }}
+            div.chart-legend__item__val {{ item.value }}

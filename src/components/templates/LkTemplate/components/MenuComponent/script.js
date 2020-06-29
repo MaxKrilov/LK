@@ -121,7 +121,6 @@ export default {
   mounted () {
     if (this.isDesktop) {
       this.openSubMenuBackground = true
-      this.menu[0].isOpen = true
     }
   }
 }

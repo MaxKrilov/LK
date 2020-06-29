@@ -9,6 +9,7 @@
     "test": "jest"
   },
   "dependencies": {
+    "@amcharts/amcharts4": "^4.9.26",
     "@chenfengyuan/create-vue-component": "^1.1.0",
     "@types/d3": "^5.7.2",
     "@types/iframe-resizer": "^3.5.8",

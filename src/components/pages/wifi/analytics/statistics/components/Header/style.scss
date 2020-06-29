@@ -1,0 +1,81 @@
+.statpage-header {
+  margin-top: $padding-x10;
+  margin-bottom: $padding-x8;
+  padding-right: $padding-x4;
+  padding-left: $padding-x4;
+
+  @include media-query(
+    (
+      margin-top: (
+        lg: $padding-x12,
+      ),
+      padding-right: (
+        sm: $padding-x6,
+        md: 0,
+      ),
+      padding-left: (
+        sm: $padding-x6,
+        md: 0,
+      ),
+    )
+  );
+
+  &__row {
+    &:not(:last-child) {
+      margin-bottom: $padding-x8;
+    }
+  }
+
+  &__title {
+    @extend %h2-font;
+  }
+
+  &__actions {
+    text-align: right;
+
+    &__item {
+      @include color-black(0.5);
+      display: inline-block;
+      vertical-align: middle;
+
+      &:not(:last-child) {
+        margin-right: $padding-x4;
+      }
+
+      svg {
+        opacity: 0.2;
+      }
+
+      &__label {
+        @extend %caption1;
+        display: none;
+        border-bottom: 1px dotted;
+        margin-left: $padding-x1;
+        line-height: 1 !important;
+
+        @include media-query(
+          (
+            display: (
+              md: inline-block,
+            ),
+          )
+        );
+
+        &__ext {
+          @extend %caption2;
+          margin-left: $padding-x1;
+          display: none;
+          vertical-align: middle;
+
+          @include media-query(
+            (
+              display: (
+                lg: inline-block,
+              ),
+            )
+          );
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,5 @@
+div(:class="[`${pre}`]")
+    template(v-for="(item, idx) in navItems")
+        router-link(:class="`${pre}__link`" :key="idx" :to="{ name: item.value }")
+            er-icon(name="left_big" :class="`${pre}__link__ico`")
+            span(:class="`${pre}__link__txt`" v-html="item.label")

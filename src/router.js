@@ -109,10 +109,13 @@ import TelephonyBlacklistPage from '@/components/pages/telephony/blacklist/index
 
 import WifiTemplate from './components/templates/WiFiTemplate/index'
 import WifiIndexPage from './components/pages/wifi/index/index'
-
 // WiFi аналитика
 import WifiAnalyticsPromo from './components/pages/wifi/analytics/promo'
 import WifiAnalyticsChoice from './components/pages/wifi/analytics/choice'
+import WifiAnalyticsStatistics from './components/pages/wifi/analytics/statistics'
+import WifiAnalyticsVisitors from '@/components/pages/wifi/analytics/statistics/VisitorsPage'
+import WifiAnalyticsDevices from '@/components/pages/wifi/analytics/statistics/DevicesPage'
+import WifiUsersRegistry from '@/components/pages/wifi/analytics/statistics/RegistryPage'
 
 // Страницы с ошибками
 import OldBrowserPage from './components/pages/errors/old-browsers'
@@ -380,6 +383,29 @@ const router = new Router({
           name: 'wifi-analytics-choice',
           path: 'wifi/analytics/choice',
           component: WifiAnalyticsChoice
+        },
+        {
+          name: 'wifi-analytics-statistics',
+          path: 'wifi/analytics/statistics',
+          component: WifiAnalyticsStatistics,
+          redirect: 'wifi/analytics/statistics/visitors',
+          children: [
+            {
+              path: 'visitors',
+              name: 'analytics-visitors',
+              component: WifiAnalyticsVisitors
+            },
+            {
+              path: 'devices',
+              name: 'analytics-devices',
+              component: WifiAnalyticsDevices
+            },
+            {
+              path: 'registry',
+              name: 'analytics-users-registry',
+              component: WifiUsersRegistry
+            }
+          ]
         }
       ]
     },
