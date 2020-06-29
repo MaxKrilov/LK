@@ -8,7 +8,6 @@ import { ERROR_MODAL } from '../../../store/actions/variables'
 import ErErrorModal from '../../blocks/ErErrorModal'
 import { GET_CLIENT_INFO, UPDATE_CLIENT_INFO } from '../../../store/actions/user'
 import { mapGetters, mapState } from 'vuex'
-import { logInfo } from '../../../functions/logging'
 import ErDadataSelect from '../../blocks/ErDadataSelect/index'
 // import { ATTACH_SIGNED_DOCUMENT, UPLOAD_FILE } from '../../../store/actions/documents'
 import ErActivationModal from '../../blocks/ErActivationModal/index'
@@ -188,25 +187,25 @@ export default {
     },
     __actionSubmit () {
       return new Promise((resolve, reject) => {
-        logInfo('Начало отправки формы')
+        console.log('Начало отправки формы')
         if (!this.$refs.form.validate()) {
-          logInfo('Ошибка при валидации формы')
+          console.log('Ошибка при валидации формы')
           reject()
         }
-        logInfo('Валидация успешно выполнена')
+        console.log('Валидация успешно выполнена')
 
         const getAddressId = () => new Promise((resolve, reject) => {
           if (this.modelData.addressCompanyId) {
-            logInfo('Адрес был получен ранее')
+            console.log('Адрес был получен ранее')
             const { name, description, id } = this.modelData.addressCompanyId
             resolve({ name, description, id })
           } else {
-            logInfo('Получение адреса...')
+            console.log('Получение адреса...')
             this.$store.dispatch('address/getAddressByFiasId', {
               fiasId: this.modelData.addressCompany.data.fias_id
             })
               .then(address => {
-                logInfo('Адрес получен успешно')
+                console.log('Адрес получен успешно')
                 resolve({
                   name: address.name,
                   description: '',
@@ -214,7 +213,7 @@ export default {
                 })
               })
               .catch(() => {
-                logInfo('Ошибка при получении адреса')
+                console.log('Ошибка при получении адреса')
                 this.isFiasError = true
                 reject()
               })
@@ -238,16 +237,16 @@ export default {
               editData['issuedBy'] = this.modelData.passportIssuedBy
             }
 
-            logInfo('Изменение данных о клиенте: отправка запроса')
+            console.log('Изменение данных о клиенте: отправка запроса')
 
             this.$store.dispatch(`user/${UPDATE_CLIENT_INFO}`, { api: this.$api, formData: editData })
               .then(() => {
-                logInfo('Данные были успешно изменены')
+                console.log('Данные были успешно изменены')
                 this.$store.dispatch(`user/${GET_CLIENT_INFO}`, { api: this.$api })
                 resolve()
               })
               .catch(() => {
-                logInfo('Ошибка при изменении данных о клиенте')
+                console.log('Ошибка при изменении данных о клиенте')
                 reject()
               })
           })
@@ -261,12 +260,12 @@ export default {
       this.__actionSubmit()
     },
     listenersDMP (e) {
-      logInfo(e)
+      console.log(e)
       if (e.data.action !== 'saveForm') return
-      logInfo('Слушаем событие')
+      console.log('Слушаем событие')
       this.__actionSubmit()
         .then(() => {
-          logInfo('Всё выполнено успешно - сообщаем порталу')
+          console.log('Всё выполнено успешно - сообщаем порталу')
           !this.isInputInn && window.top.postMessage({ eventType: 'ertUserForm', state: 'registered' }, '*')
         })
     },
