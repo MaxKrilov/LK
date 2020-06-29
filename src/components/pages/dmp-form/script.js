@@ -261,6 +261,7 @@ export default {
       this.__actionSubmit()
     },
     listenersDMP (e) {
+      logInfo(e)
       if (e.data.action !== 'saveForm') return
       logInfo('Слушаем событие')
       this.__actionSubmit()
