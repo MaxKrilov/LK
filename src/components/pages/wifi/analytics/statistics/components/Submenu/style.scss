@@ -88,10 +88,10 @@
 
     &--active{
       color: map_get($shades, 'black');
-      cursor: default;  
+      cursor: default;
 
       &::after{
-        content: '';        
+        content: '';
         width: 100%;
         height: 4px;
         background-color: map_get($yellow, 'base');

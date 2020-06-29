@@ -7,7 +7,7 @@ div(:class="`${pre}`")
             div(:class="`${pre}__actions`")
                 template(v-for="(item, idx) in chartTypes")
                     button(
-                        type="button" 
+                        type="button"
                         :class="[`${pre}__actions__item`, {[`${pre}__actions__item--active`]: item.type === currentChartType}]"
                         @click="setChartType(item.type)")
                         er-icon(:name="item.ico")

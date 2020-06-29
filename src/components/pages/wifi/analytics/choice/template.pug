@@ -6,13 +6,11 @@ div.main-content.main-content--padding.main-content--top-menu-fix.wifi-analytics
     template(v-for="item in points")
       div(:class="`${pre}__point`")
         er-toggle(
-          type="radio"
+          type="checkbox"
           view="radio-check"
-          name="point"
-          :value="item.id"
+          :value="item"
           :id="`id-point-${item.id}`"
-          :modelValue="point"
-          v-model="point"
+          v-model="selected"
         )
           template(slot="append-outer")
             label(:for="`id-point-${item.id}`") {{ item.address }}
@@ -25,12 +23,13 @@ div.main-content.main-content--padding.main-content--top-menu-fix.wifi-analytics
     title="Вы уверены, что хотите подключить аналитику?"
     cancel-button-text="Отменить"
     actionButtonText="Подключить"
-    @confirm="toggleAccept"
+    @confirm="doConfirm"
     @close="toggleAccept"
   )
     template(slot="description")
       div(:class="`${pre}__modal-caption`") {{ getCaptionText }}
-      div(:class="`${pre}__modal-text`") {{ selectedPoint.address }}
+      template(v-for="item in selected")
+        div(:class="`${pre}__modal-text`") {{ item.address }}
       div(:class="`${pre}__modal-caption`")
         | Стоимость:
         b  450

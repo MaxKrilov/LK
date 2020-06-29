@@ -22,7 +22,7 @@
       &:last-child{
         text-align: right;
       }
-      
+
       &__ico{
         margin-top: -12px;
         position: absolute;
@@ -58,7 +58,7 @@
 
         #{$root}__ico{
           left: 0;
-        }          
+        }
       }
 
       &:last-child{
@@ -77,7 +77,7 @@
           right: 0;
           transform: rotate(180deg);
           transform-origin: 50% 50%;
-        } 
+        }
       }
   }
 }

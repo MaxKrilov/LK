@@ -69,7 +69,7 @@
     @include media-query((
       border-radius: (md: 12px),
       max-width: (sm: 482px, md: 592px, lg: 896px, xl: 860px),
-      padding: (sm: 8px 24px, md: 8px)
+      padding: (sm: 8px 24px, md: 8px, xl: 12px 8px)
     ));
 
     &:last-child {
@@ -115,6 +115,10 @@
         width: (sm: 208px, md: 284px, lg: 283px, xl: 275px),
         height: (md: 40px, xl: 48px)
       ));
+
+      &.er-button--blue {
+        color: map_get($shades, 'white');
+      }
 
       &:last-child {
         margin-right: 0;

@@ -1,7 +1,10 @@
 .promo-component {
 
   &__title h2 {
-    padding-bottom: 0;
+    padding-bottom: 8px;
+    @include media-query((
+      padding-bottom: (sm: 0)
+    ));
   }
 
   &__cost {
@@ -130,5 +133,9 @@
       width: (sm: 264px, md: 288px, lg: 283px, xl: 275px),
       height: (xl: 48px)
     ));
+
+    &.er-button--blue {
+      color: map_get($shades, 'white');
+    }
   }
 }

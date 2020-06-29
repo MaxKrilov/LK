@@ -1,6 +1,6 @@
 .chart-card {
   @extend %body-font;
- 
+
   padding-top: $padding-x8;
   padding-bottom: $padding-x8;
   background-color: map_get($gray, '9');
@@ -22,8 +22,8 @@
     @include media-query((
       padding-right: (lg: $padding-x8),
       padding-left: (lg: $padding-x8)
-    ));    
-  }  
+    ));
+  }
 
   &__title{
     @extend %h4;

@@ -2,15 +2,17 @@
 
   &--modal {
     padding: 0;
-    height: 100%;
+    height: auto;
   }
 
   &__content {
     display: flex;
     flex-direction: column;
     padding: 24px;
+    min-height: 480px;
     @include media-query((
-      padding: (xl: 32px)
+      padding: (xl: 32px),
+      min-height: (sm: 390px, xl: 383px)
     ));
   }
 
