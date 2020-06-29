@@ -1,4 +1,4 @@
-import { isLocalhost } from '@/functions/helper'
+import { isLocalhost, isTesting } from '@/functions/helper'
 
 function Log (type: string, ...args: any): void {
   // TODO: реализовать журналирование не только в консоль
@@ -7,7 +7,7 @@ function Log (type: string, ...args: any): void {
   // для показа логов в браузере,
   // добавь в файл /.env.local переменную
   // VUE_APP_SHOW_LOG_IN_BROWSER=1
-  if (process.env.VUE_APP_SHOW_LOG_IN_BROWSER || isLocalhost()) {
+  if (process.env.VUE_APP_SHOW_LOG_IN_BROWSER || isLocalhost() || isTesting()) {
     (console as any)[type].apply(console, params)
   }
 }

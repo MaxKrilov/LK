@@ -35,7 +35,8 @@ const getFieldByName = (name: typeSortOrder) => {
   components,
   props: {
     isOpened: Boolean,
-    product: String
+    product: String,
+    number: String
   },
   watch: {
     isOpened (val) {
@@ -48,6 +49,7 @@ const getFieldByName = (name: typeSortOrder) => {
 export default class PhoneStatistic extends Vue {
   readonly isOpened!: boolean
   readonly product!: string
+  readonly number!: string
 
   // Data
   listStatistic: IBillingStatisticResponse[] = []
@@ -100,7 +102,8 @@ export default class PhoneStatistic extends Vue {
     this.$store.dispatch('internet/getStatistic', {
       fromDate: moment(beforeMonth).format(),
       toDate: moment(today).format(),
-      productInstance: this.product
+      productInstance: this.product,
+      eventSource: this.number.replace(/[\D]+/g, '')
     })
       .then(response => { this.listStatistic = response })
   }
