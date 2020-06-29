@@ -1,0 +1,80 @@
+@mixin grid-child($col-start, $col-end, $row-start, $row-end) {
+  grid-column: #{$col-start}/#{$col-end};
+  grid-row: #{$row-start}/#{$row-end};
+}
+
+.stat-template {
+  @extend %body-font;
+
+  &__row{
+    &:not(:last-child) {
+      margin-bottom: $padding-x4;
+
+      @include media-query((
+        margin-bottom: (md: $padding-x6, lg: $padding-x8)
+      ));
+    }
+  }
+
+  .stat-visitors-grid{
+    $cols-lg: calc(50% - 15px) 30px calc(50% - 15px);
+    $cols-xs: 100%;
+    display: grid;
+    grid-template-columns: $cols-xs;
+    grid-template-rows: auto $padding-x4 auto $padding-x4 auto;
+
+    @include media-query((
+        grid-template-columns: (lg: $cols-lg),
+        grid-template-rows: (
+          md: auto $padding-x6 auto $padding-x6 auto, 
+          lg: auto $padding-x8 auto
+        )
+    ));
+
+    &__age{
+      @include grid-child(1, 2, 1, 2);
+
+      @include media-min-width(map_get($grid-breakpoint, 'lg')) {
+        @include grid-child(1, 2, 1, 2);
+      }
+    }
+
+    &__frequency{
+      @include grid-child(1, 2, 6, 7);
+
+      @include media-min-width(map_get($grid-breakpoint, 'lg')) {
+        @include grid-child(1, 2, 3, 4);
+      }
+    }
+
+    &__auth-type{
+      @include grid-child(1, 2, 3, 4);
+
+      @include media-min-width(map_get($grid-breakpoint, 'lg')) {
+        @include grid-child(3, 4, 1, 4);        
+      }
+    }
+  }
+
+  &__footer{
+    margin-top: $padding-x8;
+    padding-right: $padding-x6;
+    padding-left: $padding-x6;
+
+    @include media-query((
+        margin-top: (lg: $padding-x10),
+        padding-right: (md: 0),
+        padding-left: (md: 0)
+    ));
+
+    &__nav{
+      order: -1;
+      margin-bottom: $padding-x8;
+
+      @include media-query((
+        order: (lg: 2),
+        margin-bottom: (lg: 0)
+      ));
+    }
+  }
+}

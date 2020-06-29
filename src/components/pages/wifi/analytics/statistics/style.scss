@@ -1,0 +1,40 @@
+.statistics {
+  @extend %body-font;
+  padding-top: $padding-x4;
+  padding-right: $padding-x4;
+  padding-left: $padding-x4;
+
+  @include media-query((
+    padding-right: (md: 0),
+    padding-left:(md: 0)
+  ));
+
+  background-image: url(../../../../../assets/images/wi-fi.png);
+  background-repeat: no-repeat;
+  background-position: 150px -30px;
+
+  @include media-query((
+    background-position: (sm: 98% -30px),
+    background-image: (lg: none)
+  ));
+
+  .list-point-component--mobile {
+    .list-point-component__content {
+      padding-right: $padding-x8;
+      padding-left: $padding-x8;
+
+      @include media-query(
+        (
+          padding-right: (
+            sm: $padding-x10,
+            md: $padding-x4
+          ),
+          padding-left: (
+            sm: $padding-x10,
+            md: $padding-x4
+          ),
+        )
+      );
+    }
+  }
+}

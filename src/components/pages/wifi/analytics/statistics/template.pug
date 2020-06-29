@@ -1,0 +1,11 @@
+div.main-content.main-content--top-menu-fix(:class="{'main-content--padding': !isMobile}")
+  div(:class="`${pre}`")
+    er-page-header(
+      title="Аналитика" 
+      linkText="Назад в WiFi зона"
+      backlink="/lk/wifi/analytics/promo")
+    list-point-component    
+
+    submenu(@input="selectSubpage")
+  router-view
+
