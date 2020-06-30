@@ -42,7 +42,8 @@ export default {
       isLoading: state => state.payments.isLoading,
       isPromisePay: state => state.payments.isPromisePay,
       visAutoPay: state => state.payments.visAutoPay,
-      listPayments: state => state.payments.listPayments
+      listPayments: state => state.payments.listPayments,
+      balanceInfo: state => state.user.paymentInfo
     })
   },
   watch: {
