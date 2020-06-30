@@ -386,6 +386,6 @@ export const USERS_LIST = [{
   'duration': { 'hours': '2', 'minutes': '12' }
 }]
 
-export const USERS_MORE = [20, 50, 100];
+export const USERS_MORE = [20, 50, 100]
 
-export const USERS_MAX = 128;
+export const USERS_MAX = 128
