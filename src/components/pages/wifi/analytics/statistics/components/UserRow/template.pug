@@ -8,7 +8,7 @@
         .user-row__wrapper
           user-card(:user="user" @close="hideCard")
     .user-row__col.mac
-      .content {{ user.mac }}
+      div(:class="`content ${isSmallMac ? ' small' : ''}`") {{ user.mac }}
   .user-row__col.authorization
     .content {{ user.authorization }}
   .user-row__col.traffic
