@@ -1,6 +1,6 @@
 import * as am4core from '@amcharts/amcharts4/core'
 import * as am4charts from '@amcharts/amcharts4/charts'
-import mixins from '../../mixins'
+import mixins from '../../chart-mixin'
 import { AUTH_TYPE } from '../../mock'
 import { COLORS_LIST } from '../../chart-colors'
 
@@ -9,18 +9,10 @@ export default {
   mixins: [mixins],
   data: () => ({
     pre: 'auth-type-chart',
-    chart: null,
-    chartHolder: null,
-    legendHolder: null,
-    legend: [],
-    currentChartType: '',
     data: AUTH_TYPE
   }),
   mounted () {
     this.$nextTick(() => {
-      this.chartHolder = this.$refs.chartholder
-      this.legendHolder = this.$refs.chartlegend
-
       if (this.chartHolder) {
         const chartSeries = this.buildChart()
         this.chart.events.on('ready', (event) => {
@@ -63,11 +55,13 @@ export default {
       series.dataFields.categoryX = 'label'
       series.dataFields.icon = 'icon'
       series.name = 'data'
-      series.columns.template.tooltipText = '{categoryX}: [bold]{valueY}[/]'
+      series.columns.template.tooltipText = '[font-size:14px]{categoryX}: [bold]{valueY}[/]'
+      series.columns.template.tooltipHTML = `<div class="am-tooltip"><div class="am-tooltip__label">{categoryX}<div><div class="am-tooltip__val">{valueY}</div></div>`
       series.columns.template.width = am4core.percent(50)
       series.columns.template.adapter.add('fill', (fill, target) => {
         return this.chart.colors.getIndex(target.dataItem.index)
       })
+      series.tooltip.getFillFromObject = false
 
       let columnTemplate = series.columns.template
       columnTemplate.strokeWidth = 0
@@ -85,25 +79,13 @@ export default {
       pieSeries.dataFields.icon = 'icon'
       pieSeries.slices.template.strokeWidth = 0
       pieSeries.labels.template.text = '{value}'
+      pieSeries.slices.template.tooltipHTML = `<div class="am-tooltip"><div class="am-tooltip__label">{category}<div><div class="am-tooltip__val">{value}</div></div>`
       pieSeries.slices.template.adapter.add('fill', (fill, target) => {
         return this.chart.colors.getIndex(target.dataItem.index)
       })
+      pieSeries.tooltip.getFillFromObject = false
 
       return pieSeries
-    },
-    makeLegend (series) {
-      this.chart.customLegend = this.legendHolder
-      series.dataItems.each((row, i) => {
-        const color = this.chart.colors.getIndex(i)
-        const value = row.value || row.valueY
-        const label = row.category || row.categoryX
-        this.legend.push({
-          color,
-          label,
-          value,
-          icon: row.icon
-        })
-      })
     }
   }
 }

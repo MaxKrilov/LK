@@ -1,15 +1,20 @@
 import * as am4core from '@amcharts/amcharts4/core'
 import * as am4charts from '@amcharts/amcharts4/charts'
 import { COLORS_LIST } from '../../chart-colors'
-import mixins from '../../mixins'
+import chartMixin from '../../chart-mixin'
 
 export default {
   name: 'SimpleChart',
-  mixins: [mixins],
+  mixins: [chartMixin],
   props: {
     data: {
       type: Array,
-      default: () => ([])
+      default: () => ([]),
+      requeired: true
+    },
+    showLegend: {
+      type: Boolean,
+      default: false
     }
   },
   data: () => ({
@@ -22,9 +27,12 @@ export default {
       this.chartHolder = this.$refs.chartholder
 
       if (this.chartHolder) {
-        this.buildChart()
+        const chartSeries = this.buildChart()
         this.chart.events.on('ready', (event) => {
           this.$emit('chartready', event)
+          if (chartSeries && this.showLegend) {
+            this.makeLegend(chartSeries)
+          }
         })
       }
     })
@@ -32,13 +40,14 @@ export default {
   methods: {
     buildChart () {
       this.destroyChart()
+      let chartSeries = null
 
       switch (this.getChartType) {
         case 'pie':
-          this.makePieChart()
+          chartSeries = this.makePieChart()
           break
         case 'bar':
-          this.makeBarChart()
+          chartSeries = this.makeBarChart()
           break
         case 'cluster-bar':
           this.makeClusterBarChart()
@@ -48,29 +57,41 @@ export default {
       this.chart.numberFormatter.numberFormat = {
         'style': 'decimal'
       }
+      return chartSeries
     },
     makeBarChart () {
       this.chart = am4core.create(this.chartHolder, am4charts.XYChart)
       this.chart.colors.step = 2
       this.chart.data = this.data
-
+      this.chart.colors.list = COLORS_LIST
       let categoryAxis = this.chart.xAxes.push(new am4charts.CategoryAxis())
       categoryAxis.dataFields.category = 'label'
       categoryAxis.renderer.grid.template.location = 0
       categoryAxis.renderer.minGridDistance = 30
-      categoryAxis.renderer.labels.template.hidden = true
+      if (this.showLegend) {
+        categoryAxis.renderer.labels.template.hidden = true
+      }
 
       this.chart.yAxes.push(new am4charts.ValueAxis())
-      this.chart.colors.list = COLORS_LIST
       let series = this.chart.series.push(new am4charts.ColumnSeries())
       series.dataFields.valueY = 'data'
       series.dataFields.categoryX = 'label'
       series.columns.template.width = am4core.percent(60)
+      series.calculatePercent = true
       series.name = 'data'
-      series.columns.template.tooltipText = '{categoryX}: [bold]{valueY}[/]'
+      series.columns.template.tooltipText = '[font-size:14px]{categoryX}: [bold]{valueY}[/]'
+      series.columns.template.tooltipHTML = `<div class="am-tooltip"><div class="am-tooltip__label">{categoryX}<div><div class="am-tooltip__val">{valueY}</div></div>`
+      series.columns.template.strokeWidth = 0
+      series.columns.template.width = am4core.percent(50)
+      series.columns.template.adapter.add('fill', (fill, target) => {
+        return this.chart.colors.getIndex(target.dataItem.index)
+      })
+
+      series.tooltip.getFillFromObject = false
 
       let columnTemplate = series.columns.template
       columnTemplate.strokeWidth = 0
+      return series
     },
     makePieChart () {
       this.chart = am4core.create(this.chartHolder, am4charts.PieChart)
@@ -82,14 +103,23 @@ export default {
       pieSeries.dataFields.category = 'label'
       pieSeries.slices.template.strokeWidth = 0
       pieSeries.ticks.template.disabled = true
-      pieSeries.labels.template.text = "{category} {value.percent.formatNumber('#.0')}%"
+      pieSeries.labels.template.text = "{value.percent.formatNumber('#.0')}%"
+      pieSeries.slices.template.tooltipHTML = `<div class="am-tooltip"><div class="am-tooltip__label">{category}<div><div class="am-tooltip__val">{value}</div></div>`
       pieSeries.alignLabels = false
       pieSeries.labels.template.dy = 25
       pieSeries.labels.template.dx = 25
+      pieSeries.slices.template.adapter.add('fill', (fill, target) => {
+        return this.chart.colors.getIndex(target.dataItem.index)
+      })
+
+      pieSeries.tooltip.getFillFromObject = false
+
+      return pieSeries
     },
     makeClusterBarChart () {
       this.chart = am4core.create(this.chartHolder, am4charts.XYChart)
       this.chart.colors.step = 2
+      this.chart.colors.list = COLORS_LIST
 
       let xAxis = this.chart.xAxes.push(new am4charts.CategoryAxis())
       xAxis.dataFields.category = 'label'
@@ -99,13 +129,14 @@ export default {
 
       let yAxis = this.chart.yAxes.push(new am4charts.ValueAxis())
       yAxis.min = 0
-      this.chart.colors.list = COLORS_LIST
       const createSeries = (value, name) => {
         let series = this.chart.series.push(new am4charts.ColumnSeries())
         series.dataFields.valueY = value
         series.dataFields.categoryX = 'label'
         series.name = name
-        series.columns.template.tooltipText = '{categoryX}: [bold]{valueY}[/]'
+        series.columns.template.tooltipText = '[font-size:14px]{categoryX}: [bold]{valueY}[/]'
+        series.columns.template.tooltipHTML = `<div class="am-tooltip"><div class="am-tooltip__label">{categoryX}<div><div class="am-tooltip__val">{valueY}</div></div>`
+        series.tooltip.getFillFromObject = false
 
         let bullet = series.bullets.push(new am4charts.LabelBullet())
         bullet.interactionsEnabled = false

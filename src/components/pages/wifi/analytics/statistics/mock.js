@@ -103,7 +103,7 @@ export const AGES = [
 
 export const CONNECTIONS = [
   { label: 'Авторизованные пользователи',
-    data: [
+    items: [
       {
         label: 'Уникальные авториз. пользователи',
         active: true,
@@ -204,7 +204,7 @@ export const CONNECTIONS = [
   },
   {
     label: 'Авторизация через соц. сети',
-    data: [
+    items: [
       {
         label: 'Вконтакте',
         active: true,
@@ -241,7 +241,7 @@ export const CONNECTIONS = [
   },
   {
     label: 'Неавторизованые пользователи',
-    data: [
+    items: [
       {
         label: 'Уникальные неавториз. пользователи',
         active: false,
@@ -279,6 +279,220 @@ export const CONNECTIONS = [
     ]
   }
 ]
+
+export const CONNECTIONS_DEVICES = [
+  { label: 'Смартфоны',
+    items: [
+      {
+        label: 'Samsung',
+        active: true,
+        data: [{
+          date: '2020-06-20',
+          data: 100
+        },
+        {
+          date: '2020-06-21',
+          data: 120
+        },
+        {
+          date: '2020-06-22',
+          data: 170
+        },
+        {
+          date: '2020-06-23',
+          data: 110
+        },
+        {
+          date: '2020-06-24',
+          data: 70
+        },
+        {
+          date: '2020-06-25',
+          data: 60
+        },
+        {
+          date: '2020-06-26',
+          data: 124
+        }]
+      },
+      {
+        label: 'Xiaomi',
+        active: false,
+        data: [{
+          date: '2020-06-20',
+          data: 140
+        },
+        {
+          date: '2020-06-21',
+          data: 170
+        },
+        {
+          date: '2020-06-22',
+          data: 120
+        },
+        {
+          date: '2020-06-23',
+          data: 110
+        },
+        {
+          date: '2020-06-24',
+          data: 145
+        },
+        {
+          date: '2020-06-25',
+          data: 156
+        },
+        {
+          date: '2020-06-26',
+          data: 189
+        }]
+      },
+      {
+        label: 'OnePlus',
+        active: false,
+        data: [{
+          date: '2020-06-20',
+          data: 10
+        },
+        {
+          date: '2020-06-21',
+          data: 20
+        },
+        {
+          date: '2020-06-22',
+          data: 70
+        },
+        {
+          date: '2020-06-23',
+          data: 10
+        },
+        {
+          date: '2020-06-24',
+          data: 50
+        },
+        {
+          date: '2020-06-25',
+          data: 60
+        },
+        {
+          date: '2020-06-26',
+          data: 124
+        }]
+      }
+    ]
+  },
+  {
+    label: 'Планшеты',
+    items: [
+      {
+        label: 'Apple',
+        active: true,
+        data: [{
+          date: '2020-06-20',
+          data: 50
+        },
+        {
+          date: '2020-06-21',
+          data: 67
+        },
+        {
+          date: '2020-06-22',
+          data: 34
+        },
+        {
+          date: '2020-06-23',
+          data: 90
+        },
+        {
+          date: '2020-06-24',
+          data: 123
+        },
+        {
+          date: '2020-06-25',
+          data: 73
+        },
+        {
+          date: '2020-06-26',
+          data: 173
+        }]
+      }
+    ]
+  },
+  {
+    label: 'Персональные компьютеры',
+    data: [{
+      active: true,
+      data: [{
+        date: '2020-06-20',
+        data: 10
+      }, {
+        date: '2020-06-21',
+        data: 11
+      }, {
+        date: '2020-06-22',
+        data: 17
+      }, {
+        date: '2020-06-23',
+        data: 9
+      }, {
+        date: '2020-06-24',
+        data: 7
+      }, {
+        date: '2020-06-25',
+        data: 7
+      }, {
+        date: '2020-06-26',
+        data: 12
+      }]
+    }]
+  }
+]
+
+export const OS = [{
+  'label': 'Android',
+  'data': 2025
+}, {
+  'label': 'IOS',
+  'data': 1882
+}, {
+  'label': 'Windows',
+  'data': 1809
+}, {
+  'label': 'Unix',
+  'data': 1322
+}, {
+  'label': 'Tizen',
+  'data': 1122
+}, {
+  'label': 'BlackBerry OS',
+  'data': 1114
+}, {
+  'label': 'Другие ОС',
+  'data': 1114
+}]
+
+export const BROWSERS = [{
+  'label': 'Safari',
+  'data': 2025
+}, {
+  'label': 'Yandex',
+  'data': 1882
+}, {
+  'label': 'Google Chrome',
+  'data': 1809
+}, {
+  'label': 'Opera',
+  'data': 1322
+}, {
+  'label': 'Maxthon',
+  'data': 1122
+}, {
+  'label': 'Mozilla Firefox',
+  'data': 1114
+}, {
+  'label': 'Другие браузеры',
+  'data': 1154
+}]
 
 export const USERS_LIST = [{
   'number': '1',

@@ -22,7 +22,7 @@
       &:last-child{
         text-align: right;
       }
-
+      
       &__ico{
         margin-top: -12px;
         position: absolute;
@@ -48,7 +48,7 @@
       }
 
       &:first-child{
-        @include color-black(.2);
+        @include color-black(.5);
         padding-left: 34px;
         margin-right: $padding-x8;
 
@@ -62,7 +62,7 @@
       }
 
       &:last-child{
-        @include color-black(.2);
+        @include color-black(.5);
         padding-right: 34px;
         margin-bottom: $padding-x6;
         order: -1;

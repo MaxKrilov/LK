@@ -1,9 +1,21 @@
+.am-tooltip{
+  color: map_get($shades, 'black');
+  padding: $padding-x2 $padding-x1;
+
+  &__label{
+    @extend %caption1;
+  }
+
+  &__val{
+    @extend %h4;
+  }
+}
+
 .statistics {
   @extend %body-font;
   padding-top: $padding-x4;
   padding-right: $padding-x4;
   padding-left: $padding-x4;
-
   @include media-query((
     padding-right: (md: 0),
     padding-left:(md: 0)

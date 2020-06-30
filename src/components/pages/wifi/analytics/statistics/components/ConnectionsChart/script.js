@@ -4,8 +4,7 @@ import cloneDeep from 'lodash/cloneDeep'
 import find from 'lodash/find'
 import sumBy from 'lodash/sumBy'
 import BreakpointMixin from '@/mixins/BreakpointMixin'
-import mixins from '../../mixins'
-import { CONNECTIONS } from '../../mock'
+import mixins from '../../chart-mixin'
 import { COLORS_LIST } from '../../chart-colors'
 
 const LINE_CHART_PERIODS = ['Час', 'День', 'Неделя', 'Месяц', 'Год']
@@ -18,6 +17,13 @@ const LEGEND_INACTIVE_CONTROL = ['Скрыть неактивные', 'Пока�
 export default {
   name: 'ConnectionsChart',
   mixins: [mixins, BreakpointMixin],
+  props: {
+    data: {
+      type: Array,
+      default: () => ([]),
+      requeired: true
+    }
+  },
   data: () => ({
     pre: 'connections-chart',
     chart: null,
@@ -31,23 +37,25 @@ export default {
     legendInactiveControl: LEGEND_INACTIVE_CONTROL,
     legendColor: {},
     lineChartPeriods: LINE_CHART_PERIODS,
-    lineChartPeriod: 2,
-    data: CONNECTIONS,
-    test: () => {
-      return CONNECTIONS.map((item, i) => {
-        return { [`item${i}`]: false }
-      })
-    }
+    lineChartPeriod: 2
   }),
   computed: {
     connections () {
       let connections = []
       for (let i = 0; i < this.data.length; i++) {
         let item = this.data[i]
-        connections.push({
-          section: item.label,
-          data: item.data
-        })
+        if (item.items) {
+          connections.push({
+            section: item.label,
+            data: item.items,
+            isToggle: true
+          })
+        } else {
+          connections.push({
+            data: item.data,
+            section: item.label
+          })
+        }
         this.$set(this.legendSections, `section${i}`, true)
       }
       connections.map((item) => {
@@ -77,7 +85,7 @@ export default {
           // тогда вместо data[0] надо брать сложенные за этот период данные
           // если я правильно понял
           data.push({
-            label: item.data[s].label,
+            label: item.data[s].label || item.section,
             data: item.data[s].data[0].data
           })
         }
@@ -145,11 +153,13 @@ export default {
       series.dataFields.categoryX = 'label'
       series.dataFields.icon = 'icon'
       series.name = 'data'
-      series.columns.template.tooltipText = '{categoryX}: [bold]{valueY}[/]'
+      series.columns.template.tooltipText = '[font-size:14px]{categoryX}: [bold]{valueY}[/]'
+      series.columns.template.tooltipHTML = `<div class="am-tooltip"><div class="am-tooltip__label">{categoryX}<div><div class="am-tooltip__val">{valueY}</div></div>`
       series.columns.template.width = am4core.percent(50)
       series.columns.template.adapter.add('fill', (fill, target) => {
         return this.chart.colors.getIndex(target.dataItem.index)
       })
+      series.tooltip.getFillFromObject = false
 
       let columnTemplate = series.columns.template
       columnTemplate.strokeWidth = 0
@@ -164,9 +174,11 @@ export default {
       pieSeries.dataFields.category = 'label'
       pieSeries.slices.template.strokeWidth = 0
       pieSeries.labels.template.text = '{value.percent.formatNumber("###.#")}%'
+      pieSeries.slices.template.tooltipHTML = `<div class="am-tooltip"><div class="am-tooltip__label">{category}<div><div class="am-tooltip__val">{value}</div></div>`
       pieSeries.slices.template.adapter.add('fill', (fill, target) => {
         return this.chart.colors.getIndex(target.dataItem.index)
       })
+      pieSeries.tooltip.getFillFromObject = false
     },
     makeLineChart () {
       this.chart = am4core.create(this.chartHolder, am4charts.XYChart)
@@ -196,7 +208,10 @@ export default {
         series.dataFields.valueY = 'value' + s
         series.dataFields.dateX = 'date'
         series.name = name
-        series.tooltipText = '{dateX.formatDate("d.MM")}: [bold]{valueY}[/]'
+        series.tooltipText = '[font-size:14px]{dateX.formatDate("d.MM")}: [bold]{valueY}[/]'
+        series.tooltipHTML = `<div class="am-tooltip"><div class="am-tooltip__label">{dateX}<div><div class="am-tooltip__val">{valueY}</div></div>`
+        series.calculatePercent = true
+        series.tooltip.getFillFromObject = false
 
         let combineData = []
         for (let i = 0; i < data.length; i++) {
@@ -213,7 +228,8 @@ export default {
       for (let i = 0; i < this.activeConnections.length; i++) {
         let item = this.activeConnections[i]
         for (let s = 0; s < item.data.length; s++) {
-          createSeries(item.data[s].data, item.data[s].label, s)
+          let name = item.data[s].label + i || item.section
+          createSeries(item.data[s].data, name, s)
         }
       }
 

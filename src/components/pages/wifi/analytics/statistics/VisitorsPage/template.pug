@@ -1,6 +1,6 @@
 div(:class="`${pre}`")
   stat-header(
-    :title="'Статистика по аудитории'"
+    :title="'Статистика по аудитории'" 
     @onPeriodSet="setPeriod"
   )
 
@@ -13,7 +13,7 @@ div(:class="`${pre}`")
         :defaultChartType="'line'"
       )
         template(v-slot:chart)
-          connections-chart
+          connections-chart(:data="mock.connections")
 
   div(:class="[`${pre}__row`, 'stat-visitors-grid']")
     div.stat-visitors-grid__age
@@ -61,4 +61,3 @@ div(:class="`${pre}`")
       er-button(:flat="true") Отключить аналитику
     er-flex(:class="`${pre}__footer__nav`" xs12 lg8)
       page-nav
-

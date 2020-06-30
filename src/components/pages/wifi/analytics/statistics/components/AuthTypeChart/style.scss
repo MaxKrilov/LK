@@ -7,6 +7,7 @@
   }
 
   .chart-legend{
+    margin-top: $padding-x10;
 
     &__item{
       @extend %body-font;

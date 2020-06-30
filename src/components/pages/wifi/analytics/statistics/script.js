@@ -11,7 +11,8 @@ export default {
   mixins: [ResponsiveMixin],
   props: {},
   data: () => ({
-    pre: 'statistics'
+    pre: 'statistics',
+    subpage: ''
   }),
   computed: {
     isMobile () {
@@ -20,7 +21,15 @@ export default {
   },
   methods: {
     selectSubpage (name) {
-      this.$router.push({ name: name })
+      const routeName = this.$router.currentRoute.name
+      if (routeName !== name) {
+        this.$router.push({ name: name })
+        this.subpage = name
+      }
     }
+  },
+  beforeRouteUpdate (to, from, next) {
+    this.subpage = to.name
+    next()
   }
 }

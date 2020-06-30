@@ -1,5 +1,36 @@
 div(:class="`${pre}`")
   stat-header(:title="'Статистика по устройствам'")
+  er-row(:class="`${pre}__row`")
+    er-flex(xs12)
+      chart-card(
+        :title="'Статистика подключений'"
+        :period="period",
+        :chartTypes="chartTypes"
+        :defaultChartType="'line'"
+      )
+        template(v-slot:chart)
+          connections-chart(:data="mock.connections")
+
+  er-row(:class="`${pre}__row`")
+    er-flex(xs12 lg6 :class="`${pre}__row__flex-item`")
+      chart-card(
+        :title="'ОС устройства'"
+        :period="period",
+        :chartTypes="[chartTypes.bar, chartTypes.pie]",
+        :defaultChartType="'bar'"
+      )
+        template(v-slot:chart)
+          simple-chart(:data="mock.os" :showLegend="true")
+
+    er-flex(xs12 lg6 :class="`${pre}__row__flex-item`")
+      chart-card(
+        :title="'Браузер устройства'"
+        :period="period",
+        :chartTypes="[chartTypes.bar, chartTypes.pie]",
+        :defaultChartType="'bar'"
+      )
+        template(v-slot:chart)
+          simple-chart(:data="mock.browsers" :showLegend="true")
   er-row(:class="[`${pre}__row`, `${pre}__footer`]")
     er-flex(:class="`${pre}__footer__action`" xs12 md5)
       er-button(:flat="true") Отключить аналитику
