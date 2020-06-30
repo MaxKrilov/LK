@@ -51,9 +51,11 @@
       .download-files__body
         er-slide-up-down(:active="showFiles")
           .download-files__list
-            span.dl-file
-              er-icon(name="download")
-              .dl-file__label Stat_100818-110820
+            file-component(
+              v-for="(file, index) in computedListFile"
+              :key="index"
+              :file="file"
+            )
 
 
   .telephony-page__statistic.statistic
