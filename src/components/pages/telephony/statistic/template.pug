@@ -87,3 +87,23 @@
       .legend__item.legend__item--missed
         er-icon(name="missed_call")
         .legend__item-title Не принятые
+
+  er-activation-modal(
+    type="success"
+    v-model="isSuccessReport"
+    title="Запрос успешно выполнен"
+    :isShowActionButton="false"
+    cancel-button-text="Спасибо"
+  )
+    template(slot="description")
+      | Запрос на генерацию файла статистики принят. Файл появится в списке файлов статистики
+
+  er-activation-modal(
+    type="error",
+    title="При выполнении запроса произошла ошибка"
+    :is-show-action-button="false"
+    cancel-button-text="Закрыть",
+    v-model="isErrorReport"
+  )
+    template(slot="description")
+      | Повторите запрос позднее

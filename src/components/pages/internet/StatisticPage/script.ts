@@ -152,7 +152,7 @@ export default class StatisticPage extends mixins(ErFileGetStatisticMixin) {
       .then((response: any) => {
         this.isShowDialogForFileSuccess = true
         Cookie.set('is-loading', '1', { expires: 30 * 24 * 60 * 60 })
-        Cookie.set('statistic-file', response.fileName, { expires: 30 * 24 * 60 * 60 });
+        Cookie.set('statistic-file', response, { expires: 30 * 24 * 60 * 60 });
         (this as any).setIntervalForFile()
       })
       .finally(() => {

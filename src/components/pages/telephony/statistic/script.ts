@@ -8,6 +8,7 @@ import { getFirstElement } from '@/functions/helper'
 import ErActivationModal from '@/components/blocks/ErActivationModal/index.vue'
 import { mapState } from 'vuex'
 import FileComponent from './components/FileComponent/index.vue'
+import { Cookie } from '@/functions/storage'
 
 const components = {
   PhoneFolder,
@@ -64,6 +65,8 @@ export default class TelephonyStatisticPage extends Vue {
 
   // Data
   currentPoint: iPointItem | null = null
+  isSuccessReport = false
+  isErrorReport = false
 
   // Computed
   get listPhone () {
@@ -105,11 +108,38 @@ export default class TelephonyStatisticPage extends Vue {
       toDate: this.periodDate[1].toISOString(),
       productInstance: this.currentPhone.product
     })
-      .then()
-      .catch()
+      .then((response) => {
+        this.isSuccessReport = true
+        Cookie.set('is-loading', '1', { expires: 30 * 24 * 60 * 60 })
+        Cookie.set('statistic-file', response, { expires: 30 * 24 * 60 * 60 });
+        this.setIntervalForFile()
+      })
+      .catch(() => {
+        this.isErrorReport = true
+      })
       .finally(() => {
         this.isGeneratingFile = false
       })
+  }
+
+  setIntervalForFile () {
+    this.$store.commit('timer/setInterval', {
+      id: 'GET_FILE_STATISTIC',
+      delay: 5000,
+      cb: () => {
+        this.$store.dispatch('fileinfo/downloadListDocument', { api: this.$api })
+          .then(() => {
+            const fileName = Cookie.get('statistic-file')
+            const findingDocument = ((this as any).getListFileStatistic as DocumentInterface[]).find(document =>
+              !Array.isArray(document) && document.fileName === fileName)
+            if (findingDocument) {
+              Cookie.remove('statistic-file')
+              Cookie.remove('is-loading')
+              this.$store.commit('timer/clearInterval', 'GET_FILE_STATISTIC')
+            }
+          })
+      }
+    })
   }
 
   mounted () {
