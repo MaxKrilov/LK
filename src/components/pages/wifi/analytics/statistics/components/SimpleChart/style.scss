@@ -5,4 +5,38 @@
     min-height: 256px;
     margin-top: $padding-x8;
   }
+  .chart-legend{
+    margin-top: $padding-x10;    
+
+    &__item{
+      @extend %body-font;
+      display: flex;
+      justify-content: space-between;
+
+      &:not(:last-child){
+        margin-bottom: $padding-x2;
+      }
+
+      &__ico{     
+        width: 16px;
+        height: 16px;   
+        margin-right: $padding-x2;
+        display: inline-block;
+        vertical-align: middle;
+        border-radius: 50%;
+      }
+
+      &__data-pcnt{
+        @extend %h4;
+        flex-shrink: 0;        
+        text-align: right;
+        @include color-black(.8);
+
+        &__pcnt{
+          @extend %caption1;
+          padding-left: 2px;
+        }
+      }
+    }
+  }
 }

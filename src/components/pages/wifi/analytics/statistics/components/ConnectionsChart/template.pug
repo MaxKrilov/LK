@@ -45,9 +45,12 @@ div(:class="`${pre}`")
                     @click="toggleLegendSection(idxs)"
                 )
                     div.chart-legend__item__label
-                        span.chart-legend__item__toggle-marker(:class="{'is-open': legendSections[`section${idxs}`]}")
+                        span.chart-legend__item__toggle-marker(
+                            v-if="section.isToggle"
+                            :class="{'is-open': legendSections[`section${idxs}`]}"
+                        )
                             er-icon(name="corner_down")
-                        span.chart-legend__item__marker
+                        span.chart-legend__item__marker(:style="{backgroundColor: legendColor[section.section], borderColor: legendColor[section.section]}")
                         span.chart-legend__item__txt {{ section.section }}
                     template(v-if="!legendUnit || legendUnit === 'pcnt'")    
                         div.chart-legend__item__data-pcnt 12
@@ -58,11 +61,12 @@ div(:class="`${pre}`")
                 er-slide-up-down.chart-legend__content-section(:active="legendSections[`section${idxs}`]")
                     template(v-for="(item, idxi) in section.data")
                         div.chart-legend__item(
+                            v-if="item.label"
                             :key="idxi"
                             :class="{'is-inactive': !item.active}"
                         )
                             div.chart-legend__item__label
-                                span.chart-legend__item__marker(:style="{backgroundColor: legendColor[item.label], borderColor: legendColor[item.label]}")
+                                span.chart-legend__item__marker(:style="{backgroundColor: legendColor[item.label+idxs], borderColor: legendColor[item.label+idxs]}")
                                 span.chart-legend__item__txt {{ item.label }}
                             template(v-if="!legendUnit || legendUnit === 'pcnt'")
                                 div.chart-legend__item__data-pcnt 12

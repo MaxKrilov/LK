@@ -11,7 +11,11 @@ export default {
       const routeName = this.$router.currentRoute
       const result = this.items.filter((item) => {
         return item.value !== routeName.name
-      }).reverse()
+      })
+
+      if (!result.includes(this.items[0]) || !result.includes(this.items[this.items.length - 1])) {
+        result.reverse()
+      }
       return result
     }
   },

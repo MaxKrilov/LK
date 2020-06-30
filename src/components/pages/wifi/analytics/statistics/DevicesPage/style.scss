@@ -1,3 +1,32 @@
 .stat-template {
   @extend %body-font;
+  &__row {
+    &:not(:last-child) {
+      margin-bottom: $padding-x4;
+
+      @include media-query(
+        (
+          margin-bottom: (
+            md: $padding-x6,
+            lg: $padding-x8
+          ),
+        )
+      );
+    }
+
+    &__flex-item{
+      &:not(:last-child) {
+        margin-bottom: $padding-x4;
+
+        @include media-query(
+          (
+            margin-bottom: (
+              md: $padding-x6,
+              lg: 0
+            ),
+          )
+        );
+      }
+    }
+  }
 }

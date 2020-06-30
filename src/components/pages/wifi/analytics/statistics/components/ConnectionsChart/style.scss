@@ -136,6 +136,7 @@
 
       &__toggle-marker{        
         background-color: map_get($gray, '4');
+        margin-right: $padding-x1;
 
         &.is-open{
           transform: rotate(-180deg);
@@ -156,8 +157,7 @@
       }
 
       &__marker {
-        border: 2px solid map_get($gray, '5');
-        margin-left: $padding-x1;
+        border: 2px solid map_get($gray, '5');        
       }
 
       &__txt{
