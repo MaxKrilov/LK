@@ -2,6 +2,7 @@ import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
 import { mapState } from 'vuex'
 import { SCREEN_WIDTH } from '@/store/actions/variables'
 import { BREAKPOINT_LG, BREAKPOINT_MD, BREAKPOINT_XL } from '@/constants/breakpoint'
+import { OFFER_LINKS } from '@/constants/url'
 
 @Component({
   computed: {
@@ -21,7 +22,7 @@ export default class ErActivationModal extends Vue {
   @Prop(Boolean) readonly isLoadingConfirm!: boolean
   @Prop(Boolean) readonly persistent!: boolean
   @Prop(Boolean) readonly disabledActionButton!: boolean
-  @Prop({ type: Boolean, default: false }) readonly isOffer!: boolean
+  @Prop({ type: String, default: '' }) readonly isOffer!: string
 
   screenWidth!: number
 
@@ -42,7 +43,10 @@ export default class ErActivationModal extends Vue {
   }
 
   get isDisabledActionButton () {
-    return this.isOffer ? !this.isAcceptOffer : this.disabledActionButton
+    return this.offerLink ? !this.isAcceptOffer : this.disabledActionButton
+  }
+  get offerLink () {
+    return OFFER_LINKS?.[this.isOffer]
   }
   get getMaxWidth () {
     return this.screenWidth >= BREAKPOINT_XL

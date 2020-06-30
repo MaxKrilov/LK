@@ -61,11 +61,20 @@ export default class ErDisconnectProduct extends ErPlugMixin {
     return `Заявка сформирована из ЛК B2B:
     Услуги: ${this.requestData.services}; 
     Адрес: ${this.requestData.fulladdress}, 
+    Как обращаться к клиенту: ${this.name}, 
     Контактный номер телефона: ${this.phoneNumber};`
+  }
+
+  get isReadonlyName () {
+    return this.getPhoneList.includes(this.phoneNumber.replace(/[\D]+/g, ''))
   }
 
   get getPhoneList () {
     return this.getListContact.map((item: iContactListItem) => item.phone?.value).filter((item: any) => item)
+  }
+
+  get isValidateRequestForm () {
+    return !(this.phoneNumber && this.name)
   }
 
   startConnection () {
@@ -86,11 +95,22 @@ export default class ErDisconnectProduct extends ErPlugMixin {
       customerContactId = customerContact.id
       phoneId = customerContact.phone.id
     } else {
-      customerContact = this.getListContact.find((item: iContactListItem) => item.isLPR) || this.getListContact?.[0]
+      customerContact = this.getListContact.find(
+        (item: iContactListItem) => item.isLPR && item?.phone?.id
+      ) || this.getListContact.find(
+        (item: iContactListItem) => item?.phone?.id
+      )
       if (customerContact !== undefined) {
         customerContactId = customerContact.id
         phoneId = customerContact.phone.id
         complainantPhone = this.phoneNumber.replace(/[\D]+/g, '')
+      } else {
+        this.isShowRequestModal = false
+        this.isShowErrorRequestModal = true
+        this.isCreatingRequest = false
+        this.phoneNumber = ''
+        this.name = ''
+        return
       }
     }
 

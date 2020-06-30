@@ -20,7 +20,7 @@
           .er-activation-modal__description
             slot(name="description")
 
-          .er-activation-modal__offer.d--flex.align-items-center.mb-8(v-if="isOffer")
+          .er-activation-modal__offer.d--flex.align-items-center.mb-8(v-if="offerLink")
             er-toggle(
               view="radio-check"
               v-model="isAcceptOffer"
@@ -29,7 +29,7 @@
               span
                 | Вы должны принять
               | &nbsp;
-              a(href="#") условия оферты
+              a(:href="offerLink" target="_blank") условия оферты
           .er-activation-modal__actions.d--flex.mt-auto.flex-column-reverse.flex-sm-row
             .er-activation-modal__action.pr-sm-8(v-if="isShowCancelButton")
               er-button(@click="closeDialog" flat :disabled="isLoadingConfirm")
