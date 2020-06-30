@@ -1,16 +1,46 @@
 div
 
-  er-activation-modal(
-    type="question"
+  er-dialog(
+    :max-width="470" 
     v-model="isShowRequestModal"
-    title="Вы уверены, что хотите отправить заявку на отключение?"
-    cancel-button-text="Отменить"
-    actionButtonText="Отключить"
-    :isLoadingConfirm="isCreatingRequest"
-    @confirm="sendRequest"
-    @close="closeCreatingRequest"
+    :persistent="true"
 
-  ) Заявка будет отправлена вашему персональному менеджеру
+  )
+    .er-plug-product__request-modal
+      .er-plug-product__request-modal__content
+        div.content-wrapper
+          .title
+            h3 Представьтесь, пожалуйста
+            .close
+              button(@click="closeCreatingRequest")
+                er-icon(name="close")
+          .wrapper.mt-8
+            .round
+            .caption2 — Поля обязательные к заполнению
+          .caption.mb-8.mt-16 {{ requestModalDescrition }}
+          er-form.mt-24
+
+            er-phone-select(
+              :items="getPhoneList"
+              v-model="phoneNumber"
+              placeholder="Телефон для связи"
+              is-show-required-label
+              :rules="requiredRule"
+            )
+            er-text-field.mt-32(
+              label="Как к Вам обращаться?"
+              is-show-required-label
+              v-model="name"
+              :rules="requiredRule"
+              :readonly="isReadonlyName"
+            )
+
+          .caption2.mt-32 Нажимая на кнопку, Вы соглашаетесь на обработку данных
+        .footer  
+          .buttons
+            er-button(@click="sendRequest" :disabled="isValidateRequestForm" :loading="isCreatingRequest") Отправить
+            er-button(flat @click="closeCreatingRequest") Отменить
+
   er-activation-modal(
     type="success"
     v-model="isShowSuccessRequestModal"

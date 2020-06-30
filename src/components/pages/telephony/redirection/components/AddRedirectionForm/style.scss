@@ -10,6 +10,9 @@
 
   &__form {
     margin-top: $padding-x8;
+    .er-icon--ok {
+      display: none;
+    }
   }
 
   &__period {
@@ -68,7 +71,9 @@
         padding-top: 16px;
         display: flex;
         align-items: center;
-
+        .er-icon--ok {
+          display: none;
+        }
         @include min-breakpoint('sm') {
           padding-top: 10px;
         }

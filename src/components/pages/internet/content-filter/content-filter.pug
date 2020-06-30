@@ -62,7 +62,7 @@ div(:class="`${pre} main-content main-content--top-menu-fix`")
     actionButtonText="Отключить"
     persistent
     :isLoadingConfirm="sendingOrder"
-    isOffer
+    isOffer="internet"
     @confirm="sendOrder"
     @close="cancelOrder"
   )

@@ -102,11 +102,22 @@ export default class ErPlugProduct extends ErPlugMixin {
       customerContactId = customerContact.id
       phoneId = customerContact.phone.id
     } else {
-      customerContact = this.getListContact.find((item: iContactListItem) => item.isLPR) || this.getListContact?.[0]
+      customerContact = this.getListContact.find(
+        (item: iContactListItem) => item.isLPR && item?.phone?.id
+      ) || this.getListContact.find(
+        (item: iContactListItem) => item?.phone?.id
+      )
       if (customerContact !== undefined) {
         customerContactId = customerContact.id
         phoneId = customerContact.phone.id
         complainantPhone = this.phoneNumber.replace(/[\D]+/g, '')
+      } else {
+        this.isShowRequestModal = false
+        this.isShowErrorRequestModal = true
+        this.isCreatingRequest = false
+        this.phoneNumber = ''
+        this.name = ''
+        return
       }
     }
 
