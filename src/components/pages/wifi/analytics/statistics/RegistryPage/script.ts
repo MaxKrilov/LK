@@ -7,7 +7,7 @@ import ErButton from '@/components/UI/ErButton'
 import ErIcon from '@/components/UI/ErIcon'
 import ErDialog from '@/components/UI/ErDialog'
 import { UsersRegistryComponent, User } from '../types'
-import {USERS_LIST, USERS_MAX, USERS_MORE} from '../mock'
+import { USERS_LIST, USERS_MAX, USERS_MORE } from '../mock'
 import { mapState } from 'vuex'
 import { SCREEN_WIDTH } from '@/store/actions/variables'
 import { BREAKPOINT_SM, BREAKPOINT_MD, BREAKPOINT_LG, BREAKPOINT_XL } from '@/constants/breakpoint'
@@ -80,8 +80,8 @@ export default {
       }
       this.moreCounts = USERS_MORE.filter(i => i + index < USERS_MAX)
       if (this.moreCounts.length === 0) {
-        const length = USERS_MAX - index + 1;
-        this.moreCounts = length > 0 ? [length] : [];
+        const length = USERS_MAX - index + 1
+        this.moreCounts = length > 0 ? [length] : []
       }
       if (index > USERS_MAX) {
         this.lastRow = null

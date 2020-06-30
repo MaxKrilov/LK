@@ -3,14 +3,14 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
 
   &__col {
     text-align: center;
+    white-space: pre;
 
     &.number .content {
       @extend %caption2;
-      min-width: 18px;
     }
 
     &.phone {
@@ -19,14 +19,21 @@
       .content {
         @extend %body;
         text-align: left;
+        @include media-query((
+          text-align: (sm: center)
+        ));
       }
     }
 
     &.mac .content {
-      @extend %caption2;
+      @extend %body;
       text-align: left;
-      @include min-breakpoint(sm) {
-        @extend %body;
+      @include media-query((
+        text-align: (sm: center)
+      ));
+
+      &.small {
+        @extend %caption2;
       }
     }
 
