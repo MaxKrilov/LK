@@ -111,7 +111,7 @@ export default class TelephonyStatisticPage extends Vue {
       .then((response) => {
         this.isSuccessReport = true
         Cookie.set('is-loading', '1', { expires: 30 * 24 * 60 * 60 })
-        Cookie.set('statistic-file', response.fileName, { expires: 30 * 24 * 60 * 60 });
+        Cookie.set('statistic-file', response.fileName, { expires: 30 * 24 * 60 * 60 })
         this.setIntervalForFile()
       })
       .catch(() => {
