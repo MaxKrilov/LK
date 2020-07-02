@@ -31,7 +31,7 @@ export default class ServicesComponent extends Vue {
       result.push(
         { icon: 'filter', name: 'Контент-фильтрация', isOn: false, link: '/lk/internet/content-filter' },
         // { icon: 'deffence_ddos', name: 'Защита от DDoS-атак', isOn: false, link: '/lk/internet/' },
-        { icon: 'add_ip', name: 'Дополнитель. IP адреса', isOn: false, link: '/lk/ip' }
+        { icon: 'add_ip', name: 'Дополнитель. IP адреса', isOn: false, link: '/lk/internet/ip' }
       )
       return result
     }

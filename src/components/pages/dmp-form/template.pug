@@ -56,6 +56,7 @@ div.px-32.pt-64(:class="`${pre}`")
                 tabIndex="3",
                 key="registrationReasonCode",
                 mask="999999999"
+                :readonly="readonly.registrationReasonCode"
                 )
           template(v-else)
             er-flex(xs2)

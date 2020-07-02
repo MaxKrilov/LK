@@ -68,7 +68,7 @@ export default {
         v => !!v || 'Поле не заполнено',
         v => {
           const sum = Number(v.replace(',', '.').replace(/[\s]+/g, ''))
-          return (sum >= 1 && sum <= 100000) || `
+          return (sum >= 10 && sum <= 100000) || `
             <span>Уважаемый клиент, введенная сумма не соответствует</span>
             <a href="${OFFER_LINK}" target="_blank">условиям оплаты и безопасности</a>
             `

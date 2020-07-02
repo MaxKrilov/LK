@@ -11,7 +11,7 @@ import {
   isContractDocument,
   isUserListDocument,
   isBlankDocument,
-  isOtherDocument
+  isOtherDocument, isActDocument
 } from '@/functions/document'
 import { TYPE_FILE, TYPE_JSON } from '@/constants/type_request'
 
@@ -197,7 +197,7 @@ const mutations = {
           state.listContractDocument.push([document])
         }
       }
-      if (isOtherDocument(document)) {
+      if (isOtherDocument(document) || isActDocument(document)) {
         state.listOtherDocument.push(document)
       }
     })
