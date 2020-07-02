@@ -30,12 +30,9 @@ div.main-content.main-content--h-padding.main-content--top-menu-fix.main-content
         )
     div.mb-24(:class="`${pre}__container-operation`")
       ActionMonth(v-if="isVisEmpty"
-        :month="currentMonth"
-        :year="currentYear"
-        page="pay"
-        :key="value.key"
-        :listPayments="listPayCurrMonth[index]"
-        v-for="(value, index) in listPayCurrMonth"
+        v-for="(value, index) in getListHistoryPaymentByCurrentMonth"
+        :key="index"
+        :item="value"
       )
       div.h4.mt-64.mb-64(v-if="!isVisEmpty" style="margin-top: 90px")
         | За текущий период операции отсутствуют

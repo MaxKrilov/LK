@@ -6,6 +6,7 @@ import HistoryPay from './HistoryPay/index.vue'
 import PromisePay from './PromisePay/index.vue'
 import { mapState } from 'vuex'
 import moment from 'moment'
+import {getFirstElement} from '../../../../functions/helper'
 
 export default {
   name: 'pay-page',
@@ -41,7 +42,17 @@ export default {
       activeBillingAccountId: state => state.user.activeBillingAccountId,
       isLoadingList: state => state.payments.isLoadingList,
       listPayments: state => state.payments.listPayments
-    })
+    }),
+    getListHistoryPaymentByCurrentMonth () {
+      const currentMonth = moment().format('M')
+      return this.listPayments.filter(listPaymentsItem => {
+        return getFirstElement(listPaymentsItem) &&
+          moment(getFirstElement(listPaymentsItem).timestamp).format('M') === currentMonth
+      })
+    },
+    isEmptyListHistory () {
+      return !!this.getListHistoryPaymentByCurrentMonth.length
+    }
   },
   methods: {
     operationsLastMonth () {

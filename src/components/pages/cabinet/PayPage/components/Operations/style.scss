@@ -156,6 +156,7 @@
     ));
     &__value {
       margin-left: 0;
+      white-space: nowrap;
       @include media-query((
       margin-left: (sm: 16px),
     ));

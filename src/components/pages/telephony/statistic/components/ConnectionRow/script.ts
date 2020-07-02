@@ -13,6 +13,13 @@ const ICONS = {
   [OUTGOING_CALL]: 'outgoing_call'
 }
 
+const EVENT_TYPE_ID: Record<number, string> = {
+  1: 'outgoing_call',
+  2: 'incoming_call',
+  3: 'outgoing_call',
+  4: 'outgoing_call'
+}
+
 // eslint-disable-next-line no-use-before-define
 @Component<InstanceType<typeof ConnectionRow>>({
   filters: {
@@ -59,7 +66,7 @@ export default class ConnectionRow extends Vue {
   }
 
   get iconName () {
-    return ICONS[this.type]
+    return EVENT_TYPE_ID[this.statistic.priceEventSpecification.eventTypeId]
   }
 
   getCSSClass () {

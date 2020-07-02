@@ -155,11 +155,11 @@ export default class CreateRequestComponent extends Vue {
   }
 
   get getPhoneList () {
-    return this.getListContact.map((item: iContactListItem) => item.phone?.value).filter(item => item)
+    return this.getListContact.map((item: iContactListItem) => item.phone?.value).filter(item => !!item)
   }
 
   get getEmailList () {
-    return this.getListContact.map((item: iContactListItem) => item.email?.value).filter(item => item)
+    return this.getListContact.map((item: iContactListItem) => item.email?.value).filter(item => !!item)
   }
 
   requiredRule = [
