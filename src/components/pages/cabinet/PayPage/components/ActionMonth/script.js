@@ -1,23 +1,26 @@
 import Operations from '../Operations/index.vue'
+import { getFirstElement } from '../../../../../../functions/helper'
 
 export default {
   name: 'action-month',
   components: {
     Operations
   },
-  props: ['month', 'posMonth', 'year', 'page', 'listPayments'],
-  data: () => ({
-    pre: 'action-month',
-    number: 0
-  }),
-  created () {
-    if (this.listPayments !== undefined) {
-      this.number = this.listPayments.length
+  props: {
+    item: {
+      type: Array,
+      default: () => ([])
     }
   },
-  watch: {
-    listPayments () {
-      this.number = this.listPayments.length
+  data: () => ({
+    pre: 'action-month'
+  }),
+  computed: {
+    month () {
+      return this.$moment(getFirstElement(this.item).timestamp).format('MMM')
+    },
+    year () {
+      return this.$moment(getFirstElement(this.item).timestamp).format('YY')
     }
   }
 }

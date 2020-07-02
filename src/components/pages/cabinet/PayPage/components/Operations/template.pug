@@ -4,19 +4,19 @@ er-row(no-gutters)
   div(:class="`${pre}`")
     div(:class="`${pre}__content`")
       div(:class="`${pre}__icon`")
-        er-icon(:name="item.icon")
+        er-icon(name="rouble")
         div.mb-8(:class="`${pre}__date`")
           div(:class="`${pre}__date__dm`") {{ date }}
-          div(:class="`${pre}__date__yy`") 20{{ item.year }}
-          div(:class="`${pre}__date__yy-str`") .{{ item.year }}
-      div(:class="`${pre}__wrapper ${pre}__wrapper__${wrapper}`")
+          div(:class="`${pre}__date__yy`") 20{{ year }}
+          div(:class="`${pre}__date__yy-str`") .{{ year }}
+      div(:class="`${pre}__wrapper ${pre}__wrapper__${color}`")
         er-row(:class="`${pre}__info`" no-gutters)
           er-flex(
             xs9
             sm8 md9 lg10 xl9
             :class="`${pre}__title`"
           ) {{ item.title }}
-            div(:class="`${pre}__type-charge`") {{ item.descr }}
+            div(:class="`${pre}__type-charge`") {{ item.description }}
             div(:class="`${pre}__type-charge`") {{ item.chargePeriod }}
           er-flex(
             xs12
@@ -25,5 +25,5 @@ er-row(no-gutters)
           )
             span.mb-8
               span(:class="`${pre}__price__value ${pre}__price__value__${color}`")
-                | {{ item.value }}
+                | {{ value }}
               span.rub.mt-8.ml-4(:class="`${pre}__price__unit`")

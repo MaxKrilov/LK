@@ -1,12 +1,12 @@
 <template lang="pug">
   .statistic-internet-page
     .statistic-internet-page__filter.d--flex.flex-column.flex-sm-row.mb-40.main-content.main-content--h-padding
-      .login.mb-32.mb-sm-0.mr-sm-16
-        er-select(
-          :items="listLogin"
-          v-model="currentLogin"
-          placeholder="Логин/IP-адрес"
-        )
+      // .login.mb-32.mb-sm-0.mr-sm-16
+        // er-select(
+        //  :items="listLogin"
+        //  v-model="currentLogin"
+        //  placeholder="Логин/IP-адрес"
+        // )
       .period
         er-date-picker(
           v-model="period"

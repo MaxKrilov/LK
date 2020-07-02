@@ -15,7 +15,7 @@ const MenuItemList: MenuItem[] = [
   {
     name: 'Главная',
     icon: 'home',
-    isOpen: false,
+    isOpen: true,
     url: '/lk',
     subitem: [
       {

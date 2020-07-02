@@ -1,23 +1,30 @@
+import { price as priceFormatted } from '../../../../../../functions/filters'
+
 export default {
   name: 'operations',
-  props: ['items'],
+  props: {
+    item: {
+      type: Object,
+      default: () => ({})
+    }
+  },
   data: () => ({
-    pre: 'operations',
-    wrapper: 'red',
-    color: 'red',
-    date: ''
+    pre: 'operations'
   }),
   computed: {
-    item () {
-      if (this.items.value.slice(0, 1) === '+') {
-        this.wrapper = 'green'
-        this.color = 'green'
-      } else {
-        this.wrapper = 'red'
-        this.color = 'red'
-      }
-      this.date = this.items.date.slice(0, 5)
-      return this.items
+    year () {
+      return this.$moment(this.item.timestamp).format('YY')
+    },
+    date () {
+      return this.$moment(this.item.timestamp).format('DD.MM')
+    },
+    color () {
+      return this.item.type === 'replenishment'
+        ? 'green'
+        : 'red'
+    },
+    value () {
+      return `${this.item.type === 'replenishment' ? '+' : '-'} ${priceFormatted(this.item.value)}`
     }
   }
 }

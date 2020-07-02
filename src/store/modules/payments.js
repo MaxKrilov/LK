@@ -1,5 +1,6 @@
 import { ERROR_MODAL } from '../actions/variables'
 import moment from 'moment'
+import { getFirstElement } from '../../functions/helper'
 
 const state = {
   numCard: 0,
@@ -107,34 +108,52 @@ const actions = {
     commit('hideDelCard')
   },
   history: async ({ commit, rootGetters, rootState }, { api, payload }) => {
-    commit('isLoadingList')
-    const toms = rootGetters['auth/getTOMS']
-    const { activeBillingAccount } = rootState.user
-    try {
-      const listAccrual = await api
-        .setWithCredentials()
-        .setData({
-          clientId: toms,
-          dateFrom: payload[0],
-          dateTo: payload[1],
-          id: activeBillingAccount
-        })
-        .query('/payment/billing/history')
+    return new Promise((resolve, reject) => {
+      commit('isLoadingList', true)
+      const clientId = rootGetters['auth/getTOMS']
+      const { activeBillingAccount } = rootState.user
 
-      const listAccounts = await api
-        .setWithCredentials()
-        .setData({
-          clientId: toms,
-          accountId: activeBillingAccount
-        })
-        .query('/billing/management/bill')
-      const result = [listAccrual, listAccounts]
-      commit('history', result)
+      const history = new Promise((resolve, reject) => {
+        api
+          .setWithCredentials()
+          .setData({
+            clientId,
+            dateFrom: payload[0],
+            dateTo: payload[1],
+            id: activeBillingAccount
+          })
+          .query('/payment/billing/history')
+          .then(response => { resolve(response) })
+          .catch(error => { reject(error) })
+      })
 
-      return result
-    } catch (e) {
-      commit(ERROR_MODAL, true, { root: true })
-    }
+      const bill = new Promise((resolve, reject) => {
+        api
+          .setWithCredentials()
+          .setData({
+            clientId,
+            accountId: activeBillingAccount
+          })
+          .query('/billing/management/bill')
+          .then(response => { resolve(response) })
+          .catch(error => { reject(error) })
+      })
+
+      Promise.all([
+        history,
+        bill
+      ])
+        .then(response => {
+          commit('history', response)
+          resolve()
+        })
+        .catch(() => {
+          reject()
+        })
+        .finally(() => {
+          commit('isLoadingList', false)
+        })
+    })
   },
   payment: ({ commit }, { api, payload }) => {
     return new Promise((resolve, reject) => {
@@ -418,94 +437,64 @@ const actions = {
   }
 }
 const mutations = {
-  history: (state, result) => {
-    const charge = result[0]
-    const bill = result[1]
-    const lenBill = bill.length
-    const lenCharge = charge.length
-    let listAccounts = []
-    let date, chargePeriod, year, title, descr, value, month, dateMlsec, j, lenDetail
-    for (let i = 0; i < lenBill; i++) {
-      lenDetail = bill[i].detail.length
-      month = moment(+bill[i].billDate).locale('ru').format('MMMM')
-      let posArrBill = listAccounts.findIndex((item, index) => item[index].month === month)
-      if (posArrBill === -1) {
-        posArrBill = listAccounts.length
-        listAccounts[posArrBill] = []
-      }
-      for (let n = 0; n < lenDetail; n++) {
-        const str = moment(+bill[i].billDate).locale('ru').format('MMMM')
-        month = str[0].toUpperCase() + str.slice(1)
-        dateMlsec = +bill[i].billDate
-        date = moment(+bill[i].billDate).format('DD.MM.')
-        year = moment(+bill[i].billDate).format('YY')
-        title = bill[i].detail[n].chargeName
-        chargePeriod = bill[i].detail[n].chargePeriod
-        descr = bill[i].detail[n].typeCharge
-        value = bill[i].detail[n].chargeCost
-        if (value > 0) {
-          value = '-' + value
-        } else {
-          value = '+' + String(value).slice(1)
-        }
-        listAccounts[posArrBill].unshift({
-          key: `${i}${n}`,
-          icon: 'rouble',
-          dateMlsec: dateMlsec,
-          date: date,
-          chargePeriod: chargePeriod,
-          year: year,
-          title: title,
-          descr: descr,
-          value: value,
-          month: month
-        })
-      }
-    }
-    for (let k = 0; k < lenCharge; k++) {
-      const str = moment(charge[k].paymentDate).locale('ru').format('MMMM')
-      month = str[0].toUpperCase() + str.slice(1)
-      dateMlsec = charge[k].paymentDate
-      date = moment(charge[k].paymentDate).format('DD.MM.')
-      year = moment(charge[k].paymentDate).format('YY')
-      title = 'Пополнение счета'
-      descr = charge[k].paymentMethod.name
-      value = '+' + charge[k].paymentAmount
-      let posArrCharge = listAccounts.findIndex((item, index) => item[index].month === month)
-      if (posArrCharge === -1) {
-        posArrCharge = listAccounts.length
-        listAccounts[posArrCharge] = []
-        j = 0
-      } else {
-        j = listAccounts[posArrCharge].length
-      }
-      listAccounts[posArrCharge][j] = {
-        key: `${posArrCharge}${j}`,
-        icon: 'rouble',
-        dateMlsec: dateMlsec,
-        date: date,
-        chargePeriod: '',
-        year: year,
-        title: title,
-        descr: descr,
-        value: value,
-        month: month
-      }
-    }
-    for (let i = 0; i < listAccounts.length; i++) {
-      listAccounts[i].sort(function (a, b) {
-        if (a.dateMlsec < b.dateMlsec) {
-          return 1
-        }
-        if (a.dateMlsec > b.dateMlsec) {
-          return -1
-        }
-        return 0
+  history: (state, [history, bill]) => {
+    const result = []
+
+    result.push(...history.reduce((acc, historyItem) => {
+      const index = acc.findIndex(accItem => {
+        return getFirstElement(accItem) &&
+          moment(getFirstElement(accItem).timestamp).format('M') === moment(Number(historyItem.paymentDate)).format('M')
       })
-    }
-    state.listPayments = listAccounts
-    state.isLoadingList = false
-    state.isLoadedList = true
+
+      const resultObject = {
+        title: 'Пополнение счёта',
+        description: historyItem.paymentMethod.name,
+        value: Number(historyItem.paymentAmount),
+        timestamp: Number(historyItem.paymentDate),
+        chargePeriod: '',
+        type: 'replenishment'
+      }
+
+      if (index > -1) {
+        acc[index].push(resultObject)
+      } else {
+        acc.push([resultObject])
+      }
+
+      return acc
+    }, []))
+
+    console.log(result)
+
+    bill.forEach(billItem => {
+      const index = result.findIndex(resultItem => {
+        return getFirstElement(resultItem) &&
+          moment(getFirstElement(resultItem).timestamp).format('M') === moment(Number(billItem.actualBillDate)).format('M')
+      })
+
+      const resultArray = billItem.detail.map(detailItem => {
+        return {
+          title: detailItem.chargeName,
+          description: detailItem.typeCharge,
+          value: Number(detailItem.chargeCost),
+          timestamp: Number(billItem.actualBillDate),
+          chargePeriod: detailItem.chargePeriod,
+          type: 'write_off'
+        }
+      })
+
+      if (index > -1) {
+        result[index].push(...resultArray)
+      } else {
+        result.push(resultArray)
+      }
+    })
+
+    result.forEach(resultItem => {
+      resultItem.sort((a, b) => a.timestamp - b.timestamp)
+    })
+
+    state.listPayments = result
   },
   updateAutoPay: (state, payload) => {
     state.visAutoPay = payload
@@ -513,8 +502,8 @@ const mutations = {
   isLoadingClean: (state) => {
     state.isLoading = false
   },
-  isLoadingList: (state) => {
-    state.isLoadingList = true
+  isLoadingList: (state, payload) => {
+    state.isLoadingList = payload
   },
   isLoadingButtClean: (state) => {
     state.isLoadingButt = false

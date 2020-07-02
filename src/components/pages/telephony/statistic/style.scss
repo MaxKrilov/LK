@@ -208,26 +208,4 @@
       }
     }
   }
-
-  .dl-file {
-    display: inline-flex;
-    align-items: center;
-    @extend %caption1;
-
-    .er-icon {
-      @include color-black(.2);
-      svg {
-        width: $padding-x4;
-      }
-    }
-
-    &__label {
-      // @extend %link-behaviour;
-      cursor: pointer;
-
-
-      margin-left: $padding-x2;
-      border-bottom: 1px dashed;
-    }
-  }
 }

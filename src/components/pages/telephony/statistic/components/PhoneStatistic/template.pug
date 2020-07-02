@@ -57,10 +57,10 @@
       :startOpened="true"
     )
       template(
-        v-for="statistic in statistics"
+        v-for="(statistic, index) in statistics"
         )
         connection-row(
-          :key="statistic.costedEventName"
+          :key="index"
           :statistic="statistic"
         )
 

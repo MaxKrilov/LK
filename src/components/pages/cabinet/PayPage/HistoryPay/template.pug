@@ -20,13 +20,10 @@ div(:class="`${pre}`")
   .main-content
     div(:class="`${pre}__container-operation`")
       ActionMonth(v-if="isVisEmpty"
-        :month="currentMonth[index]"
-        :year="currentYear"
-        :posMonth="index"
-        page="pay"
         :key="value.key"
         :listPayments="listPaymentsFilter[index]"
         v-for="(value, index) in listPaymentsFilter"
+        :item="value"
       )
       div(
         v-if="!isVisEmpty"

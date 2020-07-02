@@ -101,6 +101,28 @@ export default {
   methods: {
     submitInn (e) {
       e && e.preventDefault()
+      // Если ИНН установлен в системе
+      if (this.INN) {
+        this.isEntity = this.modelINN.length === 10
+
+        if (this.isEntity) {
+          this.modelData.nameCompany = this.clientInfo.name
+          this.modelData.registrationReasonCode = this.clientInfo.kpp
+          this.modelData.addressCompany = this.clientInfo.legalAddress.name
+          this.modelData.addressCompanyId = {
+            name: this.clientInfo.legalAddress.name,
+            description: '',
+            id: this.clientInfo.legalAddress.id
+          }
+
+          this.readonly.nameCompany = true
+          this.readonly.registrationReasonCode = true
+          this.readonly.addressCompany = true
+        } else {
+          this.modelData.nameCompany = this.clientInfo.name
+          this.readonly.nameCompany = true
+        }
+      }
       if (!this.$refs.inn_form.validate()) {
         return false
       }
