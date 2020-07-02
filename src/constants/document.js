@@ -71,7 +71,7 @@ const TYPES = {
     '9155673991313227559', // Первичный счёт
     '9155673994313227559', // Список пользователей
     '9155673992313227559', // Счёт-оферта
-    '9154452676313182647', // Акт сдачи/приёмки услуг
+    // '9154452676313182647', // Акт сдачи/приёмки услуг
     '9155673995313227559', // Гарантийное письмо
     '9154452676313182648' // Акт возврата оборудования
   ],
@@ -117,6 +117,8 @@ const SUPPLEMENTARY_AGREEMENT_ID = '9154452676313182641'
 
 const OTHER_DOCUMENTS = '9154452676313182650'
 
+const ACT_DOCUMENTS = '9154452676313182647'
+
 export {
   DIGITAL_SIGNATURE,
   IS_VERIFYING,
@@ -128,5 +130,6 @@ export {
   CONTRACT_ID,
   SUPPLEMENTARY_AGREEMENT_ID,
   GROUP_CONTRACT,
-  OTHER_DOCUMENTS
+  OTHER_DOCUMENTS,
+  ACT_DOCUMENTS
 }

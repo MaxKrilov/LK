@@ -122,6 +122,10 @@ export default {
           this.modelData.nameCompany = this.clientInfo.name
           this.readonly.nameCompany = true
         }
+        this.isInputInn = false
+        this.loadingInn = false
+        this.loadingInnScreen = false
+        return true
       }
       if (!this.$refs.inn_form.validate()) {
         return false
@@ -139,9 +143,9 @@ export default {
             }
 
             this.modelData.registrationReasonCode = response.kpp
-            if (response.kpp) {
-              this.readonly.registrationReasonCode = true
-            }
+            // if (response.kpp) {
+            //   this.readonly.registrationReasonCode = true
+            // }
 
             this.modelData.addressCompany = response.legalAddressText
             if (response.legalAddressText) {
