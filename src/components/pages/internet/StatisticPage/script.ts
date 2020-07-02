@@ -129,7 +129,7 @@ export default class StatisticPage extends mixins(ErFileGetStatisticMixin) {
     })
       .then((response: IBillingStatisticResponse[]) => {
         this.listStatistic = response.map(item => ({
-          ip: Math.random() > 0.5 ? '255.255.255.255' : '0.0.0.0', // todo переделать после исправления проблемы
+          ip: item.service,
           start: item.createdDate,
           bytes: Number(item.duration),
           type: item.priceEventSpecification.name
