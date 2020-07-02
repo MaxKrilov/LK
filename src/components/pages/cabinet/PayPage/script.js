@@ -6,7 +6,7 @@ import HistoryPay from './HistoryPay/index.vue'
 import PromisePay from './PromisePay/index.vue'
 import { mapState } from 'vuex'
 import moment from 'moment'
-import {getFirstElement} from '../../../../functions/helper'
+import { getFirstElement } from '../../../../functions/helper'
 
 export default {
   name: 'pay-page',
