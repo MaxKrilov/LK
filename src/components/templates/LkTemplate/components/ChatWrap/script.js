@@ -47,7 +47,7 @@ export default {
         nickname: this.getClientInfo.name,
         subject: 'Обращение из ЛК',
         city: 'perm',
-        isProd: isCombat,
+        isProd: isCombat(),
         userData: {
           token: this.getChatToken,
           agreementNumber: this.getActiveBillingAccountNumber,
