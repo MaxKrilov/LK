@@ -13,19 +13,19 @@
         .column
           .user-card__data.datetime
             .caption Дата регистр.
-            .content 25.12.2015
+            .data 25.12.2015
           .user-card__data.latest
             .caption Посл. сессия
-            .content
+            .data
               span {{ user.datetime.date }}
               |  {{ user.datetime.time }}
         .column
           .user-card__data.authorization
             .caption Всего авториз.
-            .content {{ user.authorization }}
+            .data {{ user.authorization }}
           .user-card__data.duration
             .caption Длит. сессии
-            .content
+            .data
               | {{ user.duration.hours }}
               span  ч
               |  {{ user.duration.minutes }}
@@ -33,7 +33,7 @@
         .column
           .user-card__data.traffic
             .caption Весь трафик
-            .content
+            .data
                | {{ user.traffic.value }}
                span  {{ user.traffic.units }}
     .user-card__content-column.right
@@ -42,13 +42,13 @@
         .minor Анатолий Анатольевич
         .user-card__data
           .caption Телефон
-          .content {{ user.phone }}
+          .data {{ user.phone }}
         .user-card__data
           .caption Эл. почта
-          .content konstantinopolsky@company.com
+          .data konstantinopolsky@company.com
         .user-card__data
           .caption MAC адрес
-          .content {{ user.mac }}
+          .data {{ user.mac }}
         .user-card__links
           .link.title Тип авториз.
           .link.title ID польз.

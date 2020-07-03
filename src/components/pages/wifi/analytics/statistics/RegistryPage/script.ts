@@ -5,7 +5,7 @@ import UserCard from '../components/UserCard/index.vue'
 import ErTableFilter from '@/components/blocks/ErTableFilter'
 import ErButton from '@/components/UI/ErButton'
 import ErIcon from '@/components/UI/ErIcon'
-import ErDialog from '@/components/UI/ErDialog'
+import UserDialog from '../components/UserDialog/index.vue'
 import { UsersRegistryComponent, User } from '../types'
 import { USERS_LIST, USERS_MAX, USERS_MORE } from '../mock'
 import { mapState } from 'vuex'
@@ -24,7 +24,7 @@ export default {
     'er-table-filter': ErTableFilter,
     'er-button': ErButton,
     'er-icon': ErIcon,
-    'er-dialog': ErDialog
+    'user-dialog': UserDialog
   },
   computed: {
     hasLastRow () {

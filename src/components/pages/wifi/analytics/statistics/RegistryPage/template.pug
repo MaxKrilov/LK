@@ -44,7 +44,8 @@ div(:class="`${pre}`")
           template(v-if="moreCounts && moreCounts.length > 0")
             div(:class="`${pre}__pagination-caption`") Показать ещё:
             template(v-for="count of moreCounts")
-              a(:class="`${pre}__pagination-link`" href="#" @click.prevent="showMore(count)") {{ count }}
+              er-button(:class="`${pre}__pagination-link`" @click.prevent="showMore(count)")
+                span {{ count }}
           er-button(:class="`${pre}__rollback`" @click="scrollTop")
             er-icon(name="corner_up")
       template(v-if="hasLastRow")
@@ -54,8 +55,7 @@ div(:class="`${pre}`")
       er-button(:flat="true") Отключить аналитику
     er-flex(:class="`${pre}__footer__nav`" xs12 lg7)
       page-nav
-  er-dialog(v-model="showDialog" :fullscreen="isFullscreenDialog" :width="getWidth")
+  user-dialog(v-model="showDialog" :fullscreen="isFullscreenDialog" :width="getWidth")
     div(:class="`${pre}__modal`")
       div(:class="`${pre}__modal-content`")
         user-card(:user="currentRow" @close="toggleCardDialog")
-

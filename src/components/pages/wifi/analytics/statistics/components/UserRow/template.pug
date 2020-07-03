@@ -1,4 +1,4 @@
-.user-row(@click="showCard")
+.user-row(@click="showCard" :class="selected ? 'active' : ''")
   .user-row__col.number
     .content {{ user.number }}
   .user-row__group
