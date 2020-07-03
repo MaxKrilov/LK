@@ -50,11 +50,7 @@ div(:class="`${pre}`")
             er-icon(name="corner_up")
       template(v-if="hasLastRow")
         user-row(:user="lastRow" :selected="lastRow === currentRow" @select="selectRow")
-  er-row(:class="[`${pre}__row`, `${pre}__footer`]")
-    er-flex(:class="`${pre}__footer__action`" xs12 md5)
-      er-button(:flat="true") Отключить аналитику
-    er-flex(:class="`${pre}__footer__nav`" xs12 lg7)
-      page-nav
+  page-footer
   user-dialog(v-model="showDialog" :fullscreen="isFullscreenDialog" :width="getWidth")
     div(:class="`${pre}__modal`")
       div(:class="`${pre}__modal-content`")

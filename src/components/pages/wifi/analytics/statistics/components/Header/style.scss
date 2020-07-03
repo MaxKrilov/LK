@@ -1,14 +1,13 @@
 .statpage-header {
-  margin-top: $padding-x10;
-  margin-bottom: $padding-x8;
+  margin-top: $padding-x8;
+  margin-bottom: $padding-x6;
   padding-right: $padding-x4;
   padding-left: $padding-x4;
 
   @include media-query(
     (
-      margin-top: (
-        lg: $padding-x12,
-      ),
+      margin-top: (md: $padding-x12),
+      margin-bottom: (md: $padding-x10),
       padding-right: (
         sm: $padding-x6,
         md: 0,
@@ -23,6 +22,10 @@
   &__row {
     &:not(:last-child) {
       margin-bottom: $padding-x8;
+
+      @include media-query((
+        margin-bottom: (lg: $padding-x10)
+      ));
     }
   }
 
@@ -46,8 +49,26 @@
         opacity: 0.2;
       }
 
+      &:hover{
+        color: map_get($shades, 'black');
+
+        svg {
+          opacity: 1;
+          color: map_get($yellow, 'base');
+        }
+      }
+
+      &:active{
+        color: map_get($yellow, 'base');
+
+        svg {
+          opacity: 1;
+          color: map_get($yellow, 'base');
+        }
+      }
+
       &__label {
-        @extend %caption1;
+        @extend %caption1-font;
         display: none;
         border-bottom: 1px dotted;
         margin-left: $padding-x1;

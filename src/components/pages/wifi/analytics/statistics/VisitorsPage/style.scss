@@ -55,26 +55,4 @@
       }
     }
   }
-
-  &__footer{
-    margin-top: $padding-x8;
-    padding-right: $padding-x6;
-    padding-left: $padding-x6;
-
-    @include media-query((
-        margin-top: (lg: $padding-x10),
-        padding-right: (md: 0),
-        padding-left: (md: 0)
-    ));
-
-    &__nav{
-      order: -1;
-      margin-bottom: $padding-x8;
-
-      @include media-query((
-        order: (lg: 2),
-        margin-bottom: (lg: 0)
-      ));
-    }
-  }
 }

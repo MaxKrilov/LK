@@ -1,9 +1,9 @@
 import Header from '../components/Header'
 import ChartCard from '../components/ChartCard'
-import PageNav from '../components/PageNav'
 import SimpleChart from '../components/SimpleChart'
 import AuthTypeChart from '../components/AuthTypeChart'
 import ConnectionsChart from '../components/ConnectionsChart'
+import PageFooter from '../components/PageFooter'
 
 import { VISITS, LANGS, AGES, CONNECTIONS } from '../mock'
 import setPeriod from '../set-period-mixin'
@@ -14,7 +14,7 @@ export default {
   components: {
     'stat-header': Header,
     'chart-card': ChartCard,
-    'page-nav': PageNav,
+    'page-footer': PageFooter,
     'simple-chart': SimpleChart,
     'auth-type-chart': AuthTypeChart,
     'connections-chart': ConnectionsChart

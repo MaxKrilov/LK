@@ -2,12 +2,17 @@
   width: 100%;
 
   .chart-holder {
+    width: calc(100% + 44px);
     min-height: 256px;
-    margin-top: $padding-x8;
+    margin-top: $padding-x4;
+    margin-left: -14px;
+
+    @include media-query((
+      margin-top: (lg: $padding-x6)
+    ));
   }
 
   .chart-legend{
-    margin-top: $padding-x10;
 
     &__item{
       @extend %body-font;
@@ -15,7 +20,7 @@
       justify-content: space-between;
 
       &:not(:last-child){
-        margin-bottom: $padding-x2;
+        margin-bottom: 7px;
       }
 
       &__ico{

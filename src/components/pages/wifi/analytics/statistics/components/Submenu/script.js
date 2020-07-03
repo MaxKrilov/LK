@@ -14,6 +14,18 @@ export default {
     pre: 'submenu',
     currentItemIdx: 0
   }),
+  computed: {
+    activeTabClass () {
+      let className = ''
+      if (this.currentItemIdx === 0) {
+        className = 'is-first-active'
+      }
+      if (this.currentItemIdx === this.items.length - 1) {
+        className = 'is-last-active'
+      }
+      return className
+    }
+  },
   mounted () {
     const routeName = this.$router.currentRoute.name
     const index = this.findSubpageIndex(routeName)

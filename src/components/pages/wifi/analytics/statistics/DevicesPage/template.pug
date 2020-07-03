@@ -31,9 +31,5 @@ div(:class="`${pre}`")
       )
         template(v-slot:chart)
           simple-chart(:data="mock.browsers" :showLegend="true")
-  er-row(:class="[`${pre}__row`, `${pre}__footer`]")
-    er-flex(:class="`${pre}__footer__action`" xs12 md5)
-      er-button(:flat="true") Отключить аналитику
-    er-flex(:class="`${pre}__footer__nav`" xs12 lg7) 
-      page-nav
+  page-footer
 

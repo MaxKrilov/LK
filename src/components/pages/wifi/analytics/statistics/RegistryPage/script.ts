@@ -1,5 +1,5 @@
 import Header from '../components/Header/index.vue'
-import PageNav from '../components/PageNav/index.vue'
+import PageFooter from '../components/PageFooter/index.vue'
 import UserRow from '../components/UserRow/index.vue'
 import UserCard from '../components/UserCard/index.vue'
 import ErTableFilter from '@/components/blocks/ErTableFilter'
@@ -18,7 +18,7 @@ export default {
   name: 'wifi-users-registry',
   components: {
     'stat-header': Header,
-    'page-nav': PageNav,
+    'page-footer': PageFooter,
     'user-row': UserRow,
     'user-card': UserCard,
     'er-table-filter': ErTableFilter,

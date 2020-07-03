@@ -2,6 +2,7 @@ import * as am4core from '@amcharts/amcharts4/core'
 import * as am4charts from '@amcharts/amcharts4/charts'
 import { COLORS_LIST } from '../../chart-colors'
 import chartMixin from '../../chart-mixin'
+import { tickSettings } from '../../chart-axis-settings'
 
 export default {
   name: 'SimpleChart',
@@ -57,6 +58,7 @@ export default {
       this.chart.numberFormatter.numberFormat = {
         'style': 'decimal'
       }
+      this.chart.nodePadding = 0
       return chartSeries
     },
     makeBarChart () {
@@ -68,11 +70,14 @@ export default {
       categoryAxis.dataFields.category = 'label'
       categoryAxis.renderer.grid.template.location = 0
       categoryAxis.renderer.minGridDistance = 30
+      categoryAxis = tickSettings(categoryAxis)
       if (this.showLegend) {
         categoryAxis.renderer.labels.template.hidden = true
       }
 
-      this.chart.yAxes.push(new am4charts.ValueAxis())
+      let yAxis = this.chart.yAxes.push(new am4charts.ValueAxis())
+      yAxis.renderer.opposite = true
+      yAxis = tickSettings(yAxis)
       let series = this.chart.series.push(new am4charts.ColumnSeries())
       series.dataFields.valueY = 'data'
       series.dataFields.categoryX = 'label'
@@ -103,7 +108,7 @@ export default {
       pieSeries.dataFields.category = 'label'
       pieSeries.slices.template.strokeWidth = 0
       pieSeries.ticks.template.disabled = true
-      pieSeries.labels.template.text = "{value.percent.formatNumber('#.0')}%"
+      pieSeries.labels.template.text = "[font-size: 14px #D5D5D5]{category}[/] [bold]{value.percent.formatNumber('#.0')}%[/]"
       pieSeries.slices.template.tooltipHTML = `<div class="am-tooltip"><div class="am-tooltip__label">{category}<div><div class="am-tooltip__val">{value}</div></div>`
       pieSeries.alignLabels = false
       pieSeries.labels.template.dy = 25
@@ -126,9 +131,12 @@ export default {
       xAxis.renderer.cellStartLocation = 0.1
       xAxis.renderer.cellEndLocation = 0.9
       xAxis.renderer.grid.template.location = 0
+      xAxis = tickSettings(xAxis)
 
-      let yAxis = this.chart.yAxes.push(new am4charts.ValueAxis())
-      yAxis.min = 0
+      let valueAxis = this.chart.yAxes.push(new am4charts.ValueAxis())
+      valueAxis.renderer.opposite = true
+      valueAxis.min = 0
+      valueAxis = tickSettings(valueAxis)
       const createSeries = (value, name) => {
         let series = this.chart.series.push(new am4charts.ColumnSeries())
         series.dataFields.valueY = value

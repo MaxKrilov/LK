@@ -1,11 +1,14 @@
 div(:class="`${pre}`")
     div.chart-holder(ref="chartholder")
-    div.chart-legend(ref="chartlegend")
+    div.chart-legend(
+      ref="chartlegend"
+      v-if="showLegend"
+      )
         template(v-for="(item, idx) in legend")
             div.chart-legend__item(:key="idx")
                 div.chart-legend__item__data
                     div.chart-legend__item__ico(:style="{backgroundColor: item.color}")
                     span.chart-legend__item__label {{ item.label }}
-                div.chart-legend__item__val 
+                div.chart-legend__item__val
                     div.chart-legend__item__data-pcnt {{ item.percent }}
                         span.chart-legend__item__data-pcnt__pcnt %
