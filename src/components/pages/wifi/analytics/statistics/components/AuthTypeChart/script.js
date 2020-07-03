@@ -3,6 +3,7 @@ import * as am4charts from '@amcharts/amcharts4/charts'
 import mixins from '../../chart-mixin'
 import { AUTH_TYPE } from '../../mock'
 import { COLORS_LIST } from '../../chart-colors'
+import { tickSettings } from '../../chart-axis-settings'
 
 export default {
   name: 'AuthTypeChart',
@@ -48,7 +49,9 @@ export default {
       categoryAxis.renderer.minGridDistance = 30
       categoryAxis.renderer.labels.template.hidden = true
 
-      this.chart.yAxes.push(new am4charts.ValueAxis())
+      let yAxis = this.chart.yAxes.push(new am4charts.ValueAxis())
+      yAxis.renderer.opposite = true
+      yAxis = tickSettings(yAxis)
       this.chart.colors.list = COLORS_LIST
       let series = this.chart.series.push(new am4charts.ColumnSeries())
       series.dataFields.valueY = 'data'

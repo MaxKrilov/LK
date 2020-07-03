@@ -1,7 +1,7 @@
 import Header from '../components/Header'
 import ChartCard from '../components/ChartCard'
 import SimpleChart from '../components/SimpleChart'
-import PageNav from '../components/PageNav'
+import PageFooter from '../components/PageFooter'
 import ConnectionsChart from '../components/ConnectionsChart'
 
 import { CONNECTIONS_DEVICES, OS, BROWSERS } from '../mock'
@@ -12,7 +12,7 @@ export default {
   components: {
     'stat-header': Header,
     'chart-card': ChartCard,
-    'page-nav': PageNav,
+    'page-footer': PageFooter,
     'simple-chart': SimpleChart,
     'connections-chart': ConnectionsChart
   },

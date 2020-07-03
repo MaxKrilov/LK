@@ -2,11 +2,18 @@
   width: 100%;
 
   .chart-holder {
+    width: calc(100% + 44px);
     min-height: 256px;
-    margin-top: $padding-x8;
+    margin-top: $padding-x4;
+    margin-left: -14px;
+
+    @include media-query((
+      margin-top: (lg: $padding-x6)
+    ));
   }
+
   .chart-legend{
-    margin-top: $padding-x10;    
+    margin-top: $padding-x10;
 
     &__item{
       @extend %body-font;
@@ -17,9 +24,9 @@
         margin-bottom: $padding-x2;
       }
 
-      &__ico{     
+      &__ico{
         width: 16px;
-        height: 16px;   
+        height: 16px;
         margin-right: $padding-x2;
         display: inline-block;
         vertical-align: middle;
@@ -28,7 +35,7 @@
 
       &__data-pcnt{
         @extend %h4;
-        flex-shrink: 0;        
+        flex-shrink: 0;
         text-align: right;
         @include color-black(.8);
 

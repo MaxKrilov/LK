@@ -6,6 +6,7 @@ import sumBy from 'lodash/sumBy'
 import BreakpointMixin from '@/mixins/BreakpointMixin'
 import mixins from '../../chart-mixin'
 import { COLORS_LIST } from '../../chart-colors'
+import { tickSettings } from '../../chart-axis-settings'
 
 const LINE_CHART_PERIODS = ['Час', 'День', 'Неделя', 'Месяц', 'Год']
 const LEGEND_UNITS = {
@@ -145,8 +146,10 @@ export default {
       categoryAxis.renderer.grid.template.location = 0
       categoryAxis.renderer.minGridDistance = 30
       categoryAxis.renderer.labels.template.hidden = true
+      categoryAxis = tickSettings(categoryAxis)
 
-      this.chart.yAxes.push(new am4charts.ValueAxis())
+      let yAxis = this.chart.yAxes.push(new am4charts.ValueAxis())
+      yAxis.renderer.opposite = true
       this.chart.colors.list = COLORS_LIST
       let series = this.chart.series.push(new am4charts.ColumnSeries())
       series.dataFields.valueY = 'data'
@@ -186,22 +189,16 @@ export default {
       // Create axes
       let dateAxis = this.chart.xAxes.push(new am4charts.DateAxis())
       let valueAxis = this.chart.yAxes.push(new am4charts.ValueAxis())
+      valueAxis.renderer.opposite = true
+      valueAxis = tickSettings(valueAxis)
       dateAxis.cursorTooltipEnabled = false
       valueAxis.cursorTooltipEnabled = false
-      dateAxis.startLocation = 0.5
-      dateAxis.endLocation = 0.6
+      dateAxis.startLocation = 0.3
+      dateAxis.endLocation = 0
       dateAxis.dateFormatter.dateFormat = 'd.MM.yyyy'
       dateAxis.dateFormats.setKey('day', 'd.MM')
       dateAxis.dateFormats.setKey('month', 'd.MM.yyyy')
-      if (!this.isMobile) {
-        dateAxis.baseInterval = {
-          'timeUnit': 'day',
-          'count': 1
-        }
-        dateAxis.gridIntervals.setAll([
-          { timeUnit: 'day', count: 1 }
-        ])
-      }
+      dateAxis = tickSettings(dateAxis)
 
       const createSeries = (data, name, s) => {
         let series = this.chart.series.push(new am4charts.LineSeries())

@@ -11,6 +11,18 @@
       max-width: (lg: map_get($grid-breakpoint, 'md'))
   ));
 
+  &.is-first-active{
+    &::before{
+      z-index: -1;
+    }
+  }
+
+  &.is-last-active{
+    &::after{
+      z-index: -1;
+    }
+  }
+
   &:hover{
     &::before,
     &::after{
@@ -84,6 +96,10 @@
 
     &:not(:last-child) {
       margin-right: $padding-x2;
+    }
+
+    &:hover {
+      color: map_get($shades, 'black');
     }
 
     &--active{

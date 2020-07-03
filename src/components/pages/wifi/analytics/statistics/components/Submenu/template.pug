@@ -1,4 +1,4 @@
-div(:class="`${pre}`" lg10)
+div(:class="[`${pre}`, activeTabClass]")
     div(:class="`${pre}__outer`")
         div(:class="`${pre}__wrap`")
             template(v-for="(item, idx) in items")
