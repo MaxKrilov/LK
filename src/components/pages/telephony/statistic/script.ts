@@ -130,7 +130,7 @@ export default class TelephonyStatisticPage extends Vue {
         this.$store.dispatch('fileinfo/downloadListDocument', { api: this.$api })
           .then(() => {
             const fileName = Cookie.get('statistic-file')
-            const findingDocument = ((this as any).getListFileStatistic as DocumentInterface[]).find(document =>
+            const findingDocument = this.computedListFile.find(document =>
               !Array.isArray(document) && document.fileName === fileName)
             if (findingDocument) {
               Cookie.remove('statistic-file')

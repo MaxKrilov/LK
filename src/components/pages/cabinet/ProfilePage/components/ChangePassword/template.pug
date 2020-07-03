@@ -113,3 +113,5 @@ er-dialog(v-else :class="`${pre}`" :value="stateModalVisibility" :maxWidth="calc
               color="yellow"
               :class="`${pre}__button`"
               :disabled="!isPasswordCorrect || !isConfirmCorrect") Сменить
+          er-flex(:class="`${pre}__button_wrap`" xs12, sm6)
+            er-button(:class="`${pre}__button`" @click="close" flat) Отмена

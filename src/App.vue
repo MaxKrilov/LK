@@ -15,7 +15,6 @@ import { SCREEN_WIDTH } from './store/actions/variables'
 import { getScreenWidth } from './functions/helper'
 import axios from 'axios'
 import NotAccessPage from './components/pages/errors/not-access'
-import ErFileGetStatisticMixin from './mixins/ErFileGetStatisticMixin'
 
 import {
   GET_CLIENT_INFO,
@@ -25,7 +24,6 @@ import {
 import { GET_CHAT_TOKEN } from '@/store/actions/chat'
 
 import { GET_REQUEST } from '@/store/actions/request'
-import { Cookie } from './functions/storage'
 
 const USE_SSO_AUTH = process.env.VUE_APP_USE_SSO_AUTH !== 'no'
 
@@ -34,9 +32,6 @@ export default {
   components: {
     NotAccessPage
   },
-  mixins: [
-    ErFileGetStatisticMixin
-  ],
   data: () => ({
     model: 1
   }),
@@ -124,12 +119,6 @@ export default {
                   this.$store.dispatch(`user/${GET_LIST_PRODUCT_BY_ADDRESS}`, context)
                     .then(() => {
                       this.$store.dispatch(`user/${GET_LIST_PRODUCT_BY_SERVICE}`, context)
-                        .then(() => {
-                          const isLoading = Cookie.get('is-loading')
-                          if (isLoading && isLoading === '1') {
-                            this.setIntervalForFile()
-                          }
-                        })
                     })
                 } else {
                   this.$store.commit(`loading/menuComponentBalance`, false)
