@@ -5,10 +5,20 @@
     &-body .user-row:nth-child(odd),
     &-foot .user-row {
       background-color: map_get($gray, '9');
+
+      &:hover,
+      &.active {
+        background-color: map_get($shades, 'white');
+      }
     }
 
     &-body .user-row:nth-child(even) {
       background-color: map_get($gray, '3');
+
+      &:hover,
+      &.active {
+        background-color: map_get($gray, '4');
+      }
     }
 
     .user-row {
@@ -18,6 +28,20 @@
         min-height: (sm: 40px),
         padding: (sm: 0 20px, md: 0 4px)
       ));
+
+      &:hover,
+      &.active {
+        .content {
+          @include color-black(0.5);
+        }
+
+        .phone .content,
+        .mac .content,
+        .authorization .content,
+        .content > span {
+          @include color-black(1);
+        }
+      }
 
       &__col {
         text-align: center;
@@ -138,6 +162,13 @@
         padding-bottom: (md: 16px)
       ));
 
+      .user-row {
+        min-height: auto;
+        @include media-query((
+          min-height: (sm: auto)
+        ));
+      }
+
       &.fixed {
         height: 48px;
         @include media-query((
@@ -197,14 +228,36 @@
     &-caption {
       @extend %caption1;
       @include color-black(.3);
-      margin-right: 16px;
+      margin-right: 8px;
     }
 
     &-link {
-      @extend %caption1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
       text-decoration: none;
-      border-bottom: 1px dashed;
-      margin-right: 16px;
+      border-radius: 50%;
+      background: transparent;
+      box-shadow: none;
+      padding-top: 2px;
+
+      span {
+        @extend %caption1;
+        border-bottom: 1px dashed;
+      }
+
+      &:hover {
+        /*
+        background: map_get($yellow, 'other-1');
+        box-shadow: 0 16px 40px rgba(map_get($shades, 'black'), 0.08),
+                    0 4px 8px rgba(map_get($shades, 'black'), 0.06);
+*/
+        span {
+          border-bottom-color: transparent;
+        }
+      }
     }
   }
 
@@ -212,6 +265,7 @@
     height: 40px;
     width: 40px;
     border-radius: 50%;
+    margin-left: 8px;
 
     svg {
       width: 16px;

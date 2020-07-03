@@ -1,0 +1,5 @@
+.user-dialog {
+  &__overlay:before {
+    background-color: rgba(map_get($shades, 'black'), 0.2);
+  }
+}
