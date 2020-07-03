@@ -1,11 +1,11 @@
-import Component, { mixins } from 'vue-class-component'
+import Vue from 'vue'
+import Component from 'vue-class-component'
 import ErTableFilter from '@/components/blocks/ErTableFilter'
 import InternetStatisticComponent from './blocks/InternetStatisticComponent'
 import { DocumentInterface, IBillingStatisticResponse, ICustomerProduct } from '@/tbapi'
 import moment from 'moment'
 import ErActivationModal from '@/components/blocks/ErActivationModal/index.vue'
 import FileComponent from './blocks/FileComponent/index.vue'
-import ErFileGetStatisticMixin from '@/mixins/ErFileGetStatisticMixin'
 import { Cookie } from '@/functions/storage'
 
 const getHtmlVolume = (volume: number) => {
@@ -56,7 +56,7 @@ const getHtmlVolume = (volume: number) => {
     }
   }
 })
-export default class StatisticPage extends mixins(ErFileGetStatisticMixin) {
+export default class StatisticPage extends Vue {
   // Props
   readonly customerProduct!: ICustomerProduct | null
   /**
@@ -117,6 +117,12 @@ export default class StatisticPage extends mixins(ErFileGetStatisticMixin) {
     })
   }
 
+  get getListFileStatistic () {
+    return this.allOtherDocuments.filter((item: DocumentInterface | DocumentInterface[]) =>
+      !Array.isArray(item) && item.fileName.indexOf('BPI') > 0 &&
+        item.fileName.indexOf(this.customerProduct?.tlo.id || '') > 0)
+  }
+
   getStatistic () {
     const fromDate = moment(this.period[0]!).format()
     const toDate = moment(this.period[1]!).format()
@@ -159,6 +165,26 @@ export default class StatisticPage extends mixins(ErFileGetStatisticMixin) {
         this.isShowDialogForFile = false
         this.isLoadingFile = false
       })
+  }
+
+  setIntervalForFile () {
+    this.$store.commit('timer/setInterval', {
+      id: 'GET_FILE_STATISTIC',
+      delay: 5000,
+      cb: () => {
+        this.$store.dispatch('fileinfo/downloadListDocument', { api: this.$api })
+          .then(() => {
+            const fileName = Cookie.get('statistic-file')
+            const findingDocument = this.allOtherDocuments.find(document =>
+              !Array.isArray(document) && document.fileName === fileName)
+            if (findingDocument) {
+              Cookie.remove('statistic-file')
+              Cookie.remove('is-loading')
+              this.$store.commit('timer/clearInterval', 'GET_FILE_STATISTIC')
+            }
+          })
+      }
+    })
   }
 
   sortBy (field: string, direction: string) {

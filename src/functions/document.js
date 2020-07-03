@@ -1,5 +1,5 @@
 import { TYPES, OTHER_DOCUMENTS } from '@/constants/document'
-import {ACT_DOCUMENTS} from '../constants/document'
+import { ACT_DOCUMENTS } from '../constants/document'
 
 function isBlankDocument (document) {
   document = Array.isArray(document) ? document[0] : document

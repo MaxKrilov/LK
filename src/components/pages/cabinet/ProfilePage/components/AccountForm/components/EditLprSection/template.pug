@@ -78,7 +78,7 @@ div(:class="`${pre}`")
             track-id="code"
             isShowLabelRequired
             :items="value.roles"
-            :disabled="isLPR"
+            :disabled="!isLPR"
             :rules="roleRule")
       er-flex(
         v-if="isLG"
@@ -145,7 +145,7 @@ div(:class="`${pre}`")
                 track-id="code"
                 isShowLabelRequired
                 :items="value.roles"
-                :disabled="isLPR"
+                :disabled="!isLPR"
                 :rules="roleRule")
         div(v-if="isAdding")
           p(:class="`${pre}__fields-container__group__text-info`")
@@ -222,7 +222,7 @@ div(:class="`${pre}`")
             track-id="code"
             isShowLabelRequired
             :items="value.roles"
-            :disabled="isLPR"
+            :disabled="!isLPR"
             :rules="roleRule")
     div(
       v-if="isLG && isAdding"
