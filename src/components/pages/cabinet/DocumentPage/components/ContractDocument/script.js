@@ -5,6 +5,7 @@ import ErDocumentViewer from '@/components/blocks/ErDocumentViewer/index'
 import ErActivationModal from '../../../../../blocks/ErActivationModal/index'
 import * as Document from '../../../../../../constants/document'
 import { getFirstElement } from '../../../../../../functions/helper'
+import { isActDocument } from '../../../../../../functions/document'
 
 export default {
   mixins: [DocumentMixin],
@@ -19,7 +20,14 @@ export default {
     isOpenConfirm: false,
     isCancelSuccess: false,
     isCancelError: false,
-    cancelErrorText: ''
+    cancelErrorText: '',
+    actConfirmTitle: '',
+    actConfirmButton: '',
+    actStatus: 0,
+    isActConfirm: false,
+    isActSuccess: false,
+    isActError: false,
+    isActSigning: false
   }),
   components: {
     CommonDocument,
@@ -58,12 +66,18 @@ export default {
       return undefined
     },
     contractIsSigned () {
-      return !!(this.getContractOrSupplementary || this.getFirstElement).contractStatus?.match(new RegExp(DOCUMENT.CONTRACT.IS_SIGNED), 'i') &&
-        (this.getContractOrSupplementary?.letterOfGuarantee?.toLowerCase() !== 'yes')
+      return !!(
+        (this.getContractOrSupplementary || this.getFirstElement)
+          .contractStatus?.match(new RegExp(DOCUMENT.CONTRACT.IS_SIGNED), 'i') &&
+        (this.getContractOrSupplementary?.letterOfGuarantee?.toLowerCase() !== 'yes')) ||
+        (isActDocument(this.document) && this.document.actStatus?.toLowerCase() === 'подписан')
     },
     contractIsReady () {
-      return ((this.getContractOrSupplementary || this.getFirstElement).contractStatus?.toLowerCase() === DOCUMENT.CONTRACT.IS_READY.toLowerCase()) ||
-        (this.getContractOrSupplementary?.letterOfGuarantee?.toLowerCase() === 'yes')
+      return (
+        (this.getContractOrSupplementary || this.getFirstElement)
+          .contractStatus?.toLowerCase() === DOCUMENT.CONTRACT.IS_READY.toLowerCase()) ||
+        (this.getContractOrSupplementary?.letterOfGuarantee?.toLowerCase() === 'yes') ||
+        (isActDocument(this.document) && this.document.actStatus?.toLowerCase() === 'не подписан')
     },
     documentIsVerifying () {
       return this.contractIsReady &&
@@ -82,6 +96,10 @@ export default {
     },
     documentIsActive () {
       return ((this.getContractOrSupplementary || this.getFirstElement).contractStatus?.toLowerCase() === DOCUMENT.CONTRACT.IS_ACTIVE.toLowerCase())
+    },
+    documentIsActNotSigned () {
+      return isActDocument(getFirstElement(this.document)) &&
+        getFirstElement(this.document)?.actStatus === 'Не подписан'
     }
   },
   methods: {
@@ -132,6 +150,36 @@ export default {
             this.cancelErrorText = result.submit_statuses[0].submitError
             this.isCancelError = true
           }
+        })
+    },
+    actSigningConfirm (status) {
+      this.actConfirmTitle = `Вы уверены, что хотите ${status ? 'подписать акт' : 'отказаться от подписания акта'}?`
+      this.actConfirmButton = status ? 'Подписать' : 'Отказаться'
+      this.actStatus = status
+      this.isActConfirm = true
+    },
+    actSigning () {
+      this.isActSigning = true
+      this.$store.dispatch('fileinfo/actSigning', {
+        api: this.$api,
+        status: this.actStatus,
+        documentId: getFirstElement(this.document).id
+      })
+        .then(response => {
+          if (response) {
+            this.isActSuccess = true
+            this.$store.dispatch(`fileinfo/downloadListDocument`, { api: this.$api })
+          } else {
+            this.isActError = true
+          }
+          this.isActConfirm = false
+        })
+        .catch(() => {
+          this.isActConfirm = false
+          this.isActError = true
+        })
+        .finally(() => {
+          this.isActSigning = false
         })
     }
   }

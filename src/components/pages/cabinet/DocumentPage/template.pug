@@ -37,10 +37,6 @@ div(:class="`${pre}`")
             v-if="isBlankDocument(document)"
             :document="document"
           )
-          //-user-list-document(
-          //-  v-else-if="isUserListDocument(document)"
-          //-  :document="document"
-          //- )
           contract-document(
             v-else-if="isContractDocument(document)"
             :document="document"

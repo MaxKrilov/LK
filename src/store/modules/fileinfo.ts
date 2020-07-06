@@ -160,6 +160,21 @@ const actions = {
         .then(response => resolve(response))
         .catch(() => resolve(false))
     })
+  },
+  actSigning (context: ActionContext<IState, any>, { api, documentId, status }: { api: API, documentId: string, status: number }) {
+    return new Promise((resolve, reject) => {
+      const { toms: clientId } = context.rootGetters['auth/user']
+      api
+        .setWithCredentials()
+        .setData({
+          id: documentId,
+          clientId,
+          status
+        })
+        .query('/docs/act/accept')
+        .then(response => { resolve(response) })
+        .catch(err => { reject(err) })
+    })
   }
 }
 
@@ -183,7 +198,11 @@ const mutations = {
       if (isReportDocument(document)) {
         state.listReportDocument.push(document)
       }
-      if ((isContractDocument(document) || isUserListDocument(document) || isBlankDocument(document))) {
+      if (
+        isContractDocument(document) ||
+        isUserListDocument(document) ||
+        isBlankDocument(document)
+      ) {
         if (GROUP_CONTRACT.includes(String(document.type.id))) {
           const findIndex = state.listContractDocument.findIndex(_document => {
             return Array.isArray(_document) &&

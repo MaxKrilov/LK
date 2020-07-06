@@ -28,14 +28,26 @@ common-document(
       | от {{ computedModifiedWhen | formatDate("DD.MM.YY") }}
 
   template(v-slot:footer)
+    .buttons(v-if="documentIsActNotSigned")
+      er-button.er-button--accept(
+        color="blue"
+        pre-icon="doc_edit"
+        @click="() => { actSigningConfirm(1) }"
+      )
+        | Подписать
+      er-button(
+        :color="'gray'"
+        @click="() => { actSigningConfirm(0) }"
+      ).er-button--decline
+        | Отказаться
     //- Документ подписан
-    div(v-if="contractIsSigned")
+    div(v-else-if="contractIsSigned")
       .er-document__signed-text
         er-icon(name="circle_ok").circle-ok-icon
         er-icon(name="ok").ok-icon
         | Подписан
     //- Документ Активен
-    div(v-if="documentIsActive")
+    div(v-else-if="documentIsActive")
       .er-document__signed-text
         er-icon(name="circle_ok").circle-ok-icon
         er-icon(name="ok").ok-icon
@@ -101,3 +113,27 @@ common-document(
       )
         template(slot="description")
           | {{ cancelErrorText }}
+
+    template(v-if="documentIsActNotSigned")
+      er-activation-modal(
+        v-model="isActConfirm"
+        type="question"
+        :title="actConfirmTitle"
+        :action-button-text="actConfirmButton"
+        @confirm="actSigning"
+        :is-loading-confirm="isActSigning"
+      )
+      er-activation-modal(
+        v-model="isActSuccess"
+        type="success"
+        :title="`${actStatus ? 'Подписание' : 'Отказ от подписания'} акта выполнился успешно!`"
+        :is-show-action-button="false"
+        cancel-button-text="Спасибо"
+      )
+      er-activation-modal(
+        v-model="isActError"
+        type="error"
+        title="Произошла ошибка! Повторите попытку позже"
+        :is-show-action-button="false"
+        cancel-button-text="Понятно"
+      )
