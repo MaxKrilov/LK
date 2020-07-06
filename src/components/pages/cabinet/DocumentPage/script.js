@@ -121,7 +121,8 @@ export default {
       // Если установлен период
       if (Array.isArray(this.contractPeriod) && lengthVar(this.contractPeriod) !== 0) {
         allContractDocuments = allContractDocuments.filter(document => {
-          return getFirstElement(document)?.modifiedWhen > this.contractPeriod[0] && getFirstElement(document).modifiedWhen < this.contractPeriod[1]
+          return getFirstElement(document)?.modifiedWhen > this.contractPeriod[0] &&
+            getFirstElement(document).modifiedWhen < this.contractPeriod[1]
         })
       }
       return allContractDocuments
