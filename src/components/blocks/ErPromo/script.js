@@ -16,7 +16,8 @@ export default {
     featureList: {
       type: Array,
       default: () => []
-    }
+    },
+    linkToConnect: String
   },
   data: () => ({
     pre: 'promo-component'

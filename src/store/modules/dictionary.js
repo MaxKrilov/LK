@@ -25,7 +25,7 @@ const state = {
   [LIST_COMPLAINT_THEME]: [
     { id: '9154749993013188892', value: 'Идея', requestName: 'complaint' },
     { id: '9154749993013188891', value: 'Благодарность', requestName: 'complaint' },
-    { id: '9156159670613264230', value: 'Претензия', requestName: 'complaint' }
+    { id: '9156211043213279417', value: 'Претензия', requestName: 'complaint' }
   ]
 }
 

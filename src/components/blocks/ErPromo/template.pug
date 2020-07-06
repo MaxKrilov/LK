@@ -35,5 +35,10 @@ div(:class="`${pre}`")
         div(:class="`${pre}__feature-description`") {{ item.description }}
 
   div(:class="`${pre}__buttons`")
-    er-button(:class="`${pre}__buttons-item`" color="blue") {{ plugText }}
-    er-button(:flat="true") Посмотреть демо-версию
+    er-button(
+      :class="`${pre}__buttons-item`"
+      color="blue"
+      tag="a"
+      :href="linkToConnect"
+      target="_blank"
+    ) {{ plugText }}

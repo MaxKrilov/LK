@@ -86,6 +86,7 @@ export default class ContactInfoComponent extends Vue {
 
   get getPhoneList () {
     return this.getListContact.map(item => item.phone?.value)
+      .filter(item => !!item)
   }
 
   get getEmailList () {
