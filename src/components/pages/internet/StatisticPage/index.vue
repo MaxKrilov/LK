@@ -1,12 +1,6 @@
 <template lang="pug">
   .statistic-internet-page
     .statistic-internet-page__filter.d--flex.flex-column.flex-sm-row.mb-40.main-content.main-content--h-padding
-      // .login.mb-32.mb-sm-0.mr-sm-16
-        // er-select(
-        //  :items="listLogin"
-        //  v-model="currentLogin"
-        //  placeholder="Логин/IP-адрес"
-        // )
       .period
         er-date-picker(
           v-model="period"
@@ -92,7 +86,7 @@
     er-activation-modal(
       v-model="isShowDialogForFile"
       type="question"
-      title="Вы желаете скачать файл?"
+      title="Вы желаете сформировать файл статистики?"
       action-button-text="Скачать"
       :persistent="true"
       :is-loading-confirm="isLoadingFile"
@@ -101,11 +95,10 @@
     er-activation-modal(
       v-model="isShowDialogForFileSuccess"
       type="success"
-      title="Запрос на формирование файла успешно отправлен!"
-      :is-show-action-text="false"
+      title="Уважаемый Клиент, файл статистики будет сформирован в ближайшее время и сохранен в данном разделе"
+      :is-show-action-button="false"
       cancel-button-text="Закрыть"
     )
-      .caption1 Файл будет сформирован в ближайшее время и появится в списке файлов статистики
 </template>
 <script lang="ts" src="./script.ts"></script>
 <style lang="scss" src="./style.scss"></style>

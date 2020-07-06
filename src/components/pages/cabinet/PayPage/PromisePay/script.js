@@ -71,7 +71,7 @@ export default {
       this.openConfirmPromise = true
       if (this.$store.state.payments.isDebt) {
         this.$store.dispatch('payments/isLoadingClean')
-        this.err = 'По счету нет дебиторской задолженности. Услуга активирована быть не может.'
+        this.err = this.$store.state.payments.isDebtReason
       } else {
         this.err = 'Произошла ошибка. Попробуйте позднее или обратитесь в техническую поддержку'
         const payload = {

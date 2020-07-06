@@ -72,6 +72,7 @@ const state = {
   isPromisePay: false,
   isExpired: false,
   isDebt: false,
+  isDebtReason: '',
   appCreation: '',
   listPayments: []
 }
@@ -634,6 +635,7 @@ const mutations = {
     state.isLoading = true
     if (!result[1].paymentCanBeCreated) {
       state.isDebt = true
+      state.isDebtReason = result[1].reason
       state.errPromisePay = true
     }
   },

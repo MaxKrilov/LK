@@ -107,6 +107,7 @@
     align-items: center;
     justify-content: center;
     position: relative;
+    vertical-align: middle;
   }
   &__icon {
     &--prev {
@@ -116,4 +117,11 @@
       margin: { left: 16px };
     }
   }
+}
+
+a.er-button {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-decoration: none;
 }

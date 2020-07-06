@@ -91,12 +91,10 @@
   er-activation-modal(
     type="success"
     v-model="isSuccessReport"
-    title="Запрос успешно выполнен"
+    title="Уважаемый Клиент, файл статистики будет сформирован в ближайшее время и сохранен в данном разделе"
     :isShowActionButton="false"
     cancel-button-text="Спасибо"
   )
-    template(slot="description")
-      | Запрос на генерацию файла статистики принят. Файл появится в списке файлов статистики
 
   er-activation-modal(
     type="error",

@@ -92,7 +92,10 @@ const actions = {
         })
     })
   },
-  downloadFile (context: ActionContext<IState, any>, payload: { api: API, bucket: string, key: string, ext: string }) {
+  downloadFile (
+    context: ActionContext<IState, any>,
+    payload: { api: API, bucket: string, key: string, ext: string, asPdf?: number }
+  ) {
     return new Promise<Blob | boolean>((resolve) => {
       payload.api
         .setWithCredentials()
@@ -100,7 +103,7 @@ const actions = {
         .setData({
           bucket: payload.bucket,
           key: payload.key,
-          asPdf: 1,
+          asPdf: typeof payload.asPdf === 'undefined' ? 1 : payload.asPdf,
           ext: payload.ext
         })
         .query('/docs/s3/get')

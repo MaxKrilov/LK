@@ -7,6 +7,7 @@ import moment from 'moment'
 import ErActivationModal from '@/components/blocks/ErActivationModal/index.vue'
 import FileComponent from './blocks/FileComponent/index.vue'
 import { Cookie } from '@/functions/storage'
+import { mapGetters } from 'vuex'
 
 const getHtmlVolume = (volume: number) => {
   const tb = 2 ** 40
@@ -33,6 +34,11 @@ const getHtmlVolume = (volume: number) => {
     InternetStatisticComponent,
     ErActivationModal,
     FileComponent
+  },
+  computed: {
+    ...mapGetters({
+      allOtherDocuments: 'fileinfo/getListOtherDocument'
+    })
   },
   watch: {
     customerProduct (val) {
