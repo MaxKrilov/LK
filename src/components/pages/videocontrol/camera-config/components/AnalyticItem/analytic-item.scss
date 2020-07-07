@@ -104,7 +104,8 @@ $pre: '.analytic-item';
       }
     }
 
-    .price__sum {
+    .er-price__sum {
+      white-space: nowrap;
       transition: color $primary-transition;
     }
   }

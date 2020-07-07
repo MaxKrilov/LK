@@ -22,6 +22,7 @@
                 :domain="item"
                 :user-count="getDomainUserCount(key)"
                 :user-price="getDomainUserPrice(key)"
+                :user-product-id="getDomainUserProductId(key)"
                 @change="onChangeDomain"
               )
 
@@ -41,7 +42,7 @@
       er-container.container--no-padding.full
         er-row
           er-flex.xs12.sm8.md6.lg4
-            er-button(:color="'blue'")
+            er-button(color="blue")
               | Подключить видеонаблюдение
 
   template(v-else)

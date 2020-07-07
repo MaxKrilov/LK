@@ -3,7 +3,7 @@
     er-page-header(
       title="Настроить камеру"
       link-text="Назад к списку камер"
-      backlink="/lk/videocontrol/products"
+      backlink="/lk/videocontrol"
     )
     .header-info Стоимость указана с НДС
 
@@ -31,12 +31,12 @@
       .d--grid
         .license-pay(v-if="licensePay")
           .caption2 Лицензионный платёж
-          er-price {{ licensePay }}
+          er-price {{ licensePay|price }}
 
         .rent-pay(v-if="hasRentPay")
           br
           .caption2 Аренда
-          er-price {{ rentPay }}
+          er-price {{ rentPay|price }}
 
       .vc-camera-edit-form
         .camera-main-fields
@@ -59,7 +59,7 @@
                 v-model="videoQualityValue"
                 @input="onVideoQualityInput"
               )
-              er-price {{ videoQualityPrice }}
+              er-price {{ videoQualityPrice|price }}
 
           .col.col-3
             .camera-main-fields__field(v-if="isAnalyticsLoaded")
@@ -69,7 +69,7 @@
                 v-model="videoArchiveValue"
                 @input="onVideoArchiveInput"
               )
-              er-price {{ videoArchivePrice }}
+              er-price {{ videoArchivePrice|price }}
 
         .addon__list
           .addon
@@ -82,7 +82,7 @@
                 v-model="soundRecordValue"
                 @input="onSoundRecordInput"
               )
-              er-price {{ soundRecordPrice }}
+              er-price {{ soundRecordPrice|price }}
 
           .addon(v-if="isAnalyticsLoaded")
             h4.addon__title Поворотный модуль
@@ -94,7 +94,7 @@
                 v-model="PTZValue"
                 @input="onPTZInput"
               )
-              er-price {{ getPTZPrice() }}
+              er-price {{ getPTZPrice()|price }}
 
   .vc-config-page__analitycs.analytics
     .analytics__head
@@ -148,7 +148,7 @@
     .total-info
       .total-info__label Абонентская плата:
       .total-info__price
-        er-price {{ totalPrice }}
+        er-price {{ totalPrice|price }}
 
       .total-info__status(v-if="isChanged")
         | Изменена

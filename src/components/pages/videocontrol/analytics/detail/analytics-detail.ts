@@ -61,6 +61,8 @@ export default class VCAddonDetailPage extends Vue {
   /* === config === */
   isOrderModalVisible: boolean = false
   isLoaded: boolean = false
+  isDiscountVisible: boolean = false
+
   // TODO: убрать после решения по разделу видеоаналитики (проблема слишком долгой загрузки данных)
   isLoadedX: boolean = false
 
@@ -102,7 +104,8 @@ export default class VCAddonDetailPage extends Vue {
     const enabledCameraList = this.allCameraList
       .filter((el: ICamera) => this.isCameraWithService(el.parentId))
 
-    return enabledCameraList.length * parseFloat(this.price)
+    const result = enabledCameraList.length * parseFloat(this.price)
+    return result
   }
 
   get name () {

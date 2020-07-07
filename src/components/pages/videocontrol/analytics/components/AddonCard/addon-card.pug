@@ -20,7 +20,7 @@
 
       .price-value
         template(v-if="isLoaded")
-          er-price {{ price }}
+          er-price {{ price|price }}
         template(v-else)
           pu-skeleton(width="100px")
 

@@ -15,7 +15,7 @@
         .col
           .price-title
             | Стоимость услуги &mdash;
-            er-price {{ price }}
+            er-price {{ price|price }}
 
     template(v-else)
       pu-skeleton(width="300px")
@@ -43,8 +43,9 @@
       .title Общая стоимость
       template(v-if="isLoaded")
         .prices
-          //- .old-price.red-deprecation-line {{ oldTotalPrice }}
-          er-price {{ totalPrice }}
+          template(v-if="isDiscountVisible")
+            .old-price.red-deprecation-line {{ oldTotalPrice|price }}
+          er-price {{ totalPrice|price }}
 
       template(v-else)
         pu-skeleton(width="300px")

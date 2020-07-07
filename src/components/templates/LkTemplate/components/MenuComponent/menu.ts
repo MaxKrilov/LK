@@ -96,7 +96,7 @@ const MenuItemList: MenuItem[] = [
       },
       {
         name: 'Портал видеонаблюдения',
-        url: ''
+        url: '/lk/videocontrol/go-to-forpost'
       }
     ]
   },
