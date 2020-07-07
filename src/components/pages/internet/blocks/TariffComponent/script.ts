@@ -21,6 +21,8 @@ const OFFER_CODE_TEMP_SPEED_INCREASE = 'SPEEDUP'
 const CHARS_SPEED_INCREASE = CURRENT_SPEED_IN_CHARS
 const CHARS_TURBO_SPEED_INCREASE = 'Увеличение скорости ДО (Мбит/с)'
 
+const CHARS_TOTAL_TRAFFIC = 'Объем включенного трафика, Гб'
+
 const CHAR_START_DATE_TURBO = 'Дата активации'
 const CHAR_STOP_DATE_TURBO = 'Дата окончания'
 
@@ -53,7 +55,6 @@ const arc = d3.arc()
       if (val) {
         this.generateSpeedChart()
         this.getBillingPacket()
-        this.generateLimitChart()
         this.initSpeedComponent()
       }
     },
@@ -78,6 +79,8 @@ export default class TariffComponent extends Vue {
   isTurboActivation = false
   turboPeriod: Date[] = []
   isInfinity = false
+
+  packetInfo: Record<string, any> = {}
 
   isLoadingConnect = false
   isShowOfferDialog = false
@@ -275,6 +278,10 @@ export default class TariffComponent extends Vue {
       api: this.$api,
       product: this.customerProduct.tlo.id
     })
+      .then(response => {
+        this.packetInfo = response
+        this.generateLimitChart()
+      })
   }
 
   getInfoList () {
@@ -392,8 +399,12 @@ export default class TariffComponent extends Vue {
   }
 
   generateLimitChart () {
-    // todo После реализации метода - убрать все заглушки
-    const wastedPercentage = 0.875 // todo Вычислять
+    const isLimit = this.customerProduct?.tlo.chars?.hasOwnProperty(CHARS_TOTAL_TRAFFIC) || false
+    const limit = isLimit ? Number(this.customerProduct!.tlo.chars[CHARS_TOTAL_TRAFFIC]) : 0
+    const spentTraffic = isLimit ? Number(this.packetInfo?.spent) : 0
+    const wastedPercentage = isLimit
+      ? (limit - spentTraffic) * 0.875 / limit
+      : 0
     // Следует очистить предыдущий график
     document.querySelector('.tariff-component__limit .chart')!.innerHTML = ''
     const svg = d3.select('.tariff-component__limit .chart')
@@ -428,7 +439,7 @@ export default class TariffComponent extends Vue {
       })
     // todo Сделать зависимость от того, безлимитный ли у нас трафик
     // eslint-disable-next-line no-constant-condition
-    if (true) {
+    if (!isLimit) {
       const text = svg.append('g')
         .classed('text', true)
       text.append('text')
@@ -450,7 +461,7 @@ export default class TariffComponent extends Vue {
         .transition()
         .delay(300)
         .duration(1000)
-        .tween('text', tweenText(500)) // todo убрать
+        .tween('text', tweenText(limit - spentTraffic))
       text.append('text')
         .attr('x', 0)
         .attr('y', 10)
@@ -463,7 +474,7 @@ export default class TariffComponent extends Vue {
         .attr('y', 22)
         .attr('text-anchor', 'middle')
         .classed('bottom', true)
-        .text(1000) // todo убрать
+        .text(limit)
         .append('tspan')
         .text(' Гб')
     }

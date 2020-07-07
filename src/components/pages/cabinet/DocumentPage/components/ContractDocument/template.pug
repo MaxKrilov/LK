@@ -21,7 +21,7 @@ common-document(
 
   template(v-slot:body)
     .document-number
-      .document-number__sign По договору №
+      .document-number__sign {{ getFirstElement.type.id === TRILATERAL_DOCUMENTS ? 'Договор №' : 'По договору №' }}
       .document-number__number {{ computedRelatedToName }}
 
     .document-date.caption2

@@ -40,7 +40,9 @@ export default {
     },
     computedTypeName () {
       return this.isSingleDocument
-        ? this.getFirstElement.type.name
+        ? this.getFirstElement.type.id === Document.TRILATERAL_DOCUMENTS
+          ? `Трехстороннее соглашение`
+          : this.getFirstElement.type.name
         : 'Комплект документов'
     },
     computedRelatedToName () {
