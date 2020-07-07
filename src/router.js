@@ -97,6 +97,7 @@ import VideocontrolProductPage from './components/pages/videocontrol/products/in
 import VCCameraConfigPage from './components/pages/videocontrol/camera-config/index'
 import VCAddonListPage from './components/pages/videocontrol/analytics/list/index'
 import VCAddonDetailPage from './components/pages/videocontrol/analytics/detail/index'
+import VCGoToForpost from './components/pages/videocontrol/components/GoToForpostPortal'
 
 // Опрос
 import SurveyPage from './components/pages/survey/index'
@@ -252,6 +253,7 @@ const router = new Router({
           component: SupportTemplate,
           children: [
             {
+              name: 'support',
               path: '/',
               component: SupportIndexPage
             }
@@ -361,6 +363,10 @@ const router = new Router({
               path: 'camera/:id',
               component: VCCameraConfigPage,
               props: true
+            },
+            {
+              path: 'go-to-forpost',
+              component: VCGoToForpost
             }
           ]
         },

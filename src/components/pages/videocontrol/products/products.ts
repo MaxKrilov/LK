@@ -76,6 +76,10 @@ export default class VideocontrolProductPage extends Vue {
     return null
   }
 
+  getDomainUserProductId (domainKey: string) {
+    return this.getDomainUsers(domainKey).offer.id
+  }
+
   getDomainUserCount (domainKey: string): number {
     const domainUsers = this.getDomainUsers(domainKey)
 

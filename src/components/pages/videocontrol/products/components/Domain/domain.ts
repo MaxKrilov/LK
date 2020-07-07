@@ -35,7 +35,8 @@ const props = {
   domain: Object,
   userCount: Number,
   userCost: Number,
-  userPrice: String
+  userPrice: String,
+  userProductId: String
 }
 
 @Component({
@@ -194,12 +195,29 @@ export default class VCDomain extends Vue {
       const payload = {
         locationId: this.videocontrolList[0].locationId,
         bpi: this.$props.domain.id,
+        productId: this.$props.userProductId,
         disconnectDate: this.$moment().format()
       }
       this.$store.dispatch('salesOrder/createDisconnectOrder', payload)
     } else if (diff > 0) {
+      const payload = {
+        locationId: this.videocontrolList[0].locationId,
+        bpi: this.$props.domain.id,
+        chars: {
+          [CHARS.USER_COUNT]: this.domainUserCount
+        }
+      }
+      this.$store.dispatch('salesOrder/createModifyOrder', payload)
       logInfo(`добавилось ${diff} пользователей`)
     } else {
+      const payload = {
+        locationId: this.videocontrolList[0].locationId,
+        bpi: this.$props.domain.id,
+        chars: {
+          [CHARS.USER_COUNT]: this.domainUserCount
+        }
+      }
+      this.$store.dispatch('salesOrder/createModifyOrder', payload)
       logInfo(`пользователей меньше на ${Math.abs(diff)} (всего ${this.domainUserCount})`)
     }
   }
@@ -222,10 +240,10 @@ export default class VCDomain extends Vue {
   }
 
   onClickPause () {
-    logInfo('onClickPause')
-  }
-
-  onClickDisable () {
-    logInfo('onClickDisable')
+    // приостановка домена происходит через службу поддержки
+    this.$router.push({
+      name: 'support',
+      query: { form: 'suspension_of_a_contract_or_service' }
+    })
   }
 }

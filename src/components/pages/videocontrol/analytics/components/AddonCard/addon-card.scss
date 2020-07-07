@@ -90,6 +90,7 @@ $card-head-height-big: 152px;
   &__footer {
     padding: $padding-x4;
     padding-top: 0;
+    color: map_get($shades, 'white');
 
     @include min-breakpoint('md') {
       padding: $padding-x6;
