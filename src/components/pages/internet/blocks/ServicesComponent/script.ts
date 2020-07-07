@@ -58,7 +58,7 @@ export default class ServicesComponent extends Vue {
       case SERVICE_CONTENT_FILTER:
         return { icon: 'filter', name: 'Контент-фильтрация', link: '/lk/internet/content-filter' }
       case SERVICE_ADDITIONAL_IP:
-        return { icon: 'add_ip', name: 'Дополнитель. IP адреса', link: '/lk/ip' }
+        return { icon: 'add_ip', name: 'Дополнитель. IP адреса', link: '/lk/internet/ip' }
       default:
         return undefined
     }
