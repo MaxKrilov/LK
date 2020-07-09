@@ -39,7 +39,6 @@
         | Вы можете скачать документ<br>
         a.d--inline-block.link--solid--black-yellow(:href="linkDownload" :download="fileName") Скачать
         .error-block(v-if="errorText")
-          | При отправке заказа в работу произошла ошибка
           code(v-html="errorText")
     er-activation-modal(
       type="error",

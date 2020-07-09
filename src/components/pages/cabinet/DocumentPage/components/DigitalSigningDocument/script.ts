@@ -189,7 +189,7 @@ export default class DigitalSigningDocument extends Vue {
                     if (['success', 'not_executed'].includes(submitStatus.submitStatus.toLowerCase())) {
                       successHandler()
                     } else {
-                      successHandler(submitStatus.submitError?.replace(/<\/?[^>]+>/g, '') || 'Ошибка при смене статуса')
+                      successHandler(submitStatus.submitError?.replace(/<\/?[^>]+>/g, '').split(':')[1] || 'Ошибка при смене статуса')
                     }
                   })
                   .catch(() => {

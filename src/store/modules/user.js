@@ -98,7 +98,8 @@ const getters = {
   getListContact (state) {
     return state.clientInfo?.contacts?.reduce
       ? state.clientInfo?.contacts?.reduce((acc, item) => {
-        const { id, firstName, name } = item
+        const { id, firstName, name, status } = item
+        if (status.toLowerCase() !== 'active') return acc
         const isLPR = !!item.roles?.filter(item => item.role.name.match(/decision maker/ig) || item.role.name.match(/лпр/ig))?.length || false
         eachArray(item.contactMethods || [], _item => {
           if (_item['@type'].match(/phone/i) || _item['@type'].match(/improfile/i)) {
@@ -106,10 +107,7 @@ const getters = {
               id,
               firstName,
               name,
-              phone: {
-                id: _item.id,
-                value: _item.value.replace(/[\D]+/g, '')
-              },
+              phone: { id: _item.id, value: _item.value.replace(/[\D]+/g, '') },
               isLPR
             })
           } else if (_item['@type'].match(/email/i)) {
@@ -117,10 +115,7 @@ const getters = {
               id,
               firstName,
               name,
-              email: {
-                id: _item.id,
-                value: _item.value
-              },
+              email: { id: _item.id, value: _item.value },
               isLPR
             })
           }
@@ -354,8 +349,9 @@ const actions = {
         .query('/payment/account/list')
       commit(GET_LIST_BILLING_ACCOUNT_SUCCESS, result)
       // Проверяем - прописан ли какой-либо л/с в GET параметрах
-      const requestBillingNumber = route.query.billing_account
+      const requestBillingNumber = route.query.billing_account || Cookie.get('ff_billing_account')
       if (requestBillingNumber) {
+        Cookie.remove('ff_billing_account')
         // // Проверяем - есть ли такой л/с в списке
         const indexBillingAccount = Array.isArray(result) && !!result.length
           ? result.findIndex(billingAccount => billingAccount.accountNumber === requestBillingNumber)
@@ -528,6 +524,9 @@ const actions = {
 
 const mutations = {
   [GET_CLIENT_INFO_SUCCESS]: (state, payload) => {
+    if (payload.hasOwnProperty('contacts') && Array.isArray(payload.contacts)) {
+      payload.contacts = payload.contacts.filter(contact => contact.status?.toLowerCase() === 'active')
+    }
     state.clientInfo = { ...state.clientInfo, ...payload }
   },
   [GET_MANAGER_INFO_SUCCESS]: (state, payload) => {

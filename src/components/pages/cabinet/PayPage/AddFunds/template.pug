@@ -49,10 +49,10 @@ div(:class="`${pre}`").main-content.main-content--h-padding
                 :class="`${pre}__sum__on-autopay__over`"
                 v-if="!(numCard !== 0 && (numCard === visAutoPay || visAutoPay === 0))"
               )
-              div(
-                @click="autoPay"
-                :class="`${pre}__sum__autopay__over`"
-              )
+              //div(
+              //  @click="autoPay"
+              //  :class="`${pre}__sum__autopay__over`"
+              //)
               span
                 er-toggle(
                   v-model="visAutoPay"
