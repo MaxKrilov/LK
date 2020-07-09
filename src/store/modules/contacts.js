@@ -133,7 +133,6 @@ const getContactMethods = (methods) => {
   if (methods) {
     methods.map((item) => {
       if (item['@type'] === 'PhoneNumber') {
-        // phones.push(getMethodData(item))
         phones.push(
           {
             id: item.id,

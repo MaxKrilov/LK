@@ -5,6 +5,7 @@ import { mapGetters, mapState } from 'vuex'
 import { SCREEN_WIDTH } from '@/store/actions/variables'
 import { PATTERN_EMAIL } from '@/constants/regexp'
 import { roundUp } from '../../../../../functions/helper'
+import { Cookie } from '../../../../../functions/storage'
 
 const OFFER_LINK = 'https://console.ertelecom.ru/files/upload/d/1/0/d108447fbf9c5d88c2801d14a6e76725.pdf'
 
@@ -80,9 +81,11 @@ export default {
     this.changeWidth()
     this.listEmail()
     // Проверяем - есть ли в GET параметрах сумма. Если да, то устанавливаем её
-    const sumPay = this.$route.query.total_amount
+    const sumPay = this.$route.query.total_amount ||
+      Cookie.get('ff_total_amount')
     if (sumPay) {
       this.sumPay = Number(roundUp(sumPay, 2)).toFixed(2).replace('.', ',')
+      Cookie.remove('ff_total_amount')
     }
     if (this.sum) {
       this.sumPay = this.sum.toFixed(2).replace('.', ',')
