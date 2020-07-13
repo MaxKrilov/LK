@@ -1,26 +1,20 @@
 import Vue from 'vue'
-import { SSO_CHANGE_CUSTOMER_IFRAME as SSO_IFRAME } from '@/constants/url'
+import { LK_STORAGE_KEY } from '@/constants/keys'
+import {
+  SSO_CHANGE_CUSTOMER_IFRAME,
+  TEST_SSO_CHANGE_CUSTOMER_IFRAME
+} from '@/constants/url'
 import iFrameResize from 'iframe-resizer/js/iframeResizer'
-import { logInfo } from '@/functions/logging'
 import { isIE11 } from '@/functions/broswer-detect'
-
-function clearTokenAndReload () {
-  window.localStorage.removeItem('lkb2b')
-  document.location = document.location.href.split('?')[0]
-}
-
-function handleMessage (msg) {
-  if (msg.data === 'post-selected') {
-    logInfo('let\'s clear token')
-    clearTokenAndReload()
-  }
-}
+import { isCombat } from '@/functions/helper'
 
 Vue.directive('resize', {
   bind: function (el, { value = {} }) {
     el.addEventListener('load', () => iFrameResize(value, el))
   }
 })
+
+const WAIT_SSO_QUERY_TIMEOUT = 2700
 
 export default {
   name: 'change-organization-popup',
@@ -29,12 +23,14 @@ export default {
   },
   data () {
     return {
-      frameUrl: ''
+      SSO_IFRAME: '',
+      frameUrl: '',
+      isWaitMode: false
     }
   },
   watch: {
     active (val) {
-      this.frameUrl = val ? SSO_IFRAME : ''
+      this.frameUrl = val ? this.SSO_IFRAME : ''
     }
   },
   computed: {
@@ -45,12 +41,30 @@ export default {
   methods: {
     onClose () {
       this.$emit('close')
+    },
+    clearTokenAndReload () {
+      window.localStorage.removeItem(LK_STORAGE_KEY)
+      document.location = document.location.href.split('?')[0]
+    },
+    handleMessage (msg) {
+      if (msg.data === 'post-selected') {
+        this.isWaitMode = true
+        // Делаем задержку чтобы браузер успел сделать запрос переключения во фрейме SSO
+        setTimeout(() => {
+          this.clearTokenAndReload()
+        }, WAIT_SSO_QUERY_TIMEOUT)
+      }
     }
   },
+  created () {
+    this.SSO_IFRAME = isCombat()
+      ? SSO_CHANGE_CUSTOMER_IFRAME
+      : TEST_SSO_CHANGE_CUSTOMER_IFRAME
+  },
   mounted () {
-    window.addEventListener('message', handleMessage)
+    window.addEventListener('message', this.handleMessage)
   },
   destroyed () {
-    window.removeEventListener('message', handleMessage)
+    window.removeEventListener('message', this.handleMessage)
   }
 }

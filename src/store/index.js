@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import createPersistedState from 'vuex-persistedstate'
 
+import { LK_STORAGE_KEY } from '@/constants/keys'
 import auth from './modules/auth/index'
 import accounts from './modules/accounts'
 import contacts from './modules/contacts'
@@ -66,7 +67,7 @@ export default new Vuex.Store({
   },
   strict: debug,
   plugins: [createPersistedState({
-    key: 'lkb2b',
+    key: LK_STORAGE_KEY,
     paths: [
       'auth.userToken',
       'auth.accessToken',
