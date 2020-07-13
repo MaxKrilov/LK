@@ -32,6 +32,13 @@ $change-org-popup-lg-max-width: 729px;
     @include min-breakpoint('xl') {
       padding: $padding-x8;
     }
+
+    .preloader-container {
+      display: flex;
+      flex-grow: 1;
+      align-items: center;
+      justify-content: center;
+    }
   }
 
   &__actions {
@@ -75,5 +82,16 @@ $change-org-popup-lg-max-width: 729px;
     .er-icon {
       height: $padding-x4;
     }
+  }
+}
+.change-org-dialog {
+  // safari fix
+  overflow: initial !important;
+}
+.change-org-frame {
+  border: none;
+  &--hidden {
+    opacity: 0;
+    position: fixed;
   }
 }

@@ -1,8 +1,8 @@
 er-dialog(
   :value="active"
   @update:returnValue="onClose"
-).change-org-popup
-
+  :contentClass="'change-org-dialog'"
+)
   .change-org-popup__body
     .change-org-popup__close
       er-close-button(@click="onClose")
@@ -13,12 +13,18 @@ er-dialog(
       p Просим вас воспользоваться другим браузером для отображения данной страницы
 
     .change-org-popup__content(v-else)
+      template(v-if="isWaitMode")
+        .preloader-container
+          er-preloader(icon=true, active)
+
       iframe(
+        class="change-org-frame"
+        v-class-mod="{hidden: isWaitMode}"
         :src="frameUrl"
         ref="iframe"
         width="100%"
         height="350px"
-        frameBorder="0"
+        frameborder="0"
       )
 
     .change-org-popup__actions

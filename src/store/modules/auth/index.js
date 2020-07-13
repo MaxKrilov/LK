@@ -219,6 +219,9 @@ const actions = {
   },
   setDmpId ({ commit }, payload) {
     commit('setDmpId', payload)
+  },
+  clearToken ({ commit }) {
+    commit(REMOVE_AUTH_TOKENS)
   }
 }
 
