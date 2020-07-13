@@ -5,9 +5,9 @@ import {
   IDomain,
   IVideocontrol,
   IBaseFunctionality,
-  ICamera
+  ICamera, IOffer
 } from '@/interfaces/videocontrol'
-import { IOfferingRelationship, IOffering } from '@/interfaces/offering'
+import { IOfferingRelationship } from '@/interfaces/offering'
 import { ILocationOfferInfo } from '@/tbapi'
 
 import PnS from './productnservices'
@@ -87,7 +87,7 @@ function isBFAddon (item: IOfferingRelationship) {
   return item.categoryId === BF_CATEGORY_ID || item.name === BF_CATEGORY_NAME
 }
 
-function isActiveOffering (item: IOffering) {
+function isActiveOffering (item: IOffer) {
   return ['Активный', 'Active'].includes(item.status)
 }
 
@@ -198,7 +198,7 @@ const getters = {
           (el: IOfferingRelationship) => isBFAnalytic(el)
         )
         ?.offerings
-        ?.filter((el: IOffering) => isActiveOffering(el))
+        ?.filter((el: IOffer) => isActiveOffering(el))
     }
   },
   availableServiceListByBFOId (state: IState, getters: any) {
@@ -209,7 +209,7 @@ const getters = {
           (el: IOfferingRelationship) => isBFAddon(el)
         )
         ?.offerings
-        ?.filter((el: IOffering) => isActiveOffering(el))
+        ?.filter((el: IOffer) => isActiveOffering(el))
     }
   }
 }

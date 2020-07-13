@@ -4,7 +4,7 @@
       .product-top-head
         .link-wrap
           er-icon(name="watch")
-          a.link Перейти на портал
+          router-link.link(:to="{name: 'go-to-forpost'}") Перейти на портал
 
         .user-count
           .user-count__input
@@ -18,7 +18,7 @@
             )
 
           .user-count__price
-            er-price {{ computedUserPrice }}
+            er-price {{ computedUserPrice|price }}
 
           er-button.user-count__add-btn(
             v-show="isUserCountChanged"
@@ -47,6 +47,7 @@
   .product__footer
     er-button(
       color="yellow"
+      :loading="isOrderCameraMode"
       @click="onClickAdd"
     ) Добавить камеру
 
@@ -61,4 +62,5 @@
     :requestData="requestData"
     :isSendOrder="!isManagerRequest"
     :isSendManagerRequest="isManagerRequest"
+    @close="onClosePlugProduct"
   )

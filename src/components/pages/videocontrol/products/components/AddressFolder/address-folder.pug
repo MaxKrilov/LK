@@ -4,7 +4,7 @@
 
     .address-folder__toggle
       er-corner-button(:reversed="true", :value="isOpened")
-        er-price {{ price }}
+        er-price {{ price|price }}
 
   er-slide-up-down(:active="isOpened || active")
     .address-folder__body

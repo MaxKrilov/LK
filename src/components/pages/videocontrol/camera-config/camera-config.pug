@@ -17,8 +17,6 @@
         template(v-else)
           pu-skeleton(width="200px")
 
-        .caption1 Все камеры {{ allLocationCameraCount }}
-
       .col.col--watch(v-if="isForpostProtalWorking")
         .watch(
           @click="onPlay"
@@ -101,7 +99,7 @@
       h2.analytics__title Аналитика
       .analytics__subtitle
         template(v-if="isAnalyticsLoaded")
-          | подключено {{ enabledAnalyticItems }} сервиса
+          | подключено {{ enabledAnalyticCount }} сервиса
         template(v-else)
           pu-skeleton(width="120px")
 
@@ -139,7 +137,7 @@
     actionButtonText="Отключить"
     persistent
     :isLoadingConfirm="isSendingOrder"
-    isOffer
+    isOffer="cctv"
     @confirm="onApplyOrder"
     @close="onCancelOrder"
   )

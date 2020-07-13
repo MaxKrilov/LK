@@ -62,6 +62,11 @@ export default class ErPlugProduct extends ErPlugMixin {
     }
   }
 
+  @Watch('isShowRequestModal')
+  onShowRequestModalChanged (value: boolean) {
+    value ? this.$emit('open') : this.$emit('close')
+  }
+
   get requestModalDescrition () {
     return this.requestData?.descriptionModal || ''
   }

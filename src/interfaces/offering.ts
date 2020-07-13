@@ -4,8 +4,6 @@ import { NumberAsString } from '@/types'
 
 export type ProductOfferingStatus = 'Активный' | 'Active' | 'Снято с производства'
 
-export interface IPurchasedPrice extends IPrice {}
-
 export interface IProductOffering {
   /*
     Приходит в массиве с эндпоинтов
@@ -35,14 +33,5 @@ export interface IOfferingRelationship {
   childProductOffering?: {}
   defaultBehavior?: string
   reconciliationId?: string
-  offerings?: IOffering[]
-}
-
-export interface IOffering {
-  code: string
-  id: NumberAsString
-  originalName: string
-  status: string
-
-  prices?: any[]
+  offerings?: IOffer[]
 }

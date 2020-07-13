@@ -2,6 +2,9 @@ import { IProductOffering } from './offering'
 import { IPrice as IPurchasedPrice, ISLOPricesItem } from '@/tbapi'
 
 export type TBaseFunctionalityId = string
+export type TDomainServiceId = string
+
+export interface IOrderChar extends Record<string, string> {}
 
 export interface IOffer {
   id: string // number "3295"
@@ -22,7 +25,14 @@ export interface IDomain {
   actualStartDate: string // datetime "2020-04-08T10:12:21+03:00"
   videocontrols: Record<string, IVideocontrol>
   billingAccountId: string // "9156925760213408499"
-  services?: object
+  services?: Record<TDomainServiceId, IDomainService>
+}
+
+export interface IDomainService {
+  id: TDomainServiceId
+  offer: IOffer
+  chars: IOrderChar
+  purchasedPrices: IPurchasedPrice
 }
 
 export interface IDomainRegistry {
@@ -50,18 +60,18 @@ export interface IBaseFunctionality {
   services?: IProductOffering[]
 }
 
-export interface IBaseFunctionalityRegistry extends Record<TBaseFunctionalityId, IBaseFunctionality> {}
+export interface IBaseFunctionalityRegistry
+  extends Record<TBaseFunctionalityId, IBaseFunctionality> {}
 
-export interface ICameraRegistry {
-  [key: string]: ICamera
-}
+export interface ICameraRegistry
+  extends Record<string, ICamera> {}
 
 export interface ICamera {
   id: string
   parentId: TBaseFunctionalityId
   locationId: string
   name: string
-  chars: Record<string, string>
+  chars: IOrderChar
   purchasedPrices: Record<string, any>
 
   // кастомное поле, добавляеся отдельно
