@@ -2,10 +2,10 @@ import { Vue, Component } from 'vue-property-decorator'
 import ErPlugProduct from '@/components/blocks/ErPlugProduct/index.vue'
 import AnalyticItem from './components/AnalyticItem/index.vue'
 
-import { ICamera, IBaseFunctionality } from '@/interfaces/videocontrol'
+import { ICamera, IBaseFunctionality, IOffer } from '@/interfaces/videocontrol'
+import { IProductOffering } from '@/interfaces/offering'
 import { promisedStoreValue } from '@/functions/store_utils'
 import { logInfo, logError } from '@/functions/logging'
-import { IProductOffering, IOffering } from '@/interfaces/offering'
 import {
   CODES,
   VIDEOARCHIVE_DAY_COUNT,
@@ -14,9 +14,14 @@ import {
   SERVICE_ORDER_MAP
 } from '@/constants/videocontrol'
 
-import { ILocationOfferInfo } from '@/tbapi'
+import { ILocationOfferInfo, ISLOPricesItem } from '@/tbapi'
 import { mapState, mapGetters } from 'vuex'
 import ErActivationModal from '@/components/blocks/ErActivationModal/index.vue'
+
+/* FUNCTIONS */
+const isFullHD = (el: IOffer) => el.code === CODES.FULLHD
+const isFullHDArchive = (el: IOffer) => el.code === CODES.FULLHD_ARCHIVE
+const isHDArchive = (el: IOffer) => el.code === CODES.HD_ARCHIVE
 
 const components = {
   AnalyticItem,
@@ -57,8 +62,8 @@ export default class VCCameraConfigPage extends Vue {
   isDomainsLoaded!: boolean
 
   /* === mapGetters === */
-  availableAnalyticListByBFOId!: (BFOfferId: string) => IOffering[]
-  availableServiceListByBFOId!: (BFOfferId: string) => IOffering[]
+  availableAnalyticListByBFOId!: (BFOfferId: string) => IOffer[]
+  availableServiceListByBFOId!: (BFOfferId: string) => IOffer[]
   cameraById!: (id: string) => ICamera
   locationById!: (id: string) => ILocationOfferInfo
   bfById!: (id: string) => IBaseFunctionality
@@ -76,7 +81,7 @@ export default class VCCameraConfigPage extends Vue {
   /* === Form === */
   soundRecordValue: boolean = false
   videoQualityValue: string = VIDEO_QUALITY_VALUE_LIST[0]
-  videoArchiveValue: number = 0
+  videoArchiveValue: string = '0'
   PTZValue: boolean = false
 
   isChanged = false
@@ -104,16 +109,8 @@ export default class VCCameraConfigPage extends Vue {
     return this.name || this.camera?.name || ''
   }
 
-  set cameraName (value) {
-    this.name = value
-  }
-
   get bf (): IBaseFunctionality {
     return this.bfById(this.camera.parentId)
-  }
-
-  get allLocationCameraCount () {
-    return 0
   }
 
   get hasRentPay () {
@@ -126,7 +123,7 @@ export default class VCCameraConfigPage extends Vue {
 
   get licensePay () {
     const price = this?.bf?.offer?.prices?.[0]
-    return price ? parseFloat(price.amount) - parseFloat(price?.tax) : '0'
+    return price ? parseFloat(price.amount) : '0'
   }
 
   get totalPrice () {
@@ -141,18 +138,22 @@ export default class VCCameraConfigPage extends Vue {
     return price.toFixed(2)
   }
 
-  get enabledServiceList () {
+  get enabledServiceList (): IProductOffering[] {
     const services = this.bf?.services
     return services ? Object.values(services) : []
   }
 
   get enabledServiceCode () {
-    return this.enabledServiceList?.map(el => el?.offer?.code) || []
+    return this.enabledServiceList?.map(el => el?.offer?.code)
   }
 
-  get enabledAnalyticItems () {
+  get enabledAnalyticCount (): number {
+    const isServiceEnabled = (el: any) => this.enabledServiceCode.includes(el?.code)
+
     return this.availableAnalyticsList
-      .filter(el => this.enabledServiceCode.includes(el?.code)).length || 0
+      .filter(
+        isServiceEnabled
+      ).length || 0
   }
 
   get availableServiceList () {
@@ -190,39 +191,49 @@ export default class VCCameraConfigPage extends Vue {
 
   // FullHD
   get fullHd () {
-    return this.enabledServiceList.find(el => el?.offer?.code === CODES.FULLHD)
+    // @ts-ignore
+    return this.enabledServiceList.find(({ offer }) => isFullHD(offer))
   }
 
   get isFHDEnabled () {
     return this.enabledServiceCode.includes(CODES.FULLHD)
   }
 
+  get fullHdPrice (): string {
+    return this.availableServiceList
+      ?.find(isFullHD)
+      ?.prices?.[0]
+      ?.amount || '0'
+  }
+
   get videoQualityPrice () {
     if (this.videoQualityValue === 'HD') {
       return '0'
     } else {
-      return this.fullHd?.purchasedPrices?.recurrentTotal?.value || '0'
+      if (this.isFHDEnabled) {
+        return this.fullHd?.purchasedPrices?.recurrentTotal?.value || '0'
+      } else {
+        return this.fullHdPrice
+      }
     }
   }
 
-  get videoArchiveOfferList () {
-    let priceList
-
-    if (this.isFHDEnabled) {
-      priceList = this.availableServiceList.find(el => el.code === CODES.FULLHD_ARCHIVE)?.prices
-    } else {
-      priceList = this.availableServiceList.find(el => el.code === CODES.HD_ARCHIVE)?.prices
-    }
-
-    return priceList
+  get videoArchiveOfferList (): ISLOPricesItem[] {
+    const isCurrentService = this.isFHDEnabled ? isFullHDArchive : isHDArchive
+    return this.availableServiceList
+      .find(isCurrentService)
+      ?.prices || []
   }
 
-  get videoArchiveValueList () {
-    return this.videoArchiveOfferList?.map(el => el.chars[VIDEOARCHIVE_DAY_COUNT])
+  get videoArchiveValueList (): string[] {
+    return this.videoArchiveOfferList?.map(
+      (el: ISLOPricesItem) => el.chars[VIDEOARCHIVE_DAY_COUNT]
+    )
   }
 
-  get videoArchiveCurrentValue () {
-    return this.videoArchiveValueList?.[this.videoArchiveValue]
+  get videoArchiveCurrentValue (): string {
+    // @ts-ignore
+    return this.videoArchiveValueList?.[this.videoArchiveValue] || '0'
   }
 
   get videoArchiveValueIndex () {
@@ -308,7 +319,7 @@ export default class VCCameraConfigPage extends Vue {
       bpi: this.bf.id,
       productCode: code,
       offer: true,
-      title: 'Вы уверены, что хотите?'
+      title: 'Вы уверены, что хотите подключить услугу?'
     }
 
     if (SERVICE_ORDER_MAP[code]) {
@@ -346,6 +357,7 @@ export default class VCCameraConfigPage extends Vue {
 
   /* === Events === */
   onVideoQualityInput (value: string) {
+    this.videoQualityValue = value
     this.switchFunctionality(
       CODES.FULLHD,
       value === VIDEO_QUALITY_VALUE_LIST[1]

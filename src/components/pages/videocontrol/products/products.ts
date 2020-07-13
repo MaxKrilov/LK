@@ -1,7 +1,7 @@
 import { Vue, Component } from 'vue-property-decorator'
 import ProductFolder from './components/ProductFolder/index.vue'
 import VCDomain from './components/Domain/index.vue'
-import { IDomainRegistry, IDomain } from '@/interfaces/videocontrol'
+import { IDomainRegistry, IDomain, IDomainService } from '@/interfaces/videocontrol'
 import { VC_TYPES, CHARS } from '@/constants/videocontrol'
 import { logInfo } from '@/functions/logging'
 import { mapState, mapGetters } from 'vuex'
@@ -63,21 +63,13 @@ export default class VideocontrolProductPage extends Vue {
 
     const services = domain?.services
 
-    if (services) {
-      for (const el in services) {
-        // @ts-ignore
-        if (services[el].offer.code === VC_TYPES.USERS) {
-          // @ts-ignore
-          return services[el]
-        }
-      }
-    }
+    const isUserType = (el: IDomainService) => el.offer.code === VC_TYPES.USERS
 
-    return null
+    return services ? Object.values(services).find(isUserType) : null
   }
 
   getDomainUserProductId (domainKey: string) {
-    return this.getDomainUsers(domainKey).offer.id
+    return this.getDomainUsers(domainKey)?.offer?.id
   }
 
   getDomainUserCount (domainKey: string): number {
@@ -90,9 +82,9 @@ export default class VideocontrolProductPage extends Vue {
     return MIN_USER_COUNT
   }
 
-  getDomainUserPrice (domainKey: string): number {
+  getDomainUserPrice (domainKey: string): string {
     const userFullPrice = this.getDomainUsers(domainKey)
-      ?.purchasedPrices.recurrentTotal.value
+      ?.purchasedPrices?.recurrentTotal?.value
 
     return userFullPrice || USER_COST
   }

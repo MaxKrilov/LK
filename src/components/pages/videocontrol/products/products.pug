@@ -1,42 +1,40 @@
 .vc-product-page
-  template(v-if="isVideocontrolPlugged")
     .vc-product-page__content
       er-page-header(
         title="Видеонаблюдение"
       )
 
     .vc-product-page__list
-      template(v-if="isDomainsLoaded")
-        template(v-if="Object.keys(domains).length > 0")
-          template( v-for="(item, key, idx) in domains" )
-            product-folder(
-              :key="key"
-              class="product"
-              :name="key"
-              :price="getDomainPrice(key).toFixed(2)"
-              :date="$moment(item.offer.availableFrom).format('DD.MM.YYYY')"
-              :stopped="isDomainActive(item)"
+      template(v-if="isDomainsLoaded && isVideocontrolPlugged")
+        template( v-for="(item, key, idx) in domains" )
+          product-folder(
+            :key="key"
+            class="product"
+            :name="item.name"
+            :price="getDomainPrice(key).toFixed(2)"
+            :date="$moment(item.actualStartDate).format('DD.MM.YYYY')"
+            :stopped="isDomainActive(item)"
+          )
+            vc-domain(
+              :dkey="key"
+              :domain="item"
+              :user-count="getDomainUserCount(key)"
+              :user-price="getDomainUserPrice(key)"
+              :user-product-id="getDomainUserProductId(key)"
+              @change="onChangeDomain"
             )
-              vc-domain(
-                :dkey="key"
-                :domain="item"
-                :user-count="getDomainUserCount(key)"
-                :user-price="getDomainUserPrice(key)"
-                :user-product-id="getDomainUserProductId(key)"
-                @change="onChangeDomain"
-              )
 
-          .total-block
-            .total-block__label Итого
-            .total-block__sum
-              er-price
-                | {{ totalPrice.toFixed(2) }}
+        .total-block
+          .total-block__label Итого
+          .total-block__sum
+            er-price
+              | {{ totalPrice|price }}
 
-        template(v-else)
-          er-empty-message(text="Видеонаблюдение не подключено")
+      template(v-else-if="!isDomainsLoaded")
+        product-folder(:loading="true")
 
       template(v-else)
-        product-folder(:loading="true")
+        VCPromo
 
     .vc-product-page__footer(v-if="isPlugVideocontrolPossible")
       er-container.container--no-padding.full
@@ -44,6 +42,3 @@
           er-flex.xs12.sm8.md6.lg4
             er-button(color="blue")
               | Подключить видеонаблюдение
-
-  template(v-else)
-    VCPromo

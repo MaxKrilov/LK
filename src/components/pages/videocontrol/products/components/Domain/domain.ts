@@ -4,11 +4,10 @@ import AddressFolder from '../AddressFolder/index.vue'
 import Camera from '../Camera/index.vue'
 import ErPlugProduct from '@/components/blocks/ErPlugProduct/index.vue'
 import { CODES, CHARS } from '@/constants/videocontrol'
-import { IVideocontrol, IBaseFunctionality } from '@/interfaces/videocontrol'
+import { IVideocontrol, IOffer, IBaseFunctionality } from '@/interfaces/videocontrol'
 import {
   IOfferingRelationship,
-  IProductOffering,
-  IOffering
+  IProductOffering
 } from '@/interfaces/offering'
 import { logInfo } from '@/functions/logging'
 
@@ -46,11 +45,13 @@ const props = {
   computed
 })
 export default class VCDomain extends Vue {
-  services: IOffering[] | [] = []
-  baseServices: IOffering[] | [] = []
+  services: IOffer[] | [] = []
+  baseServices: IOffer[] | [] = []
   searchText: string = ''
-  isOrderModalVisible = false
-  isManagerRequest = false
+  isOrderModalVisible: boolean = false
+  isManagerRequest: boolean = false
+  isOrderCameraMode: boolean = false
+
   orderData = {}
   requestData = {
     descriptionModal: 'необходимо сформировать заявку',
@@ -124,9 +125,6 @@ export default class VCDomain extends Vue {
   }
 
   fetchAllowedOfferList () {
-    // const firstVC = this.videocontrolList[0]
-    // const bfList = this.getBFList(firstVC)
-    // const offerId = bfList[0]?.offer?.id
     const offerId = this.$props.domain.offer.id
 
     const payload = {
@@ -171,7 +169,9 @@ export default class VCDomain extends Vue {
   }
 
   onClickAdd () {
+    this.isOrderCameraMode = true
     this.isOrderModalVisible = true
+    this.isManagerRequest = true
     this.requestData = {
       descriptionModal: 'Для подключения камеры необходимо сформировать заявку',
       addressId: this.addressList[0].address.id,
@@ -237,6 +237,10 @@ export default class VCDomain extends Vue {
     }
     this.isOrderModalVisible = true
     this.isManagerRequest = false
+  }
+
+  onClosePlugProduct () {
+    this.isOrderCameraMode = false
   }
 
   onClickPause () {

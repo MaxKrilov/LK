@@ -365,6 +365,7 @@ const router = new Router({
               props: true
             },
             {
+              name: 'go-to-forpost',
               path: 'go-to-forpost',
               component: VCGoToForpost
             }
