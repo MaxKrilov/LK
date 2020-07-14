@@ -123,6 +123,7 @@
       @include color-black(0.2);
     }
     .statistic {
+      cursor: pointer;
       margin-left: 4px;
       @extend %caption1;
       @include color-black(0.5);

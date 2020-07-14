@@ -51,7 +51,7 @@ export default {
           bpi: this.local?.bpi,
           productCode: CODE_PACGLOCMIN,
           chars: this.localCost === 500 ? undefined : { 'Стоимость пакета': this.localCost },
-          offer: true,
+          offer: 'telephonya',
           title: 'Вы уверены, что хотите подключить пакет местных минут?'
         }
       }
@@ -61,7 +61,7 @@ export default {
           bpi: this.global?.bpi,
           productCode: CODE_PACGMIN,
           chars: this.globalCost === 500 ? undefined : { 'Стоимость пакета': this.globalCost },
-          offer: true,
+          offer: 'telephonya',
           title: 'Вы уверены, что хотите подключить пакет звонков за границу и по России?'
         }
       }

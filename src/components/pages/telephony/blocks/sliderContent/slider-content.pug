@@ -39,7 +39,7 @@ div(:class="`${pre}`" )
             :phones="phones"
             :char="'Тип Пакета (Пакет Минут)'")
 
-          div(@click="plugPackages" v-if="!(globalConnected && localConnected)")  
+          div(@click="plugPackages" v-if="localPlug || globalPlug")  
             er-card(:class="[`${pre}__plug-package`, `${pre}__card-package`]")
               div(:class="`${pre}__plug-package__title`") Подключить пакет минут
               div(:class="`${pre}__plug-package__footer`")
@@ -51,8 +51,7 @@ div(:class="`${pre}`" )
           template(v-if="isStopped")
             er-button(color="yellow") Восстановить
           template(v-else)
-            er-button(color="yellow") Приостановить Телефонию
-            er-button(flat) Отключить Телефонию
+            er-button(color="yellow"  @click="$router.push('/lk/support?form=suspension_of_a_contract_or_service')") Приостановить Телефонию
   
   ErPlugProduct(
     v-model="isConnection"

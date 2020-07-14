@@ -13,7 +13,7 @@ div(:class="`${pre}`" )
         er-icon(name="trashbox" @click="remove")
     er-slide-up-down(:active="isOpen")
       div(:class="`${pre}__slider`" )
-        er-icon(name="stat")
-        div(class="statistic") Статистика
+        er-icon(name="stat" @click="$router.push('/lk/telephony/statistic')")
+        div(class="statistic" @click="$router.push('/lk/telephony/statistic')") Статистика
         div(class="channels" v-if="ksi") Канал связи:
           span(class="count") {{ ksi }}
