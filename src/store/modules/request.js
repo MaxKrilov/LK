@@ -99,7 +99,9 @@ const actions = {
       ? REQUEST_REASON
       : requestName.match(/problem/i)
         ? PROBLEM_REASON
-        : COMPLAINT_REASON
+        : ['9154749993013188892', '9154749993013188891'].includes(complaintTheme)
+          ? REQUEST_REASON
+          : COMPLAINT_REASON
     data.type = requestName.match(/problem/i)
       ? problemTheme
       : requestName.match(/complaint/i)

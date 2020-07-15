@@ -180,11 +180,24 @@ const getters = {
       })) : []
   },
   getListProductByService (state) {
-    return state.listProductByService?.map(item => ({
-      code: item.offeringCategory.code,
-      name: item.offeringCategory.name,
-      price: item.amount.value
-    }))
+    return state.listProductByService.reduce((acc, product) => {
+      const findElementIndex = acc.findIndex(accItem => accItem.code === product.offeringCategory.code)
+      if (findElementIndex > -1) {
+        acc[findElementIndex].price = acc[findElementIndex].price + Number(product.amount.value)
+        return acc
+      }
+      acc.push({
+        code: product.offeringCategory.code,
+        name: product.offeringCategory.name,
+        price: Number(product.amount.value)
+      })
+      return acc
+    }, [])
+    // return state.listProductByService?.map(item => ({
+    //   code: item.offeringCategory.code,
+    //   name: item.offeringCategory.name,
+    //   price: item.amount.value
+    // }))
   },
   agreementNumber (state) {
     return state.listBillingAccount.find(item => item.billingAccountId === state.activeBillingAccount)?.contractNumber

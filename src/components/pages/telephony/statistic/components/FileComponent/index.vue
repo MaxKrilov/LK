@@ -2,7 +2,7 @@
   .file-component
     span.dl-file(@click="downloadFile")
       er-icon(name="download")
-      .dl-file__label(v-if="isLoadingDocument") {{ file.fileName | fileNameFormatted }}
+      .dl-file__label(v-if="!isLoadingDocument") {{ file.fileName | fileNameFormatted }}
       .dl-file__label(v-else) Загружаем документ
 </template>
 
@@ -64,7 +64,7 @@ export default Vue.extend({
 <style lang="scss" scoped>
 .file-component {
   .dl-file {
-    display: flex;
+    display: inline-flex;
     align-items: center;
     @extend %caption1;
 

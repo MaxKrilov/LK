@@ -13,10 +13,8 @@ div(:class="`${pre}`")
     div(:class="[`${pre}__left__body`, { 'open-sub-menu': isOpenSubMenu }]")
       div(:class="[`${pre}__left__body__background-sub-menu`, { open: openSubMenuBackground }]")
       div(
-
-      v-for="(menuItem, index) in menu",
-
-      :class="`${pre}__left__body-item`",
+        v-for="(menuItem, index) in menu",
+        :class="`${pre}__left__body-item`",
         @click="openSubMenu(menuItem)",
         :key="index"
       )

@@ -132,8 +132,8 @@ div(:class="`${pre}`")
   template(v-else)
     template(v-if="modelSortService === 'service'")
       product-item-component.mb-4(
-        v-for="(product, index) in listProductByService"
-        :key="index"
+        v-for="product in listProductByService"
+        :key="product.code"
         :title="product.name"
         :price="product.price"
         :product-type="product.code"
@@ -141,8 +141,8 @@ div(:class="`${pre}`")
       )
     template(v-else)
       product-item-component.mb-4(
-        v-for="(product, index) in listProductByAddress"
-        :key="index"
+        v-for="product in listProductByAddress"
+        :key="product.addressId"
         :title="product.address"
         :price="product.price"
         :address-id="product.addressId"

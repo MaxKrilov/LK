@@ -111,9 +111,13 @@ export default class InternetTemplate extends Vue {
       productType: 'Интернет'
     })
       .then(response => {
-        this.listPoint = transformListPoint(response)
-        this.activePoint = getFirstElement(this.listPoint)
-        this.$nextTick(this.getCustomerProduct)
+        if (response.length === 0) {
+          this.$router.push('/lk/internet/promo')
+        } else {
+          this.listPoint = transformListPoint(response)
+          this.activePoint = getFirstElement(this.listPoint)
+          this.$nextTick(this.getCustomerProduct)
+        }
       })
       .catch(() => {
         this.listPoint = []
