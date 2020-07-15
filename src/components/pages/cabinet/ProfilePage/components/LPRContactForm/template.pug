@@ -117,81 +117,81 @@ div(
               v-model="formData.roles"
             )
 
-        er-flex(:class="`${preSection}`" xs12 sm6 lg4)
-          h3(:class="`${preSection}__title`") Контактные данные
-
-          div(:class="[`${preInput}`, {[`${preInput}_changed`]: changedFields.includes('phones')}]")
-            er-row(
-              :class="[`${preInput}__header`, 'no-gutters']"
-              v-if="hasContactsMethods.phones"
-              )
-              div(:class="`${preInput}__title`") Номер телефона
-              div(:class="[`${preInput}__changed`, `${preInput}__actions`]")
-                er-icon(
-                  :class="`${preInput}__changed-icon`"
-                  :width="14"
-                  :height="14"
-                  name="ok"
-                )
-                span(:class="`${preInput}__changed-text`") Изменен
-
-            template(v-for="(phone, ind) in formData.phones")
-              div(:key="phone + ind" :class="`${pre}__method`" )
-                contact-methods-list(
-                  :item="phone"
-                  :prefer="formData.preferredContactMethodId"
-                  @onPrefer="setPrefer($event)"
-                  @onRemove="removeContactMethod(ind, 'phones')"
-                )
-
-            er-text-field(
-              :class="`${pre}__add-contact-method`"
-              name="inputPhoneNumber"
-              data-skip-validate="true"
-              :label="isMobile ? 'Добавить номер' : 'Добавьте номер телефона'"
-              mask="phone"
-              ref="phones"
-              :rules="phoneRule"
-              prependInnerIcon="circle_add"
-              v-model="currentValue.phones"
-              @keydown.enter.prevent="addContactMethod($event.target.value, 'phones')"
-            )
-
-          div(:class="[`${preInput}`, {[`${preInput}_changed`]: changedFields.includes('emails')}]")
-            er-row(
-              :class="[`${preInput}__header`, 'no-gutters']"
-              v-if="hasContactsMethods.emails"
-              )
-              div(:class="`${preInput}__title`") Электронная почта
-              div(:class="[`${preInput}__changed`, `${preInput}__actions`]")
-                er-icon(
-                  :class="`${preInput}__changed-icon`"
-                  :width="14"
-                  :height="14"
-                  name="ok"
-                )
-                span(:class="`${preInput}__changed-text`") Изменен
-
-            template(v-for="(email, ind) in formData.emails")
-              div(:key="email + ind" :class="`${pre}__method`" )
-                contact-methods-list(
-                  :item="email"
-                  :prefer="formData.preferredContactMethodId"
-                  @onPrefer="setPrefer($event)"
-                  @onRemove="removeContactMethod(ind, 'emails')"
-                )
-            er-text-field(
-              :class="`${pre}__add-contact-method`"
-              name="inputEmail"
-              data-skip-validate="true"
-              label="Добавьте эл. почту"
-              type="email"
-              ref="emails"
-              v-model="currentValue.emails"
-              :rules="emailRule"
-              prependInnerIcon="circle_add"
-              @keydown.enter.prevent="addContactMethod($event.target.value, 'emails')"
-            )
+        //er-flex(:class="`${preSection}`" xs12 sm6 lg4)
+        //  h3(:class="`${preSection}__title`") Контактные данные
+        //
+        //  div(:class="[`${preInput}`, {[`${preInput}_changed`]: changedFields.includes('phones')}]")
+        //    er-row(
+        //      :class="[`${preInput}__header`, 'no-gutters']"
+        //      v-if="hasContactsMethods.phones"
+        //      )
+        //      div(:class="`${preInput}__title`") Номер телефона
+        //      div(:class="[`${preInput}__changed`, `${preInput}__actions`]")
+        //        er-icon(
+        //          :class="`${preInput}__changed-icon`"
+        //          :width="14"
+        //          :height="14"
+        //          name="ok"
+        //        )
+        //        span(:class="`${preInput}__changed-text`") Изменен
+        //
+        //    template(v-for="(phone, ind) in formData.phones")
+        //      div(:key="phone + ind" :class="`${pre}__method`" )
+        //        contact-methods-list(
+        //          :item="phone"
+        //          :prefer="formData.preferredContactMethodId"
+        //          @onPrefer="setPrefer($event)"
+        //          @onRemove="removeContactMethod(ind, 'phones')"
+        //        )
+        //
+        //    er-text-field(
+        //      :class="`${pre}__add-contact-method`"
+        //      name="inputPhoneNumber"
+        //      data-skip-validate="true"
+        //      :label="isMobile ? 'Добавить номер' : 'Добавьте номер телефона'"
+        //      mask="phone"
+        //      ref="phones"
+        //      :rules="phoneRule"
+        //      prependInnerIcon="circle_add"
+        //      v-model="currentValue.phones"
+        //      @keydown.enter.prevent="addContactMethod($event.target.value, 'phones')"
+        //    )
+        //
+        //  div(:class="[`${preInput}`, {[`${preInput}_changed`]: changedFields.includes('emails')}]")
+        //    er-row(
+        //      :class="[`${preInput}__header`, 'no-gutters']"
+        //      v-if="hasContactsMethods.emails"
+        //      )
+        //      div(:class="`${preInput}__title`") Электронная почта
+        //      div(:class="[`${preInput}__changed`, `${preInput}__actions`]")
+        //        er-icon(
+        //          :class="`${preInput}__changed-icon`"
+        //          :width="14"
+        //          :height="14"
+        //          name="ok"
+        //        )
+        //        span(:class="`${preInput}__changed-text`") Изменен
+        //
+        //    template(v-for="(email, ind) in formData.emails")
+        //      div(:key="email + ind" :class="`${pre}__method`" )
+        //        contact-methods-list(
+        //          :item="email"
+        //          :prefer="formData.preferredContactMethodId"
+        //          @onPrefer="setPrefer($event)"
+        //          @onRemove="removeContactMethod(ind, 'emails')"
+        //        )
+        //    er-text-field(
+        //      :class="`${pre}__add-contact-method`"
+        //      name="inputEmail"
+        //      data-skip-validate="true"
+        //      label="Добавьте эл. почту"
+        //      type="email"
+        //      ref="emails"
+        //      v-model="currentValue.emails"
+        //      :rules="emailRule"
+        //      prependInnerIcon="circle_add"
+        //      @keydown.enter.prevent="addContactMethod($event.target.value, 'emails')"
+        //    )
 
         er-flex(:class="`${preSection}`" xs12 sm6 lg4)
           div(:class="`${preSection}__action`")

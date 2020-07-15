@@ -32,7 +32,7 @@
   }
   &--blue {
     background: map_get($blue, 'base');
-    color: map_get($shades, 'white');
+    color: map_get($shades, 'white') !important;
     &:hover {
       background: map_get($blue, 'other-1');
     }

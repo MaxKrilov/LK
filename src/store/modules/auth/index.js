@@ -21,14 +21,14 @@ const SET_AUTH_TOKENS = 'SET_AUTH_TOKENS'
 const UPDATE_USER_INFO = 'UPDATE_USER_INFO'
 const REMOVE_AUTH_TOKENS = 'REMOVE_AUTH_TOKENS'
 
+const REMOVE_USER_INFO = 'REMOVE_USER_INFO'
+
 const SET_USER_TOMS = 'SET_USER_TOMS'
 const SET_MANAGER_AUTH = 'SET_MANAGER_AUTH'
 
 const REFRESH_REQUEST = 'REFRESH_REQUEST'
 const REFRESH_SUCCESS = 'REFRESH_SUCCESS'
 const REFRESH_ERROR = 'REFRESH_ERROR'
-
-const LKB2B_ACCESS = 'lkb2b'
 
 const INITIAL_STATE = {
   userToken: '',
@@ -170,6 +170,7 @@ const actions = {
         commit(REFRESH_SUCCESS)
       } catch (e) {
         commit(REMOVE_AUTH_TOKENS)
+        commit(REMOVE_USER_INFO)
         commit(REFRESH_ERROR, 'Не удалось сохранить токены')
       }
     } catch (e) {
@@ -189,7 +190,8 @@ const actions = {
         .query('/sso/default/reject-token')
       if (result.success) {
         commit(AUTH_LOGOUT)
-        localStorage.removeItem(LKB2B_ACCESS)
+        commit(REMOVE_AUTH_TOKENS)
+        commit(REMOVE_USER_INFO)
         location.href = result.redirect
       }
     } catch (e) {
@@ -270,6 +272,9 @@ const mutations = {
     state.userToken = null
     state.accessToken = null
     state.refreshToken = null
+  },
+  [REMOVE_USER_INFO]: (state) => {
+    state.userInfo = {}
   },
   [UPDATE_USER_INFO]: (state, payload) => {
     state.userInfo = { ...state.userInfo, ...payload }

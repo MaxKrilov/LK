@@ -3,7 +3,8 @@ import ErSlideUpDown from '@/components/UI/ErSlideUpDown'
 export default {
   props: {
     title: String,
-    items: Array
+    items: Array,
+    isExternal: Boolean
   },
   components: {
     ErSlideUpDown

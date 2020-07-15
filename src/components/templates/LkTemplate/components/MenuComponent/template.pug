@@ -102,7 +102,7 @@ div(:class="`${pre}`")
         er-icon(name="wallet_auto")
       er-preloader(:active="menuComponentBalance")
         div.info
-          a(href="#").link--solid--yellow {{ balanceInfo.balance | price }}
+          router-link(to="/lk/add-funds").link--solid--yellow {{ balanceInfo.balance | price }}
           span.caption(:class="{ 'autopay': isAutopay }") Автоплатеж
 
     div(:class="`${pre}__top__manager ${pre}__top__link--desktop`")
@@ -123,7 +123,7 @@ div(:class="`${pre}`")
               div.caption.mb-4
                 | Телефон
               div.value.mb-12
-                a(:href="`tel:${getManagerInfo.phone}`") {{ getManagerInfo.phone | formatPhone }}
+                | {{ getManagerInfo.phone }}
               div.caption.mb-4
                 | Эл. почта
               div.value.mb-12

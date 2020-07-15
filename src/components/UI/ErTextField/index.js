@@ -53,7 +53,7 @@ export default {
     },
     labelClasses () {
       return {
-        [`${this.pre}--active`]: this.hasFocus || this.value
+        [`${this.pre}--active`]: this.hasFocus || this.value || ['money', 'moneynorub'].includes(this.mask)
       }
     }
   },
@@ -212,7 +212,8 @@ export default {
             digits: 2,
             prefix: '',
             suffix: ' ₽',
-            rightAlign: false
+            rightAlign: false,
+            jitMasking: false
           }
           break
         case 'moneynorub':

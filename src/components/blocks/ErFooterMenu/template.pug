@@ -14,9 +14,10 @@
       class="expander"
       :active="isExpanded"
     )
-      a.er-footer-menu__item(
+      component.er-footer-menu__item(
         v-for="item in items"
-        :href="item.url"
+        :is="isExternal ? 'a' : 'router-link'"
         :key="item.title"
+        v-bind="isExternal ? { href: item.url, target: '_blank' } : { to: item.url }"
       )
         | {{ item.title }}
