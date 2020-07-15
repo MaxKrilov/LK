@@ -19,15 +19,17 @@ export default {
     ChangeOrganizationPopup,
     RightInfoPanelComponent
   },
-  data: () => ({
-    pre: 'menu-component',
-    openLeftMenu: false,
-    openSubMenuBackground: false,
-    isOpenRightPanel: false,
-    showChangeOrganizationPopup: false,
-    notificationCount: 0,
-    menu: MenuItemList
-  }),
+  data () {
+    return {
+      pre: 'menu-component',
+      openLeftMenu: false,
+      openSubMenuBackground: false,
+      isOpenRightPanel: false,
+      showChangeOrganizationPopup: false,
+      notificationCount: 0,
+      menu: MenuItemList(this.listProductByService || [])
+    }
+  },
   filters: {
     formatPhone,
     price
@@ -37,6 +39,9 @@ export default {
       promise.then(data => {
         this.notificationCount = data
       })
+    },
+    listProductByService (val) {
+      this.menu = MenuItemList(val || [])
     }
   },
   computed: {
@@ -47,7 +52,8 @@ export default {
       menuComponentBillingAccount: 'loading/menuComponentBillingAccount',
       menuComponentBalance: 'loading/menuComponentBalance',
       menuComponentManager: 'loading/menuComponentManager',
-      notificationCountPromise: 'campaign/getCount'
+      notificationCountPromise: 'campaign/getCount',
+      listProductByService: 'user/getListProductByService'
     }),
     ...mapState({
       legalName: state => state.user.clientInfo.legalName,

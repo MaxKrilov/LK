@@ -46,7 +46,7 @@ export default class PromoPage extends Vue {
     return (
       <div class={['main-content', 'main-content--padding', 'main-content--top-menu-fix']}>
         <er-page-header title={'Интернет'} />
-        <er-promo banner={'internet-promo.png'} featureList={this.listFeature} />
+        <er-promo banner={'internet-promo.png'} featureList={this.listFeature} linkToConnect={'https://b2b.domru.ru/products/internet'} />
       </div>
     )
   }

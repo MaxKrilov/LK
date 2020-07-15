@@ -110,6 +110,7 @@ import TelephonyBlacklistPage from '@/components/pages/telephony/blacklist/index
 
 import WifiTemplate from './components/templates/WiFiTemplate/index'
 import WifiIndexPage from './components/pages/wifi/index/index'
+import WifiPromo from './components/pages/wifi/promo/index'
 // WiFi аналитика
 import WifiAnalyticsPromo from './components/pages/wifi/analytics/promo'
 import WifiAnalyticsChoice from './components/pages/wifi/analytics/choice'
@@ -300,10 +301,6 @@ const router = new Router({
           component: InternetTemplate,
           children: [
             {
-              path: 'promo',
-              component: PromoPageInternet
-            },
-            {
               path: '/',
               component: IndexPageInternet,
               meta: {
@@ -343,6 +340,10 @@ const router = new Router({
           component: DDoSPromoPage
         },
         {
+          path: 'internet/promo',
+          component: PromoPageInternet
+        },
+        {
           path: 'videocontrol',
           component: VideocontrolTemplate,
           children: [
@@ -378,6 +379,10 @@ const router = new Router({
             {
               path: '/',
               component: WifiIndexPage
+            },
+            {
+              path: 'promo',
+              component: WifiPromo
             }
           ]
         },
