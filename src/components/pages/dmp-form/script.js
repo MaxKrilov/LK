@@ -108,9 +108,9 @@ export default {
         if (this.isEntity) {
           this.modelData.nameCompany = this.clientInfo.name
           this.modelData.registrationReasonCode = this.clientInfo.kpp
-          this.modelData.addressCompany = this.clientInfo.legalAddress.name
+          this.modelData.addressCompany = this.clientInfo.fullLegalAddress
           this.modelData.addressCompanyId = {
-            name: this.clientInfo.legalAddress.name,
+            name: this.clientInfo.fullLegalAddress,
             description: '',
             id: this.clientInfo.legalAddress.id
           }

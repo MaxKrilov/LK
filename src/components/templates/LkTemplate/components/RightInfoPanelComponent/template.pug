@@ -9,7 +9,7 @@ div(:class="[`${pre}`, { open: value }]")
   div.caption.pl-32.mb-8
     | Организация
   div.organisation.pl-32
-    | ООО «Шуруповерт-Холдинг», Пермский филиал
+    | {{ legalName }}
     .change-org-button(
       @click="onChangeOrg"
     ) Выбрать другую организацию
@@ -17,38 +17,40 @@ div(:class="[`${pre}`, { open: value }]")
     div.caption.pl-32.mb-8
       | Лицевой счёт №
     div.personal-account.pl-32
-      a.link--dashed--yellow(@click.prevent="openPersonalAccountDetail") 0987654321
+      a.link--dashed--yellow(@click.prevent="openPersonalAccountDetail") {{ activeBillingAccountNumber }}
   er-slide-up-down(:active="isOpenPersonalAccountDetail")
     div(:class="`${pre}__personal-account-detail`")
       div.border-top
       div.content
         h4.pl-32.mb-12
           | Выберите лицевой счёт
-        div.agreement
+        div.agreement(
+          v-for="(accounts, contract) in getBillingAccountsGroupByContract"
+          :key="contract"
+        )
           div.caption.mb-4.pl-32
             | Договор №
           div.agreement-number.pl-32
-            | 78010000123456789999
-          div.personal-account-item(@click="selectPersonalAccount")
+            | {{ contract }}
+          div.personal-account-item(
+            v-for="account in accounts"
+            :key="account.billingAccountId"
+            :class="{ 'active': activeBillingAccountId === account.billingAccountId }"
+            @click="() => { selectPersonalAccount(account.billingAccountId, account.accountNumber) }"
+          )
             div.caption.mb-4
               | Лицевой счёт
             div.value
               er-icon.mr-8(name="ok")
-              | 15890065432000
-          div.personal-account-item.active(@click="selectPersonalAccount")
-            div.caption.mb-4
-              | Лицевой счёт
-            div.value
-              er-icon.mr-8(name="ok")
-              | 55566600654320
-          div.profile.mt-8.mx-4.pl-28.d--flex.align-items-center
-            er-icon.mr-8(name="profile")
-            a(href="#") Профиль
+              | {{ account.accountNumber }}
+        div.profile.mt-8.mx-4.pl-28.d--flex.align-items-center
+          er-icon.mr-8(name="profile")
+          router-link(to="/lk/profile") Профиль
   div.caption.mt-20.mb-4.pl-32
     | Ваш баланс
   div.balance.pl-32.d--flex.align-items-center.pr-16.mb-16
-    a.link--solid--yellow.rub(href="#") 144 500
-    div.autopay
+    a.link--solid--yellow.rub(href="#") {{ balanceInfo.balance | price }}
+    div.autopay(v-if="isAutopay")
       er-icon(name="ok")
       span Автоплатёж
   div.caption.pl-32.mb-8
@@ -57,8 +59,8 @@ div(:class="[`${pre}`, { open: value }]")
     | {{ getManagerInfo.name }}
   div.caption.pl-32.mb-8
     | Телефон
-  a(:href="`tel:${getManagerInfo.phone}`").personal-manager.pl-32.mb-16.pr-16
-    | {{ getManagerInfo.phone | formatPhone }}
+  div.personal-manager.pl-32.mb-16.pr-16
+    | {{ getManagerInfo.phone }}
   div.caption.pl-32.mb-8
     | Эл. почта
   a(:href="`mailto:${getManagerInfo.email}`").personal-manager.pl-32.mb-16.pr-16

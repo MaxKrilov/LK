@@ -1,5 +1,5 @@
 common-document(
-  :class="{'er-document--signed': contractIsSigned}"
+  :class="{ 'er-document--signed': (contractIsSigned && !documentIsAct) || documentIsActSigned }"
 ).er-document--contract.er-document--big-doc
   template(v-slot:header)
     .er-document__title {{ computedTypeName }}
@@ -34,12 +34,24 @@ common-document(
         pre-icon="doc_edit"
         @click="() => { actSigningConfirm(1) }"
       )
-        | Подписать
+        | Акцептовать
       er-button(
         :color="'gray'"
         @click="() => { actSigningConfirm(0) }"
       ).er-button--decline
         | Отказаться
+    // Акт акцептован
+    div(v-else-if="documentIsActSigned")
+      .er-document__signed-text
+        er-icon(name="circle_ok").circle-ok-icon
+        er-icon(name="ok").ok-icon
+        | Акцептован
+    // Акт не акцептован
+    div(v-else-if="documentIsActCancel")
+      .er-document__cancelled-text
+        er-icon(name="cancel").cancelled--desktop
+        er-icon(name="cancel").cancelled--mobile
+        | Не акцептован
     //- Документ подписан
     div(v-else-if="contractIsSigned")
       .er-document__signed-text
@@ -126,7 +138,7 @@ common-document(
       er-activation-modal(
         v-model="isActSuccess"
         type="success"
-        :title="`${actStatus ? 'Подписание' : 'Отказ от подписания'} акта выполнился успешно!`"
+        :title="`${actStatus ? 'Акцептование' : 'Отказ от акцептования'} акта оказания услуг/передачи оборудования выполнился успешно!`"
         :is-show-action-button="false"
         cancel-button-text="Спасибо"
       )

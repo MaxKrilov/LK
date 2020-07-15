@@ -1,5 +1,9 @@
-import { mapGetters } from 'vuex'
-import { formatPhone } from '../../../../../functions/filters'
+import { mapState, mapGetters } from 'vuex'
+import { formatPhone, price as priceFormatted } from '../../../../../functions/filters'
+import { SET_ACTIVE_BILLING_ACCOUNT, SET_ACTIVE_BILLING_ACCOUNT_NUMBER } from '../../../../../store/actions/user'
+import { Cookie } from '../../../../../functions/storage'
+
+const IS_ENABLED_AUTOPAY = '9149184122213604836'
 
 export default {
   name: 'right-info-panel-component',
@@ -11,12 +15,23 @@ export default {
     value: null
   },
   filters: {
-    formatPhone
+    formatPhone,
+    priceFormatted
   },
   computed: {
     ...mapGetters({
-      getManagerInfo: 'user/getManagerInfo'
-    })
+      getManagerInfo: 'user/getManagerInfo',
+      getBillingAccountsGroupByContract: 'user/getBillingAccountsGroupByContract'
+    }),
+    ...mapState({
+      legalName: state => state.user.clientInfo.legalName,
+      activeBillingAccountId: state => state.user.activeBillingAccount,
+      activeBillingAccountNumber: state => state.user.activeBillingAccountNumber,
+      balanceInfo: state => state.user.paymentInfo
+    }),
+    isAutopay () {
+      return this.balanceInfo?.paymentMethod?.id === IS_ENABLED_AUTOPAY
+    }
   },
   methods: {
     closeRightPanel () {
@@ -25,9 +40,16 @@ export default {
     openPersonalAccountDetail () {
       this.isOpenPersonalAccountDetail = true
     },
-    selectPersonalAccount () {
-      // todo Реализовать логику
+    selectPersonalAccount (billingAccountId, accountNumber) {
       this.isOpenPersonalAccountDetail = false
+      // Устанавливаем загрузку для отслеживания
+      this.$store.commit('loading/rebootBillingAccount', true)
+      this.$store.commit(`user/${SET_ACTIVE_BILLING_ACCOUNT}`, billingAccountId)
+      this.$store.commit(`user/${SET_ACTIVE_BILLING_ACCOUNT_NUMBER}`, accountNumber)
+      this.$nextTick(() => {
+        this.$store.commit('loading/rebootBillingAccount', false)
+        Cookie.set('billingAccountId', billingAccountId, {})
+      })
     },
     onChangeOrg () {
       this.$emit('change-org')

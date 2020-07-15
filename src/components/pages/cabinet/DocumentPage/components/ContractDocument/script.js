@@ -99,9 +99,20 @@ export default {
     documentIsActive () {
       return ((this.getContractOrSupplementary || this.getFirstElement).contractStatus?.toLowerCase() === DOCUMENT.CONTRACT.IS_ACTIVE.toLowerCase())
     },
+    documentIsAct () {
+      return isActDocument(getFirstElement(this.document))
+    },
     documentIsActNotSigned () {
-      return isActDocument(getFirstElement(this.document)) &&
+      return this.documentIsAct &&
         getFirstElement(this.document)?.actStatus === 'Не подписан'
+    },
+    documentIsActSigned () {
+      return this.documentIsAct &&
+        getFirstElement(this.document)?.actStatus === 'Подписан'
+    },
+    documentIsActCancel () {
+      return this.documentIsAct &&
+        getFirstElement(this.document)?.actStatus === 'Отказ'
     }
   },
   methods: {
@@ -155,8 +166,10 @@ export default {
         })
     },
     actSigningConfirm (status) {
-      this.actConfirmTitle = `Вы уверены, что хотите ${status ? 'подписать акт' : 'отказаться от подписания акта'}?`
-      this.actConfirmButton = status ? 'Подписать' : 'Отказаться'
+      this.actConfirmTitle = status
+        ? 'Вы уверены, что хотите акцептовать Акт оказания услуг/передачи оборудования?'
+        : 'Вы уверены, что хотите отказаться от акцептования Акта оказания услуг/передачи оборудования?'
+      this.actConfirmButton = status ? 'Акцептовать' : 'Отказаться'
       this.actStatus = status
       this.isActConfirm = true
     },

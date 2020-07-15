@@ -7,6 +7,7 @@ const AUTH_ERROR = 'AUTH_ERROR'
 
 const SET_AUTH_TOKENS = 'SET_AUTH_TOKENS'
 const REMOVE_AUTH_TOKENS = 'REMOVE_AUTH_TOKENS'
+const REMOVE_USER_INFO = 'REMOVE_USER_INFO'
 const LKB2B_ACCESS = 'lkb2b'
 
 const getters = {
@@ -38,6 +39,7 @@ const actions = {
         return tokens
       } catch (e) {
         commit(REMOVE_AUTH_TOKENS)
+        commit(REMOVE_USER_INFO)
         commit(AUTH_ERROR, `Не удалось авторизоваться: ${e.toString()}`)
         return false
       }
