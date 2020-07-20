@@ -12,10 +12,9 @@
 <script>
 import { mapGetters, mapState, mapActions } from 'vuex'
 import { SCREEN_WIDTH } from './store/actions/variables'
-import { getAllUrlParams, getScreenWidth } from './functions/helper'
+import { getScreenWidth } from './functions/helper'
 import axios from 'axios'
 import NotAccessPage from './components/pages/errors/not-access'
-import * as Bowser from 'bowser'
 
 import {
   GET_CLIENT_INFO,
@@ -25,7 +24,6 @@ import {
 import { GET_CHAT_TOKEN } from '@/store/actions/chat'
 
 import { GET_REQUEST } from '@/store/actions/request'
-import { Cookie } from './functions/storage'
 
 const USE_SSO_AUTH = process.env.VUE_APP_USE_SSO_AUTH !== 'no'
 
@@ -143,21 +141,6 @@ export default {
     }),
     isAccessGranted () {
       return USE_SSO_AUTH ? this.hasAccess : true
-    }
-  },
-  beforeRouteEnter (to, from, next) {
-    // Костыль для FF, так как происходит редирект в SSO
-    if (Bowser.name.toLowerCase() === 'firefox') {
-      const urlParams = getAllUrlParams()
-      if (Object.keys(urlParams).length > 0) {
-        const billingAccount = urlParams.billing_account
-        const totalAmount = urlParams.total_amount
-
-        if (billingAccount && totalAmount) {
-          Cookie.set('ff_billing_account', billingAccount)
-          Cookie.set('ff_total_amount', totalAmount)
-        }
-      }
     }
   }
 }

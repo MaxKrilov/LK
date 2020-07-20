@@ -6,7 +6,7 @@ export default {
   },
   data: () => {
     return {
-      NEWS_LINK: '#news',
+      NEWS_LINK: 'https://b2b.domru.ru/news',
       MANAGER_PHONE_NUMBER: {
         title: '8 800 333 9000',
         number: '78003339000'

@@ -90,7 +90,9 @@ const actions = {
     const { toms: clientId } = rootGetters['auth/user']
     data.clientId = clientId
     data.customerAccount = clientId
-    data.requestName = requestName
+    data.requestName = requestName === 'complaint' && ['9154749993013188892', '9154749993013188891'].includes(complaintTheme)
+      ? 'request'
+      : requestName
     data.location = location
     data.channelOfNotification = CHANNEL_OF_NOTIFICATION_VIBER
     data.description = description

@@ -1,13 +1,6 @@
 div(:class="`${pre}`")
   div(:class="`${pre}__title`")
     h2 {{ title }}
-    div(:class="`${pre}__download-offer-wrapper`")
-      er-icon(
-        name="download"
-        class="icon"
-      )
-      div
-        span(:class="`${pre}__download-offer-text`") Скачать комерческое<br> предложение
 
   img(:class=("`${pre}__banner`") :src="getImg(banner)" alt="")
   div(:class="`${pre}__feature`")

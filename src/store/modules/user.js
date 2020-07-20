@@ -193,11 +193,6 @@ const getters = {
       })
       return acc
     }, [])
-    // return state.listProductByService?.map(item => ({
-    //   code: item.offeringCategory.code,
-    //   name: item.offeringCategory.name,
-    //   price: item.amount.value
-    // }))
   },
   agreementNumber (state) {
     return state.listBillingAccount.find(item => item.billingAccountId === state.activeBillingAccount)?.contractNumber
