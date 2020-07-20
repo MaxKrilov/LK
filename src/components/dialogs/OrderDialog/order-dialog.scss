@@ -1,0 +1,17 @@
+$order-dialog-width: 288px;
+$order-dialog-width-sm: 447px;
+
+.order-dialog {
+  min-width: $order-dialog-width;
+  width: initial !important;
+
+  @include min-breakpoint(sm) {
+    min-width: $order-dialog-width-sm;
+  }
+
+  .er-dialog-advanced {
+    &__actions {
+      @extend %action-buttons-block;
+    }
+  }
+}

@@ -3,7 +3,7 @@ import { Vue, Component } from 'vue-property-decorator'
 import AddressFolder from '../AddressFolder/index.vue'
 import Camera from '../Camera/index.vue'
 import ErPlugProduct from '@/components/blocks/ErPlugProduct/index.vue'
-import { CODES, CHARS } from '@/constants/videocontrol'
+import { CODES, CHARS, ADDITION_USERS } from '@/constants/videocontrol'
 import { IVideocontrol, IOffer, IBaseFunctionality } from '@/interfaces/videocontrol'
 import {
   IOfferingRelationship,
@@ -188,7 +188,7 @@ export default class VCDomain extends Vue {
   }
 
   onSaveUserCount () {
-    const diff = this.domainUserCount - this.$props.userCount
+    const userDiff = this.domainUserCount - this.$props.userCount
 
     if (this.domainUserCount === 1) {
       logInfo('отмена услуги «Дополнительные пользователи»')
@@ -199,26 +199,22 @@ export default class VCDomain extends Vue {
         disconnectDate: this.$moment().format()
       }
       this.$store.dispatch('salesOrder/createDisconnectOrder', payload)
-    } else if (diff > 0) {
-      const payload = {
-        locationId: this.videocontrolList[0].locationId,
-        bpi: this.$props.domain.id,
-        chars: {
-          [CHARS.USER_COUNT]: this.domainUserCount
-        }
-      }
-      this.$store.dispatch('salesOrder/createModifyOrder', payload)
-      logInfo(`добавилось ${diff} пользователей`)
     } else {
+      if (userDiff > 0) {
+        logInfo(`добавилось ${userDiff} пользователей`)
+      } else {
+        logInfo(`пользователей меньше на ${Math.abs(userDiff)} (всего ${this.domainUserCount})`)
+      }
+
       const payload = {
         locationId: this.videocontrolList[0].locationId,
         bpi: this.$props.domain.id,
         chars: {
-          [CHARS.USER_COUNT]: this.domainUserCount
+          [CHARS.USER_COUNT]: this.domainUserCount,
+          [CHARS.NAME_IN_INVOICE]: ADDITION_USERS
         }
       }
       this.$store.dispatch('salesOrder/createModifyOrder', payload)
-      logInfo(`пользователей меньше на ${Math.abs(diff)} (всего ${this.domainUserCount})`)
     }
   }
 

@@ -102,4 +102,22 @@ $card-head-height-big: 152px;
       padding-top: 0;
     }
   }
+
+  &__help-text {
+    @extend %body;
+
+    .h3 {
+      @extend %h3;
+    }
+
+    ul {
+      padding-left: $padding-x4;
+    }
+
+    ul + p,
+    p + p,
+    p + ul {
+      margin-top: $padding-x2;
+    }
+  }
 }

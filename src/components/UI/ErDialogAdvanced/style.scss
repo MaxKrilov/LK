@@ -14,10 +14,11 @@ $color-action: rgba(map_get($shades, 'black'), .5);
 
 #{$pre} {
   &__modal {
+    @extend %rounded-block;
     background-color: $color-dialog-bg;
-    border-radius: 12px;
+
     position: relative;
-    padding: $padding-x4;
+    padding: $padding-x6;
 
     display: flex;
     flex-direction: column;
@@ -31,9 +32,14 @@ $color-action: rgba(map_get($shades, 'black'), .5);
     @include min-breakpoint('sm') {
       flex-direction: row;
     }
+
+    @include min-breakpoint(md) {
+      flex-direction: column;
+    }
   }
 
   &__icon {
+    margin: 0;
 
     @include min-breakpoint('sm') {
       margin-right: $padding-x4;
@@ -57,6 +63,10 @@ $color-action: rgba(map_get($shades, 'black'), .5);
       &--warning {
         color: $color-warning;
       }
+
+      &--question {
+        color: map_get($yellow, 'base');
+      }
     }
   }
 
@@ -64,6 +74,7 @@ $color-action: rgba(map_get($shades, 'black'), .5);
     position: absolute;
     right: $padding-x4;
     top: $padding-x4;
+    outline: none;
 
     .er-icon {
       color: $color-close-button;
@@ -76,9 +87,16 @@ $color-action: rgba(map_get($shades, 'black'), .5);
   &__title {
     @extend %h3;
     margin-top: $padding-x4;
+    margin-left: 0;
 
-    @include min-breakpoint('sm') {
+    @include min-breakpoint(sm) {
       margin-top: $padding-x2;
+      margin-left: $padding-x4;
+    }
+
+    @include min-breakpoint(md) {
+      margin-top: $padding-x6;
+      margin-left: 0;
     }
   }
 

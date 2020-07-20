@@ -1,0 +1,45 @@
+
+.request-dialog {
+  $dialog-width: 288px;
+  $dialog-width-sm: 447px;
+
+  min-width: $dialog-width;
+  width: initial !important;
+
+  @include min-breakpoint(sm) {
+    min-width: $dialog-width-sm;
+  }
+
+  &__required-label {
+    @extend %caption2;
+    margin-top: $padding-x2;
+
+    &::before {
+      content: '';
+      display: inline-block;
+      width: $padding-x2;
+      height: $padding-x2;
+      border-radius: 50%;
+      background-color: map_get($yellow, 'base');
+    }
+  }
+
+  &__description {
+    @extend %caption1;
+    margin-top: $padding-x4;
+  }
+
+  .er-dialog-advanced {
+    &__icon {
+      display: none;
+    }
+
+    &__title {
+      margin-top: 0;
+    }
+
+    &__actions {
+      @extend %action-buttons-block;
+    }
+  }
+}

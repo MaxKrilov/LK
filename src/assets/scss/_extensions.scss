@@ -102,7 +102,7 @@
   @include min-breakpoint('md') {
     font-size: 12px;
     line-height: 16px;
-    letter-spacing: 0px;
+    letter-spacing: 0;
   }
 }
 
@@ -468,4 +468,19 @@
   opacity: 0.4;
 
   cursor: not-allowed;
+}
+
+
+%action-buttons-block {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: $padding-x2 $padding-x4;
+
+  @include min-breakpoint('sm') {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  @include min-breakpoint(md) {
+    gap: $padding-x2 $padding-x6;
+  }
 }
