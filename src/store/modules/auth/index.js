@@ -3,6 +3,9 @@ import { makeTokens, validationToken } from '@/functions/auth'
 import { USER_ROLES } from '@/store/mock/profile'
 import { ERROR_MODAL } from '@/store/actions/variables'
 
+import { Cookie } from '@/functions/storage'
+import { getAllUrlParams } from '../../../functions/helper'
+
 import {
   actions as userActions,
   getters as userGetters
@@ -143,6 +146,19 @@ const actions = {
 
     if (context.state.isManager) {
       actions = managerActions
+    }
+
+    // Костыль на случай, если авторизация в фрейме не сработала
+    // Проблема происходит в FF, но не исключены проблемы в других браузерах
+    const urlParams = getAllUrlParams()
+    if (Object.keys(urlParams).length > 0) {
+      const billingAccount = urlParams.billing_account
+      const totalAmount = urlParams.total_amount
+
+      if (billingAccount && totalAmount) {
+        Cookie.set('ff_billing_account', billingAccount, {})
+        Cookie.set('ff_total_amount', totalAmount, {})
+      }
     }
 
     return actions.signIn(context, payload)
