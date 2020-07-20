@@ -17,7 +17,7 @@
         template(v-else)
           pu-skeleton(width="200px")
 
-      .col.col--watch(v-if="isForpostProtalWorking")
+      .col.col--watch(v-if="isForpostPortalWorking")
         .watch(
           @click="onPlay"
           title="Настроить"
@@ -42,12 +42,6 @@
             .name-field
               .name-field__input
                 | {{ cameraName }}
-
-              .name-field__button(v-if="isShowRenameButton")
-                er-button(
-                  color='yellow'
-                  @click="onRenameCamera"
-                ) Переименовать
 
           .col.col-2
             .camera-main-fields__field

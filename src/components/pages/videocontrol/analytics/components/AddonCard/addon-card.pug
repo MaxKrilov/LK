@@ -8,6 +8,8 @@
       template(v-if="isLoaded")
         h4.title {{ title }}
         er-hint
+          .vc-addon-card__help-text(v-html="helpText")
+
       template(v-else)
         pu-skeleton(width="200px")
 

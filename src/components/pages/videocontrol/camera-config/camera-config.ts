@@ -1,4 +1,6 @@
-import { Vue, Component } from 'vue-property-decorator'
+import { Component } from 'vue-property-decorator'
+import { VueTransitionFSM } from '@/mixins/FSMMixin'
+
 import ErPlugProduct from '@/components/blocks/ErPlugProduct/index.vue'
 import AnalyticItem from './components/AnalyticItem/index.vue'
 
@@ -49,13 +51,43 @@ const computed = {
     isLocationLoaded: (state: any) => state.videocontrol.isPointsLoaded
   })
 }
-@Component({ components, props, computed })
-export default class VCCameraConfigPage extends Vue {
+
+@Component({
+  components,
+  props,
+  computed
+})
+export default class VCCameraConfigPage extends VueTransitionFSM {
   /* === Config === */
   isActionButtonsVisible: boolean = false
-  isForpostProtalWorking: boolean = false
+  isForpostPortalWorking: boolean = false
 
   VIDEO_QUALITY_VALUE_LIST: string[] = VIDEO_QUALITY_VALUE_LIST
+
+  ORDER_STATE = 'order'
+  REQUEST_STATE = 'request'
+
+  readonly stateList: string[] = [
+    'loading',
+    'idle',
+    this.ORDER_STATE,
+    this.REQUEST_STATE,
+    'error',
+    'success'
+  ]
+
+  stateTransitions = {
+    loading: {
+      idle: () => {
+        console.log('im loaded and waiting for You!')
+      }
+    },
+    idle: {
+      order: () => {
+        console.log('закажем каких-нибудь услуг')
+      }
+    }
+  }
 
   /* === mapState === */
   isLocationLoaded!: boolean
@@ -106,7 +138,7 @@ export default class VCCameraConfigPage extends Vue {
   }
 
   get cameraName (): string {
-    return this.name || this.camera?.name || ''
+    return this.camera?.name || ''
   }
 
   get bf (): IBaseFunctionality {
@@ -257,6 +289,7 @@ export default class VCCameraConfigPage extends Vue {
   }
 
   mounted () {
+    this.setState('loading')
     promisedStoreValue(this.$store, 'videocontrol', 'isDomainRegistryLoaded')
       .then(() => {
         this.fetchAllowedOfferList(this.bf?.offer?.id)
@@ -268,6 +301,7 @@ export default class VCCameraConfigPage extends Vue {
             this.soundRecordValue = this.isSoundRecordEnabled
             this.videoQualityValue = VIDEO_QUALITY_VALUE_LIST[+this.isFHDEnabled]
             this.videoArchiveValue = this.videoArchiveCurrentValue
+            this.setState('idle')
           })
       })
   }
@@ -285,10 +319,6 @@ export default class VCCameraConfigPage extends Vue {
     return '0'
   }
 
-  getPriceWithoutTax (price: {amount: string, tax: string}) {
-    return (parseFloat(price.amount) - parseFloat(price.tax)).toFixed(2)
-  }
-
   getAnalyticItemPrice (code: string) {
     if (this.checkIsServiceEnabled(code)) {
       const service = this.enabledServiceList.find((el:any) => el.offer.code === code)
@@ -296,7 +326,7 @@ export default class VCCameraConfigPage extends Vue {
     }
 
     const service = this.availableAnalyticsList.find((el:any) => el.code === code)
-    return service?.prices?.[0] ? this.getPriceWithoutTax(service.prices[0]) : '0.1'
+    return service?.prices?.[0] ? service.prices[0].amount : '0.1'
   }
 
   enableService (code: string, value: any) {
@@ -378,16 +408,6 @@ export default class VCCameraConfigPage extends Vue {
       CODES.FULLHD_ARCHIVE,
       this.videoArchiveOfferList?.[valueIndex]
     )
-  }
-
-  onInputName (value: string) {
-    this.isShowRenameButton = true
-    logInfo('input camera name', value)
-    this.name = value
-  }
-
-  onRenameCamera () {
-    logInfo(`Rename camera from '${this.cameraName} to '${this.name}'`)
   }
 
   onPlay () {

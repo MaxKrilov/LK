@@ -1,26 +1,18 @@
 
 .vc-promo {
-  @extend %main-content;
-
-  .page-header {
-    margin-bottom: 0;
-  }
-
   .promo-component {
     display: flex;
     flex-direction: column;
+
+    &__download-offer-wrapper {
+      display: none;
+    }
 
     &__banner {
       order: -1;
       margin-top: 0;
       margin-bottom: $padding-x8;
       padding-top: 0;
-    }
-
-    &__buttons {
-      .er-button:last-child {
-        display: none;
-      }
     }
 
     &__feature {

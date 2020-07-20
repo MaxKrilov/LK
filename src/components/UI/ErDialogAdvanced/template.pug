@@ -1,9 +1,10 @@
 er-dialog(
   :value="active"
+  :contentClass="contentClass"
   @update:returnValue="onClose()"
 )
   .er-dialog-advanced__modal
-    .er-dialog-advanced__close(
+    button(type="button").er-dialog-advanced__close(
       @click="onClose()"
       @click-outside="onClose()"
       ref="content"
@@ -12,10 +13,7 @@ er-dialog(
 
     .er-dialog-advanced__body
       .er-dialog-advanced__icon
-        er-icon(
-          :name="icon"
-          :class="getIconClass()"
-        )
+        er-icon(:name="icon")
 
       .er-dialog-advanced__content
         .er-dialog-advanced__title

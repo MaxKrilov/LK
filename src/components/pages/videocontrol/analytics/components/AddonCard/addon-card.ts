@@ -21,6 +21,10 @@ export default class VCAddonCard extends Vue {
     return `/videocontrol/${thumbName}`
   }
 
+  get helpText (): string {
+    return VIDEO_ANALYTICS[this.$props.code].helpText || ''
+  }
+
   onClick () {
     this.$router.push(`/lk/videocontrol/analytics/${this.$props.code}`)
   }

@@ -12,6 +12,7 @@ const BF_CATEGORY_ID = 187
 const BF_CATEGORY_NAME = 'Базовая функциональность видеоконтроля to Дополнительные услуги Видеоконтроль'
 
 const VIDEOARCHIVE_DAY_COUNT = 'Количество дней архива'
+const ADDITION_USERS = 'Дополнительные пользователи'
 
 const CODES = {
   CAMERA: 'CCTVCAM',
@@ -38,7 +39,8 @@ const CAMERA_SALE_TYPES = {
 
 const CHARS = {
   USER_COUNT: 'Количество пользователей',
-  CAMERA_SALE_TYPE: 'Способ передачи оборудования'
+  CAMERA_SALE_TYPE: 'Способ передачи оборудования',
+  NAME_IN_INVOICE: 'Имя в счете'
 }
 
 /*
@@ -78,5 +80,6 @@ export {
   SERVICE_ORDER_MAP,
   VC_TYPES,
   VIDEOARCHIVE_DAY_COUNT,
-  VIDEOCONTROL_OFFER_NAME
+  VIDEOCONTROL_OFFER_NAME,
+  ADDITION_USERS
 }

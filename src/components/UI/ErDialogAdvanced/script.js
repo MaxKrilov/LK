@@ -9,7 +9,8 @@ export default {
     icon: {
       type: String,
       default: 'ok'
-    }
+    },
+    contentClass: String
   },
   mixins: [ClickOutsideMixin],
   computed: {
@@ -20,9 +21,6 @@ export default {
   methods: {
     onClose () {
       this.$emit('close')
-    },
-    getIconClass () {
-      return `er-icon--${this.icon}`
     }
   }
 }

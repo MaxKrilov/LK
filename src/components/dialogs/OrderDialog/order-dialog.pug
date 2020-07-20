@@ -1,0 +1,17 @@
+er-dialog-advanced(
+  contentClass="order-dialog"
+  :active="active"
+  :icon="'question'"
+  @close="$emit('cancel')"
+)
+  template(slot="title") {{ title }}
+
+  template
+    slot
+
+  template(slot="actions").action-grid
+    er-button(@click="$emit('plug')") Подключить
+    er-button(
+      @click="$emit('cancel')"
+      flat
+    ) Отмена
