@@ -116,18 +116,18 @@
             span
               | Вы должны принять
             | &nbsp;
-            a(href="#") условия оферты
+            a(:href="offerLink" target="_blank") условия оферты
         .tariff-component__connect-price
           | Стоимость услуги составит <span>{{ (isTurboActivation ? turboPriceAfterIncrease : priceAfterIncrease) | price }}</span>&nbsp;{{ currencyCode }}/месяц
     er-activation-modal(
       v-model="isShowErrorDialog"
       type="error"
-      title="Произошла ошибка! Повторите попытку позже"
+      title="Произошла ошибка"
       :is-show-action-button="false"
       cancel-button-text="Закрыть"
     )
       template(slot="description")
-        | {{ errorText }}
+        | Уважаемый клиент, в данный момент операция недоступна, обратитесь к персональному менеджеру
     er-activation-modal(
       v-model="isShowSuccessDialog"
       type="success"

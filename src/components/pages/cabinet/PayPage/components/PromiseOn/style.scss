@@ -115,6 +115,7 @@
     }
   }
   &__timer {
+    display: flex;
     &__day {
       display: inline-block;
       margin-right: 8px;

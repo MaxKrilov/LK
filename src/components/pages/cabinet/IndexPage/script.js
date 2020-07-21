@@ -49,7 +49,7 @@ export default {
       clientName: state => state.user.clientInfo.name,
       balanceInfo: state => state.user.paymentInfo,
       invPaymentsForViewer: state => state.payments.invPaymentsForViewer,
-      isPromisePay: state => state.user.isPromisePay,
+      isPromisePay: state => state.user.isHasPromisePayment,
       promisePayStart: state => state.user.promisePayStart,
       promisePayEnd: state => state.user.promisePayEnd
     }),

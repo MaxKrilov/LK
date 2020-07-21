@@ -1,4 +1,4 @@
-import { mapGetters } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 
 export default {
   name: 'promise-off',
@@ -8,6 +8,9 @@ export default {
   computed: {
     ...mapGetters({
       getManagerInfo: 'user/getManagerInfo'
+    }),
+    ...mapState({
+      reasonCanntActivatePromisePayment: state => state.user.reasonCanntActivatePromisePayment
     })
   },
   methods: {

@@ -43,7 +43,7 @@
   }
   &--green {
     background: map_get($green, 'base');
-    color: map_get($shades, 'white');
+    color: map_get($shades, 'white') !important;
 
     &:hover {
       background: map_get($green, 'other-1');

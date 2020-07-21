@@ -1,25 +1,16 @@
 // Promise Pay
 
-div(:class="`${pre}`").main-content.main-content--h-padding
-  div.main-content--top-padding(:class="`${pre}__back-main`")
-  div(:class="`${pre}__container-main`").main-content--top-menu-fix
-    div.caption(:class="`${pre}__back-main`")
-      div.ml-auto
-        er-icon(name="arrow_l" :class="`${pre}__icon-height`")
-        a.caption2(
-        href="#"
-        :class="`${pre}__back-main__text`"
-        @click="paypage"
-        ) Назад в платежи и начисления
-    div.d--flex.align-items-start(:class="`${pre}__back-arr`")
-      div(:class="`${pre}__back-main-xs`" @click="paypage")
-        er-icon(name="left")
-      h1.fonts--demi(:class="`${pre}__welcome-title`")
-        | Обещанный платеж
+div(:class="`${pre}`").main-content.main-content--top-menu-fix.main-content--h-padding.main-content--top-padding
+  er-page-header(
+    linkText="Назад в платежи и начисления"
+    title="Обещанный платёж"
+    backlink="/lk/payments"
+  )
 
-    div(:class="`${pre}__subtitle`" v-if="visInfo")
+  template(v-if="isCanActivatePromisePayment")
+    div(:class="`${pre}__subtitle`")
       | Вы можете активировать сервис <b>«обещанный платеж»</b>, который позволит вам <b>получить доступ к услугам на 3 дня.</b> Дополнительная плата за пользование не взымается.
-    div(:class="`${pre}__container`" v-if="visInfo")
+    div(:class="`${pre}__container`")
       er-row.no-gutters.justify-content-start
         er-flex(xs12 md4 lg4 :class="`${pre}__content-left`")
           div(:class="`${pre}__icon`")
@@ -48,23 +39,25 @@ div(:class="`${pre}`").main-content.main-content--h-padding
           @click="paymentConfirm"
         ) Активировать до {{ dateWithDot }}
 
-    PromiseOn(v-if="!visInfo && success && active")
-    PromiseOff(v-if="!visInfo && !success && active")
-    PromiseExpired(v-if="visExpired && !active")
+  template(v-else-if="isPromisePay")
+    PromiseOn
+  template(v-else-if="!isCanActivatePromisePayment")
+    PromiseOff
 
     // Модальное окно
-    Confirm( v-if="openConfirmPromise"
-      :vis="openConfirmPromise"
-      title="Вы уверены, что хотите активировать обещанный платеж?"
-      :subText ="dateAll"
-      isHint="true"
-      :hasErr="errPromisePay"
-      :err="err"
-      sumPay="promisePay"
-      buttLeftText="Отменить"
-      buttRightText="Активировать"
-      @closeConfirm="closeConfirm"
-      @buttLeft="promiseOff"
-      @buttRight="promiseOn"
-      @input="promiseExpired"
-    )
+  Confirm(
+    v-if="openConfirmPromise"
+    :vis="openConfirmPromise"
+    title="Вы уверены, что хотите активировать обещанный платеж?"
+    :subText ="dateAll"
+    isHint="true"
+    :hasErr="errPromisePay"
+    :err="err"
+    sumPay="promisePay"
+    buttLeftText="Отменить"
+    buttRightText="Активировать"
+    @closeConfirm="closeConfirm"
+    @buttLeft="promiseOff"
+    @buttRight="promiseOn"
+    @input="promiseExpired"
+  )

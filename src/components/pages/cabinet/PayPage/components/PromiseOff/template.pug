@@ -11,7 +11,7 @@ div(:class="`${pre}`")
           h3(:class="`${pre}__pos??`")
             | Не может быть активирован
           div(:class="`${pre}__value`")
-            | Вы уже активировали сервис
+            | {{ reasonCanntActivatePromisePayment }}
           div(:class="`${pre}__label__manager`")
             | Ваш личный менеджер
           h4(:class="`${pre}__fio`") {{ getManagerInfo.name }}
