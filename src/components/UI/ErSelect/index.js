@@ -459,7 +459,12 @@ export default class ErSelect extends mixins(ErTextField) {
     }, [
       this.$createElement('div', {
         staticClass: 'er-select__item--inner',
-        class: 'empty'
+        class: 'empty',
+        on: {
+          click: e => {
+            this.$emit('click:empty', e)
+          }
+        }
       }, [
         this.notFoundText
       ])

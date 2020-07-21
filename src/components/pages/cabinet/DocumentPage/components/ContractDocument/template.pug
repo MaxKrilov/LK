@@ -142,6 +142,8 @@ common-document(
         :is-show-action-button="false"
         cancel-button-text="Спасибо"
       )
+        template(slot="description")
+          | Данное окно закроется через 5 секунд
       er-activation-modal(
         v-model="isActError"
         type="error"

@@ -59,7 +59,9 @@ const state = {
   listProductByAddress: [],
   listProductByService: [],
   paymentInfo: {},
-  isPromisePay: false,
+  isCanActivatePromisePayment: false,
+  reasonCanntActivatePromisePayment: '',
+  isHasPromisePayment: false,
   promisePayStart: null,
   promisePayEnd: null
 }
@@ -488,24 +490,52 @@ const actions = {
       commit('loading/menuComponentBalance', false, { root: true })
     }
   },
-  [GET_PROMISED_PAYMENT_INFO]: async ({ commit, rootGetters, getters }, { api }) => {
-    const activeBillingAccount = getters.getActiveBillingAccount
-    const toms = rootGetters['auth/getTOMS']
-    try {
-      const result = await api
-        .setWithCredentials()
-        .setData({
-          id: activeBillingAccount,
-          clientId: toms
+  [GET_PROMISED_PAYMENT_INFO]: ({ commit, rootGetters, getters }, { api }) => {
+    return new Promise((resolve, reject) => {
+      const clientId = rootGetters['auth/getTOMS']
+      const activeBillingAccount = getters.getActiveBillingAccount
+
+      const infoAboutPromisePayment = new Promise((resolve, reject) => {
+        api
+          .setWithCredentials()
+          .setData({
+            id: activeBillingAccount,
+            clientId
+          })
+          .query('/billing/promise/index')
+          .then(response => resolve(response))
+          .catch(error => reject(error))
+      })
+
+      const canBeActivatedPromisePayment = new Promise((resolve, reject) => {
+        api
+          .setWithCredentials()
+          .setData({
+            id: activeBillingAccount,
+            clientId,
+            promiseCode: 1
+          })
+          .query('/payment/billing/check-promise-payment')
+          .then(response => resolve(response))
+          .catch(error => reject(error))
+      })
+
+      Promise.all([
+        infoAboutPromisePayment,
+        canBeActivatedPromisePayment
+      ])
+        .then(response => {
+          commit(SET_PROMISED_PAYMENT_INFO, response)
+          resolve()
         })
-        .query('/billing/promise/index')
-      commit(SET_PROMISED_PAYMENT_INFO, result)
-    } catch (error) {
-      commit(ERROR_MODAL, true, { root: true })
-      // todo Логирование
-    } finally {
-      commit('loading/loadingPromisedPayment', false, { root: true })
-    }
+        .catch(error => {
+          commit(ERROR_MODAL, true, { root: true })
+          reject(error)
+        })
+        .finally(() => {
+          commit('loading/loadingPromisedPayment', false, { root: true })
+        })
+    })
   },
   [ADD_CLIENT_CONTACTS_STORE]: ({ commit }, payload) => {
     commit(ADD_CLIENT_CONTACTS_STORE, payload)
@@ -577,12 +607,18 @@ const mutations = {
   [REPLACE_CLIENT_CONTACTS_STORE]: (state, payload) => {
     state.clientInfo.contacts = [...payload]
   },
-  [SET_PROMISED_PAYMENT_INFO]: (state, payload) => {
-    if (!payload.hasOwnProperty('promisePaymentActive')) return
-    const { pymtSchdCreateDt, schdPymtDueDt } = payload.promisePaymentActive.promisePaymentDetails[0]
+  [SET_PROMISED_PAYMENT_INFO]: (state, [infoAboutPromisePaymentResult, canBeActivatedPromisePaymentResult]) => {
+    if (canBeActivatedPromisePaymentResult.paymentCanBeCreated) {
+      state.isCanActivatePromisePayment = true
+      return
+    } else {
+      state.reasonCanntActivatePromisePayment = canBeActivatedPromisePaymentResult.reason
+    }
+    if (!infoAboutPromisePaymentResult.hasOwnProperty('promisePaymentActive')) return
+    const { pymtSchdCreateDt, schdPymtDueDt } = infoAboutPromisePaymentResult.promisePaymentActive.promisePaymentDetails[0] || {}
     if (!pymtSchdCreateDt || !schdPymtDueDt) return
     if (Number(new Date()) > (new Date(moment(schdPymtDueDt, 'YYYYMMDD')))) return
-    state.isPromisePay = true
+    state.isHasPromisePayment = true
     state.promisePayStart = moment(pymtSchdCreateDt, 'YYYYMMDD')
     state.promisePayEnd = moment(schdPymtDueDt, 'YYYYMMDD')
   }

@@ -74,7 +74,7 @@ export default {
         monthPay = m
         for (let j = 0; j < listPay.length; j++) {
           let dateLine = listPay[j].timestamp
-          let selTypePay = listPay[j].title === 'Пополнение счета' ? 'Начисление' : 'Списание'
+          let selTypePay = listPay[j].title === 'Пополнение счёта' ? 'Начисление' : 'Списание'
           if (this.typeDefault === 'Все платежи') {
             isFilterType = true
           } else {

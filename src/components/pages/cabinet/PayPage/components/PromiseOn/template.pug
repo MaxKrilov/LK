@@ -11,21 +11,16 @@ div(:class="`${pre}`")
             div(:class="`${pre}__pos`")
               h3 Обещанный платеж<br> активирован
         div(:class="`${pre}__pos__time-title`") Осталось:
-          div(:class="`${pre}__timer`" v-if="isLoading")
+          div(:class="`${pre}__timer`")
             div(:class="`${pre}__timer__day`")
-              h2(:class="`${pre}__timer__day__value`") {{ day }}
+              h2(:class="`${pre}__timer__day__value`") {{ getToDatePromisePay.day }}
               div(:class="`${pre}__timer__text`") дня
             div(:class="`${pre}__timer__hour`")
-              h2(:class="`${pre}__timer__hour__value`") {{ hour }}
+              h2(:class="`${pre}__timer__hour__value`") {{ getToDatePromisePay.hour }}
               div(:class="`${pre}__timer__text`") часа
             div(:class="`${pre}__timer__min`")
-              h2(:class="`${pre}__timer__min__value`") {{ minute }}
+              h2(:class="`${pre}__timer__min__value`") {{ getToDatePromisePay.minute }}
               div(:class="`${pre}__timer__text`") минут
-          er-button(id="preloaderPromiseOn"
-            :loading="true"
-            flat
-            v-else
-          )
     div(:class="`${pre}__butt`")
       er-button(
         type="submit"

@@ -183,7 +183,9 @@ export default {
         .then(response => {
           if (response) {
             this.isActSuccess = true
-            this.$store.dispatch(`fileinfo/downloadListDocument`, { api: this.$api })
+            setTimeout(() => {
+              this.$store.dispatch(`fileinfo/downloadListDocument`, { api: this.$api })
+            }, 5000)
           } else {
             this.isActError = true
           }

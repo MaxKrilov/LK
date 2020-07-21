@@ -70,7 +70,7 @@ export default class Ip extends Vue {
       bpi: this.activePoint?.bpi,
       productCode: this.addIpCount === '1' ? SERVICE_ADDITIONAL_IP : CODE_IP4SUBNET,
       chars: this.ipChars,
-      offer: true,
+      offer: 'internet',
       title: 'Вы уверены, что хотите подключить услугу Дополнительный IPv4 адрес?'
     }
   }

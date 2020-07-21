@@ -339,30 +339,30 @@ const actions = {
     }
   },
   promisePayInfo: async ({ commit, rootGetters, rootState }, { api }) => {
-    const toms = rootGetters['auth/getTOMS']
-    const { activeBillingAccount } = rootState.user
-    try {
-      const checkPromisePay = await api
-        .setWithCredentials()
-        .setData({
-          clientId: toms,
-          id: activeBillingAccount
-        })
-        .query('/billing/promise/index')
-
-      const checkDebt = await api
-        .setWithCredentials()
-        .setData({
-          clientId: toms,
-          promiseCode: 1,
-          id: activeBillingAccount
-        })
-        .query('/payment/billing/check-promise-payment')
-
-      commit('promisePayInfo', [checkPromisePay, checkDebt])
-    } catch (e) {
-      commit('isLoadingClean')
-    }
+    // const toms = rootGetters['auth/getTOMS']
+    // const { activeBillingAccount } = rootState.user
+    // try {
+    //   const checkPromisePay = await api
+    //     .setWithCredentials()
+    //     .setData({
+    //       clientId: toms,
+    //       id: activeBillingAccount
+    //     })
+    //     .query('/billing/promise/index')
+    //
+    //   const checkDebt = await api
+    //     .setWithCredentials()
+    //     .setData({
+    //       clientId: toms,
+    //       promiseCode: 1,
+    //       id: activeBillingAccount
+    //     })
+    //     .query('/payment/billing/check-promise-payment')
+    //
+    //   commit('promisePayInfo', [checkPromisePay, checkDebt])
+    // } catch (e) {
+    //   commit('isLoadingClean')
+    // }
   },
   appCreation: async ({ commit, rootGetters, rootState }, { api, payload }) => {
     const toms = rootGetters['auth/getTOMS']
@@ -450,7 +450,7 @@ const mutations = {
       const resultObject = {
         title: 'Пополнение счёта',
         description: historyItem.paymentMethod.name,
-        value: Number(historyItem.paymentAmount),
+        value: Math.abs(Number(historyItem.paymentAmount)),
         timestamp: Number(historyItem.paymentDate),
         chargePeriod: '',
         type: 'replenishment'
@@ -465,8 +465,6 @@ const mutations = {
       return acc
     }, []))
 
-    console.log(result)
-
     bill.forEach(billItem => {
       const index = result.findIndex(resultItem => {
         return getFirstElement(resultItem) &&
@@ -477,7 +475,7 @@ const mutations = {
         return {
           title: detailItem.chargeName,
           description: detailItem.typeCharge,
-          value: Number(detailItem.chargeCost),
+          value: Math.abs(Number(detailItem.chargeCost)),
           timestamp: Number(billItem.actualBillDate),
           chargePeriod: detailItem.chargePeriod,
           type: 'write_off'
@@ -618,24 +616,18 @@ const mutations = {
     state.listCard = result
     state.isLoading = true
   },
-  promisePayInfo: (state, result) => {
-    const len = Object.keys(result[0]).length
-    if (len > 1) {
+  promisePayInfo: (state, [promisePaymentResult, checkPromisePaymentResult]) => {
+    if (promisePaymentResult.hasOwnProperty('promisePaymentActive')) {
       state.isPromisePay = false
-      if (result[0].promisePaymentActive !== undefined) {
-        state.promisePayInterval = result[0].promisePaymentActive
-          .promisePaymentDetails[0].schdPymtDueDt
-      } else {
-        state.promisePayInterval = result[0].promisePaymentHistory[0]
-          .promisePaymentDetails[0].schdPymtDueDt
-      }
-    } else {
+      state.promisePayInterval = promisePaymentResult.promisePaymentActive
+        .promisePaymentDetails[0].schdPymtDueDt
+    } else if (checkPromisePaymentResult.paymentCanBeCreated) {
       state.isPromisePay = true
     }
     state.isLoading = true
-    if (!result[1].paymentCanBeCreated) {
+    if (!checkPromisePaymentResult.paymentCanBeCreated) {
       state.isDebt = true
-      state.isDebtReason = result[1].reason
+      state.isDebtReason = checkPromisePaymentResult.reason
       state.errPromisePay = true
     }
   },

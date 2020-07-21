@@ -1,5 +1,6 @@
 import { mapState } from 'vuex'
 import moment from 'moment/moment'
+import { leadingZero } from '../../../../../../functions/filters'
 
 export default {
   name: 'promise-on',
@@ -7,7 +8,9 @@ export default {
     pre: 'promise-on',
     day: '',
     hour: '',
-    minute: ''
+    minute: '',
+    trackerIntervalPromisePay: 1,
+    idIntervalPromisePay: 0
   }),
   created () {
     this.infoPromisePay()
@@ -18,8 +21,22 @@ export default {
       promisePayInterval: state => state.payments.promisePayInterval,
       invPaymentsForViewer: state => state.payments.invPaymentsForViewer,
       isLoading: state => state.payments.isLoading,
-      isPromisePay: state => state.payments.isPromisePay
-    })
+      // Информация об ОП
+      isPromisePay: state => state.user.isHasPromisePayment,
+      promisePayStart: state => state.user.promisePayStart,
+      promisePayEnd: state => state.user.promisePayEnd
+    }),
+    getToDatePromisePay () {
+      if (!this.isPromisePay) return { day: '', hour: '', minute: '' }
+      const current = this.$moment()
+      const diff = this.promisePayEnd.diff(current)
+      const duration = this.$moment.duration(diff)
+      return {
+        day: this.trackerIntervalPromisePay ? leadingZero(duration.days(), 2) : '0',
+        hour: this.trackerIntervalPromisePay ? leadingZero(duration.hours(), 2) : '0',
+        minute: this.trackerIntervalPromisePay ? leadingZero(duration.minutes(), 2) : '0'
+      }
+    }
   },
   watch: {
     id () {
@@ -27,6 +44,20 @@ export default {
     },
     promisePayInterval () {
       this.infoPromisePay()
+    },
+    isPromisePay (val) {
+      if (val) {
+        this.idIntervalPromisePay = setInterval(() => {
+          this.trackerIntervalPromisePay === 1
+            ? this.trackerIntervalPromisePay++
+            : this.trackerIntervalPromisePay--
+          const current = this.$moment().unix()
+          const end = this.promisePayEnd.unix()
+          if (current >= end) {
+            clearInterval(this.idIntervalPromisePay)
+          }
+        }, 1000)
+      }
     }
   },
   methods: {

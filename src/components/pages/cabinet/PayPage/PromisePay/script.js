@@ -33,7 +33,12 @@ export default {
       marketingBrandId: state => state.user.paymentInfo.marketingBrandId,
       listProductByAddress: state => state.user.listProductByAddress,
       errPromisePay: state => state.payments.errPromisePay,
-      isExpired: state => state.payments.isExpired
+      isExpired: state => state.payments.isExpired,
+      // Информация об ОП
+      isPromisePay: state => state.user.isHasPromisePayment,
+      isCanActivatePromisePayment: state => state.user.isCanActivatePromisePayment,
+      promisePayStart: state => state.user.promisePayStart,
+      promisePayEnd: state => state.user.promisePayEnd
     })
   },
   created () {

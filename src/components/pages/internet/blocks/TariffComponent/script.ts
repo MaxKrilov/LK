@@ -10,6 +10,7 @@ import { getLastElement, uniq } from '@/functions/helper'
 import SpeedComponent from '@/components/pages/internet/blocks/SpeedComponent/index.vue'
 import ErActivationModal from '@/components/blocks/ErActivationModal/index.vue'
 import ErDisconnectProduct from '@/components/blocks/ErDisconnectProduct/index.vue'
+import { OFFER_LINKS } from '@/constants/url'
 
 const SPEED_N_LIMIT_WIDTH = 104
 const STROKE_WIDTH = 2
@@ -92,6 +93,8 @@ export default class TariffComponent extends Vue {
   isOffering = false
   isOffer = false
   isOfferAccepting = false
+
+  offerLink = OFFER_LINKS.internet
 
   errorText = ''
 

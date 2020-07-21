@@ -1,7 +1,8 @@
-import { mapState } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 import ErDocumentViewer from '../../../../../blocks/ErDocumentViewer/index'
 import moment from 'moment'
 import ErActivationModal from '../../../../../blocks/ErActivationModal/index'
+import { leadingZero } from '../../../../../../functions/filters'
 
 export default {
   name: 'button-pay',
@@ -18,7 +19,9 @@ export default {
     widthPgsBar: '',
     isOpenViewer: false,
     isExpired: true,
-    isNotAccessInvPayment: false
+    isNotAccessInvPayment: false,
+    trackerIntervalPromisePay: 1,
+    idIntervalPromisePay: 0
   }),
   created () {
     if (this.isLoading === false) this.$store.dispatch('payments/isLoadingTrue')
@@ -37,14 +40,39 @@ export default {
   computed: {
     ...mapState({
       id: state => state.user.activeBillingAccount,
-      promisePayInterval: state => state.payments.promisePayInterval,
       invPaymentsForViewer: state => state.payments.invPaymentsForViewer,
       isLoading: state => state.payments.isLoading,
-      isPromisePay: state => state.payments.isPromisePay,
       visAutoPay: state => state.payments.visAutoPay,
       listPayments: state => state.payments.listPayments,
-      balanceInfo: state => state.user.paymentInfo
-    })
+      balanceInfo: state => state.user.paymentInfo,
+      // Информация об ОП
+      isPromisePay: state => state.user.isHasPromisePayment,
+      isCanActivatePromisePayment: state => state.user.isCanActivatePromisePayment,
+      promisePayStart: state => state.user.promisePayStart,
+      promisePayEnd: state => state.user.promisePayEnd
+    }),
+    ...mapGetters({
+      loadingPromisedPayment: 'loading/loadingPromisedPayment'
+    }),
+    getToDatePromisePay () {
+      if (!this.isPromisePay) return { day: '', hour: '', minute: '' }
+      const current = this.$moment()
+      const diff = this.promisePayEnd.diff(current)
+      const duration = this.$moment.duration(diff)
+      return {
+        day: this.trackerIntervalPromisePay ? leadingZero(duration.days(), 2) : '0',
+        hour: this.trackerIntervalPromisePay ? leadingZero(duration.hours(), 2) : '0',
+        minute: this.trackerIntervalPromisePay ? leadingZero(duration.minutes(), 2) : '0'
+      }
+    },
+
+    getWidthPromisePayLine () {
+      if (!this.isPromisePay) return 0
+      const current = this.$moment()
+      return this.trackerIntervalPromisePay
+        ? (1 - (current - this.promisePayStart) / (this.promisePayEnd - this.promisePayStart)) * 100
+        : 0
+    }
   },
   watch: {
     invPaymentsForViewer () {
@@ -58,14 +86,25 @@ export default {
     promisePayInterval () {
       this.infoPromisePay()
     },
-    isPromisePay () {
-      this.infoPromisePay()
-    },
     isOpenViewer (val) {
       if (Number(this.balanceInfo.balance) >= 0) {
         this.isNotAccessInvPayment = true
       } else if (val && this.invPaymentsForViewer[0].filePath === '') {
         this.$store.dispatch(`payments/invPayment`, { api: this.$api })
+      }
+    },
+    isPromisePay (val) {
+      if (val) {
+        this.idIntervalPromisePay = setInterval(() => {
+          this.trackerIntervalPromisePay === 1
+            ? this.trackerIntervalPromisePay++
+            : this.trackerIntervalPromisePay--
+          const current = this.$moment().unix()
+          const end = this.promisePayEnd.unix()
+          if (current >= end) {
+            clearInterval(this.idIntervalPromisePay)
+          }
+        }, 1000)
       }
     }
   },
