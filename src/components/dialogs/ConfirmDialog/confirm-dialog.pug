@@ -1,0 +1,20 @@
+er-dialog-advanced(
+  :contentClass="'er-confirm-dialog'"
+  :active="active"
+  :icon="'question'"
+  @close="onPressOK"
+)
+  template(slot="title") {{ title }}
+
+  template
+    slot
+
+  template(slot="actions")
+    er-button(
+      @click="onPressOK"
+      color="yellow"
+    ) {{ buttonOkText }}
+    er-button(
+      @click="onPressCancel"
+      flat
+    ) {{ buttonCancelText }}

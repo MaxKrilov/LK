@@ -1,14 +1,17 @@
 import { Vue, Component } from 'vue-property-decorator'
-import ProductFolder from './components/ProductFolder/index.vue'
-import VCDomain from './components/Domain/index.vue'
+import ProductFolder from '../components/ProductFolder/index.vue'
+import VCDomain from '../components/Domain/index.vue'
+import VCPromo from '../promo/index.vue'
+import ErrorDialog from '@/components/dialogs/ErrorDialog/index.vue'
+
 import { IDomainRegistry, IDomain, IDomainService } from '@/interfaces/videocontrol'
 import { VC_TYPES, CHARS } from '@/constants/videocontrol'
 import { logInfo } from '@/functions/logging'
 import { mapState, mapGetters } from 'vuex'
 import { ILocationOfferInfo } from '@/tbapi'
-import VCPromo from '../promo/index.vue'
 
 const components = {
+  ErrorDialog,
   'vc-domain': VCDomain,
   ProductFolder,
   VCPromo
@@ -43,6 +46,10 @@ export default class VideocontrolProductPage extends Vue {
   /* === mapGetters === */
   domainByKey!: (key: string) => IDomain
   pointById!: (id: string) => ILocationOfferInfo
+
+  isErrorMode: boolean = false
+  errorMessage: string = ''
+  errorTitle: string = 'Ошибка'
 
   get totalPrice (): number {
     return this.domainsCost
@@ -106,5 +113,10 @@ export default class VideocontrolProductPage extends Vue {
 
   onChangeDomain (data: any) {
     logInfo('change domain data', data)
+  }
+
+  onError (message: string) {
+    this.errorMessage = message
+    this.isErrorMode = true
   }
 }

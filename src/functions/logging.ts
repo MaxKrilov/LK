@@ -10,7 +10,7 @@ function Log (type: string, ...args: any): void {
   // добавь в файл /.env.local переменную
   // VUE_APP_SHOW_LOG_IN_BROWSER=1
   // if (process.env.VUE_APP_SHOW_LOG_IN_BROWSER || isLocalhost() || isTesting()) {
-  (console as any)[type].apply(console)
+  (console as any)[type].apply(console, [`ЛК ${type.toUpperCase()}:`, ...args])
   // }
 }
 

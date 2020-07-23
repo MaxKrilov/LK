@@ -1,5 +1,5 @@
-import { Vue, Component } from 'vue-property-decorator'
-import { mapState, mapGetters } from 'vuex'
+import { Component, Vue } from 'vue-property-decorator'
+import { mapGetters, mapState } from 'vuex'
 import { logInfo } from '@/functions/logging'
 
 import ErPromo from '@/components/blocks/ErPromo/index.vue'
@@ -8,12 +8,7 @@ import AddonDescription from '../components/AddonDescription/index.vue'
 import ErPlugProduct from '@/components/blocks/ErPlugProduct/index.vue'
 
 import { ILocationOfferInfo } from '@/tbapi'
-import {
-  IDomainRegistry,
-  ICamera,
-  IBaseFunctionality,
-  TBaseFunctionalityId
-} from '@/interfaces/videocontrol'
+import { IBaseFunctionality, ICamera, IDomainRegistry, TBaseFunctionalityId } from '@/interfaces/videocontrol'
 
 import { ANALYTIC_NAME, SERVICE_ORDER_MAP } from '@/constants/videocontrol'
 import VIDEO_ANALYTICS from '@/constants/videoanalytics'
@@ -104,8 +99,7 @@ export default class VCAddonDetailPage extends Vue {
     const enabledCameraList = this.allCameraList
       .filter((el: ICamera) => this.isCameraWithService(el.parentId))
 
-    const result = enabledCameraList.length * parseFloat(this.price)
-    return result
+    return enabledCameraList.length * parseFloat(this.price)
   }
 
   get name () {
@@ -189,7 +183,7 @@ export default class VCAddonDetailPage extends Vue {
       locationId: value.locationId,
       bpi: value.parentId,
       productCode: this.$props.code,
-      offer: true,
+      offer: 'cctv',
       title: `Вы уверены, что хотите подключить «${this.name}»?`
     }
 

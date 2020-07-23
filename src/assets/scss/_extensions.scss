@@ -484,3 +484,19 @@
     gap: $padding-x2 $padding-x6;
   }
 }
+
+%dialog-block {
+  max-height: 100vh;
+  width: initial !important;
+  min-width: map_get($dialog-block, 'min-width');
+
+  @include min-breakpoint(sm) {
+    min-width: map_get($dialog-block, 'min-width-sm');
+  }
+
+  .er-dialog-advanced {
+    &__actions {
+      @extend %action-buttons-block;
+    }
+  }
+}

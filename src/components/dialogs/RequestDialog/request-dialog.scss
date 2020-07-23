@@ -1,14 +1,6 @@
 
 .request-dialog {
-  $dialog-width: 288px;
-  $dialog-width-sm: 447px;
-
-  min-width: $dialog-width;
-  width: initial !important;
-
-  @include min-breakpoint(sm) {
-    min-width: $dialog-width-sm;
-  }
+  @extend %dialog-block;
 
   &__required-label {
     @extend %caption2;
@@ -36,10 +28,6 @@
 
     &__title {
       margin-top: 0;
-    }
-
-    &__actions {
-      @extend %action-buttons-block;
     }
   }
 }

@@ -136,6 +136,12 @@
     @close="onCancelOrder"
   )
 
+  error-dialog(
+    :value="activeState === 'error'"
+    title="Произошла ошибка"
+    @close="onCloseError"
+  ) {{ errorMessage }}
+
   .vc-config-page__actions
     .total-info
       .total-info__label Абонентская плата:

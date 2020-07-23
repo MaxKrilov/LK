@@ -6,7 +6,7 @@
     @click="onMinus"
     @focus="onInputFocus"
     @blur="onInputBlur"
-    :disabled="value <= min"
+    :disabled="value <= min || disabled"
   ).er-number-input__minus
     er-icon(name="no")
   input(
@@ -16,13 +16,14 @@
     @change="onChange"
     @focus="onInputFocus"
     @blur="onInputBlur"
+    :disabled="disabled"
   )
   button(
     type="button"
     @click="onPlus"
     @focus="onInputFocus"
     @blur="onInputBlur"
-    :disabled="value >= max"
+    :disabled="value >= max || disabled"
     v-class-mod="{disabled: value >= max}"
   ).er-number-input__plus
     er-icon(name="add_round")

@@ -1,0 +1,9 @@
+er-activation-modal(
+  v-bind="$props"
+  type="question"
+  :isOffer="offerType"
+  @close="onCancel"
+  @confirm="onConfirm"
+)
+  template(slot="description")
+    slot
