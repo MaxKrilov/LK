@@ -32,10 +32,10 @@ export default {
     }
   },
   computed: {
-    debugTitle () {
+    infoTooltip () {
       const ct = this.notification.communication_type
       const taskId = this.notification.task_id || ''
-      return `communication_type=${ct}\n#${taskId}`
+      return `communication_type=${ct} ${taskId ? '\n#' + taskId : ''}`
     },
     isLongDescription () {
       return this.textContent.length > MAX_DESCRIPTION_LENGHT

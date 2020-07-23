@@ -7,7 +7,7 @@ import {
   isSurvey
 } from '@/functions/notifications'
 import { isPostponedTillExpired } from '@/functions/survey'
-
+import moment from 'moment'
 const NO_ITEMS_FOUND_MESSAGE = 'No items found.'
 
 const SET_NOTIFICATIONS = 'SET_NOTIFICATIONS'
@@ -34,11 +34,12 @@ const getters = {
     return result
   },
   getFilteredList (state) {
+    const types = Object.keys(campaignConst.TYPES)
+
     return state.list.filter(el => {
-      const types = Object.keys(campaignConst.TYPES)
       const includes = types.includes(el.communication_type)
       const isHidden = el.hidden ? el.hidden : false
-      const isExpired = el.communication_end_dttm <= new Date()
+      const isExpired = el.communication_end_dttm <= moment()
       return includes && !isHidden && !isExpired
     })
   },
