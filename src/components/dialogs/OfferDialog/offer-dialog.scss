@@ -1,0 +1,10 @@
+.er-offer-dialog {
+  @extend %dialog-block;
+
+  &__offer-text {
+    & > * {
+      display: inline-block;
+      margin-left: $padding-x2;
+    }
+  }
+}

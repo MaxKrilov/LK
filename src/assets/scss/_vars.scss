@@ -114,4 +114,9 @@ $border-gradient:
     to top right,
     map_get($gray, '26') 28.65%,
     map_get($shades, 'white') 90.63%
-  )
+  );
+
+$dialog-block: (
+  'min-width': 288px,
+  'min-width-sm': 447px
+);

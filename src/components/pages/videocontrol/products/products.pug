@@ -6,7 +6,7 @@
 
     .vc-product-page__list
       template(v-if="isDomainsLoaded && isVideocontrolPlugged")
-        template( v-for="(item, key, idx) in domains" )
+        template( v-for="(item, key) in domains" )
           product-folder(
             :key="key"
             class="product"
@@ -22,6 +22,7 @@
               :user-price="getDomainUserPrice(key)"
               :user-product-id="getDomainUserProductId(key)"
               @change="onChangeDomain"
+              @error="onError"
             )
 
         .total-block
@@ -35,6 +36,12 @@
 
       template(v-else)
         VCPromo
+
+    error-dialog(
+      v-model="isErrorMode"
+      @close="isErrorMode = false"
+      :title="errorTitle"
+    ) {{ errorMessage }}
 
     .vc-product-page__footer(v-if="isPlugVideocontrolPossible")
       er-container.container--no-padding.full

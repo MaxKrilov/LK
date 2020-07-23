@@ -7,7 +7,7 @@
 
   .vc-addon-config__content
     template(v-if="true")
-      template(v-for="(camera,idx) in list")
+      template(v-for="camera in list")
         camera-checkbox(
           :camera="camera"
           :value="isCameraWithService(camera.parentId)"

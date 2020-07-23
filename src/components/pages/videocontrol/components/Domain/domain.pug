@@ -15,14 +15,16 @@
               :min="1"
               v-model="domainUserCount"
               @input="onChangeUserCount"
+              :disabled="isUserCountOrdered"
             )
 
           .user-count__price
             er-price {{ computedUserPrice|price }}
 
           er-button.user-count__add-btn(
-            v-show="isUserCountChanged"
+            v-show="isUserCountChanged && !isUserCountOrdered"
             color="yellow"
+            :loading="isUserOrderMode"
             @click="onSaveUserCount"
           ) Изменить
 
@@ -34,27 +36,37 @@
       address-folder(
         :title="item.address.name || ''"
         :price="item.data.purchasedPrices.recurrentTotal.value"
-        :active="inSearchMode"
       )
-        template(v-for="(cam, key, idx) in item.data.cameras")
+        template(v-for="camera in item.data.cameras")
           camera(
-            :id="cam.id"
-            :title="cam.name"
-            :price="cam.purchasedPrices.recurrentTotal.value"
-            :services="item.data.bf[cam.parentId]"
+            :id="camera.id"
+            :title="camera.name"
+            :price="camera.purchasedPrices.recurrentTotal.value"
+            :services="item.data.bf[camera.parentId]"
           )
 
   .product__footer
     er-button(
       color="yellow"
       :loading="isOrderCameraMode"
-      @click="onClickAdd"
+      @click="onClickAddCamera"
     ) Добавить камеру
 
     er-button(
       color="gray"
       @click="onClickPause"
     ) Приостановить услугу
+
+  offer-dialog(
+    :value="activeState === 'offer'"
+    title="Вы уверены, что хотите подключить дополнительных пользователей?"
+    offerType="cctv"
+    @confirm="onAcceptOffer"
+    @cancel="onDeclineOffer"
+  )
+    .caption1 стоимость:
+      er-price {{ computedUserPrice|price }}
+    .mb-24
 
   er-plug-product(
     v-model="isOrderModalVisible"

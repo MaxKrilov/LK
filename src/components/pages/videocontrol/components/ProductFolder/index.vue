@@ -1,4 +1,4 @@
-<template lang="pug" src="./template.pug"></template>
+<template lang="pug" src="./product-folder.pug"></template>
 
 <script>
 export default {
@@ -12,4 +12,4 @@ export default {
 }
 </script>
 
-<style lang="scss" src="./style.scss"></style>
+<style lang="scss" src="./product-folder.scss"></style>

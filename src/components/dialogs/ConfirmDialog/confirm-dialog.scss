@@ -1,0 +1,7 @@
+.er-confirm-dialog {
+  @extend %dialog-block;
+
+  .er-dialog-advanced__modal > .er-dialog-advanced__actions {
+    grid-template-columns: 1fr;
+  }
+}

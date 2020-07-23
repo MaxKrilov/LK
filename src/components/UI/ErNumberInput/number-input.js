@@ -6,7 +6,8 @@ export default {
       default: 0
     },
     max: Number,
-    id: String
+    id: String,
+    disabled: Boolean
   },
   data () {
     return {

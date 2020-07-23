@@ -1,0 +1,9 @@
+er-activation-modal(
+  v-model="value"
+  type="error"
+  v-bind="$props"
+  @input="onInput"
+  @confirm="onInput"
+)
+  template(slot="description")
+    slot

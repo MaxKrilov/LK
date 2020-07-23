@@ -1,8 +1,8 @@
 import { Component } from 'vue-property-decorator'
-import { VueTransitionFSM } from '@/mixins/FSMMixin'
-
 import ErPlugProduct from '@/components/blocks/ErPlugProduct/index.vue'
 import AnalyticItem from './components/AnalyticItem/index.vue'
+import ErActivationModal from '@/components/blocks/ErActivationModal/index.vue'
+import ErrorDialog from '@/components/dialogs/ErrorDialog/index.vue'
 
 import { ICamera, IBaseFunctionality, IOffer } from '@/interfaces/videocontrol'
 import { IProductOffering } from '@/interfaces/offering'
@@ -18,7 +18,7 @@ import {
 
 import { ILocationOfferInfo, ISLOPricesItem } from '@/tbapi'
 import { mapState, mapGetters } from 'vuex'
-import ErActivationModal from '@/components/blocks/ErActivationModal/index.vue'
+import { VueTransitionFSM } from '@/mixins/FSMMixin'
 
 /* FUNCTIONS */
 const isFullHD = (el: IOffer) => el.code === CODES.FULLHD
@@ -28,7 +28,8 @@ const isHDArchive = (el: IOffer) => el.code === CODES.HD_ARCHIVE
 const components = {
   AnalyticItem,
   ErActivationModal,
-  ErPlugProduct
+  ErPlugProduct,
+  ErrorDialog
 }
 
 const props = {
@@ -66,10 +67,11 @@ export default class VCCameraConfigPage extends VueTransitionFSM {
 
   ORDER_STATE = 'order'
   REQUEST_STATE = 'request'
+  READY_STATE = 'ready'
 
   readonly stateList: string[] = [
     'loading',
-    'idle',
+    this.READY_STATE,
     this.ORDER_STATE,
     this.REQUEST_STATE,
     'error',
@@ -77,17 +79,14 @@ export default class VCCameraConfigPage extends VueTransitionFSM {
   ]
 
   stateTransitions = {
-    loading: {
-      idle: () => {
-        console.log('im loaded and waiting for You!')
-      }
-    },
-    idle: {
+    ready: {
       order: () => {
         console.log('закажем каких-нибудь услуг')
       }
     }
   }
+
+  errorMessage: string = ''
 
   /* === mapState === */
   isLocationLoaded!: boolean
@@ -120,10 +119,9 @@ export default class VCCameraConfigPage extends VueTransitionFSM {
   isManagerRequest = false
   isOrderModalVisible = false
   requestData = {}
-  orderData = {}
-
-  isShowRenameButton: boolean = false
-  name: string = ''
+  orderData = {
+    offer: 'cctv'
+  }
 
   get location (): ILocationOfferInfo {
     return this.locationById(this.camera?.locationId) || {}
@@ -301,7 +299,7 @@ export default class VCCameraConfigPage extends VueTransitionFSM {
             this.soundRecordValue = this.isSoundRecordEnabled
             this.videoQualityValue = VIDEO_QUALITY_VALUE_LIST[+this.isFHDEnabled]
             this.videoArchiveValue = this.videoArchiveCurrentValue
-            this.setState('idle')
+            this.setState(this.READY_STATE)
           })
       })
   }
@@ -345,10 +343,11 @@ export default class VCCameraConfigPage extends VueTransitionFSM {
     }
 
     this.orderData = {
+      // @ts-ignore
       locationId: this.location.id,
       bpi: this.bf.id,
       productCode: code,
-      offer: true,
+      offer: 'cctv',
       title: 'Вы уверены, что хотите подключить услугу?'
     }
 
@@ -408,14 +407,29 @@ export default class VCCameraConfigPage extends VueTransitionFSM {
       CODES.FULLHD_ARCHIVE,
       this.videoArchiveOfferList?.[valueIndex]
     )
+
+    const payload = {
+      locationId: this.location.id,
+      bpi: this.bf.id,
+      // productCode: code,
+      chars: {
+        ...this.videoArchiveOfferList?.[valueIndex].chars,
+        [CHARS.NAME_IN_INVOICE]: 'Увеличение глубины видеоархива FullHD'
+      }
+    }
+
+    this.$store.dispatch('salesOrder/createModifyOrder', payload)
+      .then(() => {
+        this.$store.dispatch('salesOrder/send')
+      })
+      .catch(() => {
+        this.showError('При заказе произошла ошибка, обратитесь к вашему персональному менеджеру')
+      })
   }
 
   onPlay () {
+    // TODO: добавить переход на сайт ФОРПОСТа когда будет готова ссылка
     logInfo('watch camera stream')
-  }
-
-  onFormInput (data: any) {
-    logInfo('onFormInput', data)
   }
 
   onInputAnalyticItem (...data: any) {
@@ -423,7 +437,6 @@ export default class VCCameraConfigPage extends VueTransitionFSM {
   }
 
   onCancelOrder () {
-    logInfo('onCancelOrder')
     this.$store.dispatch('salesOrder/cancel')
   }
 
@@ -431,7 +444,19 @@ export default class VCCameraConfigPage extends VueTransitionFSM {
     const payload = {
       offerAcceptedOn: this.$moment().format()
     }
-    logInfo('onApplyOrder', payload)
     this.$store.dispatch('salesOrder/send', payload)
+      .catch(() => {
+        this.showError('При заказе произошла ошибка, обратитесь к вашему персональному менеджеру')
+      })
+  }
+
+  onCloseError () {
+    this.errorMessage = ''
+    this.setState('ready')
+  }
+
+  showError (message: string) {
+    this.errorMessage = message
+    this.setState('error')
   }
 }
