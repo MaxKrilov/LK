@@ -1,3 +1,3 @@
-<template lang="pug" src="./template.pug"></template>
-<script lang="js" src="./script.js"></script>
-<style lang="scss" src="./style.scss"></style>
+<template lang="pug" src="./notification-panel.pug"></template>
+<script lang="js" src="./notification-panel.js"></script>
+<style lang="scss" src="./notification-panel.scss"></style>
