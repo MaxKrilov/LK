@@ -120,7 +120,15 @@ export default {
           this.readonly.addressCompany = true
         } else {
           this.modelData.nameCompany = this.clientInfo.name
+          this.modelData.addressCompany = this.clientInfo.fullLegalAddress
+          this.modelData.addressCompanyId = {
+            name: this.clientInfo.fullLegalAddress,
+            description: '',
+            id: this.clientInfo.legalAddress.id
+          }
+
           this.readonly.nameCompany = true
+          this.readonly.addressCompany = true
         }
         this.isInputInn = false
         this.loadingInn = false
