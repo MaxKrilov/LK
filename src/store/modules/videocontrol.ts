@@ -211,6 +211,17 @@ const getters = {
         ?.offerings
         ?.filter((el: IOffer) => isActiveOffering(el))
     }
+  },
+  uniqPointList (state: IState) {
+    function isUniquePoint (
+      el: ILocationOfferInfo,
+      idx: number,
+      self: ILocationOfferInfo[]
+    ) {
+      return self.map(el => el.id).indexOf(el.id) === idx
+    }
+
+    return state.points.filter(isUniquePoint)
   }
 }
 

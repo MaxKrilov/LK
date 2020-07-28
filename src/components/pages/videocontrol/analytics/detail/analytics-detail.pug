@@ -51,7 +51,7 @@
         pu-skeleton(width="300px")
 
   .vc-addon-detail-page__footer(v-if="isLoadedX")
-    er-button(color="blue") Подключить {{ name }}
+    er-button(color="blue") Подключить {{ analyticItem.name }}
     er-button(
       color="gray"
       @click="$router.push('/lk/videocontrol/analytics')"
@@ -64,3 +64,7 @@
     :isSendOrder="!isManagerRequest"
     :isSendManagerRequest="isManagerRequest"
   )
+    template(slot="offerDescription")
+      .caption1 стоимость:&nbsp;
+        er-price {{ price|price }}
+      .mb-24

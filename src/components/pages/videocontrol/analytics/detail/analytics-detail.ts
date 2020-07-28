@@ -1,6 +1,5 @@
 import { Component, Vue } from 'vue-property-decorator'
-import { mapGetters, mapState } from 'vuex'
-import { logInfo } from '@/functions/logging'
+import { mapGetters } from 'vuex'
 
 import ErPromo from '@/components/blocks/ErPromo/index.vue'
 import AddonConfig from '../components/AddonConfig/index.vue'
@@ -8,7 +7,7 @@ import AddonDescription from '../components/AddonDescription/index.vue'
 import ErPlugProduct from '@/components/blocks/ErPlugProduct/index.vue'
 
 import { ILocationOfferInfo } from '@/tbapi'
-import { IBaseFunctionality, ICamera, IDomainRegistry, TBaseFunctionalityId } from '@/interfaces/videocontrol'
+import { IBaseFunctionality, ICamera, TBaseFunctionalityId } from '@/interfaces/videocontrol'
 
 import { ANALYTIC_NAME, SERVICE_ORDER_MAP } from '@/constants/videocontrol'
 import VIDEO_ANALYTICS from '@/constants/videoanalytics'
@@ -29,26 +28,18 @@ const props = {
 }
 
 const computed = {
-  ...mapState({
-    pointList: (state: any) => state.videocontrol.points,
-    domainRegistry: (state: any) => state.videocontrol.domainRegistry,
-    isDomainsLoaded: (state: any) => state.videocontrol.isDomainRegistryLoaded
-  }),
   ...mapGetters({
     allBaseFunctionality: 'videocontrol/allBaseFunctionality',
     allCameraList: 'videocontrol/allCameraList',
-    bfById: 'videocontrol/bfById'
+    bfById: 'videocontrol/bfById',
+    uniqPointList: 'videocontrol/uniqPointList'
   })
 }
 
 @Component({ components, props, computed })
 export default class VCAddonDetailPage extends Vue {
-  /* === mapState === */
-  pointList!: ILocationOfferInfo[]
-  domainRegistry!: IDomainRegistry
-  isDomainsLoaded!: boolean
-
   /* === mapGetters === */
+  uniqPointList!: ILocationOfferInfo[]
   allBaseFunctionality!: IBaseFunctionality[]
   allCameraList!: ICamera[]
   bfById!: (id: string) => IBaseFunctionality
@@ -63,12 +54,14 @@ export default class VCAddonDetailPage extends Vue {
 
   isManagerRequest: boolean = false
   requestData = {}
-  orderData = {}
+  orderData: Record<string, any> = {
+    offer: 'cctv'
+  }
 
   isPromoOpened = false
   oldTotalPrice = 820
 
-  analyticItem!: any
+  analyticItem: Record<string, any> = { name: '' }
 
   get coverPath () {
     const imageName = VIDEO_ANALYTICS[this.$props.code].cover || 'no_cover.jpg'
@@ -76,23 +69,14 @@ export default class VCAddonDetailPage extends Vue {
   }
 
   get locationList () {
-    function isUniquePoint (
-      el: ILocationOfferInfo,
-      idx: number,
-      self: ILocationOfferInfo[]
-    ) {
-      return self.map(el => el.id).indexOf(el.id) === idx
-    }
-
     const isVCPoint = (el: ILocationOfferInfo) => el.offer.name === 'Видеоконтроль'
 
-    return this.pointList
+    return this.uniqPointList
       .filter(isVCPoint)
-      .filter(isUniquePoint)
   }
 
   get price () {
-    return this.analyticItem?.prices[0].amount || '0'
+    return this.analyticItem?.prices?.[0].amount || '0'
   }
 
   get totalPrice () {
@@ -100,10 +84,6 @@ export default class VCAddonDetailPage extends Vue {
       .filter((el: ICamera) => this.isCameraWithService(el.parentId))
 
     return enabledCameraList.length * parseFloat(this.price)
-  }
-
-  get name () {
-    return this.analyticItem?.name || ''
   }
 
   get advantages () {
@@ -130,13 +110,7 @@ export default class VCAddonDetailPage extends Vue {
     )
   }
 
-  getFirstOfObject (obj: any): any {
-    return Object.values(obj)?.[0]
-  }
-
   mounted () {
-    this.analyticItem = { name: '' }
-
     promisedStoreValue(this.$store, 'videocontrol', 'isDomainRegistryLoaded')
       .then(() => {
         if (this.bfOfferId) {
@@ -149,7 +123,7 @@ export default class VCAddonDetailPage extends Vue {
               const filteredList = availOfferingList
                 ?.find((el:any) => el.code === this.$props.code)
 
-              this.analyticItem = filteredList || {}
+              this.$set(this, 'analyticItem', filteredList)
               this.isLoaded = true
             })
         }
@@ -184,13 +158,7 @@ export default class VCAddonDetailPage extends Vue {
       bpi: value.parentId,
       productCode: this.$props.code,
       offer: 'cctv',
-      title: `Вы уверены, что хотите подключить «${this.name}»?`
-    }
-
-    if (SERVICE_ORDER_MAP[code]) {
-      logInfo('Order', code, value, this.orderData, this.requestData)
-    } else {
-      logInfo('Request', code, value, this.orderData, this.requestData)
+      title: `Вы уверены, что хотите подключить «${this.analyticItem.name}»?`
     }
 
     this.isOrderModalVisible = true

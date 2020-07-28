@@ -7,7 +7,7 @@ import ErrorDialog from '@/components/dialogs/ErrorDialog/index.vue'
 import { ICamera, IBaseFunctionality, IOffer } from '@/interfaces/videocontrol'
 import { IProductOffering } from '@/interfaces/offering'
 import { promisedStoreValue } from '@/functions/store_utils'
-import { logInfo, logError } from '@/functions/logging'
+import { logInfo } from '@/functions/logging'
 import {
   CODES,
   VIDEOARCHIVE_DAY_COUNT,
@@ -120,7 +120,8 @@ export default class VCCameraConfigPage extends VueTransitionFSM {
   isOrderModalVisible = false
   requestData = {}
   orderData = {
-    offer: 'cctv'
+    offer: 'cctv',
+    productCode: ''
   }
 
   get location (): ILocationOfferInfo {
@@ -332,6 +333,26 @@ export default class VCCameraConfigPage extends VueTransitionFSM {
     this.isOrderModalVisible = true
   }
 
+  getServiceByCode (code: string): IOffer | undefined {
+    const serviceName = this.availableServiceList.find(
+      (el: any) => el.code === code
+    )
+
+    const analyticName = this.availableAnalyticsList.find(
+      (el: any) => el.code === code
+    )
+
+    return serviceName || analyticName
+  }
+
+  getServiceNameByCode (code: string) {
+    return this.getServiceByCode(code)?.name
+  }
+
+  getCurrentServicePrice () {
+    return this.getServiceByCode(this.orderData.productCode)?.prices?.[0]?.amount || '0.01'
+  }
+
   switchFunctionality (code: string, value: any) {
     this.isManagerRequest = !SERVICE_ORDER_MAP[code]
 
@@ -348,7 +369,7 @@ export default class VCCameraConfigPage extends VueTransitionFSM {
       bpi: this.bf.id,
       productCode: code,
       offer: 'cctv',
-      title: 'Вы уверены, что хотите подключить услугу?'
+      title: `Вы уверены, что хотите подключить «${this.getServiceNameByCode(code)}»?`
     }
 
     if (SERVICE_ORDER_MAP[code]) {
@@ -381,7 +402,9 @@ export default class VCCameraConfigPage extends VueTransitionFSM {
       .then(() => {
         this.isShowDisconnectModal = true
       })
-      .catch(e => logError('ERR createDisconnectOrder', e))
+      .catch(e => {
+        this.showError(e)
+      })
   }
 
   /* === Events === */

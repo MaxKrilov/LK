@@ -122,6 +122,10 @@
     :isSendOrder="!isManagerRequest"
     :isSendManagerRequest="isManagerRequest"
   )
+    template(slot="offerDescription")
+      .caption1 стоимость:&nbsp;
+        er-price {{ getCurrentServicePrice()|price }}
+      .mb-24
 
   er-activation-modal(
     type="question"

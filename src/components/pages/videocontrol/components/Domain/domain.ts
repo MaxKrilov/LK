@@ -230,7 +230,6 @@ export default class VCDomain extends VueTransitionFSM {
       this.$store.dispatch('salesOrder/createModifyOrder', payload)
         .then(() => {
           // показываем принятие оферты
-          console.log('---show offer')
           this.setState('offer')
         })
     }
@@ -248,12 +247,15 @@ export default class VCDomain extends VueTransitionFSM {
     })
       .then(data => {
         if (data.code === HTTP_UNPROCESSABLE_ENTITY_CODE) {
-          this.$emit('error', MESSAGES.USER_MODIFY_ORDER_ERROR)
-          this.setState('error')
+          this.showError(MESSAGES.USER_MODIFY_ORDER_ERROR)
+        } else if (data.submit_statuses && data.submit_statuses[0].submitStatus === 'FAILED') {
+          this.showError(data.submit_statuses[0].submitError)
         } else {
           this.$emit('success', MESSAGES.USER_MODIFY_ORDER_SUCCESS)
           this.setState('success')
         }
+
+        this.isUserOrderMode = false
       })
       .catch(data => {
         this.isUserOrderMode = false
@@ -262,8 +264,12 @@ export default class VCDomain extends VueTransitionFSM {
       })
   }
 
+  showError (message: string) {
+    this.$emit('error', message)
+    this.setState('error')
+  }
+
   onAcceptOffer () {
-    console.log('accept offer pressed')
     this.setState('accept')
   }
 
