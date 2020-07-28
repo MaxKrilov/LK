@@ -1,7 +1,7 @@
 div
   //-сделать еще для мобилки ширину правильную and height
   er-dialog(
-    :max-width="470" 
+    :max-width="470"
     v-model="isShowRequestModal"
     :persistent="true"
 
@@ -36,7 +36,7 @@ div
             )
 
           .caption2.mt-32 Нажимая на кнопку, Вы соглашаетесь на обработку данных
-        .footer  
+        .footer
           .buttons
             er-button(@click="sendRequest" :disabled="isValidateRequestForm" :loading="isCreatingRequest") Отправить
             er-button(flat @click="closeCreatingRequest") Отменить
@@ -60,7 +60,7 @@ div
     :persistent="true"
     cancelButtonText="Закрыть"
     @close="onCloseErrorModal"
-  ) 
+  )
     template(slot="description")
       | Нам очень жаль, произошла ошибка при отправке заявки на подключение. Свяжитесь с Вашим персональным менеджером
 
@@ -75,7 +75,10 @@ div
     :isLoadingConfirm="sendingOrder"
     actionButtonText="Подключить"
     :isOffer="orderData.offer || false"
-    )
+  )
+    template(slot="description")
+      slot(name="offerDescription")
+
   er-activation-modal(
     type="success"
     v-model="isShowSuccessOrderModal"
@@ -95,5 +98,4 @@ div
     :persistent="true"
     cancelButtonText="Закрыть"
     @close="closeErrorOrderModal"
-  ) 
-    
+  )

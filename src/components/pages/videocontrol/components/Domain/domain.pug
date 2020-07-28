@@ -61,10 +61,11 @@
     :value="activeState === 'offer'"
     title="Вы уверены, что хотите подключить дополнительных пользователей?"
     offerType="cctv"
+    actionButtonText="Подключить"
     @confirm="onAcceptOffer"
     @cancel="onDeclineOffer"
   )
-    .caption1 стоимость:
+    .caption1 стоимость:&nbsp;
       er-price {{ computedUserPrice|price }}
     .mb-24
 

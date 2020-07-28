@@ -14,6 +14,7 @@ export interface IOffer {
   isEquipment: boolean
   visibleInSSP: boolean
   prices?: ISLOPricesItem[]
+  name?: string
 }
 
 export interface IDomain {
