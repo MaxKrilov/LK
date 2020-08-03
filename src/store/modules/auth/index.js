@@ -33,6 +33,10 @@ const REFRESH_REQUEST = 'REFRESH_REQUEST'
 const REFRESH_SUCCESS = 'REFRESH_SUCCESS'
 const REFRESH_ERROR = 'REFRESH_ERROR'
 
+const LOGOUT_REQUEST = 'LOGOUT_REQUEST'
+const LOGOUT_SUCCESS = 'LOGOUT_SUCCESS'
+const LOGOUT_ERROR = 'LOGOUT_ERROR'
+
 const INITIAL_STATE = {
   userToken: '',
   accessToken: null,
@@ -45,6 +49,7 @@ const INITIAL_STATE = {
   userInfo: {},
   isFetching: false,
   isFetched: false,
+  isLogouting: false,
   error: null,
   isManager: false,
   toms: null,
@@ -196,6 +201,7 @@ const actions = {
   },
 
   signOut: async ({ commit, rootState }, { api, isRefreshExpired }) => {
+    commit(LOGOUT_REQUEST)
     try {
       const { accessToken } = rootState.auth
       const result = await api
@@ -208,10 +214,14 @@ const actions = {
         commit(AUTH_LOGOUT)
         commit(REMOVE_AUTH_TOKENS)
         commit(REMOVE_USER_INFO)
+        commit(LOGOUT_SUCCESS)
         location.href = result.redirect
       }
     } catch (e) {
-      commit(ERROR_MODAL, true, { root: true })
+      commit(LOGOUT_ERROR)
+      setTimeout(() => {
+        commit(ERROR_MODAL, true, { root: true })
+      })
       // todo Логирование
     }
     // commit(AUTH_LOGOUT)
@@ -279,10 +289,18 @@ const mutations = {
   },
   [SET_AUTH_TOKENS]: (state, { tokens }) => {
     const { userToken, accessToken, refreshToken, user } = tokens
-    if (user) { state.userInfo = { ...user } }
-    if (userToken) { state.userToken = userToken }
-    if (accessToken) { state.accessToken = accessToken }
-    if (refreshToken) { state.refreshToken = refreshToken }
+    if (user) {
+      state.userInfo = { ...user }
+    }
+    if (userToken) {
+      state.userToken = userToken
+    }
+    if (accessToken) {
+      state.accessToken = accessToken
+    }
+    if (refreshToken) {
+      state.refreshToken = refreshToken
+    }
   },
   [REMOVE_AUTH_TOKENS]: (state) => {
     state.userToken = null
@@ -299,11 +317,19 @@ const mutations = {
     state.toms = payload
   },
   [SET_MANAGER_AUTH]: (state, payload) => {
-    console.log('set isManager', payload)
     state.isManager = payload
   },
   setDmpId: (state, payload) => {
     state.dmpId = payload
+  },
+  [LOGOUT_REQUEST]: (state) => {
+    state.isLogouting = true
+  },
+  [LOGOUT_SUCCESS]: (state) => {
+    // Ничего не делаем, так как происходит редирект
+  },
+  [LOGOUT_ERROR]: (state) => {
+    state.isLogouting = false
   }
 }
 

@@ -1,8 +1,8 @@
 <template lang="pug">
   div.app(data-app="true")
     div.app__content
-      template(v-if="isFetching")
-        | Проверяем авторизацию
+      template(v-if="isShowPreloader")
+        ErPreloader(:status="textPreloader")
       template(v-else-if="!isAccessGranted")
         not-access-page
       template(v-else)
@@ -15,6 +15,7 @@ import { SCREEN_WIDTH } from './store/actions/variables'
 import { getScreenWidth } from './functions/helper'
 import axios from 'axios'
 import NotAccessPage from './components/pages/errors/not-access'
+import ErPreloader from './components/blocks/ErPreloader'
 
 import {
   GET_CLIENT_INFO,
@@ -30,7 +31,8 @@ const USE_SSO_AUTH = process.env.VUE_APP_USE_SSO_AUTH !== 'no'
 export default {
   name: 'app',
   components: {
-    NotAccessPage
+    NotAccessPage,
+    ErPreloader
   },
   data: () => ({
     model: 1
@@ -137,10 +139,21 @@ export default {
       isFetching: state => state.auth.isFetching,
       isFetched: state => state.auth.isFetched,
       refreshedToken: state => state.auth.refreshedToken,
-      rebootBillingAccount: state => state.loading.rebootBillingAccount
+      rebootBillingAccount: state => state.loading.rebootBillingAccount,
+      isLogouting: state => state.auth.isLogouting
     }),
     isAccessGranted () {
       return USE_SSO_AUTH ? this.hasAccess : true
+    },
+    isShowPreloader () {
+      return this.isFetching || this.refreshedToken.isFetching || this.isLogouting
+    },
+    textPreloader () {
+      return this.isFetching || this.refreshedToken.isFetching
+        ? 'Проверяем авторизацию'
+        : this.isLogouting
+          ? 'Выполняется выход из системы'
+          : ''
     }
   }
 }
