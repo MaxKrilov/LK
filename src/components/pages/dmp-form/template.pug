@@ -67,6 +67,7 @@ div.px-32.pt-64(:class="`${pre}`")
                 :rules="[rules.isRequired]",
                 tabIndex="3",
                 key="passport"
+                :readonly="readonly.passport"
                 )
             er-flex(xs2)
               er-text-field(
@@ -76,6 +77,7 @@ div.px-32.pt-64(:class="`${pre}`")
                 :rules="[rules.isRequired]",
                 tabIndex="4",
                 key="dateOfPassport"
+                :readonly="readonly.passport"
                 )
             er-flex(xs2)
               er-text-field(
@@ -86,6 +88,7 @@ div.px-32.pt-64(:class="`${pre}`")
                 tabIndex="5",
                 @blur="onBlurDepartmentCode",
                 key="departmentCode"
+                :readonly="readonly.passport"
                 )
         er-row
           template(v-if="!isEntity")
@@ -96,6 +99,7 @@ div.px-32.pt-64(:class="`${pre}`")
                 :rules="[rules.isRequired]",
                 tabIndex="6",
                 key="passportIssuedBy"
+                :readonly="readonly.passport"
                 )
   er-error-modal
   er-activation-modal(

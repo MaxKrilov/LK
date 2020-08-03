@@ -15,6 +15,15 @@ import ErActivationModal from '../../blocks/ErActivationModal/index'
 
 const EXTENDED_MAP_INN = '9148328342013670726'
 
+// Серия паспорта
+const EXTENDED_MAP_ID_SERIAL_NUMBER = '9154125818313164681'
+// Номер паспорта
+const EXTENDED_MAP_ID_NUMBER = '9154125827913164774'
+// Дата выдачи
+const EXTENDED_MAP_ISSUED_DATE = '9154125838013164887'
+// Кем выдан
+const EXTENDED_MAP_ISSUED_BY = '9154125853213165060'
+
 export default {
   name: 'dmp-form-page',
   components: {
@@ -64,7 +73,8 @@ export default {
     readonly: {
       nameCompany: false,
       registrationReasonCode: false,
-      addressCompany: false
+      addressCompany: false,
+      passport: false
     },
     fiasId: ''
   }),
@@ -121,6 +131,9 @@ export default {
         } else {
           this.modelData.nameCompany = this.clientInfo.name
           this.modelData.addressCompany = this.clientInfo.fullLegalAddress
+          this.modelData.passport = `${this.clientInfo.extendedMap[EXTENDED_MAP_ID_SERIAL_NUMBER].singleValue.attributeValue}-${this.clientInfo.extendedMap[EXTENDED_MAP_ID_NUMBER].singleValue.attributeValue}`
+          this.modelData.dateOfPassport = this.clientInfo.extendedMap[EXTENDED_MAP_ISSUED_DATE].singleValue.attributeValue
+          this.modelData.passportIssuedBy = this.clientInfo.extendedMap[EXTENDED_MAP_ISSUED_BY].singleValue.attributeValue
           this.modelData.addressCompanyId = {
             name: this.clientInfo.fullLegalAddress,
             description: '',
@@ -129,6 +142,7 @@ export default {
 
           this.readonly.nameCompany = true
           this.readonly.addressCompany = true
+          this.readonly.passport = true
         }
         this.isInputInn = false
         this.loadingInn = false
@@ -212,6 +226,7 @@ export default {
         })
     },
     onBlurDepartmentCode () {
+      if (this.readonly.passport) return
       apiDadata({
         type: 'fms_unit',
         query: this.modelData.departmentCode
