@@ -176,7 +176,7 @@ const getters = {
       ? state.listProductByAddress.map(item => ({
         id: item.id,
         address: item.fulladdress,
-        addressId: item.address.id,
+        addressId: item.id,
         price: Number(item.amount.value),
         currency: item.amount.currency.name
       })) : []

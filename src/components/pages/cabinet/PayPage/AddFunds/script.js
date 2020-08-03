@@ -6,6 +6,7 @@ import { SCREEN_WIDTH } from '@/store/actions/variables'
 import { PATTERN_EMAIL } from '@/constants/regexp'
 import { roundUp } from '../../../../../functions/helper'
 import { Cookie } from '../../../../../functions/storage'
+import { uniq } from 'lodash'
 
 const OFFER_LINK = 'https://console.ertelecom.ru/files/upload/d/1/0/d108447fbf9c5d88c2801d14a6e76725.pdf'
 
@@ -105,14 +106,15 @@ export default {
   },
   methods: {
     listEmail () {
-      const emailList = this.clientInfo?.contactMethods?.filter(
-        _item => _item['@type'].match(/email/ig)
-      )
-      if (emailList) {
-        this.emails = emailList.map(
-          item => item.name.split(', ')[0]
-        ) || []
-      }
+      const listEmail = []
+      // eslint-disable-next-line no-unused-expressions
+      this.clientInfo.contacts?.forEach(contact => {
+        listEmail.push(...contact.contactMethods
+          .filter(item => item['@type'].toLowerCase() === 'email')
+          .map(item => item.value)
+        )
+      })
+      this.emails = uniq(listEmail)
     },
     changeWidth () {
       if (this.visAutoPay) {
