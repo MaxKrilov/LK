@@ -12,7 +12,12 @@ div.ml-lg-64
 				| Период
 			.d--flex.flex-column.flex-sm-row.align-items-sm-center
 				.calendar.mb-8.mr-sm-16
-					er-date-picker(v-model="turboPeriod" disabled-date="past" is-hide-period-block)
+					er-date-picker(
+						v-model="turboPeriod"
+						disabled-date="past"
+						is-hide-period-block
+						format="DD.MM.YY"
+						)
 				.infinity.mb-8
 					er-toggle(view="radio-check" v-model="isInfinity")
 						template(slot="append-outer")

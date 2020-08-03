@@ -21,6 +21,11 @@ export interface iSignCreateResult {
   message: any
 }
 
+const errorText = `
+Проверьте корректность установленного ПО для ЭЦП и срок действия Вашего сертификата для подписи!&nbsp;
+<a href="https://www.cryptopro.ru/" target="_blank"></a>
+`
+
 /**
  * Класс для работы с КриптоПро
  */
@@ -357,7 +362,7 @@ export default class DigitalSignature {
     try {
       result = await axios.post(this.presignUrl, requestData)
     } catch (ex) {
-      throw new Error(ex.response.statusText)
+      throw new Error(errorText)
     }
     return {
       CacheObjectId: result.data['СacheObjectId'] || result.data.CacheObjectId,
@@ -395,7 +400,7 @@ export default class DigitalSignature {
     try {
       result = await axios.post(this.postsignUrl, requestData)
     } catch (ex) {
-      throw new Error(ex.response.statusText)
+      throw new Error(errorText)
     }
     return result.data
   }
