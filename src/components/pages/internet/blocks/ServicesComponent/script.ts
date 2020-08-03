@@ -19,8 +19,8 @@ export default class ServicesComponent extends Vue {
   // Computed
   get listService () {
     const result = [
-      { icon: 'stat', name: 'Статистика', isOn: true, link: '/lk/internet/statistic' },
-      { icon: 'reload', name: 'Обратные зоны', isOn: true, link: '/lk/internet/reverce-zones' }
+      { icon: 'stat', name: 'Статистика', isOn: true, link: '/lk/internet/statistic' }
+      // { icon: 'reload', name: 'Обратные зоны', isOn: true, link: '/lk/internet/reverce-zones' }
     ]
     const additionalServices = [
       SERVICE_CONTENT_FILTER,

@@ -169,7 +169,9 @@ export default class DigitalSigningDocument extends Vue {
                   this.isShowListCertificateDialog = false
                   this.isSuccess = true
                   text && (this.errorText = text)
-                  this.$emit('success')
+                  setTimeout(() => {
+                    this.$emit('success')
+                  }, 2000)
                 }
                 this.$store.dispatch(`fileinfo/changeContractStatus`, {
                   api: this.$api,
