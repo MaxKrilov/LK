@@ -50,6 +50,7 @@ const INITIAL_STATE = {
   isFetching: false,
   isFetched: false,
   isLogouting: false,
+  isLogging: false,
   error: null,
   isManager: false,
   toms: null,
@@ -255,16 +256,19 @@ const actions = {
 
 const mutations = {
   [AUTH_REQUEST]: (state) => {
+    state.isLogging = true
     state.isFetching = true
     state.isFetched = false
     state.error = null
   },
   [AUTH_SUCCESS]: (state) => {
+    state.isLogging = false
     state.isFetching = false
     state.isFetched = true
     state.error = null
   },
   [AUTH_ERROR]: (state, payload) => {
+    // state.isLogging = false
     state.isFetching = false
     state.isFetched = false
     state.error = payload
@@ -273,16 +277,19 @@ const mutations = {
     state = INITIAL_STATE
   },
   [REFRESH_REQUEST]: (state) => {
+    state.isLogging = true
     state.refreshedToken.isFetching = true
     state.refreshedToken.isFetched = false
     state.refreshedToken.error = null
   },
   [REFRESH_SUCCESS]: (state) => {
+    state.isLogging = false
     state.refreshedToken.isFetching = false
     state.refreshedToken.isFetched = true
     state.refreshedToken.error = null
   },
   [REFRESH_ERROR]: (state, payload) => {
+    state.isLogging = false
     state.refreshedToken.isFetching = false
     state.refreshedToken.isFetched = false
     state.refreshedToken.error = payload

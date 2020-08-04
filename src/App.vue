@@ -140,16 +140,17 @@ export default {
       isFetched: state => state.auth.isFetched,
       refreshedToken: state => state.auth.refreshedToken,
       rebootBillingAccount: state => state.loading.rebootBillingAccount,
-      isLogouting: state => state.auth.isLogouting
+      isLogouting: state => state.auth.isLogouting,
+      isLogging: state => state.auth.isLogging
     }),
     isAccessGranted () {
       return USE_SSO_AUTH ? this.hasAccess : true
     },
     isShowPreloader () {
-      return this.isFetching || this.refreshedToken.isFetching || this.isLogouting
+      return this.isLogging || this.isLogouting
     },
     textPreloader () {
-      return this.isFetching || this.refreshedToken.isFetching
+      return this.isLogging
         ? 'Проверяем авторизацию'
         : this.isLogouting
           ? 'Выполняется выход из системы'

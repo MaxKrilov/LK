@@ -80,16 +80,16 @@ div.px-32.pt-64(:class="`${pre}`")
                 :readonly="readonly.passport"
                 )
             er-flex(xs2)
-              er-text-field(
-                label="Код подразделения",
-                mask="999-999",
-                v-model="modelData.departmentCode",
-                :rules="[rules.isRequired]",
-                tabIndex="5",
-                @blur="onBlurDepartmentCode",
-                key="departmentCode"
-                :readonly="readonly.passport"
-                )
+              //er-text-field(
+              //  label="Код подразделения",
+              //  mask="999-999",
+              //  v-model="modelData.departmentCode",
+              //  :rules="[rules.isRequired]",
+              //  tabIndex="5",
+              //  @blur="onBlurDepartmentCode",
+              //  key="departmentCode"
+              //  :readonly="readonly.passport"
+              //  )
         er-row
           template(v-if="!isEntity")
             er-flex(xs6)
