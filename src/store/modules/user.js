@@ -427,7 +427,7 @@ const actions = {
         .setData({
           clientId: toms,
           billingAccountId: activeBillingAccount,
-          address
+          locationId: address
         })
         .query('/order/management/products')
       return result
