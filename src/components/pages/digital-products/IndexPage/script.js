@@ -3,7 +3,7 @@ import { eachObject, getAllUrlParams, isCombat } from '../../../../functions/hel
 import { mapState } from 'vuex'
 
 const getLink = () => isCombat()
-  ? 'https://self-service-online.domru.ru/'
+  ? 'https://self-service.online.domru.ru/'
   : 'https://service-portal-dmp-uat1.nonprod.cloud-bss.loc/'
 
 export default {
