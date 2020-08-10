@@ -76,7 +76,7 @@ export const makeTokens = ({ success, message, redirect, output }) => {
 /**
  * Проверка токена
  * @param token
- * @returns {Promise<unknown>}
+ * @returns {boolean}
  */
 export const validationToken = (token) => {
   if (!token) {
