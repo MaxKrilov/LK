@@ -29,9 +29,8 @@ export default Vue.extend({
       <div style={styles.block}>
         <div style={styles.content}>
           <img
-            src={require('@/assets/images/preloaders/2.svg')}
+            src={require('@/assets/images/preloaders/3.svg')}
           />
-          <div>{this.status}</div>
         </div>
       </div>
     )

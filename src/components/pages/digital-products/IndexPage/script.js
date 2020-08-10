@@ -10,7 +10,7 @@ export default {
   name: 'digital-products-index-page',
   data: () => ({
     pre: 'digital-products-index-page',
-    link: `${getLink()}/products?`
+    link: `${getLink()}products?`
   }),
   computed: {
     ...mapState({

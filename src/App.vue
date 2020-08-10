@@ -12,10 +12,11 @@
 <script>
 import { mapGetters, mapState, mapActions } from 'vuex'
 import { SCREEN_WIDTH } from './store/actions/variables'
-import { getScreenWidth } from './functions/helper'
+import { generateUrl, getScreenWidth } from './functions/helper'
 import axios from 'axios'
 import NotAccessPage from './components/pages/errors/not-access'
 import ErPreloader from './components/blocks/ErPreloader'
+import { validationToken } from './functions/auth'
 
 import {
   GET_CLIENT_INFO,
@@ -60,6 +61,32 @@ export default {
   },
   async created () {
     if (USE_SSO_AUTH) {
+      const tokenInterceptorsRequest = () => async config => {
+        const isValidAccessToken = validationToken(this.accessToken)
+        const isValidRefreshToken = validationToken(this.refreshToken)
+
+        if (
+          ~config.url.indexOf(generateUrl('authUser')) ||
+            ~config.url.indexOf(generateUrl('authManager')) ||
+            ~config.url.indexOf(generateUrl('refreshToken'))
+        ) return config
+
+        if (isValidAccessToken) return config
+
+        if (isValidRefreshToken) {
+          await this.$store.dispatch('auth/fetchRefreshToken', { api: this.$api })
+          return config
+        }
+
+        await this.$store.dispatch('auth/signIn', { api: this.$api })
+
+        return config
+      }
+
+      const tIR = tokenInterceptorsRequest()
+
+      axios.interceptors.request.use(tIR)
+
       axios.interceptors.response.use(response => response, err => {
         return new Promise((resolve, reject) => {
           if (err && err.response && [403, 401].includes(err.response.status)) {
@@ -141,7 +168,10 @@ export default {
       refreshedToken: state => state.auth.refreshedToken,
       rebootBillingAccount: state => state.loading.rebootBillingAccount,
       isLogouting: state => state.auth.isLogouting,
-      isLogging: state => state.auth.isLogging
+      isLogging: state => state.auth.isLogging,
+      // Токены (для валидации запросов)
+      accessToken: state => state.auth.accessToken,
+      refreshToken: state => state.auth.refreshToken
     }),
     isAccessGranted () {
       return USE_SSO_AUTH ? this.hasAccess : true
