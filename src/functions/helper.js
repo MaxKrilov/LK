@@ -624,6 +624,11 @@ export function isPSI () {
   return location.origin.match(/master2/ig)
 }
 
+export function isServer (branchName) {
+  const regex = new RegExp(branchName, 'ig')
+  return !!location.origin.match(regex)
+}
+
 export function dataURLtoFile (dataurl, fileName) {
   // const arr = dataurl.split(',')
   // const mime = arr[0].match(/:(.*?);/)[1]
