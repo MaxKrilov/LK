@@ -1,8 +1,13 @@
 import Vue from 'vue'
 import { LK_STORAGE_KEY } from '@/constants/keys'
-import { SSO_CUSTOMER_IFRAME_URL } from '@/constants/url'
 import iFrameResize from 'iframe-resizer/js/iframeResizer'
 import { isIE11 } from '@/functions/broswer-detect'
+import { isCombat, isServer } from '@/functions/helper'
+import {
+  PROD_SSO_CHANGE_CUSTOMER_IFRAME,
+  PSI_SSO_CHANGE_CUSTOMER_IFRAME,
+  TEST_SSO_CHANGE_CUSTOMER_IFRAME
+} from '@/constants/url'
 
 // TODO: переместить в @/directives/resize.js как iframe-resize
 Vue.directive('resize', {
@@ -10,6 +15,12 @@ Vue.directive('resize', {
     el.addEventListener('load', () => iFrameResize(value, el))
   }
 })
+
+const SSO_CUSTOMER_IFRAME_URL = isCombat()
+  ? PROD_SSO_CHANGE_CUSTOMER_IFRAME
+  : isServer('psi2')
+    ? PSI_SSO_CHANGE_CUSTOMER_IFRAME
+    : TEST_SSO_CHANGE_CUSTOMER_IFRAME
 
 const WAIT_SSO_QUERY_TIMEOUT = 2700
 
