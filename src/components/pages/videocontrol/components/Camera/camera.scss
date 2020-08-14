@@ -1,4 +1,4 @@
-$pre: '.camera';
+$pre: ".camera";
 
 #{$pre} {
   display: flex;
@@ -6,29 +6,30 @@ $pre: '.camera';
   align-items: center;
   height: $padding-x12;
 
-  border-top: 1px solid rgba(map_get($shades, 'black'), .2);
+  border-top: 1px solid rgba(map_get($shades, "black"), 0.2);
+  padding: 0 $padding-x2;
 
   &:last-child {
-    border-bottom: 1px solid rgba(map_get($shades, 'black'), .2);
+    border-bottom: 1px solid rgba(map_get($shades, "black"), 0.2);
   }
 
   &__title {
     @extend %caption1;
     cursor: pointer;
-    @include color-black(.8);
-    border-bottom: 1px solid map_get($shades, 'transparent');
+    @include color-black(0.8);
+    border-bottom: 1px solid map_get($shades, "transparent");
     transition: all $primary-transition;
 
     &:hover {
       @include color-black(1);
-      border-bottom-color: map_get($yellow, 'base');
+      border-bottom-color: map_get($yellow, "base");
     }
   }
 
   #{$pre}__price + #{$pre}__watch {
     margin-left: $padding-x4;
 
-    @include min-breakpoint('md') {
+    @include min-breakpoint("md") {
       margin-left: $padding-x6;
     }
   }
@@ -38,7 +39,7 @@ $pre: '.camera';
   &__config {
     margin-left: $padding-x4;
 
-    @include min-breakpoint('md') {
+    @include min-breakpoint("md") {
       margin-left: $padding-x6;
     }
   }
@@ -46,7 +47,7 @@ $pre: '.camera';
   &__count {
     display: none;
     @extend %caption2;
-    @include max-breakpoint('sm') {
+    @include max-breakpoint("sm") {
       display: none;
     }
   }
@@ -55,7 +56,7 @@ $pre: '.camera';
     .price,
     .price__units,
     .price__sum {
-      @include max-breakpoint('sm') {
+      @include max-breakpoint("sm") {
         display: block;
         margin-left: 0;
       }
@@ -71,32 +72,32 @@ $pre: '.camera';
 
     &:hover {
       .title {
-        @include color-black(.8);
+        @include color-black(0.8);
       }
 
       .er-icon {
-        color: map_get($yellow, 'base');
+        color: map_get($yellow, "base");
       }
     }
 
     .title {
+      @extend %caption1;
       @extend %link-behaviour;
-      @include color-black(.5);
       transition: all $primary-transition;
     }
 
     .er-icon {
       transition: all $primary-transition;
-      @include color-black(.2);
-      @include min-breakpoint('sm') {
-        margin-right: $padding-x1;
+      @include color-black(0.2);
+      @include min-breakpoint("sm") {
+        margin-right: $padding-x2;
       }
     }
   }
 
   &__config {
     .title {
-      @include max-breakpoint('lg') {
+      @include max-breakpoint("lg") {
         display: none;
       }
     }

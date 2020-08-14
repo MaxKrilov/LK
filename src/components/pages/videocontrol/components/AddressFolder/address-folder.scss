@@ -94,6 +94,10 @@ $pre: ".address-folder";
     @include min-breakpoint("sm") {
       align-self: center;
     }
+
+    .er-corner-button__label {
+      border-bottom: none;
+    }
   }
 
   &__title {

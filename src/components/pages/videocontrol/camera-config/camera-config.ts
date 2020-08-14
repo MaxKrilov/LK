@@ -104,6 +104,7 @@ export default class VCCameraConfigPage extends VueTransitionFSM {
 
   /* === */
   isAnalyticsLoaded: boolean = false
+  serviceStatuses: Record<string, boolean> = {}
   isOrderMode: boolean = false
 
   isSendingOrder: boolean = false
@@ -112,7 +113,7 @@ export default class VCCameraConfigPage extends VueTransitionFSM {
   /* === Form === */
   soundRecordValue: boolean = false
   videoQualityValue: string = VIDEO_QUALITY_VALUE_LIST[0]
-  videoArchiveValue: string = '0'
+  videoArchiveValue: string = ''
   PTZValue: boolean = false
 
   isChanged = false
@@ -300,6 +301,17 @@ export default class VCCameraConfigPage extends VueTransitionFSM {
             this.soundRecordValue = this.isSoundRecordEnabled
             this.videoQualityValue = VIDEO_QUALITY_VALUE_LIST[+this.isFHDEnabled]
             this.videoArchiveValue = this.videoArchiveCurrentValue
+
+            this.serviceStatuses = this.availableAnalyticsList.map(
+              el => ({ [el.code]: false })
+            ).reduce((accumulator, el) => ({ ...accumulator, ...el }), {})
+
+            this.enabledServiceCode.forEach(
+              (el: any) => {
+                this.serviceStatuses[el] = true
+              }
+            )
+
             this.setState(this.READY_STATE)
           })
       })
@@ -311,7 +323,7 @@ export default class VCCameraConfigPage extends VueTransitionFSM {
 
   getPTZPrice () {
     if (this.checkIsServiceEnabled(CODES.PTZ)) {
-      const service = this.enabledServiceList.find((el:any) => el.offer.code === CODES.PTZ)
+      const service = this.enabledServiceList.find((el: any) => el.offer.code === CODES.PTZ)
       return service?.purchasedPrices?.recurrentTotal?.value || '0'
     }
 
@@ -320,11 +332,11 @@ export default class VCCameraConfigPage extends VueTransitionFSM {
 
   getAnalyticItemPrice (code: string) {
     if (this.checkIsServiceEnabled(code)) {
-      const service = this.enabledServiceList.find((el:any) => el.offer.code === code)
+      const service = this.enabledServiceList.find((el: any) => el.offer.code === code)
       return service?.purchasedPrices?.recurrentTotal?.value || '0'
     }
 
-    const service = this.availableAnalyticsList.find((el:any) => el.code === code)
+    const service = this.availableAnalyticsList.find((el: any) => el.code === code)
     return service?.prices?.[0] ? service.prices[0].amount : '0.1'
   }
 
