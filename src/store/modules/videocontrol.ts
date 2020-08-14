@@ -1,3 +1,4 @@
+import Vue from 'vue'
 import { ActionContext } from 'vuex'
 import { API } from '@/functions/api'
 import {
@@ -19,7 +20,8 @@ import {
   VC_TYPES,
   ANALYTIC_CATEGORY_ID,
   BF_CATEGORY_NAME,
-  BF_CATEGORY_ID
+  BF_CATEGORY_ID,
+  VIDEOCONTROL_OFFER_NAME
 } from '@/constants/videocontrol'
 
 const TYPES = {
@@ -91,6 +93,8 @@ function isActiveOffering (item: IOffer) {
   return ['Активный', 'Active'].includes(item.status)
 }
 
+const isVCPoint = (item: ILocationOfferInfo) => item.offer.name === VIDEOCONTROL_OFFER_NAME
+
 const getters = {
   BPIList (state: IState) {
     return state.points.map(el => el.bpi)
@@ -104,6 +108,9 @@ const getters = {
     return (pointId: string) => state.points.find(
       (point: ILocationOfferInfo) => point.id === pointId
     ) || {}
+  },
+  videocontrolPoints (state: IState) {
+    return state.points.filter(isVCPoint)
   },
   domainByKey (state: IState) {
     return (key: string) => state.domainRegistry?.[key]
@@ -359,7 +366,7 @@ const mutations = {
   [TYPES.SET_ALLOWED_OFFERS] (
     state: IState, payload: {id: string, data: []}
   ) {
-    state.allowedOffers[payload.id] = payload.data
+    Vue.set(state.allowedOffers, payload.id, payload.data)
   },
   [TYPES.SET_ALLOWED_OFFERS_IS_LOADED] (state: IState, payload: boolean) {
     state.isAllowedOffersLoaded = payload

@@ -6,7 +6,6 @@ import AddonConfig from '../components/AddonConfig/index.vue'
 import AddonDescription from '../components/AddonDescription/index.vue'
 import ErPlugProduct from '@/components/blocks/ErPlugProduct/index.vue'
 
-import { ILocationOfferInfo } from '@/tbapi'
 import { IBaseFunctionality, ICamera, TBaseFunctionalityId } from '@/interfaces/videocontrol'
 
 import { ANALYTIC_NAME, SERVICE_ORDER_MAP } from '@/constants/videocontrol'
@@ -32,14 +31,13 @@ const computed = {
     allBaseFunctionality: 'videocontrol/allBaseFunctionality',
     allCameraList: 'videocontrol/allCameraList',
     bfById: 'videocontrol/bfById',
-    uniqPointList: 'videocontrol/uniqPointList'
+    locationList: 'videocontrol/videocontrolPoints'
   })
 }
 
 @Component({ components, props, computed })
 export default class VCAddonDetailPage extends Vue {
   /* === mapGetters === */
-  uniqPointList!: ILocationOfferInfo[]
   allBaseFunctionality!: IBaseFunctionality[]
   allCameraList!: ICamera[]
   bfById!: (id: string) => IBaseFunctionality
@@ -66,13 +64,6 @@ export default class VCAddonDetailPage extends Vue {
   get coverPath () {
     const imageName = VIDEO_ANALYTICS[this.$props.code].cover || 'no_cover.jpg'
     return `/videocontrol/${imageName}`
-  }
-
-  get locationList () {
-    const isVCPoint = (el: ILocationOfferInfo) => el.offer.name === 'Видеоконтроль'
-
-    return this.uniqPointList
-      .filter(isVCPoint)
   }
 
   get price () {

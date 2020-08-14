@@ -8,7 +8,6 @@
 
       p Для входа на портал пройдите по ссылке&nbsp;
         a(href="https://vs.domru.ru") https://vs.domru.ru
-
 </template>
 
 <script>

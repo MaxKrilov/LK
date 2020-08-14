@@ -5,6 +5,7 @@ import ErPromo from '@/components/blocks/ErPromo/index.vue'
 const components = { ErPromo }
 
 @Component({ components })
-export default class ErTimePickerRange extends Vue {
+export default class VCPromoPage extends Vue {
   featureList = featureList
+  link = 'https://b2b.domru.ru/products/videonablyudenie'
 }
