@@ -4,7 +4,7 @@ import { USER_ROLES } from '@/store/mock/profile'
 import { ERROR_MODAL } from '@/store/actions/variables'
 
 import { Cookie } from '@/functions/storage'
-import { getAllUrlParams } from '../../../functions/helper'
+import { getAllUrlParams, isCombat, isServer } from '../../../functions/helper'
 
 import {
   actions as userActions,
@@ -14,6 +14,8 @@ import {
   actions as managerActions,
   getters as managerGetters
 } from './manager'
+
+import { MANAGER_LOGOUT } from '../../../constants/url'
 
 const AUTH_REQUEST = 'AUTH_REQUEST'
 const AUTH_SUCCESS = 'AUTH_SUCCESS'
@@ -201,7 +203,18 @@ const actions = {
     }
   },
 
-  signOut: async ({ commit, rootState }, { api, isRefreshExpired }) => {
+  signOut: async ({ commit, rootState, state }, { api, isRefreshExpired }) => {
+    if (state.isManager) {
+      commit(AUTH_LOGOUT)
+      commit(REMOVE_AUTH_TOKENS)
+      commit(REMOVE_USER_INFO)
+      location.href = isCombat()
+        ? MANAGER_LOGOUT.combat
+        : isServer('psi2')
+          ? MANAGER_LOGOUT.psi2
+          : MANAGER_LOGOUT.psi1
+      return
+    }
     commit(LOGOUT_REQUEST)
     try {
       const { accessToken } = rootState.auth
