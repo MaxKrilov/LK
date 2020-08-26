@@ -1,10 +1,9 @@
-import { generateUrl, copyObject } from '@/functions/helper'
 import { makeTokens, validationToken } from '@/functions/auth'
 import { USER_ROLES } from '@/store/mock/profile'
 import { ERROR_MODAL } from '@/store/actions/variables'
 
 import { Cookie } from '@/functions/storage'
-import { getAllUrlParams, isCombat, isServer } from '../../../functions/helper'
+import { generateUrl, getAllUrlParams, isCombat, isServer, copyObject } from '../../../functions/helper'
 
 import {
   actions as userActions,
@@ -38,6 +37,8 @@ const REFRESH_ERROR = 'REFRESH_ERROR'
 const LOGOUT_REQUEST = 'LOGOUT_REQUEST'
 const LOGOUT_SUCCESS = 'LOGOUT_SUCCESS'
 const LOGOUT_ERROR = 'LOGOUT_ERROR'
+
+const CLEAN_STATE = 'CLEAN_STATE'
 
 const INITIAL_STATE = {
   userToken: '',
@@ -76,7 +77,7 @@ const mappingResourceAccess = (rawAccess, bSystems) => {
   }, {})
 }
 
-const state = INITIAL_STATE
+const state = copyObject(INITIAL_STATE)
 
 const getters = {
   isLPR (state, { user }) {
@@ -287,7 +288,7 @@ const mutations = {
     state.error = payload
   },
   [AUTH_LOGOUT]: (state) => {
-    state = INITIAL_STATE
+    state = copyObject(INITIAL_STATE)
   },
   [REFRESH_REQUEST]: (state) => {
     state.isLogging = true
@@ -350,6 +351,9 @@ const mutations = {
   },
   [LOGOUT_ERROR]: (state) => {
     state.isLogouting = false
+  },
+  [CLEAN_STATE]: state => {
+    state = copyObject(INITIAL_STATE)
   }
 }
 

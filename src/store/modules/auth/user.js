@@ -10,6 +10,8 @@ const REMOVE_AUTH_TOKENS = 'REMOVE_AUTH_TOKENS'
 const REMOVE_USER_INFO = 'REMOVE_USER_INFO'
 const LKB2B_ACCESS = 'lkb2b'
 
+const CLEAN_STATE = 'CLEAN_STATE'
+
 const getters = {
   hasAccess (state, { user }) {
     const resources = user?.postAccess
@@ -40,6 +42,7 @@ const actions = {
       } catch (e) {
         commit(REMOVE_AUTH_TOKENS)
         commit(REMOVE_USER_INFO)
+        commit(CLEAN_STATE)
         commit(AUTH_ERROR, `Не удалось авторизоваться: ${e.toString()}`)
         return false
       }
