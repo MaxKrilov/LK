@@ -237,6 +237,23 @@ const getters = {
   pull*() -> скачивает, записывает в стор и возвращает данные
 */
 const actions = {
+  fetchForpostLink (context: ActionContext<IState, any>) {
+    const api = new API()
+
+    const isManager = context.rootState.auth.isManager
+    let payload: Record<string, any> = {
+      isManager
+    }
+
+    const toms = context.rootGetters['auth/getTOMS']
+    if (isManager) payload['externalId'] = toms
+
+    return APIShortcut(
+      api,
+      `/sso/forpost/link`,
+      payload
+    )
+  },
   fetchPoints (context: ActionContext<IState, any>, { api }: { api: API}) {
     const newPayload = {
       api,

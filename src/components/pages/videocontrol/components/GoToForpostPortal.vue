@@ -11,14 +11,23 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
+
 export default {
-  data: () => ({ active: true }),
+  data: () => ({ active: false }),
   watch: {
     active (val) {
       if (!val) {
         this.$router.go(-1)
       }
     }
+  },
+  methods: {
+    ...mapActions({ getForpostLink: 'videocontrol/fetchForpostLink' })
+  },
+  mounted () {
+    this.getForpostLink()
+      .then(data => { window.location = data.loginLink })
   }
 }
 </script>
