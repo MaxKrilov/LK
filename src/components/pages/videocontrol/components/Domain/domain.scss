@@ -88,6 +88,8 @@
     }
 
     .link-wrap {
+      display: inline-flex;
+      align-items: center;
       margin-bottom: $padding-x12;
 
       @include min-breakpoint('sm') {
@@ -104,15 +106,15 @@
 
       .er-icon {
         transition: all $primary-transition;
-        @include color-black(.2);
+        @include color-black(0.2);
         margin-right: $padding-x2;
       }
 
       .link {
         cursor: pointer;
         @extend %caption1;
-        @include color-black(.5);
-        border-color: rgba(map_get($shades, 'black'), .5);
+        @include color-black(0.5);
+        border-color: rgba(map_get($shades, "black"), 0.5);
       }
     }
   }
