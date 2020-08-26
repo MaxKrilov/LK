@@ -216,7 +216,7 @@ export default class VCDomain extends VueTransitionFSM {
           this.$emit('error', data.message)
           this.isUserOrderMode = false
         })
-    } else if (this.$props.userCount === 1 && userDiff > 1) { // Заказ пользователей
+    } else if (this.$props.userCount === 1 && userDiff) { // Заказ пользователей
       this.onAddUser()
     } else { // Изменение количества
       const payload = {
@@ -291,6 +291,10 @@ export default class VCDomain extends VueTransitionFSM {
     }
     this.isOrderModalVisible = true
     this.isManagerRequest = false
+  }
+
+  onCancelOrder () {
+    this.isUserOrderMode = false
   }
 
   onClosePlugProduct () {

@@ -98,6 +98,7 @@ export default class ErPlugMixin extends Vue {
     this.endConnection()
   }
   closeOrderModal () {
+    this.$emit('cancelOrder')
     this.cancelOrder()
     this.endConnection()
   }

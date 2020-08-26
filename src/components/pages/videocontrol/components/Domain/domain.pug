@@ -4,26 +4,25 @@
       .product-top-head
         .link-wrap
           er-icon(name="watch")
-          router-link.link(:to="{name: 'go-to-forpost'}") Перейти на портал
+          router-link.link(:to="{ name: 'go-to-forpost' }") Перейти на портал
 
         .user-count
           .user-count__input
             label.user-count__label(for="input-user-count") Пользователей портала
 
-            er-number-input(
-              id="input-user-count"
+            er-number-input#input-user-count(
               :min="1"
               v-model="domainUserCount"
-              @input="onChangeUserCount"
+              @input="onChangeUserCount",
               :disabled="isUserCountOrdered"
             )
 
           .user-count__price
-            er-price {{ computedUserPrice|price }}
+            er-price {{ computedUserPrice | price }}
 
           er-button.user-count__add-btn(
             v-show="isUserCountChanged && !isUserCountOrdered"
-            color="yellow"
+            color="yellow",
             :loading="isUserOrderMode"
             @click="onSaveUserCount"
           ) Изменить
@@ -34,28 +33,25 @@
   .product__body
     template(v-for="item in addressList")
       address-folder(
-        :title="item.address.name || ''"
+        :title="item.address.name || ''",
         :price="item.data.purchasedPrices.recurrentTotal.value"
       )
         template(v-for="camera in item.data.cameras")
           camera(
-            :id="camera.id"
-            :title="camera.name"
-            :price="camera.purchasedPrices.recurrentTotal.value"
+            :id="camera.id",
+            :title="camera.name",
+            :price="camera.purchasedPrices.recurrentTotal.value",
             :services="item.data.bf[camera.parentId]"
           )
 
   .product__footer
     er-button(
-      color="yellow"
+      color="yellow",
       :loading="isOrderCameraMode"
       @click="onClickAddCamera"
     ) Добавить камеру
 
-    er-button(
-      color="gray"
-      @click="onClickPause"
-    ) Приостановить услугу
+    er-button(color="gray" @click="onClickPause") Приостановить услугу
 
   offer-dialog(
     :value="activeState === 'offer'"
@@ -66,14 +62,15 @@
     @cancel="onDeclineOffer"
   )
     .caption1 стоимость:&nbsp;
-      er-price {{ computedUserPrice|price }}
+      er-price {{ computedUserPrice | price }}
     .mb-24
 
   er-plug-product(
-    v-model="isOrderModalVisible"
-    :orderData="orderData"
-    :requestData="requestData"
-    :isSendOrder="!isManagerRequest"
+    v-model="isOrderModalVisible",
+    :orderData="orderData",
+    :requestData="requestData",
+    :isSendOrder="!isManagerRequest",
     :isSendManagerRequest="isManagerRequest"
     @close="onClosePlugProduct"
+    @cancelOrder="onCancelOrder"
   )
