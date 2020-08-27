@@ -464,6 +464,11 @@ router.beforeEach((to, from, next) => {
     store.dispatch('auth/setDmpId', to.query.dmpID)
   }
 
+  if (queryKeys.includes('clean')) {
+    store.dispatch('auth/clean')
+    next()
+  }
+
   if (to.matched.some(r => r.meta.requiresAuth)) {
     if (!hasAccess) {
       const tokenIsFetching = store.state.auth.refreshedToken.isFetching
