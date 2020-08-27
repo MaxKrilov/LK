@@ -207,13 +207,13 @@ const actions = {
   signOut: async ({ commit, rootState, state }, { api, isRefreshExpired }) => {
     if (state.isManager) {
       commit(AUTH_LOGOUT)
-      commit(REMOVE_AUTH_TOKENS)
-      commit(REMOVE_USER_INFO)
-      location.href = isCombat()
+      commit(CLEAN_STATE)
+      const redirectLink = isCombat()
         ? MANAGER_LOGOUT.combat
         : isServer('psi2')
           ? MANAGER_LOGOUT.psi2
           : MANAGER_LOGOUT.psi1
+      location.href = `${redirectLink}?redirect_uri=${location.href}`
       return
     }
     commit(LOGOUT_REQUEST)
@@ -227,8 +227,7 @@ const actions = {
         .query('/sso/default/reject-token')
       if (result.success) {
         commit(AUTH_LOGOUT)
-        commit(REMOVE_AUTH_TOKENS)
-        commit(REMOVE_USER_INFO)
+        commit(CLEAN_STATE)
         commit(LOGOUT_SUCCESS)
         location.href = result.redirect
       }
@@ -265,6 +264,13 @@ const actions = {
   },
   clearToken ({ commit }) {
     commit(REMOVE_AUTH_TOKENS)
+  },
+  clean ({ commit }) {
+    commit(REMOVE_AUTH_TOKENS)
+    commit(REMOVE_USER_INFO)
+    commit(SET_USER_TOMS, null)
+    commit(SET_MANAGER_AUTH, false)
+    commit('setDmpId', null)
   }
 }
 
