@@ -16,11 +16,14 @@ Vue.directive('resize', {
   }
 })
 
-const SSO_CUSTOMER_IFRAME_URL = isCombat()
-  ? PROD_SSO_CHANGE_CUSTOMER_IFRAME
-  : isServer('psi2')
-    ? PSI_SSO_CHANGE_CUSTOMER_IFRAME
-    : TEST_SSO_CHANGE_CUSTOMER_IFRAME
+function getCurrentIframeUrl () {
+  return isCombat()
+    ? PROD_SSO_CHANGE_CUSTOMER_IFRAME
+    : isServer('psi2') || isServer('psi3')
+      ? PSI_SSO_CHANGE_CUSTOMER_IFRAME
+      : TEST_SSO_CHANGE_CUSTOMER_IFRAME
+}
+const SSO_CUSTOMER_IFRAME_URL = getCurrentIframeUrl()
 
 const WAIT_SSO_QUERY_TIMEOUT = 2700
 
