@@ -207,7 +207,6 @@ const actions = {
   signOut: async ({ commit, rootState, state }, { api, isRefreshExpired }) => {
     if (state.isManager) {
       commit(AUTH_LOGOUT)
-      commit(CLEAN_STATE)
       const redirectLink = isCombat()
         ? MANAGER_LOGOUT.combat
         : isServer('psi2')
@@ -227,7 +226,6 @@ const actions = {
         .query('/sso/default/reject-token')
       if (result.success) {
         commit(AUTH_LOGOUT)
-        commit(CLEAN_STATE)
         commit(LOGOUT_SUCCESS)
         location.href = result.redirect
       }
@@ -294,7 +292,18 @@ const mutations = {
     state.error = payload
   },
   [AUTH_LOGOUT]: (state) => {
-    state = copyObject(INITIAL_STATE)
+    // Clean tokens
+    state.accessToken = null
+    state.refreshToken = null
+    state.userToken = null
+
+    // Clean userInfo
+    state.userInfo = {}
+
+    // Clean other Info
+    state.dmpId = null
+    state.isManager = false
+    state.toms = null
   },
   [REFRESH_REQUEST]: (state) => {
     state.isLogging = true
@@ -359,7 +368,18 @@ const mutations = {
     state.isLogouting = false
   },
   [CLEAN_STATE]: state => {
-    state = copyObject(INITIAL_STATE)
+    // Clean tokens
+    state.accessToken = null
+    state.refreshToken = null
+    state.userToken = null
+
+    // Clean userInfo
+    state.userInfo = {}
+
+    // Clean other Info
+    state.dmpId = null
+    state.isManager = false
+    state.toms = null
   }
 }
 
