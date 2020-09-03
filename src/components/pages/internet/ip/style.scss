@@ -162,7 +162,7 @@ $pre: '.er-ip-page';
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-
+  align-items: center;
   border-radius: map_get($ui, 'border-radius');
   background-color: map_get($gray, '4');
 
