@@ -6,7 +6,7 @@ div.px-32.pt-64(:class="`${pre}`")
     er-form(@submit="submitInn", ref="inn_form" key="inn_form")
       div.mb-40.d--flex(:class="`${pre}__input-inn`")
         er-text-field(
-          label="Введите ИНН",
+          label="Введите ИНН головной организации",
           v-model="modelINN",
           autocomplete="off",
           mask="999999999999",

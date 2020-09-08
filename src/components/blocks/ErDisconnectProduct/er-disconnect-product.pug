@@ -1,7 +1,7 @@
 div
 
   er-dialog(
-    :max-width="470" 
+    :max-width="470"
     v-model="isShowRequestModal"
     :persistent="true"
 
@@ -36,7 +36,7 @@ div
             )
 
           .caption2.mt-32 Нажимая на кнопку, Вы соглашаетесь на обработку данных
-        .footer  
+        .footer
           .buttons
             er-button(@click="sendRequest" :disabled="isValidateRequestForm" :loading="isCreatingRequest") Отправить
             er-button(flat @click="closeCreatingRequest") Отменить
@@ -60,7 +60,7 @@ div
     :persistent="true"
     cancelButtonText="Закрыть"
     @close="onCloseErrorModal"
-  ) 
+  )
     template(slot="description")
       | Нам очень жаль, произошла ошибка при отправке заявки на подключение. Свяжитесь с Вашим персональным менеджером
 
@@ -85,7 +85,7 @@ div
     @confirm="closeSuccessOrderModal"
   )
     template(slot="description")
-      | Заказ успешно создан
+      div Благодарим Вас за заказ! Подробности выполнения можно отследить в разделе заказы
   er-activation-modal(
     type="error"
     v-model="isShowErrorOrderModal"
@@ -94,6 +94,6 @@ div
     :persistent="true"
     cancelButtonText="Закрыть"
     @close="closeErrorOrderModal"
-  ) 
+  )
     template(slot="description")
       div Уважаемый Клиент, в данный момент операция не доступна, обратитесь к персональному менеджеру
