@@ -129,7 +129,7 @@ export default class TariffComponent extends Vue {
    */
   get maxAvailableSpeedIncrease () {
     return this.customerProduct
-      ? getLastElement(this.listAvailableSpeedIncrease).speed
+      ? getLastElement(this.listAvailableSpeedIncrease)?.speed
       : null
   }
 

@@ -55,6 +55,17 @@ div(:class="`${pre} main-content main-content--top-menu-fix`")
       div Уважаемый Клиент, в данный момент операция не доступна, обратитесь к персональному менеджеру
 
   er-activation-modal(
+    title="Заказ успешно сформирован"
+    type="success"
+    :isShowCancelButton="false"
+    actionButtonText="Спасибо"
+    @confirm="isShowSuccessModal = false"
+    v-model="isShowSuccessModal"
+  )
+    template(slot="description")
+      div Благодарим Вас за заказ! Подробности выполнения можно отследить в разделе заказы
+
+  er-activation-modal(
     type="question"
     v-model="isShowDisconnectModal"
     title="Вы уверены, что хотите отключить контент-фильтрацию?"
@@ -62,7 +73,6 @@ div(:class="`${pre} main-content main-content--top-menu-fix`")
     actionButtonText="Отключить"
     persistent
     :isLoadingConfirm="sendingOrder"
-    isOffer="internet"
     @confirm="sendOrder"
     @close="cancelOrder"
   )
