@@ -18,11 +18,15 @@ export default {
     isSearchActive: false,
     selectedCity: ALL_CITIES,
     selectedStatus: IN_PROGRESS,
-    isLoading: false
+    isLoading: false,
+    range: '',
+    page: 1,
+    rowCount: 20,
+    orderList: []
   }),
   computed: {
     orders: function () {
-      let listOrders = this.getListOrders
+      let listOrders = this.orderList
       if (this.selectedCity !== ALL_CITIES) {
         listOrders = listOrders.filter(el => el.cities.includes(this.selectedCity))
       }
@@ -41,8 +45,6 @@ export default {
     },
     ...mapGetters({
       getListOrders: 'orders/getListOrders',
-      getStatuses: 'orders/getStatuses',
-      getCities: 'orders/getCities',
       loadingClientInfo: 'loading/clientInfo',
       loadingOrders: 'loading/loadingOrders',
       getAddressList: 'user/getAddressList'
@@ -59,8 +61,20 @@ export default {
     statuses: function () {
       return [ ALL_STATUSES, IN_PROGRESS, ACCEPTED, WAIT, COMPLITED, CANCELLED ]
     },
+    getCities: function () {
+      return [...new Set(this.orders.map(order => order.cities).flat())]
+    },
     cities: function () {
       return [ ALL_CITIES, ...this.getCities ]
+    },
+    isEndOfList: function () {
+      const matches = this.range.match(/(\d+)-(\d+)\/(\d+|\*)/)
+      if (matches) {
+        const last = parseInt(matches[2])
+        const length = parseInt(matches[3])
+        return length === last
+      }
+      return true
     },
     selectedFilters: function () {
       if (this.selectedStatus === ALL_STATUSES && this.selectedCity === ALL_CITIES) {
@@ -78,35 +92,65 @@ export default {
       }
     },
     selectedStatus (status) {
-      const getStatuses = (status) => {
-        switch (status) {
-          case IN_PROGRESS:
-            return ['Точка невозврата пройдена', 'В исполнении', 'В процессе согласования']
-          case ACCEPTED:
-            return ['Ввод данных']
-          case WAIT:
-            return ['Договор подписан', 'Согласование с Клиентом', 'Согласовано с Клиентом']
-          case COMPLITED:
-            return ['Завершен', 'Выполнено']
-          case CANCELLED:
-            return ['Отменено', 'Заменено']
-          default:
-            return []
-        }
-      }
-
-      this.$store.dispatch(`orders/${GET_ORDERS}`, { statuses: getStatuses(status), api: this.$api })
+      this.page = 1
+      this.$store.dispatch(`orders/${GET_ORDERS}`,
+        {
+          statuses: this.getStatusesForRequest(status),
+          api: this.$api,
+          rowCount: this.rowCount,
+          page: this.page
+        })
+        .then((data) => {
+          this.range = data.range
+          this.orderList = [...data.orders]
+        })
     },
     isLoading (val) {
       this.changeLoadingStatus(val)
     }
   },
   methods: {
+    getStatusesForRequest (status) {
+      switch (status) {
+        case IN_PROGRESS:
+          return ['Точка невозврата пройдена', 'В исполнении', 'В процессе согласования']
+        case ACCEPTED:
+          return ['Ввод данных']
+        case WAIT:
+          return ['Договор подписан', 'Согласование с Клиентом', 'Согласовано с Клиентом']
+        case COMPLITED:
+          return ['Завершен', 'Выполнено']
+        case CANCELLED:
+          return ['Отменено', 'Заменено']
+        default:
+          return []
+      }
+    },
+    loadMore () {
+      this.page = this.page + 1
+      this.$store.dispatch(`orders/${GET_ORDERS}`,
+        {
+          statuses: this.getStatusesForRequest(this.selectedStatus),
+          api: this.$api,
+          rowCount: this.rowCount,
+          page: this.page
+        })
+        .then((data) => {
+          this.range = data.range
+          this.orderList = [...this.orderList, ...data.orders]
+        })
+    },
     async init () {
       this.$store.dispatch(`orders/${GET_ORDERS}`,
         {
           statuses: ['Точка невозврата пройдена', 'В исполнении', 'В процессе согласования'],
-          api: this.$api
+          api: this.$api,
+          rowCount: this.rowCount,
+          page: this.page
+        })
+        .then((data) => {
+          this.range = data.range
+          this.orderList = [...this.orderList, ...data.orders]
         })
     },
     ...mapMutations({
