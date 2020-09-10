@@ -12,7 +12,7 @@ import ErtReturnableMixin from '@/mixins2/ErtReturnableMixin'
 import ErtRoundableMixin from '@/mixins2/ErtRoundableMixin'
 import ErtToggleableMixin from '@/mixins2/ErtToggleableMixin'
 
-import ClickOutside from '@/directives/click-outside'
+import ClickOutside from '@/directives2/click-outside'
 import Resize from '@/directives/resize'
 
 import { convertToUnit } from '@/functions/helper2'

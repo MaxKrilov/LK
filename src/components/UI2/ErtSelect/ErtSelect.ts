@@ -15,7 +15,7 @@ import ErtTextField from '@/components/UI2/ErtTextField'
 import ErtComparableMixin from '@/mixins2/ErtComparableMixin'
 import ErtFilterableMixin from '@/mixins2/ErtFilterableMixin'
 
-import ClickOutside from '@/directives/click-outside'
+import ClickOutside from '@/directives2/click-outside'
 
 import mergeData from '@/utils/mergeData'
 import { getPropertyFromItem, getObjectValueByPath } from '@/functions/helper2'
