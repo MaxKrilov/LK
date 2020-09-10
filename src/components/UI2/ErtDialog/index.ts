@@ -8,7 +8,7 @@ import ErtReturnableMixin from '@/mixins2/ErtReturnableMixin'
 import ErtStackableMixin from '@/mixins2/ErtStackableMixin'
 import ErtToggleableMixin from '@/mixins2/ErtToggleableMixin'
 
-import ClickOutside from '@/directives/click-outside'
+import ClickOutside from '@/directives2/click-outside'
 
 import Component, { mixins } from 'vue-class-component'
 import { CreateElement, VNode, VNodeData } from 'vue'
