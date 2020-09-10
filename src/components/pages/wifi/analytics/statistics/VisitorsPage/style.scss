@@ -43,7 +43,8 @@
       @include grid-child(1, 2, 6, 7);
 
       @include media-min-width(map_get($grid-breakpoint, 'lg')) {
-        @include grid-child(1, 2, 3, 4);
+        // @include grid-child(1, 2, 3, 4);
+        @include grid-child(1, 2, 1, 2);
       }
     }
 

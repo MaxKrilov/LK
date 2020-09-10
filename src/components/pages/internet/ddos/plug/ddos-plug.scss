@@ -20,7 +20,7 @@ $pre: '.ddos-plug-page';
       margin-bottom: -12px;
     }
 
-    /deep/ .er-input {
+    >>> .er-input {
       flex: none
     }
   }

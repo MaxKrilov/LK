@@ -13,17 +13,20 @@ div(:class="`${pre}`")
         :defaultChartType="'line'"
       )
         template(v-slot:chart)
-          connections-chart(:data="mock.connections")
+          connections-chart(
+            :data="mock.connections"
+            @setLineChartPeriod="e => { periodType = e }"
+          )
 
   div(:class="[`${pre}__row`, 'stat-visitors-grid']")
-    div.stat-visitors-grid__age
-      chart-card(
-        :title="'Пол/Возраст'"
-        :period="period",
-        :defaultChartType="'cluster-bar'"
-      )
-        template(v-slot:chart)
-          simple-chart(:data="mock.ages")
+    // div.stat-visitors-grid__age
+      //chart-card(
+      //  :title="'Пол/Возраст'"
+      //  :period="period",
+      //  :defaultChartType="'cluster-bar'"
+      //)
+      //  template(v-slot:chart)
+      //    simple-chart(:data="mock.ages")
 
     div.stat-visitors-grid__frequency
       chart-card(
@@ -35,25 +38,25 @@ div(:class="`${pre}`")
         template(v-slot:chart)
           simple-chart(:data="mock.visits")
 
-    div.stat-visitors-grid__auth-type
-      chart-card(
-        :title="'Тип авторизации'"
-        :period="period",
-        :chartTypes="[chartTypes.bar, chartTypes.pie]"
-        :defaultChartType="'bar'"
-      )
-        template(v-slot:chart)
-          auth-type-chart
+    //div.stat-visitors-grid__auth-type
+    //  chart-card(
+    //    :title="'Тип авторизации'"
+    //    :period="period",
+    //    :chartTypes="[chartTypes.bar, chartTypes.pie]"
+    //    :defaultChartType="'bar'"
+    //  )
+    //    template(v-slot:chart)
+    //      auth-type-chart
 
-  er-row(:class="`${pre}__row`")
-    er-flex(xs12 lg6)
-      chart-card(
-        :title="'Используемый язык'"
-        :period="period",
-        :chartTypes="[chartTypes.bar, chartTypes.pie]"
-        :defaultChartType="'pie'"
-      )
-        template(v-slot:chart)
-          simple-chart(:data="mock.langs")
+  //er-row(:class="`${pre}__row`")
+  //  er-flex(xs12 lg6)
+  //    chart-card(
+  //      :title="'Используемый язык'"
+  //      :period="period",
+  //      :chartTypes="[chartTypes.bar, chartTypes.pie]"
+  //      :defaultChartType="'pie'"
+  //    )
+  //      template(v-slot:chart)
+  //        simple-chart(:data="mock.langs")
 
   page-footer

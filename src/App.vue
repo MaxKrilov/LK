@@ -1,5 +1,5 @@
 <template lang="pug">
-  div.app(data-app="true")
+  div.app.erth(data-app="true")
     div.app__content
       template(v-if="isShowPreloader")
         ErPreloader(:status="textPreloader")
@@ -36,7 +36,7 @@ export default {
     ErPreloader
   },
   data: () => ({
-    model: 1
+    model: ''
   }),
   watch: {
     isAccessGranted (val) {

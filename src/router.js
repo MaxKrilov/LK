@@ -111,6 +111,7 @@ import TelephonyBlacklistPage from '@/components/pages/telephony/blacklist/index
 import WifiTemplate from './components/templates/WiFiTemplate/index'
 import WifiIndexPage from './components/pages/wifi/index/index'
 import WifiPromo from './components/pages/wifi/promo/index'
+import WifiAuthService from './components/pages/wifi/auth-services/index'
 // WiFi аналитика
 import WifiAnalyticsPromo from './components/pages/wifi/analytics/promo'
 import WifiAnalyticsChoice from './components/pages/wifi/analytics/choice'
@@ -383,6 +384,10 @@ const router = new Router({
             {
               path: 'promo',
               component: WifiPromo
+            },
+            {
+              path: 'auth-services',
+              component: WifiAuthService
             }
           ]
         },

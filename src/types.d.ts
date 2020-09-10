@@ -1,3 +1,15 @@
+import { Component, DirectiveOptions } from 'vue'
+
+export type ComponentOrPack = Component & {
+  // eslint-disable-next-line camelcase
+  $_subcomponents?: Record<string, ComponentOrPack>
+}
+
+export interface ErtUseOptions {
+  directives?: Record<string, DirectiveOptions>
+  components?: Record<string, ComponentOrPack>
+}
+
 export interface TouchHandlers {
   start?: (wrapperEvent: TouchEvent & TouchWrapper) => void
   end?: (wrapperEvent: TouchEvent & TouchWrapper) => void
@@ -25,3 +37,29 @@ export type TouchValue = TouchHandlers & {
 }
 
 export type NumberAsString = string
+
+export type InputValidationRule = (value: any) => string | boolean
+
+export type InputMessage = string | string[]
+
+export type InputValidationRules = (InputValidationRule | string)[]
+
+export interface IIconModule {
+  default: {
+    id: string
+    toString: () => string
+    url: string
+    viewBox: string
+  }
+}
+
+export interface IIconShadow {
+  color: string
+  offset: {
+    x: string | number
+    y: string | number
+  }
+  radius: string | number
+}
+
+export type SelectItemKey = string | (string | number)[] | ((item: object, fallback?: any) => any)

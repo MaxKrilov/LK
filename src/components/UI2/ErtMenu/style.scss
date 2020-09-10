@@ -1,0 +1,89 @@
+@include theme(ert-menu) using ($theme) {
+  &__content {
+    box-shadow: map-deep-get($theme, 'modal', 'box-shadow');
+    border-radius: map-deep-get($theme, 'modal', 'border-radius');
+  }
+}
+
+.ert-menu {
+  display: none;
+
+  &--attched {
+    display: inline;
+  }
+
+  &__content {
+    position: absolute;
+    display: inline-block;
+    max-width: 80%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    contain: content;
+    will-change: transform;
+
+    &--active {
+      pointer-events: none;
+    }
+
+    &--auto {
+      .ert-list-item {
+        transition-property: transform, opacity;
+        transition-duration: 300ms;
+        transition-timing-function: map-get($transition, 'fast-in-fast-out');
+      }
+    }
+
+    &--fixed {
+      position: fixed;
+    }
+  }
+
+  > .ert-menu__content {
+    max-width: none;
+  }
+}
+
+.menu-transition-enter {
+  &-enter {
+    .ert-list-item {
+      min-width: 0;
+      pointer-events: none;
+    }
+  }
+
+  &-enter-to {
+    .ert-list-item {
+      transition-delay: 100ms;
+    }
+  }
+
+  &-leave-active,
+  &-leave-to {
+    pointer-events: none;
+  }
+
+  &-enter,
+  &-leave-to {
+    opacity: 0;
+  }
+
+  &-enter-active,
+  &-leave-active {
+    transition: all 300ms map-get($transition, 'fast-in-fast-out');
+  }
+
+  &.ert-menu__content--auto {
+    transition: none !important;
+
+    .ert-list-item {
+      opacity: 0;
+      transform: translateY(-15px);
+    }
+
+    .ert-list-item--active {
+      opacity: 1;
+      transform: none !important;
+      pointer-events: auto;
+    }
+  }
+}

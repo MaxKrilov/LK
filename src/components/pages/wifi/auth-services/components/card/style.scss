@@ -1,0 +1,136 @@
+.wifi-auth-service__card {
+  background: $border-gradient;
+  padding: 1px;
+  width: 100%;
+  border-radius: $border-radius;
+
+  &__content {
+    background-color: map-get($gray, '9');
+    width: 100%;
+    height: 100%;
+    padding: 24px 32px;
+    border-radius: inherit;
+    display: grid;
+    grid-template-rows: repeat(3, auto);
+    grid-auto-columns: auto 1fr auto;
+  }
+
+  &__input {
+    grid: {
+      row: { start: 1; end: 4 };
+      column: { start: 1; end: 2 }
+    };
+    margin-right: 16px;
+  }
+
+  &__title {
+    grid: {
+      row: { start: 1; end: 2 };
+      column: { start: 2; end: 4 }
+    };
+    @extend %h4;
+    margin-bottom: 16px;
+    user-select: none;
+  }
+
+  &__description,
+  &__settings {
+    grid: {
+      row: { start: 2; end: 3 };
+      column: { start: 2; end: 4 }
+    }
+  }
+
+  &__settings {
+    .er-input {
+      align-items: center;
+
+      > .er-input__prepend-outer {
+        margin-right: 8px;
+      }
+
+      > .er-input__append-outer {
+        cursor: pointer;
+        margin-left: 8px;
+        @include color-black(0.5);
+      }
+
+      .er-input__append-inner {
+        cursor: pointer;
+      }
+    }
+  }
+
+  &__description {
+    @extend %body-font;
+    @include color-black(0.8);
+    margin-bottom: 16px;
+    user-select: none;
+  }
+
+  &__price {
+    grid: {
+      row: { start: 3; end: 4 };
+      column: { start: 2; end: 4 }
+    };
+    @extend %caption1;
+    @include color-black(0.5);
+    text-align: right;
+    user-select: none;
+
+    span {
+      @extend %h2;
+      color: inherit;
+    }
+  }
+
+  &__actions {
+    display: flex;
+  }
+
+  &__action {
+    width: 100%;
+    max-width: 208px;
+  }
+
+  @include min-breakpoint('sm') {
+    &__content {
+      padding: 24px 40px;
+    }
+  }
+
+  @include min-breakpoint('md') {
+    &__content {
+      padding: 32px 24px;
+    }
+
+    &__title,
+    &__description,
+    &__settings {
+      grid-column-end: 3;
+    }
+
+    &__settings {
+      margin-top: 32px;
+      margin-bottom: 16px;
+    }
+
+    &__price {
+      grid: {
+        row: { start: 1; end: 4 };
+        column: { start: 3; end: 4 }
+      };
+      margin-left: 48px;
+
+      span {
+        display: block;
+      }
+    }
+  }
+
+  @include min-breakpoint('xl') {
+    &__content {
+      padding: 32px;
+    }
+  }
+}

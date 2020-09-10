@@ -1,0 +1,12 @@
+@include theme(ert-label) using ($theme) {
+  color: map-deep-get($theme, 'text', 'rest-primary');
+
+  &--is-disabled {
+    color: map-deep-get($theme, 'text', 'disabled');
+  }
+}
+
+.ert-label {
+  @extend %body-font;
+  transition: 300ms map-get($transition, 'swing')
+}

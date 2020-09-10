@@ -1,0 +1,18 @@
+.ert-icon {
+  display: inline-block;
+  font-size: 0;
+  line-height: 0;
+  vertical-align: middle;
+  transition: $primary-transition;
+
+  svg {
+    width: 24px;
+    transition: inherit;
+  }
+
+  @include min-breakpoint('md') {
+    svg {
+      width: 32px;
+    }
+  }
+}

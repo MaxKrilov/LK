@@ -16,7 +16,7 @@ export const SERVICES_AUTH = [
   WIFIADVCANCEL,
   WIFIHSCLONET,
   WIFIACCCHANGE,
-  WIFIAVTVOUCH,
+  // WIFIAVTVOUCH, todo Вернуть после того, как WiFi backend починит
   WIFINAME,
   WIFIREDIR
 ]

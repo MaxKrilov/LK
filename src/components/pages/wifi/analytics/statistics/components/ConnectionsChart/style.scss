@@ -95,6 +95,8 @@
       padding-top: $padding-x2;
       padding-bottom: $padding-x2;
       display: flex;
+      user-select: none;
+      cursor: pointer;
 
       &.is-inactive{
         @extend %connection-chart-legend-inactive;

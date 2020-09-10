@@ -1,0 +1,106 @@
+$select-chip-margin: 4px !default;
+$select-selected-chip-opacity: 0.22 !default;
+$select-prefix-line-height: 20px !default;
+$select-prefix-top: 7px !default;
+$select-selections-padding-top-bottom: 8px 0 !default;
+$select-chips-selections-padding-top: 42px !default;
+$select-active-chip-opacity: 0.2 !default;
+$select-small-chips-selections-min-height: 26px !default;
+$select-selections-line-height: 18px !default;
+$select-selections-margin: 7px 4px 7px 0 !default;
+
+.ert-select {
+  position: relative;
+
+  & > .ert-input__control > .ert-input__slot {
+    cursor: pointer;
+  }
+
+  .ert-chip {
+    flex: 0 1 auto;
+    margin: $select-chip-margin;
+
+    &--selected::after {
+      opacity: $select-selected-chip-opacity;
+    }
+  }
+
+  .fade-transition-leave-active {
+    position: absolute;
+    left: 0;
+  }
+
+  &:not(.ert-input--is-dirty):not(.ert-input--is-focused) .ert-text-field__prefix {
+    line-height: $select-prefix-line-height;
+    top: $select-prefix-top;
+    transition: $primary-transition;
+  }
+
+  .ert-select__selections {
+    padding: $select-selections-padding-top-bottom;
+  }
+
+  &.ert-text-field input {
+    position: relative;
+    flex: 1 1;
+    min-width: 0;
+    margin-top: 0;
+    pointer-events: none;
+  }
+
+  .ert-input__icon--append > .ert-icon.ert-icon--corner_down > svg {
+    width: 16px;
+  }
+
+  &.ert-select--is-menu-active .ert-input__icon--append .ert-icon svg {
+    transform: rotate(180deg);
+  }
+
+  &.ert-select__chips {
+    input {
+      margin: 0;
+    }
+
+    .ert-select__selections {
+      min-height: $select-chips-selections-padding-top;
+    }
+
+    .ert-chip--select.ert-chip--active::before {
+      opacity: $select-active-chip-opacity;
+    }
+
+    &.ert-select--chips--small .ert-select__selections {
+      min-height: $select-small-chips-selections-min-height;
+    }
+  }
+
+  &__selections {
+    line-height: $select-selections-line-height;
+    display: flex;
+    align-items: center;
+    flex: 1 1;
+    flex-wrap: wrap;
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  &__selection {
+    max-width: 90%;
+
+    &--comma {
+      overflow: hidden;
+      margin: $select-selections-margin;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+  }
+
+  &__slot {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+  }
+}
