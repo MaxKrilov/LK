@@ -70,7 +70,7 @@ export default Vue.extend({
 
     .er-icon {
       @include color-black(.2);
-      /deep/ svg {
+      >>> svg {
         width: $padding-x4;
       }
     }

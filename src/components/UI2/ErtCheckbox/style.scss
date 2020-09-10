@@ -1,0 +1,69 @@
+@include theme(ert-input--checkbox) using ($theme) {
+  &__thumb {
+    background: map-deep-get($theme, 'checkbox', 'border-color-inactive');
+
+    &--inner {
+      background: map-deep-get($theme, 'checkbox', 'background-inactive');
+      box-shadow: map-deep-get($theme, 'checkbox', 'box-shadow');
+    }
+  }
+
+  .ert-input--selection-controls__input:hover {
+    .ert-input--checkbox__thumb {
+      background: map-deep-get($theme, 'checkbox', 'border-color-inactive-hover');
+
+      &--inner {
+        box-shadow: map-deep-get($theme, 'checkbox', 'box-shadow-hover');
+      }
+    }
+  }
+
+  &.ert-input--is-dirty {
+    .ert-input--checkbox__thumb {
+      background: map-deep-get($theme, 'checkbox', 'border-color-active');
+
+      &--inner {
+        background: map-deep-get($theme, 'checkbox', 'background-active');
+        color: map-deep-get($theme, 'checkbox', 'icon-color');
+      }
+    }
+
+    .ert-input--selection-controls__input:hover {
+      .ert-input--checkbox__thumb {
+        background: map-deep-get($theme, 'checkbox', 'border-color-active-hover');
+
+        &--inner {
+          box-shadow: map-deep-get($theme, 'checkbox', 'box-shadow-active-hover');
+        }
+      }
+    }
+  }
+}
+
+.ert-input--checkbox {
+  &__thumb {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    padding: 2px;
+    transition: $primary-transition;
+
+    &--inner {
+      width: 100%;
+      height: 100%;
+      border-radius: inherit;
+      transition: inherit;
+      position: relative;
+
+      > i {
+        position: absolute;
+        top: 3px;
+        left: 1px;
+      }
+
+      > i > svg {
+        width: 16px;
+      }
+    }
+  }
+}

@@ -1,5 +1,5 @@
 .package {
-  
+
   @include max-breakpoint("sm") {
     margin-bottom: 16px;
   }
@@ -45,7 +45,7 @@
     }
 
     &_icon {
-      /deep/.er-icon {
+      >>> .er-icon {
         svg {
           color: white;
           width: 80px;
@@ -71,7 +71,7 @@
       @include color-black(0.8);
     }
 
-    /deep/.er-icon {
+    >>> .er-icon {
       cursor: pointer;
 
       &:hover {
@@ -122,7 +122,7 @@
   &__buttons {
     margin-top: 24px;
 
-    .er-button:first-child() {
+    .er-button:first-child {
       margin-bottom: 8px;
     }
   }

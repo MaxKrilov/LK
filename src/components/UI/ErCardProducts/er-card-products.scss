@@ -65,7 +65,7 @@
       opacity: 1;
     }
     .er-card-products__point-icon {
-      /deep/.icon {
+      >>> .icon {
         svg {
           color: map-get($yellow, "base");
         }
@@ -82,7 +82,7 @@
       background: map_get($shades, "white");
     }
     .er-card-products__point-icon {
-      /deep/.icon {
+      >>> .icon {
         svg {
           color: map_get($yellow, "base");
         }
@@ -101,7 +101,7 @@
       @include color-black();
     }
     .er-card-products__switcher {
-      /deep/.icon {
+      >>> .icon {
         @include color-black(0.5);
       }
     }
@@ -129,7 +129,7 @@
       background: map_get($gray, "3");
     }
     .er-card-products__point-icon {
-      /deep/.icon {
+      >>> .icon {
         svg {
           @include color-black(0.1);
         }
@@ -155,7 +155,7 @@
     @include min-breakpoint("lg") {
       margin-left: -23px;
     }
-    /deep/.icon {
+    >>>.icon {
       svg {
         transition: $primary-transition;
         @include color-black(0.2);
@@ -257,7 +257,7 @@
     @include max-breakpoint("md") {
       padding-top: 8px;
     }
-    /deep/.icon {
+    >>>.icon {
       padding-right: 10px;
       @include min-breakpoint("md") {
         padding-right: 16px;
@@ -280,7 +280,7 @@
       padding-top: 0;
     }
     &:hover {
-      /deep/.icon {
+      >>>.icon {
         @include color-black(0.5);
       }
       .wide {
@@ -291,7 +291,7 @@
       }
 
     }
-    /deep/.icon {
+    >>>.icon {
       @include media-query(
         (
           padding-right: (
@@ -306,7 +306,7 @@
       @include color-black(0.2);
     }
     .arrow-up {
-      /deep/svg {
+      >>>svg {
         transform: rotate(180deg);
       }
       @include color-black(0.5);

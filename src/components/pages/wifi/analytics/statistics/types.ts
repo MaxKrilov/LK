@@ -18,7 +18,8 @@ export interface User {
   duration: {
     hours: string
     minutes: string
-  }
+  },
+  dateRegistration: string
 }
 
 export interface UsersRegistryComponent {

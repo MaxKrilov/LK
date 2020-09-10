@@ -1,0 +1,19 @@
+@include theme(ert-messages) using ($theme) {
+  color: map-deep-get($theme, 'text', 'caption');
+}
+
+.ert-messages {
+  position: relative;
+  @extend %caption2-font;
+  flex: 1 1 auto;
+  min-width: 1px;
+  min-height: 14px;
+  text-align: left;
+
+  &__message {
+    word-wrap: break-word;
+    word-break: break-word;
+    hyphens: auto;
+    overflow-wrap: break-word;
+  }
+}

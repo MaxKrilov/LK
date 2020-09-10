@@ -1,0 +1,37 @@
+$list-padding: 8px 0 !default;
+$list-nav-item-margin-bottom: 8px !default;
+$list-nav-padding-left: 8px !default;
+$list-nav-padding-right: 8px !default;
+$list-nav-item-padding: 0 8px !default;
+$list-subheader-padding-top: 0 !default;
+
+@include theme(ert-list) using ($theme) {
+  background-color: map-deep-get($theme, 'list', 'background-color');
+}
+
+.ert-list {
+  display: block;
+  padding: $list-padding;
+  position: static;
+
+  &--disabled {
+    pointer-events: none;
+  }
+
+  &--nav .ert-list-item:not(:last-child):not(:only-child) {
+    margin-bottom: $list-nav-item-margin-bottom;
+  }
+
+  &--nav {
+    padding-left: $list-nav-padding-left;
+    padding-right: $list-nav-padding-right;
+
+    .ert-list-item {
+      padding: $list-nav-item-padding;
+    }
+  }
+
+  &--subheader {
+    padding-top: $list-subheader-padding-top;
+  }
+}

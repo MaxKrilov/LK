@@ -1,0 +1,91 @@
+$list-group-header-icon-min-width: 48px !default;
+$list-group-sub-group-child-margin: 16px !default;
+$list-group-sub-group-header-margin: 32px !default;
+$list-group-items-item-padding: 40px !default;
+$list-group-no-action-item-padding: 72px !default;
+$list-group-no-action-sub-group-item-padding: 88px !default;
+
+.ert-list-group .ert-list-group__header {
+  .ert-list-item__icon.ert-list-group__header__append-icon {
+    align-self: center;
+    margin: 0;
+    min-width: $list-group-header-icon-min-width;
+    justify-content: flex-end;
+
+    > i.ert-icon.ert-icon--corner_down > svg {
+      width: 16px;
+    }
+  }
+}
+
+.ert-list-group--sub-group {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.ert-list-group__header {
+  &.ert-list-item--active:not(:hover):not(:focus):before {
+    opacity: 0;
+  }
+}
+
+.ert-list-group__items {
+  flex: 1 1 auto;
+
+  .ert-list-item,
+  .ert-list-group__items {
+    overflow: hidden;
+  }
+}
+
+.ert-list-group--active > .ert-list-group__header {
+  > .ert-list-group__header__append-icon .ert-icon svg {
+    transform: rotate(-180deg);
+  }
+
+  &.ert-list-group__header--sub-group {
+    > .ert-list-group__header__prepend-icon .ert-icon svg {
+      transform: rotate(-180deg);
+    }
+  }
+}
+
+.ert-list-group--sub-group {
+  .ert-list-item__action,
+  .ert-list-item__icon {
+    &:first-child {
+      margin-right: $list-group-sub-group-child-margin;
+
+      > i.ert-icon.ert-icon--corner_down > svg {
+        width: 16px;
+      }
+    }
+  }
+
+  .ert-list-group__header {
+    padding-left: $list-group-sub-group-header-margin;
+  }
+
+  .ert-list-group__items .ert-list-item {
+    padding-left: $list-group-items-item-padding;
+  }
+
+  &.ert-list-group--active {
+    .ert-list-item__icon.ert-list-group__header__prepend-icon .ert-icon svg {
+      transform: rotate(-180deg);
+    }
+  }
+}
+
+.ert-list-group--no-action {
+  > .ert-list-group__items > .ert-list-item {
+    padding-left: $list-group-no-action-item-padding;
+  }
+
+  &.ert-list-group--sub-group {
+    > .ert-list-group__items > .ert-list-item {
+      padding-left: $list-group-no-action-sub-group-item-padding;
+    }
+  }
+}

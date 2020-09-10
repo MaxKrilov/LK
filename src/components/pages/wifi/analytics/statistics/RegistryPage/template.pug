@@ -1,5 +1,8 @@
 div(:class="`${pre}`")
-  stat-header(:title="'Реестр пользователей'")
+  stat-header(
+    :title="'Реестр пользователей'"
+    @onPeriodSet="setPeriod"
+  )
   div(:class="`${pre}__table`")
     div(:class="`${pre}__table-head${fixedHeader ? ' fixed' : ''}`" ref="thead")
       .user-row
@@ -37,19 +40,6 @@ div(:class="`${pre}`")
     div(:class="`${pre}__table-body`")
       template(v-for="row in rows")
         user-row(:user="row" :selected="row === currentRow" @select="selectRow")
-    div(:class="`${pre}__table-foot`")
-      div(:class="`${pre}__table-panel`")
-        div(:class="`${pre}__preloader`") &hellip;
-        div(:class="`${pre}__pagination`")
-          template(v-if="moreCounts && moreCounts.length > 0")
-            div(:class="`${pre}__pagination-caption`") Показать ещё:
-            template(v-for="count of moreCounts")
-              er-button(:class="`${pre}__pagination-link`" @click.prevent="showMore(count)")
-                span {{ count }}
-          er-button(:class="`${pre}__rollback`" @click="scrollTop")
-            er-icon(name="corner_up")
-      template(v-if="hasLastRow")
-        user-row(:user="lastRow" :selected="lastRow === currentRow" @select="selectRow")
   page-footer
   user-dialog(v-model="showDialog" :fullscreen="isFullscreenDialog" :width="getWidth")
     div(:class="`${pre}__modal`")

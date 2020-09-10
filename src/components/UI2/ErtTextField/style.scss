@@ -1,0 +1,247 @@
+$input-top-spacing: 16px !default;
+$text-field-active-label-height: 12px !default;
+$text-field-line-height: 20px !default;
+$text-field-padding: 8px 0 8px !default;
+$text-field-append-prepend-margin: 4px !default;
+$text-field-counter-margin: 8px !default;
+$text-field-label-top--mobile: 10px !default;
+$text-field-label-top: 14px !default;
+$text-field-label-active-transform: translateY(-22px) scale(.75) !default;
+$text-field-label-active-transform--mobile: translateY(-18px) scale(.75) !default;
+$text-field-details-min-height: 14px !default;
+$text-field-slot-min-height: 48px !default;
+$text-field-slot-min-height--mobile: 40px !default;
+$text-field-slot-padding: 0 12px !default;
+$text-field-border-radius: 8px !default;
+$text-field-fieldset-top: -5px !default;
+$text-field-fieldset-padding: 8px !default;
+$text-field-legend-line-height: 11px !default;
+
+@include theme(ert-text-field) using ($theme) {
+  > .ert-input__control > .ert-input__slot > fieldset {
+    color: map-deep-get($theme, 'textfield', 'rest');
+  }
+
+  > .ert-input__control > .ert-input__slot {
+    > .ert-input__prepend-inner,
+    > .ert-input__append-inner {
+      color: map-deep-get($theme, 'textfield', 'prepend-append-color');
+    }
+  }
+
+  > .ert-input__control > .ert-input__slot > .ert-text-field__slot,
+  > .ert-input__control > .ert-input__slot > .ert-select__slot {
+    > label {
+      color: map-deep-get($theme, 'textfield', 'label');
+
+      &.ert-label--active {
+        font-family: map-deep-get($theme, 'textfield', 'label-active-font');
+      }
+    }
+  }
+
+  &:not(.ert-input--has-state):not(.ert-input--is-focused) {
+    > .ert-input__control > .ert-input__slot:hover > fieldset {
+      color: map-deep-get($theme, 'textfield', 'hover');
+    }
+
+    > .ert-input__control > .ert-input__slot:hover {
+      > .ert-input__prepend-inner,
+      > .ert-input__append-inner {
+        color: map-deep-get($theme, 'textfield', 'prepend-append-color--hover');
+      }
+    }
+  }
+
+  &.ert-input--is-focused:not(.ert-input--has-state) {
+    > .ert-input__control > .ert-input__slot > fieldset {
+      color: map-deep-get($theme, 'textfield', 'focus');
+    }
+
+    > .ert-input__control > .ert-input__slot {
+      > .ert-input__prepend-inner,
+      > .ert-input__append-inner {
+        color: map-deep-get($theme, 'textfield', 'prepend-append-color--focus');
+      }
+    }
+  }
+
+  &.ert-input--has-state {
+    &.ert-text-field--is-error {
+      > .ert-input__control > .ert-input__slot > fieldset {
+        color: map-deep-get($theme, 'textfield', 'error');
+      }
+
+      > .ert-input__control > .ert-input__slot > .ert-text-field__slot > label {
+        color: map-deep-get($theme, 'textfield', 'error');
+      }
+
+      > .ert-input__control > .ert-text-field__details > .ert-messages {
+        color: map-deep-get($theme, 'textfield', 'error');
+      }
+    }
+
+    &.ert-text-field--is-success {
+      > .ert-input__control > .ert-input__slot > fieldset {
+        color: map-deep-get($theme, 'textfield', 'success');
+      }
+
+      > .ert-input__control > .ert-input__slot > .ert-text-field__slot > label {
+        color: map-deep-get($theme, 'textfield', 'success');
+      }
+
+      > .ert-input__control > .ert-text-field__details > .ert-messages {
+        color: map-deep-get($theme, 'textfield', 'success');
+      }
+    }
+  }
+}
+
+.ert-text-field {
+  margin-top: $input-top-spacing - $text-field-active-label-height;
+  padding-top: $text-field-active-label-height;
+  position: relative;
+  border-radius: $text-field-border-radius;
+
+  input {
+    line-height: $text-field-line-height;
+    flex: 1 1 auto;
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    padding: $text-field-padding;
+  }
+
+  fieldset,
+  .ert-input__control,
+  .ert-input__slot {
+    border-radius: inherit;
+  }
+
+  fieldset,
+  .ert-input__control {
+    color: inherit;
+  }
+
+  .ert-input__prepend-inner,
+  .ert-input__append-inner {
+    line-height: 1;
+    display: inline-flex;
+    user-select: none;
+    align-self: center;
+  }
+
+  .ert-input__prepend-inner {
+    margin-right: auto;
+    padding-right: $text-field-append-prepend-margin;
+  }
+
+  .ert-input__append-inner {
+    margin-left: auto;
+    padding-left: $text-field-append-prepend-margin;
+  }
+
+  .ert-counter {
+    margin-left: $text-field-counter-margin;
+    white-space: nowrap;
+  }
+
+  .ert-label {
+    top: $text-field-label-top--mobile;
+    overflow: hidden;
+    max-width: 90%;
+    transform-origin: top left;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    pointer-events: none;
+
+    &--active {
+      max-width: 133%;
+      transform: $text-field-label-active-transform--mobile;
+    }
+  }
+
+  & > .ert-input__control > .ert-input__slot {
+    cursor: text;
+    align-items: stretch;
+    min-height: $text-field-slot-min-height--mobile;
+    padding: $text-field-slot-padding;
+  }
+
+  &__details {
+    display: flex;
+    flex: 1 0 auto;
+    max-width: 100%;
+    min-height: $text-field-details-min-height;
+    overflow: hidden;
+  }
+
+  &__prefix,
+  &__suffix {
+    align-self: center;
+    cursor: default;
+    white-space: nowrap;
+  }
+
+  &__prefix {
+    text-align: right;
+    padding-right: $text-field-append-prepend-margin;
+  }
+
+  &__suffix {
+    white-space: nowrap;
+    padding-left: $text-field-append-prepend-margin;
+  }
+
+  & > .ert-input__control > .ert-input__slot > .ert-text-field__slot {
+    display: flex;
+    flex: 1 1 auto;
+    position: relative;
+    align-items: center;
+  }
+
+  &:not(.ert-text-field--is-booted) {
+    .ert-label,
+    legend {
+      transition: none;
+    }
+  }
+
+  fieldset {
+    border-collapse: collapse;
+    border-color: currentColor;
+    border-style: solid;
+    border-width: 1px;
+    bottom: 0;
+    left: 0;
+    pointer-events: none;
+    position: absolute;
+    right: 0;
+    top: $text-field-fieldset-top;
+    transition-duration: 300ms;
+    transition-property: color;
+    transition-timing-function: map-get($transition, 'fast-in-fast-out');
+    padding-left: $text-field-fieldset-padding;
+  }
+
+  legend {
+    line-height: $text-field-legend-line-height;
+    padding: 0;
+    transition: width $primary-transition;
+    text-align: left;
+  }
+
+  @include min-breakpoint('md') {
+    .ert-label {
+      top: $text-field-label-top;
+
+      &--active {
+        transform: $text-field-label-active-transform;
+      }
+    }
+
+    & > .ert-input__control > .ert-input__slot {
+      min-height: $text-field-slot-min-height;
+    }
+  }
+}

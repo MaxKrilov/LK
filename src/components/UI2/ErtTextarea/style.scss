@@ -1,0 +1,31 @@
+$textarea-line-height: 1.75rem !default;
+$textarea-min-height: 32px !default;
+$textarea-padding: 0 !default;
+$textarea-prefix-padding-top: 2px !default;
+
+.ert-textarea {
+  textarea {
+    align-self: stretch;
+    flex: 1 1 auto;
+    line-height: $textarea-line-height;
+    max-width: 100%;
+    min-height: $textarea-min-height;
+    outline: none;
+    padding: $textarea-padding;
+    width: 100%;
+  }
+
+  .ert-text-field__prefix,
+  .ert-text-field__suffix {
+    padding-top: $textarea-prefix-padding-top;
+    align-self: start;
+  }
+
+  &--auto-grow textarea {
+    overflow: hidden;
+  }
+
+  &--no-resize textarea {
+    resize: none;
+  }
+}
