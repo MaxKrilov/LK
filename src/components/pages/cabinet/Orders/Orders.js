@@ -21,7 +21,7 @@ export default {
     isLoading: false,
     range: '',
     page: 1,
-    rowCount: 20,
+    rowCount: 25,
     orderList: []
   }),
   computed: {
