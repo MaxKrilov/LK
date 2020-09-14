@@ -6,7 +6,8 @@ import { isCombat, isServer } from '@/functions/helper'
 import {
   PROD_SSO_CHANGE_CUSTOMER_IFRAME,
   PSI_SSO_CHANGE_CUSTOMER_IFRAME,
-  TEST_SSO_CHANGE_CUSTOMER_IFRAME
+  TEST_SSO_CHANGE_CUSTOMER_IFRAME,
+  EDU_SSO_CHANGE_CUSTOMER_IFRAME
 } from '@/constants/url'
 
 // TODO: переместить в @/directives/resize.js как iframe-resize
@@ -21,7 +22,9 @@ function getCurrentIframeUrl () {
     ? PROD_SSO_CHANGE_CUSTOMER_IFRAME
     : isServer('psi2') || isServer('psi3')
       ? PSI_SSO_CHANGE_CUSTOMER_IFRAME
-      : TEST_SSO_CHANGE_CUSTOMER_IFRAME
+      : isServer('edu')
+        ? EDU_SSO_CHANGE_CUSTOMER_IFRAME
+        : TEST_SSO_CHANGE_CUSTOMER_IFRAME
 }
 const SSO_CUSTOMER_IFRAME_URL = getCurrentIframeUrl()
 
@@ -29,7 +32,7 @@ const WAIT_SSO_QUERY_TIMEOUT = 2700
 const NEED_SSO_TIMEOUT = false
 
 function waitSSO () {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     if (NEED_SSO_TIMEOUT) {
       setTimeout(() => {
         resolve()
