@@ -1,77 +1,66 @@
 div(:class="`${pre}`")
-    template(v-if="getChartType === 'line'")
-        div.line-chart-period
-            template(v-for="(item, idx) in getLineChartPeriods") 
-                button.line-chart-period__item(
-                    :class="{'is-selected': lineChartPeriod === idx}"
-                    type="button" 
-                    @click="setLineChartPeriod(idx)"
-                ) {{ item }}
-    div.chart-holder(
-        ref="chartholder"
-        :class="[getChartType]"
-    )
-    div.chart-legend(
-        ref="chartlegend"
-        :class="{'is-hide-inactive': !legendInactiveIsVisible}"
-    )
-        div.chart-legend__controls.chart-legend__item
-            div.chart-legend__controls__item(
-                @click="toggleLegendInactiveVisible"
-            ) {{ getLegendInactiveControl }}
-            div.chart-legend__controls__item(
-                v-if="isMobile"
-                @click="toggleLegendUnits"
-            ) {{ legendUnits[legendUnit] }}
+  template(v-if="getChartType === 'line'")
+    div.line-chart-period
+      template(v-for="(item, idx) in getLineChartPeriods")
+        button.line-chart-period__item(
+          :class="{'is-selected': lineChartPeriod === idx}"
+          type="button"
+          @click="setLineChartPeriod(idx)"
+        ) {{ item }}
+  div.chart-holder(
+    ref="chartholder"
+    :class="[getChartType]"
+  )
 
-        div.chart-legend__item.chart-legend__head(@click="toggleLegend")
-            div.chart-legend__item__label
-                span.chart-legend__item__toggle-marker(:class="{'is-open': legendIsOpen}")
-                    er-icon(name="corner_down")
-                span.chart-legend__item__marker(:style="{backgroundColor: '#6688C9', borderColor: '#6688C9'}")
-                span.chart-legend__item__txt Общее количество подключений
+  //- Легенда
+  div.chart-legend(
+    ref="chartlegend"
+    :class="{'is-hide-inactive': !legendInactiveIsVisible}"
+  )
+    div.chart-legend__controls.chart-legend__item
+      div.chart-legend__controls__item(@click="toggleLegendInactiveVisible")
+        | {{ getLegendInactiveControl }}
+      div.chart-legend__controls__item(v-if="isMobile" @click="toggleLegendUnits")
+        | {{ legendUnits[legendUnit] }}
+    template(v-for="(legendItem, idxs) in legendData")
+      div.chart-legend__section-head.chart-legend__item(
+        :key="idxs"
+        :class="{'is-inactive': !legendItem.visible}"
+        @click="() => { toggleVisibilityLegend(legendItem.authType); legendItem.visible = !legendItem.visible }"
+      )
+        div.chart-legend__item__label()
+          span.chart-legend__item__toggle-marker(
+            v-if="legendItem.hasOwnProperty('isToggle')"
+            :class="{ 'is-open': legendItem.isToggle }"
+            @click.prevent.stop="legendItem.isToggle = !legendItem.isToggle"
+          )
+            er-icon(name="corner_down")
+          span.chart-legend__item__marker(
+            :style="legendItem.visible ? {backgroundColor: legendColor[legendItem.authType], borderColor: legendColor[legendItem.authType]} : null"
+          )
+          span.chart-legend__item__txt {{ legendItem.label }}
+        template(v-if="!legendUnit || legendUnit === 'pcnt'")
+          div.chart-legend__item__data-pcnt
+            | {{ legendItem.percentage }}
+            span.chart-legend__item__data-pcnt__pcnt %
+        template(v-if="!legendUnit || legendUnit === 'unit'")
+          div.chart-legend__item__data {{ legendItem.count }}
+
+      er-slide-up-down.chart-legend__content-section(:active="legendItem.isToggle")
+        template(v-for="(item, idxi) in legendItem.children")
+          div.chart-legend__item(
+            v-if="item.label"
+            :key="idxi"
+            :class="{'is-inactive': !item.visible}"
+          )
+            div.chart-legend__item__label(
+              @click="() => { toggleVisibilityLegend(item.authType); item.visible = !item.visible }"
+            )
+              span.chart-legend__item__marker(
+                :style="item.visible ? {backgroundColor: legendColor[item.authType], borderColor: legendColor[item.authType]} : null"
+              )
+              span.chart-legend__item__txt {{ item.label }}
             template(v-if="!legendUnit || legendUnit === 'pcnt'")
-                div.chart-legend__item__data-pcnt 20
-                    span.chart-legend__item__data-pcnt__pcnt %
+              div.chart-legend__item__data-pcnt
             template(v-if="!legendUnit || legendUnit === 'unit'")
-                div.chart-legend__item__data 192 250
-            
-
-        er-slide-up-down.chart-legend__content(:active="legendIsOpen")
-            template(v-for="(section, idxs) in connections")
-                div.chart-legend__section-head.chart-legend__item(
-                    :key="idxs"
-                    :class="{'is-inactive': !section.active}"
-                    @click="toggleLegendSection(idxs)"
-                )
-                    div.chart-legend__item__label
-                        span.chart-legend__item__toggle-marker(
-                            v-if="section.isToggle"
-                            :class="{'is-open': legendSections[`section${idxs}`]}"
-                        )
-                            er-icon(name="corner_down")
-                        span.chart-legend__item__marker(:style="{backgroundColor: legendColor[section.section], borderColor: legendColor[section.section]}")
-                        span.chart-legend__item__txt {{ section.section }}
-                    template(v-if="!legendUnit || legendUnit === 'pcnt'")    
-                        div.chart-legend__item__data-pcnt 12
-                            span.chart-legend__item__data-pcnt__pcnt %
-                    template(v-if="!legendUnit || legendUnit === 'unit'")
-                        div.chart-legend__item__data {{ calcLegendSectionData(section.data) }}              
-
-                er-slide-up-down.chart-legend__content-section(:active="legendSections[`section${idxs}`]")
-                    template(v-for="(item, idxi) in section.data")
-                        div.chart-legend__item(
-                            v-if="item.label"
-                            :key="idxi"
-                            :class="{'is-inactive': !item.active}"
-                        )
-                            div.chart-legend__item__label
-                                span.chart-legend__item__marker(:style="{backgroundColor: legendColor[item.label+idxs], borderColor: legendColor[item.label+idxs]}")
-                                span.chart-legend__item__txt {{ item.label }}
-                            template(v-if="!legendUnit || legendUnit === 'pcnt'")
-                                div.chart-legend__item__data-pcnt 12
-                                    span.chart-legend__item__data-pcnt__pcnt %
-                            template(v-if="!legendUnit || legendUnit === 'unit'")
-                                div.chart-legend__item__data {{ calcLegendItemData(item.data) }}                     
-        
-            
+              div.chart-legend__item__data {{ calcLegendItemData(item.data) }}

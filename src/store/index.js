@@ -30,6 +30,8 @@ import internet from './modules/internet'
 import timer from './modules/timer'
 import address from './modules/address'
 import videocontrol from './modules/videocontrol'
+import profile from './modules/profile'
+import wifi from './modules/wifi'
 
 const debug = process.env.NODE_ENV !== 'production'
 
@@ -63,7 +65,9 @@ export default new Vuex.Store({
     timer,
     telephony,
     address,
-    videocontrol
+    videocontrol,
+    wifi,
+    profile
   },
   strict: debug,
   plugins: [createPersistedState({

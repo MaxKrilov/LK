@@ -1,0 +1,51 @@
+$tooltip-border-radius: 12px !default;
+$tooltip-font-size: 14px !default;
+$tooltip-padding: 5px 16px !default;
+$tooltip-transition-timing-function: map-get($transition, 'linear-out-slow-in') !default;
+$tooltip-transition-enter-duration: 150ms !default;
+$tooltip-transition-leave-duration: 75ms !default;
+
+@include theme(ert-tooltip) using ($theme) {
+  &__content {
+    background-color: map-deep-get($theme, 'tooltip', 'background-color');
+    color: map-deep-get($theme, 'tooltip', 'text-color');
+    box-shadow: map-deep-get($theme, 'tooltip', 'box-shadow');
+  }
+}
+
+.ert-tooltip {
+  display: none;
+
+  &--attched {
+    display: inline;
+  }
+
+  &__content {
+    border-radius: $tooltip-border-radius;
+    font-size: $tooltip-font-size;
+    line-height: round($tooltip-font-size * 1.6);
+    display: inline-block;
+    padding: $tooltip-padding;
+    position: absolute;
+    text-transform: initial;
+    width: auto;
+    opacity: 1;
+    pointer-events: none;
+  }
+
+  &--fixed {
+    position: fixed;
+  }
+
+  &[class*="-active"] {
+    transition-timing-function: $tooltip-transition-timing-function;
+  }
+
+  &[class*="enter-active"] {
+    transition-duration: $tooltip-transition-enter-duration;
+  }
+
+  &[class*="leave-active"] {
+    transition-duration: $tooltip-transition-leave-duration;
+  }
+}

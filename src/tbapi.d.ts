@@ -522,3 +522,29 @@ export interface IAddressUnit {
     }
   ]
 }
+
+export interface IWifiResourceInfo {
+  // eslint-disable-next-line camelcase
+  bpi_id: string,
+  vlan?: [{
+    cityId: string
+    name: string
+    number: string
+    status: string
+  }]
+}
+
+export interface IWifiStatUser {
+  // eslint-disable-next-line camelcase,camelcase
+  count_auth: number
+  // eslint-disable-next-line camelcase
+  date_reg: string
+  // eslint-disable-next-line camelcase,camelcase
+  last_session: string
+  // eslint-disable-next-line camelcase
+  mac_address: string
+  // eslint-disable-next-line camelcase
+  output_bytes: number
+  // eslint-disable-next-line camelcase
+  user_name: string
+}

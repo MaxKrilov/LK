@@ -1,0 +1,183 @@
+$chip-line-height: 20px !default;
+$chip-padding: 0 12px !default;
+$chip-transition-duration: 0.28s !default;
+$chip-transition-fn: map-get($transition, 'fast-out-slow-in') !default;
+$chip-white-space: nowrap !default;
+$chip-icon-margin-after: 6px !default;
+$chip-icon-margin-before: -6px !default;
+$chip-close-size: 16px !default;
+$chip-icon-right-margin-after: -4px !default;
+$chip-link-focus-opacity: 0.32 !default;
+$chip-disabled-opacity: 0.4 !default;
+$chip-filter-max-width: 24px !default;
+$icon-outlined-border-width: thin !default;
+$chip-outlined-active-opacity: 0.08 !default;
+$chip-selected-opacity: 0.28 !default;
+$icon-sizes: (
+  'x-small': (
+    'font-size': 10,
+    'height': 16
+  ),
+  'small': (
+    'font-size': 12,
+    'height': 24
+  ),
+  'default': (
+    'font-size': 14,
+    'height': 32
+  ),
+  'large': (
+    'font-size': 16,
+    'height': 54
+  ),
+  'x-large': (
+    'font-size': 18,
+    'height': 66
+  )
+);
+
+@include theme(ert-chip) using ($theme) {
+  border-color: map-deep-get($theme, 'chip', 'border-color');
+  color: map-deep-get($theme, 'text', 'rest-primary');
+
+  &:not(.ert-chip--active) {
+    background: map-deep-get($theme, 'chip', 'background');
+  }
+
+  @include states($theme);
+}
+
+.ert-chip {
+  line-height: $chip-line-height;
+  position: relative;
+  display: inline-flex;
+  overflow: hidden;
+  align-items: center;
+  max-width: 100%;
+  padding: $chip-padding;
+  cursor: default;
+  transition-timing-function: $chip-transition-fn;
+  transition-duration: $chip-transition-duration;
+  transition-property: box-shadow, opacity;
+  vertical-align: middle;
+  white-space: $chip-white-space;
+  text-decoration: none;
+  outline: none;
+
+  &::before {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    content: '';
+    pointer-events: none;
+    opacity: 0;
+    border-radius: inherit;
+    background-color: currentColor;
+  }
+
+  .ert-icon {
+    &--left {
+      margin-right: $chip-icon-margin-after;
+      margin-left: $chip-icon-margin-before;
+    }
+
+    &--right {
+      margin-right: $chip-icon-margin-before;
+      margin-left: $chip-icon-margin-after;
+    }
+
+    > svg {
+      width: 24px;
+    }
+  }
+
+  &__close.ert-icon {
+    user-select: none;
+
+    > svg {
+      width: $chip-close-size;
+    }
+
+    &.ert-icon--right {
+      margin-right: $chip-icon-right-margin-after;
+    }
+
+    &:hover,
+    &:focus,
+    &:active {
+      opacity: .72;
+    }
+  }
+
+  &__content {
+    display: inline-flex;
+    align-items: center;
+    max-width: 100%;
+    height: 100%;
+  }
+
+  &--link {
+    &::before {
+      transition: opacity $primary-transition;
+    }
+
+    &:focus::before {
+      opacity: $chip-link-focus-opacity;
+    }
+  }
+
+  &--clickable {
+    cursor: pointer;
+    user-select: none;
+  }
+
+  &--disabled {
+    user-select: none;
+    pointer-events: none;
+    opacity: $chip-disabled-opacity;
+  }
+
+  &__filter {
+    max-width: $chip-filter-max-width;
+
+    &.expand-x-transition-leave-active,
+    &.expand-x-transition-enter {
+      margin: 0;
+    }
+  }
+
+  &--label {
+    border-radius: 12px !important;
+  }
+
+  &--outlined {
+    border-width: $icon-outlined-border-width;
+    border-style: solid;
+
+    &.ert-chip--active::before {
+      opacity: $chip-outlined-active-opacity;
+    }
+
+    &.ert-chip.ert-chip {
+      background-color: map-get($shades, 'transparent') !important;
+    }
+  }
+
+  &--selected.ert-chip {
+    background: map-get($shades, 'transparent');
+
+    &::after {
+      opacity: $chip-selected-opacity;
+    }
+  }
+
+  @each $name, $size in $icon-sizes {
+    &.ert-size--#{$name} {
+      border-radius: #{map-get($size, 'height') / 2}px;
+      font-size: #{map-get($size, 'font-size')}px;
+      height: #{map-get($size, 'height')}px;
+    }
+  }
+}

@@ -1,6 +1,5 @@
 // eslint-disable-next-line no-unused-vars
 import Vue from 'vue'
-// eslint-disable-next-line no-unused-vars
 import { Route, RawLocation } from 'vue-router'
 
 declare module 'vue/types/vue' {

@@ -1,0 +1,5 @@
+@mixin theme ($component) {
+  div[data-app].erth .#{$component} {
+    @content($ert)
+  }
+}

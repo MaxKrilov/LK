@@ -86,3 +86,12 @@
     opacity: 1;
   }
 }
+
+.fab-transition {
+  @include transition-default();
+
+  &-enter,
+  &-leave-to {
+    transform: scale(0) rotate(-45deg);
+  }
+}

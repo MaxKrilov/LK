@@ -1,29 +1,31 @@
 @import "settings/colors";
 @import "settings/breakpoint";
+@import "settings/shadows";
 
-$fedra-book:  "Fedra Book", sans-serif;
-$fedra-demi:  "Fedra Book Demi";
+$fedra-book: "Fedra Book", sans-serif;
+$fedra-demi: "Fedra Book Demi";
 $fedra-light: "Fedra Book Light";
-$fedra-med:   "Fedra Book Med";
+$fedra-med: "Fedra Book Med";
 
 $transition: (
-        fast-out-slow-in:   cubic-bezier(0.4, 0.0, 0.2,   1),
-        linear-out-slow-in: cubic-bezier(0.0, 0.0, 0.2,   1),
-        fast-out-linear-in: cubic-bezier(0.4, 0.0, 1,     1),
-        ease-in-out:        cubic-bezier(0.4, 0.0, 0.6,   1),
-        fast-in-fast-out:   cubic-bezier(.25, 0.8, 0.25,  1),
-        swing:              cubic-bezier(.25, 0.8, 0.5,   1)
+  fast-out-slow-in: cubic-bezier(0.4, 0, 0.2, 1),
+  linear-out-slow-in: cubic-bezier(0, 0, 0.2, 1),
+  fast-out-linear-in: cubic-bezier(0.4, 0, 1, 1),
+  ease-in-out: cubic-bezier(0.4, 0, 0.6, 1),
+  fast-in-fast-out: cubic-bezier(0.25, 0.8, 0.25, 1),
+  swing: cubic-bezier(0.25, 0.8, 0.5, 1)
 );
 
-$primary-transition:    300ms map_get($transition, swing);
-$secondary-transition:  200ms map_get($transition, ease-in-out);
+$primary-transition: 300ms map_get($transition, swing);
+$secondary-transition: 200ms map_get($transition, ease-in-out);
 
 // Progress Circular
-$progress-circular-rotate-animation:            progress-circular-rotate 1.4s linear infinite;
-$progress-circular-rotate-dash:                 progress-circular-dash 1.4s ease-in-out infinite;
-$process-circular-indeterminate-svg-transition: all .2s ease-in-out;
-$progress-circular-underlay-stroke:             rgba(map_get($shades, 'black'), 0.1);
-$progress-circular-overlay-transition:          all .6s ease-in-out;
+$progress-circular-rotate-animation: progress-circular-rotate 1.4s linear
+  infinite;
+$progress-circular-rotate-dash: progress-circular-dash 1.4s ease-in-out infinite;
+$process-circular-indeterminate-svg-transition: all 0.2s ease-in-out;
+$progress-circular-underlay-stroke: rgba(map_get($shades, "black"), 0.1);
+$progress-circular-overlay-transition: all 0.6s ease-in-out;
 
 $min-indentation: 4;
 $max-indentation: 64;
@@ -46,77 +48,127 @@ $padding-x40: $min-indentation * 40px;
 $browser-scrollbar-width: 48px;
 
 $main-content-padding: (
-  'xs': $padding-x4,
-  'sm': $padding-x6,
-  'md': $padding-x6,
-  'lg': $padding-x8,
-  'xl': $padding-x12
+  "xs": $padding-x4,
+  "sm": $padding-x6,
+  "md": $padding-x6,
+  "lg": $padding-x8,
+  "xl": $padding-x12
 );
 
 $main-content-padding-top: (
-  'xs': $padding-x10,
-  'md': $padding-x12,
-  'xl': $padding-x8,
+  "xs": $padding-x10,
+  "md": $padding-x12,
+  "xl": $padding-x8
 );
 
 $z-index: (
-  'top-menu': 5,
-  'left-menu': 7,
-  'right-modal': 100,
-  'side-modal': 100,
-  'search-field': 1,
-  'top-overlay': 6,
-  'toast-stack': 10
+  "top-menu": 5,
+  "left-menu": 7,
+  "right-modal": 100,
+  "side-modal": 100,
+  "search-field": 1,
+  "top-overlay": 6,
+  "toast-stack": 10
 );
 
 // Fonts
 $text: (
-  'xs': (normal 12px/1.2rem $fedra-book, 'Roboto', 'Helvetica', sans-serif),
-  'small': (normal 14px/18px $fedra-book, 'Roboto', 'Helvetica', sans-serif),
-  'medium': (normal 16px/20px $fedra-book, 'Roboto', 'Helvetica', sans-serif),
-  'large': (normal 18px/23px $fedra-book, 'Roboto', 'Helvetica', sans-serif),
-  'xl': (normal 20px/25px $fedra-book, 'Roboto', 'Helvetica', sans-serif)
+  "xs": (
+    normal 12px/1.2rem $fedra-book,
+    "Roboto",
+    "Helvetica",
+    sans-serif
+  ),
+  "small": (
+    normal 14px/18px $fedra-book,
+    "Roboto",
+    "Helvetica",
+    sans-serif
+  ),
+  "medium": (
+    normal 16px/20px $fedra-book,
+    "Roboto",
+    "Helvetica",
+    sans-serif
+  ),
+  "large": (
+    normal 18px/23px $fedra-book,
+    "Roboto",
+    "Helvetica",
+    sans-serif
+  ),
+  "xl": (
+    normal 20px/25px $fedra-book,
+    "Roboto",
+    "Helvetica",
+    sans-serif
+  )
 );
 
 $title: (
-  'xs': (normal 15px/20px $fedra-demi, 'Roboto', 'Helvetica', sans-serif),
-  'small': (normal 18px/22px $fedra-demi, 'Roboto', 'Helvetica', sans-serif),
-  'medium': (normal 24px/30px $fedra-demi, 'Roboto', 'Helvetica', sans-serif),
-  'large': (normal 28px/1.8rem $fedra-demi, 'Roboto', 'Helvetica', sans-serif),
-  'xl': (normal 36px/45px $fedra-demi, 'Roboto', 'Helvetica', sans-serif),
+  "xs": (
+    normal 15px/20px $fedra-demi,
+    "Roboto",
+    "Helvetica",
+    sans-serif
+  ),
+  "small": (
+    normal 18px/22px $fedra-demi,
+    "Roboto",
+    "Helvetica",
+    sans-serif
+  ),
+  "medium": (
+    normal 24px/30px $fedra-demi,
+    "Roboto",
+    "Helvetica",
+    sans-serif
+  ),
+  "large": (
+    normal 28px/1.8rem $fedra-demi,
+    "Roboto",
+    "Helvetica",
+    sans-serif
+  ),
+  "xl": (
+    normal 36px/45px $fedra-demi,
+    "Roboto",
+    "Helvetica",
+    sans-serif
+  )
 );
 
 $left-menu-width: 271px;
 
 $menu-top-height: (
-  'default': 56px,
-  'md': 64px,
-  'lg': 72px,
-  'xl': 96px
+  "default": 56px,
+  "md": 64px,
+  "lg": 72px,
+  "xl": 96px
 );
 
 $ui: (
-  'border-radius': 8px
+  "border-radius": 8px
 );
 
 $content-max-width: 1024px;
 
 $main-content-width: (
-  'default': $content-max-width,
-  'xl': 900px,
-  'lg': 100%
+  "default": $content-max-width,
+  "xl": 900px,
+  "lg": 100%
 );
 
+$small-border-radius: $min-indentation * 2px;
 $border-radius: $min-indentation * 3px;
 
-$border-gradient:
-  linear-gradient(
-    to top right,
-    map_get($gray, '26') 28.65%,
-    map_get($shades, 'white') 90.63%
-  );
+$border-gradient: linear-gradient(
+  to top right,
+  map_get($gray, "26") 28.65%,
+  map_get($shades, "white") 90.63%
+);
 
 $dialog-block: (
-  'min-width': 288px,
-  'min-width-sm': 447px
+  "min-width": 288px,
+  "min-width-sm": 447px
 );

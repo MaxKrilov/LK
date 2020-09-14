@@ -393,6 +393,10 @@
   border-radius: $border-radius;
 }
 
+%small-rounded-block {
+  border-radius: $small-border-radius;
+}
+
 %shadow-block {
   box-shadow: $card-shadow;
 }

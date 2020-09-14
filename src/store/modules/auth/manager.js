@@ -8,8 +8,6 @@ const AUTH_ERROR = 'AUTH_ERROR'
 const SET_AUTH_TOKENS = 'SET_AUTH_TOKENS'
 const REMOVE_AUTH_TOKENS = 'REMOVE_AUTH_TOKENS'
 
-const CLEAN_STATE = 'CLEAN_STATE'
-
 const getters = {
   hasAccess (state, payload) {
     const resources = payload?.user?.userId
@@ -40,7 +38,6 @@ const actions = {
         return tokens
       } catch (e) {
         commit(REMOVE_AUTH_TOKENS)
-        commit(CLEAN_STATE)
         commit(AUTH_ERROR, `Не удалось авторизоваться: ${e.toString()}`)
         return false
       }

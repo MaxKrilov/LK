@@ -1,0 +1,221 @@
+$progress-linear-border-radius: 12px !default;
+$progress-linear-stream-opacity: 0.3 !default;
+$progress-linear-stream-border-width: 4px !default;
+$progress-linear-stripe-gradient: linear-gradient(
+    135deg,
+    map-get($shades, 'white') 25%,
+    map-get($shades, 'transparent') 0,
+    map-get($shades, 'transparent') 50%,
+    map-get($shades, 'white') 0,
+    map-get($shades, 'white') 75%,
+    map-get($shades, 'transparent') 0,
+    map-get($shades, 'transparent')
+) !default;
+$progress-linear-stripe-background-size: 40px 40px !default;
+
+@include theme(ert-progress-linear) using ($theme) {
+  color: map-deep-get($theme, 'linear-progress', 'color');
+}
+
+.ert-progress-linear {
+  background: transparent;
+  overflow: hidden;
+  position: relative;
+  transition: .2s map-get($transition, 'ease-in-out');
+  width: 100%;
+
+  &__buffer {
+    height: inherit;
+    left: 0;
+    position: absolute;
+    top: 0;
+    transition: inherit;
+    width: 100%;
+    z-index: 1;
+  }
+
+  &__background {
+    bottom: 0;
+    left: 0;
+    position: absolute;
+    top: 0;
+    transition: inherit;
+  }
+
+  &__content {
+    align-items: center;
+    display: flex;
+    height: 100%;
+    left: 0;
+    justify-content: center;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    z-index: 2;
+  }
+
+  &__determinate {
+    height: inherit;
+    left: 0;
+    position: absolute;
+    transition: inherit;
+    color: inherit;
+  }
+
+  &__indeterminate {
+    color: inherit;
+
+    .long, .short {
+      background-color: currentColor;
+      bottom: 0;
+      height: inherit;
+      left: 0;
+      position: absolute;
+      right: auto;
+      top: 0;
+      width: auto;
+      will-change: left, right;
+      color: inherit;
+    }
+
+    &--active .long {
+      animation-name: indeterminate;
+      animation-duration: 2.2s;
+      animation-iteration-count: infinite;
+    }
+
+    &--active .short {
+      animation-name: indeterminate-short;
+      animation-duration: 2.2s;
+      animation-iteration-count: infinite;
+    }
+  }
+
+  &__stream {
+    animation: stream .25s infinite linear;
+    border-color: currentColor;
+    border-top: $progress-linear-stream-border-width dotted;
+    bottom: 0;
+    left: auto;
+    right: -8px;
+    opacity: $progress-linear-stream-opacity;
+    pointer-events: none;
+    position: absolute;
+    top: calc(50% - #{$progress-linear-stream-border-width / 2});
+    transition: inherit;
+  }
+
+  &__wrapper {
+    overflow: hidden;
+    position: relative;
+    transition: inherit;
+  }
+
+  &--absolute,
+  &--fixed {
+    left: 0;
+    z-index: 1;
+  }
+
+  &--absolute {
+    position: absolute;
+  }
+
+  &--fixed {
+    position: fixed;
+  }
+
+  &--reactive .ert-progress-linear__content {
+    pointer-events: none;
+  }
+
+  &--rounded {
+    border-radius: $progress-linear-border-radius;
+  }
+
+  &--striped .ert-progress-linear__determinate {
+    background-image: $progress-linear-stripe-gradient;
+    background-size: $progress-linear-stripe-background-size;
+    background-repeat: repeat;
+  }
+
+  &--query .ert-progress-linear__indeterminate--active {
+    .long {
+      animation-name: query;
+      animation-duration: 2s;
+      animation-iteration-count: infinite;
+    }
+
+    .short {
+      animation-name: query-short;
+      animation-duration: 2s;
+      animation-iteration-count: infinite;
+    }
+  }
+}
+
+@keyframes indeterminate {
+  0% {
+    left: -90%;
+    right: 100%;
+  }
+  60% {
+    left: -90%;
+    right: 100%;
+  }
+  100% {
+    left: 100%;
+    right: -35%;
+  }
+}
+
+@keyframes indeterminate-short {
+  0% {
+    left: -200%;
+    right: 100%;
+  }
+  60% {
+    left: 107%;
+    right: -8%;
+  }
+  100% {
+    left: 107%;
+    right: -8%;
+  }
+}
+
+@keyframes query {
+  0% {
+    right: -90%;
+    left: 100%;
+  }
+  60% {
+    right: -90%;
+    left: 100%;
+  }
+  100% {
+    right: 100%;
+    left: -35%;
+  }
+}
+
+@keyframes query-short {
+  0% {
+    right: -200%;
+    left: 100%;
+  }
+  60% {
+    right: 107%;
+    left: -8%;
+  }
+  100% {
+    right: 107%;
+    left: -8%;
+  }
+}
+
+@keyframes stream {
+  to {
+    transform: translateX(-8px)
+  }
+}

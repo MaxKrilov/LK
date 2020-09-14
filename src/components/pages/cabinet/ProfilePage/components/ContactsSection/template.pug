@@ -42,7 +42,6 @@ div(:class="`${pre}`")
     er-flex(xs12 sm6 lg4)
       template(v-if="isLPR")
         er-button(
-          :class="`${pre}__add-btn`"
           :disabled="isOpenContactForm || isEditContactOpen"
           :loading="getCreatedContactState.isFetching"
           preIcon="add"
@@ -68,7 +67,7 @@ div(:class="`${pre}`")
         :class="`${pre}__title-hint__ico`"
         :width="52"
         :height="52"
-        )
+      )
       h3(:class="`${pre}__title-hint__title`") Контакты
       p(:class="`${pre}__title-hint__txt`") Вы&nbsp;можете добавить контакты сотрудников, чтобы они были в&nbsp;курсе работы ваших сервисов в&nbsp;Дом.ru&nbsp;Бизнес
       div(

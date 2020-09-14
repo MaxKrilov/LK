@@ -1,0 +1,24 @@
+@mixin states ($theme) {
+  &:hover::before {
+    opacity: map-deep-get($theme, 'states', 'hover');
+  }
+
+  &:focus::before {
+    opacity: map-deep-get($theme, 'states', 'focus');
+  }
+
+  &--active {
+    @include active-states($theme);
+  }
+}
+
+@mixin active-states ($theme) {
+  &:hover::before,
+  &::before {
+    opacity: map-deep-get($theme, 'states', 'activated');
+  }
+
+  &:focus::before {
+    opacity: map-deep-get($theme, 'states', 'pressed');
+  }
+}

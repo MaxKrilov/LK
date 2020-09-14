@@ -23,6 +23,10 @@ div(:class="`${pre}`")
 
   div(v-for="(card, index) in orders" :key="index").main-content.main-content--h-padding
     order-card(:card='card')
+  div(v-if="!loadingOrders && !getListOrders[0] && !isEndOfList").main-content.main-content--h-padding
+    .orders__button-wrapper  
+      .orders__button  
+        er-button(@click="loadMore") Загрузить еще
   transition(name="no-orders")
     .main-content.main-content--h-padding
       order-card(v-if="loadingOrders && !getListOrders[0]")

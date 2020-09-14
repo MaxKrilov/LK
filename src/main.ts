@@ -18,6 +18,9 @@ import VueScrollTo from 'vue-scrollto'
 import iFrameResize from 'iframe-resizer/js/iframeResizer'
 import Skeleton from 'vue-loading-skeleton'
 
+import * as ErtComponents from './components/UI2'
+import { install } from '@/install'
+
 // Подключение стилей
 import './assets/scss/main.scss'
 
@@ -33,6 +36,9 @@ eachArray(requireComponent.keys(), (fileName: string) => {
   const componentName = fileName.replace(/^\.\/(.*)\/index\.\w+$/, '$1')
   Vue.component(componentName, componentConfig.default || componentConfig)
 })
+
+// Регистрация UI2 компонентов
+install(Vue, { components: ErtComponents })
 
 // Регистрация директив
 eachObject(Directives, (config: DirectiveOptions | DirectiveFunction, directiveName: string) => {

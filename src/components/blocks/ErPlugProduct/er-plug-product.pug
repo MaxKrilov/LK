@@ -62,7 +62,7 @@ div
     @close="onCloseErrorModal"
   )
     template(slot="description")
-      | Нам очень жаль, произошла ошибка при отправке заявки на подключение. Свяжитесь с Вашим персональным менеджером
+      div Уважаемый Клиент, в данный момент операция не доступна, обратитесь к персональному менеджеру
 
   er-activation-modal(
     type="question"
@@ -90,6 +90,7 @@ div
   )
     template(slot="description")
       | Заказ создан успешно. Выполнение заказа может занять некоторое время. Актуальный статус можно узнать в разделе Заказы.
+
   er-activation-modal(
     type="error"
     v-model="isShowErrorOrderModal"
@@ -99,3 +100,5 @@ div
     cancelButtonText="Закрыть"
     @close="closeErrorOrderModal"
   )
+    template(slot="description")
+      div Уважаемый Клиент, в данный момент операция не доступна, обратитесь к персональному менеджеру

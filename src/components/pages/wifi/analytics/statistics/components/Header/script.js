@@ -10,7 +10,7 @@ export default {
   },
   data: () => ({
     pre: 'statpage-header',
-    period: [moment().toDate(), moment().add(1, 'days').toDate()]
+    period: [moment().subtract(1, 'months').toDate(), moment().toDate()]
   }),
   mounted () {
     this.$emit('onPeriodSet', this.period)

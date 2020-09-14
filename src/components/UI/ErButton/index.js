@@ -36,7 +36,7 @@ export default {
     /**
      * Тег компонента router-link
      */
-    to: String,
+    to: String | Location,
     /**
      * Иконка перед текстом
      */

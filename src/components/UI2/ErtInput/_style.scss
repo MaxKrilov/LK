@@ -1,0 +1,142 @@
+@include theme(ert-input) using ($theme) {
+  color: map-deep-get($theme, 'text', 'rest-primary');
+
+  input,
+  textarea {
+    color: map-deep-get($theme, 'text', 'rest-primary');
+  }
+
+  input::placeholder,
+  textarea::placeholder {
+    color: map-deep-get($theme, 'text', 'rest-secondary');
+  }
+
+  &--is-disabled {
+    color: map-deep-get($theme, 'text', 'disabled');
+
+    input,
+    textarea {
+      color: map-deep-get($theme, 'text', 'disabled');
+    }
+  }
+}
+
+.ert-input {
+  align-items: flex-start;
+  display: flex;
+  flex: 1 1 auto;
+  @extend %body-font;
+  max-width: 100%;
+  text-align: left;
+
+  .ert-progress-linear {
+    top: calc(100% - 1px);
+    left: 0;
+  }
+
+  input {
+    max-height: 32px;
+  }
+
+  input,
+  textarea {
+    &:invalid {
+      box-shadow: none;
+    }
+
+    &:focus,
+    &:active {
+      outline: none;
+    }
+  }
+
+  .ert-label {
+    height: 20px;
+    line-height: 20px;
+  }
+
+  &__append-outer,
+  &__prepend-outer {
+    display: inline-flex;
+    margin-bottom: 4px;
+    margin-top: 8px;
+    line-height: 1;
+
+    .ert-icon {
+      user-select: none;
+    }
+  }
+
+  &__append-outer {
+    margin-left: 9px;
+  }
+
+  &__prepend-outer {
+    margin-right: 9px;
+  }
+
+  &__control {
+    display: flex;
+    flex-direction: column;
+    height: auto;
+    flex-grow: 1;
+    flex-wrap: wrap;
+    min-width: 0;
+    width: 100%;
+  }
+
+  &__icon {
+    align-items: center;
+    display: inline-flex;
+    height: 24px;
+    flex: 1 0 auto;
+    justify-content: center;
+    min-width: 24px;
+    width: 24px;
+
+    &--clear {
+      border-radius: 50%;
+
+      .ert-icon--disabled {
+        visibility: hidden;
+      }
+    }
+  }
+
+  &__slot {
+    align-items: center;
+    color: inherit;
+    display: flex;
+    margin-bottom: 4px;
+    min-height: inherit;
+    position: relative;
+    transition: $primary-transition;
+    width: 100%;
+  }
+
+  &--is-disabled:not(.ert-input--is-readonly) {
+    pointer-events: none;
+  }
+
+  &--hide-details > .ert-input__control > .ert-input__slot {
+    margin-bottom: 0;
+  }
+
+  &--has-state {
+    &.error--text .ert-label {
+      animation: shake 600ms map-get($transition, 'swing');
+    }
+  }
+
+  @include min-breakpoint('md') {
+    &__icon {
+      height: 32px;
+      min-width: 32px;
+      width: 32px;
+    }
+
+    &__slot {
+      margin-bottom: 8px;
+    }
+  }
+}

@@ -7,13 +7,13 @@
       .user-card__content-item.photo
         .wraper
           img(:src="getImg('user.png')" alt="")
-          .status
+          //.status
             span в сети
       .user-card__content-item.additional
         .column
           .user-card__data.datetime
             .caption Дата регистр.
-            .data 25.12.2015
+            .data {{ user.dateRegistration }}
           .user-card__data.latest
             .caption Посл. сессия
             .data
@@ -38,30 +38,30 @@
                span  {{ user.traffic.units }}
     .user-card__content-column.right
       .user-card__content-item.info
-        .major Константинопольский
-        .minor Анатолий Анатольевич
+        //-.major Константинопольский
+        //.minor Анатолий Анатольевич
         .user-card__data
           .caption Телефон
           .data {{ user.phone }}
-        .user-card__data
-          .caption Эл. почта
-          .data konstantinopolsky@company.com
+        //-.user-card__data
+        //-  .caption Эл. почта
+        //-  .data н/д
         .user-card__data
           .caption MAC адрес
           .data {{ user.mac }}
-        .user-card__links
-          .link.title Тип авториз.
-          .link.title ID польз.
-          .link.tw
-            a.button(:href="`https://twitter.com/intent/user?user_id=789698`" target="_blank")
-              span Twitter
-          .link 789698
-          .link.vk
-            a.button(:href="`https://vk.com/id770000008956`" target="_blank")
-              span Вконтакте
-          .link 770000008956
-          .link.ok
-            a.button(:href="`https://ok.ru/profile/990098005555`" target="_blank")
-              span Однокласники
-          .link 990098005555
+        //.user-card__links
+        //  .link.title Тип авториз.
+        //  .link.title ID польз.
+        //  .link.tw
+        //    a.button(:href="`https://twitter.com/intent/user?user_id=789698`" target="_blank")
+        //      span Twitter
+        //  .link 789698
+        //  .link.vk
+        //    a.button(:href="`https://vk.com/id770000008956`" target="_blank")
+        //      span Вконтакте
+        //  .link 770000008956
+        //  .link.ok
+        //    a.button(:href="`https://ok.ru/profile/990098005555`" target="_blank")
+        //      span Однокласники
+        //  .link 990098005555
 

@@ -30,10 +30,10 @@ export default {
       return this.getClientInfo?.name &&
       this.getActiveBillingAccount &&
       this.getActiveBillingAccountNumber &&
-      this.getChatToken && this.getTOMS
+      this.getChatToken && this.getTOMS && this.getChatTokenTimeStapm
     },
     ...mapGetters('user', ['getClientInfo', 'getActiveBillingAccount', 'getActiveBillingAccountNumber']),
-    ...mapGetters('chat', ['getChatToken']),
+    ...mapGetters('chat', ['getChatToken', 'getChatTokenTimeStapm']),
     ...mapGetters('auth', ['getTOMS'])
   },
   mounted () {
@@ -56,6 +56,7 @@ export default {
           userType: 'bss'
         },
         operatorNameHook: (name) => { if (name) this.operatorName = name },
+        closeChatHook: () => { this.onClickClose() },
         onlineStatusHook: (status) => { this.isOnline = status }
       })
       this.chat.attach(this.$refs.chatWrap)

@@ -26,7 +26,7 @@
         template(v-if="isLoadingCustomerProduct")
           PuSkeleton
         template(v-else)
-          .button
+          .button(v-if="listAvailableSpeedIncrease.length > 0")
             button(@click="() => { openBlur(false) }")
               | Изменить
       .tariff-component__limit
@@ -63,8 +63,8 @@
               .value
                 span.mr-4 {{ turboPrice | price }}
                 | {{ currencyCode }}
-          template(v-else)
-            er-button(pre-icon="speedup" @click="() => { openBlur(true) }" :disabled="!isAvailableTurbo")
+          template(v-else-if="isAvailableTurbo")
+            er-button(pre-icon="speedup" @click="() => { openBlur(true) }")
               | Турбо-режим
       .tariff-component__price
         template(v-if="isLoadingCustomerProduct")
@@ -131,10 +131,12 @@
     er-activation-modal(
       v-model="isShowSuccessDialog"
       type="success"
-      title="Подключение успешно выполнено"
+      title="Заказ успешно сформирован"
       :is-show-action-button="false"
       cancel-button-text="Закрыть"
     )
+      template(slot="description")
+        div Благодарим Вас за заказ! Подробности выполнения можно отследить в разделе заказы
     er-disconnect-product(
       v-model="isDisconnectionTurbo"
       :delete-order-data="turboDetails"

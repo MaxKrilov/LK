@@ -10,6 +10,7 @@ export default class ErPlugMixin extends Vue {
   @Prop({ type: Object, default: () => { return {} } }) readonly orderData!: IOrderData
   @Prop({ type: Object, default: () => { return {} } }) readonly deleteOrderData!: IDeleteOrderData
   @Prop({ type: Boolean, default: false }) readonly isConnection!: boolean // v-modal внешний
+  @Prop({ type: Boolean, default: false }) readonly isUpdate!: boolean
 
   isShowRequestModal: boolean = false
   isShowSuccessRequestModal: boolean = false
@@ -26,7 +27,11 @@ export default class ErPlugMixin extends Vue {
   sendingOrder: boolean = false
   createOrder () {
     this.isCreatingOrder = true
-    this.$store.dispatch('salesOrder/createSaleOrder',
+    const url = this.isUpdate
+      ? 'salesOrder/createModifyOrder'
+      : 'salesOrder/createSaleOrder'
+
+    this.$store.dispatch(url,
       {
         locationId: this.orderData?.locationId,
         bpi: this.orderData?.bpi,

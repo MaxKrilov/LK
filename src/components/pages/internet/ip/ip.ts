@@ -170,7 +170,7 @@ export default class Ip extends Vue {
         this.ipAddressList = point?.slo
           .filter((el:any) => (el.offer.code === CODE_IP4SECOND || el.offer.code === CODE_IP4SUBNET || el.offer.code === SERVICE_ADDITIONAL_IP) && el.status === 'Active')
           .map((el:any) => {
-            if (el.offer.code === CODE_IP4SECOND || el.code === CODE_IP4SUBNET) {
+            if (el.offer.code === CODE_IP4SECOND || el.offer.code === CODE_IP4SUBNET) {
               return {
                 price: Number(el?.purchasedPrices?.recurrentTotal?.value),
                 productId: el.id,
