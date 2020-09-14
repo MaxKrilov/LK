@@ -7,38 +7,39 @@ div(:class="`${pre}`")
           p(:class="`${pre}__caption-text`")
             | Наименование:
           p(:class="`${pre}__caption-title`")
-            | {{name}}
+            | {{ name }}
       div(:class="`${pre}__requisites`")
         div(:class="`${pre}__caption`")
           p(:class="`${pre}__caption-text`")
             | ИНН:
           p(:class="`${pre}__caption-content`")
-            | {{inn}}
+            | {{ inn }}
         div(:class="`${pre}__caption`")
           p(:class="`${pre}__caption-text`")
             | КПП:
           p(:class="`${pre}__caption-content`")
-            | {{kpp}}
+            | {{ kpp }}
         div(:class="`${pre}__caption`")
           p(:class="`${pre}__caption-text`")
             | ОГРН:
           p(:class="`${pre}__caption-content`")
-            | {{ogrn}}
+            | {{ ogrn }}
       div(:class="`${pre}__address`")
         div(:class="`${pre}__caption`")
           p(:class="`${pre}__caption-text`")
             | Юр. адрес:
           p(:class="`${pre}__caption-content`")
-            | {{address}}
+            | {{ address }}
     template(v-else)
       div(:class="`${pre}__caption`")
         p(:class="`${pre}__caption-text`")
           | Наименование:
-        p(:class="`${pre}__caption-title`").mb-16
-          | {{name}}
-      div(:class="`${pre}__caption`").flex-grow-1
-        p(:class="`${pre}__caption-content`").mb-40
+        p.mb-16(:class="`${pre}__caption-title`")
+          | {{ name }}
+      .flex-grow-1(:class="`${pre}__caption`")
+        p.mb-40(:class="`${pre}__caption-content`")
           | Чтобы заключить договор и пользоваться услугами нужно заполнить данные организации. Это не займёт много времени, регистрация автоматизирована и занимает 5–8 минут
-        router-link(:class="`${pre}__link`" :to="{name: inn === emptyField ? 'company-inn' : 'company-edit'}")
-          er-button(:color="'yellow'")
-            | Заполнить данные
+
+        er-button.fill-data-btn(
+          :to="{ name: inn === emptyField ? 'company-inn' : 'company-edit' }"
+        ) Заполнить данные

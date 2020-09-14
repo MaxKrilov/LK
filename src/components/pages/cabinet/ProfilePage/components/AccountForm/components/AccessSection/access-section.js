@@ -1,9 +1,18 @@
 import { BREAKPOINT_MD, BREAKPOINT_LG } from '@/constants/breakpoint'
 import Responsive from '@/mixins/ResponsiveMixin'
 import { mapGetters } from 'vuex'
+import AccessItem from '../access-item'
+import ForpostAccessForm from '../forpost-access-form'
+import ForpostAccessTable from '../forpost-access-table'
+import { copyObject } from '../../../../../../../../functions/helper'
 
 export default {
   name: 'access-section',
+  components: {
+    AccessItem,
+    ForpostAccessForm,
+    ForpostAccessTable
+  },
   mixins: [ Responsive ],
   data: () => ({
     pre: 'access-section',
@@ -12,8 +21,16 @@ export default {
     windowWidth: null,
     isShowAccessRight: false,
     isShowAddAccessRights: false,
-    currSelectedMenuItem: {}
+    currSelectedMenuItem: {},
+    forpostUsers: {} // tmp storage for forpost users
   }),
+  mounted () {
+    if (this.isSelectFirst) {
+      this.$nextTick(() => {
+        this.showFirstTab()
+      })
+    }
+  },
   props: {
     value: { type: null },
     isLPR: {
@@ -27,13 +44,6 @@ export default {
     isSelectFirst: {
       type: Boolean,
       default: true
-    }
-  },
-  mounted () {
-    if (this.isSelectFirst) {
-      this.$nextTick(() => {
-        this.showFirstTab()
-      })
     }
   },
   methods: {
@@ -52,6 +62,15 @@ export default {
         label: this.currentAccessRight.value
       }
       currData[this.currentPortal.code].content = [newAccessRight]
+
+      if (currData.Forpost && Object.keys(this.forpostUsers).length) {
+        currData.Forpost.content = [currData.Forpost.accessRights.find(el => el.access === true)]
+        currData.Forpost.users = { ...currData.Forpost.users, ...this.forpostUsers }
+      } else {
+        // нет пользователей - нет доступа
+        currData.Forpost.content = [currData.Forpost.accessRights.find(el => el.access === false)]
+      }
+
       this.$emit('input', { ...this.value, ...currData })
     },
     removeAccessRight () {
@@ -111,7 +130,7 @@ export default {
       currData[currSelectedId].menu.selected = true
       this.$emit('input', { ...this.value, ...currData })
     },
-    handleContentItemBtnClick ({ access }) {
+    onRemoveAccessItem ({ access }) {
       if (access) {
         this.removeAccessRight()
       }
@@ -137,6 +156,35 @@ export default {
           value: content[0].label
         }
       })
+    },
+    onForpostUserSelected (data) {
+      this.$set(this.forpostUsers, data.ID, data)
+    },
+    onForpostUserDelete (data) {
+      delete this.forpostUsers[data]
+
+      let result = copyObject(this.value)
+
+      if (!Object.keys(this.forpostUsers).length) {
+        const newAccessRight = {
+          id: 2,
+          access: false,
+          label: 'Без доступа'
+        }
+        result[this.currSelectedMenuItem.code].content = [newAccessRight]
+      }
+      result.Forpost.users = copyObject(this.forpostUsers)
+      this.$emit('input', result)
+    }
+  },
+  watch: {
+    value: {
+      handler (val) {
+        if (val?.Forpost?.users) {
+          this.forpostUsers = { ...val.Forpost.users }
+        }
+      },
+      deep: true
     }
   },
   computed: {

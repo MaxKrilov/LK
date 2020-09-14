@@ -684,3 +684,9 @@ export function hexToBase64 (str) {
     str.replace(/\r|\n/g, '').replace(/([\da-fA-F]{2}) ?/g, '0x$1 ').replace(/ +$/, '').split(' '))
   )
 }
+
+export function removeObjectKey (keyName, object) {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { [keyName]: removedKey, ...newObject } = object
+  return newObject
+}

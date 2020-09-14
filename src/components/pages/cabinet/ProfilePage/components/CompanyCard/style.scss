@@ -1,5 +1,5 @@
 .company-card {
-  color: rgba(map_get($shades, 'black'), 0.8);
+  color: rgba(map_get($shades, "black"), 0.8);
   display: flex;
   flex-direction: column;
   &__inner {
@@ -7,36 +7,54 @@
     flex-direction: column;
     flex-grow: 1;
     padding: 24px 14px 16px;
-    @include media-query((
-      padding: (
-        sm: 22px 0 16px,
-        md: 29px 0 23px,
-        lg: 30px 0 24px,
-        xl: 29px 0 32px)
-    ));
+    @include media-query(
+      (
+        padding: (
+          sm: 22px 0 16px,
+          md: 29px 0 23px,
+          lg: 30px 0 24px,
+          xl: 29px 0 32px
+        )
+      )
+    );
   }
   &__title {
     @extend %h2;
     letter-spacing: -1px;
     margin-bottom: 18px;
-    @include media-query((
-      margin-bottom: (sm: 24px, md: 32px)
-    ));
+    @include media-query(
+      (
+        margin-bottom: (
+          sm: 24px,
+          md: 32px
+        )
+      )
+    );
   }
 
   &__name {
     margin-bottom: 20px;
-    @include media-query((
-      margin-bottom: (sm: 16px, xl: 18px)
-    ));
+    @include media-query(
+      (
+        margin-bottom: (
+          sm: 16px,
+          xl: 18px
+        )
+      )
+    );
   }
   &__requisites {
     display: flex;
     justify-content: space-between;
     margin: 0 0 18px 0;
-    @include media-query((
-      margin-bottom: (sm: 16px, md: 20px)
-    ));
+    @include media-query(
+      (
+        margin-bottom: (
+          sm: 16px,
+          md: 20px
+        )
+      )
+    );
     flex-wrap: nowrap;
   }
   &__address {
@@ -48,9 +66,14 @@
     &-name {
       @extend %h4;
       margin-bottom: 4px;
-      @include media-query((
-        margin-bottom: (sm: 4px, lg: 8px)
-      ));
+      @include media-query(
+        (
+          margin-bottom: (
+            sm: 4px,
+            lg: 8px
+          )
+        )
+      );
     }
     &-title {
       @extend %h4;
@@ -58,40 +81,45 @@
     &-text {
       @extend %caption2;
       margin-bottom: 4px;
-      @include media-query((
-          margin-bottom: (sm: 8px, md: 4px, lg: 8px)
-      ));
-      color: map_get($gray, '6');
+      @include media-query(
+        (
+          margin-bottom: (
+            sm: 8px,
+            md: 4px,
+            lg: 8px
+          )
+        )
+      );
+      color: map_get($gray, "6");
     }
     &-content {
       @extend %body-font;
-      @include media-query((
-        padding-right: (lg: 69px, xl: 0)
-      ));
+      @include media-query(
+        (
+          padding-right: (
+            lg: 69px,
+            xl: 0
+          )
+        )
+      );
     }
   }
   &__buttons {
     margin: -20px 0;
-    @include media-query((
-      margin: (
-        md: 0,
-        lg: 0,
-        xl: 0)
-    ));
+    @include media-query(
+      (
+        margin: (
+          md: 0,
+          lg: 0,
+          xl: 0
+        )
+      )
+    );
   }
-  &__link {
-    display: flex;
-    justify-content: center;
-    margin-top: auto;
-    max-width: 203px;
-    height: 40px;
-    text-decoration: none;
-    cursor: pointer;
-    .er-button__content {
-      @extend %button-font;
-    }
-    @include media-query((
-      height: (md: 48px)
-    ));
+
+  .fill-data-btn {
+    padding: 0 $padding-x8;
+    align-self: flex-start;
+    width: inherit;
   }
 }

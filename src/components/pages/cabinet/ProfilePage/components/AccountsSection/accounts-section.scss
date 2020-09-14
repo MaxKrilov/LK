@@ -100,21 +100,14 @@
         )
       ))
     }
-    .er-icon {
-      opacity: 0.3;
-    }
     .er-button {
+      @extend %small-icon;
       padding-left: 12px;
-      font-family: $fedra-demi;
-      @include media-query((
-        height: (md: 40px, xl: 48px),
-        font-size: (
-          sm: 14px,
-          md: 14px,
-          lg: 14px,
-          xl: 15px
-        )
-      ));
+
+      .er-icon {
+        @include color-black(.3)
+      }
+
       &__content {
         justify-content: initial;
         @include media-query((
@@ -126,7 +119,7 @@
 
   /**
   TABLE
- */
+  */
   &__table--loading {
     opacity: 0.4;
     pointer-events: none;

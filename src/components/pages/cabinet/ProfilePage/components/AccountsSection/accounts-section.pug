@@ -1,7 +1,7 @@
-div.text--small(:class="`${pre}`")
-  div.small--box--shadow
+.text--small(:class="`${pre}`")
+  .small--box--shadow
   er-row.align-items-center
-    er-flex(xs12, md6)
+    er-flex(xs12 md6)
       h2(:class="`${pre}__welcome-title`")
         | Учетные записи
         template(v-if="!isCurrentBreakpoint('sm')")
@@ -9,20 +9,21 @@ div.text--small(:class="`${pre}`")
             er-hint(right)
               template(v-slot:activator="{ on }")
                 span(
-                  :class="[`${pre}__welcome-title__question__icon`, { active: isQuestionOpen }]",
-                  v-on="on")
+                  :class="[`${pre}__welcome-title__question__icon`, { active: isQuestionOpen }]"
+                  v-on="on"
+                )
                   er-icon(name="question")
               div(:class="`${pre}__welcome-title__question__wrapper`")
                 h2.title--medium Учетные записи
                 p(:class="`${pre}__welcome-title__question__text`") Учетные записи дают доступ в Личный кабинет Дом.ru Бизнеc и в другие порталы
+
         template(v-else)
-          span(:class="`${pre}__welcome-title__question__icon`" @click="openInfoModal").ml-12
-            er-icon(
-              height='24px'
-              width='24px'
-              name='question'
-            )
-    er-flex(xs12, md6)
+          span.ml-12(
+            :class="`${pre}__welcome-title__question__icon`"
+            @click="openInfoModal"
+          )
+            er-icon(height="24px" width="24px" name="question")
+    er-flex(xs12 md6)
       search-field(
         placeholder="Искать учетную запись",
         :countRows="countRows"
@@ -38,87 +39,86 @@ div.text--small(:class="`${pre}`")
       :columns="accountTableColumnsMobile",
       :sortField="sortField",
       :sortAsc="sortAsc",
-      :expandedId="expandedAccount",
+      :expandedId="expandedAccount"
       @clickRow="handleAccountDetails"
     )
       template(v-slot:cell="{ item, dataKey, index }")
         div(v-if="expandedAccount === item.userPostId")
           div(v-if="dataKey === 'firstName'", :class="`${pre}__table__cell`")
-            div.d--flex
+            .d--flex
               er-icon(name="corner_down", :class="`${pre}__table__cell__icon`")
         div(v-else)
-          div(
-            v-if="dataKey === 'firstName'",
-            :class="`${pre}__table__cell`")
-            div.d--flex
+          div(v-if="dataKey === 'firstName'", :class="`${pre}__table__cell`")
+            .d--flex
               er-icon(name="corner_down", :class="`${pre}__table__cell__icon`")
-              div.d--flex.flex-column(:class="`${pre}__table__cell__person`")
+              .d--flex.flex-column(:class="`${pre}__table__cell__person`")
                 span(:class="`${pre}__table__cell__person__family-name`") {{ item.lastName }}
                 span(:class="`${pre}__table__cell__person__name`") {{ item.firstName }}
-                span(:class="`${pre}__table__cell__person__role`") {{realmRole(item.roleName)}}
+                span(:class="`${pre}__table__cell__person__role`") {{ realmRole(item.roleName) }}
 
         div(
           v-if="dataKey === 'alert' && requestStatus.id === item.userPostId",
           :class="`${pre}__table__cell__alert--${requestStatus.type}`"
         )
           alert(
-            :message="requestStatus.message"
+            :message="requestStatus.message",
             :isFail="requestStatus.type === 'error'"
           )
       template(v-slot:row="{ item }")
-          er-slide-up-down(:active="expandedAccount === item.userPostId")
-            account-details(
-              :userId="item.id",
-              :userPostId="item.userPostId",
-              :firstName="item.firstName",
-              :lastName="item.lastName",
-              :middleName="item.middleName"
-              :phone="item.phone",
-              :email="item.email",
-              :role="item.role",
-              :roles="rolesDirectory"
-              :systems="item.systems"
-              :systemRoleName="systemRole(item.systemRoleName)",
-              :systemName="item.systemName"
-              :isDeletable="isDeletableUser(item.id)"
-              @success="handleSuccessForm"
-              @fail="handleFailForm"
-              @cancel="handleCancelForm")
+        er-slide-up-down(:active="expandedAccount === item.userPostId")
+          account-details(
+            :userId="item.id",
+            :userPostId="item.userPostId",
+            :firstName="item.firstName",
+            :lastName="item.lastName",
+            :middleName="item.middleName",
+            :phone="item.phone",
+            :email="item.email",
+            :role="item.role",
+            :roles="rolesDirectory",
+            :systems="item.systems",
+            :systemRoleName="systemRole(item.systemRoleName)",
+            :systemName="item.systemName",
+            :isDeletable="isDeletableUser(item.id)"
+            @success="handleSuccessForm"
+            @fail="handleFailForm"
+            @cancel="handleCancelForm"
+          )
 
   profile-table(
     v-if="isCurrentBreakpoint('md')",
-    :class="`${pre}__table`",
+    :class="`${pre}__table md`",
     :tableData="filteredAccountsByName",
     :columns="accountTableColumnsTablet",
     :sortField="sortField",
     :sortAsc="sortAsc",
-    :expandedId="expandedAccount",
+    :expandedId="expandedAccount"
     @clickRow="handleAccountDetails"
   )
     template(v-slot:cell="{ item, dataKey, index }")
       div(v-if="expandedAccount === item.userPostId")
         div(v-if="dataKey === 'firstName'", :class="`${pre}__table__cell`")
-          div.d--flex
+          .d--flex
             er-icon(name="corner_down", :class="`${pre}__table__cell__icon`")
       div(v-else)
         div(v-if="dataKey === 'firstName'", :class="`${pre}__table__cell`")
-          div.d--flex
+          .d--flex
             er-icon(name="corner_down", :class="`${pre}__table__cell__icon`")
-            div.d--flex.flex-column(:class="`${pre}__table__cell__person`")
-              span(:class="`${pre}__table__cell__person__family-name`") {{item.lastName}}
-              span(:class="`${pre}__table__cell__person__name`") {{item.firstName}}
-              span(:class="`${pre}__table__cell__person__role`") {{realmRole(item.roleName)}}
+            .d--flex.flex-column(:class="`${pre}__table__cell__person`")
+              span(:class="`${pre}__table__cell__person__family-name`") {{ item.lastName }}
+              span(:class="`${pre}__table__cell__person__name`") {{ item.firstName }}
+              span(:class="`${pre}__table__cell__person__role`") {{ realmRole(item.roleName) }}
 
         div(v-if="dataKey === 'email'", :class="`${pre}__table__cell`")
           p.mb-4 {{ item.phone | formatPhone }}
-          p {{ item.email}}
+          p {{ item.email }}
 
       div(
         v-if="dataKey === 'alert' && requestStatus.id === item.userPostId",
         :class="`${pre}__table__cell__alert--${requestStatus.type}`"
       )
         alert(
-          :message="requestStatus.message"
+          :message="requestStatus.message",
           :isFail="requestStatus.type === 'error'"
         )
 
@@ -127,52 +127,57 @@ div.text--small(:class="`${pre}`")
         template(v-if="expandedAccount === item.userPostId")
           account-form(
             isLPR
-            isUpdate
+            isUpdate,
             :userId="item.id",
             :userPostId="item.userPostId",
             :firstName="item.firstName",
             :lastName="item.lastName",
-            :middleName="item.middleName"
+            :middleName="item.middleName",
             :role="item.role",
             :phoneNumber="item.phone",
             :email="item.email",
-            :roles="rolesDirectory"
+            :roles="rolesDirectory",
             :systems="item.systems"
             @success="handleSuccessForm"
             @fail="handleFailForm"
-            @cancel="handleCancelForm")
+            @cancel="handleCancelForm"
+          )
+
 
   profile-table(
     v-if="isCurrentBreakpoint('lg')",
-    :class="`${pre}__table ${preLoadingStyles}`",
+    :class="`${pre}__table ${preLoadingStyles} lg`",
     :tableData="filteredAccountsByName",
     :columns="accountTableColumnsDesktop",
     :sortField="sortField",
     :sortAsc="sortAsc",
-    :expandedId="expandedAccount",
+    :expandedId="expandedAccount"
     @clickRow="handleAccountDetails"
   )
     template(v-slot:cell="{ item, dataKey, index }")
       div(v-if="dataKey === 'firstName'", :class="`${pre}__table__cell`")
         div(:class="`${pre}__table__cell__person`")
-          div(:class="`${pre}__table__cell__person__family-name`") {{item.lastName}}
+          div(:class="`${pre}__table__cell__person__family-name`") {{ item.lastName }}
           div(:class="`${pre}__table__cell__person__name`")
-            | {{item.firstName}} {{item.middleName}}
-          div(:class="`${pre}__table__cell__person__role`") {{realmRole(item.roleName)}}
+            | {{ item.firstName }} {{ item.middleName }}
+          div(:class="`${pre}__table__cell__person__role`") {{ realmRole(item.roleName) }}
 
       div(v-if="dataKey === 'systemLabel'", :class="`${pre}__table__cell`")
-        div.d--flex.justify-content-between
+        .d--flex.justify-content-between
           .d--inline-block
-            p.mb-8(v-if="item.systems" v-for="system in getResourceAccessLabels(item.userPostId)") {{ system }}
+            p.mb-8(
+              v-if="item.systems"
+              v-for="system in getResourceAccessLabels(item.userPostId)"
+            ) {{ system }}
           er-icon(name="corner_down", :class="`${pre}__table__cell__icon`")
       div(v-if="dataKey === 'phone'", :class="`${pre}__table__cell`") {{ item[dataKey] | formatPhone }}
-      div(v-if="dataKey === 'email'", :class="`${pre}__table__cell`") {{ item[dataKey]}}
+      div(v-if="dataKey === 'email'", :class="`${pre}__table__cell`") {{ item[dataKey] }}
       div(
         v-if="dataKey === 'alert' && requestStatus.id === item.userPostId",
         :class="`${pre}__table__cell__alert--${requestStatus.type}`"
       )
         alert(
-          :message="requestStatus.message"
+          :message="requestStatus.message",
           :isFail="requestStatus.type === 'error'"
         )
     template(v-slot:row="{ item }")
@@ -180,37 +185,42 @@ div.text--small(:class="`${pre}`")
         template(v-if="expandedAccount === item.userPostId")
           account-form(
             isLPR
-            isUpdate
+            isUpdate,
             :userId="item.id",
             :userPostId="item.userPostId",
             :firstName="item.firstName",
             :lastName="item.lastName",
-            :middleName="item.middleName"
+            :middleName="item.middleName",
             :role="item.role",
             :phoneNumber="item.phone",
             :email="item.email",
-            :roles="rolesDirectory"
+            :roles="rolesDirectory",
             :systems="item.systems"
             @success="handleSuccessForm"
             @fail="handleFailForm"
-            @cancel="handleCancelForm")
+            @cancel="handleCancelForm"
+          )
 
   er-flex(
-    v-if="isShowAccountForm && !expandedAccount" xs12
-    :class="`${pre}__add-account-form`")
+    v-if="isShowAccountForm && !expandedAccount"
+    xs12,
+    :class="`${pre}__add-account-form`"
+  )
     account-form(
-      isLPR
-      :systems="systemsDirectory"
+      isLPR,
+      :systems="systemsDirectory",
       :roles="rolesDirectory"
       @success="handleSuccessForm"
       @fail="handleFailForm"
-      @cancel="handleCancelForm")
+      @cancel="handleCancelForm"
+    )
 
   er-row(v-if="!isShowAccountForm" no-gutters, :class="`${pre}__add-account`")
-    er-flex(xs12, sm8, md6, lg5)
+    er-flex(xs12 sm8 md6 lg5)
       div(:class="`${pre}__add-account__button`")
         er-button(
           preIcon="add",
           :disabled="!!expandedAccount"
-          @click="handleAddNewAccountClick")
+          @click="handleAddNewAccountClick"
+        )
           | Добавить учетную запись

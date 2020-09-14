@@ -65,7 +65,6 @@
   }
 
   &__header{
-
     &__aside{
       display: inline-flex;
       align-items: flex-end;
@@ -89,7 +88,6 @@
   }
 
   &__title-hint{
-
     &--inline {
       margin-left: $padding-x3;
 
@@ -192,28 +190,12 @@
         md: row
       )
     ));
-  }
 
-  &__add-btn{
-    &.er-button{
-      padding: 0 $padding-x4;
+    .er-button {
+      @extend %small-icon;
 
-      .er-button__content{
-        justify-content: center;
-        position: relative;
-
-        .er-button__icon{
-          position: absolute;
-          top: 0;
-          left: 0;
-        }
-      }
-
-      .er-icon{
-        svg {
-          width: 12px !important;
-          height: 12px;
-        }
+      .er-icon {
+        @include color-black(.3)
       }
     }
   }

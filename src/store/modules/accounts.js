@@ -115,10 +115,11 @@ const getters = {
   isDeletableUser: (state, getters, rootState, rootGetters) => (id) => {
     return rootGetters['auth/user']?.userId !== id
   },
-  getResourceAccessLabels: ({ usersInfo }) => (id) => {
-    const tUser = usersInfo.find((user) => {
-      return user.userPostId === id
-    })
+  getUserByPostId: ({ usersInfo }) => (postId) => usersInfo.find(
+    ({ userPostId }) => userPostId === postId
+  ),
+  getResourceAccessLabels: ({ usersInfo }, getters) => (id) => {
+    const tUser = getters.getUserByPostId(id)
 
     return Object.values(tUser.systems)
       .filter(item => item.content[0].access)
@@ -136,18 +137,19 @@ const actions = {
       if (!token) {
         throw new Error('Токен невалидный')
       }
-      const user = rootGetters['auth/user']
+      const toms = rootGetters['auth/getTOMS']
+      const { userId } = rootGetters['auth/user']
 
       const url = !rootState.auth.isManager
         ? generateUrl('getListlk')
         : '/user/list'
-      if (!user?.toms) {
+      if (!toms) {
         return commit(ACCOUNTS_ERROR, 'Нет toms')
       }
       const result = await api
         .setWithCredentials()
         .setData({
-          toms: user?.toms,
+          toms,
           token
         })
         .query(url)
@@ -158,7 +160,7 @@ const actions = {
           result?.output?.results['users-info'] || result,
           baseSystems
         )
-        return commit(ACCOUNTS_SUCCESS, sortByPriorityId(usersInfo, user?.userId))
+        return commit(ACCOUNTS_SUCCESS, sortByPriorityId(usersInfo, userId))
       }
 
       commit(ACCOUNTS_ERROR, result.message)

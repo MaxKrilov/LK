@@ -169,22 +169,4 @@
       color: map_get($red, 'base');
     }
   }
-  &__button.er-button {
-    .er-button__content {
-      @include media-query((
-        font: (
-          xs: (normal 13px/16px $fedra-demi, 'Roboto', 'Helvetica', sans-serif),
-          md: (normal 14px/17px $fedra-demi, 'Roboto', 'Helvetica', sans-serif),
-          lg: (normal 16px/20px $fedra-demi, 'Roboto', 'Helvetica', sans-serif)
-        ),
-        letter-spacing: (
-          xs: 0.35px,
-          sm: 0
-        )
-      ));
-    }
-    @include media-query((
-      height: (md: 48px)
-    ));
-  }
 }
