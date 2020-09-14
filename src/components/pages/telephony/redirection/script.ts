@@ -4,7 +4,8 @@ import RedirectionTable from './components/RedirectionTable/index.vue'
 import AddRedirectionForm from './components/AddRedirectionForm/index.vue'
 import ListPointComponent from '@/components/templates/InternetTemplate/blocks/ListPointComponent/index.vue'
 import { IPointItem, IRedirectionList, IPhone } from '@/components/pages/telephony/telephony'
-import { CODE_PHONE, CODE_PHONE_VPN, CODE_CALLFORWRD } from '@/constants/product-code'
+import { CODE_CALLFORWRD, ARRAY_SHOWN_PHONES } from '@/constants/product-code'
+import { STATUS_ACTIVE } from '@/constants/status'
 
 const components = {
   AddRedirectionForm,
@@ -62,14 +63,16 @@ export default class TelephonyRedirectionPage extends Vue {
       productType: 'Телефония'
     }).then(answer => {
       if (answer.length) {
-        this.addressList = answer.map((el: { id: any; fulladdress: any; bpi: any; offer: { name: any } }) => {
-          return {
-            id: el?.id,
-            fulladdress: el?.fulladdress,
-            bpi: el?.bpi,
-            offerName: el?.offer?.name
-          }
-        })
+        this.addressList = answer
+          .filter((el: { status: string}) => el.status === STATUS_ACTIVE)
+          .map((el: { id: any; fulladdress: any; bpi: any; offer: { name: any } }) => {
+            return {
+              id: el?.id,
+              fulladdress: el?.fulladdress,
+              bpi: el?.bpi,
+              offerName: el?.offer?.name
+            }
+          })
         if (this.addressList.length) { this.currentAddress = this.addressList[0] }
       } else {
         this.$router.push('/lk/telephony/promo')
@@ -84,7 +87,7 @@ export default class TelephonyRedirectionPage extends Vue {
       api: this.$api,
       parentId: bpi
     }).then(answer => {
-      const phonesIdWithNumbers = answer?.slo.filter((el: any) => el?.code === CODE_PHONE || el?.code === CODE_PHONE_VPN)
+      const phonesIdWithNumbers = answer?.slo.filter((el: any) => ARRAY_SHOWN_PHONES.includes(el?.code))
         .reduce((acc: any, el: any) => {
           acc[el.productId] = el?.chars?.['Номер телефона']
           return acc
@@ -130,7 +133,7 @@ export default class TelephonyRedirectionPage extends Vue {
           this.freePhonesList = this.phonesList.filter((el:IPhone) =>
             !this.redirectionList.map((el:IRedirectionList) => el.phoneId).includes(el.id)
           )
-          if (!data.length) this.addRedirectionMode = true
+          this.addRedirectionMode = !data.length
         })
     }).finally(() => {
       this.isLoadingRedirections = false

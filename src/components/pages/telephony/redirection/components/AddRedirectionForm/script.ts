@@ -40,7 +40,7 @@ export default class AddRedirectionForm extends Vue {
   timeFrom = ''
   timeTo = ''
   slectedPhone = ''
-  redirectionTypes = ['Абсолютная', 'Безусловная', 'По неответу', 'По занятости', 'По недоступности']
+  redirectionTypes = ['Безусловная', 'По неответу', 'По занятости', 'По недоступности']
   selectedRedirectionType = ''
   get phoneToFormated () {
     return this.phoneTo.replace(/\D+/g, '')
