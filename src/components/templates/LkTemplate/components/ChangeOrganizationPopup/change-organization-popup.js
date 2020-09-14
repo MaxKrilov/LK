@@ -16,13 +16,29 @@ Vue.directive('resize', {
   }
 })
 
-const SSO_CUSTOMER_IFRAME_URL = isCombat()
-  ? PROD_SSO_CHANGE_CUSTOMER_IFRAME
-  : isServer('psi2')
-    ? PSI_SSO_CHANGE_CUSTOMER_IFRAME
-    : TEST_SSO_CHANGE_CUSTOMER_IFRAME
+function getCurrentIframeUrl () {
+  return isCombat()
+    ? PROD_SSO_CHANGE_CUSTOMER_IFRAME
+    : isServer('psi2') || isServer('psi3')
+      ? PSI_SSO_CHANGE_CUSTOMER_IFRAME
+      : TEST_SSO_CHANGE_CUSTOMER_IFRAME
+}
+const SSO_CUSTOMER_IFRAME_URL = getCurrentIframeUrl()
 
 const WAIT_SSO_QUERY_TIMEOUT = 2700
+const NEED_SSO_TIMEOUT = false
+
+function waitSSO () {
+  return new Promise((resolve, reject) => {
+    if (NEED_SSO_TIMEOUT) {
+      setTimeout(() => {
+        resolve()
+      }, WAIT_SSO_QUERY_TIMEOUT)
+    } else {
+      resolve()
+    }
+  })
+}
 
 export default {
   name: 'change-organization-popup',
@@ -58,9 +74,10 @@ export default {
       if (msg.data === 'post-selected') {
         this.isWaitMode = true
         // Делаем задержку чтобы браузер успел сделать запрос переключения во фрейме SSO
-        setTimeout(() => {
-          this.clearTokenAndReload()
-        }, WAIT_SSO_QUERY_TIMEOUT)
+        waitSSO()
+          .then(() => {
+            this.clearTokenAndReload()
+          })
       }
     }
   },
