@@ -83,7 +83,8 @@ export default {
       class: this.classes,
       attrs: {
         disabled: this.disabled || this.loading,
-        type: this.type
+        type: this.type,
+        ...this.$attrs
       },
       props: {
         to: this.to

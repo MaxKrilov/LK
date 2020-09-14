@@ -5,7 +5,7 @@ import ErPlugProduct from '@/components/blocks/ErPlugProduct'
 import ErDisconnectProduct from '@/components/blocks/ErDisconnectProduct'
 import ErActivationModal from '@/components/blocks/ErActivationModal/index.vue'
 import PackageMinuteCard from '@/components/pages/telephony/blocks/packageMinute/index.vue'
-import { CODE_PHONE, CODE_PHONE_VPN, CODE_PACGLOCMIN, CODE_PACGMIN } from '@/constants/product-code'
+import { ARRAY_SHOWN_PHONES, CODE_PACGLOCMIN, CODE_PACGMIN } from '@/constants/product-code'
 
 export default {
   name: 'slider-content',
@@ -62,7 +62,7 @@ export default {
   },
   computed: {
     phones () {
-      return this.slo.filter(el => el.code === CODE_PHONE || el.code === CODE_PHONE_VPN).map(el => {
+      return this.slo.filter(el => ARRAY_SHOWN_PHONES.includes(el.code)).map(el => {
         return {
           number: el.chars['Номер телефона'],
           price: el?.purchasedPrices?.recurrentTotal?.value,
