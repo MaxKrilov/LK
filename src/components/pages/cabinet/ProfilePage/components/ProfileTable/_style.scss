@@ -28,28 +28,34 @@
     align-items: center;
     justify-content: space-between;
     position: relative;
-    border-left: 1px solid map-get($gray, '9');
-    border-right: 1px solid map-get($gray, '9');
+    border-left: 1px solid map-get($gray, "9");
+    border-right: 1px solid map-get($gray, "9");
     &__cell {
-      @each $n-column, $flex  in $columns-flex {
+      @each $n-column, $flex in $columns-flex {
         &:nth-child(#{$n-column}) {
-          @include media-query((
-            flex: $flex
-          ));
+          @include media-query(
+            (
+              flex: $flex
+            )
+          );
         }
       }
       overflow: hidden;
       display: flex;
       flex-direction: row;
       align-items: center;
-      @include media-query((
-        padding: (
-          sm: 7px 0 11px !important,
-          md: 13px 0 12px !important,
-          lg: 13px 0px 12px !important
-        ),
-        margin: (xs: 0 !important)
-      ));
+      @include media-query(
+        (
+          padding: (
+            sm: 7px 0 11px !important,
+            md: 13px 0 12px !important,
+            lg: 13px 0px 12px !important
+          ),
+          margin: (
+            xs: 0 !important
+          )
+        )
+      );
     }
     &__row {
       display: flex;
@@ -67,66 +73,93 @@
       flex-direction: row;
       position: relative;
       width: 100%;
-      @include media-query((
-        padding-bottom: (sm: 17px, md: 14px, lg: 9px, xl: 20px)
-      ));
+      @include media-query(
+        (
+          padding-bottom: (
+            sm: 17px,
+            md: 14px,
+            lg: 9px,
+            xl: 20px
+          )
+        )
+      );
       &--hidden {
-        @include media-query((
-          display: (md: none, lg: none, xl: none)
-        ));
+        @include media-query(
+          (
+            display: (
+              md: none,
+              lg: none,
+              xl: none
+            )
+          )
+        );
       }
       &-wrapper {
         &:hover {
-          background: map_get($shades, 'transparent');
-          @include media-query((
-            background: (
-              lg: map_get($shades, 'white'),
-              xl: map_get($shades, 'white'))
-          ));
+          background: map_get($shades, "transparent");
+          @include media-query(
+            (
+              background: (
+                lg: map_get($shades, "white"),
+                xl: map_get($shades, "white")
+              )
+            )
+          );
         }
         & > .profile-table__content__row {
           &:hover {
-            & > .profile-table__content__cell
+            &
+              > .profile-table__content__cell
               > .profile-table__content__cell__content
               > div
               > .accounts-section__table__cell
               > .d--flex
               > .er-icon.accounts-section__table__cell__icon {
-              color: rgba(map_get($shades, 'black'), .5);
+              color: rgba(map_get($shades, "black"), 0.5);
             }
           }
         }
         &--active {
-          background: map_get($shades, 'white') !important;
+          background: map_get($shades, "white") !important;
           & > .profile-table__content__row__slot__separator {
             display: none !important;
           }
           & > .profile-table__content__row {
-            @include media-query((
-              padding: (xs: 0 12px 0 !important, sm: 0 20px 0 !important, md: 0 28px 0 !important, lg: 0 30px 14px, xl: 0 30px 15px)
-            ));
+            @include media-query(
+              (
+                padding: (
+                  xs: 0 12px 0 !important,
+                  sm: 0 20px 0 !important,
+                  md: 0 28px 0 !important,
+                  lg: 0 30px 14px,
+                  xl: 0 30px 15px
+                )
+              )
+            );
           }
-          & > .profile-table__content__row
+          &
+            > .profile-table__content__row
             > .profile-table__content__cell
             > .profile-table__content__cell__content
             > div
             > .accounts-section__table__cell
             > .d--flex
             > .er-icon.accounts-section__table__cell__icon {
-            color: rgba(map_get($shades, 'black'), .5) !important;
+            color: rgba(map_get($shades, "black"), 0.5) !important;
             svg {
               transform: rotate(180deg);
             }
           }
           & > .profile-table__content__row {
             &:hover {
-              & > .profile-table__content__cell
+              &
+                > .profile-table__content__cell
                 > .profile-table__content__cell__content
                 > div
                 > .accounts-section__table__cell
                 > .d--flex
                 > .er-icon.accounts-section__table__cell__icon {
-                  color: map_get($yellow, 'base') !important;
+                color: map_get($yellow, "base") !important;
               }
             }
           }
@@ -145,12 +178,12 @@
         &__separator::before {
           position: absolute;
           top: 0px;
-          content: '';
+          content: "";
           width: 100%;
           height: 1px;
-          background: map_get($gray, '4');
-          border-left: 24px solid map_get($gray, '9');
-          border-right: 24px solid map_get($gray, '9');
+          background: map_get($gray, "4");
+          border-left: 24px solid map_get($gray, "9");
+          border-right: 24px solid map_get($gray, "9");
         }
       }
     }
@@ -158,37 +191,54 @@
       flex: 1 1 100%;
       overflow: hidden;
       padding: 15px 0 0;
-      @include media-query((
-        padding: (
-          md: 23px 0 0
+      @include media-query(
+        (
+          padding: (
+            md: 23px 0 0
+          )
         )
-      ));
-      @each $n-column, $flex  in $columns-flex {
+      );
+      @each $n-column, $flex in $columns-flex {
         &:nth-child(#{$n-column}) {
-          @include media-query((
-            flex: $flex
-          ));
+          @include media-query(
+            (
+              flex: $flex
+            )
+          );
         }
       }
     }
   }
 
+  .sort-button {
+    margin-left: $padding-x3;
+  }
 
-  &__filter, &__filter.er-button {
+  &__filter,
+  &__filter.er-button {
     border-radius: 50%;
     background: transparent;
     height: 24px;
     width: 24px;
-    @include media-query((
-      margin: (sm: 0 7px, md: 0 18px)
-    ));
+    @include media-query(
+      (
+        margin: (
+          sm: 0 7px,
+          md: 0 18px
+        )
+      )
+    );
     flex: 0 0 auto;
     transition: transform 0.1s ease;
     box-shadow: none !important;
-    & svg { color: map_get($gray, '6') }
+    & svg {
+      color: map_get($gray, "6");
+    }
     &--active {
-      background: map_get($yellow, 'base');
-      & svg { color: map_get($shades, 'black') }
+      background: map_get($yellow, "base");
+      & svg {
+        color: map_get($shades, "black");
+      }
     }
     &--reverse {
       transform: rotate(-180deg);
@@ -198,10 +248,15 @@
         width: 16px;
       }
     }
-    &:active, &:focus {
+    &:active,
+    &:focus {
       outline: none;
-      & svg { color: map_get($shades, 'black') }
+      & svg {
+        color: map_get($shades, "black");
+      }
     }
-    &:hover svg { color: map_get($shades, 'black') }
+    &:hover svg {
+      color: map_get($shades, "black");
+    }
   }
 }

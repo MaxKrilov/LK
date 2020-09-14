@@ -16,8 +16,9 @@
   @include display-important(inline-block);
   @include display-important(flex);
   @include display-important(inline-flex);
+  @include display(grid);
+  @include display(inline-grid);
 }
-
 
 @each $bp in map-keys($grid-breakpoint) {
   .d-#{$bp} {
@@ -27,6 +28,8 @@
       @include display(inline-block);
       @include display(flex);
       @include display(inline-flex);
+      @include display-important(grid);
+      @include display-important(inline-grid);
     }
   }
 }

@@ -9,65 +9,6 @@
       font: (xs: map_get($title, 'large'), md: map_get($title, 'xl'))
     ))
   }
-  &__welcome-title {
-    display: flex;
-    align-items: center;
-    margin: 0 0 24px;
-    flex-direction: row;
-    align-items: center;
-    @include media-query((
-      flex-direction: (lg: column),
-      align-items: (lg: flex-start),
-      margin: (md: 0 0 32px, xl: 16px 0 48px)
-    ));
-    &__back-link {
-      cursor: pointer;
-      display: inline-block;
-      text-decoration: none;
-      @include media-query((
-        margin-bottom: (xs: 0, md: 8px)
-      ));
-      &__icon {
-        display: inline-block;
-        &.desktop {
-          @include media-query((
-            display: (xs: none, lg: inline-block)
-          ));
-          svg {
-            width: 16px;
-          }
-        }
-        &.mobile {
-          @include media-query((
-            display: (xs: inline-block, lg: none)
-          ));
-          padding-right: 8px;
-          svg {
-            transform: rotate(-90deg);
-            color: map_get($yellow, 'base');
-            width: 18px;
-          }
-        }
-      }
-      &__label {
-        margin-left: 11px;
-        font: map_get($text, 'xs');
-        font-family: $fedra-demi;
-        @include media-query((
-          display: (xs: none, lg: inline-block)
-        ));
-      }
-      &:hover {
-        color: rgba(map_get($shades, 'black'), 0.8);
-        * > svg {
-          color: map_get($yellow, 'base');
-        }
-      }
-      &:active {
-        color: map_get($yellow, 'base');
-      }
-    }
-  }
   &__switcher {
     overflow: hidden;
     @include media-query((
@@ -112,7 +53,6 @@
     width: calc(100% + 30px) !important;
     max-width: calc(100% + 30px) !important;
 
-    padding: 0 !important;
     @include media-query((
       flex-wrap: (md: nowrap, lg: nowrap, xl: nowrap),
       width: (sm: calc(100% + 48px) !important, md: 100% !important),

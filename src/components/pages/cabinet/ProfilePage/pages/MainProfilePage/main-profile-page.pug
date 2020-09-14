@@ -1,28 +1,21 @@
 div(:class="`${pre}`")
-  div(:class="`${pre}__welcome-title`")
-    router-link.caption(:to="{name: 'index'}", :class="`${pre}__welcome-title__back-link`")
-      span(:class="`${pre}__welcome-title__back-link__icon`")
-        er-icon(:class="`${pre}__welcome-title__back-link__icon desktop`", name="arrow_l")
-        er-icon(:class="`${pre}__welcome-title__back-link__icon mobile`", name="corner_up")
-      span(:class="`${pre}__welcome-title__back-link__label`") Назад в кабинет
-    h1(:class="`${pre}__title`") Профиль
+  er-page-header(title="Профиль" link-text="Назад в кабинет" backlink="/lk")
+
   er-row(v-if="serverErrorMessage")
-    er-flex
-      | {{serverErrorMessage}}
+    er-flex {{ serverErrorMessage }}
+
   template(v-else-if="hasAccess")
     er-row(:class="`${pre}__switcher`")
       er-flex(:class="`${pre}__switcher--mobile`")
         er-switch(
           :class="`${pre}__switcher__controls`"
-          name="cardsSwitch",
+          name="cardsSwitch"
           v-model="modelCardsSwitch",
           :labels="dataCardsSwitch",
           :has-icon="true"
         )
-    er-flex(
-      ref="refCards"
-      :class="`${pre}__cards`",
-      xs12)
+
+    er-flex(ref="refCards", :class="`${pre}__cards`" xs12)
       person-card(
         v-if="user",
         :class="`${pre}__cards__item`",
@@ -34,16 +27,18 @@ div(:class="`${pre}`")
       )
       company-card(
         :class="`${pre}__cards__item`",
-        :name="getClientInfo.name"
-        :inn="getClientInfo.inn"
-        :kpp="getClientInfo.kpp"
-        :ogrn="getClientInfo.ogrn"
+        :name="getClientInfo.name",
+        :inn="getClientInfo.inn",
+        :kpp="getClientInfo.kpp",
+        :ogrn="getClientInfo.ogrn",
         :address="getClientInfo.address"
       )
 
   div(v-if="isLPR && !serverErrorMessage", :class="`${pre}__accounts`")
     accounts-section
+
   div(:class="`${pre}__accounts`")
     contacts-section
+
   change-password
   modal-accounts-info

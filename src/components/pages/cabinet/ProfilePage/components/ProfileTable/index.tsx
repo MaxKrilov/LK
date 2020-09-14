@@ -2,6 +2,7 @@ import { CreateElement, VNode } from 'vue'
 import { Vue, Component } from 'vue-property-decorator'
 import './_style.scss'
 import { getSlot } from '@/functions/helper'
+import SortButton from './sort-button.vue'
 
 interface SortBy {
   asc: any,
@@ -50,7 +51,11 @@ const ProfileTableProp = Vue.extend({
   }
 })
 
-@Component
+const components = {
+  SortButton
+}
+
+@Component({ components })
 export default class ProfileTable extends ProfileTableProp {
   pre: string = 'profile-table'
   sortBy: SortBy = {
@@ -133,6 +138,7 @@ export default class ProfileTable extends ProfileTableProp {
   handleClickRow (item: any) {
     return this.$emit('clickRow', { item })
   }
+
   // eslint-disable-next-line
   render (h: CreateElement): VNode {
     const scopedSlots = {
@@ -187,12 +193,7 @@ export default class ProfileTable extends ProfileTableProp {
               : ` (${this.tableLength})`
             : null}
           {!disableSort && (
-            <er-button class={[`${this.pre}__filter`, this.setFilterActiveStyle(dataKey)]}>
-              <er-icon
-                name="funnel"
-                class={`${this.pre}__filter__icon`}
-              />
-            </er-button>
+            <sort-button class={this.setFilterActiveStyle(dataKey)} />
           )}
         </div>
       )

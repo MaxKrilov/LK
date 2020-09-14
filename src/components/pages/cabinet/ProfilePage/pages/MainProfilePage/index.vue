@@ -1,3 +1,3 @@
-<template lang="pug" src="./template.pug"></template>
-<script lang="js" src="./script.js"></script>
-<style lang="scss" src="./style.scss"></style>
+<template lang="pug" src="./main-profile-page.pug"></template>
+<script lang="js" src="./main-profile-page.js"></script>
+<style lang="scss" src="./main-profile-page.scss"></style>

@@ -34,6 +34,16 @@ const INITIAL_STATE = {
 
 const state = INITIAL_STATE
 
+function getSystemDirectoryIcon (code) {
+  const SYS_DIR_ICONS = {
+    'oats': 'cloud_telephone',
+    'Forpost': 'watch',
+    'itglobal': 'storage',
+    'lkb2b': 'profile'
+  }
+  return SYS_DIR_ICONS?.[code] || undefined
+}
+
 const getters = {
   systemsDirectory ({ receivedSystemsDirectory }) {
     const { systems = [] } = receivedSystemsDirectory?.content
@@ -46,7 +56,7 @@ const getters = {
           code: curr?.name,
           menu: {
             label: curr?.label,
-            icon: 'profile',
+            icon: getSystemDirectoryIcon(curr?.name) || 'profile',
             selected: false
           },
           accessRights: [

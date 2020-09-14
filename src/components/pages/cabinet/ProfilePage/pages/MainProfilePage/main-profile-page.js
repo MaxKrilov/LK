@@ -1,4 +1,4 @@
-import { mapGetters } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import PersonCard from '../../components/PersonCard/index'
 import CompanyCard from '../../components/CompanyCard/index'
 import AccountForm from '../../components/AccountForm/index'
@@ -40,6 +40,10 @@ export default {
     modelCardsSwitch: 'person'
   }),
   methods: {
+    ...mapActions('profile', [
+      'pullCurrentUserForpostAccounts',
+      'pullAllForpostUsers'
+    ]),
     setActiveTab (val) {
       const MARGIN_RIGHT = this.isXS ? 16 : 24
       const target = this.$refs.refCards
@@ -59,6 +63,12 @@ export default {
         }
       }
     }
+  },
+  mounted () {
+    this.pullCurrentUserForpostAccounts()
+      .then(() => {
+        this.pullAllForpostUsers()
+      })
   },
   watch: {
     modelCardsSwitch (val) {

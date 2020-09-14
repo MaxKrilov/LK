@@ -25,6 +25,7 @@ export default {
     isSuccess: false,
     isLoading: false,
     snapshot: {},
+    forpostUsersSnapshot: [],
     createdSuccessText: 'Учетная запись сотрудника создана.',
     createdFailText: 'Не удалось создать учетную запись сотрудника',
     updatedSuccessText: 'Учетная запись сотрудника изменена',
@@ -84,6 +85,14 @@ export default {
     })
     this.sectionLprData.roles = copyObject(this.roles)
     this.sectionAccessRightsData = copyObject(this.filterAccess())
+
+    // Forpost users
+    if (this.sectionAccessRightsData.Forpost) {
+      this.sectionAccessRightsData.Forpost.users = this.bindedForpostUserList
+        .filter(el => el.ExternalID === this.userId)
+        .reduce((acc, el) => ({ ...acc, [el.ID]: el }), {})
+    }
+
     if (this.isUpdate) {
       this.sectionLprData.lastName = this.lastName
       this.sectionLprData.firstName = this.firstName
@@ -93,6 +102,7 @@ export default {
       this.sectionLprData.role = this.role
     }
 
+    this.forpostUsersSnapshot = this.generateForpostUsersSnapshot()
     this.snapshot = this.generateSnapshot()
   },
   watch: {
@@ -150,6 +160,11 @@ export default {
         contacts: copyObject(this.currentClientContacts)
       }
     },
+    generateForpostUsersSnapshot () {
+      const forpostRights = this.sectionAccessRightsData?.Forpost
+
+      return forpostRights ? Object.keys(forpostRights.users) : []
+    },
     getFormData () {
       const formData = this.sectionLprData
       const formAccessRightsData = this.isLPR
@@ -184,6 +199,7 @@ export default {
       return isValid
     },
     validForm () {
+      // TODO: рефакторить - возвращать значение вместо изменения isSuccess
       if (!this.isLPR && this.isUpdate) {
         this.isSuccess = this.$refs.accountForm.validate() && this.validateContactsData()
       } else {
@@ -191,7 +207,7 @@ export default {
       }
     },
     filterAccess () {
-      const shownAccesses = ['lkb2b', 'dmp-kc-sit']
+      const shownAccesses = this.$store.getters['profile/availableSystems']
       let filtered = {}
       Object.entries(this.systems).forEach(([key, value]) => {
         if (shownAccesses.includes(key)) {
@@ -234,6 +250,7 @@ export default {
             }
           })
         }
+
         return { userId, postId }
       } catch (error) {
         throw new Error(error)
@@ -319,10 +336,54 @@ export default {
           }
         })
       }
+
+      this.syncForpostUsers(this.userId)
     },
     // Events
     async onSuccess (msg = '', id, type = 'success') {
       this.$emit('success', { id: id, type: type, msg: msg })
+    },
+    bindForpostUsers (userId, forpostUserList) {
+      forpostUserList.forEach(el => {
+        const user = this.allForpostUserList.find(item => item.ID === parseInt(el, 10))
+
+        const payload = {
+          id: user.ID,
+          accountId: user.AccountID,
+          externalId: userId
+        }
+        this.$store.dispatch('profile/addForpostToSSO', payload)
+          .then(data => {
+            this.$store.dispatch('profile/pullAllForpostUsers')
+          })
+      })
+    },
+    unbindForpostUsers (userId, forpostUserList) {
+      forpostUserList.forEach(el => {
+        const user = this.allForpostUserList.find(item => item.ID === parseInt(el, 10))
+        const payload = {
+          id: user.ID,
+          accountId: user.AccountID,
+          externalId: userId
+        }
+        this.$store.dispatch('profile/deleteForpostFromSSO', payload)
+          .then(data => {
+            this.$store.dispatch('profile/pullAllForpostUsers')
+          })
+      })
+    },
+    syncForpostUsers (userId) {
+      const ForpostAccess = this.sectionAccessRightsData?.Forpost
+      if (ForpostAccess) {
+        const userList = Object.keys(ForpostAccess.users)
+        // 1 to delete
+        const toDelete = this._.difference(this.forpostUsersSnapshot, userList)
+        this.unbindForpostUsers(userId, toDelete)
+
+        // 2 to add
+        const toAdd = this._.difference(userList, this.forpostUsersSnapshot)
+        this.bindForpostUsers(userId, toAdd)
+      }
     },
     onFail (msg = '', id) { this.$emit('fail', { id: id, msg: msg }) },
     onCancel () { this.$emit('cancel') },
@@ -412,7 +473,9 @@ export default {
               this.onSuccess(this.updatedSuccessText, this.userPostId)
             }
           } else if (!this.isUpdate && this.isLPR) {
-            const { postId } = await this.createAccount(formData, formAccessRightsData)
+            const { userId, postId } = await this.createAccount(formData, formAccessRightsData)
+
+            this.syncForpostUsers(userId)
             this.reset()
             this.onSuccess(this.createdSuccessText, postId)
           } else {
@@ -449,6 +512,13 @@ export default {
           this.dialogRemoveAccount.fetching = false
         } else {
           await this.hideDialogRemoveAccount()
+
+          const ForpostAccess = this.sectionAccessRightsData?.Forpost
+          if (ForpostAccess) {
+            const userList = Object.keys(ForpostAccess.users)
+            this.unbindForpostUsers(this.userId, userList)
+          }
+
           this.onSuccess(this.removeAccountSuccessText, this.userPostId, 'error')
         }
       } catch (error) {
@@ -469,6 +539,7 @@ export default {
     ...mapGetters('auth', [
       'user'
     ]),
+    ...mapGetters('profile', ['bindedForpostUserList', 'allForpostUserList']),
     ...mapState('accounts', [
       'createdUserLprInfo',
       'removedAccountInfo'
@@ -513,7 +584,14 @@ export default {
         contacts: formContactsData
       }
       if (data.user.role && data.user.role.id) data.user.role.id = data.user.role.id.toString()
-      return JSON.stringify(this.snapshot) !== JSON.stringify(data)
+      const isDiffSnapshot = JSON.stringify(this.snapshot) !== JSON.stringify(data)
+      return isDiffSnapshot || this.isForpostUsersChanged
+    },
+    isForpostUsersChanged () {
+      const oldData = JSON.stringify(this.forpostUsersSnapshot)
+      const newData = JSON.stringify(this.generateForpostUsersSnapshot())
+      const isForpostChanged = oldData !== newData
+      return isForpostChanged
     },
     isLastNameChanged () {
       const { formData } = this.getFormData()
