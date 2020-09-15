@@ -16,6 +16,7 @@ const SPEED_N_LIMIT_WIDTH = 104
 const STROKE_WIDTH = 2
 
 const CURRENT_SPEED_IN_CHARS = 'Скорость доступа, до (Мбит/с)'
+const CURRENT_SPEED_IN_CHARS_2 = 'Скорость доступа, входящая, до (Мбит/с)'
 const OFFER_CODE_SPEED_INCREASE = 'INTBEZLIM'
 const OFFER_CODE_TEMP_SPEED_INCREASE = 'SPEEDUP'
 
@@ -120,7 +121,7 @@ export default class TariffComponent extends Vue {
    */
   get currentSpeed () {
     return this.customerProduct
-      ? Number(this.customerProduct.tlo.chars[CURRENT_SPEED_IN_CHARS].replace(/[\D]+/g, ''))
+      ? Number((this.customerProduct.tlo.chars[CURRENT_SPEED_IN_CHARS] || this.customerProduct.tlo.chars[CURRENT_SPEED_IN_CHARS_2]).replace(/[\D]+/g, ''))
       : null
   }
 
@@ -231,12 +232,13 @@ export default class TariffComponent extends Vue {
 
   get turboPriceAfterIncrease () {
     if (!this.customerProduct || !this.isTurboActivation) return 0
-    if (this.isInfinity) return this.priceAfterIncrease
-    const [from, to] = this.turboPeriod
-    const diff = Math.ceil(Math.abs(to.getTime() - from.getTime()) / (1000 * 3600 * 24))
-    const daysInMonth = (new Date(from.getFullYear(), from.getMonth() + 1, 0)).getDate()
-
-    return this.priceAfterIncrease / daysInMonth * diff
+    return this.priceAfterIncrease
+    // if (this.isInfinity) return this.priceAfterIncrease
+    // const [from, to] = this.turboPeriod
+    // const diff = Math.ceil(Math.abs(to.getTime() - from.getTime()) / (1000 * 3600 * 24))
+    // const daysInMonth = (new Date(from.getFullYear(), from.getMonth() + 1, 0)).getDate()
+    //
+    // return this.priceAfterIncrease / daysInMonth * diff
   }
 
   get offerIdTLO () {
@@ -257,6 +259,18 @@ export default class TariffComponent extends Vue {
       productId: this.isAvailableTurbo.productId,
       title: 'Вы уверены, что хотите отключить Турбо-режим?'
     }
+  }
+
+  get getTurboPeriod () {
+    if (this.isAvailableTurbo && this.isAvailableTurbo.status?.toLowerCase() === 'active') {
+      const { startDate, endDate } = this.isAvailableTurbo
+      if (startDate && endDate) {
+        return `${moment(startDate).format('DD.MM.YYYY')} - ${moment(endDate).format('DD.MM.YYYY')}`
+      } else {
+        return 'Бессрочно'
+      }
+    }
+    return ''
   }
 
   // Methods

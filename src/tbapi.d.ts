@@ -325,6 +325,8 @@ export interface ICustomerProduct {
     status: string
     suspendable: boolean
     visibleInSSP: boolean
+    startDate: string
+    endDate: string
   }]
 }
 
