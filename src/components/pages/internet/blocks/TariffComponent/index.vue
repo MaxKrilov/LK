@@ -56,7 +56,7 @@
                 | Активен на период
               .value
                 er-icon.mr-8(name="calendar")
-                | 10.08.18 - 11.08.18
+                | {{ getTurboPeriod }}
             .price
               .caption.mb-4
                 | Стоимость за период
