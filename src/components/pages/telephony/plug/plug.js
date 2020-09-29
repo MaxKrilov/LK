@@ -1,5 +1,6 @@
 import ErPlugProduct from '@/components/blocks/ErPlugProduct/index.vue'
 import { CODE_PACGLOCMIN, CODE_PACGMIN } from '@/constants/product-code'
+import ErActivationModal from '@/components/blocks/ErActivationModal/index'
 
 export default {
   name: 'telephony-plug-page',
@@ -12,6 +13,7 @@ export default {
     }
   },
   components: {
+    ErActivationModal,
     ErPlugProduct
   },
   data () {
@@ -21,6 +23,9 @@ export default {
       hideButtons: true,
       isOpenStickyButtons: false,
       isConnection: false,
+      isTryConnection: false,
+      isShowMoneyModal: false,
+      availableFunds: false,
       globalCost: 500,
       localCost: 500,
       selectedPackage: '',
@@ -43,6 +48,15 @@ export default {
         return `Выбран пакет: Местные звноки — ${this.localCost} ₽`
       }
       return ''
+    },
+    selectedPrice () {
+      if (this.selectedPackage === 'global') {
+        return Number(this.globalCost)
+      }
+      if (this.selectedPackage === 'local') {
+        return Number(this.localCost)
+      }
+      return 0
     },
     orderData () {
       if (this.selectedPackage === 'local') {
@@ -94,7 +108,22 @@ export default {
       }
     },
     plug () {
-      this.isConnection = true
+      this.isTryConnection = true
+      this.$store.dispatch('salesOrder/getAvailableFunds')
+        .then((response) => {
+          this.availableFunds = response.availableFundsAmt
+          if (this.availableFunds - this.selectedPrice < 0) {
+            this.isShowMoneyModal = true
+          } else {
+            this.isConnection = true
+          }
+        })
+        .catch(() => {
+          this.isConnection = true
+        })
+        .finally(() => {
+          this.isTryConnection = false
+        })
     },
     selectPackage (val) {
       if (this.selectedPackage === val) {

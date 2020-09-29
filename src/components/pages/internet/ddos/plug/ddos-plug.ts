@@ -23,11 +23,16 @@ export default class DddosPlug extends Vue {
   isShowModal: boolean = false
   isShowErrorModal: boolean = false
   isShowSuccessModal: boolean = false
+  isShowMoneyModal: boolean = false
   sendingOrder: boolean = false
   ddosPrice: number = 0
+  availableFunds: number = 0
 
   get ips () {
     return [this.tloIp].filter(el => el)
+  }
+  get fullAddress () {
+    return this.activePoint?.fulladdress || ''
   }
   @Watch('points')
   onPointsChange () {
@@ -54,7 +59,19 @@ export default class DddosPlug extends Vue {
       })
       .then((answer) => {
         this.ddosPrice = Number(answer)
-        this.isShowModal = true
+        this.$store.dispatch('salesOrder/getAvailableFunds')
+          .then((response) => {
+            this.availableFunds = response.availableFundsAmt
+            if (response.availableFundsAmt - this.ddosPrice < 0) {
+              this.creatingOrder = false
+              this.isShowMoneyModal = true
+            } else {
+              this.isShowModal = true
+            }
+          })
+          .catch(() => {
+            this.isShowModal = true
+          })
       })
       .catch(() => {
         this.isShowErrorModal = true

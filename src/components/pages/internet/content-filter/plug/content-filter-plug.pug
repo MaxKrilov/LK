@@ -37,7 +37,7 @@ div
             @mouseleave="mouseleave(index)")
             er-button(
               color="blue"
-              @click="createOrder(cell.chars, cell.price)"
+              @click="plugContentFilter(cell.chars, cell.price)"
               :disabled="creatingOrder"
               :loading="creatingOrder && selectedTariff.chars === cell.chars"
               ) Выбрать
@@ -48,7 +48,7 @@ div
             @mouseleave="mouseleave(index)")
             er-button(
               color="blue"
-              @click="createOrder(cell.chars, cell.price)"
+              @click="plugContentFilter(cell.chars, cell.price)"
               :disabled="creatingOrder"
               :loading="creatingOrder && selectedTariff.chars === cell.chars"
               ) Выбрать
@@ -73,7 +73,7 @@ div
                   span(:class="`${pre}__caption`") ₽/мес. с НДС
                 er-button(
                   :color="'blue'"
-                  @click="createOrder(item.chars, item.price)"
+                  @click="plugContentFilter(item.chars, item.price)"
                   :disabled="creatingOrder || isLoadingProduct"
                   :loading="creatingOrder && selectedTariff.chars === item.chars"
                   ) Выбрать
@@ -104,6 +104,19 @@ div
     template(slot="description")
       div Уважаемый Клиент, в данный момент операция не доступна, обратитесь к персональному менеджеру
  
+  er-activation-modal(
+    type="question"
+    v-model="isShowMoneyModal"
+    actionButtonText="Пополнить счет"
+    @confirm="$router.push({ name: 'add-funds', params: {sum: - +availableFunds + +selectedPrice}})"
+    cancel-button-text="Закрыть"
+  )
+    template(slot="description")
+      div  Уважаемый клиент, для завершения заказа на лицевом счете не достаточно денежных средств. Пополните лицевой счет и повторите покупку. 
+      br
+      div  Стоимость подключения: <b>{{ selectedPrice }} </b> руб.
+      div  Ваши доступные средства: <b>{{ availableFunds }}</b> руб. 
+
   er-activation-modal(
     title="Заказ успешно сформирован"
     type="success"
