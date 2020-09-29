@@ -20,19 +20,20 @@ div(:class="`${pre}`").main-content--padding
         @click="plugDdos"
         ) Сформировать заявку
       er-button(flat :class="`${pre}__cancel-button`" @click="$emit('cancel')") Отменить
-    h3(:class="`${pre}__price-title`") Примерная стоимость защиты
-    div(:class="`${pre}__prices-table`")
-      .head.position
-        div Скорость интернета:
-        div Примерная стоимость:
-      
-      div(v-for="price in prices").row.position
-        div.price-cel
-          h4 до {{ price.speed }}
-          span(:class="`${pre}__unit`") Мбит/с
-        div.price-cel
-          h4 {{ price.price }}
-          span(:class="`${pre}__unit`") ₽/мес
+    template(v-if="prices.length")  
+      h3(:class="`${pre}__price-title`") Примерная стоимость защиты
+      div(:class="`${pre}__prices-table`")
+        .head.position
+          div Скорость интернета:
+          div Примерная стоимость:
+        
+        div(v-for="price in prices").row.position
+          div.price-cel
+            h4 до {{ price.speed }}
+            span(:class="`${pre}__unit`") Мбит/с
+          div.price-cel
+            h4 {{ price.price }}
+            span(:class="`${pre}__unit`") ₽/мес
 
 
   er-activation-modal(
@@ -46,7 +47,7 @@ div(:class="`${pre}`").main-content--padding
     isOffer="internet"
   )
     template(slot="description")
-      .caption По адресу:{{ activePoint.fulladdress }}
+      .caption(v-if="fullAddress") По адресу:{{ fullAddress }}
       .d--flex.justify-content-between.mt-8
         div().d--flex.align-items-baseline
           .caption Ваша скорость: &nbsp;
@@ -69,3 +70,16 @@ div(:class="`${pre}`").main-content--padding
     :isShowActionButton="false"
     cancel-button-text="Спасибо"
   )
+
+  er-activation-modal(
+  type="question"
+  v-model="isShowMoneyModal"
+  actionButtonText="Пополнить счет"
+  @confirm="$router.push({ name: 'add-funds', params: {sum: - availableFunds +  ddosPrice}})"
+  cancel-button-text="Закрыть"
+  )
+    template(slot="description")
+      div  Уважаемый клиент, для завершения заказа на лицевом счете не достаточно денежных средств. Пополните лицевой счет и повторите покупку. 
+      br
+      div  Стоимость подключения DDoS: <b>{{ ddosPrice }} </b> руб.
+      div  Ваши доступные средства: <b>{{ availableFunds }}</b> руб. 
