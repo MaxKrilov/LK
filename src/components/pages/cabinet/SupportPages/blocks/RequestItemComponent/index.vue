@@ -157,10 +157,10 @@
           er-form.text-field(ref="cancel_form")
             er-textarea(v-model="reasonOfCancel" label="Укажите причину" is-show-label-required :rules="[v => !!v || 'Поле обязательно к заполнению']")
           er-row.actions.d--flex
-            er-flex.action.xs12.sm6.px-16
+            er-flex.action.xs12.sm6.px-16.order-sm2
               er-button(@click="cancelRequest" :loading="loadingCancel")
                 | Отменить
-            er-flex.action.xs12.sm6.px-16
+            er-flex.action.xs12.sm6.px-16.order-sm1
               er-button(flat, @click="closeCancelDialog")
                 | Не отменять
     er-activation-modal(

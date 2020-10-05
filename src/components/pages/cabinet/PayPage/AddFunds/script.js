@@ -49,6 +49,7 @@ export default {
     selectedEmail: '',
     emails: [],
     currentEmail: '',
+    searchEmail: null,
     isLoadingPayment: false
   }),
   computed: {
@@ -102,6 +103,18 @@ export default {
     },
     clientInfo () {
       this.listEmail()
+    },
+    selectedEmail (val) {
+      if (PATTERN_EMAIL.test(val)) {
+        this.$nextTick(() => {
+          this.emails.push(val)
+          this.selectedEmail = val
+        })
+      } else {
+        this.$nextTick(() => {
+          this.selectedEmail = null
+        })
+      }
     }
   },
   methods: {

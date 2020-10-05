@@ -65,13 +65,28 @@ export default class WifiIndexPage extends Vue {
   tracker = 1
 
   // Computed
+  get isErrorClient () {
+    const countAdresses = this.listAddressUnit.length
+
+    let isError = false
+    for (let i = 0; i < countAdresses; i++) {
+      if (!this.listAddressUnit[i].hasOwnProperty('latitude') ||
+        !this.listAddressUnit[i].hasOwnProperty('longitude')) {
+        isError = true
+        break
+      }
+    }
+
+    return isError
+  }
+
   get mapCenter () {
     const countAdresses = this.listAddressUnit.length
 
     if (countAdresses === 1) {
       return latLng(
-        Number(this.listAddressUnit[0].latitude),
-        Number(this.listAddressUnit[0].longitude)
+        Number(this.listAddressUnit[0]?.latitude || 0),
+        Number(this.listAddressUnit[0]?.longitude || 0)
       )
     }
 

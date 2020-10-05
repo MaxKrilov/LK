@@ -76,13 +76,18 @@ mixin toDirectorForm(name)
       er-flex(xs12)
         er-row
           er-flex.mb-32(xs12)
-            er-select(
+            ErtCombobox(
               v-model="modelDirectorEmail"
               :items="getEmailList"
-              placeholder="E-mail"
-              is-show-required-label
+              label="E-mail"
               :rules="requiredRule"
+              :search-input.sync="searchEmail"
             )
+              template(v-slot:no-data)
+                ErtListItem
+                  ErtListItemContent
+                    ErtListItemTitle
+                      | Не найдена эл. почта {{ searchEmail }}. Нажмите <kbd>Enter</kbd> для добавления
           er-flex.mb-32(xs12)
             er-text-field(
               v-model="modelDirectorName"

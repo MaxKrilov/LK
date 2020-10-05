@@ -5,7 +5,7 @@
       title="WiFi зона"
       backlink="/lk"
     )
-    .wifi-index-page__map.mb-32
+    .wifi-index-page__map.mb-32(v-if="!isErrorClient")
       l-map(
         :zoom="mapZoom"
         :options="mapOptions"
@@ -76,7 +76,7 @@
         @open="() => getCustomerProductById(point.bpi)"
       )
         template
-          | {{ point.name }}
+          | {{ point.fulladdress }}
         template(slot="slider-content")
           .wifi-index-page__points__head.d--flex.mb-40
             .item.d--flex.mr-40

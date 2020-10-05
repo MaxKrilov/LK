@@ -1,6 +1,7 @@
 export * from './ErtAutocomplete'
 export * from './ErtCheckbox'
 export * from './ErtChip'
+export * from './ErtCombobox'
 export * from './ErtCounter'
 export * from './ErtDialog'
 export * from './ErtForm'

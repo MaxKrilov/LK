@@ -82,9 +82,14 @@ export default {
       this.closeSubMenu()
       this.openSubMenuBackground = false
     },
-    openSubMenu (menuItem) {
+    openSubMenu (menuItem, event) {
       this.closeSubMenu()
-      !this.openSubMenuBackground && (this.openSubMenuBackground = true)
+      if (!this.openSubMenuBackground) {
+        this.openSubMenuBackground = true
+      }
+      if (!event.target.closest('.menu-component__left__body-item__sub-items')) {
+        this.$router.push(menuItem.url)
+      }
       menuItem.isOpen = true
     },
     toggleRightPanel () {
