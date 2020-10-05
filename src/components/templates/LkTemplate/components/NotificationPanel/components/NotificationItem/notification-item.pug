@@ -14,16 +14,24 @@
       .notification-item__time
         | {{ getTime() }}
 
-  er-slide-up-down(:active="showDescription").spoiler-text
+  er-slide-up-down.spoiler-text(
+    :active="showDescription"
+    v-class-mod="{closed: !showDescription}"
+  )
     .notification-item__content.d--flex.flex-direction-row
-      .notification-item__text(
-        v-if="!isPPR"
-        v-html="textContent"
+      campaign-custom-message-14(
+        v-if="isCampaignCustomMessage"
+        :params="notification"
       )
 
       ppr-text(
-        v-else
+        v-else-if="isPPR"
         :data="notification.data"
+      )
+
+      .notification-item__text(
+        v-else
+        v-html="textContent"
       )
 
       .notification-item__timer(v-if="hasTimer")
@@ -48,7 +56,7 @@
 
   .notification-item__footer
     a.notification-item__action(
-      v-if="isCampaignMessage"
+      v-if="isCampaignMessage || isCampaignCustomMessage"
       @click="onClickAccept"
     ) Ознакомлен
 

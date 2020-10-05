@@ -11,11 +11,15 @@ export default {
       default: 'Новое уведомление'
     },
     text: String,
-    type: String
+    type: String,
+    params: {}
   },
   computed: {
     iconName () {
       return getNotificationType(this.type).iconName
+    },
+    offerNumber () {
+      return this.$props.params?.['param_2'] || '%param_2%'
     }
   },
   mounted () {

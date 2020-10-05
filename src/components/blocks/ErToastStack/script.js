@@ -58,6 +58,13 @@ export default {
     hideToast (id) {
       this.hidden.push(id)
     },
+    getToastParams (toast) {
+      return Object.keys(toast)
+        .filter(el => el.startsWith('param_'))
+        .reduce((acc, el) => {
+          return { ...acc, [el]: toast[el] }
+        }, {})
+    },
     onClickToast (id) {
       this.$emit('click', id)
       this.hideToast(id)
