@@ -2,16 +2,19 @@ import { mapActions } from 'vuex'
 import NotificationIcon from '../NotificationIcon/index'
 import TimerDisplay from '../TimerDisplay/index'
 import PPRText from '../PPRText/index'
+import CampaignCustomMessage14 from '../campaign-custom-message-14'
+
 import {
   isSurvey,
   isSurveyReception,
   isSurveyTicket,
   isCampaignMessage,
+  isCampaignCustomMessage,
   isPPR
 } from '@/functions/notifications'
 import { isMaxPostponedTimes } from '@/functions/survey'
 
-const MAX_DESCRIPTION_LENGHT = 101
+const MAX_DESCRIPTION_LENGTH = 101
 
 export default {
   props: {
@@ -21,6 +24,7 @@ export default {
   components: {
     NotificationIcon,
     TimerDisplay,
+    CampaignCustomMessage14,
     'ppr-text': PPRText
   },
   data () {
@@ -38,7 +42,7 @@ export default {
       return `communication_type=${ct} ${taskId ? '\n#' + taskId : ''}`
     },
     isLongDescription () {
-      return this.textContent.length > MAX_DESCRIPTION_LENGHT
+      return this.textContent.length > MAX_DESCRIPTION_LENGTH || this.isCampaignCustomMessage
     },
     hasTimer () {
       return this.notification.expected_resolution_date
@@ -63,6 +67,10 @@ export default {
     },
     isCampaignMessage () {
       const result = isCampaignMessage(this.notification.communication_type)
+      return result
+    },
+    isCampaignCustomMessage () {
+      const result = isCampaignCustomMessage(this.notification.communication_type)
       return result
     },
     isPPR () {

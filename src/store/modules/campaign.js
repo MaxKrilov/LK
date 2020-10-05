@@ -1,13 +1,11 @@
 import Vue from 'vue'
 import * as campaignConst from '@/constants/campaign.ts'
 import { logInfo } from '@/functions/logging.ts'
-import {
-  campaignShitToNotification,
-  pprToNotification,
-  isSurvey
-} from '@/functions/notifications'
+import { campaignShitToNotification, isSurvey, pprToNotification } from '@/functions/notifications'
 import { isPostponedTillExpired } from '@/functions/survey'
 import moment from 'moment'
+import { logError } from '@/functions/logging'
+
 const NO_ITEMS_FOUND_MESSAGE = 'No items found.'
 
 const SET_NOTIFICATIONS = 'SET_NOTIFICATIONS'
@@ -23,6 +21,7 @@ const state = {
 const apiWrap = api => {
   return api
     .setWithCredentials()
+    .setBranch('web-21528')
 }
 
 const getters = {
@@ -93,22 +92,28 @@ const actions = {
                 api,
                 id: el.task_id
               }
-              const survey = await dispatch(
-                'survey/fetchSurveyById',
-                payload,
-                { root: true }
-              )
-              el.bindedSurvey = survey
 
-              if (el.bindedSurvey.postponedTill) {
-                const isExpired = isPostponedTillExpired(
-                  el.bindedSurvey.postponedTill,
-                  el.communication_end_dttm
+              /*
+                заранее скрываем "Анкетные" уведомления,
+                чтобы при ошибке получения данных их не выводить
+              */
+              el.hidden = true
+
+              try {
+                el.bindedSurvey = await dispatch(
+                  'survey/fetchSurveyById',
+                  payload,
+                  { root: true }
                 )
 
-                if (isExpired) {
-                  el.hidden = true
+                if (el?.bindedSurvey?.postponedTill) {
+                  el.hidden = isPostponedTillExpired(
+                    el.bindedSurvey.postponedTill,
+                    el.communication_end_dttm
+                  )
                 }
+              } catch (err) {
+                logError(err)
               }
             }
 
@@ -151,7 +156,7 @@ const actions = {
     logInfo(`campaign/response`, newPayload)
 
     if (!SEND_RESPONSE) {
-      return new Promise((resolve, reject) => resolve({}))
+      return new Promise((resolve) => resolve({}))
     } else {
       return apiWrap(api)
         .setData(newPayload)
@@ -199,7 +204,7 @@ const actions = {
     logInfo('campaign/delete', payload)
 
     if (!SEND_RESPONSE) {
-      return new Promise((resolve, reject) => {
+      return new Promise((resolve) => {
         dispatch('hide', { id })
         return resolve({})
       })
