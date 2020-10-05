@@ -9,6 +9,7 @@ import { SCREEN_WIDTH } from '../../../../../../store/actions/variables'
 import { BREAKPOINT_XL } from '../../../../../../constants/breakpoint'
 import { CREATE_REQUEST } from '../../../../../../store/actions/request'
 import { LIST_COMPLAINT_THEME } from '../../../../../../store/actions/dictionary'
+import { PATTERN_EMAIL } from '../../../../../../constants/regexp'
 
 @Component({
   components: {
@@ -54,6 +55,8 @@ export default class ContactInfoComponent extends Vue {
   modelDirectorPost = ''
   modelDirectorComment = ''
 
+  searchEmail = ''
+
   listTheme = [
     'Идея',
     'Претензия',
@@ -81,6 +84,19 @@ export default class ContactInfoComponent extends Vue {
     const findingValue = this.getListContact.find(item => item.phone?.value === _val)
     if (findingValue !== undefined && findingValue.firstName && findingValue.name) {
       this.modelDirectorName = findingValue.name
+    }
+  }
+
+  @Watch('modelDirectorEmail')
+  onModelDirectorEmailChange (val) {
+    if (PATTERN_EMAIL.test(val)) {
+      this.$nextTick(() => {
+        this.modelDirectorEmail = val
+      })
+    } else {
+      this.$nextTick(() => {
+        this.modelDirectorEmail = null
+      })
     }
   }
 

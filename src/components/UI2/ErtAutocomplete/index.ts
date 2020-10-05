@@ -204,7 +204,6 @@ class ErtAutocomplete extends mixins(ErtSelect) {
 
   // Hooks
   created () {
-    console.log(this)
     this.setSearch()
   }
 
@@ -225,7 +224,8 @@ class ErtAutocomplete extends mixins(ErtSelect) {
       this.setMenuIndex(0)
     })
   }
-  onInternalSearchChanged () {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  onInternalSearchChanged (val: any) {
     this.updateMenuDimensions()
   }
   updateMenuDimensions () {

@@ -15,7 +15,7 @@ div(:class="`${pre}`")
       div(
         v-for="(menuItem, index) in menu",
         :class="`${pre}__left__body-item`",
-        @click="openSubMenu(menuItem)",
+        @click="openSubMenu(menuItem, $event)",
         :key="index"
       )
         er-tooltip(right)
