@@ -2,7 +2,7 @@
   .notify-type(
     v-for="item in items"
     :key="item.id"
-    :class="{'notify-type--active': item.id == selected$}"
+    :class="{'notify-type--active': item.id === selected$}"
     @click="onClickType(item.id)"
   )
     .notify-type__title

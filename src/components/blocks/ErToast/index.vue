@@ -1,3 +1,3 @@
-<template lang="pug" src="./template.pug"></template>
-<script src="./script.js"></script>
-<style lang="scss" src="./style.scss"></style>
+<template lang="pug" src="./er-toast.pug"></template>
+<script src="./er-toast.js"></script>
+<style lang="scss" src="./er-toast.scss"></style>

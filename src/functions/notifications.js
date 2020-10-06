@@ -1,11 +1,12 @@
 import {
-  TYPES,
-  T_SURVEY,
-  T_SURVEY_TICKET,
-  T_SURVEY_RECEPTION,
   T_CAMPAIGN_MESSAGE,
   T_PPR,
-  T_PPR_CODE
+  T_PPR_CODE,
+  T_SURVEY,
+  T_SURVEY_RECEPTION,
+  T_CAMPAIGN_CUSTOM_MESSAGE,
+  T_SURVEY_TICKET,
+  TYPES
 } from '@/constants/campaign.ts'
 import moment from 'moment'
 import { strToTimestampInMs } from '@/functions/date'
@@ -15,8 +16,7 @@ function getNotificationType (communicationType) {
 }
 
 function getNotificationIconName (communicationType) {
-  const iconName = getNotificationType(communicationType).iconName
-  return iconName
+  return getNotificationType(communicationType).iconName
 }
 
 function isSurvey (communicationType) {
@@ -43,6 +43,11 @@ function isCampaignMessage (communicationType) {
   return type === T_CAMPAIGN_MESSAGE
 }
 
+function isCampaignCustomMessage (communicationType) {
+  const type = getNotificationType(communicationType)
+  return type === T_CAMPAIGN_CUSTOM_MESSAGE
+}
+
 function isExpiredNotification (notification) {
   return notification.communication_end_dttm.getTime() <= (new Date()).getTime()
 }
@@ -66,6 +71,11 @@ function campaignShitToNotification (campaign) {
     ...notificationType,
     text: data.COMMUNICATION_TEXT,
     description: data.description
+  }
+
+  if (isCampaignCustomMessage(campaign.data.communication_type)) {
+    const offerNumber = campaign.data?.['param_2'] || '%param_2%'
+    newEl.label = `${notificationType.label}${offerNumber}`
   }
 
   newEl.date = dateConvert(data.communication_start_dttm)
@@ -103,6 +113,7 @@ export {
   isSurveyTicket,
   isSurveyReception,
   isCampaignMessage,
+  isCampaignCustomMessage,
   campaignShitToNotification,
   pprToNotification,
   isExpiredNotification,

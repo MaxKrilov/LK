@@ -37,6 +37,12 @@ const T_PPR = {
   iconName: 'warning'
 }
 
+const T_CAMPAIGN_CUSTOM_MESSAGE = {
+  description: 'Уведомление о смене платежных реквизитов',
+  label: 'Уведомление о смене платежных реквизитов на договоре №',
+  iconName: 'warning'
+}
+
 const T_PPR_CODE = '8'
 
 const TYPES = {
@@ -48,7 +54,8 @@ const TYPES = {
   '6': T_SURVEY_RECEPTION,
   '7': T_CAMPAIGN_MESSAGE,
   [T_PPR_CODE]: T_PPR,
-  '11': T_SURVEY_RECEPTION
+  '11': T_SURVEY_RECEPTION,
+  '14': T_CAMPAIGN_CUSTOM_MESSAGE
 }
 
 const RESPONSE_ACCEPT = 'accept'
@@ -65,6 +72,7 @@ export {
   T_SURVEY_RECEPTION,
   T_PPR,
   T_CAMPAIGN_MESSAGE,
+  T_CAMPAIGN_CUSTOM_MESSAGE,
   T_BANNER,
   T_PPR_CODE,
   RESPONSE_ACCEPT,

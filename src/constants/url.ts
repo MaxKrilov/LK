@@ -8,12 +8,14 @@ export const BACKEND_STAGING = 'api-lkb2b.domru.staging.ertelecom.ru'
 
 const CHANGE_CUSTOMER_IFRAME: Record<string, string> = {
   PATH: '/auth/admin/user/console?iframe=1&hiddenHeader=true',
+  SSO: 'https://sso-balancer.testing.srv.loc',
   SSO2: 'https://sso-balancer2.testing.srv.loc',
   SSO4: 'https://sso-balancer4.testing.srv.loc',
   PROD: 'https://auth.domru.ru'
 }
 
 const buildIframeUrl = (url:string) => url + CHANGE_CUSTOMER_IFRAME.PATH
+export const EDU_SSO_CHANGE_CUSTOMER_IFRAME = buildIframeUrl(CHANGE_CUSTOMER_IFRAME.SSO)
 export const TEST_SSO_CHANGE_CUSTOMER_IFRAME = buildIframeUrl(CHANGE_CUSTOMER_IFRAME.SSO2)
 export const PSI_SSO_CHANGE_CUSTOMER_IFRAME = buildIframeUrl(CHANGE_CUSTOMER_IFRAME.SSO4)
 export const PSI3_SSO_CHANGE_CUSTOMER_IFRAME = buildIframeUrl(CHANGE_CUSTOMER_IFRAME.SSO4)

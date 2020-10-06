@@ -4,19 +4,42 @@ $notification-link-margin: 56px;
   @extend %caption2-font;
   cursor: pointer;
   text-decoration: none;
-  @include color-black(.5);
+  @include color-black(0.5);
   transition: color $primary-transition;
   border-bottom-style: dashed;
   border-width: 1px;
 
   &:hover {
-    color: map_get($shades, 'black');
+    color: map_get($shades, "black");
   }
 }
 
 .notification-item {
   .spoiler-text {
-    min-height: $padding-x12;
+    min-height: $padding-x16;
+    position: relative;
+    &::before {
+      transform: all $primary-transition;
+      content: "";
+      display: block;
+      pointer-events: none;
+      position: absolute;
+      height: $padding-x10;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: map_get($shades, "transparent");
+    }
+
+    &--closed {
+      &::before {
+        background: linear-gradient(
+          to top,
+          map_get($shades, "white"),
+          map_get($shades, "transparent")
+        );
+      }
+    }
   }
 
   & + & {
@@ -49,7 +72,7 @@ $notification-link-margin: 56px;
 
   .survey-actions {
     .survey-actions__item + .survey-actions__item {
-      @include min-breakpoint('sm') {
+      @include min-breakpoint("sm") {
         margin-left: $notification-link-margin;
       }
     }
@@ -62,16 +85,16 @@ $notification-link-margin: 56px;
         @extend %link-color;
 
         &:hover {
-          border-bottom-color: map_get($shades, 'transparent');
+          border-bottom-color: map_get($shades, "transparent");
         }
       }
 
       &--put-off {
-        @include color-black(.5);
+        @include color-black(0.5);
         border-bottom-style: dashed;
 
         &:hover {
-          @include color-black(.8);
+          @include color-black(0.8);
         }
       }
     }
@@ -93,7 +116,7 @@ $notification-link-margin: 56px;
   &__text,
   &__timer {
     @extend %body-font;
-    @include color-black(.8);
+    @include color-black(0.8);
     padding: $padding-x2 0;
   }
 
@@ -107,7 +130,7 @@ $notification-link-margin: 56px;
     .slide-up-down-activator {
       display: inline-flex;
       @extend %caption2-font;
-      @include color-black(.5);
+      @include color-black(0.5);
 
       &__label {
         @extend %notification-item-action;

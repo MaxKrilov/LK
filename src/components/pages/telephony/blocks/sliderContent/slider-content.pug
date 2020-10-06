@@ -20,10 +20,10 @@ div(:class="`${pre}`" )
           h3(:class="`${pre}__phone-title`") Подключенные телефоны
           connected-phone(v-for="(phone, index) in phones" :key="index" :phone="phone" @disconnect="disconnectNumber(phone.number)")
         
-        div(:class="`${pre}__slider-buttons`").add-button
+        div(:class="`${pre}__slider-buttons`" v-if="!isStopped").add-button
           er-button(pre-icon="add_round" color="yellow" @click="connectNewNumber" :loading="isConnection") Добавить телефон
         
-        h3(:class="`${pre}__packages-title`") Пакеты минут
+        h3(:class="`${pre}__packages-title`" v-if="localConnected|| globalConnected || !isStopped") Пакеты минут
         div(:class="`${pre}__packages`")
           PackageMinuteCard(
             v-if="localConnected"
@@ -39,7 +39,7 @@ div(:class="`${pre}`" )
             :phones="phones"
             :char="'Тип Пакета (Пакет Минут)'")
 
-          div(@click="plugPackages" v-if="localPlug || globalPlug")  
+          div(@click="plugPackages" v-if="(localPlug || globalPlug) && !isStopped")  
             er-card(:class="[`${pre}__plug-package`, `${pre}__card-package`]")
               div(:class="`${pre}__plug-package__title`") Подключить пакет минут
               div(:class="`${pre}__plug-package__footer`")
@@ -49,7 +49,7 @@ div(:class="`${pre}`" )
                 er-icon(name="minute_pack")
         div(:class="`${pre}__slider-buttons`")
           template(v-if="isStopped")
-            er-button(color="yellow") Восстановить
+            er-button(color="yellow"  @click="$router.push('/lk/support?form=restoring_a_contract_or_service')") Восстановить
           template(v-else)
             er-button(color="yellow"  @click="$router.push('/lk/support?form=suspension_of_a_contract_or_service')") Приостановить Телефонию
   

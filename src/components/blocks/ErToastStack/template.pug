@@ -14,6 +14,7 @@
           :type="toast.communication_type"
           :id="toast.id"
           :key="toast.id"
+          :params="getToastParams(toast)"
           @click="onClickToast"
           @hide="onHideToast"
           @timeout="removeFromQueue"

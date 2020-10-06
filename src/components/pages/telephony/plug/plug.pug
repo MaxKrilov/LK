@@ -72,11 +72,11 @@ div(:class="`${pre} main-content main-content--top-menu-fix`")
         er-icon(name="corner_down" :class="[`arrow`, {[`arrow-down`]: !isOpenStickyButtons}]")
     er-slide-up-down(:active="isOpenStickyButtons" :duration="100")
       div(:class="`${pre}__chosen-packets_sticky-buttons`")
-        er-button(color="blue" :disabled="!orderData" @click="plug" :loading="isConnection") Подключить пакет минут
+        er-button(color="blue" :disabled="!orderData" @click="plug" :loading="isConnection || isTryConnection") Подключить пакет минут
         er-button(flat @click="$router.push('/lk/telephony')") Отмена
 
   div(:class="`${pre}__buttons`")
-    er-button(color="blue" :disabled="!orderData" @click="plug" :loading="isConnection") Подключить пакет минут
+    er-button(color="blue" :disabled="!orderData" @click="plug" :loading="isConnection || isTryConnection") Подключить пакет минут
     er-button(flat @click="$router.push('/lk/telephony')") Отмена
 
   ErPlugProduct(
@@ -84,6 +84,18 @@ div(:class="`${pre} main-content main-content--top-menu-fix`")
     :orderData="orderData"
     isSendOrder
   )
+  er-activation-modal(
+    type="question"
+    v-model="isShowMoneyModal"
+    actionButtonText="Пополнить счет"
+    @confirm="$router.push({ name: 'add-funds', params: {sum: - +availableFunds + +selectedPrice}})"
+    cancel-button-text="Закрыть"
+  )
+    template(slot="description")
+      div  Уважаемый клиент, для завершения заказа на лицевом счете не достаточно денежных средств. Пополните лицевой счет и повторите покупку. 
+      br
+      div  Стоимость подключения: <b>{{ selectedPrice }} </b> руб.
+      div  Ваши доступные средства: <b>{{ availableFunds }}</b> руб. 
   //- TODO оставить до определения способа вывода цен
   //- div(:class="`${pre}__call-cost`")
   //-   div(:class="`${pre}__call-cost-title`") Стоимость звонков

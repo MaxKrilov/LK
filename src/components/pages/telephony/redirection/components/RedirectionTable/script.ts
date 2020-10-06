@@ -29,6 +29,7 @@ export default class RedirectionTable extends Vue {
         this.isShowDeletModal = true
       })
       .catch(() => {
+        this.isShowErrorModal = true
         this.cancelOrder()
       })
       .finally(() => {

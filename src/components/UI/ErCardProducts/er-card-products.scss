@@ -51,7 +51,7 @@
     margin-bottom: $padding-x1;
     border-radius: 12px;
     box-shadow: 0 12px 16px rgba(map_get($shades, "black"), 0), 0 2px 12px rgba(map_get($shades, "black"), 0.1),
-      0 2px 2px rgba(map_get($shades, "black"), 0.05);
+                0 2px 2px rgba(map_get($shades, "black"), 0.05);
     transition: 0.15s ease-in;
     background: linear-gradient(to top, map_get($gray, "26") 28.65%, map_get($shades, "white") 90.63%);
     padding: 1px;
@@ -65,7 +65,7 @@
       opacity: 1;
     }
     .er-card-products__point-icon {
-      >>> .icon {
+       .icon {
         svg {
           color: map-get($yellow, "base");
         }
@@ -75,14 +75,14 @@
   &__point-item:hover:not(.stopped) {
     position: relative;
     box-shadow: 0 12px 16px rgba(map_get($shades, "black"), 0.1), 0 12px 16px rgba(map_get($shades, "black"), 0),
-      0 2px 2px rgba(map_get($shades, "black"), 0);
+                0 2px 2px rgba(map_get($shades, "black"), 0);
     background: map_get($shades, "white");
 
     .er-card-products__point-content {
       background: map_get($shades, "white");
     }
     .er-card-products__point-icon {
-      >>> .icon {
+      &::v-deep .icon {
         svg {
           color: map_get($yellow, "base");
         }
@@ -101,7 +101,7 @@
       @include color-black();
     }
     .er-card-products__switcher {
-      >>> .icon {
+      &::v-deep .icon {
         @include color-black(0.5);
       }
     }
@@ -129,7 +129,7 @@
       background: map_get($gray, "3");
     }
     .er-card-products__point-icon {
-      >>> .icon {
+      &::v-deep .icon {
         svg {
           @include color-black(0.1);
         }
@@ -155,7 +155,7 @@
     @include min-breakpoint("lg") {
       margin-left: -23px;
     }
-    >>>.icon {
+    &::v-deep .icon {
       svg {
         transition: $primary-transition;
         @include color-black(0.2);
@@ -257,7 +257,7 @@
     @include max-breakpoint("md") {
       padding-top: 8px;
     }
-    >>>.icon {
+    &::v-deep .icon {
       padding-right: 10px;
       @include min-breakpoint("md") {
         padding-right: 16px;
@@ -280,7 +280,7 @@
       padding-top: 0;
     }
     &:hover {
-      >>>.icon {
+      &::v-deep .icon {
         @include color-black(0.5);
       }
       .wide {
@@ -291,7 +291,7 @@
       }
 
     }
-    >>>.icon {
+    &::v-deep .icon {
       @include media-query(
         (
           padding-right: (
@@ -306,7 +306,7 @@
       @include color-black(0.2);
     }
     .arrow-up {
-      >>>svg {
+      &::v-deep svg {
         transform: rotate(180deg);
       }
       @include color-black(0.5);

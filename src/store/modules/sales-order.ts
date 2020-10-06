@@ -396,6 +396,24 @@ const actions = {
         .catch(err => reject(err))
     })
   },
+  getAvailableFunds (
+    context: ActionContext<IState, any>) {
+    const accountNumber = context.rootGetters['user/getActiveBillingAccountNumber']
+    return new Promise((resolve, reject) => {
+      api()
+        .setWithCredentials()
+        .setData({
+          accountNumber
+        })
+        .query('/payment/billing/available')
+        .then((response) => {
+          resolve(response)
+        })
+        .catch((error: AxiosError) => {
+          reject(error?.response?.data)
+        })
+    })
+  },
   createDisconnectOrder (
     context: ActionContext<IState, any>,
     { locationId, productId, disconnectDate }: { locationId: string, bpi: string, productId?: string, disconnectDate: string }

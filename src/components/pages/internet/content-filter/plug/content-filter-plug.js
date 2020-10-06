@@ -34,10 +34,12 @@ export default {
       isShowErrorModal: false,
       isShowSuccessModal: false,
       selectedTariff: {},
+      availableFunds: 0,
       offer: false,
       offerAcceptedOn: null,
       creatingOrder: false,
       sendingOrder: false,
+      isShowMoneyModal: false,
       tariffs: [
         {
           id: 101161,
@@ -275,12 +277,27 @@ export default {
           this.isLoadingProduct = false
         })
     },
-    createOrder (chars, price) {
+    plugContentFilter (chars, price) {
       this.selectedTariff = {
         chars,
         price
       }
       this.creatingOrder = true
+      this.$store.dispatch('salesOrder/getAvailableFunds')
+        .then((response) => {
+          this.availableFunds = response.availableFundsAmt
+          if (this.availableFunds - price < 0) {
+            this.creatingOrder = false
+            this.isShowMoneyModal = true
+          } else {
+            this.createOrder(chars)
+          }
+        })
+        .catch(() => {
+          this.createOrder(chars)
+        })
+    },
+    createOrder (chars) {
       this.$store.dispatch('salesOrder/createSaleOrder',
         {
           locationId: this.activePoint.id,
@@ -292,6 +309,7 @@ export default {
           this.isShowModal = true
         })
         .catch(() => {
+          this.isShowErrorModal = true
         })
         .finally(() => {
           this.creatingOrder = false

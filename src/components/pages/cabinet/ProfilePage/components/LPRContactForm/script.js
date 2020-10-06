@@ -6,6 +6,7 @@ import { compareObject, formatPhoneNumber, toDefaultPhoneNumber } from '@/functi
 import { CyrName } from '@/functions/declination'
 import ContactMethodsList from './components/ContactMethodsList'
 import UploadFileDialog from './components/UploadFileDialog'
+import ErActivationModal from '../../../../../blocks/ErActivationModal/index'
 
 const CAN_SIGN_ROLE = {
   id: '9142343507913277484',
@@ -16,7 +17,8 @@ export default {
   name: 'lpr-contact-form',
   components: {
     ContactMethodsList,
-    UploadFileDialog
+    UploadFileDialog,
+    ErActivationModal
   },
   mixins: [ResponsiveMixin, Validators],
   props: {
@@ -53,7 +55,8 @@ export default {
       changedFields: [],
       fetchedContactRoles: [],
       contactRolesList: [],
-      signDocumentsList: ['Доверенность', 'Устав', 'Другое']
+      signDocumentsList: ['Доверенность', 'Устав', 'Другое'],
+      isShowDialogDeleteContact: false
     }
   },
   mounted () {
@@ -210,7 +213,11 @@ export default {
         })
       }
     },
+    showDialogDeleteContact () {
+      this.isShowDialogDeleteContact = true
+    },
     handleDeleteContact () {
+      this.isShowDialogDeleteContact = false
       this.deleteContact({ api: this.$api })
     },
     addContactMethod (val, type) {
