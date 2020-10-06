@@ -21,7 +21,6 @@ const state = {
 const apiWrap = api => {
   return api
     .setWithCredentials()
-    .setBranch('web-21528')
 }
 
 const getters = {
@@ -60,6 +59,7 @@ const actions = {
       .setData({
         customer_id: toms
       })
+      .setBranch('web-21528')
       .query(url)
       .then(data => {
         return data
