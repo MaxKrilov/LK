@@ -1,0 +1,128 @@
+div.main-content.main-content--padding.main-content--top-menu-fix
+  er-page-header(title="ТВ приставка" linkText="Назад к ТВ" backlink="/lk/tv")
+  template(v-if="loading")
+    er-preloader(:active="true" icon icon-type="2")
+  template(v-else)
+    div.mb-40.mb-md-48
+      div.caption2 Адрес
+      div {{ address }}
+      div.mt-24
+        span.caption2 Модель
+        div {{ line.stb.name }}
+
+      div(class="tv-packages__wrap-stb")
+        div.mr-40
+          div.caption2.mt-16 Способ передачи оборудования
+          div {{ stbType }} 
+        div
+          div.caption2.mt-16 Стоимость оборудования 
+          div 
+            | {{ line.stb.price }} 
+            span(class="unit") ₽/мес
+      div.caption2.mt-32 Тариф
+      div {{ tariffname }} 
+      div.caption2.mt-16 Итого за приставку
+      .h4 
+        | {{ line.price }} 
+        span(class="unit") ₽/мес
+
+      div(class="tv-packages__button").mt-24
+        er-button(color="gray" @click="isChangeTariff = true"  :disabled="isChangeTariff") Сменить тариф
+    
+    h2 Пакеты каналов
+    div.caption2.mt-8.mt-lg-16.mt-md-8.mb-16.mb-lg-32.mb-md-24
+      | Абонентская плата за дополнительные пакеты 
+      span(class="h4") &nbsp; {{ pasketsPrise }} 
+      span(class="unit") ₽/мес
+
+    div(class="tv-packages__packages").mt-16.mt-md-24.mt-lg-32
+      er-card(v-if="standartPackage")
+        div(class="tv-packages__packages-standart")
+          div(class="tv-packages__packages__img" :style="{'background-image': `url(${require('@/assets/images/tv/standart.png')})`}")
+          div(class="tv-packages__packages__header")
+            div
+              div(class="tv-packages__packages__title").mb-4 Пакет каналов
+              div(class="tv-packages__packages__name").mb-48 {{ standartPackageName }}
+              div(class="tv-packages__packages__count" @click="$router.push(`/lk/tv/channel-list/${standartPackageId}`)")  {{ standartPackageCount }} канала
+          div(class="tv-packages__packages__content")
+            div(class="tv-packages__packages__price-active__title") Стоимость:
+            div(class="tv-packages__packages__price-active") {{ 0 }} <span class="unit">₽/мес</span>
+            div(class="tv-packages__packages__price-active__title") Включен в тариф
+
+      er-card(v-for="(item, index) in connectedPackages" :key="item.id")
+        div(:style="`background: ${item.background}`" class="tv-packages__packages-active")
+          div(class="tv-packages__packages__img" :style="{'background-image': `url(${item.img})`}")
+
+          div(class="tv-packages__packages__header")
+            div
+              div(class="tv-packages__packages__title").mb-4 Пакет каналов
+              div(class="tv-packages__packages__name").mb-32 {{ item.title }}
+              div(class="tv-packages__packages__count" @click="$router.push(`/lk/tv/channel-list/${item.id}`)") {{ item.count }} канала
+
+          div(class="tv-packages__packages__content")
+          
+            div(class="tv-packages__packages__price-active__title") Стоимость:
+            div(class="tv-packages__packages__price-active")
+              | {{ item.price }}
+              span(class="unit") ₽/мес
+            div(class="tv-packages__packages__price-active__title") Подключен
+            er-button(
+              color="gray"
+              :loading="item.productId === disconnectedItem"
+              @click="unPlug(item.productId, item.title)"
+              :disabled="isConnection || isCheckingMoney || isDisconnection"
+              ).mt-24 Отключить
+      er-card(v-for="(item, index) in allowedPackages" :key="item.id")
+        div(:style="`background: ${item.background}`" class="tv-packages__packages-active")
+
+          div(class="tv-packages__packages__img" :style="{'background-image': `url(${item.img})`}")
+          div(class="tv-packages__packages__header")
+            div(class="tv-packages__packages__title").mb-4 Пакет каналов
+            div(class="tv-packages__packages__name").mb-48 {{ item.title}}
+            div(class="tv-packages__packages__count" @click="$router.push(`/lk/tv/channel-list/${item.id}`)") {{ item.count }} канала
+
+          div(class="tv-packages__packages__content not-connected")
+            .caption2 Стоимость:
+            div(class="tv-packages__packages__price").h3 
+              | {{ item.price }} 
+              span(class="caption1") ₽/мес
+            er-button(
+              color="blue"
+              @click="plug(item.productCode, item.price)"
+              :loading="(item.productCode === disconnectedItem) && (isConnection || isCheckingMoney)"
+              :disabled="isConnection || isCheckingMoney || isDisconnection"
+              ).mt-24 Подключить
+      
+    ErPlugProduct(
+      v-model="isConnection"
+      :orderData="orderData"
+      isSendOrder
+      )
+    ErPlugProduct(
+      v-model="isChangeTariff"
+      :requestData="requestData"
+      isSendManagerRequest
+      )
+    ErDisconnectProduct(
+      v-model="isDisconnection"
+      :deleteOrderData="deleteData"
+      isSendOrder
+      )
+  er-activation-modal(
+    type="question"
+    v-model="isShowMoneyModal"
+    actionButtonText="Пополнить счет"
+    @confirm="$router.push({ name: 'add-funds', params: {sum: - +availableFunds + +selectedPrice}})"
+    cancel-button-text="Закрыть"
+  )
+    template(slot="description")
+      div.mb-12  Уважаемый клиент, для завершения заказа на лицевом счете не достаточно денежных средств. Пополните лицевой счет и повторите покупку. 
+      div
+        | Стоимость подключения: 
+        b {{ selectedPrice }} 
+        | руб.
+      div
+        | Ваши доступные средства: 
+        b {{ availableFunds }} 
+        | руб. 
+

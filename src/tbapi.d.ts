@@ -330,6 +330,11 @@ export interface ICustomerProduct {
   }]
 }
 
+export interface IAddress {
+    id?: string | number,
+    value?: string
+    locationId?: string | number
+}
 export interface IBillingStatisticResponse {
   costedEventName: string
   bill: string

@@ -3,6 +3,7 @@ export interface IRequestData {
   fulladdress: string;
   addressId: string;
   services: string;
+  type?: string
 }
 
 export interface IOrderData {

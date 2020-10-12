@@ -12,6 +12,9 @@ export function getIconNameByCode (code: string): string {
   if (~code.indexOf('wifi') || ~code.indexOf('wi-fi')) {
     return 'wifi'
   }
+  if (~code.indexOf('тв')) {
+    return 'tv'
+  }
   if (~code.indexOf('видео') || ~code.indexOf('форпост')) {
     return 'watch_right'
   }

@@ -25,7 +25,7 @@ div(:class="`${pre}`")
                         | Подробно
           template(v-if="!stopped")
             div(:class="`${pre}__data-wrap`")
-              div(:class="`${pre}__activate-date`")
+              div(:class="`${pre}__activate-date`" v-if="date")
                 div(class="title")
                   slot(name="date-title")
                     | Дата активации:

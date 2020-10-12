@@ -24,6 +24,7 @@ export const PROD_SSO_CHANGE_CUSTOMER_IFRAME = buildIframeUrl(CHANGE_CUSTOMER_IF
 export const OFFER_LINKS: Record<string, string> = {
   'cctv': 'https://beta-lkb2b.domru.ru/files/oferta-cctv.pdf',
   'telephonya': 'https://beta-lkb2b.domru.ru/files/oferta-telephonya.pdf',
+  'tv': 'https://beta-lkb2b.domru.ru/files/oferta-tv.pdf',
   'internet': 'https://beta-lkb2b.domru.ru/files/oferta-internet.pdf',
   'wifi': 'https://beta-lkb2b.domru.ru/files/oferta-wifi-mono.pdf'
 }
