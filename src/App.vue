@@ -31,7 +31,7 @@ import { GET_CHAT_TOKEN } from '@/store/actions/chat'
 import { GET_REQUEST } from '@/store/actions/request'
 
 const USE_SSO_AUTH = process.env.VUE_APP_USE_SSO_AUTH !== 'no'
-const IS_WORK_IN_PROGRESS = true
+const IS_WORK_IN_PROGRESS = false
 
 export default {
   name: 'app',
