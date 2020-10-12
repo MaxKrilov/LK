@@ -77,6 +77,12 @@ export default {
             `
         }
       ]
+    },
+    rulesEmail () {
+      return [
+        v => !!v || 'Поле не заполнено',
+        v => PATTERN_EMAIL.test(v) || 'Некорректный e-mail'
+      ]
     }
   },
   mounted () {
@@ -109,10 +115,12 @@ export default {
         this.$nextTick(() => {
           this.emails.push(val)
           this.selectedEmail = val
+          this.currentEmail = val
         })
       } else {
         this.$nextTick(() => {
           this.selectedEmail = null
+          this.currentEmail = ''
         })
       }
     }
