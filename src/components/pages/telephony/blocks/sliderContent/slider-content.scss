@@ -32,18 +32,54 @@
     }
 
     &__tariff-wrapper {
+      grid-area: tariff;
+      justify-self: baseline;
+
       @include max-breakpoint("sm") {
         padding-bottom: 24px;
       }
     }
 
     &__date-wrapper {
+      grid-area: date;
       @include max-breakpoint("sm") {
-        padding-bottom: 32px;
+        padding-bottom: 24px;
       }
+    }
+    &__channels-wrapper {
+      grid-area: channels;
+      display: flex;
+      flex-direction: column;
 
-      @include min-breakpoint("sm") {
-        margin-left: 40px;
+    }
+    &__channels-e1-wrapper {
+      display: grid;
+      column-gap: 8px;
+      row-gap: 4px;
+      grid-template-areas: 
+        "icon caption2"
+        "icon count";
+      .er-icon {
+        grid-area: icon;
+        @include color-black(0.2);
+      }
+      .h4 {
+        grid-area: count;
+      }
+      .caption2 {
+        grid-area: caption2;
+      }
+    }
+    &__channels {
+      max-width: 140px;
+      margin-right: 20px;
+      &-select {
+        display: flex;
+        margin-top: 8px;
+        align-items: center;
+      }
+      &-price {
+        width: 110px;
       }
     }
 
@@ -56,13 +92,29 @@
     }
 
     &__info-wrapper {
+      margin-bottom: 32px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-areas: 
+      "date tariff"
+      "channels channels";
       @include min-breakpoint("sm") {
-        display: flex;
-        padding-bottom: 32px;
+        grid-gap: 24px;
       }
 
       @include min-breakpoint("md") {
-        padding-bottom: 40px;
+        grid-template-columns: 1fr 1fr 1fr;
+        grid-template-areas: 
+          "date . tariff"
+          "channels channels .";
+        margin-bottom: 40px;
+      }
+      @include min-breakpoint("lg") {
+        grid-template-columns: 3fr 4fr 3fr;
+        align-items: center;
+        justify-items: center;        
+        grid-template-areas: 
+          "tariff channels date";
       }
     }
 

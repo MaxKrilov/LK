@@ -1,4 +1,5 @@
 export interface IRequestData {
+  type: string;
   descriptionModal?: string;
   fulladdress: string;
   addressId: string;
