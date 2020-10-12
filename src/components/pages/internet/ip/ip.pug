@@ -47,7 +47,7 @@
                         span Бесплатно
 
                     td.col-actions
-                      template(v-if="isDisconnection"  v-show="addr.price")
+                      template(v-if="isDisconnection && disconnectionProductId === addr.productId")
                         | Удаляем
                       template(v-else)
                         er-delete-button(@click="deleteIp(addr.productId)" v-show="addr.price")
