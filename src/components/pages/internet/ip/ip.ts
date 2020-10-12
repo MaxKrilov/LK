@@ -55,6 +55,7 @@ export default class Ip extends Vue {
   addIpCount: string = ''
 
   protocolList: string[] = ['ipv4']
+  disconnectionProductId: string = ''
   @Watch('billingAccountId')
   onBillingAccountIdChange (val: boolean) {
     if (val) {
@@ -94,6 +95,7 @@ export default class Ip extends Vue {
       bpi: this.activePoint?.bpi,
       title: 'Вы уверены, что хотите отключить услугу Дополнительный IPv4 адрес?'
     }
+    this.disconnectionProductId = productId
     this.isDisconnection = true
   }
   onShowAddIpForm () {
@@ -181,6 +183,7 @@ export default class Ip extends Vue {
             return {
               price: Number(el?.purchasedPrices?.recurrentTotal?.value),
               productId: el.id,
+              ip: el?.chars?.['IPv4 адрес'],
               auth: el?.chars?.['Тип авторизации']
             }
           })
