@@ -65,7 +65,7 @@
       opacity: 1;
     }
     .er-card-products__point-icon {
-       .icon {
+      &::v-deep .icon {
         svg {
           color: map-get($yellow, "base");
         }

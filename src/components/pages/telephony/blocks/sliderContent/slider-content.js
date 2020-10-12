@@ -3,9 +3,11 @@ import ConnectedPhone from '../ConnectedPhone'
 import moment from 'moment'
 import ErPlugProduct from '@/components/blocks/ErPlugProduct'
 import ErDisconnectProduct from '@/components/blocks/ErDisconnectProduct'
+import ErNumberField from '@/components/blocks/ErNumberField'
 import ErActivationModal from '@/components/blocks/ErActivationModal/index.vue'
 import PackageMinuteCard from '@/components/pages/telephony/blocks/packageMinute/index.vue'
-import { ARRAY_SHOWN_PHONES, CODE_PACGLOCMIN, CODE_PACGMIN } from '@/constants/product-code'
+import { ARRAY_SHOWN_PHONES, CODE_PACGLOCMIN, CODE_PACGMIN, CODE_PHONE_SERSELCHTR } from '@/constants/product-code'
+import { ARRAY_STATUS_SHOWN } from '@/constants/status'
 
 export default {
   name: 'slider-content',
@@ -15,6 +17,7 @@ export default {
     ErPlugProduct,
     ErDisconnectProduct,
     ErActivationModal,
+    ErNumberField,
     PackageMinuteCard
   },
   props: {
@@ -46,6 +49,12 @@ export default {
       isDisconnection: false,
       isLoading: true,
 
+      serChannels: 0,
+      serChannelsValue: 0,
+      serChannelsPrice: 0,
+      serChannelsE1: 0,
+      isChangingChannels: false,
+
       requestData: {
         descriptionModal: 'Для подключения телефонного номера нужно сформировать заявку на вашего персонального менеджера',
         addressId: this.addressId,
@@ -62,13 +71,26 @@ export default {
   },
   computed: {
     phones () {
-      return this.slo.filter(el => ARRAY_SHOWN_PHONES.includes(el.code)).map(el => {
-        return {
-          number: el.chars['Номер телефона'],
-          price: el?.purchasedPrices?.recurrentTotal?.value,
-          productId: el?.productId
-        }
-      })
+      return this.slo
+        .filter(el => ARRAY_SHOWN_PHONES.includes(el.code) && ARRAY_STATUS_SHOWN.includes(el.status))
+        .map(el => {
+          return {
+            number: el.chars['Номер телефона'],
+            price: el?.purchasedPrices?.recurrentTotal?.value,
+            productId: el?.productId
+          }
+        })
+    },
+    isChangedChannels () {
+      return this.serChannels - this.serChannelsValue
+    },
+    changeChannelsRequestData () {
+      return {
+        descriptionModal: 'Для подключения телефонного номера нужно сформировать заявку на вашего персонального менеджера',
+        addressId: this.addressId,
+        services: `Изменение кол-ва каналов связи. ${this.serChannelsValue} шт`,
+        fulladdress: this.fulladdress
+      }
     },
     tariffName () {
       return this.tlo?.offer?.name || ''
@@ -86,6 +108,9 @@ export default {
   methods: {
     connectNewNumber () {
       this.isConnection = true
+    },
+    changeChannels () {
+      this.isChangingChannels = true
     },
     plugPackages () {
       this.$router.push({
@@ -118,6 +143,11 @@ export default {
       this.isLoading = false
       this.slo = answer?.slo
       this.tlo = answer?.tlo
+
+      this.serChannels = +answer?.slo.find(el => el.code === CODE_PHONE_SERSELCHTR)?.chars?.['Дополнительные каналы серийного искания']
+      this.serChannelsValue = this.serChannels
+      this.serChannelsPrice = answer?.slo.find(el => el.code === CODE_PHONE_SERSELCHTR)?.purchasedPrices?.recurrentTotal?.value
+      this.serChannelsE1 = answer?.tlo?.chars?.['Количество каналов серийного искания по умолчанию']
 
       this.local = answer?.slo.find(el => el.code === CODE_PACGLOCMIN)
       this.global = answer?.slo.find(el => el.code === CODE_PACGMIN)

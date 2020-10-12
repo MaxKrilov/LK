@@ -15,6 +15,24 @@ div(:class="`${pre}`" )
             div(:class="`${pre}__slider__date`")
               div(:class="`${pre}__caption2`") Активен с:
               div {{ startDate }}
+          div(:class="`${pre}__slider__channels-wrapper`" v-if="serChannels || serChannelsE1")
+            template(v-if="serChannels")
+              div(:class="`${pre}__caption2`") Канал связи:
+              div(:class="`${pre}__slider__channels-select`")
+                div(:class="`${pre}__slider__channels`")
+                  ErNumberField(v-model="serChannelsValue")
+                div(:class="`${pre}__slider__channels-price`" v-if="serChannelsPrice").h4 
+                  template(v-if="isChangedChannels")
+                    er-button(@click="changeChannels" :loading="isChangingChannels") Изменить
+                  template(v-else)
+                    | {{ serChannelsPrice }} <span class="caption2">₽/мес</span>
+            template(v-else-if="serChannelsE1")
+              div(:class="`${pre}__slider__channels-e1-wrapper`")
+                er-icon(name="integration")
+                div(class="caption2") Канал связи:
+                div(class="h4") {{ serChannelsE1 }}
+            
+
 
         template(v-if="phones.length")
           h3(:class="`${pre}__phone-title`") Подключенные телефоны
@@ -61,5 +79,10 @@ div(:class="`${pre}`" )
   ErDisconnectProduct(
     v-model="isDisconnection"
     :requestData="disconnectRequestData"
+    isSendManagerRequest
+    )
+  ErPlugProduct(
+    v-model="isChangingChannels"
+    :requestData="changeChannelsRequestData"
     isSendManagerRequest
     )
