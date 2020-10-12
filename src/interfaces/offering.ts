@@ -14,13 +14,28 @@ export interface IProductOffering {
   originalName: string
   code: string // "VIDCROOT"
   status: ProductOfferingStatus
-  offeringRelationships: IOfferingRelationship[] | []
-
+  offeringRelationships: IOfferingRelationship[]
   offer?: IOffer
   isRoot?: boolean
   purchasedPrices?: IPrice
 }
 
+export interface IChildProductOffering {
+    availableFrom: string
+    availableTo: string
+    canBeActivatedInSSP: boolean
+    code: string
+    prices: any
+
+    customerCategories: [{
+      code: string
+      href: string
+      id: string
+      name: string
+      originalName: string
+      tomsId: string
+    }]
+}
 export interface IOfferingRelationship {
   id: string // number "2721"
   name: string
@@ -28,9 +43,8 @@ export interface IOfferingRelationship {
   // childMin: string // number "1"
   orderNumber: NumberAsString
   originalId: string
-
   categoryId?: number
-  childProductOffering?: {}
+  childProductOffering: IChildProductOffering
   defaultBehavior?: string
   reconciliationId?: string
   offerings?: IOffer[]

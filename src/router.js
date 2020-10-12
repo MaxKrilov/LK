@@ -120,6 +120,11 @@ import WifiAnalyticsVisitors from '@/components/pages/wifi/analytics/statistics/
 import WifiAnalyticsDevices from '@/components/pages/wifi/analytics/statistics/DevicesPage'
 import WifiUsersRegistry from '@/components/pages/wifi/analytics/statistics/RegistryPage'
 
+import TVPromoPage from './components/pages/tv/promo-page/index'
+import TVMainPage from './components/pages/tv/index'
+import TVPackagesPage from './components/pages/tv/tv-packages/index'
+import ChannelListPage from './components/pages/tv/channel-list/index'
+
 // Страницы с ошибками
 import OldBrowserPage from './components/pages/errors/old-browsers'
 
@@ -423,6 +428,34 @@ const router = new Router({
               component: WifiUsersRegistry
             }
           ]
+        },
+        {
+          path: 'tv',
+          component: TVMainPage
+        },
+        {
+          path: 'tv/promo',
+          component: TVPromoPage,
+          meta: {
+            name: 'Промо-страница Бизнес ТВ'
+          }
+        },
+        {
+          path: 'tv/channel-list/:packId',
+          props: true,
+          component: ChannelListPage,
+          meta: {
+            name: 'ChannelList'
+          }
+        },
+        {
+          path: 'tv/packages',
+          component: TVPackagesPage,
+          props: true,
+          name: 'tv-packages',
+          meta: {
+            name: 'Пакеты каналов'
+          }
         }
       ]
     },

@@ -110,7 +110,7 @@
     &__date-wrapper {
       display: flex;
       padding-bottom: $padding-x4;
-      >>>.er-icon {
+      &::v-deep .er-icon {
         padding-right: 16px;
         svg {
           width: 32px;
@@ -120,7 +120,7 @@
     }
     &__ips-wrapper {
       display: flex;
-      >>>.er-icon {
+      &::v-deep .er-icon {
         padding-right: 16px;
         svg {
           width: 32px;

@@ -1,0 +1,106 @@
+.channel-list {
+  &__header {
+    margin-bottom: 40px;
+    background: $tv-standart-2;
+    @include min-breakpoint("sm") {  
+      background: $tv-standart-3;
+    }
+
+    &-title {
+      @extend %h1;
+      @include color-white(1)
+    }
+    &-info {
+      @extend %caption1;
+      @include color-white(.6)
+    }
+    &-content {
+      padding-top: 40px;
+      background-image: url('../../../../assets/images/tv/standart.png');
+      background-repeat: no-repeat;
+      background-position: right bottom;
+      padding-bottom: 250px;
+      padding-left: 16px;
+      padding-right: 16px;
+      @include min-breakpoint("sm") {
+        padding: 40px;
+        background-size: contain;  
+      }
+    }
+  }
+
+  &__description {
+    @extend %caption1;
+    @include color-white(.8);
+    @include min-breakpoint("sm") {
+      width: 65%;
+    }
+    @include min-breakpoint("lg") {
+      width: 50%;
+    }
+
+  }
+  &__content {
+    margin: 0 16px;
+    @include min-breakpoint("sm") {
+      margin: 0 24px;
+
+    }
+  }
+  &__table {
+
+    &-header, &-header2 {
+      @extend %caption2;
+      margin-bottom: 8px;
+      @include min-breakpoint("md") {
+        margin-bottom: 16px;
+      }
+    }
+    &-header2 {
+      @include max-breakpoint("lg") {
+        display: none;
+      }
+    }
+    &-header, &-row, &-header2 {
+      display: grid;
+      grid-template-areas: "name quality button lang";
+      grid-template-columns: 3fr 1fr 1fr;
+      @include min-breakpoint("sm") {
+        grid-column-gap: 40px;
+      }
+      @include min-breakpoint("md") {
+        grid-template-columns: 4fr 1fr 1fr;
+      }
+      @include min-breakpoint("lg") {
+        grid-column-gap: 16px;
+      }
+    }
+    &-rows, &-headers {
+      @include min-breakpoint("lg") {
+        grid-template-columns: 1fr 1fr;
+        display: grid;
+        grid-column-gap: 60px;
+      }
+    }
+    &-row {
+      margin-bottom: 8px;
+
+      .name {
+        grid-area: name;
+      }
+
+      .quality {
+        grid-area: quality;
+      }
+
+      .button {
+        grid-area: button;
+      }
+
+      .lang {
+        grid-area: lang;
+      }
+    }
+  }
+}
+

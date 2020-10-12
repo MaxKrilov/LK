@@ -156,6 +156,12 @@ const MenuItemList = (listProduct: { code: string, name: string, price: number }
           }
         ]
         : []
+    },
+    {
+      name: 'Бизнес ТВ',
+      icon: 'tv',
+      isOpen: true,
+      url: '/lk/tv'
     }
   ]
 }

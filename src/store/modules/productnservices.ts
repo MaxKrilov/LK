@@ -87,6 +87,22 @@ const actions = {
         .catch((err: AxiosError) => reject(err))
     })
   },
+  customerTVProducts (context: ActionContext<IState, any>, payload: { api: API, parentIds?: Array<string | number>}) {
+    const { toms: clientId } = context.rootGetters['auth/user']
+    const data: any = {
+      clientId
+    }
+    payload.parentIds && (data.parentIds = payload.parentIds)
+    return new Promise<ICustomerProduct>((resolve, reject) => {
+      payload.api
+        .setWithCredentials()
+        .setData(data)
+        .setType(TYPE_ARRAY)
+        .query('/customer/product/tv')
+        .then((response) => resolve(response))
+        .catch((err: AxiosError) => reject(err))
+    })
+  },
   billingPacket (context: ActionContext<IState, any>, { api, product }: { api: API, product: string | number }) {
     const { toms: clientId } = context.rootGetters['auth/user']
     return new Promise<any>((resolve, reject) => {
@@ -112,6 +128,25 @@ const actions = {
           id
         })
         .query('/customer/product/infolist')
+        .then((response: any) => resolve(response))
+        .catch((err: AxiosError) => reject(err))
+    })
+  },
+  allowedOffers (context: ActionContext<IState, any>, { api, id }: { api: API, id: string | number }) {
+    const { toms: clientId } = context.rootGetters['auth/user']
+    const brandId = context.rootGetters['user/getMarketingBrandId']
+
+    return new Promise((resolve, reject) => {
+      api
+        .setData({
+          brandId,
+          marketId: 68,
+          customerCategoryId: 146,
+          distributionChannelId: 144,
+          clientId,
+          id
+        })
+        .query('/catalog/management/allowed-offers')
         .then((response: any) => resolve(response))
         .catch((err: AxiosError) => reject(err))
     })

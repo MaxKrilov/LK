@@ -26,7 +26,7 @@
         flex-basis: 50%;
       }
 
-      >>> svg {
+      &::v-deep  svg {
         @include color-black(0.2);
       }
     }

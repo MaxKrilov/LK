@@ -45,7 +45,7 @@
     }
 
     &_icon {
-      >>> .er-icon {
+      &::v-deep  .er-icon {
         svg {
           color: white;
           width: 80px;
@@ -71,7 +71,7 @@
       @include color-black(0.8);
     }
 
-    >>> .er-icon {
+    &::v-deep  .er-icon {
       cursor: pointer;
 
       &:hover {

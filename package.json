@@ -131,7 +131,9 @@
   },
   "postcss": {
     "plugins": {
-      "autoprefixer": {},
+      "autoprefixer": {
+        "grid": "autoplace"
+      },
       "css-mqpacker": {
         "sort": true
       },
