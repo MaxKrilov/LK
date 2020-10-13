@@ -29,7 +29,8 @@
       }
 
       @include min-breakpoint(md) {
-        gap: $padding-x8 $padding-x10;
+        grid-column-gap: $padding-x8;
+        grid-row-gap: $padding-x10;
         margin-top: $padding-x8;
       }
 

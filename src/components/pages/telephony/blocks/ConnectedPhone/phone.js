@@ -1,5 +1,5 @@
 import BreakpointMixin from '@/mixins/BreakpointMixin'
-import { CODE_PHONE_CHANNEL } from '@/constants/product-code.ts'
+import { CODE_PHONE_CHANNEL, ARRAY_SHOWN_PHONES } from '@/constants/product-code.ts'
 
 export default {
   name: 'connected-phone',
@@ -40,7 +40,9 @@ export default {
           this.isOpen = true
           this.ksi = answer[this.phone.productId]?.slo
             .find(el => el?.offer?.code === CODE_PHONE_CHANNEL)
-            ?.chars?.['Дополнительные каналы серийного искания']
+            ?.chars?.['Дополнительные каналы серийного искания'] ||
+            answer[this.phone.productId]?.slo
+            .find(el => ARRAY_SHOWN_PHONES.includes(el?.offer?.code))?.chars?.['Количество каналов серийного искания по умолчанию']
         }).catch(() => {
         })
       }

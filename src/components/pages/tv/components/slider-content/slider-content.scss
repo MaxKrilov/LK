@@ -1,0 +1,193 @@
+.iptv-slider {
+
+  &__info {
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 16px;
+    margin-bottom: 40px;
+    @include min-breakpoint("sm") {
+      grid-template-rows: 1fr;
+      grid-template-columns: 1fr 1fr 1fr;
+    }
+    @include min-breakpoint("md") {
+      margin-bottom: 48px;
+    }
+
+    &__content {
+      margin-top: 4px;
+    }
+
+  }
+
+  &__cards {
+    margin-bottom: 40px;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-gap: 16px;
+    @include min-breakpoint("sm") {
+      grid-template-columns: 1fr 1fr;
+    }
+    @include min-breakpoint("md") {
+      grid-gap: 24px;
+      margin-bottom: 48px;
+    }
+    @include min-breakpoint("lg") {
+      grid-template-columns: 1fr 1fr 1fr;
+    }
+
+    &__item {
+      margin: 16px;
+      @include min-breakpoint("md") {
+        margin: 24px;
+      }
+    }
+  }
+
+  &__control {
+    opacity: .3;
+    margin-top: 8px;
+
+    &__price {
+      display: flex;
+      white-space: nowrap;
+    }
+    
+  }
+  &__unit {
+    @extend %caption1;
+    white-space: nowrap;
+  }
+
+  &__modules {
+    &__header {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      padding-bottom: 8px;
+      border-bottom: 1px solid rgba(map_get($shades, 'black'), 0.2);
+      @include min-breakpoint("sm") {
+        grid-template-columns: 1fr 1fr 1fr;
+      }
+      @include min-breakpoint("lg") {
+        grid-template-columns: 2fr 6fr 1fr;
+        margin-left: -32px;
+        margin-right: -24px;
+        padding-left: 32px;
+          
+      }
+    }
+    &__id {
+      @include max-breakpoint("sm") {
+        display: none;
+      }
+
+    }
+
+    &__find-icon {
+      justify-self: end;
+      opacity: .2;
+      width: 16px;
+    }
+
+    &__sort-wrapper {
+      display: flex;
+      cursor: pointer;
+      align-items: center;
+    }
+
+    &__sort-text {
+      margin-left: 8px;
+      border-bottom: 1px dashed;
+    }
+
+    &__item {
+      cursor: pointer;
+      display: grid;
+      padding-bottom: 8px;
+      border-bottom: 1px solid rgba(map_get($shades, 'black'), 0.2);
+      grid-template-areas:
+        'mac package price';
+      grid-template-columns: 2fr 1fr 1fr;
+      @include min-breakpoint("sm") {
+        grid-template-areas: 'mac package price';
+        align-items: center;
+      }
+      @include min-breakpoint("lg") {
+        grid-template-columns: 5fr 1fr 2fr;
+        margin-left: -32px;
+        margin-right: -24px;
+        padding-left: 32px;
+        padding-right: 24px;
+      }
+      transition: 300ms;
+      &:hover {
+        background-color: map_get($shades, 'white');
+        .count {
+          @include color-black(.8);
+          text-decoration-color: rgba(map_get($shades, 'black'), 0.8);
+        }
+        .er-icon {
+          opacity: .5;
+        }
+      }
+
+      &__type {
+        grid-area: type;
+        @extend %caption2;
+        @include color-black(.5);
+      }
+
+      &__mac {
+        grid-area: mac;
+        @extend %caption2;
+        @include color-black(.8);
+      }
+
+      &__package {
+        justify-self: center;
+        grid-area: package;
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        .count {
+          transition: 300ms;
+          @include color-black(.5);
+          text-decoration: underline;
+          text-decoration-color: rgba(map_get($shades, 'black'), 0.5);
+        }
+        .er-icon {
+          opacity: .2;
+          transition: 300ms;
+        }
+
+      }
+
+      &__price {
+        grid-area: price;
+        justify-self: end;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        @include min-breakpoint("sm") {
+          flex-direction: row;
+        }
+      }
+
+    }
+  }
+
+  &__buttons {
+    display: grid;
+    grid-gap: 8px;
+    @include min-breakpoint("sm") {
+      grid-row-gap: 8px;
+      grid-column-gap: 16px;
+      grid-template-columns: 1fr 1fr;
+    }
+    @include min-breakpoint("lg") {
+      grid-gap: 24px;
+      grid-template-columns: 1fr 1fr 1fr;
+    }
+  }
+}

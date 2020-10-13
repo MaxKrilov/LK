@@ -1,0 +1,52 @@
+.ip-tv {
+  &__points {
+    margin: 0 -24px;
+    margin-bottom: $padding-x10;
+    @include media-query((margin: (sm: 0 -32px,
+          md: 0 0px),
+        margin-bottom: (sm: $padding-x10,
+          md: $padding-x12)));
+  }
+
+  &__total {
+    background: map_get($gray, "4");
+    display: flex;
+    justify-content: space-between;
+    border-radius: 12px;
+    padding: $padding-x4 $padding-x8;
+    margin: 0 -12px;
+    @include media-query((margin: (md: 0),
+        padding: (md: $padding-x4 $padding-x6)));
+
+    .price {
+      display: flex;
+      align-items: baseline;
+    }
+
+    .units {
+      @extend %caption1;
+      @include color-black(0.5);
+    }
+  }
+
+  &__button {
+    margin-top: 24px;
+    margin-left: 24px;
+    margin-right: 24px;
+
+    @include min-breakpoint("sm") {
+      display: grid;
+      margin-top: 32px;
+      grid-template-columns: 1fr 1fr;
+    }
+
+    @include min-breakpoint("md") {
+      margin-left: 0;
+      margin-right: 0;
+    }
+
+    @include min-breakpoint("lg") {
+      grid-template-columns: 1fr 1fr 1fr;
+    }
+  }
+}

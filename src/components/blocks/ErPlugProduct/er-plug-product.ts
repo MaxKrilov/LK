@@ -2,6 +2,7 @@ import { Component, Watch } from 'vue-property-decorator'
 import { mapGetters } from 'vuex'
 import { iContactListItem } from '@/components/pages/cabinet/SupportPages/blocks/CreateRequestComponent/script'
 import { CREATE_REQUEST } from '@/store/actions/request'
+import { REQUEST_TYPES } from '@/constants/orders'
 import ErPhoneSelect from '@/components/blocks/ErPhoneSelect'
 import ErActivationModal from '@/components/blocks/ErActivationModal/index.vue'
 import ErPlugMixin from '@/mixins/ErPlugMixin'
@@ -22,6 +23,7 @@ import ErPlugMixin from '@/mixins/ErPlugMixin'
 // requestData=
 //   descriptionModal: описание модалки,
 //   addressId: addressId,
+//   type: тип заявки
 //   services: описание действия для менедера пр. подключение номера,
 //   fulladdress: полный адресс
 
@@ -130,7 +132,7 @@ export default class ErPlugProduct extends ErPlugMixin {
       requestName: 'request',
       location: this.requestData.addressId,
       description: this.descriptionRequestText,
-      type: '9157238575013921100',
+      type: (REQUEST_TYPES as any)[this.requestData?.type || 'connect'] || REQUEST_TYPES.connect,
       customerContact: customerContactId,
       phoneNumber: phoneId,
       api: this.$api,

@@ -74,7 +74,7 @@ div
     @close="closeOrderModal"
     :isLoadingConfirm="sendingOrder"
     actionButtonText="Подключить"
-    :isOffer="orderData.offer || false"
+    :isOffer="orderData.offer"
   )
     template(slot="description")
       slot(name="offerDescription")

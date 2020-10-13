@@ -21,7 +21,6 @@ const state = {
 const apiWrap = api => {
   return api
     .setWithCredentials()
-    .setBranch('web-21528')
 }
 
 const getters = {

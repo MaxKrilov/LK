@@ -56,11 +56,11 @@
       .text {
         @include color-black(0.8);
       }
-      >>> svg {
+      &::v-deep  svg {
         @include color-black(0.5);
       }
     }
-    >>> svg {
+    &::v-deep  svg {
       transition: 300ms;
       @include color-black(0.2);
     }
@@ -205,7 +205,7 @@
 
       .delete-button {
 
-        >>> .er-input__slot {
+        &::v-deep  .er-input__slot {
           min-height: 20px !important;
         }
       }
@@ -238,7 +238,7 @@
         justify-content: space-between;
         margin-top: 8px;
 
-        >>> svg {
+        &::v-deep  svg {
           @include color-black(0.2);
           width: 16px;
         }
@@ -250,7 +250,7 @@
       grid-gap: 16px;
       align-items: center;
       grid-template-columns: 1fr 20px 40px;
-      >>> .er-text-field__success-icon {
+      &::v-deep  .er-text-field__success-icon {
         display: none;
       }
       @include min-breakpoint("sm") {
@@ -283,12 +283,12 @@
         }
 
         @include max-breakpoint("sm") {
-          >>> .er-button__icon--prev {
+          &::v-deep  .er-button__icon--prev {
             margin-right: 0;
           }
         }
 
-        >>> svg {
+        &::v-deep  svg {
           @include color-black(0.2);
         }
 

@@ -1,0 +1,131 @@
+.tv-packages {
+  &__button {
+    @include min-breakpoint("md") {
+      width: 200px;
+    }
+  }
+
+  &__wrap-stb {
+    display: flex;
+  }
+
+  &__packages {
+    display: grid;
+    grid-gap: 16px;
+
+    @include min-breakpoint("sm") {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    @include min-breakpoint("lg") {
+      grid-gap: 24px;
+      grid-gap: 24px;
+      grid-template-columns: 1fr 1fr 1fr;
+    }
+
+    @include min-breakpoint("xl") {
+      grid-gap: 16px;
+    }
+
+    .er-card__content {
+      height: 100%;
+    }
+
+    &-standart {
+      height: 100%;
+      background: $tv-standart-1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    &-active {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    &__name {
+      @extend %h3;
+
+      @include color-white(.8);
+    }
+
+    &__price-active {
+      @extend %h3;
+      @include color-white(.8);
+
+      .unit {
+        @extend %caption1;
+        @include color-white(.6);
+
+      }
+
+      &__title {
+        @extend %caption2;
+        @include color-white(.6);
+      }
+    }
+
+    &__count {
+      @extend %caption1;
+      cursor: pointer;
+      @include color-white(.8);
+      text-decoration: underline;
+    }
+
+    &__header {
+      position: relative;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+
+      @include min-breakpoint("sm") {
+        padding: 24px;
+      }
+
+      @include min-breakpoint("xl") {
+        padding: 32px;
+      }
+    }
+
+    .not-connected {
+      justify-content: flex-end;
+      background-color: map-get($gray, '9');
+    }
+
+
+    &__content {
+      display: flex;
+      flex-direction: column;
+      padding: 16px;
+      padding-top: 24px;
+
+      @include min-breakpoint("sm") {
+        padding: 24px;
+        padding-top: 32px;
+      }
+
+      @include min-breakpoint("xl") {
+        padding: 32px;
+      }
+    }
+
+    &__title {
+      @extend %caption2;
+      @include color-white(.6);
+    }
+
+    &__img {
+      width: 150px;
+      height: 150px;
+      background-image: url("~@/assets/images/tv/football.png");
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: contain;
+      position: absolute;
+      right: 0;
+    }
+
+  }
+}
