@@ -20,8 +20,6 @@ export default class PackageMinuteCard extends Vue {
   changed: number = 0
   spent: number = 0
 
-  isShowManagerModal: boolean = false
-
   isCreatingDeletePackage: boolean = false
   isCreatingUpdatePackage: boolean = false
 
@@ -53,11 +51,7 @@ export default class PackageMinuteCard extends Vue {
     }
   }
   changePackage () {
-    if (Number(this.$moment().format('D')) <= 5) {
-      this.isChanging = true
-    } else {
-      this.isShowManagerModal = true
-    }
+    this.isChanging = true
   }
 
   disconnect () {
