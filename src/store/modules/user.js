@@ -30,7 +30,6 @@ import { findIndex } from 'lodash'
 import {
   isContractDocument,
   isBlankDocument,
-  isUserListDocument,
   isReportDocument
 } from '@/functions/document'
 import { Cookie } from '../../functions/storage'
@@ -38,6 +37,7 @@ import moment from 'moment'
 import { TYPE_JSON } from '../../constants/type_request'
 
 const ACCOUNT_MANAGER_ID = '9134601279613203712'
+const USER_LIST_LOADING_DATE = '9157297242513186244'
 const INN_ID = '9148328342013670726'
 const KPP_ID = '9154340518713221693'
 const OGRN_ID = '9154340419713221073'
@@ -76,6 +76,9 @@ const getters = {
       address: state.clientInfo?.fullLegalAddress,
       contactId: state.clientInfo?.primaryContact.id
     }
+  },
+  getUserListLoadingDate (state) {
+    return state.clientInfo?.extendedMap?.[USER_LIST_LOADING_DATE]?.singleValue?.attributeValue
   },
   getFnsClientInfo (state) {
     return {
@@ -130,7 +133,7 @@ const getters = {
     return isReportDocument(el)
   }),
   getContractDocuments: state => state.documents.filter(el => {
-    return isContractDocument(el) || isBlankDocument(el) || isUserListDocument(el)
+    return isContractDocument(el) || isBlankDocument(el)
   }),
   getCountUnsignedDocument (state) {
     return state.documents.filter(item => item?.contractStatus?.match(/Готов для клиента/i)).length
@@ -195,6 +198,9 @@ const getters = {
       })
       return acc
     }, [])
+  },
+  getUserlistRequired (state) {
+    return Boolean(state.listProductByService?.find((el) => el?.offer?.userlistRequired === 'Да'))
   },
   agreementNumber (state) {
     return state.listBillingAccount.find(item => item.billingAccountId === state.activeBillingAccount)?.contractNumber
@@ -267,6 +273,21 @@ const actions = {
       commit(GET_CLIENT_INFO_ERROR, 'Сервер не отвечает. Попробуйте обновить страницу.')
       return false
     }
+  },
+  updateClientInfo (context, payload) {
+    const { toms: clientId } = context.rootGetters['auth/user']
+    const { api, ...data } = payload
+    data.id = clientId
+    return new Promise((resolve, reject) => {
+      payload.api
+        .setWithCredentials()
+        .setData(data)
+        .query('/customer/account/edit-client')
+        .then((response) => {
+          resolve(response)
+        })
+        .catch((err) => reject(err))
+    })
   },
   [GET_COMPANY_INFO]: async ({ commit, rootState, rootGetters }, { api, inn }) => {
     const innLength = inn.length
@@ -453,6 +474,7 @@ const actions = {
       // todo Логирование
     } finally {
       commit('loading/indexPageProductByAddress', false, { root: true })
+      commit('loading/indexPageProductByService', false, { root: true })
     }
   },
   [GET_LIST_ADDRESS_BY_SERVICES]: async ({ commit, rootGetters, getters }, { api, productType }) => {

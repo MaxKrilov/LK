@@ -9,7 +9,6 @@ import { CONTRACT, GROUP_CONTRACT } from '@/constants/document'
 import {
   isReportDocument,
   isContractDocument,
-  isUserListDocument,
   isBlankDocument,
   isOtherDocument, isActDocument
 } from '@/functions/document'
@@ -203,7 +202,6 @@ const mutations = {
       }
       if (
         isContractDocument(document) ||
-        isUserListDocument(document) ||
         isBlankDocument(document)
       ) {
         if (GROUP_CONTRACT.includes(String(document.type.id))) {

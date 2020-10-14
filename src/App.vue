@@ -54,6 +54,7 @@ export default {
         const context = { api: this.$api }
         this.$store.commit(`loading/menuComponentBalance`, true)
         this.$store.commit(`loading/indexPageProductByAddress`, true)
+        this.$store.commit(`loading/indexPageProductByService`, true)
         this.$store.commit(`loading/loadingDocuments`, true)
         this.$store.dispatch(`fileinfo/downloadListDocument`, context)
         this.$store.dispatch(`user/${GET_PAYMENT_INFO}`, context)

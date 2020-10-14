@@ -16,17 +16,30 @@ const actions = {
       return false
     }
   },
-  [UPLOAD_FILE]: async (_, { api, bucket, file, filePath }) => {
+  [UPLOAD_FILE]: async (_, { api, bucket, file, filePath, uploadCallback }) => {
     try {
-      await api
-        .setWithCredentials()
-        .setType(TYPE_FILE)
-        .setData({
-          bucket,
-          file,
-          key: filePath
-        })
-        .query('/docs/s3/set')
+      if (uploadCallback) {
+        await api
+          .setWithCredentials()
+          .setType(TYPE_FILE)
+          .setUploadCallback(uploadCallback)
+          .setData({
+            bucket,
+            file,
+            key: filePath
+          })
+          .query('/docs/s3/set')
+      } else {
+        await api
+          .setWithCredentials()
+          .setType(TYPE_FILE)
+          .setData({
+            bucket,
+            file,
+            key: filePath
+          })
+          .query('/docs/s3/set')
+      }
       return true
     } catch (e) {
       return false

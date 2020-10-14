@@ -1,44 +1,40 @@
-common-document(
-  :class="{'er-document--signed': isUpdated, 'er-document--expired': !isUpdated}"
-).er-document--userlist.er-document--big-doc
-  template(v-slot:header)
-    .er-document__title Список пользователей
+div(class="er-document-width-mobile")
+  common-document(
+    :class="{'er-document--signed': isUpdated, 'er-document--expired': !isUpdated}"
+  ).er-document--userlist.er-document--big-doc
+    template(v-slot:header)
+      .er-document__title Список пользователей
 
-    .question-button(
-      @click="onClickQuestion()"
-    )
-      er-icon(
-        name="question"
-      ).er-icon--question
+      .question-button(
+        @click="onClickQuestion()"
+      )
+        er-icon(
+          name="question"
+        ).er-icon--question
 
-    component(
-      :is="currentDialog"
-      :active="openDialog"
-      @close="onCloseQuestion()"
-    )
+      .er-document__subtitle(v-if="dateOfUpdate")
+        .er-document__update-label
+          | Обновить после
+        .er-document__update-period
+          .date {{ dateOfUpdate }}
 
-    .er-document__subtitle(v-if="documentIsSigned")
-      .er-document__update-label
-        | Обновить после
-      .er-document__update-period
-        .date {{ dateOfUpdate }}
+    template(v-slot:body)
+      .just-wrap(v-if="userListLoadingDate")
+        .er-document__text.d-sm--none
+          div.caption1 Вы обязаны обновлять каждый квартал список пользователей во исполнение требований
+            a(href="http://base.garant.ru/12155536/" target="_blank").link Правил оказания услуг связи по передаче данных
 
-  template(v-slot:body)
-    .just-wrap(v-if="documentIsSigned")
-      .er-document__text.d-sm--none
-        div.caption1 Вы обязаны обновлять каждый квартал список пользователей во исполнение требований
-          a(href="#").link Правил оказания услуг связи по передаче данных
+      .er-document__text(v-else)
+        div.caption1 Вы обязаны предоставить список пользователей во исполнение требований
+          a(href="http://base.garant.ru/12155536/" target="_blank").link Правил оказания услуг связи по передаче данных
 
-    .er-document__text(v-else)
-      div.caption1 Вы обязаны предоставить список пользователей во исполнение требований
-        a(href="#").link Правил оказания услуг связи по передаче данных
-
-  template(v-slot:footer)
-    .signed(v-if="documentIsSigned")
-      //er-attach(:url="document.fileName")
-      er-button(:color="'blue'") Обновить
-    .not-signed(v-else)
-      .er-document__download-template
-        a(href="#download-user-list-template").link.link--dashed--black
-          | Скачать шаблон
-      er-button(:color="'blue'") Загрузить
+    template(v-slot:footer)
+      .signed(v-if="userListLoadingDate")
+        er-button(:color="'blue'" @click="onClickQuestion") Обновить
+      .not-signed(v-else)
+        .er-document__download-template
+          a(href="https://beta-lkb2b.domru.ru/files/template-user-list.csv" ).link.link--dashed--black
+            | Скачать шаблон
+        er-button(:color="'blue'" @click="onClickQuestion") Загрузить
+  
+  UploadUserlistDialog(:active="openDialog" @close="openDialog = false")
