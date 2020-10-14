@@ -13,6 +13,7 @@ export class API {
   private _type: string = TYPE_OBJECT
   private _method: Method = 'POST'
   private _data: any = null
+  private _uploadCallback: any = undefined
   private _withCredentials: boolean = false
   private _responseType: ResponseType = 'json'
 
@@ -94,6 +95,11 @@ export class API {
     return this
   }
 
+  public setUploadCallback = (uploadCallback: any): API => {
+    this._uploadCallback = uploadCallback
+    return this
+  }
+
   public setType = (type: string): API => {
     if (![TYPE_OBJECT, TYPE_ARRAY, TYPE_JSON, TYPE_FILE].includes(type)) {
       throw new Error('Type must be object, array, json, file')
@@ -162,6 +168,9 @@ export class API {
       url: API._getUrl(query, this._branch),
       withCredentials: true
     })
+    if (this._uploadCallback) {
+      config.onUploadProgress = this._uploadCallback
+    }
     return new Promise((resolve, reject) => {
       axios(config)
         .then(response => {

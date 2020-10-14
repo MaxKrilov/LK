@@ -1,0 +1,20 @@
+div(:class="[`${pre}`]")
+  input(:id="id" :ref="id" type="file" @change="onChange")     
+  div(:class="[`${pre}__wrapper`]")
+    label(:for="id" :class="[`${pre}__filename`, {'er-file-input2__success-text': isFileLoaded && !error}]")
+      template(v-if="fileName")
+        | {{ fileName }}
+      template(v-else)
+        | {{ label }}
+    div(:class="[`${pre}__cancel`]" @click="cancelDocument" v-if="fileName && !isFileLoaded && !percent")
+      er-icon(name="close")
+    div
+      div(:class="[`${pre}__load-progress`]" v-if="!isFileLoaded")
+        template(v-if="percent && !error")  
+          er-progress-circular(width="2" :value="percent" :rotate="percent === 100 ? 0 : -90" :indeterminate="percent === 100")
+      template(v-else)
+        div(v-if="!error" :class="[`${pre}__succes-icon`]")
+          er-icon(name="ok")
+
+  div(:class="[`${pre}__error`]" v-if="error") {{ error }}
+

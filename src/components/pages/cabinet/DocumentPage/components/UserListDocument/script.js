@@ -1,15 +1,11 @@
-import * as DOCUMENT from '@/constants/document'
-
 import CommonDocument from '../CommonDocument'
 import UploadUserlistDialog from './components/UploadUserlistDialog'
 import WarningUserlistDialog from './components/WarningUserlistDialog'
-import DocumentMixin from '@/mixins/ErDocumentMixin'
+import { mapGetters } from 'vuex'
+
+const USER_LIST_EXPARIED_DAYS = 1000 * 3600 * 24 * 90
 
 export default {
-  mixins: [DocumentMixin],
-  props: {
-    'document': Object
-  },
   components: {
     CommonDocument,
     UploadUserlistDialog,
@@ -17,30 +13,27 @@ export default {
   },
   data () {
     return {
-      openDialog: false,
-      DOCUMENT
+      openDialog: false
     }
   },
   computed: {
-    currentDialog () {
-      if (this.document.signed) {
-        return 'warning-userlist-dialog'
-      } else {
-        return 'upload-userlist-dialog'
-      }
-    },
+    ...mapGetters({
+      userListLoadingDate: 'user/getUserListLoadingDate'
+    }),
     isUpdated () {
-      const modifiedWhen = this.document.modifiedWhen
-      const today = new Date()
-      return today - modifiedWhen < 1000 * 3600 * 24 * 90
+      if (this.userListLoadingDate) {
+        return this.$moment().valueOf() - this.$moment(this.userListLoadingDate, 'DD-MM-YYYY').valueOf() < USER_LIST_EXPARIED_DAYS
+      }
+      return false
     },
     dateOfUpdate () {
-      const modifiedWhen = this.document.modifiedWhen
-      const dateOfUpdate = modifiedWhen + 1000 * 3600 * 24 * 90
-      return this.$moment(dateOfUpdate).format('LL')
+      if (this.userListLoadingDate) {
+        return this.$moment(this.userListLoadingDate, 'DD-MM-YYYY').add(90, 'day').format('DD.MM.YYYY')
+      }
     }
   },
   methods: {
+
     onClickQuestion () {
       this.openDialog = true
     },

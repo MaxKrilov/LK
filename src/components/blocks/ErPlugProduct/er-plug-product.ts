@@ -140,7 +140,6 @@ export default class ErPlugProduct extends ErPlugMixin {
       complainantContactName: complainantPhone ? this.name : undefined
     })
       .then((answer) => {
-        console.log(answer)
         this.isShowRequestModal = false
         if (answer) {
           if (typeof answer === 'string') {

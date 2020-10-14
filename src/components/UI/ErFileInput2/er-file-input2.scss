@@ -1,0 +1,54 @@
+.er-file-input2 {
+  input {
+    display: none;
+  }
+
+  &__wrapper {
+    display: flex;
+    align-items: center;
+  }
+
+  &__error {
+    @extend %caption2;
+    color: rgba(map_get($red, 'base'), 0.8);
+  }
+
+  &__succes-icon {
+    .er-icon {
+      svg {
+        width: 16px;
+        color: rgba(map_get($green, 'base'), 0.8);
+      }
+    }
+  }
+  &__success-text {
+    color: rgba(map_get($green, 'base'), 0.8) !important;
+    border-bottom: 1px dashed rgba(map_get($green, 'base'), 0.5) !important;
+  }
+
+  &__filename {
+    margin-right: 12px;
+    display: inline-block;
+    position: relative;
+    cursor: pointer;
+    overflow: hidden;
+    color: rgba(map_get($shades, 'black'), 0.5);
+    border-bottom: 1px dashed rgba(map_get($shades, 'black'), 0.5);
+    text-overflow: ellipsis;
+    letter-spacing: -1px;
+    white-space: nowrap;
+    overflow: hidden;
+
+  }
+
+  &__cancel {
+    cursor: pointer;
+    color: rgba(map_get($shades, 'black'), 0.2);
+
+    .er-icon {
+      svg {
+        width: 12px;
+      }
+    }
+  }
+}
