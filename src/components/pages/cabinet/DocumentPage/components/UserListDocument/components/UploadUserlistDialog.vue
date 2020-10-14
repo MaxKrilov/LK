@@ -23,7 +23,8 @@ er-dialog-advanced(:active="active", icon="doc", @close="$emit('close')")
 
 <script>
 import { mapGetters } from 'vuex'
-import { UPLOAD_FILE, ATTACH_SIGNED_DOCUMENT, USER_LIST_TYPE } from '@/store/actions/documents'
+import { UPLOAD_FILE, ATTACH_SIGNED_DOCUMENT } from '@/store/actions/documents'
+import { USER_LIST_TYPE } from '@/constants/document'
 
 export default {
   name: 'upload-userlist-dialog',

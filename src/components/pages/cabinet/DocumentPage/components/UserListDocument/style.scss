@@ -1,7 +1,9 @@
 $pre: '.er-document';
 
 $er-hint-width: 24px;
-
+.er-document__text a {
+  margin-left: 0;
+}
 .er-document-width-mobile {
   @include max-breakpoint('md') {
     width: 100%;
