@@ -104,6 +104,8 @@ export default {
       allContractDocuments: 'fileinfo/getListContractDocument',
       allReportDocuments: 'fileinfo/getListReportDocument',
       listContact: 'user/getListContact',
+      isUserlistRequired: 'user/getUserlistRequired',
+      loadingUserListInfo: 'loading/indexPageProductByService',
       loadingDocuments: 'loading/loadingDocuments'
     }),
     hasSelectedReports () {

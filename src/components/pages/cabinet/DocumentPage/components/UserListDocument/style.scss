@@ -2,14 +2,16 @@ $pre: '.er-document';
 
 $er-hint-width: 24px;
 
-
+.er-document-width-mobile {
+  @include max-breakpoint('md') {
+    width: 100%;
+  }
+}
 #{$pre}--userlist {
   background: map_get($document-colors, 'blue-gradient');
 
   #{$pre}__header {
-    @include min-breakpoint('md') {
-      background-color: map_get($document-colors, 'blue-header');
-    }
+    background-color: map_get($document-colors, 'blue-header');
   }
 
   #{$pre}__text {
@@ -25,10 +27,8 @@ $er-hint-width: 24px;
   &:not(#{$pre}--signed) {
     #{$pre}__title {
       @extend %h3;
-      display: none;
 
       @include min-breakpoint('md') {
-        display: initial;
 
         @include color-white(1);
       }
@@ -38,9 +38,6 @@ $er-hint-width: 24px;
       @extend %h3;
       @include color-white(1);
 
-      @include min-breakpoint('md') {
-        display: none;
-      }
     }
 
     #{$pre}__body {
@@ -55,10 +52,8 @@ $er-hint-width: 24px;
       }
 
       .er-button {
-        display: none;
 
         @include min-breakpoint('md') {
-          display: initial;
           margin-top: $padding-x6;
         }
       }
@@ -92,11 +87,7 @@ $er-hint-width: 24px;
     background-color: map_get($shades, 'white');
 
     #{$pre}__header {
-      background-color: map_get($shades, 'transparent');
-
-      @include min-breakpoint('md') {
-        background-color: map_get($document-colors, 'green-header');
-      }
+      background-color: map_get($document-colors, 'blue-gradient');
     }
 
     #{$pre}__title {
@@ -151,7 +142,6 @@ $er-hint-width: 24px;
       background-color: map_get($shades, 'transparent');
 
       .er-button {
-        display: none;
 
         @include min-breakpoint('md') {
           display: block;

@@ -23,12 +23,12 @@ div(:class="`${pre}`")
 
   .document-page__list.main-content.main-content--h-padding
     er-container.full.container--no-padding.document
-      er-row(v-if="loadingDocuments")
+      er-row(v-if="loadingDocuments || loadingUserListInfo")
         er-flex.document-page__loading.d--flex.align-items-center
           .loading-text.mr-16
             | Идёт загрузка документов
           er-progress-circular(indeterminate width="2")
-      er-row(v-else-if="computedAllContractDocuments.length !== 0")
+      er-row(v-else-if="computedAllContractDocuments.length !== 0 || isUserlistRequired")
         er-flex.lg4.md6.sm6.xs12.d--flex(
           v-for="document in computedAllContractDocuments"
           :key="document.number"
@@ -47,6 +47,11 @@ div(:class="`${pre}`")
             v-else
             :document="document"
           )
+        er-flex.lg4.md6.sm6.xs12.d--flex(
+          v-if="isUserlistRequired"
+        )       
+          user-list-document
+
       er-row(v-else)
         er-flex.document-page__empty-list
           er-icon(name="no")

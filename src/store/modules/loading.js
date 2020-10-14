@@ -1,6 +1,7 @@
 const state = {
   clientInfo: true,
   indexPageProductByAddress: true,
+  indexPageProductByService: true,
   menuComponentBillingAccount: true,
   menuComponentBalance: true,
   menuComponentManager: true,
@@ -16,6 +17,7 @@ const state = {
 }
 const getters = {
   indexPageProductByAddress: state => state.indexPageProductByAddress,
+  indexPageProductByService: state => state.indexPageProductByService,
   menuComponentBillingAccount: state => state.menuComponentBillingAccount,
   menuComponentBalance: state => state.menuComponentBalance,
   menuComponentManager: state => state.menuComponentManager,
@@ -30,6 +32,9 @@ const getters = {
 const mutations = {
   indexPageProductByAddress (state, payload) {
     state.indexPageProductByAddress = payload
+  },
+  indexPageProductByService (state, payload) {
+    state.indexPageProductByService = payload
   },
   menuComponentBillingAccount (state, payload) {
     state.menuComponentBillingAccount = payload
