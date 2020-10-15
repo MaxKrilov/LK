@@ -12,17 +12,18 @@ div(class="er-document-width-mobile")
           name="question"
         ).er-icon--question
 
-      .er-document__subtitle(v-if="dateOfUpdate")
+      .er-document__subtitle(v-if="userListLoadingDate")
         .er-document__update-label
-          | Обновить после
+          | Дата загрузки
         .er-document__update-period
-          .date {{ dateOfUpdate }}
+          .date {{ userListLoadingDate }}
 
     template(v-slot:body)
       .just-wrap(v-if="userListLoadingDate")
         .er-document__text.d-sm--none
           div.caption1 Вы обязаны обновлять каждый квартал список пользователей во исполнение требований 
             a(href="http://base.garant.ru/12155536/" target="_blank").link Правил оказания услуг связи по передаче данных
+            div(v-if="dateOfUpdate").mt-8 Обновить после {{ dateOfUpdate }}
 
       .er-document__text(v-else)
         div.caption1 Вы обязаны предоставить список пользователей во исполнение требований
