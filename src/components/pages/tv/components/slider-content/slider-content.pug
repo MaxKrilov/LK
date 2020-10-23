@@ -8,6 +8,7 @@ div(class="iptv-slider")
         div(class="iptv-slider__modules__header").mt-8
           div(class="iptv-slider__modules__id").caption2 ID оборудования
         div(class="iptv-slider__modules__item" v-for="item in moduleList" :key="item.id" @click="openPackages(item)").pt-8
+          div(class="iptv-slider__modules__item__type") {{ item.stb.stbName }}
           div(class="iptv-slider__modules__item__mac") {{ item.stb.name }}
           div(class="iptv-slider__modules__item__package" )
             er-icon(name="tv-pack")

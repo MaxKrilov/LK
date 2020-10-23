@@ -67,10 +67,10 @@
       padding-bottom: 8px;
       border-bottom: 1px solid rgba(map_get($shades, 'black'), 0.2);
       @include min-breakpoint("sm") {
-        grid-template-columns: 1fr 1fr 1fr;
+        grid-template-columns: 2fr 1fr 1fr;
       }
       @include min-breakpoint("lg") {
-        grid-template-columns: 2fr 6fr 1fr;
+        grid-template-columns: 3fr 6fr 1fr;
         margin-left: -32px;
         margin-right: -24px;
         padding-left: 32px;
@@ -107,14 +107,16 @@
       padding-bottom: 8px;
       border-bottom: 1px solid rgba(map_get($shades, 'black'), 0.2);
       grid-template-areas:
+        'type package price'
         'mac package price';
       grid-template-columns: 2fr 1fr 1fr;
       @include min-breakpoint("sm") {
-        grid-template-areas: 'mac package price';
+        grid-template-areas: 'type mac package price';
+        grid-template-columns: 2fr 2fr 1fr 1fr;
         align-items: center;
       }
       @include min-breakpoint("lg") {
-        grid-template-columns: 5fr 1fr 2fr;
+        grid-template-columns: 3fr 4fr 1fr 2fr;
         margin-left: -32px;
         margin-right: -24px;
         padding-left: 32px;
