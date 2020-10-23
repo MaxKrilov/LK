@@ -3,6 +3,8 @@
     div.app__content
       template(v-if="isShowPreloader")
         ErPreloader(:status="textPreloader")
+      template(v-else-if="isWorkInProgress")
+        work-in-progress
       template(v-else-if="!isAccessGranted")
         not-access-page
       template(v-else)
@@ -15,6 +17,7 @@ import { SCREEN_WIDTH } from './store/actions/variables'
 import { generateUrl, getScreenWidth } from './functions/helper'
 import axios from 'axios'
 import NotAccessPage from './components/pages/errors/not-access'
+import WorkInProgress from '@/components/pages/errors/work-in-progress'
 import ErPreloader from './components/blocks/ErPreloader'
 import { validationToken } from './functions/auth'
 
@@ -28,10 +31,12 @@ import { GET_CHAT_TOKEN } from '@/store/actions/chat'
 import { GET_REQUEST } from '@/store/actions/request'
 
 const USE_SSO_AUTH = process.env.VUE_APP_USE_SSO_AUTH !== 'no'
+const IS_WORK_IN_PROGRESS = false
 
 export default {
   name: 'app',
   components: {
+    WorkInProgress,
     NotAccessPage,
     ErPreloader
   },
@@ -174,6 +179,9 @@ export default {
       accessToken: state => state.auth.accessToken,
       refreshToken: state => state.auth.refreshToken
     }),
+    isWorkInProgress () {
+      return IS_WORK_IN_PROGRESS
+    },
     isAccessGranted () {
       return USE_SSO_AUTH ? this.hasAccess : true
     },

@@ -163,7 +163,10 @@ const actions = {
         .catch(() => resolve(false))
     })
   },
-  actSigning (context: ActionContext<IState, any>, { api, documentId, status }: { api: API, documentId: string, status: number }) {
+  actSigning (
+    context: ActionContext<IState, any>,
+    { api, documentId, status, reason }: { api: API, documentId: string, status: number, reason: string }
+  ) {
     return new Promise((resolve, reject) => {
       const { toms: clientId } = context.rootGetters['auth/user']
       api
@@ -171,7 +174,8 @@ const actions = {
         .setData({
           id: documentId,
           clientId,
-          status
+          status,
+          rejectReason: reason
         })
         .query('/docs/act/accept')
         .then(response => { resolve(response) })
