@@ -12,6 +12,7 @@
 
 <script>
 import { mapActions } from 'vuex'
+import { VS_LOGIN } from '@/constants/url'
 
 export default {
   data: () => ({ active: false }),
@@ -23,10 +24,18 @@ export default {
     }
   },
   methods: {
-    ...mapActions({ getForpostLink: 'videocontrol/fetchForpostLink' })
+    ...mapActions({ getForpostSSOLink: 'videocontrol/fetchForpostLink' }),
+    getForpostLoginLink () {
+      return Promise.resolve({ loginLink: VS_LOGIN })
+    },
+    getRedirectLink () {
+      // TODO: заменить на getForpostSSOLink() когда будет работать сквозная авторизация
+      return this.getForpostLoginLink()
+    }
   },
   mounted () {
-    this.getForpostLink()
+    console.log('make redirect')
+    this.getRedirectLink()
       .then(data => { window.location = data.loginLink })
   }
 }
