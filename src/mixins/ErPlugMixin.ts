@@ -11,6 +11,7 @@ export default class ErPlugMixin extends Vue {
   @Prop({ type: Object, default: () => { return {} } }) readonly deleteOrderData!: IDeleteOrderData
   @Prop({ type: Boolean, default: false }) readonly isConnection!: boolean // v-modal внешний
   @Prop({ type: Boolean, default: false }) readonly isUpdate!: boolean
+  @Prop({ type: String, default: 'Подключить' }) readonly plugButtonName!: string
 
   isShowRequestModal: boolean = false
   isShowSuccessRequestModal: boolean = false

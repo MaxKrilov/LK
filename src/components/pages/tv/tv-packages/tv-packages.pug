@@ -8,7 +8,15 @@ div.main-content.main-content--padding.main-content--top-menu-fix
       div {{ address }}
       div.mt-24
         span.caption2 Модель
-        div {{ line.stb.name }}
+        div.tv-packages__wrap-name
+          template(v-if="isEditMode")
+            er-text-field(v-model="stbName")
+            er-button(@click="saveName" :loading="isEditingName") Сохранить
+          template(v-else)
+            div {{ line.stb.name }}
+            //- оставить до проавки ошибки
+            //- div(@click="editName")
+            //-   er-icon(name="edit")
 
       div(class="tv-packages__wrap-stb")
         div.mr-40
@@ -97,6 +105,13 @@ div.main-content.main-content--padding.main-content--top-menu-fix
       v-model="isConnection"
       :orderData="orderData"
       isSendOrder
+      )
+    ErPlugProduct(
+      v-model="isEditingName"
+      :orderData="editingOrderData"
+      plugButtonName="Изменить"
+      isSendOrder
+      isUpdate
       )
     ErPlugProduct(
       v-model="isChangeTariff"

@@ -124,6 +124,7 @@ import TVPromoPage from './components/pages/tv/promo-page/index'
 import TVMainPage from './components/pages/tv/index'
 import TVPackagesPage from './components/pages/tv/tv-packages/index'
 import ChannelListPage from './components/pages/tv/channel-list/index'
+import PackageListPage from './components/pages/tv/tv-package-list/index'
 
 // Страницы с ошибками
 import OldBrowserPage from './components/pages/errors/old-browsers'
@@ -446,6 +447,14 @@ const router = new Router({
           component: ChannelListPage,
           meta: {
             name: 'ChannelList'
+          }
+        },
+        {
+          path: 'tv/packages-list',
+          props: true,
+          component: PackageListPage,
+          meta: {
+            name: 'PackageList'
           }
         },
         {

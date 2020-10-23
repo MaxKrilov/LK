@@ -4,7 +4,6 @@
       width: 200px;
     }
   }
-
   &__wrap-stb {
     display: flex;
   }
@@ -59,6 +58,8 @@
     &-active {
       height: 100%;
       display: flex;
+      background: $tv-standart-1;
+
       flex-direction: column;
     }
 
@@ -116,12 +117,10 @@
     &__content {
       display: flex;
       flex-direction: column;
-      padding: 16px;
-      padding-top: 24px;
+      padding: 24px 16px 16px;
 
       @include min-breakpoint("sm") {
-        padding: 24px;
-        padding-top: 32px;
+        padding: 32px 24px 24px;
       }
 
       @include min-breakpoint("xl") {
