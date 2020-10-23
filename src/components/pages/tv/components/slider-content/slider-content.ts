@@ -39,7 +39,8 @@ export default class TvSlider extends Vue {
                 id: stbItem.id,
                 type: stbItem.chars['Способ передачи оборудования'],
                 price: Number(stbItem.purchasedPrices.recurrentTotal.value),
-                name: stbItem.name
+                stbName: stbItem.name,
+                name: stbItem.chars?.['Имя оборудования']
               }
             }) : [{
               id: '',

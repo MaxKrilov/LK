@@ -135,6 +135,16 @@ common-document(
         @confirm="actSigning"
         :is-loading-confirm="isActSigning"
       )
+        template(v-slot:description)
+          ErtTextarea(
+            v-if="actStatus === 0"
+            placeholder="Укажите причину отказа от акцептования акта (обязательное поле)"
+            noResize
+            autoGrow
+            rows="3"
+            v-model="actRejectReason"
+            :rules="[v => !!v || 'Поле обязательно к заполнению']"
+          )
       er-activation-modal(
         v-model="isActSuccess"
         type="success"

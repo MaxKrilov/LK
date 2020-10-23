@@ -49,10 +49,20 @@ export default class TVPackagesPage extends Vue {
   availableFunds: number = 0
   selectedPrice: number = 0
 
+  isEditMode: boolean = false
+  isEditingName: boolean = false
+  stbName: string = ''
+
   @Watch('isDisconnection')
   onIsDisconnection (val: boolean) {
     if (!val) {
       this.disconnectedItem = false
+    }
+  }
+  @Watch('isEditingName')
+  onIsEditingName (val: boolean) {
+    if (!val) {
+      this.isEditMode = false
     }
   }
   @Watch('isConnection')
@@ -75,6 +85,14 @@ export default class TVPackagesPage extends Vue {
       services: 'Смена тарифного плана ТВ',
       type: 'change',
       fulladdress: this.line?.fulladdress
+    }
+  }
+  get editingOrderData () {
+    return {
+      locationId: this.line?.locationId,
+      bpi: this.line?.stb?.id,
+      chars: { 'Имя оборудования': this.stbName },
+      title: `Вы уверены, что хотите изменить имя оборудования?`
     }
   }
   get pasketsPrise () {
@@ -131,6 +149,13 @@ export default class TVPackagesPage extends Vue {
     }
     this.disconnectedItem = productId
     this.isDisconnection = true
+  }
+  editName () {
+    this.stbName = this.line?.stb?.name || ''
+    this.isEditMode = true
+  }
+  saveName () {
+    this.isEditingName = true
   }
   mounted () {
     if (this.line) {

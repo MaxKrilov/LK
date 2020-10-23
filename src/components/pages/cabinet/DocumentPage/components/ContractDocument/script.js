@@ -27,7 +27,8 @@ export default {
     isActConfirm: false,
     isActSuccess: false,
     isActError: false,
-    isActSigning: false
+    isActSigning: false,
+    actRejectReason: ''
   }),
   components: {
     CommonDocument,
@@ -174,11 +175,15 @@ export default {
       this.isActConfirm = true
     },
     actSigning () {
+      if (this.actStatus === 0 && !this.actRejectReason) {
+        return
+      }
       this.isActSigning = true
       this.$store.dispatch('fileinfo/actSigning', {
         api: this.$api,
         status: this.actStatus,
-        documentId: getFirstElement(this.document).id
+        documentId: getFirstElement(this.document).id,
+        reason: this.actRejectReason
       })
         .then(response => {
           if (response) {

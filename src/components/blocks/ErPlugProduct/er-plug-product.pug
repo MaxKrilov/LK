@@ -73,7 +73,7 @@ div
     :persistent="true"
     @close="closeOrderModal"
     :isLoadingConfirm="sendingOrder"
-    actionButtonText="Подключить"
+    :actionButtonText="plugButtonName"
     :isOffer="orderData.offer"
   )
     template(slot="description")

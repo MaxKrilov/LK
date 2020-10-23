@@ -161,7 +161,14 @@ const MenuItemList = (listProduct: { code: string, name: string, price: number }
       name: 'Бизнес ТВ',
       icon: 'tv',
       isOpen: false,
-      url: '/lk/tv'
+      url: '/lk/tv',
+      subitem: [
+        {
+          name: 'Пакеты каналов',
+          url: '/lk/tv/packages-list'
+        }
+      ]
+
     }
   ]
 }
