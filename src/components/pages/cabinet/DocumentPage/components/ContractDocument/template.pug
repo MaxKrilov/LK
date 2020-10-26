@@ -52,6 +52,12 @@ common-document(
         er-icon(name="cancel").cancelled--desktop
         er-icon(name="cancel").cancelled--mobile
         | Не акцептован
+      er-button.er-button--accept(
+        color="blue"
+        pre-icon="doc_edit"
+        @click="() => { actSigningConfirm(1) }"
+      )
+        | Акцептовать
     //- Документ подписан
     div(v-else-if="contractIsSigned")
       .er-document__signed-text
@@ -136,15 +142,15 @@ common-document(
         :is-loading-confirm="isActSigning"
       )
         template(v-slot:description)
-          ErtTextarea(
-            v-if="actStatus === 0"
-            placeholder="Укажите причину отказа от акцептования акта (обязательное поле)"
-            noResize
-            autoGrow
-            rows="3"
-            v-model="actRejectReason"
-            :rules="[v => !!v || 'Поле обязательно к заполнению']"
-          )
+          ErtForm(ref="act-form" v-if="actStatus === 0")
+            ErtTextarea(
+              placeholder="Укажите причину отказа от акцептования акта (обязательное поле)"
+              noResize
+              autoGrow
+              rows="3"
+              v-model="actRejectReason"
+              :rules="[v => !!v || 'Поле обязательно к заполнению']"
+            )
       er-activation-modal(
         v-model="isActSuccess"
         type="success"
@@ -153,7 +159,8 @@ common-document(
         cancel-button-text="Спасибо"
       )
         template(slot="description")
-          | Данное окно закроется через 5 секунд
+          div.caption.mb-8(v-if="!actStatus") Было создано открытое обращение на менеджера
+          div.caption Данное окно закроется через 5 секунд
       er-activation-modal(
         v-model="isActError"
         type="error"

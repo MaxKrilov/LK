@@ -175,7 +175,7 @@ export default {
       this.isActConfirm = true
     },
     actSigning () {
-      if (this.actStatus === 0 && !this.actRejectReason) {
+      if (this.actStatus === 0 && !this.$refs['act-form'].validate()) {
         return
       }
       this.isActSigning = true
