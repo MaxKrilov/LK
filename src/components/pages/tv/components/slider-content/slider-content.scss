@@ -62,15 +62,15 @@
   &__modules {
     &__header {
       display: grid;
-      grid-template-columns: 1fr 1fr;
       align-items: center;
       padding-bottom: 8px;
       border-bottom: 1px solid rgba(map_get($shades, 'black'), 0.2);
+      grid-template-columns: 2fr 1fr 1fr;
       @include min-breakpoint("sm") {
-        grid-template-columns: 2fr 1fr 1fr;
+        grid-template-columns: 2fr 2fr 1fr 1fr;
       }
       @include min-breakpoint("lg") {
-        grid-template-columns: 3fr 6fr 1fr;
+        grid-template-columns: 3fr 4fr 1fr 2fr;
         margin-left: -32px;
         margin-right: -24px;
         padding-left: 32px;
