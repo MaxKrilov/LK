@@ -132,7 +132,7 @@ common-document(
         template(slot="description")
           | {{ cancelErrorText }}
 
-    template(v-if="documentIsActNotSigned")
+    template(v-if="documentIsActNotSigned || documentIsActCancel")
       er-activation-modal(
         v-model="isActConfirm"
         type="question"
