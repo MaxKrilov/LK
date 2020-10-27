@@ -29,6 +29,7 @@ stages:
     - deploy_dev_image    # Развёртывание образа для dev
     - build_prod_image    # Сборка образа для prod
     - save_dhub           # Размещение в магазине приложений
+    - staging_cc4
     - deploy_on_kuber_cc1
     - deploy_on_kuber_cc3 # Развёртывание в продакшне
 
@@ -107,13 +108,31 @@ Save dhub:
         - export FULL_PROJECT_NAME=$(echo ${PROJECT_GROUP}-${PROJECT_NAME}|sed -e 's/\W//g')
         - helm repo add base-images http://harbor.ertelecom.ru/chartrepo/base-images
         - envsubst < build_env/values.yaml.template > build_env/values.yaml
-        - helm upgrade -i ${FULL_PROJECT_NAME} --values build_env/values.yaml base-images/deploy -n b2bweb-prod
+        - helm upgrade -i ${FULL_PROJECT_NAME} --values build_env/values.yaml base-images/deploy -n ${NAMESPACE}
         - helm list
     only:
         - /^\d+\.\d+\.\d+$/
 
+Deploy on staging cc4:
+    stage: staging_cc4
+    variables:
+        DOMAIN: newlkb2b.t4.ertelecom.ru
+        NAMESPACE: staging
+        tlsSecret: wildcard-t4
+        COOKIE_DOMAIN: '.t4.ertelecom.ru'
+    <<: *k8s_deployment
+    when: manual
+    tags:
+        - k8s-st-cc4-staging
+
+
 Deploy on cc1:
     stage: deploy_on_kuber_cc1
+    variables:
+        DOMAIN: newlkb2b.domru.ru
+        NAMESPACE: b2bweb-prod
+        tlsSecret: wildcard-domru-ru
+        COOKIE_DOMAIN: '.domru.ru'
     <<: *k8s_deployment
     when: manual
     tags:
@@ -121,6 +140,11 @@ Deploy on cc1:
 
 Deploy on cc3:
     stage: deploy_on_kuber_cc3
+    variables:
+        DOMAIN: newlkb2b.domru.ru
+        NAMESPACE: b2bweb-prod
+        tlsSecret: wildcard-domru-ru
+        COOKIE_DOMAIN: '.domru.ru'
     <<: *k8s_deployment
     when: manual
     tags:
