@@ -1,0 +1,52 @@
+$background-upload: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDgiIGhlaWdodD0iNDgiIHZpZXdCb3g9IjAgMCA0OCA0OCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjI0MCIgaGVpZ2h0PSIxMjAiIGZpbGw9IiNGQkZCRkIiPjwvcmVjdD4KPHJlY3Qgb3BhY2l0eT0iMC4wNSIgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0IiBmaWxsPSJibGFjayI+PC9yZWN0Pgo8cmVjdCBvcGFjaXR5PSIwLjA1IiB4PSIyNCIgeT0iMjQiIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgZmlsbD0iYmxhY2siPjwvcmVjdD4KPC9zdmc+';
+
+.ert-wifi-personalization-page {
+  &__dialog {
+    padding: 24px;
+    background-color: map-get($shades, 'white');
+
+    .head .title {
+      @extend %h3-font;
+      @include color-black(0.8);
+    }
+
+    .head .close {
+      @include color-black(0.2);
+
+      i > svg {
+        width: 16px;
+      }
+    }
+
+    .upload-file {
+      width: 240px;
+      height: 120px;
+      background: url($background-upload);
+    }
+  }
+
+  &__loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .ert-progress-circular {
+      @include color-black(0.3);
+      margin-right: $padding-x4;
+    }
+
+    .title {
+      @include color-black(0.8);
+      @extend %h4-font;
+    }
+  }
+
+  &__actions {
+    display: flex;
+
+    .action {
+      width: 100%;
+      max-width: 208px;
+    }
+  }
+}

@@ -231,13 +231,12 @@ export default class WifiUsersRegistry extends Vue {
   }
   init () {
     if (!this.vlanInfo || !this.vlanInfo.hasOwnProperty('vlan')) return
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { cityId, number } = head(this.vlanInfo.vlan)!
     this.$store.dispatch('wifi/bigDataStatUser', {
-      vlan: '140:1298',
-      cityId: '1',
-      dateFrom: '2020031909',
-      dateTo: '2020051812'
+      vlan: number,
+      cityId,
+      dateFrom: this.periodDate.from,
+      dateTo: this.periodDate.to
     })
       .then(response => {
         this.rows = transformData(response)

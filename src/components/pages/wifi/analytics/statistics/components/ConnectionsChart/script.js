@@ -249,6 +249,13 @@ export default {
       dateAxis.dateFormats.setKey('week', 'd.MM')
       dateAxis.dateFormats.setKey('month', 'MM.yyyy')
       dateAxis.dateFormats.setKey('year', 'yyyy')
+
+      dateAxis.periodChangeDateFormats.setKey('hour', 'd.MM HH:mm')
+      dateAxis.periodChangeDateFormats.setKey('day', 'd.MM')
+      dateAxis.periodChangeDateFormats.setKey('week', 'd.MM')
+      dateAxis.periodChangeDateFormats.setKey('month', 'MM.yyyy')
+      dateAxis.periodChangeDateFormats.setKey('year', 'yyyy')
+
       dateAxis.renderer.minGridDistance = 30
       dateAxis = tickSettings(dateAxis)
 
@@ -319,15 +326,9 @@ export default {
     },
     calcLegendItemData (data) {
       return 0
-      // return sumBy(data, (o) => (o.data))
     },
     calcLegendSectionData (data) {
       return 0
-      // let totalData = 0
-      // for (let i = 0; i < data.length; i++) {
-      //   totalData = totalData + sumBy(data[i].data, (o) => (o.data))
-      // }
-      // return totalData
     },
     transformLegendData (data) {
       if (Object.keys(data).length === 0) return []

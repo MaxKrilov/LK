@@ -82,5 +82,8 @@ $ert: (
   ),
   'select': (
     'active': map-get($green, 'base')
+  ),
+  'slider': (
+    'base': map-get($blue, 'base')
   )
 );

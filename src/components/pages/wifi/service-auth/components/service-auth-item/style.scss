@@ -1,4 +1,4 @@
-.wifi-auth-service__card {
+.ert-wifi-service-auth-item {
   background: $border-gradient;
   padding: 1px;
   width: 100%;
@@ -42,20 +42,18 @@
   }
 
   &__settings {
-    .er-input {
-      align-items: center;
-
-      > .er-input__prepend-outer {
+    .ert-input {
+      > .ert-input__prepend-outer {
         margin-right: 8px;
       }
 
-      > .er-input__append-outer {
+      > .ert-input__append-outer {
         cursor: pointer;
         margin-left: 8px;
         @include color-black(0.5);
       }
 
-      .er-input__append-inner {
+      .ert-input__append-inner {
         cursor: pointer;
       }
     }

@@ -1,0 +1,308 @@
+@import "./variables";
+
+@include theme(ert-slider) using ($theme) {
+  .ert-slider__track-background,
+  .ert-slider__track-fill,
+  .ert-slider__thumb {
+    background: map-deep-get($theme, 'slider', 'base');
+  }
+}
+
+// Block
+.ert-slider {
+  cursor: default;
+  display: flex;
+  align-items: center;
+  position: relative;
+  flex: 1;
+  user-select: none;
+
+  input {
+    cursor: default;
+    padding: 0;
+    width: 100%;
+    display: none;
+  }
+}
+
+// Elements
+.ert-slider__track-container {
+  position: absolute;
+  border-radius: $slider-track-border-radius;
+}
+
+.ert-slider__track {
+  &-background, &-fill {
+    position: absolute;
+    transition: $slider-transition;
+  }
+}
+
+.ert-slider__thumb-container {
+  outline: none;
+  position: absolute;
+  transition: $slider-transition;
+  top: 50%;
+
+  &:hover {
+    .ert-slider__thumb:before {
+      transform: scale(1);
+    }
+  }
+}
+
+.ert-slider__thumb {
+  position: absolute;
+  width: $slider-thumb-size;
+  height: $slider-thumb-size;
+  left: -#{$slider-thumb-size / 2};
+  top: 50%;
+  border-radius: $slider-thumb-border-radius;
+  transition: $slider-transition;
+  transform: translateY(-50%);
+  user-select: none;
+
+  &:before {
+    transition: $primary-transition;
+    content: '';
+    color: inherit;
+    width: #{$slider-thumb-size + $slider-thumb-focused-size-increase};
+    height: #{$slider-thumb-size + $slider-thumb-focused-size-increase};
+    border-radius: $slider-thumb-border-radius;
+    background: currentColor;
+    opacity: $slider-thumb-before-opacity;
+    position: absolute;
+    left: -#{$slider-thumb-focused-size-increase / 2};
+    top: -#{$slider-thumb-focused-size-increase / 2};
+    transform: scale(0.1);
+    pointer-events: none;
+  }
+}
+
+.ert-slider__ticks-container {
+  position: absolute;
+}
+
+.ert-slider__tick {
+  position: absolute;
+  opacity: 0;
+  background-color: rgba(map-get($shades, 'black'), 0.5);
+  transition: $slider-transition;
+  border-radius: $slider-tick-border-radius;
+
+  &--filled {
+    background-color: rgba(map-get($shades, 'white'), 0.5);
+  }
+
+  &:first-child .ert-slider__tick-label {
+    transform: none;
+  }
+
+  &:last-child .ert-slider__tick-label {
+    transform: translateX(-100%);
+  }
+}
+
+.ert-slider__tick-label {
+  position: absolute;
+  user-select: none;
+  white-space: nowrap;
+}
+
+.ert-slider__thumb-label-container {
+  position: absolute;
+  left: 0;
+  top: 0;
+  transition: $slider-thumb-label-transition;
+}
+
+.ert-slider__thumb-label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: $slider-thumb-label-font-size;
+  color: map-get($shades, 'white');
+  width: $slider-thumb-label-width;
+  height: $slider-thumb-label-height;
+  border-radius: 50% 50% 0;
+  position: absolute;
+  left: 0;
+  bottom: 100%;
+  user-select: none;
+  transition: $slider-thumb-label-transition;
+}
+
+// Modifiers
+.ert-slider--horizontal {
+  min-height: $slider-horizontal-min-height;
+  margin-left: $slider-horizontal-left;
+  margin-right: $slider-horizontal-right;
+
+  .ert-slider__track {
+    &-container {
+      width: 100%;
+      height: $slider-track-width;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    &-background, &-fill {
+      height: 100%;
+    }
+  }
+
+  .ert-slider__ticks-container {
+    left: 0;
+    height: $slider-track-width;
+    width: 100%;
+  }
+
+  .ert-slider__tick {
+    &:first-child .ert-slider__tick-label {
+      transform: translateX(0%);
+    }
+
+    &:last-child .ert-slider__tick-label {
+      transform: translateX(-100%);
+    }
+
+    .ert-slider__tick-label {
+      top: 8px;
+      transform: translateX(-50%);
+    }
+
+    .ert-slider__thumb-label {
+      transform: translateY(-20%) translateY(-12px) translateX(-50%) rotate(45deg);
+
+      > * {
+        transform: rotate(-45deg);
+      }
+    }
+  }
+}
+
+.ert-slider--vertical {
+  min-height: $slider-vertical-min-height;
+  margin-top: $slider-vertical-margin-top;
+  margin-bottom: $slider-vertical-margin-bottom;
+
+  .ert-slider__track {
+    &-container {
+      height: 100%;
+      width: $slider-track-width;
+      left: 50%;
+      top: 0;
+      transform: translateX(-50%);
+    }
+
+    &-background, &-fill {
+      width: 100%;
+    }
+  }
+
+  .ert-slider__thumb-container {
+    left: 50%;
+  }
+
+  .ert-slider__ticks-container {
+    top: 0;
+    width: $slider-track-width;
+    height: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .ert-slider__tick {
+    .ert-slider__tick-label,
+    &:first-child .ert-slider__tick-label,
+    &:last-child .ert-slider__tick-label {
+      transform: translateY(-50%);
+      left: 12px;
+    }
+  }
+
+  .ert-slider__thumb-label {
+    > * {
+      transform: rotate(-135deg);
+    }
+  }
+}
+
+.ert-slider__thumb-container--focused {
+  .ert-slider__thumb:before {
+    transform: scale(1);
+  }
+}
+
+.ert-slider--active {
+  .ert-slider__tick {
+    opacity: 1;
+  }
+}
+
+.ert-slider__thumb-container--active {
+  .ert-slider__thumb:before {
+    transform: scale(1.5) !important;
+  }
+}
+
+.ert-slider--disabled {
+  pointer-events: none;
+
+  .ert-slider__thumb {
+    width: #{$slider-thumb-size - 4};
+    height: #{$slider-thumb-size - 4};
+    left: -#{($slider-thumb-size - 4) / 2};
+
+    &:before {
+      display: none;
+    }
+  }
+}
+
+.ert-slider__ticks-container--always-show {
+  .ert-slider__tick {
+    opacity: 1;
+  }
+}
+
+// Input
+.ert-input__slider {
+  &.ert-input--is-readonly > .ert-input__control {
+    pointer-events: none;
+  }
+
+  .ert-input__slot .ert-label {
+    margin-left: 0;
+    margin-right: $slider-label-margin-end;
+  }
+}
+
+.ert-input__slider--inverse-label {
+  .ert-input__slot .ert-label {
+    margin-right: 0;
+    margin-left: $slider-label-margin-start;
+  }
+}
+
+.ert-input__slider--vertical {
+  align-items: center;
+  flex-direction: column-reverse;
+
+  .ert-input {
+    &__slot, &__prepend-outer, &__append-outer {
+      margin: 0;
+    }
+  }
+
+  .ert-messages {
+    display: none;
+  }
+}
+
+.ert-input--has-state {
+  .ert-slider__track-background {
+    opacity: $slider-state-track-background-opacity;
+  }
+}

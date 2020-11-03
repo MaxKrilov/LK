@@ -5,14 +5,20 @@
   vertical-align: middle;
   transition: $primary-transition;
 
-  svg {
-    width: 24px;
-    transition: inherit;
+  &:not(.ert-icon--small) {
+    svg {
+      width: 24px;
+      transition: inherit;
+    }
+
+    @include min-breakpoint('md') {
+      svg {
+        width: 32px;
+      }
+    }
   }
 
-  @include min-breakpoint('md') {
-    svg {
-      width: 32px;
-    }
+  &--small {
+    width: 16px;
   }
 }

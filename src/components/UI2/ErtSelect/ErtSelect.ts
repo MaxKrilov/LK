@@ -26,7 +26,8 @@ export const defaultMenuProps = {
   closeOnContentClick: false,
   disableKeys: true,
   openOnClick: false,
-  maxHeight: 304
+  maxHeight: 304,
+  offsetY: true
 }
 
 const baseMixins = mixins(
