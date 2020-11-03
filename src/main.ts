@@ -6,6 +6,8 @@ import router from './router'
 import store from './store'
 // @ts-ignore
 import App from './App'
+import WorkInProgressPage from './components/pages/errors/work-in-progress.vue'
+
 import { eachArray, eachObject } from './functions/helper'
 import { API } from './functions/api'
 import * as Filters from './functions/filters'
@@ -71,8 +73,28 @@ Vue.use(VueScrollTo)
 
 Vue.use(Skeleton)
 
-new Vue({
+// отображать страницу "Ведутся технические работы" до запроса авторизации
+const WORK_IN_PROGRESS_BEFORE_AUTH = false
+
+// отображать страницу "Ведутся технические работы" после авторизации
+const WORK_IN_PROGRESS_AFTER_AUTH = true
+
+const DEFAULT_CONFIG = {
   router,
   store,
-  render: h => h(App)
-}).$mount('#app')
+  render: (h: any) => h(App, {
+    props: { isWorkInProgress: WORK_IN_PROGRESS_AFTER_AUTH }
+  })
+}
+
+const WIP_CONFIG = {
+  render: (h: any) => h(WorkInProgressPage, {
+    props: { showLogoutButton: false }
+  })
+}
+
+const CONFIG = WORK_IN_PROGRESS_BEFORE_AUTH
+  ? WIP_CONFIG
+  : DEFAULT_CONFIG
+
+new Vue(CONFIG).$mount('#app')
