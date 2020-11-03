@@ -3,7 +3,7 @@
     div.app__content
       template(v-if="isShowPreloader")
         ErPreloader(:status="textPreloader")
-      template(v-else-if="isWorkInProgress")
+      template(v-else-if="$props.isWorkInProgress")
         work-in-progress
       template(v-else-if="!isAccessGranted")
         not-access-page
@@ -31,7 +31,6 @@ import { GET_CHAT_TOKEN } from '@/store/actions/chat'
 import { GET_REQUEST } from '@/store/actions/request'
 
 const USE_SSO_AUTH = process.env.VUE_APP_USE_SSO_AUTH !== 'no'
-const IS_WORK_IN_PROGRESS = false
 
 export default {
   name: 'app',
@@ -39,6 +38,12 @@ export default {
     WorkInProgress,
     NotAccessPage,
     ErPreloader
+  },
+  props: {
+    isWorkInProgress: {
+      type: Boolean,
+      default: false
+    }
   },
   data: () => ({
     model: ''
@@ -179,9 +184,6 @@ export default {
       accessToken: state => state.auth.accessToken,
       refreshToken: state => state.auth.refreshToken
     }),
-    isWorkInProgress () {
-      return IS_WORK_IN_PROGRESS
-    },
     isAccessGranted () {
       return USE_SSO_AUTH ? this.hasAccess : true
     },
