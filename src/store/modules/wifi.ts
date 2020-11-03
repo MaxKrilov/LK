@@ -1,6 +1,6 @@
 import { API } from '@/functions/api'
 import { ActionContext } from 'vuex'
-import { TYPE_ARRAY } from '@/constants/type_request'
+import { TYPE_ARRAY, TYPE_JSON } from '@/constants/type_request'
 import { IWifiResourceInfo } from '@/tbapi'
 
 const api = () => new API()
@@ -31,7 +31,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       api()
         .setWithCredentials()
-        .setBranch('web-20066')
+        // .setBranch('web-20066')
         .setData({
           client_id: toms,
           vlan,
@@ -67,7 +67,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       api()
         .setWithCredentials()
-        .setBranch('web-20066')
+        // .setBranch('web-20066')
         .setData({
           method: 'stat_audiences',
           cityId,
@@ -107,7 +107,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       api()
         .setWithCredentials()
-        .setBranch('web-20066')
+        // .setBranch('web-20066')
         .setData({
           method: 'stat_users',
           cityId,
@@ -122,6 +122,34 @@ const actions = {
         .catch(error => {
           reject(error)
         })
+    })
+  },
+  getData (
+    context: ActionContext<undefined, any>,
+    { vlan, cityId }: { vlan: string, cityId: string }
+  ) {
+    return new Promise((resolve, reject) => {
+      api()
+        .setWithCredentials()
+        .setData({ vlan, city_id: cityId })
+        .query('/hotspot/default/get-data')
+        .then(response => resolve(response))
+        .catch(error => reject(error))
+    })
+  },
+  setData (
+    context: ActionContext<undefined, any>,
+    data: FormData
+  ) {
+    data.append('_token', context.rootGetters)
+    return new Promise((resolve, reject) => {
+      api()
+        .setWithCredentials()
+        .setType(TYPE_JSON)
+        .setData(data)
+        .query('/hotspot/default/set-data')
+        .then(response => resolve(response))
+        .catch(error => reject(error))
     })
   }
 }

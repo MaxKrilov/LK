@@ -95,3 +95,11 @@
     transform: scale(0) rotate(-45deg);
   }
 }
+
+.expand-transition {
+  @include transition-default();
+}
+
+.expand-x-transition {
+  @include transition-default();
+}

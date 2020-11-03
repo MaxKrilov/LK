@@ -1,3 +1,4 @@
+/* eslint camelcase: 0 */
 export interface DocumentInterface {
   attachmentName: string
   fileName: string
@@ -554,4 +555,88 @@ export interface IWifiStatUser {
   output_bytes: number
   // eslint-disable-next-line camelcase
   user_name: string
+}
+
+export interface WifiData {
+  hotspot_id: number;
+  hotspot_billing_id: string;
+  domain: string;
+  active_city_id: number;
+  vlan: string;
+  name: string;
+  address: string;
+  hotspot_type_id: number;
+  longitude: number;
+  latitude: number;
+  worktime: string;
+  owner_type_id: string;
+  client_id: string;
+  client_city_id: string;
+  functional_type: string;
+  macs: string;
+  status: number;
+  billing_client_id: string;
+  field_logo: string | File;
+  field_index_banner: string | File;
+  field_index_banner_href: string;
+  field_index_abonent_title: string;
+  field_index_guest_title: string;
+  field_abonent_redirect_url: string;
+  field_abonent_redirect_delay: string;
+  field_abonent_global_redirect: number;
+  field_abonent_global_redirect_url: string;
+  field_guest_redirect_delay: string;
+  field_guest_redirect_url: string;
+  field_guest_global_redirect: number;
+  field_guest_global_redirect_url: string;
+  field_theme: string;
+  field_language: string;
+  field_guest_sms_auth: number;
+  field_voucher_auth: number;
+  field_guest_sms_auth_only_russia: number;
+  field_premium_auth: number;
+  field_adfox_flag: number;
+  field_index_premium_title: string;
+  field_guest_auth: number;
+  field_abonent_auth: number;
+  field_index_voucher_title: string;
+  field_oferta_checkbox: number;
+  field_guest_pin: string;
+  field_guest_pin_active: number;
+  field_additional_offer: number;
+  field_additional_offer_text: string;
+  field_adfox_puid: string;
+  field_esia_auth: number;
+  field_guest_auto_login: number;
+  field_fan_id_auth: number;
+  field_log_auth: number;
+  field_offer_main_template: string;
+  field_social_networks: string[];
+  field_phone_confirm_sms: number;
+  field_phone_confirm_callback: number;
+  field_custom_voucher_button: string;
+  field_custom_premium_button: string;
+  field_custom_button: Record<string, string> | null;
+  field_custom_body: any;
+  field_custom_fullscreen: number;
+  field_custom_background_image: string | File;
+  field_social_auth_vk: number;
+  field_social_auth_ok: number;
+  field_social_auth_fb: number;
+  field_social_auth_in: number;
+  field_social_auth_tw: number;
+  field_guest_auth_time: string;
+  field_custom_redirect: string;
+  field_private_network_ssid: string;
+  field_private_network_password: string;
+  field_private_network_speed_per_user: string;
+  field_public_network_ssid: string;
+  field_guest_speed_profile: string;
+  field_guest_auth_cache_duration: string;
+  field_guest_hs_session_timout: string;
+  field_abon_hs_session_timout: string;
+  field_logo_real_size: number;
+  field_blacklist_phone: string;
+  field_blacklist_mac: string;
+  field_subscription_is_active: number;
 }

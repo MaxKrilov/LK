@@ -111,7 +111,8 @@ import TelephonyBlacklistPage from '@/components/pages/telephony/blacklist/index
 import WifiTemplate from './components/templates/WiFiTemplate/index'
 import WifiIndexPage from './components/pages/wifi/index/index'
 import WifiPromo from './components/pages/wifi/promo/index'
-import WifiAuthService from './components/pages/wifi/auth-services/index'
+import WifiServiceAuth from './components/pages/wifi/service-auth/index'
+import WifiPersonalizationPage from '@/components/pages/wifi/personalization/index'
 // WiFi аналитика
 import WifiAnalyticsPromo from './components/pages/wifi/analytics/promo'
 import WifiAnalyticsChoice from './components/pages/wifi/analytics/choice'
@@ -128,6 +129,7 @@ import PackageListPage from './components/pages/tv/tv-package-list/index'
 
 // Страницы с ошибками
 import OldBrowserPage from './components/pages/errors/old-browsers'
+// import WifiAuthService from '@/components/pages/wifi/auth-services/index'
 
 Vue.use(Router)
 
@@ -391,11 +393,19 @@ const router = new Router({
               path: 'promo',
               component: WifiPromo
             },
+            // {
+            //   path: 'auth-services',
+            //   component: WifiAuthService
+            // },
             {
-              path: 'auth-services',
-              component: WifiAuthService
+              path: 'personalization',
+              component: WifiPersonalizationPage
             }
           ]
+        },
+        {
+          path: 'wifi/services-auth',
+          component: WifiServiceAuth
         },
         {
           name: 'wifi-analytics-promo',

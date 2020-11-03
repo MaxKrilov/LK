@@ -136,15 +136,13 @@ export default class WifiIndexPage extends Vue {
   }
 
   get mapZoom () {
+    if (this.listAddressUnit.length === 0) {
+      return 1
+    }
     const minLatitude = deg2rad(Math.min(...this.listAddressUnit.map(addressUnit => Number(addressUnit.latitude))))
     const maxLatitude = deg2rad(Math.max(...this.listAddressUnit.map(addressUnit => Number(addressUnit.latitude))))
     const minLongitude = deg2rad(Math.min(...this.listAddressUnit.map(addressUnit => Number(addressUnit.longitude))))
     const maxLongitude = deg2rad(Math.max(...this.listAddressUnit.map(addressUnit => Number(addressUnit.longitude))))
-
-    // todo подправить
-    /* if (minLatitude === Infinity) {
-      return 1
-    } */
 
     const cosLatitude1 = Math.cos(minLatitude)
     const cosLatitude2 = Math.cos(maxLatitude)

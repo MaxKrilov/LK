@@ -476,9 +476,9 @@ export default class DigitalSignature {
     let hashAlgorithm: number | undefined
     if (certificate.algoOid === '1.2.643.7.1.1.1.1') { // алгоритм подписи ГОСТ Р 34.10-2012 с ключом 256 бит
       hashAlgorithm = cadesplugin.CADESCOM_HASH_ALGORITHM_CP_GOST_3411_2012_256
-    } else if (certificate.algoOid === '1.2.643.7.1.1.1.2') {
+    } else if (certificate.algoOid === '1.2.643.7.1.1.1.2') { // алгоритм подписи ГОСТ Р 34.10-2012 с ключом 512 бит
       hashAlgorithm = cadesplugin.CADESCOM_HASH_ALGORITHM_CP_GOST_3411_2012_512
-    } else if (certificate.algoOid === '1.2.643.2.2.19') {
+    } else if (certificate.algoOid === '1.2.643.2.2.19') { // алгоритм подписи ГОСТ Р 34.10-2001
       hashAlgorithm = cadesplugin.CADESCOM_HASH_ALGORITHM_CP_GOST_3411
     }
     if (!hashAlgorithm) {

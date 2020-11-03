@@ -107,7 +107,8 @@ class ErtSwitch extends mixins(ErSelectable) {
           ? this.genProgress()
           : this.$createElement(ErtIcon, {
             props: {
-              name: this.isActive ? 'ok' : 'close'
+              name: this.isActive ? 'ok' : 'close',
+              small: true
             }
           })
       ])

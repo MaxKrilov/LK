@@ -1,0 +1,8 @@
+@mixin canvas-size ($orientation) {
+  @each $breakpoint, $sizes in $canvas-size {
+    @include min-breakpoint($breakpoint) {
+      width: #{map-deep-get($sizes, $orientation, 'width')};
+      height: #{map-deep-get($sizes, $orientation, 'height')};
+    }
+  }
+}

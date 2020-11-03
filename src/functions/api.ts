@@ -59,7 +59,11 @@ export class API {
   private _transformDataForJson = (): any => {
     const dataResult = this._data
     const _token = this._getToken()
-    !!_token && (dataResult._token = _token)
+    if (!!_token && this._data instanceof FormData) {
+      dataResult.append('_token', _token)
+    } else if (!!_token) {
+      dataResult._token = _token
+    }
     return dataResult
   }
 

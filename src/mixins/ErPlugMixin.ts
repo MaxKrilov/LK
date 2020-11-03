@@ -44,6 +44,7 @@ export default class ErPlugMixin extends Vue {
       })
       .catch(() => {
         this.isShowErrorOrderModal = true
+        this.errorEmit()
       })
       .finally(() => {
         this.isCreatingOrder = false
@@ -62,6 +63,7 @@ export default class ErPlugMixin extends Vue {
       })
       .catch(() => {
         this.isShowErrorOrderModal = true
+        this.errorEmit()
       })
   }
   sendOrder () { // отправка заказа в раоту
@@ -74,8 +76,10 @@ export default class ErPlugMixin extends Vue {
         this.sendingOrder = false
         if (answer?.submit_statuses?.[0]?.submitStatus === 'FAILED') {
           this.isShowErrorOrderModal = true
+          this.errorEmit()
         } else {
           this.isShowSuccessOrderModal = true
+          this.successEmit()
         }
         this.isShowOrderModal = false
         this.isShowDeleteOrderModal = false
@@ -85,6 +89,7 @@ export default class ErPlugMixin extends Vue {
         this.isShowOrderModal = false
         this.isShowDeleteOrderModal = false
         this.isShowErrorOrderModal = true
+        this.errorEmit()
       })
       .finally(() => {
         this.sendingOrder = false
@@ -92,6 +97,7 @@ export default class ErPlugMixin extends Vue {
   }
   cancelOrder () {
     this.$store.dispatch('salesOrder/cancel')
+    this.$emit('cancelOrder')
   }
 
   closeSuccessOrderModal () {
@@ -110,5 +116,13 @@ export default class ErPlugMixin extends Vue {
   }
   endConnection () {
     this.$emit('changeStatusConnection', false)
+  }
+
+  errorEmit () {
+    this.$emit('errorOrder')
+  }
+
+  successEmit () {
+    this.$emit('successOrder')
   }
 }

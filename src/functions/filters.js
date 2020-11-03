@@ -67,3 +67,7 @@ export function cutText (text, charCount) {
 
   return newText
 }
+
+export function fileName (str) {
+  return str.replace(/^.*[\\/]/, '')
+}

@@ -5,7 +5,10 @@
       title="WiFi зона"
       backlink="/lk"
     )
-    .wifi-index-page__map.mb-32(v-if="!isErrorClient")
+    .wifi-index-page__map.mb-32(
+      v-if="!isErrorClient"
+      :class="{ 'show': listAddressUnit.length > 0 }"
+    )
       l-map(
         :zoom="mapZoom"
         :options="mapOptions"

@@ -32,6 +32,7 @@
     transition: inherit;
     width: 100%;
     will-change: opacity;
+    background-color: rgba(map-get($shades, 'black'), 0.2);
   }
 
   &--absolute {

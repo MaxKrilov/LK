@@ -16,7 +16,8 @@ const props = {
     default: () => ({})
   },
   left: Boolean,
-  right: Boolean
+  right: Boolean,
+  small: Boolean
 }
 
 // eslint-disable-next-line no-use-before-define
@@ -30,10 +31,11 @@ const props = {
 })
 class ErtIcon extends mixins(ErBindAttrs) {
   // Props
-  name!: string
-  shadow!: IIconShadow
-  left!: boolean
-  right!: boolean
+  readonly name!: string
+  readonly shadow!: IIconShadow
+  readonly left!: boolean
+  readonly right!: boolean
+  readonly small!: boolean
 
   icon: IIconModule | null = null
 
@@ -65,7 +67,8 @@ class ErtIcon extends mixins(ErBindAttrs) {
       staticClass: this.CSSClass,
       class: {
         'ert-icon--left': this.left,
-        'ert-icon--right': this.right
+        'ert-icon--right': this.right,
+        'ert-icon--small': this.small
       },
       attrs: { ...this.attrs$ },
       on: { ...this.listeners$ }

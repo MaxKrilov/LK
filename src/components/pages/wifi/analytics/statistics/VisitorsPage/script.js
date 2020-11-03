@@ -8,7 +8,7 @@ import PageFooter from '../components/PageFooter'
 import { VISITS, LANGS, AGES } from '../mock'
 import { CHART_TYPES } from '../chart-types'
 
-import { head } from 'lodash'
+// import { head } from 'lodash'
 import moment from 'moment'
 import { PERIOD_TYPE_DAY } from '../constants'
 
@@ -39,16 +39,16 @@ export default {
       from: '',
       to: ''
     },
-    periodType: PERIOD_TYPE_DAY
+    periodType: PERIOD_TYPE_DAY,
+    isLoadingData: true,
+    isErrorLoad: false
   }),
   props: {
-    vlanInfo: {
-      type: Object,
-      default: () => ({})
-    }
+    vlan: String,
+    cityId: String
   },
   watch: {
-    vlanInfo () {
+    vlan () {
       this.init()
     },
     periodType () {
@@ -73,12 +73,12 @@ export default {
     },
     init () {
       this.mock.connections = {}
-      if (!this.vlanInfo || !this.vlanInfo.hasOwnProperty('vlan')) return
-      // eslint-disable-next-line no-unused-vars
-      const { cityId, number: vlan } = head(this.vlanInfo.vlan)
+      if (!this.vlan || !this.cityId) return
+      this.isLoadingData = true
+      this.isErrorLoad = false
       this.$store.dispatch('wifi/bigDataStatAudience', {
-        vlan: '140:1298',
-        cityId: '1',
+        vlan: this.vlan,
+        cityId: this.cityId,
         dateFrom: this.periodDate.from,
         dateTo: this.periodDate.to,
         authType: 1,
@@ -86,6 +86,12 @@ export default {
       })
         .then(response => {
           this.mock.connections = response
+        })
+        .catch(() => {
+          this.isErrorLoad = true
+        })
+        .finally(() => {
+          this.isLoadingData = false
         })
     }
   }

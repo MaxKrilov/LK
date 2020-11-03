@@ -1,0 +1,22 @@
+$canvas-size: (
+  'xs': (
+    'v': ( width: '100%', height: '568px' ),
+    'h': ( width: '100%', height: '0' )
+  ),
+  'sm': (
+    'v': ( width: '100%', height: '610px' ),
+    'h': ( width: '100%', height: '0' )
+  ),
+  'md': (
+    'v': ( width: '100%', height: '839px' ),
+    'h': ( width: '100%', height: '0' )
+  ),
+  'lg': (
+    'v': ( width: '330px', height: '579px' ),
+    'h': ( width: '100%', height: '574px' )
+  ),
+  'xl': (
+    'v': ( width: '360px', height: '651px' ),
+    'h': ( width: '100%', height: '552px' )
+  )
+);

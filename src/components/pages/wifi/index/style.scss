@@ -1,6 +1,12 @@
 .wifi-index-page {
   &__map {
     height: 604px;
+    opacity: 0;
+    transition: opacity 100ms ease-in-out;
+
+    &.show {
+      opacity: 1;
+    }
   }
 
   &__map-popup {
