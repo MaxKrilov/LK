@@ -1,5 +1,7 @@
 import { Component, DirectiveOptions } from 'vue'
 
+import { Hex, Hexa, HSLA, HSVA, RGBA } from '@/utils/colorUtils'
+
 export type ComponentOrPack = Component & {
   // eslint-disable-next-line camelcase
   $_subcomponents?: Record<string, ComponentOrPack>
@@ -63,3 +65,13 @@ export interface IIconShadow {
 }
 
 export type SelectItemKey = string | (string | number)[] | ((item: object, fallback?: any) => any)
+
+export interface IColor {
+  alpha: number
+  hex: Hex
+  hexa: Hexa
+  hsla: HSLA
+  hsva: HSVA
+  hue: number
+  rgba: RGBA
+}

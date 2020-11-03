@@ -1,0 +1,482 @@
+import Component, { mixins } from 'vue-class-component'
+
+import Page, { iPageComponent } from '@/components/helpers/Page'
+
+// Components
+import ErListPoints from '@/components/blocks/ErListPoints/index.vue'
+import ErtWifiPersonalizationScreen from './components/ErtWifiPersonalizationScreen/index.vue'
+import ErtWifiPersonalizationSettings from './components/ErtWifiPersonalizationSettings/index.vue'
+/// Dialog windows
+import ErtWifiPersonalizationDialogLogo from './components/ErtWifiPersonalizationDialogLogo/index.vue'
+import ErtWifiPersonalizationDialogBackground from './components/ErtWifiPersonalizationDialogBackground/index.vue'
+import ErtWifiPersonalizationDialogButton from './components/ErtWifiPersonalizationDialogButton/index.vue'
+
+import ErActivationModal from '@/components/blocks/ErActivationModal/index.vue'
+import ErPromo from '@/components/blocks/ErPromo/index.vue'
+import ErPlugProduct from '@/components/blocks/ErPlugProduct/index.vue'
+import ErDisconnectProduct from '@/components/blocks/ErDisconnectProduct/index.vue'
+
+// Utils
+import { head, cloneDeep } from 'lodash'
+import { mapState, mapActions } from 'vuex'
+import { SCREEN_WIDTH } from '@/store/actions/variables'
+import { BREAKPOINT_LG } from '@/constants/breakpoint'
+import { IWifiResourceInfo, WifiData } from '@/tbapi'
+import { HOST_WIFI_BACKEND, SLO_CODE } from '@/components/pages/wifi/personalization/constants'
+import { IButtons } from './types'
+import { camelize } from '@/functions/helper2'
+import { ServiceStatus } from '@/constants/status'
+import { price as priceFormatted } from '@/functions/filters'
+
+const personalizationFutureList = require('./promo.json')
+
+const typesButtons = ['abonent', 'guest', 'voucher', 'premium']
+
+const defaultStyles: Record<string, string> = {
+  color: 'rgb(0, 0, 0)',
+  borderRadius: '3px',
+  boxShadow: '0 2px 0 #CCB100',
+  borderColor: '#F8DD17',
+  backgroundColor: '#F8DD17'
+}
+
+function parseStyles (field: string | null) {
+  if (field === null) { // Возвращаем стили по умолчанию
+    return defaultStyles
+  }
+
+  const result: Record<string, string> = {}
+  field.split(';').forEach(style => {
+    const [property, value] = style.split(':')
+    result[camelize(property).trim()] = value.trim()
+  })
+
+  return Object.assign({}, defaultStyles, result)
+}
+
+@Component<InstanceType<typeof WifiPersonalizationPage>>({
+  components: {
+    ErListPoints,
+    ErtWifiPersonalizationScreen,
+    ErtWifiPersonalizationSettings,
+    ErtWifiPersonalizationDialogLogo,
+    ErtWifiPersonalizationDialogBackground,
+    ErtWifiPersonalizationDialogButton,
+    ErPromo,
+    ErPlugProduct,
+    ErDisconnectProduct,
+    ErActivationModal
+  },
+  filters: {
+    priceFormatted
+  },
+  computed: {
+    ...mapState({
+      screenWidth: (state: any) => state.variables[SCREEN_WIDTH]
+    })
+  },
+  watch: {
+    listPoint () {
+      this.$nextTick(() => {
+        this.isLoadingListPoint = false
+      })
+    },
+    customerProduct (val) {
+      val && this.$nextTick(() => {
+        this.isLoadingCustomerProduct = false
+      })
+    },
+    screenWidth (val) {
+      if (val < BREAKPOINT_LG) {
+        this.modelScreenOrientation = this.listScreenOrientation.find(item => item.value === 'portrait')
+      }
+    },
+    activePoint (newVal, oldVal) {
+      Page.options.watch.activePoint.call(this, newVal, oldVal)
+      if (newVal && oldVal) {
+        this.isLoadingCustomerProduct = true
+        this.isLoadingWifiData = true
+        this.isErrorLoad = false
+      }
+      newVal && this.getResource({ bpi: newVal.bpi })
+        .then(response => {
+          const vlan = head(response)!.vlan
+          if (vlan && typeof head(vlan) !== 'undefined') {
+            this.cityId = head(vlan)!.cityId
+            this.vlan = head(vlan)!.number
+          }
+          this.getData({ vlan: this.vlan, cityId: this.cityId })
+            .then(dataResponse => {
+              this.wifiData = dataResponse
+              this.isLoadingWifiData = false
+            })
+            .catch(() => {
+              this.isErrorLoad = true
+              this.isLoadingCustomerProduct = false
+              this.isLoadingWifiData = false
+            })
+        })
+        .catch(() => {
+          this.isErrorLoad = true
+          this.isLoadingCustomerProduct = false
+          this.isLoadingWifiData = false
+        })
+    }
+  },
+  methods: mapActions({
+    getResource: 'wifi/getResource',
+    getData: 'wifi/getData'
+  })
+})
+export default class WifiPersonalizationPage extends mixins(Page) implements iPageComponent {
+  // Options
+  productType = 'Wi-Fi'
+
+  // Vuex
+  readonly screenWidth!: number
+
+  // Vuex actions
+  getResource!: <T = { bpi: string }, R = Promise<IWifiResourceInfo[]>>(args: T) => R
+  getData!: <T = { vlan: string }, R = Promise<WifiData>>(args: T) => R
+
+  // Data
+  /// Data
+  /**
+   * Список ориентация экрана
+   */
+  listScreenOrientation = [
+    { value: 'landscape', text: 'Горизонтальная', image: require('@/components/pages/wifi/personalization/images/orientations/horizontal_orientation.svg') },
+    { value: 'portrait', text: 'Вертикальная', image: require('@/components/pages/wifi/personalization/images/orientations/vertical_orientation.svg') }
+  ]
+  /**
+   * Список языков
+   */
+  listLanguage = [
+    { value: 'RUS', text: 'Русский', image: require('@/components/pages/wifi/personalization/images/flags/RUS.svg') }
+  ]
+
+  vlan: string = ''
+  cityId: string = ''
+
+  /// Models
+  modelScreenOrientation = head(this.listScreenOrientation)
+  modelLanguage = head(this.listLanguage)
+
+  /// Dialogs
+  dialogLogo: boolean = false
+  dialogBackground: boolean = false
+  dialogButton: boolean = false
+
+  /// Server Data
+  wifiData: WifiData | null = null
+
+  /// Internal Data
+  internalLogoFile: null | File | false = null
+  internalLogoBase64: null | string | false = null
+
+  internalBackgroundImageFile: null | File | false = null
+  internalBackgroundImageBase64: null | string | false = null
+
+  internalBannerFile: null | File | false = null
+  internalBannerBase64: null | string | false = null
+
+  internalFullscreen: null | boolean = null
+
+  internalFieldCustomBodyStyle: null | { backgroundColor: string, color: string } = null
+
+  internalButtons: IButtons | null = null
+  internalButtonStyles: Record<string, string> | null = null
+  internalSocialNetworks: Record<string, number> | null = null
+
+  /// Loading Data
+  isLoadingListPoint: boolean = true
+  isLoadingCustomerProduct: boolean = true
+  isLoadingWifiData: boolean = true
+
+  isErrorLoad: boolean = false
+
+  isLoadingSetData: boolean = false
+  isSuccessSetData: boolean = false
+  isErrorSetData: boolean = false
+
+  promoFeatureList: { icon: string, name: string, description: string }[] = personalizationFutureList
+  isShowPlugProductPlugin: boolean = false
+  isShowDisconnectProductPlugin: boolean = false
+
+  // Computed
+  get isPortrait () {
+    return this.modelScreenOrientation!.value === 'portrait'
+  }
+
+  get isLandscape () {
+    return this.modelScreenOrientation!.value === 'landscape'
+  }
+
+  get getLogo () {
+    return this.internalLogoBase64 === null
+      ? this.wifiData && this.wifiData.field_logo
+        ? `${HOST_WIFI_BACKEND}${this.wifiData.field_logo}`
+        : false
+      : this.internalLogoBase64
+  }
+
+  get getBackgroundImage () {
+    return this.internalBackgroundImageBase64 === null
+      ? this.wifiData && this.wifiData.field_custom_background_image
+        ? `${HOST_WIFI_BACKEND}${this.wifiData.field_custom_background_image}`
+        : false
+      : this.internalBackgroundImageBase64
+  }
+
+  get getFieldCustomBodyStyle () {
+    return this.internalFieldCustomBodyStyle === null
+      ? this.wifiData
+        ? {
+          backgroundColor: this.wifiData.field_custom_body?.styles?.['background-color'] || '#F7F7F7',
+          color: this.wifiData.field_custom_body?.styles?.['color'] || 'black'
+        }
+        : false
+      : this.internalFieldCustomBodyStyle
+  }
+
+  get getBanner () {
+    return this.internalBannerBase64 === null
+      ? this.wifiData && this.wifiData.field_index_banner
+        ? `${HOST_WIFI_BACKEND}${this.wifiData.field_index_banner}`
+        : false
+      : this.internalBannerBase64
+  }
+
+  get getIsFullscreen () {
+    return this.internalFullscreen === null
+      ? this.wifiData && this.wifiData.field_custom_fullscreen !== null
+        ? this.wifiData.field_custom_fullscreen
+        : false
+      : this.internalFullscreen
+  }
+
+  get getServerButtons () {
+    const result: IButtons = {
+      abonent: { auth: 0, title: '' },
+      guest: { auth: 0, title: '' },
+      voucher: { auth: 0, title: '' },
+      premium: { auth: 0, title: '' }
+    }
+
+    if (this.wifiData === null) return result
+
+    typesButtons.forEach(type => {
+      result[type as keyof IButtons] = {
+        auth: (this.wifiData as any)[`field_${type}_auth`],
+        title: (this.wifiData as any)[`field_index_${type}_title`]
+      }
+    })
+
+    return result
+  }
+
+  get getButtons () {
+    return this.internalButtons === null
+      ? this.getServerButtons
+      : this.internalButtons
+  }
+
+  get getButtonStyles () {
+    return this.internalButtonStyles === null
+      ? parseStyles(this.wifiData?.field_custom_button?.style || null)
+      : this.internalButtonStyles
+  }
+
+  get getServerSocialNetworks () {
+    const socialNetworks: Record<string, number> = {
+      field_phone_confirm_sms: 0,
+      field_phone_confirm_callback: 0,
+      field_social_auth_vk: 0,
+      field_social_auth_ok: 0,
+      field_social_auth_fb: 0,
+      field_social_auth_in: 0,
+      field_social_auth_tw: 0
+    }
+
+    if (this.wifiData === null) return socialNetworks
+
+    for (const key in socialNetworks) {
+      if (socialNetworks.hasOwnProperty(key)) {
+        socialNetworks[key] = this.wifiData.hasOwnProperty(key)
+          ? (this.wifiData as any)[key]
+          : 0
+      }
+    }
+
+    return socialNetworks
+  }
+
+  get getSocialNetworks () {
+    return this.internalSocialNetworks === null
+      ? this.getServerSocialNetworks
+      : this.internalSocialNetworks
+  }
+
+  get isActiveProduct () {
+    return this.customerProduct
+      ? this.customerProduct.slo
+        .find(sloItem => sloItem.code === SLO_CODE)!.status === ServiceStatus.STATUS_ACTIVE
+      : false
+  }
+
+  get getPriceForConnection () {
+    return this.customerProduct && !this.isActiveProduct
+      ? head(this.customerProduct!.slo.find(sloItem => sloItem.code === SLO_CODE)!.prices)!.amount
+      : 0
+  }
+
+  get getOrderData () {
+    return {
+      locationId: this.activePoint?.id,
+      bpi: this.activePoint?.bpi,
+      productCode: SLO_CODE,
+      offer: 'wifi',
+      title: 'Вы уверены, что хотите подключить услугу «Управление дизайном стартовой страницы»?'
+    }
+  }
+
+  get getDisconnectData () {
+    const productId = this.customerProduct && this.isActiveProduct
+      ? this.customerProduct.slo.find(sloItem => sloItem.code === SLO_CODE)!.productId
+      : ''
+    return {
+      bpi: this.activePoint?.bpi,
+      locationId: this.activePoint?.id,
+      productId,
+      title: 'Вы уверены, что хотите отключить услугу «Управление дизайном стартовой страницы»?'
+    }
+  }
+
+  // Methods
+  openDialogLogo () {
+    this.dialogLogo = true
+  }
+
+  openDialogBackground () {
+    this.dialogBackground = true
+  }
+
+  openDialogButton () {
+    this.dialogButton = true
+  }
+
+  onSaveLogo (e: { file: File | false, base64: string | false }) {
+    this.internalLogoFile = e.file
+    this.internalLogoBase64 = e.base64
+  }
+
+  onSaveBackground (e: Record<string, any>) {
+    this.internalBackgroundImageFile = e.backgroundImageFile || (e.backgroundImageServer ? null : false)
+    this.internalBackgroundImageBase64 = e.backgroundImageBase64 || (e.backgroundImageServer ? null : false)
+
+    this.internalBannerFile = e.bannerFile || (e.bannerServer ? null : false)
+    this.internalBannerBase64 = e.bannerBase64 || (e.bannerServer ? null : false)
+
+    this.internalFullscreen = e.isFullscreen
+
+    this.internalFieldCustomBodyStyle = {
+      backgroundColor: e.backgroundColor,
+      color: e.colorText
+    }
+  }
+
+  onSaveButtons (e: Record<string, any>) {
+    this.internalButtons = cloneDeep(e.buttons)
+    this.internalButtonStyles = cloneDeep(e.buttonStyle)
+    this.internalSocialNetworks = cloneDeep(e.socialNetworks)
+  }
+
+  onSave () {
+    this.isLoadingSetData = true
+    const data = new FormData()
+
+    data.append('vlan', this.vlan)
+    data.append('city_id', this.cityId)
+
+    if (this.internalLogoFile) {
+      data.append(`field_logo`, this.internalLogoFile)
+    }
+
+    if (this.internalBackgroundImageFile) {
+      data.append('field_custom_background_image', this.internalBackgroundImageFile)
+    }
+
+    if (this.internalBannerFile) {
+      data.append('field_index_banner', this.internalBannerFile)
+    }
+
+    if (this.internalFullscreen !== null) {
+      data.append('params[field_custom_fullscreen]', Number(this.internalFullscreen).toString())
+    }
+
+    if (this.internalFieldCustomBodyStyle) {
+      data.append('params[field_custom_body][styles][background-color]', this.internalFieldCustomBodyStyle.backgroundColor)
+      data.append('params[field_custom_body][styles][color]', this.internalFieldCustomBodyStyle.color)
+    }
+
+    if (this.internalButtons) {
+      Object.keys(this.internalButtons).forEach(key => {
+        if (this.internalButtons!.hasOwnProperty(key)) {
+          data.append(`params[field_${key}_auth]`, (this.internalButtons as any)[key].auth)
+          data.append(`params[field_index_${key}_title]`, (this.internalButtons as any)[key].title)
+        }
+      })
+    }
+
+    if (this.internalButtonStyles) {
+      const styles: string[] = []
+      Object.keys(this.internalButtonStyles).forEach(key => {
+        if (this.internalButtonStyles!.hasOwnProperty(key)) {
+          styles.push(`${key}: ${this.internalButtonStyles![key]}`)
+        }
+      })
+
+      data.append('params[field_custom_button][style]', styles.join('; '))
+    }
+
+    this.$store.dispatch('wifi/setData', data)
+      .then(response => {
+        if (response) {
+          this.isSuccessSetData = true
+        } else {
+          this.isErrorSetData = true
+        }
+      })
+      .catch(() => {
+        this.isErrorSetData = true
+      })
+      .finally(() => {
+        this.isLoadingSetData = false
+      })
+  }
+
+  getListPoint () {
+    return new Promise((resolve, reject) => {
+      Page.options.methods.getListPoint.call(this)
+        .then(() => {
+          this.listPoint = this.listPoint.filter((point: any) => ~point.offerName.toLowerCase().indexOf('mono'))
+          this.activePoint = head(this.listPoint) || null
+          resolve(this.listPoint)
+        })
+        .catch((error: any) => {
+          this.isErrorLoad = true
+          this.isLoadingListPoint = false
+          this.isLoadingCustomerProduct = false
+          this.isLoadingWifiData = false
+          reject(error)
+        })
+    })
+  }
+
+  // Hooks
+  mounted () {
+    if (this.screenWidth < BREAKPOINT_LG) {
+      this.modelScreenOrientation = this.listScreenOrientation.find(item => item.value === 'portrait')
+    }
+  }
+}

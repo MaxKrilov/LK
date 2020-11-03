@@ -17,7 +17,8 @@ export default {
       type: Array,
       default: () => []
     },
-    linkToConnect: String
+    linkToConnect: String,
+    isLoadingConnectButton: Boolean
   },
   data: () => ({
     pre: 'promo-component'

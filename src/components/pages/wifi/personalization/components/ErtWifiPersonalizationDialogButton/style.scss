@@ -1,0 +1,214 @@
+.ert-wifi-personalization-dialog-button {
+  &__content {
+    background-color: map-get($shades, 'white');
+  }
+
+  &__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    height: 48px;
+    padding: 0 $padding-x4;
+
+    .title {
+      @extend %h3-font;
+      @include color-black(0.8);
+    }
+
+    .close {
+      @include color-black(0.3);
+    }
+  }
+
+  &__buttons-text {
+    padding: 20px 16px 32px;
+    display: flex;
+    flex-direction: column;
+
+    @include min-breakpoint('md') {
+      flex-direction: row;
+      flex-wrap: wrap;
+    }
+  }
+
+  &__buttons-text-item {
+    @include min-breakpoint('md') {
+      width: 100%;
+      flex-basis: 50%;
+    }
+
+    > .ert-input {
+      align-items: center;
+
+      > .ert-input__prepend-outer {
+        margin-top: 0;
+
+        > .ert-input {
+          margin-top: 0;
+        }
+      }
+    }
+  }
+
+  &__toggle-button {
+    width: 100%;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 $padding-x4;
+    background-color: map-get($gray, '9');
+    box-shadow: map-get($shadows, 'button');
+    outline: none;
+
+    .title {
+      @extend %h4-font;
+      @include color-black(0.8);
+    }
+
+    .icon {
+      @include color-black(0.5);
+
+      i > svg {
+        transition: $primary-transition;
+      }
+    }
+
+    &.open .icon i > svg {
+      transform: rotate(180deg);
+    }
+  }
+
+  &__edit-styles {
+    padding: $padding-x8 $padding-x4 $padding-x6;
+
+    .title {
+      @extend %caption1-font;
+      @include color-black(0.8);
+      margin-bottom: $padding-x2;
+    }
+
+    .row {
+      display: flex;
+      align-items: center;
+      margin: 0;
+      width: 100%;
+      flex-wrap: nowrap;
+    }
+
+    .rectangle {
+      width: 64px;
+      height: 32px;
+      border: 2px solid rgba(map-get($shades, 'black'), 0.2);
+
+      &.rounding {
+        border-radius: 8px;
+      }
+
+      &.wo-rounding {
+        border-radius: 4px;
+      }
+
+      &.volume {
+        border-radius: 4px;
+        border-bottom-width: 6px;
+      }
+    }
+
+    .button {
+      width: 100%;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      @extend %button-font;
+      border-radius: 4px;
+    }
+
+    .hex,
+    .rgb {
+      width: 100%;
+    }
+
+    .rgb {
+      display: flex;
+      align-items: center;
+
+      .ert-input {
+        &:first-child {
+          border-radius: 8px 0 0 8px;
+        }
+
+        &:nth-child(2) {
+          border-radius: 0;
+        }
+
+        &:last-child {
+          border-radius: 0 8px 8px 0;
+        }
+      }
+    }
+
+    @include min-breakpoint('md') {
+      > * {
+        width: 100%;
+        flex-basis: 50%;
+        max-width: 50%;
+      }
+    }
+  }
+
+  &__guest-auth {
+    margin-bottom: $padding-x8;
+  }
+
+  &__edit-guest-auth {
+    padding: $padding-x8 $padding-x4 $padding-x6;
+  }
+
+  &__guest-auth-item {
+    .ert-label {
+      .title {
+        flex: 1;
+        @extend %caption1-font;
+      }
+
+      .icon i > svg {
+        width: 32px;
+      }
+    }
+
+    &.vk .icon {
+      color: map-get($blue, 'other-4');
+    }
+
+    &.ok .icon {
+      color: map-get($yellow, 'other-13');
+    }
+
+    &.fb .icon {
+      color: map-get($blue, 'darken-1');
+    }
+
+    &.instagram .icon {
+      color: map-get($purple, 'other-1');
+    }
+
+    &.twitter .icon {
+      color: map-get($blue, 'other-5');
+    }
+  }
+
+  &__action {
+    width: 100%;
+    @include min-breakpoint('sm') {
+      max-width: 208px;
+    }
+  }
+
+  &__color__dialog-content {
+    padding: $padding-x2;
+    background-color: map-get($shades, 'white');
+  }
+}

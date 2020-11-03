@@ -41,7 +41,7 @@ class ErtCheckbox extends mixins(ErSelectable) {
         staticClass: 'ert-input--checkbox__thumb--inner'
       }, !this.isActive
         ? []
-        : [this.$createElement(ErtIcon, { props: { name: 'ok' } })]
+        : [this.$createElement(ErtIcon, { props: { name: 'ok', small: true } })]
       )
     ])
   }

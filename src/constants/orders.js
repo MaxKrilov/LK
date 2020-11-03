@@ -7,5 +7,6 @@ export const WAIT = 'Ожидаем'
 export const COMPLITED = 'Выполнен'
 export const REQUEST_TYPES = {
   'connect': '9157238575013921100',
-  'change': '9154749993013188884'
+  'change': '9154749993013188884',
+  'disconnect': '9154749993013188896'
 }

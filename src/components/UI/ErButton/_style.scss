@@ -53,6 +53,18 @@
       box-shadow: inset 0 4px 4px map_get($green, 'other-2');
     }
   }
+  &--red {
+    background: map_get($red, 'base');
+    color: map_get($shades, 'white') !important;
+
+    &:hover {
+      background: map_get($red, 'other-1');
+    }
+    &:active {
+      background: map_get($red, 'base');
+      box-shadow: inset 0 4px 4px map_get($red, 'other-2');
+    }
+  }
   &--gray {
     background: map_get($gray, '9');
     color: map_get($shades, 'black');

@@ -12,7 +12,7 @@ export default {
     color: {
       type: String,
       default: 'yellow',
-      validator: value => ['yellow', 'blue', 'green', 'gray'].includes(value)
+      validator: value => ['yellow', 'blue', 'green', 'gray', 'red'].includes(value)
     },
     /**
      * Отключение кнопки

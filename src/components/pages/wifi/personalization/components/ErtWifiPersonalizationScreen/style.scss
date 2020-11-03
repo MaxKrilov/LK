@@ -1,0 +1,212 @@
+@import "./variables";
+@import "./mixins";
+
+.ert-wifi-personalization-screen {
+  background-color: map-get($gray, '9');
+  position: relative;
+  display: flex;
+  flex-direction: column;
+
+  &--landscape {
+    @include canvas-size('h');
+  }
+
+  &--portrait {
+    @include canvas-size('v')
+  }
+
+  &__logo {
+    width: 100%;
+    max-width: 120px;
+    height: 48px;
+
+    button {
+      width: 100%;
+      height: 100%;
+      outline: none;
+      display: flex;
+      align-items: center;
+      border: 1px dashed rgba(map-get($shades, 'black'), 0.2);
+      padding: 0 8px;
+      border-radius: 8px;
+
+      i {
+        @include color-black(0.2);
+      }
+
+      span {
+        @extend %caption2-font;
+        @include color-black(0.5);
+        font-weight: 450;
+      }
+    }
+
+    &--visible {
+      display: flex;
+      align-items: center;
+      max-width: none;
+
+      img {
+        margin-right: $padding-x4;
+        height: 100%;
+      }
+
+      button {
+        border: none;
+        width: auto;
+      }
+    }
+  }
+
+  &__help {
+    span {
+      @extend %caption1-font;
+      @include color-black(0.5);
+      border-bottom: 1px solid;
+    }
+
+    img {
+      width: 24px;
+    }
+  }
+
+  &__background-settings {
+    flex: 1 1 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+
+    button {
+      outline: none;
+      position: relative;
+      z-index: 2;
+    }
+
+    i {
+      @include color-black(0.2);
+    }
+
+    span {
+      @extend %caption2-font;
+      @include color-black(0.5);
+      border-bottom: 1px dashed rgba(map-get($shades, 'black'), 0.5);
+    }
+
+    &__banner {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      text-align: center;
+      z-index: 1;
+
+      img {
+        height: 100%;
+        max-width: 100%;
+      }
+    }
+  }
+
+  &__button-settings {
+    display: flex;
+    margin: 0 16px;
+    padding: 16px;
+    border: 1px dashed rgba(map-get($shades, 'black'), 0.2);
+    border-radius: 8px;
+    position: relative;
+
+    .ert-button {
+      pointer-events: none;
+    }
+
+    .button {
+      position: absolute;
+      border: 1px dashed rgba(map-get($shades, 'black'), 0.2);
+      border-bottom-style: solid;
+      border-bottom-color: map-get($gray, '9');
+      width: 48px;
+      height: 48px;
+      top: -48px;
+      left: 50%;
+      transform: translateX(-50%);
+      border-radius: 8px 8px 0 0;
+      @include color-black(0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2;
+
+      button {
+        outline: none;
+      }
+    }
+  }
+
+  &__button-item {
+    width: 100%;
+    height: 40px;
+    font: 14px $fedra-demi;
+    cursor: pointer;
+
+    @include media-query((
+      height: (md: 46px)
+    ));
+
+    .content {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      vertical-align: middle;
+      height: 100%;
+      text-align: center;
+    }
+
+    &.premium {
+      color: map-get($shades, 'white');
+      box-shadow: 0 2px 0 map-get($red, 'other-3');
+      background-color: map-get($red, 'other-4');
+      border-radius: 3px;
+    }
+  }
+
+  &__offer-settings {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+
+    i {
+      @include color-black(0.2);
+    }
+
+    > span {
+      @extend %caption2-font;
+      @include color-black(0.8);
+
+      > span {
+        border-bottom: 1px solid;
+      }
+    }
+  }
+
+  &--landscape {
+    .ert-wifi-personalization-screen__button-settings .ert-wifi-personalization-screen__button-item {
+      &:not(.premium) {
+        margin-right: $padding-x4;
+      }
+    }
+  }
+
+  &--portrait {
+    .ert-wifi-personalization-screen__button-settings {
+      flex-direction: column;
+
+      .ert-wifi-personalization-screen__button-item:not(:last-child) {
+        margin-bottom: $padding-x2;
+      }
+    }
+  }
+}

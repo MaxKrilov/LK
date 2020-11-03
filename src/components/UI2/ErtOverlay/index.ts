@@ -32,7 +32,7 @@ class ErtOverlay extends mixins(ErtToggleableMixin) {
   // Computed
   get __scrim (): VNode {
     return this.$createElement('div', {
-      staticClass: 'er-overlay__scrim',
+      staticClass: 'ert-overlay__scrim',
       style: {
         opacity: this.computedOpacity
       }
