@@ -77,7 +77,7 @@ Vue.use(Skeleton)
 const WORK_IN_PROGRESS_BEFORE_AUTH = false
 
 // отображать страницу "Ведутся технические работы" после авторизации
-const WORK_IN_PROGRESS_AFTER_AUTH = true
+const WORK_IN_PROGRESS_AFTER_AUTH = false
 
 const DEFAULT_CONFIG = {
   router,
