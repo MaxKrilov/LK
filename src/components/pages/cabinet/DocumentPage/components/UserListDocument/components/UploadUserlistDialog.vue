@@ -106,7 +106,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .user-list-modal__buttons {
   display: grid;
   grid-template-columns: 1fr 1fr;
