@@ -6,7 +6,7 @@ import { BACKEND_COMBAT, BACKEND_STAGING, BACKEND_TESTING } from '@/constants/ur
 import { API_DADATA } from '@/store/actions/api'
 import store from '../store'
 
-const BASE_BRANCH = 'psi1'
+const BASE_BRANCH = 'master'
 
 export class API {
   private _branch = BASE_BRANCH
