@@ -12,9 +12,12 @@ const MAP_URL = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
 const CHAR_SPEED = 'Скорость, до (Мбит/с)'
 const CHAR_INSTITUTION_NAME = 'Название заведения'
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const EARTH_RADIUS = 6372795
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const EQUATOR_LENGTH = 40075.696
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const deg2rad = (deg: number) => deg * Math.PI / 180
 
 // eslint-disable-next-line no-use-before-define
@@ -136,32 +139,34 @@ export default class WifiIndexPage extends Vue {
   }
 
   get mapZoom () {
-    if (this.listAddressUnit.length === 0) {
-      return 1
-    }
-    const minLatitude = deg2rad(Math.min(...this.listAddressUnit.map(addressUnit => Number(addressUnit.latitude))))
-    const maxLatitude = deg2rad(Math.max(...this.listAddressUnit.map(addressUnit => Number(addressUnit.latitude))))
-    const minLongitude = deg2rad(Math.min(...this.listAddressUnit.map(addressUnit => Number(addressUnit.longitude))))
-    const maxLongitude = deg2rad(Math.max(...this.listAddressUnit.map(addressUnit => Number(addressUnit.longitude))))
-
-    const cosLatitude1 = Math.cos(minLatitude)
-    const cosLatitude2 = Math.cos(maxLatitude)
-    const sinLatitude1 = Math.sin(minLatitude)
-    const sinLatitude2 = Math.sin(maxLatitude)
-
-    const delta = maxLongitude - minLongitude
-    const cosDelta = Math.cos(delta)
-    const sinDelta = Math.sin(delta)
-
-    const y = Math.sqrt(
-      Math.pow(cosLatitude2 * sinDelta, 2) +
-      Math.pow(cosLatitude1 * sinLatitude2 - sinLatitude1 * cosLatitude2 * cosDelta, 2)
-    )
-    const x = sinLatitude1 * sinLatitude2 + cosLatitude1 * cosLatitude2 * cosDelta
-    const ad = Math.atan2(y, x)
-    const dist = ad * EARTH_RADIUS / 1000
-
-    return Math.floor(Math.log(EQUATOR_LENGTH / dist) / Math.log(2))
+    return 13
+    // todo Вернуть после разбора (возвращается Infinite)
+    // if (this.listAddressUnit.length === 0) {
+    //   return 1
+    // }
+    // const minLatitude = deg2rad(Math.min(...this.listAddressUnit.map(addressUnit => Number(addressUnit.latitude))))
+    // const maxLatitude = deg2rad(Math.max(...this.listAddressUnit.map(addressUnit => Number(addressUnit.latitude))))
+    // const minLongitude = deg2rad(Math.min(...this.listAddressUnit.map(addressUnit => Number(addressUnit.longitude))))
+    // const maxLongitude = deg2rad(Math.max(...this.listAddressUnit.map(addressUnit => Number(addressUnit.longitude))))
+    //
+    // const cosLatitude1 = Math.cos(minLatitude)
+    // const cosLatitude2 = Math.cos(maxLatitude)
+    // const sinLatitude1 = Math.sin(minLatitude)
+    // const sinLatitude2 = Math.sin(maxLatitude)
+    //
+    // const delta = maxLongitude - minLongitude
+    // const cosDelta = Math.cos(delta)
+    // const sinDelta = Math.sin(delta)
+    //
+    // const y = Math.sqrt(
+    //   Math.pow(cosLatitude2 * sinDelta, 2) +
+    //   Math.pow(cosLatitude1 * sinLatitude2 - sinLatitude1 * cosLatitude2 * cosDelta, 2)
+    // )
+    // const x = sinLatitude1 * sinLatitude2 + cosLatitude1 * cosLatitude2 * cosDelta
+    // const ad = Math.atan2(y, x)
+    // const dist = ad * EARTH_RADIUS / 1000
+    //
+    // return Math.floor(Math.log(EQUATOR_LENGTH / dist) / Math.log(2))
   }
 
   get getSpeed () {
