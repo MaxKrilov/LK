@@ -6,6 +6,10 @@ import ReverceZoneItemComponent from './blocks/ReverceZoneItemComponent'
 
 import { ICustomerProduct } from '@/tbapi'
 import { getFirstElement } from '@/functions/helper'
+import { SERVICE_ADDITIONAL_IP as SLO_CODE } from '@/constants/internet'
+
+const TLO_CHAR = 'IPv4 адрес в составе услуги'
+const SLO_CHAR = 'IPv4 адрес'
 
 // eslint-disable-next-line no-use-before-define
 @Component<InstanceType<typeof ReverceZonePage>>({
@@ -15,25 +19,47 @@ import { getFirstElement } from '@/functions/helper'
   props: {
     customerProduct: {
       type: Object
-    }
+    },
+    isLoadingCustomerProduct: Boolean
   },
   watch: {
+    isLoadingCustomerProduct (val) {
+      this.isLoadingIP = val
+      this.isLoadingReverceZone = val
+    },
     customerProduct (val) {
-      if (val) {
+      if (val && this.getListIP()) {
+        this.currentIP = this.listIP[0]
         this.getListReverceZone()
+          .then(response => {
+            if (response) {
+              this.isLoadingReverceZone = false
+            }
+          })
       }
     },
     currentIP () {
       this.isLoadingReverceZone = true
       this.getListReverceZone()
+        .then(response => {
+          if (response) {
+            this.isLoadingReverceZone = false
+          }
+        })
     }
   },
   beforeRouteEnter (to: Route, from: Route, next: (to?: (RawLocation | false | ((vm: ReverceZonePage) => void))) => void): void {
     next(vm => {
-      vm.isLoadingIP = true
       vm.isLoadingReverceZone = true
-      if (vm.customerProduct) {
+
+      if (vm.customerProduct && vm.getListIP()) {
+        vm.currentIP = vm.listIP[0]
         vm.getListReverceZone()
+          .then(response => {
+            if (response) {
+              vm.isLoadingReverceZone = false
+            }
+          })
       }
     })
   }
@@ -41,17 +67,10 @@ import { getFirstElement } from '@/functions/helper'
 export default class ReverceZonePage extends Vue {
   // Props
   readonly customerProduct!: ICustomerProduct | null
+  readonly isLoadingCustomerProduct!: boolean
   // Data
-  listIP: string[] = [
-    '5.166.47.140',
-    '5.166.57.240',
-    '5.166.57.241',
-    '5.166.57.242',
-    '5.166.57.243',
-    '109.195.98.254',
-    '176.215.1.132'
-  ]
-  currentIP = getFirstElement(this.listIP) // todo Переделать после получения списка IP
+  listIP: string[] = []
+  currentIP: string | null = null
   listReverceZone: string[] = []
   isOpenAdding = false
   model = {
@@ -63,22 +82,19 @@ export default class ReverceZonePage extends Vue {
   isLoadingReverceZone = false
   // Methods
   getListReverceZone () {
-    this.$store.dispatch('internet/getListReverceZone', { ip: this.currentIP })
-      .then(response => {
-        this.listReverceZone = Array.isArray(response) ? response : [response]
-        this.isLoadingIP = false
-      })
-      .finally(() => {
-        this.isLoadingReverceZone = false
-      })
+    return new Promise((resolve) => {
+      if (!this.currentIP) resolve(true)
+      this.$store.dispatch('internet/getListReverceZone', { ip: this.currentIP })
+        .then(response => {
+          this.listReverceZone = Array.isArray(response) ? response : [response]
+        })
+        .finally(() => {
+          resolve(true)
+        })
+    })
   }
 
-  deleteReverceZone () {
-    // this.listReverceZone.splice(
-    //   this.listReverceZone.findIndex(item => item === reverceZone),
-    //   1
-    // )
-  }
+  deleteReverceZone () {}
 
   addReverceZone () {
     if (!(this.$refs.form as any).validate()) return
@@ -93,72 +109,31 @@ export default class ReverceZonePage extends Vue {
       })
   }
 
-  // Hooks
-  // beforeRouteEnter (to: Route, from: Route, next: (to?: (RawLocation | false | ((vm: Vue) => void))) => void): void {
-  //   console.log(to, from)
-  //   console.log('------')
-  //   next(vm => {
-  //     console.log((vm as ReverceZonePage).cutomerProduct)
-  //   })
-  // }
-}
+  getListIP () {
+    this.listIP = []
 
-// import Vue, { PropType } from 'vue'
-//
-// // Components
-// import ReverceZoneItemComponent from './blocks/ReverceZoneItemComponent/index'
-//
-// import { ICustomerProduct } from '@/tbapi'
-// import { getFirstElement } from '@/functions/helper'
-//
-// export default Vue.extend({
-//   name: 'reverce-zones-page',
-//   components: {
-//     ReverceZoneItemComponent
-//   },
-//   props: {
-//     customerProduct: {
-//       type: Object as PropType<null | ICustomerProduct>
-//     }
-//   },
-//   data () {
-//     return {
-//       currentIp: '',
-//       listIP: [
-//         '5.166.47.140',
-//         '5.166.57.240',
-//         '5.166.57.241',
-//         '5.166.57.242',
-//         '5.166.57.243',
-//         '109.195.98.254',
-//         '176.215.1.132'
-//       ],
-//       listReverceZone: [],
-//       isOpenAdding: false,
-//       model: {
-//         ip: '',
-//         domain: ''
-//       },
-//       loadingReverceZone: true
-//     }
-//   },
-//   watch: {
-//     customerProduct (val) {
-//       if (!val) {
-//         // this.loading = true
-//         this.$store.dispatch('internet/getListReverceZone', { ip: getFirstElement(this.listIP) })
-//           .then(response => {
-//             console.log(response)
-//           })
-//       }
-//     }
-//   },
-//   methods: {
-//     deleteReverceZone (reverceZone: string) {
-//       // this.listReverceZone.splice(
-//       //   this.listReverceZone.findIndex(item => item.reverceZone === reverceZone),
-//       //   1
-//       // )
-//     }
-//   }
-// })
+    if (!this.customerProduct) return false
+    // Получаем IP адрес из TLO
+    if (this.customerProduct.tlo.chars.hasOwnProperty(TLO_CHAR)) {
+      this.listIP.push(
+        getFirstElement(
+          this.customerProduct.tlo.chars[TLO_CHAR].split('/')
+        )
+      )
+    } else {
+      return false
+    }
+
+    // Получаем IP адрес(-а) из SLO
+    const filterSLO = this.customerProduct.slo.filter(sloItem =>
+      sloItem.code === SLO_CODE && typeof sloItem.chars !== 'string' && sloItem.chars.hasOwnProperty(SLO_CHAR)
+    )
+    if (filterSLO.length === 0) return true
+
+    this.listIP.push(...filterSLO.map(filterSLOItem => getFirstElement(
+      filterSLOItem.chars[SLO_CHAR].split('/')
+    )))
+
+    return true
+  }
+}
