@@ -5,12 +5,12 @@ import PPRText from '../PPRText/index'
 import CampaignCustomMessage14 from '../campaign-custom-message-14'
 
 import {
+  isCampaignCustomMessage,
+  isCampaignMessage,
+  isPPR,
   isSurvey,
   isSurveyReception,
-  isSurveyTicket,
-  isCampaignMessage,
-  isCampaignCustomMessage,
-  isPPR
+  isSurveyTicket
 } from '@/functions/notifications'
 import { isMaxPostponedTimes } from '@/functions/survey'
 
@@ -42,7 +42,7 @@ export default {
       return `communication_type=${ct} ${taskId ? '\n#' + taskId : ''}`
     },
     isLongDescription () {
-      return this.textContent.length > MAX_DESCRIPTION_LENGTH || this.isCampaignCustomMessage
+      return this?.textContent?.length > MAX_DESCRIPTION_LENGTH || this.isCampaignCustomMessage
     },
     hasTimer () {
       return this.notification.expected_resolution_date
@@ -54,28 +54,22 @@ export default {
       return this.isSurvey || this.isSurveyTicket || this.isSurveyReception
     },
     isSurvey () {
-      const result = isSurvey(this.notification.communication_type)
-      return result
+      return isSurvey(this.notification.communication_type)
     },
     isSurveyTicket () {
-      const result = isSurveyTicket(this.notification.communication_type)
-      return result
+      return isSurveyTicket(this.notification.communication_type)
     },
     isSurveyReception () {
-      const result = isSurveyReception(this.notification.communication_type)
-      return result
+      return isSurveyReception(this.notification.communication_type)
     },
     isCampaignMessage () {
-      const result = isCampaignMessage(this.notification.communication_type)
-      return result
+      return isCampaignMessage(this.notification.communication_type)
     },
     isCampaignCustomMessage () {
-      const result = isCampaignCustomMessage(this.notification.communication_type)
-      return result
+      return isCampaignCustomMessage(this.notification.communication_type)
     },
     isPPR () {
-      const result = isPPR(this.notification.communication_type)
-      return result
+      return isPPR(this.notification.communication_type)
     },
     textContent () {
       return this.isCommonSurvey
@@ -137,7 +131,7 @@ export default {
     }),
     onClickAccept () {
       this.$store.dispatch('campaign/responseAccept', this.payload)
-        .then(data => {
+        .then(() => {
           // Удаление
           const deletePayload = {
             api: this.$api,
@@ -155,14 +149,14 @@ export default {
         id: this.notification.id
       }
       this.$store.dispatch('campaign/responseAccept', payload)
-        .then(data => {
+        .then(() => {
           this.$emit('hide')
         })
     },
     onRefuse () {
       // Отклик
       this.$store.dispatch('campaign/responseRefuse', this.payload)
-        .then(data => {
+        .then(() => {
           this.$emit('hide')
         })
 
@@ -207,7 +201,7 @@ export default {
       }
 
       this.surveyResponsePutOff(surveyPayload)
-        .then(data => {
+        .then(() => {
           this.$emit('hide')
           this.surveyRemove({ id: this.notification.task_id })
         })
@@ -223,7 +217,7 @@ export default {
     },
     onGoToSurvey () {
       this.$store.dispatch('campaign/responseClickForView', this.payload)
-        .then(data => {
+        .then(() => {
           this.$emit('survey', this.notification.task_id)
         })
     },
