@@ -7,7 +7,7 @@
   .toast__content
     .toast__title {{ title }}
     .toast__text
-      template(v-if="type==='14'")
+      template(v-if="isCustomCampaignMessage")
         | Уведомление о смене платежных реквизитов для договора
         span &nbsp;{{ offerNumber }}!
 

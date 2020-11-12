@@ -1,4 +1,5 @@
 import { getNotificationType } from '@/functions/notifications'
+import { T_CAMPAIGN_CUSTOM_MESSAGE_TYPE } from '@/constants/campaign'
 
 const TOAST_HIDE_TIMEOUT = 3600
 
@@ -20,6 +21,9 @@ export default {
     },
     offerNumber () {
       return this.$props.params?.['param_2'] || '%param_2%'
+    },
+    isCustomCampaignMessage () {
+      return this.$props.type === T_CAMPAIGN_CUSTOM_MESSAGE_TYPE
     }
   },
   mounted () {
