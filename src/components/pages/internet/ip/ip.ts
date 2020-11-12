@@ -54,6 +54,10 @@ export default class Ip extends Vue {
   addProtocol: string = ''
   addIpCount: string = ''
 
+  isShowMoneyModal:boolean = false
+  creatingOrder:boolean = false
+  availableFunds: number = 0
+
   protocolList: string[] = ['ipv4']
   disconnectionProductId: string = ''
   @Watch('billingAccountId')
@@ -102,7 +106,22 @@ export default class Ip extends Vue {
     this.showAddIpForm = true
   }
   onAddIp () {
-    this.isConnection = true
+    this.creatingOrder = true
+    this.$store.dispatch('salesOrder/getAvailableFunds')
+      .then((response) => {
+        this.availableFunds = Number(response.availableFundsAmt)
+        if (this.availableFunds - this.ipCost < 0) {
+          this.isShowMoneyModal = true
+        } else {
+          this.isConnection = true
+        }
+      })
+      .catch(() => {
+        this.isConnection = true
+      })
+      .finally(() => {
+        this.creatingOrder = false
+      })
   }
   onCancelAddIp () {
     if (this.ipAddressList.length) {
