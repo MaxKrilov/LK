@@ -12,11 +12,11 @@ export const WIFIANALYTICS = 'WIFIANALYTICS' // Аналитика по поль
 
 export const SERVICES_AUTH = [
   WIFIAUTOECIA,
-  WIFIAUTCNHS,
-  WIFIADVCANCEL,
-  WIFIHSCLONET,
-  WIFIACCCHANGE,
+  // WIFIAUTCNHS,
+  // WIFIADVCANCEL,
+  WIFIHSCLONET
+  // WIFIACCCHANGE,
   // WIFIAVTVOUCH, todo Вернуть после того, как WiFi backend починит
-  WIFINAME,
-  WIFIREDIR
+  // WIFINAME,
+  // WIFIREDIR
 ]
