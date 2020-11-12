@@ -1,6 +1,7 @@
 import { Vue, Component, Prop } from 'vue-property-decorator'
 import { mapGetters } from 'vuex'
 import { ITVPacketPage, IModuleInfo } from '@/components/pages/tv/tv.d.ts'
+import { getNoun } from '@/functions/helper'
 
 @Component({
   components: {},
@@ -23,6 +24,7 @@ export default class TVPackagesPage extends Vue {
             .map((el:string) => answer.find((_el:ITVPacketPage) => _el.title === el))
           this.packages = this.packages.map((el:any) => {
             const _el = el
+            _el.count = `${el.count} ${getNoun(el.count, 'канал', 'канала', 'каналов')}`
             try {
               _el.img = _el?.backgroundMobile ? require(`@/assets/images/tv/${_el?.backgroundMobile}.png`) : ''
             } catch {

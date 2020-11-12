@@ -42,12 +42,12 @@ export default class PackageMinuteCard extends Vue {
   isShowChangeModal: boolean = false
 
   plus () {
-    this.changed = this.changed + 500
+    this.changed = Math.floor(this.changed / 100) * 100 + 500
   }
 
   minus () {
     if (this.changed > 500) {
-      this.changed = this.changed - 500
+      this.changed = Math.floor(this.changed / 100) * 100 - 500
     }
   }
   changePackage () {
