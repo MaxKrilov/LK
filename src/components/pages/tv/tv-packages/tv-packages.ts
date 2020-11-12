@@ -6,6 +6,7 @@ import { IAddress } from '@/tbapi'
 import ErDisconnectProduct from '@/components/blocks/ErDisconnectProduct/index.vue'
 import ErPlugProduct from '@/components/blocks/ErPlugProduct/index.vue'
 import ErActivationModal from '@/components/blocks/ErActivationModal/index.vue'
+import { getNoun } from '@/functions/helper'
 import { IDeleteOrderData } from '@/constants/er-plug'
 
 @Component({
@@ -212,6 +213,8 @@ export default class TVPackagesPage extends Vue {
                   if (code && this.allowedPackagesPrices?.[code]) {
                     _el.price = this.allowedPackagesPrices?.[code]
                   }
+                  _el.count = `${el.count} ${getNoun(el.count, 'канал', 'канала', 'каналов')}`
+
                   try {
                     _el.img = _el.backgroundMobile ? require(`@/assets/images/tv/${_el.backgroundMobile}.png`) : ''
                   } catch {
