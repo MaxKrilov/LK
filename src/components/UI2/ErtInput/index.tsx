@@ -224,7 +224,7 @@ class ErtInput extends baseMixins {
         focused: this.hasState,
         for: this.computedId
       }
-    }, this.$slots.label || this.label)
+    }, [this.$slots.label || this.label])
   }
   genMessages () {
     if (!this.showDetails) return null

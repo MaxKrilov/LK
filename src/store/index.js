@@ -33,6 +33,7 @@ import videocontrol from './modules/videocontrol/index'
 import tv from './modules/tv'
 import profile from './modules/profile'
 import wifi from './modules/wifi'
+import catalog from './modules/catalog'
 
 const debug = process.env.NODE_ENV !== 'production'
 
@@ -69,7 +70,8 @@ export default new Vuex.Store({
     videocontrol,
     tv,
     wifi,
-    profile
+    profile,
+    catalog
   },
   strict: debug,
   plugins: [createPersistedState({

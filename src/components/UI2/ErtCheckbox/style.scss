@@ -59,10 +59,12 @@
         position: absolute;
         top: 3px;
         left: 1px;
+        transition: none;
       }
 
       > i > svg {
         width: 16px;
+        transition: inherit;
       }
     }
   }

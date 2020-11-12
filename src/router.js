@@ -123,6 +123,9 @@ import WifiAnalyticsVisitors from '@/components/pages/wifi/analytics/statistics/
 import WifiAnalyticsDevices from '@/components/pages/wifi/analytics/statistics/DevicesPage'
 import WifiUsersRegistry from '@/components/pages/wifi/analytics/statistics/RegistryPage'
 
+// WiFi PRO
+import ErtWifiPro from '@/components/pages/wifi/pro/index'
+
 import TVPromoPage from './components/pages/tv/promo-page/index'
 import TVMainPage from './components/pages/tv/index'
 import TVPackagesPage from './components/pages/tv/tv-packages/index'
@@ -449,6 +452,10 @@ const router = new Router({
               component: WifiUsersRegistry
             }
           ]
+        },
+        {
+          path: 'wifi/pro',
+          component: ErtWifiPro
         },
         {
           path: 'tv',
