@@ -33,6 +33,7 @@
         :disabled="disabled || isWaitOrder"
         :is-show-required-label="false"
         :key="subkey"
+        :hideDetails="true"
         @change="onInput"
       )
     template(v-else)

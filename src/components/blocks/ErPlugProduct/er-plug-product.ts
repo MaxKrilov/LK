@@ -25,7 +25,7 @@ import ErPlugMixin from '@/mixins/ErPlugMixin'
 //   addressId: addressId,
 //   type: тип заявки
 //   services: описание действия для менедера пр. подключение номера,
-//   fulladdress: полный адресс
+//   fulladdress: полный адрес
 
 const components = {
   ErActivationModal,

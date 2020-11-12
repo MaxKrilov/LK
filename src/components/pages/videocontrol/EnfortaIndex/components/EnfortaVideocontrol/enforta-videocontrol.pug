@@ -1,0 +1,44 @@
+.enforta-videocontrol
+  .vc-tariff.h-columns
+    .h-column-left
+      .vc-tariff__icon
+        er-icon(name="watch")
+    .h-column-right
+      .vc-tariff__label Тариф:
+      .vc-tariff__name {{ tariffName }}
+      .vc-tariff__price
+        er-price {{ tariffPrice| price }}
+
+  .enforta-videocontrol__text
+    .text Все настройки камер осуществляются на портале Энфорта
+    .link-to-portal.mt-8
+      er-icon(name="watch")
+      a.link(:href="linkToEnfortaPortal" target="_blank") Перейти на портал
+
+  .enforta-videocontrol__camera-list.camera-list(v-if="cameraList.length")
+    .camera-list__head
+      .camera-list__title Подключенные камеры
+      .camera-list__search(v-if="isVisibleSearchField")
+        er-text-field(
+          appendInnerIcon="lens"
+          v-model="cameraSearchQuery"
+          label="Номер камеры"
+        )
+
+    .camera-list__content
+      .camera-item(v-for="camera in cameraList")
+        .h-columns.justify-content-between.align-items-center
+          .camera-item__title
+            router-link.link(:to="linkToEdit(camera.id)") {{ camera.name }}
+
+          .camera-item__service-count(v-class-mod="{active: getCameraServiceCount(camera)}")
+            er-icon(name="pack")
+            span.caption1 {{ getCameraServiceCount(camera) }} сервис{{ getServicePlural(getCameraServiceCount(camera)) }}
+
+          .camera-item__price
+            er-price {{ camera.purchasedPrices.recurrentTotal.value }}
+
+  .enforta-videocontrol__footer
+    er-button(@click="onAddCamera") Добавить камеру
+    er-button(@click="onClickPause" flat) Приостановить услугу
+

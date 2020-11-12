@@ -32,7 +32,7 @@ export interface ILocationOfferInfo {
     id: string | number
     name: string
   }
-  ammount: {
+  amount: {
     currency: {
       name: string
       currentCode: string
