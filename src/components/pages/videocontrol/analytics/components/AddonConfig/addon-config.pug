@@ -3,7 +3,7 @@
     .d--flex.align-items-center
       .title {{ location.name }}
 
-    .count {{ list.length }}&nbsp;камеры
+    .count(v-if="isCameraCountVisible") {{ list.length }}&nbsp;камеры
 
   .vc-addon-config__content
     template(v-if="true")

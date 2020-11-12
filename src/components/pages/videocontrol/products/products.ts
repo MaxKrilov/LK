@@ -1,17 +1,16 @@
-import { Vue, Component } from 'vue-property-decorator'
+import { Component } from 'vue-property-decorator'
 import ProductFolder from '../components/ProductFolder/index.vue'
 import VCDomain from '../components/Domain/index.vue'
 import VCPromo from '../promo/index.vue'
-import ErrorDialog from '@/components/dialogs/ErrorDialog/index.vue'
 
 import { IDomainRegistry, IDomain, IDomainService } from '@/interfaces/videocontrol'
-import { VC_TYPES, CHARS } from '@/constants/videocontrol'
+import { VC_TYPES, CHARS, VC_DOMAIN_STATUSES } from '@/constants/videocontrol'
 import { logInfo } from '@/functions/logging'
 import { mapState, mapGetters } from 'vuex'
 import { ILocationOfferInfo } from '@/tbapi'
+import { ErtPageWithDialogsMixin } from '@/mixins2/ErtPageWithDialogsMixin'
 
 const components = {
-  ErrorDialog,
   'vc-domain': VCDomain,
   ProductFolder,
   VCPromo
@@ -35,7 +34,7 @@ const computed = {
   components,
   computed
 })
-export default class VideocontrolProductPage extends Vue {
+export default class VideocontrolProductPage extends ErtPageWithDialogsMixin {
   /* === Config === */
   isPlugVideocontrolPossible: boolean = false
 
@@ -46,10 +45,6 @@ export default class VideocontrolProductPage extends Vue {
   /* === mapGetters === */
   domainByKey!: (key: string) => IDomain
   pointById!: (id: string) => ILocationOfferInfo
-
-  isErrorMode: boolean = false
-  errorMessage: string = ''
-  errorTitle: string = 'Ошибка'
 
   get totalPrice (): number {
     return this.domainsCost
@@ -108,15 +103,14 @@ export default class VideocontrolProductPage extends Vue {
   }
 
   isDomainActive (domain: IDomain) {
-    return domain.status !== 'Active'
+    const ActiveStatuses = [
+      VC_DOMAIN_STATUSES.ACTIVE,
+      VC_DOMAIN_STATUSES.MODIFICATION
+    ]
+    return ActiveStatuses.includes(domain.status)
   }
 
   onChangeDomain (data: any) {
     logInfo('change domain data', data)
-  }
-
-  onError (message: string) {
-    this.errorMessage = message
-    this.isErrorMode = true
   }
 }

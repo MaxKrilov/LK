@@ -24,27 +24,27 @@
     display: grid;
     grid-template-columns: 1fr;
 
-    grid-gap: $padding-x6;
+    gap: $padding-x6;
 
-    @include min-breakpoint('md') {
+    @include min-breakpoint("md") {
       grid-template-columns: 1fr 1fr;
-      grid-gap: $padding-x8 $padding-x10;
+      gap: $padding-x8 $padding-x10;
     }
 
-    @include min-breakpoint('lg') {
+    @include min-breakpoint("lg") {
       grid-template-columns: 1fr 1fr 1fr;
     }
   }
 
   .addon-feature {
     &__icon {
-      color: map_get($yellow, 'base');
+      color: map_get($yellow, "base");
 
       svg {
         width: $padding-x12;
         height: $padding-x12;
 
-        @include min-breakpoint('md') {
+        @include min-breakpoint("md") {
           width: $padding-x16;
           height: $padding-x16;
         }
@@ -60,7 +60,7 @@
       @extend %body;
       margin-top: $padding-x2;
 
-      @include min-breakpoint('md') {
+      @include min-breakpoint("md") {
         margin-top: $padding-x4;
       }
     }

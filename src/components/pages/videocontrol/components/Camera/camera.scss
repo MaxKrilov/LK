@@ -13,12 +13,25 @@ $pre: ".camera";
     border-bottom: 1px solid rgba(map_get($shades, "black"), 0.2);
   }
 
+  &__device-name {
+    @extend %h4;
+    flex-grow: 1;
+  }
+
+  &__title-wrap {
+    min-width: 50%;
+    max-width: 50%;
+    flex-grow: 1;
+    display: flex;
+  }
+
   &__title {
     @extend %caption1;
     cursor: pointer;
     @include color-black(0.8);
     border-bottom: 1px solid map_get($shades, "transparent");
     transition: all $primary-transition;
+    text-decoration: none;
 
     &:hover {
       @include color-black(1);

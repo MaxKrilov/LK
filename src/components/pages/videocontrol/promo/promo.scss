@@ -1,4 +1,3 @@
-
 .vc-promo {
   .promo-component {
     display: flex;
@@ -13,35 +12,6 @@
       margin-top: 0;
       margin-bottom: $padding-x8;
       padding-top: 0;
-    }
-
-    &__feature {
-      $promo-feature: '.promo-component__feature';
-
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: $padding-x6;
-      margin-top: $padding-x6;
-
-      @include min-breakpoint(sm) {
-        grid-template-columns: 1fr 1fr;
-        margin-top: $padding-x6;
-      }
-
-      @include min-breakpoint(md) {
-        grid-column-gap: $padding-x8;
-        grid-row-gap: $padding-x10;
-        margin-top: $padding-x8;
-      }
-
-      @include min-breakpoint(lg) {
-        grid-template-columns: 1fr 1fr 1fr;
-      }
-
-      > #{$promo-feature}-item {
-        padding: 0;
-        margin: 0;
-      }
     }
   }
 }

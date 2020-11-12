@@ -58,7 +58,8 @@ export interface IVideocontrolRegistry {
 export interface IBaseFunctionality {
   id: TBaseFunctionalityId,
   offer: IOffer
-  services?: IProductOffering[]
+  services?: IProductOffering[],
+  status: string
 }
 
 export interface IBaseFunctionalityRegistry

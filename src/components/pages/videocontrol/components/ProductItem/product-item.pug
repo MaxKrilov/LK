@@ -1,10 +1,10 @@
-.analytic-item(
+.product-item(
   v-class-mod="{active}"
 )
-  .analytic-item__head
+  .product-item__head
     .col.col-1
       template(v-if="!isLoading")
-        er-icon(:name="iconName")
+        er-icon(:name="iconName || 'question'")
       template(v-else)
         er-icon(name="question")
 
@@ -17,21 +17,23 @@
       template(v-else)
         pu-skeleton(width="200px")
 
-    .col.col-3
+    .col.col-3(v-if="infoLink")
       template(v-if="!isLoading")
-        router-link(:to="linkToDetailPage").l-link Подробно
+        router-link(:to="infoLink").l-link Подробно
       template(v-else)
         pu-skeleton(width="70px")
 
-  .analytic-item__body
+  .product-item__body
     template(v-if="!isLoading")
       er-price {{ price|price }}
-      er-toggle(
+      ert-switch(
         :checked="value"
-        :value="value"
-        :disabled="disabled"
+        :input-value="value"
+        :loading="isWaitOrder"
+        :disabled="disabled || isWaitOrder"
         :is-show-required-label="false"
-        @input="onInput"
+        :key="subkey"
+        @change="onInput"
       )
     template(v-else)
       pu-skeleton(width="160px")

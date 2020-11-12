@@ -1,4 +1,4 @@
-$pre: '.vc-addon-card';
+$pre: ".vc-addon-card";
 
 $card-head-height-small: 110px;
 $card-head-height-big: 152px;
@@ -6,7 +6,7 @@ $card-head-height-big: 152px;
 #{$pre} {
   @extend %rounded-block;
   box-shadow: $card-shadow;
-  background-color: map_get($gray, '9');
+  background-color: map_get($gray, "9");
   overflow: hidden;
 
   display: flex;
@@ -15,16 +15,16 @@ $card-head-height-big: 152px;
 
   &--is-loading {
     #{$pre}__cover {
-      background-color: rgba(rebeccapurple, .3);
+      background-color: rgba(rebeccapurple, 0.3);
     }
   }
 
   &:hover {
-    background-color: map_get($shades, 'white');
+    background-color: map_get($shades, "white");
 
     #{$pre}__cover::after {
       // убираем пелену над изображением
-      background-color: map_get($shades, 'transparent');
+      background-color: map_get($shades, "transparent");
     }
   }
 
@@ -34,13 +34,14 @@ $card-head-height-big: 152px;
 
     .er-image {
       width: 100%;
-      height: auto;
+      height: 100%;
+      object-fit: cover;
     }
 
     &::after {
       // белая пелена над изображением
-      content: '';
-      background-color: rgba(map_get($shades, 'white'), .25);
+      content: "";
+      background-color: rgba(map_get($shades, "white"), 0.25);
       position: absolute;
       top: 0;
       left: 0;
@@ -50,7 +51,7 @@ $card-head-height-big: 152px;
     }
 
     height: $card-head-height-small;
-    @include min-breakpoint('md') {
+    @include min-breakpoint("md") {
       height: $card-head-height-big;
     }
   }
@@ -78,11 +79,11 @@ $card-head-height-big: 152px;
 
     padding: $padding-x4;
 
-    @include min-breakpoint('md') {
+    @include min-breakpoint("md") {
       padding: $padding-x6;
     }
 
-    @include min-breakpoint('xl') {
+    @include min-breakpoint("xl") {
       padding: $padding-x8;
     }
   }
@@ -90,14 +91,14 @@ $card-head-height-big: 152px;
   &__footer {
     padding: $padding-x4;
     padding-top: 0;
-    color: map_get($shades, 'white');
+    color: map_get($shades, "white");
 
-    @include min-breakpoint('md') {
+    @include min-breakpoint("md") {
       padding: $padding-x6;
       padding-top: 0;
     }
 
-    @include min-breakpoint('xl') {
+    @include min-breakpoint("xl") {
       padding: $padding-x8;
       padding-top: 0;
     }

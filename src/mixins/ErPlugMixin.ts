@@ -101,10 +101,12 @@ export default class ErPlugMixin extends Vue {
   }
 
   closeSuccessOrderModal () {
+    this.$emit('closeSuccess')
     this.isShowSuccessOrderModal = false
     this.endConnection()
   }
   closeErrorOrderModal () {
+    this.$emit('closeError')
     this.isShowErrorOrderModal = false
     this.cancelOrder()
     this.endConnection()

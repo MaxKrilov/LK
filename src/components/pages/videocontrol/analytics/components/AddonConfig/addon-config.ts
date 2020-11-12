@@ -26,6 +26,7 @@ const computed = {
 
 @Component({ components, props, computed })
 export default class AddonConfig extends Vue {
+  isCameraCountVisible: boolean = false
   cameraRegistry: Object = {}
 
   /* === mapGetters === */

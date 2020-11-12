@@ -1,9 +1,10 @@
 er-activation-modal(
-  v-model="value"
-  type="error"
+  :value="value"
+  type="info"
   v-bind="$props"
+  :is-show-action-button="false"
+  cancel-button-text="Ок"
   @input="onInput"
-  :isShowCancelButton="false"
   @confirm="onInput"
 )
   template(slot="description")

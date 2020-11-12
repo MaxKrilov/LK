@@ -38,8 +38,18 @@ export default {
 <style lang="scss">
 .camera-config {
   &__input {
+    margin-bottom: $padding-x1;
+
+    .er-input__slot {
+      margin-bottom: 0;
+    }
+
     .er-icon {
-      color: map_get($green, "base")
+      color: map_get($green, "base");
+      svg {
+        width: $padding-x6;
+        height: $padding-x6;
+      }
     }
   }
 }

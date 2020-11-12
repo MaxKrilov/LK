@@ -5,7 +5,9 @@
       link-text="Назад к списку камер"
       backlink="/lk/videocontrol"
     )
-    .header-info Стоимость указана с НДС
+    .header-info(
+      :title="bf.status"
+    ) Стоимость указана с НДС
 
   .vc-config-page__edit-form.camera-edit-form
     .camera-edit-form__head
@@ -18,50 +20,84 @@
           pu-skeleton(width="200px")
 
       .col.col--watch(v-if="isForpostPortalWorking")
-        .watch(
-          @click="onPlay"
-          title="Настроить"
-        )
+        .watch(@click="onPlay" title="Настроить")
           er-icon(name="play")
           span.title Смотреть
+
+    .camera-edit-form__subhead
+      .camera-device
+        .col-model
+          .caption2 Модель
+          .mt-8 {{ device.model }}
+
+        .col-sale
+          .caption2 {{ CHARS.CAMERA_SALE_TYPE }}
+          .mt-8 {{ device.saleType }}
+
+        .col-price
+          .caption2 Стоимость оборудования
+          .mt-8
+            er-price {{ device.price|price }}
 
     .camera-edit-form__body
       .d--grid
         .license-pay(v-if="licensePay")
           .caption2 Лицензионный платёж
-          er-price {{ licensePay|price }}
+          .mt-8
+            template(v-if="isAnalyticsLoaded")
+              er-price {{ licensePay | price }}
+            template(v-else)
+              pu-skeleton(width="120px")
 
-        .rent-pay(v-if="hasRentPay")
+        .rent-pay(v-if="isAnalyticsLoaded && hasRentPay")
           br
           .caption2 Аренда
-          er-price {{ rentPay|price }}
+          .mt-8
+            template(v-if="isAnalyticsLoaded")
+              er-price {{ rentPay | price }}
+            template(v-else)
+              pu-skeleton(width="120px")
 
       .vc-camera-edit-form
+        template(v-if="isAnalyticsLoaded")
+          rename-field(
+            label="Название оборудования"
+            :value="deviceName"
+            @save="onSaveDeviceName"
+            :isLoading="isDeviceRenameMode"
+          )
+        template(v-else)
+          pu-skeleton(width="300px")
+
         .camera-main-fields
           .col.col-name
-            .name-field
-              .name-field__input
-                | {{ cameraName }}
+            .name-field.mt-md-32
+              .name-field__description.caption2 Название
+              .name-field__label {{ cameraName }}
 
           .col.col-2
             .camera-main-fields__field
               er-select(
-                placeholder="Разрешение видеопотока"
+                placeholder="Разрешение видеопотока",
                 :items="VIDEO_QUALITY_VALUE_LIST"
-                v-model="videoQualityValue"
+                :loading="isVideoQualityChanged"
+                :disabled="isVideoQualityChanged"
+                :value="videoQualityValue"
                 @input="onVideoQualityInput"
               )
-              er-price {{ videoQualityPrice|price }}
+              er-price {{ videoQualityCurrentPrice | price }}
 
           .col.col-3
             .camera-main-fields__field(v-if="isAnalyticsLoaded")
               er-select(
-                placeholder="Срок хранения видеоархива"
+                placeholder="Срок хранения видеоархива",
                 :items="videoArchiveValueList"
-                v-model="videoArchiveValue"
+                :value="videoArchiveValue"
+                :loading="currentServiceCode === currentVideoArchiveCode"
+                :disabled="currentServiceCode === currentVideoArchiveCode"
                 @input="onVideoArchiveInput"
               )
-              er-price {{ videoArchivePrice|price }}
+              er-price {{ videoArchivePrice | price }}
 
         .addon__list
           .addon
@@ -69,29 +105,36 @@
             .addon__text
               | Активируйте на камере запись звука, чтобы не только видеть, но и слышать.
             .addon__config
-              er-toggle(
-                :disabled="isOrderMode"
-                v-model="soundRecordValue"
-                @input="onSoundRecordInput"
-              )
-              er-price {{ soundRecordPrice|price }}
+              template(v-if="isAnalyticsLoaded")
+                ert-switch(
+                  :input-value="serviceStatuses[CODES.SOUND_RECORD]"
+                  :loading="currentServiceCode === CODES.SOUND_RECORD"
+                  :disabled="currentServiceCode === CODES.SOUND_RECORD || isOrderMode"
+                  :key="`${CODES.SOUND_RECORD}-${updateKeyPlease()}`"
+                  @change="onSoundRecordInput"
+                )
+                er-price {{ soundRecordPrice | price }}
+              template(v-else)
+                pu-skeleton(width="300px")
 
           .addon(v-if="isAnalyticsLoaded")
             h4.addon__title Поворотный модуль
             .addon__text
               | Управление направлением видоискателя камеры
             .addon__config
-              er-toggle(
+              ert-switch(
+                :loading="currentServiceCode === CODES.PTZ"
                 :disabled="!isPTZAvailable && isOrderMode"
-                v-model="PTZValue"
-                @input="onPTZInput"
+                :input-value="serviceStatuses[CODES.PTZ]"
+                :key="`${CODES.PTZ}-${updateKeyPlease()}`"
+                @change="onPTZInput"
               )
-              er-price {{ getPTZPrice()|price }}
+              er-price {{ getPTZPrice() | price }}
 
   .vc-config-page__analitycs.analytics
     .analytics__head
       h2.analytics__title Аналитика
-      .analytics__subtitle
+      .analytics__subtitle(v-if="isAnalyticCountVisible")
         template(v-if="isAnalyticsLoaded")
           | подключено {{ enabledAnalyticCount }} сервиса
         template(v-else)
@@ -100,57 +143,95 @@
     .analytics__content
       template(v-if="isAnalyticsLoaded")
         template(v-for="item in availableAnalyticsList")
-          analytic-item(
-            :key="item.id"
-            :title="item.originalName"
-            :price="getAnalyticItemPrice(item.code)"
-            :code="item.code"
-            :value="enabledServiceCode.includes(item.code)"
-            @input="onInputAnalyticItem(item.code, $event)"
-            :isLoading="false"
+          product-item(
+            :key="`${item.code}-${updateKeyPlease()}`",
+            :title="item.originalName",
+            :price="getAnalyticItemPrice(item.code)",
+            :isWaitOrder="currentServiceCode === item.code"
+            :isLoading="false",
+            :icon-name="getAnalyticItemIcon(item.code)"
+            :info-link="`/lk/videocontrol/analytics/${item.code}`"
             :disabled="isOrderMode"
+            :value="serviceStatuses[item.code]"
+            :status="item.status"
+            @input="onInputAnalyticItem(item.code, $event)",
           )
       template(v-else)
-        analytic-item(:isLoading="true")
-        analytic-item(:isLoading="true")
-        analytic-item(:isLoading="true")
+        product-item(:isLoading="true")
+        product-item(:isLoading="true")
+        product-item(:isLoading="true")
 
   er-plug-product(
-    v-model="isOrderModalVisible"
-    :orderData="orderData"
-    :requestData="requestData"
-    :isSendOrder="!isManagerRequest"
+    v-model="isOrderModalVisible",
+    :orderData="orderData",
+    :requestData="requestData",
+    :isSendOrder="!isManagerRequest",
     :isSendManagerRequest="isManagerRequest"
+    @cancelRequest="onCancelRequest"
+    @cancelOrder="onCancelOrder"
+    @closeError="onCloseError"
+    @closeSuccess="onCloseSuccess"
+    @closeSuccessRequest="onCloseSuccess"
   )
     template(slot="offerDescription")
       .caption1 стоимость:&nbsp;
-        er-price {{ getCurrentServicePrice()|price }}
+        er-price {{ currentServicePrice | price }}
       .mb-24
 
   er-activation-modal(
     type="question"
     v-model="isShowDisconnectModal"
-    title="Вы уверены, что хотите отключить \"Дополнительных пользователей\"?"
+    :title="disconnectTitle"
     cancelButtonText="Отменить"
     actionButtonText="Отключить"
-    persistent
+    persistent,
     :isLoadingConfirm="isSendingOrder"
-    isOffer="cctv"
     @confirm="onApplyOrder"
     @close="onCancelOrder"
   )
 
+  er-activation-modal(
+    type="question"
+    v-model="isShowRenameConfirm"
+    title="Вы действительно хотите переименовать камеру?"
+    cancelButtonText="Отменить"
+    actionButtonText="Да"
+    persistent,
+    :isLoadingConfirm="isSendingOrder"
+    @confirm="onApplyRename"
+    @close="onCancelRename"
+  )
+
+  er-activation-modal(
+    type="success"
+    v-model="isShowSuccessDisconnectModal"
+    title="Заказ успешно создан"
+    actionButtonText="Ок"
+    :is-show-cancel-button="false"
+    @confirm="isShowSuccessDisconnectModal = false"
+  )
+    template(slot="description")
+      | Заказ создан успешно. Выполнение заказа может занять некоторое время. Актуальный статус можно узнать в разделе Заказы.
+
+
   error-dialog(
     :value="activeState === 'error'"
-    title="Произошла ошибка"
+    :title="errorTitle"
     @close="onCloseError"
   ) {{ errorMessage }}
+
+  info-dialog(
+    v-model="isInfoMode"
+    @close="onInfoClose"
+    :title="infoTitle"
+  )
+    p(v-html="infoMessage")
 
   .vc-config-page__actions
     .total-info
       .total-info__label Абонентская плата:
       .total-info__price
-        er-price {{ totalPrice|price }}
+        er-price {{ totalPrice | price }}
 
       .total-info__status(v-if="isChanged")
         | Изменена

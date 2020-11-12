@@ -118,7 +118,7 @@ export class VueTransitionFSM extends VueSimpleFSM {
   }
 
   private runTransition (nextState: TState) {
-    this.stateTransitions?.[this.lastState]?.[nextState]()
+    this.stateTransitions?.[this.lastState]?.[nextState](this)
   }
 
   @Watch('state')

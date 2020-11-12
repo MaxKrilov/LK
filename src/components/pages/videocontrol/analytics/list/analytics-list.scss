@@ -1,4 +1,4 @@
-$pre: '.vc-addon-list-page';
+$pre: ".vc-addon-list-page";
 
 #{$pre} {
   @extend %main-content;
@@ -9,7 +9,7 @@ $pre: '.vc-addon-list-page';
     align-items: flex-start;
     justify-content: space-between;
 
-    @include min-breakpoint('sm') {
+    @include min-breakpoint("sm") {
       flex-direction: row;
       align-items: flex-end;
     }
@@ -18,7 +18,7 @@ $pre: '.vc-addon-list-page';
       @extend %caption1;
       margin-top: $padding-x2;
 
-      @include min-breakpoint('sm') {
+      @include min-breakpoint("sm") {
         margin-top: 0;
         margin-bottom: $padding-x2;
       }
@@ -33,38 +33,38 @@ $pre: '.vc-addon-list-page';
   &__footer {
     display: grid;
     grid-template-columns: 1fr;
-    grid-gap: $padding-x4;
+    gap: $padding-x4;
 
-    @include min-breakpoint('sm') {
+    @include min-breakpoint("sm") {
       grid-template-columns: 1fr 1fr;
     }
 
-    @include min-breakpoint('lg') {
-      grid-gap: $padding-x6;
+    @include min-breakpoint("lg") {
+      gap: $padding-x6;
       grid-template-columns: 1fr 1fr 1fr;
     }
 
-    @include min-breakpoint('xl') {
-      grid-gap: $padding-x4;
+    @include min-breakpoint("xl") {
+      gap: $padding-x4;
     }
   }
 
   &__content {
     margin-top: $padding-x8;
 
-    @include min-breakpoint('md') {
+    @include min-breakpoint("md") {
       margin-top: $padding-x10;
     }
 
-    @include min-breakpoint('xs') {
-      margin-top: $padding-x12
+    @include min-breakpoint("xs") {
+      margin-top: $padding-x12;
     }
   }
 
   &__footer {
     margin-top: $padding-x8;
 
-    @include min-breakpoint('md') {
+    @include min-breakpoint("md") {
       margin-top: $padding-x10;
     }
   }
