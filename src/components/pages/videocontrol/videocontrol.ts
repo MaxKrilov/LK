@@ -29,6 +29,8 @@ export default class VCTemplate extends Vue {
   }
 
   created () {
+    this.$store.dispatch('videocontrol/setProductType', this.$props.type)
+
     if (this.billingAccountId) {
       this.fetchData()
     }
@@ -49,22 +51,39 @@ export default class VCTemplate extends Vue {
   fetchData () {
     this.pullPoints()
       .then(data => {
-        const parentIds = data.map((el: ILocationOfferInfo) => el.bpi)
+        const parentIds = data.map(({ bpi }: ILocationOfferInfo) => bpi)
 
         this.cleanupData()
 
         if (parentIds.length) {
-          this.$store.dispatch(
-            'videocontrol/pullForpostDomainRegistry',
-            { api: this.$api, parentIds }
-          )
+          if (this.$props.type === 'forpost') {
+            this.$store.dispatch(
+              'videocontrol/pullForpostDomainRegistry',
+              { api: this.$api, parentIds }
+            )
+          } else if (this.$props.type === 'enforta') {
+            this.$store.dispatch(
+              'videocontrol/pullEnfortaRegistry',
+              { api: this.$api, parentIds }
+            )
+          }
+
+          this.$store.dispatch('productnservices/customerProducts', {
+            api: this.$api,
+            parentIds,
+            code: 'VIDNCAM'
+          })
+            .then(() => {
+              this.$store.dispatch('videocontrol/setEnfortaDataIsLoaded')
+            })
         } else {
-          this.$store.commit('videocontrol/SET_DOMAINS_IS_LOADED', true)
+          this.$store.dispatch('videocontrol/setVCDataIsLoaded', true)
         }
       })
   }
 
   beforeDestroy () {
     this.$store.dispatch('videocontrol/cleanupPoints')
+    this.$store.dispatch('videocontrol/setProductType', '')
   }
 }

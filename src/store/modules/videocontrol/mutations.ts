@@ -2,7 +2,7 @@ import Vue from 'vue'
 import { TYPES } from './types'
 import { IState } from './state'
 import { ILocationOfferInfo } from '@/tbapi'
-import { IDomainRegistry } from '@/interfaces/videocontrol'
+import { IDomainRegistry, IEnfortaRegistry } from '@/interfaces/videocontrol'
 
 export const mutations = {
   [TYPES.SET_POINTS] (state: IState, payload: ILocationOfferInfo[]) {
@@ -14,7 +14,10 @@ export const mutations = {
   [TYPES.SET_DOMAINS] (state: IState, payload: IDomainRegistry) {
     state.domainRegistry = payload
   },
-  [TYPES.SET_DOMAINS_IS_LOADED] (state: IState, payload: boolean) {
+  [TYPES.SET_ENFORTA_REGISTRY] (state: IState, payload: IEnfortaRegistry) {
+    state.enfortaRegistry = payload
+  },
+  [TYPES.SET_VC_DATA_IS_LOADED] (state: IState, payload: boolean) {
     state.isDomainRegistryLoaded = payload
   },
   [TYPES.SET_ALLOWED_OFFERS] (
@@ -33,8 +36,21 @@ export const mutations = {
     state.domainRegistry = {}
     state.isDomainRegistryLoaded = false
   },
+  [TYPES.DELETE_ENFORTA_REGISTRY] (state: IState) {
+    state.enfortaRegistry = {}
+    state.isDomainRegistryLoaded = false
+  },
   [TYPES.DELETE_ALLOWED_OFFERS] (state: IState) {
     state.allowedOffers = {}
     state.isAllowedOffersLoaded = false
+  },
+  [TYPES.SET_PRODUCT_TYPE] (state: IState, payload: string) {
+    state.productType = payload
+  },
+  [TYPES.UNSET_PRODUCT_TYPE] (state: IState) {
+    state.productType = ''
+  },
+  [TYPES.SET_ENFORTA_DATA_IS_LOADED] (state: IState) {
+    state.isEnfortaDataLoaded = true
   }
 }

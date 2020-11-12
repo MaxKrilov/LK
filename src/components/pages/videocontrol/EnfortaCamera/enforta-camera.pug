@@ -1,0 +1,83 @@
+.enforta-camera
+  .enforta-camera__header
+    er-page-header(
+      title="Настроить камеру"
+      link-text="Назад к списку камер"
+      backlink="/lk/videocontrol/enforta"
+    )
+
+    .header-info Стоимость указана с НДС
+
+    .enforta-camera__logo
+      er-image(:src="'/videocontrol/logo_enforta.svg'")
+
+  .enforta-camera__content
+    .enforta-camera__address
+      .caption2 Адрес
+      .mt-8.e-body {{ location.fulladdress }}
+
+    .enforta-camera__info.mt-32
+      .columns.d--flex
+        .col
+          .caption2 Номер
+          .mt-8.e-body {{ cameraNumber }}
+
+        .col.ml-40(v-if="isRentPayVisible")
+          .caption2 Аренда камеры
+          .mt-8.e-body
+            er-price {{ camera.purchasedPrices.recurrentTotal.value| price }}
+
+    .enforta-camera__config
+      .camera-config-item(v-for="(serviceItem, key) in serviceList" :key="key")
+        .camera-config-item__title {{ getServiceInfo(key).title }}
+        .camera-config-item__description.mt-8 {{ getServiceInfo(key).description }}
+        .camera-config-item__control.mt-8
+          ert-switch(
+            :input-value="enabledServiceCodes.includes(serviceItem.code)"
+            :key="SERVICE_STATE[key].key"
+            :loading="SERVICE_STATE[key].loading"
+            hideDetails
+            @change="onServiceToggle($event, key)"
+          )
+
+  .enforta-camera__packets.packet-list
+    .packet-list__title Пакеты сервисов
+    .packet-list__content(v-if="isLoaded")
+        ProductItem(
+          v-for="(item, key) in packetList"
+          v-bind="getPaketInfo(key)"
+          :is-wait-order="SERVICE_STATE[key].loading"
+          :value="enabledPaketCodes.includes(item.code)"
+          :key="key"
+          @input="onInputPaket($event, key)"
+        )
+    .packet-list__content(v-else)
+        ProductItem(:is-loading="true")
+        ProductItem(:is-loading="true")
+        ProductItem(:is-loading="true")
+        ProductItem(:is-loading="true")
+
+  .enforta-camera__actions
+    .action-buttons
+      er-button(flat @click="onUnplugCamera") Отключить камеру
+
+  er-plug-product(
+    v-model="isRequestModalVisible",
+    :requestData="requestData",
+    isSendManagerRequest
+    @closeSuccessRequest="onCloseSuccess"
+    @close="onCloseRequest"
+  )
+
+  error-dialog(
+    :value="isErrorMode"
+    :title="errorTitle"
+    @close="onCloseError"
+  ) {{ errorMessage }}
+
+  info-dialog(
+    v-model="isInfoMode"
+    @close="isInfoMode = false"
+    :title="infoTitle"
+  )
+    p(v-html="infoMessage")

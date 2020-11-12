@@ -1,5 +1,8 @@
 import { ILocationOfferInfo } from '@/tbapi'
-import { IDomainRegistry } from '@/interfaces/videocontrol'
+import {
+  IDomainRegistry,
+  IEnfortaRegistry
+} from '@/interfaces/videocontrol'
 
 export interface IAllowedOffers {
   [BFOfferId: string]: []
@@ -10,21 +13,27 @@ export interface IDomainUserRegistry {
 }
 
 export interface IState {
+  productType: string
   points: ILocationOfferInfo[]
   isPointsLoaded: boolean
   domainRegistry: IDomainRegistry
+  enfortaRegistry: IEnfortaRegistry
   isDomainRegistryLoaded: boolean
   domainUserCount: IDomainUserRegistry
   allowedOffers: IAllowedOffers
   isAllowedOffersLoaded: boolean
+  isEnfortaDataLoaded: boolean
 }
 
 export const state: IState = {
+  productType: '',
   points: [],
   isPointsLoaded: false,
   domainRegistry: {},
+  enfortaRegistry: {},
   isDomainRegistryLoaded: false,
   domainUserCount: {},
   allowedOffers: {},
-  isAllowedOffersLoaded: false
+  isAllowedOffersLoaded: false,
+  isEnfortaDataLoaded: false
 }

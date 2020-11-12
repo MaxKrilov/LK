@@ -1,0 +1,47 @@
+.vc-product-page.vc-product-page--enforta
+  .vc-product-page__header
+    er-page-header(
+      title="Видеонаблюдение"
+    )
+
+    .header-info Стоимость указана с НДС
+
+    .enforta-camera__logo
+      er-image(:src="'/videocontrol/logo_enforta.svg'")
+
+
+  .vc-product-page__list
+    er-card-products(
+      v-for="item in pointList"
+      :price="item.amount.value"
+      :loading="!isLoaded"
+      :key="item.bpi"
+    ) {{ item.fulladdress }}
+      div(slot="slider-content")
+        enforta-videocontrol(
+          v-bind="getPointVideocontrolByOfferId(item.offer.id) || getBlankVideocontrolFromPoint(item)"
+          :point="item"
+          @addCamera="onAddCamera"
+        )
+
+    .total-block
+      .total-block__label Итого
+      .total-block__sum
+        template(v-if="isLoaded")
+          er-price
+            | {{ totalPrice | price }}
+        template(v-else)
+          pu-skeleton(width="90px")
+
+  .vc-product-page__footer
+    a.er-button.er-button--blue(
+      :href="plugUrl"
+    ) Подключить видеонаблюдение
+
+  er-plug-product(
+    v-model="isRequestModalVisible",
+    :requestData="requestData",
+    :isSendOrder="false",
+    :isSendManagerRequest="true"
+    @closeSuccess="onCloseSuccess"
+  )

@@ -129,13 +129,5 @@ $pre: ".product-item";
   .ert-input.ert-input--switch {
     margin-left: $padding-x4;
     flex-grow: 0;
-
-    .ert-input__slot {
-      margin: 0;
-    }
-
-    .ert-messages {
-      display: none;
-    }
   }
 }

@@ -1,0 +1,143 @@
+$pre: ".vc-product-page";
+
+#{$pre} {
+  &__header {
+    @extend %main-content-width;
+    @extend %margin-left--menu-width;
+    @extend %main-content-padding-top;
+    @extend %main-content-padding-h;
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-between;
+
+    @include min-breakpoint("sm") {
+      flex-direction: row;
+      align-items: flex-end;
+      flex-wrap: wrap;
+    }
+
+    @include min-breakpoint(lg) {
+      flex-wrap: nowrap;
+
+      .page-header {
+        white-space: nowrap;
+      }
+    }
+
+    .header-info {
+      @extend %caption1;
+      @include color-black(0.3);
+      margin-top: $padding-x2;
+
+      @include min-breakpoint("sm") {
+        margin-top: $padding-x8;
+        margin-bottom: $padding-x2;
+        order: 4; // т.е. последний
+        width: 100%;
+      }
+
+      @include min-breakpoint(md) {
+        margin-top: $padding-x10;
+      }
+
+      @include min-breakpoint(lg) {
+        margin-left: $padding-x6;
+        order: initial;
+      }
+
+      @include min-breakpoint(xl) {
+        margin-left: $padding-x12;
+      }
+    }
+
+    .page-header {
+      margin-bottom: 0;
+    }
+  }
+
+  &__logo {
+    margin-top: $padding-x8;
+    padding: 0;
+    display: inline-flex;
+
+    @include min-breakpoint(sm) {
+      margin-top: 0;
+    }
+  }
+
+  &__content {
+    @extend %main-content-width;
+    @extend %margin-left--menu-width;
+    @extend %main-content-padding-top;
+    @extend %main-content-padding-h;
+  }
+
+  &__list {
+    @extend %main-content-width;
+    @extend %margin-left--menu-width;
+    @extend %main-content-padding-h;
+
+    margin-top: $padding-x6;
+
+    @include max-breakpoint("md") {
+      padding-left: 0;
+      padding-right: 0;
+    }
+
+    @include min-breakpoint(md) {
+      margin-top: $padding-x8;
+    }
+
+    @include min-breakpoint(lg) {
+      margin-top: $padding-x10;
+    }
+
+    @include min-breakpoint(xl) {
+      margin-top: $padding-x12;
+    }
+
+    .er-card-products {
+      & .er-card-products__point-item {
+        @include max-breakpoint(md) {
+          border-radius: 0;
+        }
+      }
+    }
+
+    .total-block {
+      border-radius: $padding-x3;
+      align-items: center;
+
+      height: $padding-x12;
+      @include max-breakpoint("md") {
+        border-radius: 0;
+      }
+
+      @include content-padding-breakpoint("left", "md");
+      @include content-padding-breakpoint("right", "md");
+    }
+  }
+
+  &__footer {
+    .er-container {
+      outline: 1px dashed crimson;
+    }
+    @extend %main-content-width;
+    @extend %margin-left--menu-width;
+    @extend %main-content-padding-h;
+
+    margin-top: $padding-x8;
+
+    @include min-breakpoint("md") {
+      margin-top: $padding-x10;
+    }
+
+    .er-button {
+      display: inline-flex;
+      width: initial;
+      padding: 0 $padding-x4;
+    }
+  }
+}

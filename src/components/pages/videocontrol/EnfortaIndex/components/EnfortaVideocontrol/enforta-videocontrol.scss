@@ -1,0 +1,204 @@
+.enforta-videocontrol {
+  //padding-top: $padding-x8;
+
+  @include min-breakpoint(sm) {
+    padding-top: $padding-x3;
+  }
+
+  .h-columns {
+    display: flex;
+    flex-direction: row;
+    gap: $padding-x4;
+  }
+
+  .link-to-portal {
+    transition: all $primary-transition;
+
+    &:hover {
+      .er-icon {
+        color: map_get($yellow, "base");
+      }
+    }
+
+    .er-icon {
+      transition: all $primary-transition;
+      @include color-black(0.2);
+      margin-right: $padding-x2;
+    }
+
+    .link {
+      cursor: pointer;
+      @extend %caption1;
+      @include color-black(0.5);
+      border-color: rgba(map_get($shades, "black"), 0.5);
+    }
+  }
+
+  &__text {
+    @extend %body;
+    margin-top: $padding-x6;
+
+    @include min-breakpoint(sm) {
+      margin-top: $padding-x8;
+    }
+
+    @include min-breakpoint(md) {
+      margin-top: $padding-x12;
+    }
+  }
+
+  .vc-tariff {
+    &__label {
+      @extend %caption2;
+    }
+
+    &__name {
+      @extend %h4;
+      margin-top: $padding-x2;
+    }
+
+    &__price {
+      margin-top: $padding-x2;
+    }
+
+    &__icon {
+      .er-icon {
+        @include color-black(0.2);
+        svg {
+          width: $padding-x6;
+          height: $padding-x6;
+
+          @include min-breakpoint("md") {
+            width: $padding-x8;
+            height: $padding-x8;
+          }
+        }
+      }
+    }
+  }
+
+  .camera-list {
+    margin-top: $padding-x10;
+
+    @include min-breakpoint(xl) {
+      margin-top: $padding-x12;
+    }
+
+    &__head {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+
+      @include min-breakpoint(md) {
+        flex-direction: row;
+        justify-content: space-between;
+      }
+    }
+
+    &__title {
+      @extend %h2;
+    }
+
+    &__content {
+      margin-top: $padding-x4;
+
+      @include min-breakpoint(md) {
+        margin-top: $padding-x8;
+      }
+    }
+
+    &__search {
+      margin-top: $padding-x4;
+
+      @include min-breakpoint(md) {
+        margin-top: 0;
+      }
+
+      .er-text-field > .er-input__control > .er-input__slot,
+      .er-textarea > .er-input__control > .er-input__slot {
+        border-radius: $padding-x2;
+      }
+    }
+  }
+
+  .camera-item {
+    $price-width: 150px;
+    display: flex;
+    flex-direction: row;
+
+    min-height: $padding-x10;
+    border-top: 1px solid rgba(map-get($shades, "black"), 0.2);
+
+    &:last-child {
+      border-bottom: 1px solid rgba(map-get($shades, "black"), 0.2);
+    }
+
+    &__price {
+      min-width: $price-width;
+      text-align: right;
+    }
+
+    &__title {
+      flex-grow: 1;
+      .link {
+        @extend %body;
+        border-bottom: 1px solid map_get($shades, "transparent");
+        transition: all $primary-transition;
+        text-decoration: none;
+
+        &:hover {
+          @include color-black(1);
+          border-bottom-color: map_get($yellow, "base");
+        }
+      }
+    }
+
+    &__service-count {
+      &--active {
+        span.caption1 {
+          @include color-black(0.5);
+        }
+      }
+
+      .er-icon {
+        @include color-black(0.2);
+      }
+
+      .caption1 {
+        @include color-black(0.2);
+        margin-left: $padding-x3;
+      }
+    }
+
+    .h-columns {
+      width: 100%;
+    }
+  }
+
+  &__footer {
+    display: grid;
+    gap: $padding-x2 $padding-x4;
+    margin-top: $padding-x8;
+
+    @include min-breakpoint(sm) {
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
+    }
+
+    @include min-breakpoint(md) {
+      margin-top: $padding-x10;
+    }
+
+    @include min-breakpoint(lg) {
+      gap: $padding-x10;
+      grid-template-columns: 1fr 1fr 1fr;
+      grid-template-rows: 1fr;
+    }
+
+    @include min-breakpoint(xl) {
+      gap: $padding-x8;
+      grid-template-columns: 1fr 1fr 1fr;
+      grid-template-rows: 1fr;
+    }
+  }
+}

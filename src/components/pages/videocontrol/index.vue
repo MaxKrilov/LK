@@ -3,4 +3,4 @@
     router-view
 </template>
 
-<script lang="typescript" src="./videocontrol.ts"></script>
+<script lang="ts" src="./videocontrol.ts"></script>

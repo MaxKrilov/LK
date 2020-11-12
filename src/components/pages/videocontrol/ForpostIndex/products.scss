@@ -4,7 +4,8 @@ $pre: ".vc-product-page";
   &__content {
     @extend %main-content-width;
     @extend %margin-left--menu-width;
-    @extend %main-content-padding;
+    @extend %main-content-padding-top;
+    @extend %main-content-padding-h;
   }
 
   &__list {

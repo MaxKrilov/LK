@@ -92,9 +92,11 @@ import ContentFilterMainPage from './components/pages/internet/content-filter/in
 import OATSPromoPage from './components/pages/oats/promo/index'
 
 // Видеоконтроль
-import VideocontrolTemplate from './components/pages/videocontrol/index'
-import VideocontrolProductPage from './components/pages/videocontrol/products/index'
-import VCCameraConfigPage from './components/pages/videocontrol/camera-config/index'
+import VCTemplate from './components/pages/videocontrol/index'
+import VCGuessProduct from './components/pages/videocontrol/guess-product'
+import VCProductIndex from './components/pages/videocontrol/ProductIndex/index'
+// import VCCameraConfigPage from './components/pages/videocontrol/camera-config/index'
+import VCCameraPage from './components/pages/videocontrol/camera-page'
 import VCAddonListPage from './components/pages/videocontrol/analytics/list/index'
 import VCAddonDetailPage from './components/pages/videocontrol/analytics/detail/index'
 import VCGoToForpost from './components/pages/videocontrol/components/GoToForpostPortal'
@@ -353,28 +355,36 @@ const router = new Router({
           component: PromoPageInternet
         },
         {
-          path: 'videocontrol',
-          component: VideocontrolTemplate,
+          path: 'videocontrol/',
+          component: VCGuessProduct
+        },
+        {
+          path: 'videocontrol/:type',
+          component: VCTemplate,
+          props: true,
           children: [
             {
               path: '/',
-              component: VideocontrolProductPage
+              name: 'vc-index',
+              component: VCProductIndex
             },
             {
-              path: 'analytics',
+              path: 'products',
+              name: 'vc-product-list',
               component: VCAddonListPage
             },
             {
-              path: 'analytics/:code',
+              path: 'ForpostIndex/:code',
               component: VCAddonDetailPage,
               props: true
             },
             {
               path: 'camera/:id',
-              component: VCCameraConfigPage,
+              component: VCCameraPage,
+              name: 'vc-camera',
               props: true
             },
-            {
+            { // только для Forpost
               name: 'go-to-forpost',
               path: 'go-to-forpost',
               component: VCGoToForpost

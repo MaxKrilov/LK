@@ -24,9 +24,9 @@ export interface IDomain {
   status: string // 'Active'
   offer: IOffer
   actualStartDate: string // datetime "2020-04-08T10:12:21+03:00"
-  videocontrols: Record<string, IVideocontrol>
   billingAccountId: string // "9156925760213408499"
   services?: Record<TDomainServiceId, IDomainService>
+  videocontrols: Record<string, IVideocontrol>
 }
 
 export interface IDomainService {
@@ -78,4 +78,57 @@ export interface ICamera {
 
   // кастомное поле, добавляеся отдельно
   videocontrolId?: string
+}
+
+/* Enforta aka iVideon */
+export interface IEnfortaRegistry {
+  name?: string
+  videocontrols?: Record<string, IEnfortaVideocontrol>
+}
+
+export interface IEnfortaVideocontrol {
+  id: string
+  chars: IOrderChar
+  locationId: string
+  cameras: Record<string, IEnfortaCamera>
+  offer?: IOffer
+}
+
+export interface IEnfortaCamera extends ICamera {
+  pakets: Record<string, IEnfortaPaket>
+  services: Record<string, IEnfortaService>
+  offer: IOffer
+  actualStartDate: Date
+  status: IEnfortaPaketStatus
+}
+
+export interface IEnfortaService {
+  id: string
+  name: string
+  parentId: string
+  locationId: string
+  purchasedPrices: IPurchasedPrice
+  status: IEnfortaPaketStatus
+  offer: IOffer
+  actualStartDate: Date
+  chars: IOrderChar
+}
+
+export interface IEnfortaPaket {
+  id: string
+  name: string
+  billingAccountId: string
+  parentId: string
+  locationId: string
+  purchasedPrices: IPurchasedPrice
+  status: IEnfortaPaketStatus
+  offer: IOffer
+  actualStartDate: Date
+  chars: IOrderChar
+  // market: ?
+}
+
+export enum IEnfortaPaketStatus {
+  Active = 'Active',
+  Completed = 'Completed'
 }

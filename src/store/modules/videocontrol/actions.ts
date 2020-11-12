@@ -22,6 +22,7 @@ interface IPayload {
 const APIShortcut = (api: API, url: string, data: Object) => {
   return api
     .setType('json')
+    .setBranch('web-bss-psi2')
     .setWithCredentials()
     .setData(data)
     .query(url)
@@ -32,6 +33,20 @@ const APIShortcut = (api: API, url: string, data: Object) => {
   pull*() -> скачивает, записывает в стор и возвращает данные
 */
 export const actions = {
+  setProductType ({ commit }: ActionContext<IState, any>, productType: string) {
+    commit(TYPES.SET_PRODUCT_TYPE, productType)
+  },
+  unsetProductType ({ commit }: ActionContext<IState, any>) {
+    commit(TYPES.UNSET_PRODUCT_TYPE)
+  },
+  fetchEnfortaData (context: ActionContext<IState, any>, payload: any) {
+    const { parentIds } = payload
+    return context.dispatch('productnservices/customerProducts', {
+      api: API,
+      parentIds,
+      code: 'VIDNCAM'
+    })
+  },
   fetchForpostLink (context: ActionContext<IState, any>) {
     const api = new API()
 
@@ -126,12 +141,12 @@ export const actions = {
       })
   },
   pullForpostDomainRegistry (context: ActionContext<IState, any>, payload: IPayload) {
-    context.commit(TYPES.SET_DOMAINS_IS_LOADED, false)
+    context.commit(TYPES.SET_VC_DATA_IS_LOADED, false)
 
     return context.dispatch('fetchCCTV', payload)
       .then(data => {
         context.commit(TYPES.SET_DOMAINS, data)
-        context.commit(TYPES.SET_DOMAINS_IS_LOADED, true)
+        context.commit(TYPES.SET_VC_DATA_IS_LOADED, true)
         return data
       })
   },
@@ -147,5 +162,19 @@ export const actions = {
     commit(TYPES.DELETE_POINTS)
     commit(TYPES.DELETE_DOMAINS)
     commit(TYPES.DELETE_ALLOWED_OFFERS)
+  },
+  pullEnfortaRegistry (context: ActionContext<IState, any>, payload: IPayload) {
+    return context.dispatch('fetchCCTV', payload)
+      .then(data => {
+        context.commit(TYPES.SET_ENFORTA_REGISTRY, data.enforta)
+        context.commit(TYPES.SET_VC_DATA_IS_LOADED, true)
+        return data.enforta
+      })
+  },
+  setVCDataIsLoaded ({ commit }: ActionContext<IState, any>) {
+    commit(TYPES.SET_VC_DATA_IS_LOADED, true)
+  },
+  setEnfortaDataIsLoaded ({ commit }: ActionContext<IState, any>) {
+    commit(TYPES.SET_ENFORTA_DATA_IS_LOADED, true)
   }
 }

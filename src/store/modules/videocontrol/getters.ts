@@ -4,6 +4,7 @@ import {
   IBaseFunctionality,
   ICamera,
   IDomain,
+  IEnfortaVideocontrol,
   IOffer,
   IVideocontrol
 } from '@/interfaces/videocontrol'
@@ -165,5 +166,13 @@ export const getters = {
     }
 
     return state.points.filter(isUniquePoint)
+  },
+  enfortaVideocontrolList (state: IState): IEnfortaVideocontrol[] {
+    return Object.values(state.enfortaRegistry?.videocontrols || {})
+  },
+  enfortaCameraRegistry (state: IState, getters: any) {
+    return getters.enfortaVideocontrolList.reduce((acc: {}, videocontrol: any) => {
+      return { ...acc, ...videocontrol.cameras }
+    }, {})
   }
 }
