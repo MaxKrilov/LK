@@ -54,6 +54,65 @@ export interface IDocumentObject {
 
 export type typeYesOrNo = 'Да' | 'Нет'
 
+export interface ICustomerOffer {
+  availableFrom: string
+  availableTo: string
+  canBeActivatedInSSP: false
+  categoryRelationships: [{
+    maxCount: number
+    minCount: number
+    offeringCategoryId: number
+    orderNumber: number
+  }]
+  code: string
+  customerCategory: {
+    code: string
+    href: string
+    id: string
+    name: string
+    originalName: string
+    tomsId: string
+  }
+  description: string
+  feasibilityCheckRequired: boolean
+  href: string
+  id: string
+  isEquipment: boolean
+  isRoot: boolean
+  market: {
+    code: string
+    href: string
+    id: string
+    marketingBrands: [{
+      id: string
+      name: string
+    }]
+    name: string
+    originalName: string
+    tomsId: string
+  }
+  name: string
+  offeringCategories: [{
+    code: string
+    id: string
+    isTop: boolean
+    name: string
+    orderNumber: string
+    originalName: string
+    parent: { id: string, code: string }
+    reconciliationId: string
+    tomsId: string
+    visible: boolean
+  }]
+  originalDescription: string
+  originalName: string
+  prices: ISLOPricesItem[]
+  requiresContract: boolean
+  status: string
+  suspendable: boolean
+  visibleInSSP: boolean
+}
+
 export interface ICustomerProduct {
   tlo: {
     actualStartDate: string
@@ -63,70 +122,9 @@ export interface ICustomerProduct {
     id: string
     locationId: string
     name: string
-    offer: {
-      availableFrom: string
-      availableTo: string
-      canBeActivatedInSSP: false
-      categoryRelationships: [{
-        maxCount: number
-        minCount: number
-        offeringCategoryId: number
-        orderNumber: number
-      }]
-      code: string
-      customerCategory: {
-        code: string
-        href: string
-        id: string
-        name: string
-        originalName: string
-        tomsId: string
-      }
-      description: string
-      feasibilityCheckRequired: boolean
-      href: string
-      id: string
-      isEquipment: boolean
-      isRoot: boolean
-      market: {
-        code: string
-        href: string
-        id: string
-        marketingBrands: [{
-          id: string
-          name: string
-        }]
-        name: string
-        originalName: string
-        tomsId: string
-      }
-      name: string
-      offeringCategories: [{
-        code: string
-        id: string
-        isTop: boolean
-        name: string
-        orderNumber: string
-        originalName: string
-        parent: { id: string, code: string }
-        reconciliationId: string
-        tomsId: string
-        visible: boolean
-      }]
-      originalDescription: string
-      originalName: string
-      prices: ISLOPricesItem[]
-      requiresContract: boolean
-      status: string
-      suspendable: boolean
-      visibleInSSP: boolean
-    }
+    offer: ICustomerOffer
     pointAmount: string | number
-    purchasedPrices: {
-      recurrent: IPriceItem
-      recurrentDisacount: IPriceItem
-      recurrentTotal: IPriceItem
-    }
+    purchasedPrices: IPurchasedPrices
     status: string
   }
   slo: [{
@@ -317,11 +315,7 @@ export interface ICustomerProduct {
       originalName: string
     }
     productId: string
-    purchasedPrices: {
-      recurrent: IPriceItem
-      recurrentDisacount: IPriceItem
-      recurrentTotal: IPriceItem
-    }
+    purchasedPrices: IPurchasedPrices
     requiresContract: boolean
     status: string
     suspendable: boolean
@@ -369,6 +363,12 @@ export interface ISLOPricesItem {
   startDate: string
   tax: string
   type: string
+}
+
+export interface IPurchasedPrices {
+  recurrent: IPriceItem
+  recurrentDisacount: IPriceItem
+  recurrentTotal: IPriceItem
 }
 
 export interface IPriceItem {
@@ -555,6 +555,44 @@ export interface IWifiStatUser {
   output_bytes: number
   // eslint-disable-next-line camelcase
   user_name: string
+}
+
+export type IWifiPro = {
+  actualStartDate: string
+  billingAccountId: string
+  chars: Record<string, string>
+  id: string
+  locationId: string
+  name: string
+  offer: ICustomerOffer
+  packets: Record<string, {
+    actualStartDate: string
+    billingAccountId: string
+    chars: Record<string, string>
+    id: string
+    locationId: string
+    name: string
+    offer: ICustomerOffer
+    parentId: string
+    purchasedPrices: IPurchasedPrices
+    status: string
+  }>
+  purchasedPrices: IPurchasedPrices
+  services: Record<string, {
+    actualStartDate: string
+    billingAccountId: string
+    chars: Record<string, string>
+    id: string
+    locationId: string
+    fullAddress?: string // Данное поле добавляется в ходе преобразования полученных данных
+    addressId?: string
+    name: string
+    offer: ICustomerOffer
+    parentId: string
+    purchasedPrices: IPurchasedPrices
+    status: string
+  }>
+  status: string
 }
 
 export interface WifiData {

@@ -1,7 +1,7 @@
 import { API } from '@/functions/api'
 import { ActionContext } from 'vuex'
 import { TYPE_ARRAY, TYPE_JSON } from '@/constants/type_request'
-import { IWifiResourceInfo } from '@/tbapi'
+import { IWifiPro, IWifiResourceInfo } from '@/tbapi'
 
 const api = () => new API()
 
@@ -122,6 +122,22 @@ const actions = {
         .catch(error => {
           reject(error)
         })
+    })
+  },
+  getWifiPro (context: ActionContext<undefined, any>, payload: { parentIds: string[] }) {
+    const { toms: clientId } = context.rootGetters['auth/user']
+    return new Promise<IWifiPro>((resolve, reject) => {
+      api()
+        .setWithCredentials()
+        .setType(TYPE_JSON)
+        .setBranch('web-bss-psi2')
+        .setData({
+          clientId,
+          parentIds: payload.parentIds
+        })
+        .query('/customer/product/wifipro')
+        .then(response => resolve(response))
+        .catch(error => reject(error))
     })
   },
   getData (

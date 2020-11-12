@@ -1,0 +1,210 @@
+.ert-wifi-pro-item {
+  &__sms-packets {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    @include min-breakpoint('sm') {
+      flex-direction: row;
+    }
+
+    &__select,
+    &__button {
+      width: 100%;
+      max-width: 300px;
+    }
+
+    &__button {
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity $primary-transition;
+
+      &.visible {
+        opacity: 1;
+        pointer-events: auto;
+      }
+    }
+  }
+
+  &__locations {
+    &__title {
+      @extend %h2-font;
+      @include color-black(0.8);
+    }
+
+    &__content__row {
+      display: flex;
+      flex-direction: column;
+      padding: $padding-x4 0;
+      border-top: 1px solid rgba(map-get($shades, 'black'), 0.2);
+
+      &:last-child {
+        border-bottom: 1px solid rgba(map-get($shades, 'black'), 0.2);
+      }
+
+      @include min-breakpoint('md') {
+        flex-direction: row;
+
+        > * {
+          width: 100%;
+        }
+      }
+
+      .address {
+        @extend %body-font;
+        @include color-black(0.8);
+      }
+
+      .tariff {
+        text-align: right;
+
+        .caption {
+          @extend %caption2-font;
+          @include color-black(0.3);
+        }
+
+        .value {
+          @extend %h4-font;
+          @include color-black(0.8);
+        }
+      }
+
+      .price {
+        @extend %caption1-font;
+        @include color-black(0.5);
+        text-align: right;
+
+        span {
+          @extend %h4-font;
+          @include color-black(0.8);
+          white-space: nowrap;
+
+          @include min-breakpoint('md') {
+            display: block;
+          }
+        }
+      }
+    }
+  }
+
+  &__dialog-content {
+    background-color: map-get($shades, 'white');
+    padding: $padding-x6;
+    display: flex;
+    flex-direction: column;
+
+    @include min-breakpoint('sm') {
+      flex-direction: row;
+      flex-wrap: wrap;
+    }
+
+    @include min-breakpoint('md') {
+      flex-direction: column;
+      flex-wrap: nowrap;
+    }
+
+    &__content {
+      @include min-breakpoint('sm') {
+        flex: 1;
+      }
+    }
+
+    &__icon {
+      color: map-get($yellow, 'base');
+      margin-bottom: $padding-x4;
+
+      @include min-breakpoint('sm') {
+        flex: 0;
+        margin-right: $padding-x4;
+      }
+
+      i > svg {
+        width: 64px;
+      }
+    }
+
+    &__title {
+      @extend %h3-font;
+      @include color-black(0.8);
+      margin-bottom: $padding-x2;
+
+      @include min-breakpoint('sm') {
+        margin-top: $padding-x2;
+      }
+    }
+
+    &__price {
+      @extend %caption1-font;
+      @include color-black(0.3);
+      margin-bottom: $padding-x6;
+
+      > span {
+        @extend %h4-font;
+        @include color-black(0.8);
+
+        > span {
+          @extend %caption1-font;
+          @include color-black(0.5);
+        }
+      }
+    }
+
+    &__offer {
+      margin-bottom: $padding-x4;
+    }
+
+    &__offer-label {
+      @extend %caption1-font;
+      @include color-black(0.8);
+
+      a {
+        text-decoration: none;
+        color: inherit;
+        border-bottom: 1px dashed;
+      }
+    }
+
+    &__warning {
+      @extend %caption2-font;
+      @include color-black(0.3);
+      margin-bottom: $padding-x6;
+
+      i > svg {
+        color: map-get($yellow, 'base');
+      }
+    }
+
+    &__actions {
+      display: flex;
+      flex-direction: column;
+
+      @include min-breakpoint('sm') {
+        flex: 1;
+        flex-basis: 100%;
+        flex-direction: row;
+      }
+    }
+
+    &__action {
+      width: 100%;
+
+      &:first-child {
+        order: 2;
+
+        @include min-breakpoint('sm') {
+          order: 1;
+        }
+      }
+      &:last-child {
+        order: 1;
+        margin-bottom: $padding-x2;
+
+        @include min-breakpoint('sm') {
+          order: 2;
+          margin-bottom: 0;
+          margin-left: $padding-x4;
+        }
+      }
+    }
+  }
+}
