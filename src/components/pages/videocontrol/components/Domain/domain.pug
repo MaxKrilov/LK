@@ -33,13 +33,17 @@
   .product__body
     template(v-for="item in addressList")
       address-folder(
-        :title="item.address.name || ''",
+        :title="item.location.fulladdress || ''",
         :price="item.data.purchasedPrices.recurrentTotal.value"
       )
+        .camera-list__head
+          .col камера
+          .col.col--device-name имя оборудования
+          .col.col--actions
         template(v-for="camera in item.data.cameras")
           camera(
-            :id="camera.id",
-            :title="camera.name",
+            :key="camera.id"
+            :data="camera"
             :price="camera.purchasedPrices.recurrentTotal.value",
             :services="item.data.bf[camera.parentId]"
           )
@@ -50,7 +54,6 @@
       :loading="isOrderCameraMode"
       @click="onClickAddCamera"
     ) Добавить камеру
-
     er-button(color="gray" @click="onClickPause") Приостановить услугу
 
   offer-dialog(
@@ -74,3 +77,15 @@
     @close="onClosePlugProduct"
     @cancelOrder="onCancelOrder"
   )
+
+  er-activation-modal(
+    type="success"
+    v-model="isShowSuccessOrderModal"
+    title="Заказ успешно создан"
+    :isShowCancelButton="false"
+    actionButtonText="Спасибо"
+    :persistent="true"
+    @confirm="onCloseSuccessOrderModal"
+  )
+    template(slot="description")
+      | Заказ создан успешно. Выполнение заказа может занять некоторое время. Актуальный статус можно узнать в разделе Заказы.

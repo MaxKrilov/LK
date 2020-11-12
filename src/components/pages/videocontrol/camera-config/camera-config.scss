@@ -7,7 +7,7 @@
     align-items: flex-start;
     justify-content: space-between;
 
-    @include min-breakpoint('sm') {
+    @include min-breakpoint("sm") {
       flex-direction: row;
       align-items: flex-end;
     }
@@ -16,7 +16,7 @@
       @extend %caption1;
       margin-top: $padding-x2;
 
-      @include min-breakpoint('sm') {
+      @include min-breakpoint("sm") {
         margin-top: 0;
         margin-bottom: $padding-x2;
       }
@@ -30,11 +30,11 @@
   &__edit-form {
     margin-top: $padding-x8;
 
-    @include min-breakpoint('md') {
+    @include min-breakpoint("md") {
       margin-top: $padding-x10;
     }
 
-    @include min-breakpoint('xl') {
+    @include min-breakpoint("xl") {
       margin-top: $padding-x12;
     }
 
@@ -42,7 +42,7 @@
       @extend %caption1;
 
       .er-icon {
-        @include color-black(.2);
+        @include color-black(0.2);
         margin-right: $padding-x1;
       }
     }
@@ -50,16 +50,42 @@
     .vc-camera-edit-form {
       margin-top: $padding-x8;
 
-      @include min-breakpoint('md') {
+      @include min-breakpoint("md") {
         margin-top: $padding-x10;
       }
+    }
+
+    .er-select__slot label.er-text-field--active,
+    .er-select__slot label.er-textarea--active {
+      transform: scale(0.85) translateY(-36px);
+    }
+  }
+
+  .camera-device {
+    margin-top: $padding-x8;
+    display: grid;
+    gap: $padding-x4;
+    grid-template-areas: "model" "sale-type" "price";
+
+    @include min-breakpoint(md) {
+      grid-template-areas: "model model" "sale-type price";
+    }
+
+    .col-model {
+      grid-area: model;
+    }
+    .col-sale-type {
+      grid-area: sale-type;
+    }
+    .col-price {
+      grid-area: price;
     }
   }
 
   &__analitycs {
     margin-top: $padding-x10;
 
-    @include min-breakpoint('md') {
+    @include min-breakpoint("md") {
       margin-top: $padding-x12;
     }
   }
@@ -67,7 +93,7 @@
   &__actions {
     margin-top: $padding-x6;
 
-    @include min-breakpoint('md') {
+    @include min-breakpoint("md") {
       margin-top: $padding-x10;
     }
 
@@ -76,16 +102,16 @@
 
       display: grid;
       grid-template-columns: 1fr;
-      grid-gap: $padding-x2;
+      gap: $padding-x2;
 
-      @include min-breakpoint('sm') {
+      @include min-breakpoint("sm") {
         grid-template-columns: 1fr 1fr;
-        grid-gap: $padding-x4;
+        gap: $padding-x4;
       }
 
-      @include min-breakpoint('lg') {
-        grid-template-columns: .33fr .33fr;
-        grid-gap: $padding-x6;
+      @include min-breakpoint("lg") {
+        grid-template-columns: 0.33fr 0.33fr;
+        gap: $padding-x6;
       }
     }
   }
@@ -102,13 +128,13 @@
     margin-left: $padding-x1;
 
     .price__sum {
-      color: map_get($green, 'base');
+      color: map_get($green, "base");
     }
   }
 
   &__status {
     @extend %caption2;
-    color: map_get($green, 'base');
+    color: map_get($green, "base");
     display: inline-block;
     margin-left: $padding-x4;
 
@@ -126,7 +152,7 @@
     justify-content: space-between;
     align-items: flex-end;
 
-    @include min-breakpoint('sm') {
+    @include min-breakpoint("sm") {
       justify-content: flex-start;
     }
   }
@@ -135,11 +161,11 @@
     @extend %caption2;
     margin-bottom: $padding-x1 + 1px;
 
-    @include min-breakpoint('sm') {
+    @include min-breakpoint("sm") {
       margin-left: $padding-x8;
     }
 
-    @include min-breakpoint('md') {
+    @include min-breakpoint("md") {
       margin-left: $padding-x10;
     }
   }
@@ -147,14 +173,8 @@
   &__content {
     margin-top: $padding-x6;
 
-    @include min-breakpoint('md') {
+    @include min-breakpoint("md") {
       margin-top: $padding-x8;
-    }
-  }
-
-  .analytic-item {
-    & + .analytic-item {
-      margin-top: $padding-x1;
     }
   }
 }
@@ -164,7 +184,7 @@
     display: flex;
     flex-direction: column-reverse;
 
-    @include min-breakpoint('sm') {
+    @include min-breakpoint("sm") {
       flex-direction: row;
       justify-content: space-between;
     }
@@ -176,13 +196,13 @@
     .col--point {
       margin-top: $padding-x4;
 
-      @include min-breakpoint('sm') {
+      @include min-breakpoint("sm") {
         margin-top: 0;
         flex-grow: 1;
         max-width: 70%;
       }
 
-      @include min-breakpoint('md') {
+      @include min-breakpoint("md") {
         margin-right: $padding-x10;
         max-width: 100%;
       }
@@ -193,8 +213,8 @@
         .title {
           @extend %link-behaviour;
           &:hover {
-            @include color-black(.8);
-            border-bottom-color: map_get($shades, 'transparent');
+            @include color-black(0.8);
+            border-bottom-color: map_get($shades, "transparent");
           }
         }
 
@@ -202,13 +222,12 @@
         align-items: center;
       }
     }
-
   }
 
   &__body {
     margin-top: $padding-x6;
 
-    @include min-breakpoint('md') {
+    @include min-breakpoint("md") {
       margin-top: $padding-x8;
     }
 
@@ -225,16 +244,15 @@
     $camera-config-input-width: 250px;
 
     display: grid;
-    grid-gap: $padding-x8 0;
+    gap: $padding-x8 0;
 
     grid-template-areas:
       "col1"
       "col2"
-      "col3"
-    ;
+      "col3";
 
-    @include min-breakpoint('md') {
-      grid-gap: $padding-x10 $padding-x4;
+    @include min-breakpoint("md") {
+      gap: $padding-x10 $padding-x4;
     }
 
     .col-1 {
@@ -254,40 +272,6 @@
     }
 
     .name-field {
-      display: grid;
-      gap: $padding-x4;
-      grid-template-columns: 1fr;
-
-      @include min-breakpoint('sm') {
-        grid-template-columns: 1fr 149px;
-        gap: $padding-x4 + $padding-x1;
-      }
-
-      @include min-breakpoint('md') {
-        grid-template-columns: 1fr 1fr;
-      }
-
-      &__input {
-
-        input {
-          cursor: inherit;
-        }
-      }
-
-      &__button {
-        .er-button {
-          max-height: $padding-x10;
-
-          @include min-breakpoint('md') {
-            max-width: 184px;
-          }
-
-          @include min-breakpoint('xl') {
-            max-height: $padding-x12;
-            height: $padding-x12;
-          }
-        }
-      }
     }
 
     label.er-text-field--active {
@@ -313,24 +297,23 @@
   .addon {
     &:not(.addon--active) {
       .price__sum {
-        @include color-black(.5);
+        @include color-black(0.5);
       }
-
     }
 
     &--active {
       .addon__text {
-        @include color-black(.5);
+        @include color-black(0.5);
       }
     }
 
     &__list {
       display: grid;
       grid-template-columns: 1fr;
-      grid-gap: $padding-x6;
+      gap: $padding-x6;
       margin-top: $padding-x6;
 
-      @include min-breakpoint('md') {
+      @include min-breakpoint("md") {
         margin-top: $padding-x8;
         grid-template-columns: 1fr 1fr;
       }
@@ -351,7 +334,7 @@
       margin-top: $padding-x2;
       align-items: center;
 
-      @include min-breakpoint('md') {
+      @include min-breakpoint("md") {
         margin-top: $padding-x4;
       }
 
@@ -368,6 +351,24 @@
     .er-input {
       input:disabled + label {
         @extend %disabled-input;
+      }
+    }
+  }
+
+  .er-activation-modal__description {
+    overflow-y: auto;
+  }
+}
+
+.vc-config-page {
+  .vc-camera-edit-form {
+    .ert-input.ert-input--switch {
+      .ert-input__slot {
+        margin: 0;
+      }
+
+      .ert-messages {
+        display: none;
       }
     }
   }

@@ -5,15 +5,17 @@ import Camera from '../Camera/index.vue'
 import ErPlugProduct from '@/components/blocks/ErPlugProduct/index.vue'
 import OfferDialog from '@/components/dialogs/OfferDialog/index.vue'
 
-import { CODES, CHARS, ADDITION_USERS } from '@/constants/videocontrol'
+import { CODES, CHARS, ADDITION_USERS, MESSAGES, VC_DOMAIN_STATUSES } from '@/constants/videocontrol'
 import { IVideocontrol, IOffer } from '@/interfaces/videocontrol'
 import { logInfo } from '@/functions/logging'
 import { OFFER_LINKS } from '@/constants/url'
 import { VueTransitionFSM } from '@/mixins/FSMMixin'
+import { ILocationOfferInfo } from '@/tbapi'
+import ErActivationModal from '@/components/blocks/ErActivationModal/index.vue'
 
 interface IAddressListItem {
   bpi: string
-  address: any
+  location: any
   data: any
 }
 
@@ -23,16 +25,12 @@ const INVOICE_REQUIRED_IN_ORDER = true
 // доп.характеристика заказа пользователей
 const INVOICE_USERS = INVOICE_REQUIRED_IN_ORDER ? { [CHARS.NAME_IN_INVOICE]: ADDITION_USERS } : {}
 
-const MESSAGES = {
-  USER_MODIFY_ORDER_ERROR: 'При изменении количества пользователей возникла ошибка. Свяжитесь с вашим персональным менеджером.',
-  USER_MODIFY_ORDER_SUCCESS: 'Услуга "Дополнительные пользователи" успешно изменена.'
-}
-
 const components = {
   AddressFolder,
   Camera,
   ErPlugProduct,
-  OfferDialog
+  OfferDialog,
+  ErActivationModal
 }
 
 const computed = { }
@@ -45,6 +43,7 @@ const props = {
   userPrice: String,
   userProductId: String
 }
+const RELOAD_DOMAIN_DATA_DELAY = 800
 
 @Component({
   name: 'vc-domain',
@@ -70,9 +69,9 @@ export default class VCDomain extends VueTransitionFSM {
       }
     },
     offer: {
-      accept: () => {
+      accept: (vm: any) => {
         logInfo('принят заказ пользователей')
-        this.sendOrder()
+        vm.sendOrder()
       },
       decline: () => {
         logInfo('отказ от заказа пользователей')
@@ -80,7 +79,9 @@ export default class VCDomain extends VueTransitionFSM {
       }
     },
     accept: {
-      success: () => {}
+      success: (vm: any) => {
+        vm.isShowSuccessOrderModal = true
+      }
     }
   }
 
@@ -95,6 +96,8 @@ export default class VCDomain extends VueTransitionFSM {
 
   isShowOfferDialog: boolean = false
 
+  isShowSuccessOrderModal: boolean = false
+
   orderData: {} = {
     offer: 'cctv'
   }
@@ -103,10 +106,15 @@ export default class VCDomain extends VueTransitionFSM {
     descriptionModal: 'необходимо сформировать заявку',
     addressId: '',
     services: 'Подключение камеры',
-    fulladdress: ''
+    fulladdress: '',
+    type: ''
   }
 
   domainUserCount: number = 1
+
+  get isModificationInProgress () {
+    return this.$props.domain.status === VC_DOMAIN_STATUSES.MODIFICATION
+  }
 
   get offerLink () {
     return OFFER_LINKS['cctv']
@@ -118,7 +126,7 @@ export default class VCDomain extends VueTransitionFSM {
     Object.keys(obj).forEach(el => {
       list.push({
         bpi: el,
-        address: this.$store.getters['videocontrol/pointByBPI'](el),
+        location: this.$store.getters['videocontrol/pointByBPI'](el),
         data: obj[el]
       })
     })
@@ -163,6 +171,14 @@ export default class VCDomain extends VueTransitionFSM {
     ).id
   }
 
+  get location () {
+    return this.addressList[0].location
+  }
+
+  get addressId () {
+    return this.location.address.id
+  }
+
   mounted () {
     this.domainUserCount = this.$props.userCount
   }
@@ -177,20 +193,28 @@ export default class VCDomain extends VueTransitionFSM {
     )
   }
 
+  onCloseSuccessOrderModal () {
+    this.isShowSuccessOrderModal = false
+    setTimeout(() => {
+      this.pullDomainRegistry()
+    }, RELOAD_DOMAIN_DATA_DELAY)
+  }
+
   onClickAddCamera () {
     this.isOrderCameraMode = true
     this.isOrderModalVisible = true
     this.isManagerRequest = true
     this.requestData = {
       descriptionModal: 'Для подключения камеры необходимо сформировать заявку',
-      addressId: this.addressList[0].address.id,
+      addressId: this.addressId,
       services: 'Подключение камеры',
-      fulladdress: '-'
+      fulladdress: this.location.fulladdress,
+      type: 'create'
     }
 
     this.orderData = {
       ...this.orderData,
-      locationId: this.locationId,
+      locationId: this.addressId,
       bpi: this.$props.domain.id,
       productCode: CODES.CAMERA,
       title: 'Вы уверены, что хотите подключить камеру?'
@@ -198,40 +222,44 @@ export default class VCDomain extends VueTransitionFSM {
   }
 
   onSaveUserCount () {
-    const userDiff = this.domainUserCount - this.$props.userCount
-    this.isUserOrderMode = true
+    if (this.isModificationInProgress) {
+      this.showInfo('', MESSAGES.MIP_MESSAGE)
+    } else {
+      const userDiff = this.domainUserCount - this.$props.userCount
+      this.isUserOrderMode = true
 
-    if (this.domainUserCount === 1) { // Отключение услуги
-      logInfo('отмена услуги «Дополнительные пользователи»')
-      const payload = {
-        locationId: this.locationId,
-        bpi: this.$props.domain.id,
-        productId: this.$props.userProductId,
-        disconnectDate: this.$moment().format()
-      }
-
-      // TODO: доработать когда починят отключение услуги в Netcracker
-      this.$store.dispatch('salesOrder/createDisconnectOrder', payload)
-        .catch(data => {
-          this.$emit('error', data.message)
-          this.isUserOrderMode = false
-        })
-    } else if (this.$props.userCount === 1 && userDiff) { // Заказ пользователей
-      this.onAddUser()
-    } else { // Изменение количества
-      const payload = {
-        locationId: this.videocontrolList[0].locationId,
-        bpi: this.userCountOfferId,
-        chars: {
-          [CHARS.USER_COUNT]: this.domainUserCount,
-          ...INVOICE_USERS
+      if (this.domainUserCount === 1) { // Отключение услуги
+        logInfo('отмена услуги «Дополнительные пользователи»')
+        const payload = {
+          locationId: this.locationId,
+          bpi: this.$props.domain.id,
+          productId: this.$props.userProductId,
+          disconnectDate: this.$moment().format()
         }
+
+        // TODO: доработать когда починят отключение услуги в Netcracker
+        this.$store.dispatch('salesOrder/createDisconnectOrder', payload)
+          .catch(data => {
+            this.$emit('error', data.message)
+            this.isUserOrderMode = false
+          })
+      } else if (this.$props.userCount === 1 && userDiff) { // Заказ пользователей
+        this.onAddUser()
+      } else { // Изменение количества
+        const payload = {
+          locationId: this.videocontrolList[0].locationId,
+          bpi: this.userCountOfferId,
+          chars: {
+            [CHARS.USER_COUNT]: this.domainUserCount,
+            ...INVOICE_USERS
+          }
+        }
+        this.$store.dispatch('salesOrder/createModifyOrder', payload)
+          .then(() => {
+            // показываем принятие оферты
+            this.setState('offer')
+          })
       }
-      this.$store.dispatch('salesOrder/createModifyOrder', payload)
-        .then(() => {
-          // показываем принятие оферты
-          this.setState('offer')
-        })
     }
   }
 
@@ -269,6 +297,23 @@ export default class VCDomain extends VueTransitionFSM {
     this.setState('error')
   }
 
+  showInfo (title: string, message: string) {
+    this.$emit('info', { title, message })
+    this.setState('accept')
+  }
+
+  pullDomainRegistry () {
+    const parentIds = this.$store.state.videocontrol.points
+      .map(({ bpi }: ILocationOfferInfo) => bpi)
+
+    this.$store.dispatch(
+      'videocontrol/pullForpostDomainRegistry',
+      {
+        api: this.$api,
+        parentIds
+      })
+  }
+
   onAcceptOffer () {
     this.setState('accept')
   }
@@ -287,7 +332,7 @@ export default class VCDomain extends VueTransitionFSM {
         ...INVOICE_USERS
       },
       offer: 'cctv',
-      title: `Вы уверены, что хотите добавить ${this.domainUserCount - 1} пользователей?`
+      title: MESSAGES.USER_ADD_QUESTION
     }
     this.isOrderModalVisible = true
     this.isManagerRequest = false

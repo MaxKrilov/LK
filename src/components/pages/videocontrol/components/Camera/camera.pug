@@ -1,20 +1,18 @@
 .camera
-  .d-flex.flex-grow-1
-    span.camera__title {{ title }}
+  .camera__title-wrap
+    router-link.camera__title(:to="linkToEdit") {{ title }}
 
+  .camera__device-name {{ deviceName }}
   .camera__count {{ count }} сервиса
-  .camera__price
-    er-price {{ price|price }}
+  .camera__price(v-if="showPrice" :title="services.status")
+    er-price {{ price | price }}
 
-  .camera__watch(
-    v-if="isForpostProtalWorking"
-    @click="onPlay"
-  )
+  .camera__watch(v-if="isForpostPortalWorking" @click="onPlay")
     er-icon(name="play")
     span.title Смотреть
 
   router-link.camera__config(
-    :to="`/lk/videocontrol/camera/${id}`"
+    :to="linkToEdit"
     title="Настроить"
   )
     er-icon(name="settings")

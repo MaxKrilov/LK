@@ -160,18 +160,23 @@ export default class ErPlugProduct extends ErPlugMixin {
         this.name = ''
       })
   }
+
   closeSuccessRequestModal () {
+    this.$emit('closeSuccessRequest')
     this.isShowSuccessRequestModal = false
     this.endConnection()
     this.successEmit()
   }
+
   closeCreatingRequest () {
+    this.$emit('cancelRequest')
     this.isShowRequestModal = false
     this.endConnection()
     this.$emit('cancelOrder')
   }
 
   onCloseErrorModal () {
+    this.$emit('closeError')
     this.isShowErrorRequestModal = false
     this.endConnection()
     this.errorEmit()

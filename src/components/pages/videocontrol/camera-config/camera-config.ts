@@ -1,11 +1,15 @@
-import { Component } from 'vue-property-decorator'
+import { Component, Mixins } from 'vue-property-decorator'
 import ErPlugProduct from '@/components/blocks/ErPlugProduct/index.vue'
-import AnalyticItem from './components/AnalyticItem/index.vue'
+import ProductItem from '../components/ProductItem/index.vue'
 import ErActivationModal from '@/components/blocks/ErActivationModal/index.vue'
-import ErrorDialog from '@/components/dialogs/ErrorDialog/index.vue'
+
+import RenameField from './components/rename-field.vue'
+
+import VIDEO_ANALYTICS from '@/constants/videoanalytics'
 
 import { ICamera, IBaseFunctionality, IOffer } from '@/interfaces/videocontrol'
 import { IProductOffering } from '@/interfaces/offering'
+// @ts-ignore
 import { promisedStoreValue } from '@/functions/store_utils'
 import { logInfo } from '@/functions/logging'
 import {
@@ -13,12 +17,16 @@ import {
   VIDEOARCHIVE_DAY_COUNT,
   CHARS,
   CAMERA_SALE_TYPES,
-  SERVICE_ORDER_MAP
+  SERVICE_ORDER_MAP,
+  VC_DOMAIN_STATUSES,
+  MESSAGES,
+  CHAR_VALUES
 } from '@/constants/videocontrol'
 
 import { ILocationOfferInfo, ISLOPricesItem } from '@/tbapi'
 import { mapState, mapGetters } from 'vuex'
 import { VueTransitionFSM } from '@/mixins/FSMMixin'
+import { ErtPageWithDialogsMixin } from '@/mixins2/ErtPageWithDialogsMixin'
 
 /* FUNCTIONS */
 const isFullHD = (el: IOffer) => el.code === CODES.FULLHD
@@ -26,17 +34,27 @@ const isFullHDArchive = (el: IOffer) => el.code === CODES.FULLHD_ARCHIVE
 const isHDArchive = (el: IOffer) => el.code === CODES.HD_ARCHIVE
 
 const components = {
-  AnalyticItem,
+  ProductItem,
   ErActivationModal,
   ErPlugProduct,
-  ErrorDialog
+  RenameField
 }
 
 const props = {
   id: String
 }
 
-const VIDEO_QUALITY_VALUE_LIST = ['HD', 'FullHD']
+interface iVideoQualityValueItem {
+  id: number
+  value: string
+}
+
+const HD_VALUE = 'HD'
+const FHD_VALUE = 'FullHD'
+const VIDEO_QUALITY_VALUE_LIST: iVideoQualityValueItem[] = [
+  { id: 1, value: HD_VALUE },
+  { id: 2, value: FHD_VALUE }
+]
 
 const computed = {
   ...mapGetters({
@@ -53,17 +71,35 @@ const computed = {
   })
 }
 
+interface ICameraDevice {
+  model: string
+  price: string
+  saleType: string // "Аренда" etc
+}
+
+const getCameraDevice = (camera: ICamera): ICameraDevice => {
+  const model = camera?.chars?.[CHARS.MODEL] || ''
+  const saleType = camera?.chars?.[CHARS.CAMERA_SALE_TYPE] || ''
+  const price = camera?.purchasedPrices?.recurrentTotal?.value || ''
+
+  return { model, price, saleType }
+}
+
 @Component({
   components,
   props,
   computed
 })
-export default class VCCameraConfigPage extends VueTransitionFSM {
+export default class VCCameraConfigPage extends Mixins(VueTransitionFSM, ErtPageWithDialogsMixin) {
   /* === Config === */
   isActionButtonsVisible: boolean = false
   isForpostPortalWorking: boolean = false
+  isAnalyticCountVisible: boolean = false
 
-  VIDEO_QUALITY_VALUE_LIST: string[] = VIDEO_QUALITY_VALUE_LIST
+  VIDEO_QUALITY_VALUE_LIST: any[] = VIDEO_QUALITY_VALUE_LIST
+
+  CODES = CODES
+  CHARS = CHARS
 
   ORDER_STATE = 'order'
   REQUEST_STATE = 'request'
@@ -75,17 +111,36 @@ export default class VCCameraConfigPage extends VueTransitionFSM {
     this.ORDER_STATE,
     this.REQUEST_STATE,
     'error',
-    'success'
+    'success',
+    'renameConfirmation'
   ]
 
   stateTransitions = {
     ready: {
       order: () => {
         console.log('закажем каких-нибудь услуг')
+      },
+      renameConfirmation: (vm: any) => {
+        vm.isShowRenameConfirm = true
+      },
+      loading: (vm: any) => {
+        vm.isAnalyticsLoaded = false
+      }
+    },
+    error: {
+      ready: (vm: any) => {
+        vm.isDeviceRenameMode = false
+      }
+    },
+    renameConfirmation: {
+      success: (vm: any) => {
+        vm.isDeviceRenameMode = false
+        vm.isShowRenameConfirm = false
+        vm.isShowSuccessDisconnectModal = true
       }
     }
   }
-
+  disconnectTitle: string = ''
   errorMessage: string = ''
 
   /* === mapState === */
@@ -107,22 +162,31 @@ export default class VCCameraConfigPage extends VueTransitionFSM {
   serviceStatuses: Record<string, boolean> = {}
   isOrderMode: boolean = false
 
+  isDeviceRenameMode: boolean = false
   isSendingOrder: boolean = false
   isShowDisconnectModal: boolean = false
 
   /* === Form === */
   soundRecordValue: boolean = false
-  videoQualityValue: string = VIDEO_QUALITY_VALUE_LIST[0]
-  videoArchiveValue: string = ''
+  videoQualityValue: iVideoQualityValueItem = VIDEO_QUALITY_VALUE_LIST[0]
+
   PTZValue: boolean = false
 
-  isChanged = false
-  isManagerRequest = false
-  isOrderModalVisible = false
+  currentValue: any = null
+  currentServiceCode: string = ''
+  isChanged: boolean = false
+  isManagerRequest: boolean = false
+  isOrderModalVisible: boolean = false
+  isShowRenameConfirm: boolean = false
+  isShowSuccessDisconnectModal: boolean = false
   requestData = {}
-  orderData = {
+  orderData: any = {
     offer: 'cctv',
     productCode: ''
+  }
+
+  get isModificationInProgress () {
+    return this.bf?.status === VC_DOMAIN_STATUSES.MODIFICATION
   }
 
   get location (): ILocationOfferInfo {
@@ -130,11 +194,19 @@ export default class VCCameraConfigPage extends VueTransitionFSM {
   }
 
   get locationName () {
-    return this.location?.name || ''
+    return this.location?.fulladdress || ''
+  }
+
+  get deviceName (): string {
+    return this.camera?.chars[CHARS.DEVICE_NAME] || ''
+  }
+
+  get device (): ICameraDevice {
+    return getCameraDevice(this.camera) || {}
   }
 
   get camera (): ICamera {
-    return this.cameraById(this.$props.id)
+    return this.cameraById(this.$props.id) || {}
   }
 
   get cameraName (): string {
@@ -142,7 +214,9 @@ export default class VCCameraConfigPage extends VueTransitionFSM {
   }
 
   get bf (): IBaseFunctionality {
-    return this.bfById(this.camera.parentId)
+    // @ts-ignore
+    const empty: IBaseFunctionality = {}
+    return this.camera?.parentId ? this.bfById(this.camera.parentId) : empty
   }
 
   get hasRentPay () {
@@ -150,7 +224,7 @@ export default class VCCameraConfigPage extends VueTransitionFSM {
   }
 
   get rentPay () {
-    return this?.camera?.purchasedPrices.recurrentTotal.value || '0'
+    return this?.camera?.purchasedPrices?.recurrentTotal?.value || '0'
   }
 
   get licensePay () {
@@ -172,7 +246,10 @@ export default class VCCameraConfigPage extends VueTransitionFSM {
 
   get enabledServiceList (): IProductOffering[] {
     const services = this.bf?.services
-    return services ? Object.values(services) : []
+    return services
+      ? Object.values(services)
+        .filter((el: any) => el.status === 'Active')
+      : []
   }
 
   get enabledServiceCode () {
@@ -238,8 +315,15 @@ export default class VCCameraConfigPage extends VueTransitionFSM {
       ?.amount || '0'
   }
 
-  get videoQualityPrice () {
-    if (this.videoQualityValue === 'HD') {
+  get videoQualityCurrentCode () {
+    return this.isFHDEnabled
+      ? CODES.FULLHD
+      : 'HD'
+  }
+
+  get videoQualityCurrentPrice () {
+    // цена подключенной услуги
+    if (this.videoQualityValue.value === 'HD') {
       return '0'
     } else {
       if (this.isFHDEnabled) {
@@ -250,6 +334,24 @@ export default class VCCameraConfigPage extends VueTransitionFSM {
     }
   }
 
+  get videoQualityPrice () {
+    // цена подключаемой услуги
+    if (this.videoQualityValue.value === 'HD') {
+      return '0'
+    } else {
+      if (this.isFHDEnabled) {
+        return this.fullHd?.offer?.prices?.[0]?.amount || '0'
+      } else {
+        return this.fullHdPrice
+      }
+    }
+  }
+
+  get isVideoQualityChanged () {
+    const isCurrentValueFHD = this.videoQualityValue.value === FHD_VALUE
+    return this.isFHDEnabled !== isCurrentValueFHD
+  }
+
   get videoArchiveOfferList (): ISLOPricesItem[] {
     const isCurrentService = this.isFHDEnabled ? isFullHDArchive : isHDArchive
     return this.availableServiceList
@@ -258,9 +360,13 @@ export default class VCCameraConfigPage extends VueTransitionFSM {
   }
 
   get videoArchiveValueList (): string[] {
-    return this.videoArchiveOfferList?.map(
+    const originalOfferValues = this.videoArchiveOfferList?.map(
       (el: ISLOPricesItem) => el.chars[VIDEOARCHIVE_DAY_COUNT]
     )
+
+    return this.videoArchiveValue !== '-'
+      ? [MESSAGES.DISABLE, ...originalOfferValues]
+      : originalOfferValues
   }
 
   get videoArchiveCurrentValue (): string {
@@ -268,12 +374,57 @@ export default class VCCameraConfigPage extends VueTransitionFSM {
     return this.videoArchiveValueList?.[this.videoArchiveValue] || '0'
   }
 
+  get videoArchiveValue (): string {
+    const currentCode = this.isFHDEnabled ? CODES.FULLHD_ARCHIVE : CODES.HD_ARCHIVE
+    return this.enabledServiceList.find(
+      (el:IProductOffering) => el?.offer?.code === currentCode
+    )?.chars?.[CHARS.ARCHIVE_DAY_COUNT] || '-'
+  }
+
   get videoArchiveValueIndex () {
     return this.videoArchiveValueList?.indexOf(this.videoArchiveValue) || 0
   }
 
+  get currentVideoArchiveCode () {
+    return this.isFHDEnabled
+      ? CODES.FULLHD_ARCHIVE
+      : CODES.HD_ARCHIVE
+  }
+
   get videoArchivePrice () {
     return this.videoArchiveOfferList?.[this.videoArchiveValueIndex]?.amount || 0
+  }
+
+  get isPTZExists () {
+    /* Есть поворотный модуль */
+    return this?.camera?.chars?.[CHARS.PTZ] === CHAR_VALUES.YES
+  }
+
+  get isSoundRecordExists () {
+    /* Поддерживается запись звука */
+    return this?.camera?.chars?.[CHARS.SOUND_RECORD] === CHAR_VALUES.YES
+  }
+
+  get isFullHDExists () {
+    /* Поддерживается запись звука */
+    return this?.camera?.chars?.[CHARS.FULLHD] === CHAR_VALUES.YES
+  }
+
+  get currentServicePrice () {
+    const code = this.orderData.productCode
+    const service = this?.getServiceByCode(code)
+
+    let serviceChar = 0
+    let price = service?.prices?.[serviceChar]?.amount || '0.0'
+
+    if ([CODES.FULLHD_ARCHIVE, CODES.HD_ARCHIVE].includes(code)) {
+      price = service?.prices?.find(
+        (el:any) => {
+          return el.chars?.[VIDEOARCHIVE_DAY_COUNT] === this.currentValue
+        }
+      )?.amount || '0'
+    }
+    return price
   }
 
   fetchAllowedOfferList (offerId: string) {
@@ -293,28 +444,45 @@ export default class VCCameraConfigPage extends VueTransitionFSM {
     promisedStoreValue(this.$store, 'videocontrol', 'isDomainRegistryLoaded')
       .then(() => {
         this.fetchAllowedOfferList(this.bf?.offer?.id)
-          .then(data => {
-            this.allowedOffer = data[0]
-            this.isAnalyticsLoaded = true
-
-            this.PTZValue = this.isPTZEnabled
-            this.soundRecordValue = this.isSoundRecordEnabled
-            this.videoQualityValue = VIDEO_QUALITY_VALUE_LIST[+this.isFHDEnabled]
-            this.videoArchiveValue = this.videoArchiveCurrentValue
-
-            this.serviceStatuses = this.availableAnalyticsList.map(
-              el => ({ [el.code]: false })
-            ).reduce((accumulator, el) => ({ ...accumulator, ...el }), {})
-
-            this.enabledServiceCode.forEach(
-              (el: any) => {
-                this.serviceStatuses[el] = true
-              }
-            )
-
-            this.setState(this.READY_STATE)
-          })
+          .then(this.initCameraData)
       })
+  }
+
+  initCameraData (data: any) {
+    this.allowedOffer = data?.[0]
+    this.isAnalyticsLoaded = true
+
+    this.PTZValue = this.isPTZEnabled
+    this.soundRecordValue = this.isSoundRecordEnabled
+    this.videoQualityValue = VIDEO_QUALITY_VALUE_LIST[+this.isFHDEnabled]
+
+    this.serviceStatuses = this.availableAnalyticsList.map(
+      el => ({ [el.code]: false })
+    ).reduce((accumulator, el) => ({ ...accumulator, ...el }), {})
+
+    this.enabledServiceCode.forEach(
+      (el: any) => {
+        this.serviceStatuses[el] = true
+      }
+    )
+
+    this.serviceStatuses[CODES.PTZ] = this.PTZValue
+    this.serviceStatuses[CODES.SOUND_RECORD] = this.soundRecordValue
+    this.setState(this.READY_STATE)
+  }
+
+  fetchCameraData () {
+    this.setState('loading')
+    promisedStoreValue(this.$store, 'videocontrol', 'isDomainRegistryLoaded')
+      .then(() => {
+        this.fetchAllowedOfferList(this.bf?.offer?.id)
+          .then(this.initCameraData)
+      })
+  }
+
+  reloadCameraData () {
+    this.pullDomainRegistry()
+    this.fetchCameraData()
   }
 
   checkIsServiceEnabled (code: string) {
@@ -340,11 +508,6 @@ export default class VCCameraConfigPage extends VueTransitionFSM {
     return service?.prices?.[0] ? service.prices[0].amount : '0.1'
   }
 
-  enableService (code: string, value: any) {
-    logInfo('enable Service', code, value)
-    this.isOrderModalVisible = true
-  }
-
   getServiceByCode (code: string): IOffer | undefined {
     const serviceName = this.availableServiceList.find(
       (el: any) => el.code === code
@@ -361,52 +524,80 @@ export default class VCCameraConfigPage extends VueTransitionFSM {
     return this.getServiceByCode(code)?.name
   }
 
-  getCurrentServicePrice () {
-    return this.getServiceByCode(this.orderData.productCode)?.prices?.[0]?.amount || '0.01'
+  getProductId (code:string) {
+    const service = this.enabledServiceList.find(
+      (el: any) => el.offer.code === code
+    )
+    return service?.id || this.bf.id
   }
 
   switchFunctionality (code: string, value: any) {
-    this.isManagerRequest = !SERVICE_ORDER_MAP[code]
-
-    this.requestData = {
-      descriptionModal: 'Для подключения необходимо сформировать заявку',
-      addressId: this.location.address.id,
-      services: '',
-      fulladdress: this.locationName
-    }
-
-    this.orderData = {
-      // @ts-ignore
-      locationId: this.location.id,
-      bpi: this.bf.id,
-      productCode: code,
-      offer: 'cctv',
-      title: `Вы уверены, что хотите подключить «${this.getServiceNameByCode(code)}»?`
-    }
-
-    if (SERVICE_ORDER_MAP[code]) {
-      logInfo('Order', code, value, this.orderData, this.requestData)
+    if (code === CODES.FULLHD && !this.isFullHDExists) {
+      this.onInfo({ message: MESSAGES.FUNC_NOT_EXISTS })
+    } else if (code === CODES.SOUND_RECORD && !this.isSoundRecordExists) {
+      this.onInfo({ message: MESSAGES.FUNC_NOT_EXISTS })
+    } else if (code === CODES.PTZ && !this.isPTZExists) {
+      this.onInfo({ message: MESSAGES.FUNC_NOT_EXISTS })
+    } else if (this.isModificationInProgress && SERVICE_ORDER_MAP[code]) {
+      this.onInfo({ message: MESSAGES.MIP_MESSAGE })
     } else {
-      logInfo('Request', code, value, this.orderData, this.requestData)
-    }
+      this.currentServiceCode = code
 
-    if (this.checkIsServiceEnabled(code)) {
-      this.disableService(code, value)
-    } else {
-      this.enableService(code, value)
-    }
+      this.serviceStatuses[code] = value
 
-    // this.isOrderModalVisible = true
+      this.currentValue = value
+      this.isManagerRequest = !SERVICE_ORDER_MAP[code]
+
+      this.requestData = {
+        descriptionModal: 'Для подключения необходимо сформировать заявку',
+        addressId: this.location.address.id,
+        services: this.getServiceNameByCode(code),
+        fulladdress: this.locationName
+      }
+
+      this.orderData = {
+        // @ts-ignore
+        locationId: this.location.id,
+        bpi: this.bf.id,
+        productCode: code,
+        offer: 'cctv',
+        title: `Вы уверены, что хотите подключить «${this.getServiceNameByCode(code)}»?`
+      }
+
+      if (SERVICE_ORDER_MAP[code]) {
+        logInfo('Order', code, value, this.orderData, this.requestData)
+      } else {
+        logInfo('Request', code, value, this.orderData, this.requestData)
+      }
+
+      if (this.checkIsServiceEnabled(code)) {
+        if (this.isManagerRequest) {
+          this.requestData = {
+            descriptionModal: 'Для отключения необходимо сформировать заявку',
+            addressId: this.location.address.id,
+            services: this.getServiceNameByCode(code),
+            fulladdress: this.locationName,
+            type: 'disconnect'
+          }
+          this.isOrderModalVisible = true
+        } else {
+          this.disableService(code, value)
+        }
+      } else {
+        this.enableService(code, value)
+      }
+    }
   }
 
   disableService (code: string, value: any) {
     logInfo('disableService', code, value)
 
     this.isOrderMode = true
+    this.disconnectTitle = `Вы уверены, что хотите отключить «${this.getServiceNameByCode(code)}»?`
 
     const payload = {
       locationId: this.location.id,
-      bpi: this.bf.id,
+      productId: this.getProductId(code),
       disconnectDate: this.$moment().format()
     }
 
@@ -414,18 +605,93 @@ export default class VCCameraConfigPage extends VueTransitionFSM {
       .then(() => {
         this.isShowDisconnectModal = true
       })
-      .catch(e => {
-        this.showError(e)
+      .catch(() => {
+        this.showError('При заказе произошла ошибка, обратитесь к вашему персональному менеджеру')
       })
   }
 
+  enableService (code: string, value: any) {
+    logInfo('enable Service', code, value)
+    this.isOrderModalVisible = true
+  }
+
   /* === Events === */
-  onVideoQualityInput (value: string) {
-    this.videoQualityValue = value
-    this.switchFunctionality(
-      CODES.FULLHD,
-      value === VIDEO_QUALITY_VALUE_LIST[1]
-    )
+  onApplyRename () {
+    this.setState('renameConfirmation')
+    this.isSendingOrder = true
+    this.$store.dispatch('salesOrder/send', {
+      offerAcceptedOn: this.$moment().format()
+    })
+      .catch(data => {
+        this.showError(MESSAGES.ORDER_ERROR)
+        throw new Error(data)
+      })
+      .then(() => {
+        this.setState('success')
+      })
+      .finally(() => {
+        this.isSendingOrder = false
+        this.reloadCameraData()
+      })
+  }
+
+  onCancelRename () {
+    this.onCancelOrder()
+    this.setState('ready')
+  }
+
+  onSaveDeviceName (value: string) {
+    if (this.isModificationInProgress) {
+      this.onInfo({ message: MESSAGES.MIP_MESSAGE })
+    } else {
+      const payload = {
+        locationId: this.location.id,
+        bpi: this.camera.id,
+        chars: {
+          [CHARS.DEVICE_NAME]: value
+        }
+      }
+
+      this.isDeviceRenameMode = true
+      this.$store.dispatch('salesOrder/createModifyOrder', payload)
+        .then(() => {
+          // показываем модалку подтверждения
+          this.setState('renameConfirmation')
+        })
+        .catch(() => {
+          this.showError('При заказе произошла ошибка, обратитесь к вашему персональному менеджеру')
+        })
+    }
+  }
+
+  onCancelDeviceRename () {
+    this.isDeviceRenameMode = false
+  }
+
+  onVideoQualityInput (value: iVideoQualityValueItem) {
+    this.$set(this, 'videoQualityValue', value)
+    const isFullHDEnabled = this.videoQualityValue['id'] === VIDEO_QUALITY_VALUE_LIST[1].id
+    const prevValue = this.isFHDEnabled
+      ? VIDEO_QUALITY_VALUE_LIST[1]
+      : VIDEO_QUALITY_VALUE_LIST[0]
+
+    if (
+      (!isFullHDEnabled && this.enabledServiceCode.includes(CODES.FULLHD_ARCHIVE)) ||
+      (isFullHDEnabled && this.enabledServiceCode.includes(CODES.HD_ARCHIVE))
+    ) {
+      this.onInfo({ message: MESSAGES.WARNING_FULLHD_AND_HD_ARCHIVE })
+      this.$set(this, 'videoQualityValue', prevValue)
+    } else {
+      if (!this.isModificationInProgress) {
+        this.switchFunctionality(
+          CODES.FULLHD,
+          isFullHDEnabled
+        )
+      } else {
+        this.onInfo({ message: MESSAGES.MIP_MESSAGE })
+        this.$set(this, 'videoQualityValue', prevValue)
+      }
+    }
   }
 
   onPTZInput (value: boolean) {
@@ -437,29 +703,38 @@ export default class VCCameraConfigPage extends VueTransitionFSM {
   }
 
   onVideoArchiveInput (value: any) {
-    const valueIndex = this.videoArchiveValueList?.indexOf(value) || 0
-    this.switchFunctionality(
-      CODES.FULLHD_ARCHIVE,
-      this.videoArchiveOfferList?.[valueIndex]
-    )
+    if (this.isModificationInProgress) {
+      this.onInfo({ message: MESSAGES.MIP_MESSAGE })
+      return
+    }
 
-    const payload = {
+    const valueIndex = this.videoArchiveValueList?.indexOf(value) || 0
+
+    this.currentServiceCode = this.currentVideoArchiveCode
+    this.currentValue = value
+    const serviceName = this.getServiceNameByCode(this.currentVideoArchiveCode)
+
+    const isDisabling = value === MESSAGES.DISABLE
+
+    this.orderData = {
       locationId: this.location.id,
       bpi: this.bf.id,
-      // productCode: code,
+      productCode: this.currentVideoArchiveCode,
+      offer: isDisabling ? '' : 'cctv',
+      title: isDisabling
+        ? `Вы уверены, что хотите отключить «${serviceName}»?`
+        : `Вы уверены, что хотите подключить «${serviceName}»?`,
       chars: {
         ...this.videoArchiveOfferList?.[valueIndex].chars,
-        [CHARS.NAME_IN_INVOICE]: 'Увеличение глубины видеоархива FullHD'
+        [CHARS.NAME_IN_INVOICE]: `Увеличение глубины видеоархива ${this.videoQualityValue.value}`
       }
     }
 
-    this.$store.dispatch('salesOrder/createModifyOrder', payload)
-      .then(() => {
-        this.$store.dispatch('salesOrder/send')
-      })
-      .catch(() => {
-        this.showError('При заказе произошла ошибка, обратитесь к вашему персональному менеджеру')
-      })
+    if (isDisabling) {
+      this.disableService(this.currentVideoArchiveCode, false)
+    } else {
+      this.enableService(this.currentVideoArchiveCode, value)
+    }
   }
 
   onPlay () {
@@ -472,26 +747,90 @@ export default class VCCameraConfigPage extends VueTransitionFSM {
   }
 
   onCancelOrder () {
-    this.$store.dispatch('salesOrder/cancel')
+    this.isOrderMode = false
+    this.serviceStatuses[this.currentServiceCode] = !this.serviceStatuses[this.currentServiceCode]
+    this.isDeviceRenameMode = false
+    this.currentServiceCode = ''
+    this.setState('loading')
+    this.$store.dispatch('salesOrder/cancel').then(() => {
+      this.reloadCameraData()
+    })
+  }
+
+  onCancelRequest () {
+    this.serviceStatuses[this.currentServiceCode] = !this.serviceStatuses[this.currentServiceCode]
+    this.currentServiceCode = ''
+    this.reloadCameraData()
   }
 
   onApplyOrder () {
+    const FAILED_STATUS = 'FAILED'
+
     const payload = {
       offerAcceptedOn: this.$moment().format()
     }
+
+    this.isSendingOrder = true
     this.$store.dispatch('salesOrder/send', payload)
+      .then(response => {
+        if (response?.submit_statuses?.[0].submitStatus === FAILED_STATUS) {
+          throw Error(MESSAGES.ORDER_ERROR)
+        } else {
+          this.isShowDisconnectModal = false
+          this.isSendingOrder = false
+          this.isShowSuccessDisconnectModal = true
+          this.setState('ready')
+        }
+      })
       .catch(() => {
-        this.showError('При заказе произошла ошибка, обратитесь к вашему персональному менеджеру')
+        this.isShowDisconnectModal = false
+        this.showError(MESSAGES.ORDER_ERROR)
+      })
+      .finally(() => {
+        this.isSendingOrder = false
+        this.isOrderMode = false
+        this.currentServiceCode = ''
       })
   }
 
   onCloseError () {
     this.errorMessage = ''
     this.setState('ready')
+    this.serviceStatuses[this.currentServiceCode] = !this.serviceStatuses[this.currentServiceCode]
+    this.currentServiceCode = ''
   }
 
   showError (message: string) {
     this.errorMessage = message
     this.setState('error')
+  }
+
+  onCloseSuccess () {
+    this.reloadCameraData()
+    this.currentServiceCode = ''
+  }
+
+  pullDomainRegistry (): void {
+    const parentIds = this.$store.state.videocontrol.points
+      .map(({ bpi }: ILocationOfferInfo) => bpi)
+
+    this.$store.dispatch(
+      'videocontrol/pullForpostDomainRegistry',
+      {
+        api: this.$api,
+        parentIds
+      })
+  }
+
+  getAnalyticItemIcon (code: string) {
+    return VIDEO_ANALYTICS[code]?.iconName
+  }
+
+  updateKeyPlease () {
+    return parseInt(Math.random() * 999, 10)
+  }
+
+  onInfoClose () {
+    this.isInfoMode = false
   }
 }

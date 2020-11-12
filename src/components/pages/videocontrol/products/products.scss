@@ -1,4 +1,4 @@
-$pre: '.vc-product-page';
+$pre: ".vc-product-page";
 
 #{$pre} {
   &__content {
@@ -12,7 +12,7 @@ $pre: '.vc-product-page';
     @extend %margin-left--menu-width;
     @extend %main-content-padding-h;
 
-    @include max-breakpoint('md') {
+    @include max-breakpoint("md") {
       padding-left: 0;
       padding-right: 0;
     }
@@ -22,12 +22,12 @@ $pre: '.vc-product-page';
       align-items: center;
 
       height: $padding-x12;
-      @include max-breakpoint('md') {
+      @include max-breakpoint("md") {
         border-radius: 0;
       }
 
-      @include content-padding-breakpoint('left', 'md');
-      @include content-padding-breakpoint('right', 'md');
+      @include content-padding-breakpoint("left", "md");
+      @include content-padding-breakpoint("right", "md");
     }
   }
 
@@ -41,7 +41,7 @@ $pre: '.vc-product-page';
 
     margin-top: $padding-x8;
 
-    @include min-breakpoint('md') {
+    @include min-breakpoint("md") {
       margin-top: $padding-x10;
     }
   }

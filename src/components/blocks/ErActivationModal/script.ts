@@ -60,6 +60,8 @@ export default class ErActivationModal extends Vue {
 
   get getIconByType () {
     switch (this.type) {
+      case 'info':
+        return 'info'
       case 'question':
         return 'question'
       case 'success':

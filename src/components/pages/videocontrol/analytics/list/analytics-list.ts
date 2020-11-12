@@ -1,8 +1,9 @@
-import { Vue, Component } from 'vue-property-decorator'
+import { Component, Vue } from 'vue-property-decorator'
 import AddonCard from '../components/AddonCard/index.vue'
 import { promisedStoreValue } from '@/functions/store_utils'
-import { IDomain } from '@/interfaces/videocontrol'
+import { IVideocontrol } from '@/interfaces/videocontrol'
 import { ANALYTIC_NAME } from '@/constants/videocontrol'
+
 const components = {
   AddonCard
 }
@@ -23,12 +24,16 @@ export default class VCAddonListPage extends Vue {
   */
   get bfOfferId () {
     const domains = this.$store.state.videocontrol.domainRegistry
-    const firstDomain: IDomain = this.getFirstOfObject(domains)
-    const videocontrols = firstDomain?.videocontrols || {}
-    const firstVC = this.getFirstOfObject(videocontrols)
-    const bf = firstVC?.bf || {}
-    const firstBF = this.getFirstOfObject(bf) || {}
-    return firstBF?.offer?.id // '2546'
+    const hasBaseFunctionality = (videocontrol: IVideocontrol) => videocontrol?.bf
+
+    const vcWithBF: IVideocontrol = Object.values(domains)
+      .reduce((acc: any[], domain: any) => {
+        const vc = domain?.videocontrols || {}
+        return [...acc, ...Object.values(vc)]
+      }, [])
+      .find(hasBaseFunctionality) || {}
+
+    return Object.values(vcWithBF.bf)?.[0]?.offer?.id// '2546'
   }
 
   fetchAllowedOfferList (offerId: string) {

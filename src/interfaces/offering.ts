@@ -16,8 +16,10 @@ export interface IProductOffering {
   status: ProductOfferingStatus
   offeringRelationships: IOfferingRelationship[]
   offer?: IOffer
+  id?: string
   isRoot?: boolean
   purchasedPrices?: IPrice
+  chars?: Record<string, any>
 }
 
 export interface IChildProductOffering {

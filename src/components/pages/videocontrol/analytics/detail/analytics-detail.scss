@@ -1,4 +1,4 @@
-$pre: '.vc-addon-detail-page';
+$pre: ".vc-addon-detail-page";
 
 #{$pre} {
   @extend %main-content-width;
@@ -16,21 +16,21 @@ $pre: '.vc-addon-detail-page';
       justify-content: space-between;
       margin-top: $padding-x8;
 
-      @include min-breakpoint('sm') {
+      @include min-breakpoint("sm") {
         flex-direction: row;
       }
 
       .price-title {
         margin-top: $padding-x4;
 
-        @include min-breakpoint('sm') {
+        @include min-breakpoint("sm") {
           margin-top: 0;
         }
       }
     }
 
     .er-corner-button {
-      @include color-black(.5);
+      @include color-black(0.5);
       &__label {
         border-bottom: 1px dashed;
       }
@@ -38,14 +38,14 @@ $pre: '.vc-addon-detail-page';
   }
 
   &__config {
-    @include content-padding-breakpoint('left', 'md');
-    @include content-padding-breakpoint('right', 'md');
+    @include content-padding-breakpoint("left", "md");
+    @include content-padding-breakpoint("right", "md");
 
-    @include content-padding-breakpoint('left', 'lg');
-    @include content-padding-breakpoint('right', 'lg');
+    @include content-padding-breakpoint("left", "lg");
+    @include content-padding-breakpoint("right", "lg");
 
-    @include content-padding-breakpoint('left', 'xl');
-    @include content-padding-breakpoint('right', 'xl');
+    @include content-padding-breakpoint("left", "xl");
+    @include content-padding-breakpoint("right", "xl");
 
     .vc-addon-config + .vc-addon-config {
       margin-top: $padding-x1;
@@ -58,30 +58,30 @@ $pre: '.vc-addon-detail-page';
     display: grid;
     grid-template-columns: 1fr;
 
-    grid-gap: $padding-x6;
+    gap: $padding-x6;
 
-    @include min-breakpoint('sm') {
+    @include min-breakpoint("sm") {
       grid-template-columns: 1fr 1fr;
     }
 
-    @include min-breakpoint('md') {
+    @include min-breakpoint("md") {
       margin-top: $padding-x10;
-      grid-gap: $padding-x8 $padding-x10;
+      gap: $padding-x8 $padding-x10;
     }
 
-    @include min-breakpoint('lg') {
+    @include min-breakpoint("lg") {
       grid-template-columns: 1fr 1fr 1fr;
     }
   }
 
   .addon-config-head {
-    @include content-padding-breakpoint('left', 'xs');
-    @include content-padding-breakpoint('right', 'xs');
+    @include content-padding-breakpoint("left", "xs");
+    @include content-padding-breakpoint("right", "xs");
 
-    @include content-padding-breakpoint('left', 'sm');
-    @include content-padding-breakpoint('right', 'sm');
+    @include content-padding-breakpoint("left", "sm");
+    @include content-padding-breakpoint("right", "sm");
 
-    @include min-breakpoint('md') {
+    @include min-breakpoint("md") {
       padding-left: 0;
       padding-right: 0;
     }
@@ -108,26 +108,26 @@ $pre: '.vc-addon-detail-page';
   .addon-config-body {
     margin-top: $padding-x6;
 
-    @include min-breakpoint('md') {
+    @include min-breakpoint("md") {
       margin-top: $padding-x8;
     }
   }
 
   .addon-config-total {
-    @include content-padding-breakpoint('left', 'xs');
-    @include content-padding-breakpoint('right', 'xs');
+    @include content-padding-breakpoint("left", "xs");
+    @include content-padding-breakpoint("right", "xs");
 
-    @include content-padding-breakpoint('left', 'sm');
-    @include content-padding-breakpoint('right', 'sm');
+    @include content-padding-breakpoint("left", "sm");
+    @include content-padding-breakpoint("right", "sm");
 
-    @include min-breakpoint('md') {
+    @include min-breakpoint("md") {
       padding-left: 0;
       padding-right: 0;
     }
 
     margin-top: $padding-x6;
 
-    @include min-breakpoint('sm') {
+    @include min-breakpoint("sm") {
       margin-top: $padding-x8;
     }
 
@@ -137,7 +137,7 @@ $pre: '.vc-addon-detail-page';
 
     .old-price {
       @extend %h3;
-      @include color-black(.5);
+      @include color-black(0.5);
     }
 
     .prices {
@@ -155,7 +155,6 @@ $pre: '.vc-addon-detail-page';
   }
 }
 
-
 .red-deprecation-line {
   display: inline-block;
   position: relative;
@@ -166,7 +165,7 @@ $pre: '.vc-addon-detail-page';
     top: 50%;
     left: -6%;
     right: -6%;
-    border: 1px solid map_get($red, 'base');
+    border: 1px solid map_get($red, "base");
     transform: translateY(-50%) rotate(-20deg);
   }
 }

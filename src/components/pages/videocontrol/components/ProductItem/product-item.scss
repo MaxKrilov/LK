@@ -1,9 +1,13 @@
-$pre: '.analytic-item';
+$pre: ".product-item";
 
 #{$pre} {
+  & + & {
+    margin-top: $padding-x1;
+  }
+
   @extend %rounded-block;
   height: $padding-x1 * 28;
-  background-color: map_get($gray, '9');
+  background-color: map_get($gray, "9");
 
   display: flex;
   justify-content: space-between;
@@ -18,7 +22,7 @@ $pre: '.analytic-item';
     }
   }
 
-  @include min-breakpoint('md') {
+  @include min-breakpoint("md") {
     flex-direction: row;
     height: $padding-x12;
     padding: $padding-x2 $padding-x3;
@@ -27,21 +31,21 @@ $pre: '.analytic-item';
   &__head {
     display: grid;
     grid-template-columns: $padding-x6 1fr;
-    grid-gap: $padding-x1 $padding-x2;
+    gap: $padding-x1 $padding-x2;
     grid-template-areas:
       "col-1 col-2"
       "col-1 col-3";
 
-    @include min-breakpoint('md') {
+    @include min-breakpoint("md") {
       margin-right: $padding-x6;
       width: 100%;
-      grid-template-columns: $padding-x6 4fr .5fr;
-      grid-template-areas: "col-1 col-2 col-3"
+      grid-template-columns: $padding-x6 4fr 0.5fr;
+      grid-template-areas: "col-1 col-2 col-3";
     }
 
     .er-icon {
       transition: color $primary-transition;
-      @include color-black(.2);
+      @include color-black(0.2);
       svg {
         width: $padding-x6;
         height: $padding-x6;
@@ -51,7 +55,7 @@ $pre: '.analytic-item';
     .title {
       @extend %h4;
 
-      @include min-breakpoint('md') {
+      @include min-breakpoint("md") {
         white-space: nowrap;
         text-overflow: ellipsis;
         overflow: hidden;
@@ -66,7 +70,7 @@ $pre: '.analytic-item';
       display: flex;
       flex-direction: row;
 
-      @include min-breakpoint('md') {
+      @include min-breakpoint("md") {
         align-items: center;
       }
 
@@ -75,9 +79,9 @@ $pre: '.analytic-item';
       }
     }
 
-    @include grid-col-name('col-1');
-    @include grid-col-name('col-2');
-    @include grid-col-name('col-3');
+    @include grid-col-name("col-1");
+    @include grid-col-name("col-2");
+    @include grid-col-name("col-3");
   }
 
   &__body {
@@ -86,7 +90,7 @@ $pre: '.analytic-item';
     justify-content: flex-end;
     align-items: center;
 
-    @include min-breakpoint('md') {
+    @include min-breakpoint("md") {
       width: 180px;
       min-width: 180px;
     }
@@ -112,13 +116,26 @@ $pre: '.analytic-item';
 
   &--active {
     .er-icon {
-      color: map_get($green, 'base');
+      color: map_get($green, "base");
     }
   }
 
   &:not(&--active) {
     .price__sum {
-      @include color-black(.5);
+      @include color-black(0.5);
+    }
+  }
+
+  .ert-input.ert-input--switch {
+    margin-left: $padding-x4;
+    flex-grow: 0;
+
+    .ert-input__slot {
+      margin: 0;
+    }
+
+    .ert-messages {
+      display: none;
     }
   }
 }

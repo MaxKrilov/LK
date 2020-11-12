@@ -13,7 +13,7 @@
             :name="item.name"
             :price="getDomainPrice(key).toFixed(2)"
             :date="$moment(item.actualStartDate).format('DD.MM.YYYY')"
-            :stopped="isDomainActive(item)"
+            :stopped="!isDomainActive(item)"
           )
             vc-domain(
               :dkey="key"
@@ -22,7 +22,7 @@
               :user-price="getDomainUserPrice(key)"
               :user-product-id="getDomainUserProductId(key)"
               @change="onChangeDomain"
-              @error="onError"
+              @info="onInfo"
             )
 
         .total-block
@@ -42,6 +42,14 @@
       @close="isErrorMode = false"
       :title="errorTitle"
     ) {{ errorMessage }}
+
+    info-dialog(
+      v-model="isInfoMode"
+      @close="isInfoMode = false"
+      :title="infoTitle"
+    )
+      div
+        p(v-html="infoMessage")
 
     .vc-product-page__footer(v-if="isPlugVideocontrolPossible")
       er-container.container--no-padding.full

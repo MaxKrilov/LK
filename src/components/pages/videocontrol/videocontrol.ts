@@ -1,31 +1,66 @@
-import { Vue, Component } from 'vue-property-decorator'
-import { promisedStoreValue } from '@/functions/store_utils'
+import { Component, Vue, Watch } from 'vue-property-decorator'
 import { ILocationOfferInfo } from '@/tbapi'
+import { PRODUCT_TYPES } from '@/constants/videocontrol'
+import { mapGetters } from 'vuex'
 
 @Component({
-  name: 'VCTemplate'
+  props: {
+    type: String
+  },
+  computed: {
+    ...mapGetters({ billingAccountId: 'user/getActiveBillingAccount' })
+  }
 })
-export default class VideocontrolProductPage extends Vue {
-  waitBillingAccount () {
-    return promisedStoreValue(this.$store, 'user', 'activeBillingAccount')
+export default class VCTemplate extends Vue {
+  billingAccountId!: any
+
+  get productType (): string {
+    return PRODUCT_TYPES?.[this.$props.type]
+  }
+
+  pullPoints () {
+    return this.$store.dispatch(
+      'videocontrol/pullPoints',
+      {
+        api: this.$api,
+        productType: this.productType || PRODUCT_TYPES.forpost
+      }
+    )
   }
 
   created () {
-    this.waitBillingAccount()
-      .then(() => {
-        this.$store.dispatch('videocontrol/pullPoints', { api: this.$api })
-          .then(data => {
-            const parentIds = data.map((el: ILocationOfferInfo) => el.bpi)
+    if (this.billingAccountId) {
+      this.fetchData()
+    }
+  }
 
-            if (parentIds.length) {
-              this.$store.dispatch(
-                'videocontrol/pullDomainRegistry',
-                { api: this.$api, parentIds }
-              )
-            } else {
-              this.$store.commit('videocontrol/SET_DOMAINS_IS_LOADED', true)
-            }
-          })
+  @Watch('billingAccountId')
+  onBillingAccountIdChange (value: any) {
+    if (value) {
+      this.fetchData()
+    }
+  }
+
+  cleanupData () {
+    this.$store.commit('videocontrol/SET_DOMAINS', {})
+    this.$store.commit('videocontrol/SET_DOMAINS_IS_LOADED', false)
+  }
+
+  fetchData () {
+    this.pullPoints()
+      .then(data => {
+        const parentIds = data.map((el: ILocationOfferInfo) => el.bpi)
+
+        this.cleanupData()
+
+        if (parentIds.length) {
+          this.$store.dispatch(
+            'videocontrol/pullForpostDomainRegistry',
+            { api: this.$api, parentIds }
+          )
+        } else {
+          this.$store.commit('videocontrol/SET_DOMAINS_IS_LOADED', true)
+        }
       })
   }
 
