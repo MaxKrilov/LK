@@ -64,10 +64,10 @@ const MenuItemList = (listProduct: { code: string, name: string, price: number }
             name: 'Контент-фильтрация',
             url: '/lk/internet/content-filter'
           },
-          // {
-          //   name: 'Обратные зоны',
-          //   url: '/lk/internet/reverce-zones'
-          // },
+          {
+            name: 'Обратные зоны',
+            url: '/lk/internet/reverce-zones'
+          },
           {
             name: 'Дополнительные IP-адреса',
             url: '/lk/internet/ip'
