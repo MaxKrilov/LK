@@ -514,7 +514,6 @@
       }
     }
     &__chat {
-      display: none;
       color: rgba(map_get($shades, 'black'), 0.5);
       cursor: pointer;
       @include media-query((

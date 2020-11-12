@@ -3,13 +3,12 @@ $xl-max-chat-width: 300px;
 
 .chat {
   &__wrap {
+    height: 100vh;
     display: flex;
     flex-direction: column;
-
     @include min-breakpoint('xl') {
       width: $xl-max-chat-width;
       max-width: $xl-max-chat-width;
-      height: 100vh;
     }
   }
 }
