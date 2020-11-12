@@ -97,7 +97,7 @@
               er-container.full.container--no-padding
                 er-row
                   er-flex.d--flex.xs12.sm4.md3
-                    er-button(@click="onAddIp" :loading="isConnection" :disabled="isDisabledAddButton") Добавить
+                    er-button(@click="onAddIp" :loading="isConnection || creatingOrder" :disabled="isDisabledAddButton") Добавить
                   er-flex.d--flex.xs12.sm4.md3
                     er-button(
                       color="gray"
@@ -113,3 +113,15 @@
         :deleteOrderData="disconnectionOrderData"
         isSendOrder
         )
+    er-activation-modal(
+      type="question"
+      v-model="isShowMoneyModal"
+      actionButtonText="Пополнить счет"
+      @confirm="$router.push({ name: 'add-funds', params: {sum: - +availableFunds + +ipCost}})"
+      cancel-button-text="Закрыть"
+    )
+      template(slot="description")
+        div  Уважаемый клиент, для завершения заказа на лицевом счете не достаточно денежных средств. Пополните лицевой счет и повторите покупку. 
+        br
+        div  Стоимость подключения: <b>{{ ipCost }} </b> руб.
+        div  Ваши доступные средства: <b>{{ availableFunds }}</b> руб. 
