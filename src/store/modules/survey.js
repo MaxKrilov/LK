@@ -1,16 +1,11 @@
 import {
-  QUESTION_SENDED,
   QUESTION_CANCELED,
-  SURVEY_STATUS_SENDED,
-  SURVEY_PUTOFF_DAYS
+  QUESTION_SENDED,
+  SURVEY_PUTOFF_DAYS,
+  SURVEY_STATUS_SENDED
 } from '@/constants/survey.ts'
 import { logInfo } from '@/functions/logging.ts'
-import {
-  surveyStatusIsDone,
-  processSurvey
-} from '@/functions/survey'
-
-const SURVEY_BACKEND_BRANCH = 'master'
+import { processSurvey, surveyStatusIsDone } from '@/functions/survey'
 
 const SET_USER_SURVEYS = 'SET_USER_SURVEYS'
 const SET_CURRENT_SURVEY = 'SET_CURRENT_SURVEY'
@@ -27,7 +22,6 @@ const state = {
 const apiWrap = api => {
   return api
     .setWithCredentials()
-    .setBranch(SURVEY_BACKEND_BRANCH)
 }
 
 const getters = {
@@ -47,8 +41,7 @@ const getters = {
     return state.actualList.filter(el => {
       const isRemoved = state.removed.includes(el.id)
       const isDone = surveyStatusIsDone(el.surveyStatus)
-      const isActual = !isRemoved && !isDone
-      return isActual
+      return !isRemoved && !isDone
     })
   }
 }
@@ -72,8 +65,7 @@ const actions = {
       })
       .query(url)
       .then(data => {
-        const processedData = processSurvey(data)
-        return processedData
+        return processSurvey(data)
       })
   },
   fetchSurveyByClient: ({ commit, rootGetters }, { api }) => {
@@ -101,7 +93,7 @@ const actions = {
     logInfo('survey/response', newPayload)
 
     if (!SEND_RESPONSE) {
-      return new Promise((resolve, reject) => { resolve({}) })
+      return new Promise((resolve) => { resolve({}) })
     } else {
       return apiWrap(api)
         .setData(newPayload)
@@ -128,7 +120,6 @@ const actions = {
     return dispatch('response', payload)
   },
   remove: ({ commit }, payload) => {
-    console.log('remove survey action', payload)
     commit(REMOVE_SURVEY, payload)
   }
 }
@@ -142,8 +133,7 @@ const mutations = {
     state.actualList = payload.filter(el => {
       const isRemoved = state.removed.includes(el.id)
       const isDone = surveyStatusIsDone(el.surveyStatus)
-      const isActual = !isRemoved && !isDone
-      return isActual
+      return !isRemoved && !isDone
     })
   },
   [SET_CURRENT_SURVEY]: (state, payload) => {
