@@ -22,8 +22,6 @@ interface IPayload {
 const APIShortcut = (api: API, url: string, data: Object) => {
   return api
     .setType('json')
-    .setBranch('web-bss-psi2')
-    .setWithCredentials()
     .setData(data)
     .query(url)
 }

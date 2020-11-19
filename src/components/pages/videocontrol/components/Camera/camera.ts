@@ -28,7 +28,7 @@ export default class Camera extends Vue {
   }
 
   get linkToEdit () {
-    return `/lk/videocontrol/camera/${this.$props.data.id}`
+    return `/lk/videocontrol/forpost/camera/${this.$props.data.id}`
   }
 
   onPlay () {
