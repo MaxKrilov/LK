@@ -4,7 +4,13 @@
     .col.head-label Домен
     .col.head-label Уч.запись
   .forpost-access-table__body
-    template(v-if="Object.keys(users).length")
+    template(v-if="forpostAccountsError || forpostUsersError")
+      .forpost-access-table__row
+        access-item(:show-close-button="false")
+          .error
+            er-icon(name="warning")
+            span.error--text При получении данных по учетным записям произошла ошибка. Попробуйте позже.
+    template(v-else-if="Object.keys(users).length")
       .forpost-access-table__row(v-for="user in users")
         access-item(
           :show-close-button="showDeleteButton"
@@ -19,7 +25,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapState } from 'vuex'
 import AccessItem from './access-item'
 
 export default {
@@ -35,6 +41,10 @@ export default {
     AccessItem
   },
   computed: {
+    ...mapState('profile', [
+      'forpostUsersError',
+      'forpostAccountsError'
+    ]),
     ...mapGetters({
       forpostAccountsRegistry: 'profile/forpostAccountsRegistry'
     })
@@ -50,6 +60,25 @@ export default {
 <style lang="scss">
 .forpost-access-table {
   width: 100%;
+
+  .error {
+    color: map-get($red, 'base');
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: $padding-x3;
+
+    .er-icon {
+      svg {
+        width: $padding-x8;
+        height: $padding-x8;
+      }
+    }
+
+    &__text {
+      @extend %caption1;
+    }
+  }
 
   &__head,
   &__row {

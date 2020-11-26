@@ -1,13 +1,14 @@
-import { mapActions, mapState, mapGetters } from 'vuex'
+import { mapActions, mapGetters, mapState } from 'vuex'
 import EditLprSection from './components/EditLprSection'
 import EditSection from './components/EditSection'
 import EditContactSection from './components/EditContactSection'
 import AccessSection from './components/AccessSection'
 import EditConfirm from './components/EditConfirm'
 import RemoveAccount from '../RemoveAccount'
-import { copyObject, toDefaultPhoneNumber, eachArray } from '@/functions/helper'
-import { USER_FOUND_BY_PHONE, USER_EXISTS_WITH_EMAIL } from '@/constants/status_response'
+import { copyObject, eachArray, toDefaultPhoneNumber } from '@/functions/helper'
+import { USER_EXISTS_WITH_EMAIL, USER_FOUND_BY_PHONE } from '@/constants/status_response'
 import Responsive from '@/mixins/ResponsiveMixin'
+import { SYSTEM_NAMES } from '@/constants/profile'
 
 export default {
   name: 'account-form',
@@ -87,8 +88,8 @@ export default {
     this.sectionAccessRightsData = copyObject(this.filterAccess())
 
     // Forpost users
-    if (this.sectionAccessRightsData.Forpost) {
-      this.sectionAccessRightsData.Forpost.users = this.bindedForpostUserList
+    if (this.sectionAccessRightsData[SYSTEM_NAMES.FORPOST]) {
+      this.sectionAccessRightsData[SYSTEM_NAMES.FORPOST].users = this.bindedForpostUserList
         .filter(el => el.ExternalID === this.userId)
         .reduce((acc, el) => ({ ...acc, [el.ID]: el }), {})
     }
@@ -161,7 +162,7 @@ export default {
       }
     },
     generateForpostUsersSnapshot () {
-      const forpostRights = this.sectionAccessRightsData?.Forpost
+      const forpostRights = this.sectionAccessRightsData?.[SYSTEM_NAMES.FORPOST]
 
       return forpostRights ? Object.keys(forpostRights.users) : []
     },
@@ -353,7 +354,7 @@ export default {
           externalId: userId
         }
         this.$store.dispatch('profile/addForpostToSSO', payload)
-          .then(data => {
+          .then(() => {
             this.$store.dispatch('profile/pullAllForpostUsers')
           })
       })
@@ -367,13 +368,13 @@ export default {
           externalId: userId
         }
         this.$store.dispatch('profile/deleteForpostFromSSO', payload)
-          .then(data => {
+          .then(() => {
             this.$store.dispatch('profile/pullAllForpostUsers')
           })
       })
     },
     syncForpostUsers (userId) {
-      const ForpostAccess = this.sectionAccessRightsData?.Forpost
+      const ForpostAccess = this.sectionAccessRightsData?.[SYSTEM_NAMES.FORPOST]
       if (ForpostAccess) {
         const userList = Object.keys(ForpostAccess.users)
         // 1 to delete
@@ -513,7 +514,7 @@ export default {
         } else {
           await this.hideDialogRemoveAccount()
 
-          const ForpostAccess = this.sectionAccessRightsData?.Forpost
+          const ForpostAccess = this.sectionAccessRightsData?.[SYSTEM_NAMES.FORPOST]
           if (ForpostAccess) {
             const userList = Object.keys(ForpostAccess.users)
             this.unbindForpostUsers(this.userId, userList)
@@ -590,8 +591,7 @@ export default {
     isForpostUsersChanged () {
       const oldData = JSON.stringify(this.forpostUsersSnapshot)
       const newData = JSON.stringify(this.generateForpostUsersSnapshot())
-      const isForpostChanged = oldData !== newData
-      return isForpostChanged
+      return oldData !== newData
     },
     isLastNameChanged () {
       const { formData } = this.getFormData()

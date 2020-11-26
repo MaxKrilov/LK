@@ -4,7 +4,8 @@ import { mapGetters } from 'vuex'
 import AccessItem from '../access-item'
 import ForpostAccessForm from '../forpost-access-form'
 import ForpostAccessTable from '../forpost-access-table'
-import { copyObject } from '../../../../../../../../functions/helper'
+import { copyObject } from '@/functions/helper'
+import { SYSTEM_NAMES } from '@/constants/profile'
 
 export default {
   name: 'access-section',
@@ -22,7 +23,8 @@ export default {
     isShowAccessRight: false,
     isShowAddAccessRights: false,
     currSelectedMenuItem: {},
-    forpostUsers: {} // tmp storage for forpost users
+    forpostUsers: {}, // tmp storage for forpost users,
+    SYSTEM_NAMES
   }),
   mounted () {
     if (this.isSelectFirst) {
@@ -63,12 +65,12 @@ export default {
       }
       currData[this.currentPortal.code].content = [newAccessRight]
 
-      if (currData.Forpost && Object.keys(this.forpostUsers).length) {
-        currData.Forpost.content = [currData.Forpost.accessRights.find(el => el.access === true)]
-        currData.Forpost.users = { ...currData.Forpost.users, ...this.forpostUsers }
+      if (currData[SYSTEM_NAMES.FORPOST] && Object.keys(this.forpostUsers).length) {
+        currData[SYSTEM_NAMES.FORPOST].content = [currData[SYSTEM_NAMES.FORPOST].accessRights.find(el => el.access === true)]
+        currData[SYSTEM_NAMES.FORPOST].users = { ...currData[SYSTEM_NAMES.FORPOST].users, ...this.forpostUsers }
       } else {
         // нет пользователей - нет доступа
-        currData.Forpost.content = [currData.Forpost.accessRights.find(el => el.access === false)]
+        currData[SYSTEM_NAMES.FORPOST].content = [currData[SYSTEM_NAMES.FORPOST].accessRights.find(el => el.access === false)]
       }
 
       this.$emit('input', { ...this.value, ...currData })
@@ -173,15 +175,15 @@ export default {
         }
         result[this.currSelectedMenuItem.code].content = [newAccessRight]
       }
-      result.Forpost.users = copyObject(this.forpostUsers)
+      result[SYSTEM_NAMES.FORPOST].users = copyObject(this.forpostUsers)
       this.$emit('input', result)
     }
   },
   watch: {
     value: {
       handler (val) {
-        if (val?.Forpost?.users) {
-          this.forpostUsers = { ...val.Forpost.users }
+        if (val?.[SYSTEM_NAMES.FORPOST]?.users) {
+          this.forpostUsers = { ...val[SYSTEM_NAMES.FORPOST].users }
         }
       },
       deep: true
@@ -201,6 +203,12 @@ export default {
         value: item.menu.label,
         accessRights: item.accessRights
       }))
+    },
+    forpostUserList () {
+      return this.value[SYSTEM_NAMES.FORPOST].users || {}
+    },
+    isForpostSelected () {
+      return this.currentPortal.code === SYSTEM_NAMES.FORPOST
     },
     accessRightsLabels () {
       if (this.currentPortal) {
