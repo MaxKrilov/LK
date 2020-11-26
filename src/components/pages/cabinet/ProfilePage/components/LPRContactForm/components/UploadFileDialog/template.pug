@@ -32,7 +32,7 @@ div(:class="`${pre}`")
   )
   h4(:class="`${pre}__title`") Для подтверждения права подписи загрузите скан документа
   p(:class="`${pre}__desc`") Это может быть Устав&nbsp;предприятия, Доверенность, Паспорт и&nbsp;прочее. Размер файла не&nbsp;должен
-      | превышать&nbsp;4Мб. Формат: jpg, png, pdf, doc, docx.
+      | превышать&nbsp;2Мб. Формат: doc, docx, pdf, csv, xls, xslx, jpeg, gif, png, tiff, bmp.
 
   er-row(:class="[`${pre}__upload`, {[`${pre}__upload_complete`]: fileSaveState.add}, 'no-gutters']")
     er-file-input(

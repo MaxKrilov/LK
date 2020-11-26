@@ -2,8 +2,8 @@ import { mapGetters } from 'vuex'
 import { ATTACH_SIGNED_DOCUMENT, UPLOAD_FILE } from '@/store/actions/documents'
 import { formatBytes, generateFilePath } from '@/functions/helper'
 
-const ALLOWED_FILE_EXT = ['jpg', 'png', 'pdf', 'doc', 'docx']
-const ALLOWED_FILE_SIZE = 4194304
+const ALLOWED_FILE_EXT = ['doc', 'docx', 'pdf', 'csv', 'xls', 'xslx', 'jpeg', 'gif', 'png', 'tiff', 'bmp']
+const ALLOWED_FILE_SIZE = 2097152
 const FILE_DATA_TYPE = '9154452676313182650'
 const FILE_DATA_BUCKET = 'customer-docs'
 
@@ -16,7 +16,7 @@ export default {
     fileInputLabel: 'Загрузить скан документа',
     value: {},
     checkFileError: {
-      size: 'Файл не загружен. Превышен максимальный размер файла 4 Мб',
+      size: 'Файл не загружен. Превышен максимальный размер файла 2 Мб',
       type: 'Файл не загружен. Недопустимый формат файла.',
       current: null
     },

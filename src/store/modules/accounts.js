@@ -131,7 +131,6 @@ const actions = {
   getProfileAccounts: async ({ commit, dispatch, rootState, rootGetters }, { api }) => {
     commit(ACCOUNTS_REQUEST)
     try {
-      await dispatch('auth/checkAuth', { api }, { root: true })
       const { accessToken: token } = rootState.auth
 
       if (!token) {
@@ -173,10 +172,9 @@ const actions = {
     { api, email, name, phone }) => {
     commit(CREATE_USER_LPR_REQUEST)
     try {
-      await dispatch('auth/checkAuth', { api }, { root: true })
       const { accessToken } = rootState.auth
       const url = generateUrl('createUserLpr')
-      const { success, message, output } = await api
+      const { success, output } = await api
         .setWithCredentials()
         .setData({
           token: accessToken,
@@ -185,7 +183,7 @@ const actions = {
           phone
         })
         .query(url)
-      const { results } = output
+      const { results, message } = output
 
       if (success) {
         return commit(CREATE_USER_LPR_SUCCESS, {
@@ -214,7 +212,6 @@ const actions = {
     commit(ACCOUNTS_REMOVE_REQUEST)
     try {
       const url = generateUrl('deleteUserPost')
-      await dispatch('auth/checkAuth', { api }, { root: true })
       const { accessToken } = rootState.auth
 
       const { success, output } = await api

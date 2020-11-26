@@ -52,15 +52,11 @@ div(:class="`${pre}`")
             v-model="value.middleName"
             isShowSuccess
             :rules="fullNameRule")
-        div(
-          v-if="isMD && !isXS && isAdding"
-          :class="`${pre}__btn-similar`")
+        //- div(v-if="isMD && !isXS && isAdding" :class="`${pre}__btn-similar`")
           er-row
             er-flex(xs1)
               er-toggle(view="radio-check" v-model="isSimilarAccount")
-            er-flex(
-              :class="`${pre}__btn-similar-text--dashed ${isSimilarAccount ? `${pre}__btn-similar--active` : ''}`"
-              xs11)
+            er-flex(:class="`${pre}__btn-similar-text--dashed ${isSimilarAccount ? `${pre}__btn-similar--active` : ''}`" xs11)
               span(@click="handleToggle")
                   | Создать контакт с аналогичными данными
         div(
@@ -194,15 +190,11 @@ div(:class="`${pre}`")
           p(:class="`${pre}__fields-container__group__text-info`")
             | Пароль для учетной записи формируется автоматически после добавления телефона
             | и электронной почты. Сотруднику будет отправлено уведомление о создании учетной записи.
-        div(
-          v-if="isXS && isAdding"
-          :class="`${pre}__btn-similar`")
+        //- div(v-if="isXS && isAdding" :class="`${pre}__btn-similar`")
           er-row
             er-flex(xs1)
               er-toggle(view="radio-check" v-model="isSimilarAccount")
-            er-flex(
-              :class="`${pre}__btn-similar-text--dashed ${isSimilarAccount ? `${pre}__btn-similar--active` : ''}`"
-              xs11)
+            er-flex(:class="`${pre}__btn-similar-text--dashed ${isSimilarAccount ? `${pre}__btn-similar--active` : ''}`" xs11)
               span(@click="handleToggle")
                   | Создать контакт с аналогичными данными
       er-flex(
@@ -224,9 +216,7 @@ div(:class="`${pre}`")
             :items="value.roles"
             :disabled="isLPR && !isAdding"
             :rules="roleRule")
-    div(
-      v-if="isLG && isAdding"
-      @click="handleToggle")
+    //- div(v-if="isLG && isAdding" @click="handleToggle")
       div(:class="`${pre}__btn-similar`")
         er-toggle(view="radio-check" v-model="isSimilarAccount")
         a(:class="`${pre}__btn-similar-text--dashed ${isSimilarAccount ? `${pre}__btn-similar--active` : ''}`")

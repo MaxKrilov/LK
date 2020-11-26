@@ -58,6 +58,11 @@ common-document(
         @click="() => { actSigningConfirm(1) }"
       )
         | Акцептовать
+      er-button(
+        :color="'gray'"
+        @click="() => { actSigningConfirm(0) }"
+      ).er-button--decline
+        | Отказаться
     //- Документ подписан
     div(v-else-if="contractIsSigned")
       .er-document__signed-text
@@ -146,10 +151,10 @@ common-document(
             ErtTextarea(
               placeholder="Укажите причину отказа от акцептования акта (обязательное поле)"
               noResize
-              autoGrow
               rows="3"
+              counter="900"
               v-model="actRejectReason"
-              :rules="[v => !!v || 'Поле обязательно к заполнению']"
+              :rules="[v => !!v || 'Поле обязательно к заполнению', v => v.length <= 900 || 'Максимальное количество символов: 900']"
             )
       er-activation-modal(
         v-model="isActSuccess"

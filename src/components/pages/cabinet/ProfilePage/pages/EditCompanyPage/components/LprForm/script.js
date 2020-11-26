@@ -2,7 +2,7 @@ import { CyrName } from '../../../../../../../../functions/declination'
 import Validators from '@/mixins/ValidatorsMixin'
 import Responsive from '@/mixins/ResponsiveMixin'
 
-const ALLOWED_FILE_EXT = ['jpg', 'png', 'pdf', 'doc', 'docx']
+const ALLOWED_FILE_EXT = ['doc', 'docx', 'pdf', 'csv', 'xls', 'xslx', 'jpeg', 'gif', 'png', 'tiff', 'bmp']
 
 export default {
   name: 'lpr-form',
@@ -16,7 +16,8 @@ export default {
     isFileLoaded: false,
     isFileValid: false,
     cyrNameObj: {},
-    fileInputLabel: 'Загрузить скан документа'
+    fileInputLabel: 'Загрузить скан документа',
+    errorFileText: ''
   }),
   computed: {
     docsLabel () {
@@ -36,8 +37,14 @@ export default {
       if (INPUT_DATA) {
         this.value.file = res
         this.value.fileName = INPUT_DATA.name
-        const fileSizeValid = INPUT_DATA.size <= 4194304
-        this.isFileValid = fileSizeValid && this.fileTypeValid(this.value.fileName)
+        const fileSizeValid = INPUT_DATA.size <= 2097152
+        const fileTypeValid = this.fileTypeValid(this.value.fileName)
+        if (!fileSizeValid) {
+          this.errorFileText = 'Максималный размер файла: 2 МБ'
+        } else if (!fileTypeValid) {
+          this.errorFileText = 'Допустимый формат файла: .doc, .docx, .pdf, .csv, .xls, .xslx, .jpeg, .jpg, .gif, .png, .tiff, .bmp'
+        }
+        this.isFileValid = fileSizeValid && fileTypeValid
         this.isFileLoaded = !!res
       } else {
         this.isFileValid = false
