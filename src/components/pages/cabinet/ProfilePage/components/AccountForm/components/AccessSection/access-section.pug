@@ -34,10 +34,9 @@ div(:class="[{ active: isShowAddAccessRights }, `${pre}`]")
             name="corner_up"
           )
 
-
-    template(v-if="value.Forpost && value.Forpost.menu.selected")
+    template(v-if="value[SYSTEM_NAMES.FORPOST] && value[SYSTEM_NAMES.FORPOST].menu.selected")
       ForpostAccessTable(
-        :users="value.Forpost.users || {}"
+        :users="forpostUserList"
         :show-delete-button="isLPR"
         @delete="onForpostUserDelete"
       )
@@ -69,10 +68,10 @@ div(:class="[{ active: isShowAddAccessRights }, `${pre}`]")
         )
 
       er-flex(v-if="currentPortal" sm12 md6 lg8)
-        template(v-if="currentPortal.code === 'Forpost'")
+        template(v-if="isForpostSelected")
           forpost-access-form(@input="onForpostUserSelected")
 
-        template(v-else-if="currentPortal.code === 'oats'")
+        template(v-else-if="currentPortal.code === SYSTEM_NAMES.OATS")
           er-row
             er-flex(lg6)
               er-select(

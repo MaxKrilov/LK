@@ -3,9 +3,11 @@ import { ActionContext } from 'vuex'
 import { API } from '@/functions/api'
 import { removeObjectKey } from '@/functions/helper'
 import { IForpostAccount, IForpostUser } from '@/interfaces/profile'
-
-const SSO_FORPOST_AUTH_PROVIDER = 2
-const OATS_USERS_OWNER = 'domru'
+import {
+  SYSTEM_NAMES,
+  OATS_USERS_OWNER,
+  SSO_FORPOST_AUTH_PROVIDER
+} from '@/constants/profile'
 
 const URLS = {
   PRODUCTS: '/customer/product/client',
@@ -16,6 +18,8 @@ const URLS = {
   FORPOST_ADD: '/sso/forpost/add',
   FORPOST_DELETE: '/sso/forpost/delete'
 }
+
+const FORPOST_DOMAIN = 'VIDCDOMAIN'
 
 const removeDebugData = (obj: any) => removeObjectKey('debugData', obj)
 
@@ -34,36 +38,54 @@ function isOATSProduct (product: any) {
   return product.offer.originalName.includes('ОАТС')
 }
 
+function isForpostDomain (product: any) {
+  const isForpost = product.offer.code === FORPOST_DOMAIN
+  const isRootOffer = product.offer.isRoot
+  return isForpost && isRootOffer
+}
+
 const TYPES = {
   SET_PRODUCTS: 'SET_PRODUCTS',
   SET_OATS_USERS: 'SET_OATS_USERS',
   SET_OATS_DOMAINS: 'SET_OATS_DOMAINS',
   SET_FORPOST_ACCOUNTS: 'SET_FORPOST_ACCOUNTS',
-  SET_FORPOST_USERS: 'SET_FORPOST_USERS'
+  SET_FORPOST_USERS: 'SET_FORPOST_USERS',
+  SET_FORPOST_ACCOUNTS_ERROR: 'SET_FORPOST_ACCOUNTS_ERROR',
+  SET_FORPOST_USERS_ERROR: 'SET_FORPOST_USERS_ERROR',
+  SET_OATS_DOMAINS_FETCH_ERROR: 'SET_OATS_DOMAINS_FETCH_ERROR',
+  SET_OATS_USERS_FETCH_ERROR: 'SET_OATS_USERS_FETCH_ERROR'
 }
 
 interface IState {
   products: []
   oatsDomains: []
+  oatsUsers: []
   forpostAccounts: IForpostAccount[]
   forpostUsers: Record<string, IForpostUser[]>
+  forpostUsersError: boolean
+  oatsDomainFetchError: boolean
+  oatsUsersFetchError: boolean
 }
 
 const state: IState = {
   products: [],
   oatsDomains: [],
+  oatsUsers: [],
   forpostAccounts: [],
-  forpostUsers: {}
+  forpostUsers: {},
+  forpostUsersError: false,
+  oatsDomainFetchError: false,
+  oatsUsersFetchError: false
 }
 
 const getters = {
   availableSystems (state: IState, getters: any): string[] {
     const systems: Record<string, any> = {
-      'lkb2b': true,
-      'dmp-kc-sit': true,
-      'itglobal': false,
-      'Forpost': getters.hasForpost,
-      'oats': getters.hasOATS
+      [SYSTEM_NAMES.LKB2B]: true,
+      [SYSTEM_NAMES.DMP]: true,
+      [SYSTEM_NAMES.ITGLOBAL]: false,
+      [SYSTEM_NAMES.FORPOST]: getters.hasForpost,
+      [SYSTEM_NAMES.OATS]: getters.hasOATS
     }
 
     return Object.keys(systems).filter(
@@ -74,7 +96,8 @@ const getters = {
     return !!getters.oatsProductList.length
   },
   hasForpost (state: IState): boolean {
-    return !!state.forpostAccounts.length
+    // return !!state.forpostAccounts.length
+    return !!state.products.find(isForpostDomain)
   },
   oatsProductList (state: IState) {
     return state.products.filter(
@@ -117,20 +140,31 @@ const actions = {
     }
 
     return APIShortcut(URLS.OATS_DOMAINS, payload)
+      .catch(() => {
+        context.commit(TYPES.SET_OATS_DOMAINS_FETCH_ERROR, true)
+        throw new Error(`Не получилось запросить домены OATS`)
+      })
       .then(data => {
-        context.commit(TYPES.SET_OATS_DOMAINS, data)
+        context.commit(TYPES.SET_OATS_DOMAINS_FETCH_ERROR, false)
+
+        context.commit(TYPES.SET_OATS_DOMAINS, [data])
         return data
       })
   },
-  pullOATSUsers (context: ActionContext<IState, any>, domain: any) {
+  pullOATSUsers (context: ActionContext<IState, any>, domain: string) {
     const newPayload = {
       owner: OATS_USERS_OWNER,
       userDomain: domain
-      // userDomain: 'vpbx034313789'
     }
     return APIShortcut(URLS.OATS_USERS, newPayload)
+      .catch(() => {
+        context.commit(TYPES.SET_OATS_USERS_FETCH_ERROR, true)
+        throw new Error(`Не получилось запросить пользователей OATS для домена ${newPayload.userDomain}`)
+      })
       .then(data => {
-        context.dispatch(TYPES.SET_OATS_USERS, data)
+        context.commit(TYPES.SET_OATS_USERS_FETCH_ERROR, false)
+        const users = data.accounts
+        context.commit(TYPES.SET_OATS_USERS, users)
         return data
       })
   },
@@ -138,16 +172,20 @@ const actions = {
     const payload = {
       // externalId: context.rootGetters['auth/getTOMS']
       externalId // здесь externalId это TOMS
-
     }
 
     return APIShortcut(URLS.FORPOST_ALL_USERS, payload, 'web-20443-fix')
+      .catch(() => {
+        context.commit(TYPES.SET_FORPOST_ACCOUNTS_ERROR, true)
+        throw new Error(`Не получилось запросить учётные записи Forpost для externalId=${externalId}`)
+      })
       .then(removeDebugData)
       .then(Object.values)
   },
   pullForpostAccounts (context: ActionContext<IState, any>, externalId: any) {
     return context.dispatch('fetchForpostAccounts', externalId)
       .then(data => {
+        context.commit(TYPES.SET_FORPOST_ACCOUNTS_ERROR, false)
         context.commit(TYPES.SET_FORPOST_ACCOUNTS, data)
         return data
       })
@@ -172,9 +210,14 @@ const actions = {
     }
 
     return APIShortcut(URLS.FORPOST_USERS, payload)
+      .catch(() => {
+        context.commit(TYPES.SET_FORPOST_USERS_ERROR, true)
+        throw new Error(`Не получилось запросить пользователей Forpost для accountId=${accountId}`)
+      })
       .then(removeDebugData)
       .then(Object.values)
       .then(data => {
+        context.commit(TYPES.SET_FORPOST_USERS_ERROR, false)
         context.commit(TYPES.SET_FORPOST_USERS, { accountId, userList: data })
         return data
       })
@@ -197,6 +240,7 @@ const actions = {
     }
 
     return APIShortcut(URLS.FORPOST_ADD, newPayload)
+      .catch(() => {})
   },
   deleteForpostFromSSO (context: ActionContext<IState, any>, payload: any) {
     /*
@@ -216,7 +260,6 @@ const actions = {
       authProviderId: SSO_FORPOST_AUTH_PROVIDER
     }
 
-    console.log('payload', newPayload)
     return APIShortcut(URLS.FORPOST_DELETE, newPayload)
   }
 }
@@ -228,11 +271,26 @@ const mutations = {
   [TYPES.SET_OATS_DOMAINS] (state: IState, data: []) {
     state.oatsDomains = data
   },
+  [TYPES.SET_OATS_USERS] (state: IState, data: []) {
+    state.oatsUsers = data
+  },
   [TYPES.SET_FORPOST_ACCOUNTS] (state: IState, data: []) {
     state.forpostAccounts = data
   },
   [TYPES.SET_FORPOST_USERS] (state: IState, { accountId, userList }: { accountId: string, userList: IForpostUser[] }) {
     Vue.set(state.forpostUsers, accountId, userList)
+  },
+  [TYPES.SET_FORPOST_ACCOUNTS_ERROR] (state: IState, isError: boolean) {
+    Vue.set(state, 'forpostAccountsError', isError)
+  },
+  [TYPES.SET_FORPOST_USERS_ERROR] (state: IState, isError: boolean) {
+    Vue.set(state, 'forpostUsersError', isError)
+  },
+  [TYPES.SET_OATS_DOMAINS_FETCH_ERROR] (state: IState, isError: boolean) {
+    Vue.set(state, 'oatsDomainFetchError', isError)
+  },
+  [TYPES.SET_OATS_USERS_FETCH_ERROR] (state: IState, isError: boolean) {
+    Vue.set(state, 'oatsUsersFetchError', isError)
   }
 }
 

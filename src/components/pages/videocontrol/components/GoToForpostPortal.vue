@@ -30,7 +30,7 @@ export default {
     },
     getRedirectLink () {
       // TODO: заменить на getForpostSSOLink() когда будет работать сквозная авторизация
-      return this.getForpostLoginLink()
+      return this.getForpostSSOLink()
     }
   },
   mounted () {

@@ -42,7 +42,10 @@ export default {
   methods: {
     ...mapActions('profile', [
       'pullCurrentUserForpostAccounts',
-      'pullAllForpostUsers'
+      'pullAllForpostUsers',
+      'pullAvailableProducts',
+      'pullOATSDomains',
+      'pullOATSUsers'
     ]),
     setActiveTab (val) {
       const MARGIN_RIGHT = this.isXS ? 16 : 24
@@ -65,9 +68,14 @@ export default {
     }
   },
   mounted () {
-    this.pullCurrentUserForpostAccounts()
+    this.pullAvailableProducts()
       .then(() => {
-        this.pullAllForpostUsers()
+        if (this.hasForpost) {
+          this.pullCurrentUserForpostAccounts()
+            .then(() => {
+              this.pullAllForpostUsers()
+            })
+        }
       })
   },
   watch: {
@@ -82,6 +90,10 @@ export default {
     }
   },
   computed: {
+    ...mapGetters('profile', [
+      'hasForpost',
+      'hasOATS'
+    ]),
     ...mapGetters('user', ['getClientInfo']),
     ...mapGetters('auth', [
       'isLPR',

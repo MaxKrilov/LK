@@ -17,7 +17,7 @@ div(:class="[`${pre}`, { open: value }]")
     div.caption.pl-32.mb-8
       | Лицевой счёт №
     div.personal-account.pl-32
-      a.link--dashed--yellow(@click.prevent="openPersonalAccountDetail") {{ activeBillingAccountNumber }}
+      a.link--dashed--yellow.cursor-pointer(@click.prevent="openPersonalAccountDetail") {{ activeBillingAccountNumber }}
   er-slide-up-down(:active="isOpenPersonalAccountDetail")
     div(:class="`${pre}__personal-account-detail`")
       div.border-top
@@ -28,7 +28,7 @@ div(:class="[`${pre}`, { open: value }]")
           v-for="(accounts, contract) in getBillingAccountsGroupByContract"
           :key="contract"
         )
-          div.caption.mb-4.pl-32
+          div.caption.mb-4.pl-32.cursor-default
             | Договор №
           div.agreement-number.pl-32
             | {{ contract }}
@@ -38,9 +38,9 @@ div(:class="[`${pre}`, { open: value }]")
             :class="{ 'active': activeBillingAccountId === account.billingAccountId }"
             @click="() => { selectPersonalAccount(account.billingAccountId, account.accountNumber) }"
           )
-            div.caption.mb-4
+            div.caption.mb-4.cursor-default
               | Лицевой счёт
-            div.value
+            div.value.cursor-pointer
               er-icon.mr-8(name="ok")
               | {{ account.accountNumber }}
         div.profile.mt-8.mx-4.pl-28.d--flex.align-items-center
