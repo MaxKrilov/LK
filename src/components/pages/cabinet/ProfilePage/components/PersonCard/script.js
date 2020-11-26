@@ -20,12 +20,11 @@ export default {
     }
   },
   computed: {
-    ...mapState('modal',
-      {
-        isPasswordChanged: (state) => state.isFetched,
-        message: (state) => state.message
-      }
-    ),
+    ...mapState({
+      isPasswordChanged: state => state.modal.isFetched,
+      message: state => state.modal.message,
+      isManager: state => state.auth.isManager
+    }),
     roleText () {
       return this.roles
     },

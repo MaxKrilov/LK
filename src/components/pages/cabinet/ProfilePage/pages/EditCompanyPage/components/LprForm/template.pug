@@ -130,4 +130,4 @@ div(:class="`${pre}`")
           v-if="isFileLoaded && !isFileValid"
           :class="`${pre}__file-input__hint`"
         )
-          | Документ не загружен
+          | {{ errorFileText || 'Документ не загружен' }}

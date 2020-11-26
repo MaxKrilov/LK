@@ -1,8 +1,21 @@
 import ErTextarea from '../../UI/ErTextarea'
 import './style.scss'
 
+function returnFileSize (number) {
+  if (number < 1024) {
+    return number + 'bytes'
+  } else if (number > 1024 && number < 1048576) {
+    return (number / 1024).toFixed(1) + 'KB'
+  } else if (number > 1048576) {
+    return (number / 1048576).toFixed(1) + 'MB'
+  }
+}
+
 export default {
   name: 'er-textarea-with-file',
+  props: {
+    maxFileSize: [Number, String]
+  },
   data: () => ({
     childPre: 'er-textarea-with-file',
     fileName: ''
@@ -28,7 +41,11 @@ export default {
         staticClass: `${this.childPre}__file-input`
       }, [
         this.$createElement('input', {
-          attrs: { type: 'file', id },
+          attrs: {
+            type: 'file',
+            id,
+            accept: '.doc, .docx, .pdf, .csv, .xls, .xslx, .jpeg, .jpg, .gif, .png, .tiff, .bmp'
+          },
           on: {
             change: this.onChange
           }
@@ -42,19 +59,19 @@ export default {
       ])
     },
     onChange (e) {
-      this.fileName = e?.target?.files[0]?.name
-      this.$emit('file-append', e.target.files[0])
-      // toBase64(e.target.files[0])
-      //   .then(result => {
-      //     this.$emit('file-append', result)
-      //   })
+      const file = e.target.files[0]
+      const allowedExtensions = /(\.doc|\.docx|\.pdf|\.csv|\.xls|\.xslx|\.jpeg|\.jpg|\.gif|\.png|\.tiff|\.bmp)$/i
+      this.messages.pop()
+      if (file) {
+        if (!allowedExtensions.exec(file.name)) {
+          this.messages.push(`Некорректный формат файла`)
+        } else if (this.maxFileSize && file.size > parseInt(this.maxFileSize)) {
+          this.messages.push(`Размер файла не должен превышать ${returnFileSize(parseInt(this.maxFileSize))}`)
+        } else {
+          this.fileName = e?.target?.files[0]?.name
+          this.$emit('file-append', e.target.files[0])
+        }
+      }
     }
   }
 }
-
-// const toBase64 = file => new Promise((resolve, reject) => {
-//   const reader = new FileReader()
-//   reader.readAsBinaryString(file)
-//   reader.onload = () => resolve(reader.result)
-//   reader.onerror = error => reject(error)
-// })

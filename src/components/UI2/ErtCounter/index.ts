@@ -20,7 +20,7 @@ const ErtCounter = Vue.extend({
     const isGreater = max && (value > max)
 
     return h('div', {
-      staticClass: 'v-counter',
+      staticClass: 'ert-counter',
       class: {
         'error--text': isGreater
       }

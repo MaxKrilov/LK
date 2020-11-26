@@ -34,8 +34,11 @@ mixin appeal(label)
     label= label
     v-model="comment"
     :rules="requiredRule"
+    maxFileSize="2097152"
     @file-append="e => { file = e }"
   )
+  .caption2 Допустимый формат файлов: .doc, .docx, .pdf, .csv, .xls, .xslx, .jpeg, .jpg, .gif, .png, .tiff, .bmp&nbsp;
+    | Размер не должен превышать 2 МБ
 
 mixin footer
   er-flex.create-request-component__personal-data.mb-24(xs12)

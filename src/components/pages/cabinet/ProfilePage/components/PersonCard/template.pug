@@ -16,7 +16,8 @@ er-card(:class="`${pre}`")
           a.link.link--dashed--black Редактировать свой профиль
     er-row.align-items-center.mt-auto(no-gutters)
       er-flex(xs12, lg7, xl7)
-        er-button(:class="`${pre}__button`" flat, @click="handleOpenPasswordChange") Изменить пароль
+        template(v-if="!isManager")
+          er-button(:class="`${pre}__button`" flat, @click="handleOpenPasswordChange") Изменить пароль
       er-flex(xs12, md5, v-if="hasMessage", :class="`${pre}__message__wrapper`")
         div.d--flex(:class="`${pre}__message ${pre}__message--${message.type}`")
           er-icon.mr-4(:class="`${pre}__icon`", :name="message.icon ")

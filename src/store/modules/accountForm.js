@@ -125,7 +125,6 @@ const actions = {
     { api, userId, roleId }) => {
     commit(CREATE_USER_POSITION_REQUEST)
     try {
-      await dispatch('auth/checkAuth', { api }, { root: true })
       const { accessToken } = rootState.auth
       const url = generateUrl('createUserPosition')
       const toms = rootGetters['auth/getTOMS']
@@ -160,7 +159,6 @@ const actions = {
     { api, userPostId, systemRoleId }) => {
     commit(CREATE_USER_ROLES_REQUEST)
     try {
-      await dispatch('auth/checkAuth', { api }, { root: true })
       const { accessToken } = rootState.auth
       const url = generateUrl('createUserRoles')
       const { success, message, output } = await api
@@ -194,7 +192,6 @@ const actions = {
     { api, postId, roleId }) => {
     commit(CHANGE_POSITION_REQUEST)
     try {
-      await dispatch('auth/checkAuth', { api }, { root: true })
       const { accessToken } = rootState.auth
       const url = generateUrl('changePosition')
       const { success, message, output } = await api
@@ -220,7 +217,6 @@ const actions = {
     { api, userPostId, systemRoleId }) => {
     commit(REMOVE_USER_ROLES_REQUEST)
     try {
-      await dispatch('auth/checkAuth', { api }, { root: true })
       const url = generateUrl('removeUserRoles')
       const token = rootState.auth.accessToken
       const { success, message, output } = await api
@@ -253,7 +249,6 @@ const actions = {
     { api, data }) => {
     commit(UPDATE_USER_REQUEST)
     try {
-      await dispatch('auth/checkAuth', { api }, { root: true })
       const toms = rootGetters['auth/getTOMS']
       const result = await api
         .setWithCredentials()
@@ -276,7 +271,6 @@ const actions = {
     { api, userId, fio, email }) => {
     commit(UPDATE_USER_REQUEST)
     try {
-      await dispatch('auth/checkAuth', { api }, { root: true })
       const { accessToken: token } = rootState.auth
       if (!token) {
         throw new Error('Токен невалидный')
@@ -315,7 +309,6 @@ const actions = {
     { api, userId, params }) => {
     commit(CHANGE_ATTRIBUTES_REQUEST)
     try {
-      await dispatch('auth/checkAuth', { api }, { root: true })
       const { accessToken } = rootState.auth
       const url = generateUrl('changeAttributes')
       const { success, message, output } = await api
@@ -347,7 +340,6 @@ const actions = {
     { api, userPostId }) => {
     commit(GET_POST_REQUEST)
     try {
-      await dispatch('auth/checkAuth', { api }, { root: true })
       const { accessToken } = rootState.auth
       const url = generateUrl('getPost')
       const { success, message, output } = await api

@@ -406,7 +406,7 @@ export default {
           this.onSuccess(this.updatedSuccessText, this.userPostId)
         }
       } catch (error) {
-        if (error.includes(USER_EXISTS_WITH_EMAIL)) {
+        if (~this.createdUserLprInfo.error.indexOf(USER_EXISTS_WITH_EMAIL)) {
           this.isEmailExistsError = true
           if (!this.isLPR) {
             this.$refs.editSec.$refs.email.messages.push(this.emailAlreadyExistsText)
@@ -415,7 +415,7 @@ export default {
           }
           this.isLoading = false
           this.setConfirmModalVisibility({ isOpen: false, isFetching: false })
-        } else if (error.includes(USER_FOUND_BY_PHONE)) {
+        } else if (~this.createdUserLprInfo.error.indexOf(USER_FOUND_BY_PHONE)) {
           this.isPhoneExistsError = true
           if (!this.isLPR) {
             this.$refs.editSec.$refs.phone.messages.push(this.phoneAlreadyExistsText)
@@ -483,11 +483,11 @@ export default {
             this.onFail(this.createdFailText, this.userPostId)
           }
         } catch (error) {
-          if (error.includes(USER_EXISTS_WITH_EMAIL)) {
+          if (~this.createdUserLprInfo.error.indexOf(USER_EXISTS_WITH_EMAIL)) {
             this.isEmailExistsError = true
             this.$refs.editLprSec.$refs.email.messages.push(this.emailAlreadyExistsText)
             this.isLoading = false
-          } else if (error.includes(USER_FOUND_BY_PHONE)) {
+          } else if (~this.createdUserLprInfo.error.indexOf(USER_FOUND_BY_PHONE)) {
             this.isPhoneExistsError = true
             this.$refs.editLprSec.$refs.phone.messages.push(this.phoneAlreadyExistsText)
             this.isLoading = false

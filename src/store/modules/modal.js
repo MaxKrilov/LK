@@ -51,7 +51,6 @@ const actions = {
   changePasswordRequest: async ({ commit, dispatch, rootState }, { api, password, userId }) => {
     commit(CHANGE_PASSWORD_REQUEST)
     try {
-      await dispatch('auth/checkAuth', { api }, { root: true })
       const { accessToken } = rootState.auth
       const url = generateUrl('changePassword')
       const { success, message } = await api

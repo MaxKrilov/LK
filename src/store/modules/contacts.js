@@ -735,7 +735,6 @@ const actions = {
     commit(CONTACTS_REMOVE_REQUEST)
     try {
       const url = generateUrl('deleteUserPost')
-      await dispatch('auth/checkAuth', { api }, { root: true })
       const { accessToken } = rootState.auth
 
       const { success, output } = await api

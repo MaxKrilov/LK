@@ -92,7 +92,6 @@ const actions = {
   fetchSystemsDirectory: async ({ commit, dispatch, rootState }, { api }) => {
     commit(SYSTEM_DIRECTORY_REQUEST)
     try {
-      await dispatch('auth/checkAuth', { api }, { root: true })
       const { accessToken } = rootState.auth
 
       const url = generateUrl('getSystems')
@@ -118,7 +117,6 @@ const actions = {
   fetchRolesDirectory: async ({ commit, dispatch, rootState }, { api }) => {
     commit(ROLES_DIRECTORY_REQUEST)
     try {
-      await dispatch('auth/checkAuth', { api }, { root: true })
       const { accessToken } = rootState.auth
 
       const url = generateUrl('getRoles')
