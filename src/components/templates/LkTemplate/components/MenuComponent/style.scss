@@ -151,6 +151,7 @@
         font: 18px/24px $fedra-demi;
         letter-spacing: -0.5px;
         color: rgba(map_get($shades, 'white'), 0.8);
+        flex: 1;
       }
       &__toggle {
         margin-left: auto;

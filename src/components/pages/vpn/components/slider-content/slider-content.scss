@@ -1,0 +1,86 @@
+.vpn-slider {
+
+  &__info {
+    margin-bottom: 32px;
+    display: grid;
+    grid-row-gap: 16px;
+    grid-template-areas: "date"
+      "tariff"
+      "point"
+      "speed"
+      "class";
+
+    @include min-breakpoint("sm") {
+      grid-template-areas: "tariff date"
+      "point point"
+      "speed class";
+    }
+
+    .title {
+      grid-area: title;
+      @extend %caption2;
+    }
+
+    .icon {
+      grid-area: icon;
+      opacity: .2;
+
+    }
+
+    .content {
+      grid-area: content;
+
+    }
+  }
+
+  &__wrapper {
+    display: grid;
+    grid-template-columns: 30px 100%;
+    grid-template-areas: "icon title"
+      "icon content";
+      @include min-breakpoint("md") {
+        grid-template-columns: 40px 100%;
+
+      }
+  }
+
+  &__date {
+    grid-area: date;
+  }
+
+  &__tariff {
+    grid-area: tariff;
+
+  }
+
+  &__point {
+    grid-area: point;
+
+  }
+
+  &__speed {
+    grid-area: speed;
+
+  }
+
+  &__class {
+    grid-area: class;
+
+  }
+
+  &__buttons {
+    display: grid;
+    grid-gap: 8px;
+
+    @include min-breakpoint("md") {
+      grid-row-gap: 8px;
+      grid-column-gap: 16px;
+      grid-template-columns: 1fr 1fr;
+    }
+
+    @include min-breakpoint("lg") {
+      grid-gap: 24px;
+      grid-template-columns: 1fr 1fr 1fr;
+    }
+  }
+}

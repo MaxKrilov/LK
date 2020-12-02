@@ -1,0 +1,21 @@
+div.main-content.main-content--padding.main-content--top-menu-fix
+  er-page-header(title="Сетевая инфраструктура")
+  
+  .vpn__points
+    template(v-if="isLoading")
+        er-card-products(:loading="true")
+        er-card-products(:loading="true")
+        er-card-products(:loading="true")
+    template(v-else)
+      er-card-products(v-for="(item, index) in addressList" :key="index" :price="item.amount" :date="item.name")
+        | {{ item.fulladdress}}
+        template(#date-title) Услуга:
+        template(#slider-content)
+          vpn-slider(:bpi="item.bpi" :fulladdress="item.fulladdress" :addressId="item.addressId")
+      div(class="vpn__total")
+        div(class="vpn__h4") Итого:
+        div(class="price")
+          div(class="h4") {{ amountPrice }}
+          span(class="units") &nbsp₽/месяц
+      .vpn__button
+        er-button(color="blue" tag="a" href="https://perm.b2b.domru.ru/products/arc-gl" target="_blank") Создать сеть
