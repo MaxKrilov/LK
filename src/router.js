@@ -132,6 +132,9 @@ import TVPackagesPage from './components/pages/tv/tv-packages/index'
 import ChannelListPage from './components/pages/tv/channel-list/index'
 import PackageListPage from './components/pages/tv/tv-package-list/index'
 
+import VPNMainPage from './components/pages/vpn/index'
+import VPNPromoPage from './components/pages/vpn/promo-page/index'
+
 // Страницы с ошибками
 import OldBrowserPage from './components/pages/errors/old-browsers'
 // import WifiAuthService from '@/components/pages/wifi/auth-services/index'
@@ -491,6 +494,20 @@ const router = new Router({
           name: 'tv-packages',
           meta: {
             name: 'Пакеты каналов'
+          }
+        },
+        {
+          path: 'vpn',
+          component: VPNMainPage,
+          meta: {
+            name: 'Промо-страница Бизнес ТВ'
+          }
+        },
+        {
+          path: 'vpn/promo',
+          component: VPNPromoPage,
+          meta: {
+            name: 'Промо-страница Бизнес ТВ'
           }
         }
       ]

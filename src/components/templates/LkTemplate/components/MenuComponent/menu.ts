@@ -177,6 +177,19 @@ const MenuItemList = (listProduct: { code: string, name: string, price: number }
         }
       ]
 
+    },
+    {
+      name: 'Сетевая инфраструктура',
+      icon: 'vpn',
+      isOpen: false,
+      url: '/lk/vpn',
+      subitem: [
+        {
+          name: 'promo',
+          url: '/lk/vpn/promo'
+        }
+      ]
+
     }
   ]
 }

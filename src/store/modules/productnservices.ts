@@ -16,13 +16,14 @@ const actions = {
    * @param context
    * @param payload
    */
-  locationOfferInfo (context: ActionContext<IState, any>, payload: { api: API, productType: string}) {
+  locationOfferInfo (context: ActionContext<IState, any>, payload: { api: API, productType: string | string[]}) {
     const { api, productType } = payload
     const { toms: clientId } = context.rootGetters['auth/user']
     const billingAccountId = context.rootGetters['user/getActiveBillingAccount']
     return new Promise<ILocationOfferInfo[]>((resolve, reject) => {
       api
         .setWithCredentials()
+        .setType(TYPE_ARRAY)
         .setData({
           clientId,
           billingAccountId,

@@ -1,0 +1,49 @@
+div(class="vpn-slider")
+  template(v-if="loading")
+    er-preloader(:active="true" icon icon-type="2")
+  template(v-else)
+    .vpn-slider__info
+      .vpn-slider__date.vpn-slider__wrapper
+        .icon
+          er-icon(name="time")
+        .title Активен с:
+        .content {{ date }}
+
+      .vpn-slider__tariff.vpn-slider__wrapper
+        .icon
+          er-icon(name="vpn")
+        .title Тариф:
+        .content.h4 {{ tariff }}
+      .vpn-slider__point.vpn-slider__wrapper
+        .icon
+          er-icon(name="geolocation")
+        .title Наименование сети:
+        .content {{ webName }}
+
+      .vpn-slider__speed.vpn-slider__wrapper
+        .icon
+          er-icon(name="speedup")
+        .title Скорость:
+        .content.h4 
+          span {{ speed }}
+          span.caption2 &nbsp;Мб/с
+
+      .vpn-slider__class.vpn-slider__wrapper
+        .icon
+          er-icon(name="star")
+        .title Класс обслуживания:
+        .content.h4 {{ class1 }}
+    .vpn-slider__buttons
+      er-button(@click="isConnectionSpeed = true" :loading="isConnectionSpeed") Увеличить скорость
+      er-button(flat @click="isConnectionClass = true" :loading="isConnectionClass") Изменить класс обслуживания
+      er-button(flat @click="$router.push('/lk/support?form=suspension_of_a_contract_or_service')") Приостановить услугу
+  ErPlugProduct(
+    v-model="isConnectionSpeed"
+    :requestData="requestDataSpeed"
+    isSendManagerRequest
+  )
+  ErPlugProduct(
+    v-model="isConnectionClass"
+    :requestData="requestDataClass"
+    isSendManagerRequest
+  )
