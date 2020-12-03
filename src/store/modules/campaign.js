@@ -105,11 +105,15 @@ const actions = {
                   { root: true }
                 )
 
-                if (el?.bindedSurvey?.postponedTill) {
+                const isSatisfactionAssessment = el?.bindedSurvey?.scenario?.name === campaignConst.T_SURVEY_SATISFACTION_ASSESSMENT
+
+                if (isSatisfactionAssessment && el?.bindedSurvey?.postponedTill) {
                   el.hidden = isPostponedTillExpired(
                     el.bindedSurvey.postponedTill,
                     el.communication_end_dttm
                   )
+                } else {
+                  el.hidden = false
                 }
               } catch (err) {
                 logError(err)

@@ -5,6 +5,8 @@ const T_SURVEY = {
   iconName: 'question'
 }
 
+const T_SURVEY_SATISFACTION_ASSESSMENT = 'Оценка удовлетворенности'
+
 // "Оценка решения вопроса"
 // В ТЗ анкеты с текстом "Работы по вашему обращению ..."
 const T_SURVEY_TICKET = {
@@ -69,6 +71,7 @@ const RESPONSE_CLICK_TO_CLOSE_VIEW = 'clickToCloseView'
 export {
   TYPES,
   T_SURVEY,
+  T_SURVEY_SATISFACTION_ASSESSMENT,
   T_SURVEY_TICKET,
   T_SURVEY_RECEPTION,
   T_PPR,
