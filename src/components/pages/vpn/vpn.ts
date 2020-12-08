@@ -49,8 +49,9 @@ export default class VPNMainPage extends Vue {
             amount: el?.amount?.value
           }
         })
+        if (!this.addressList.length) this.$router.push('/lk/vpn/promo')
       } else {
-        this.$router.push('/lk/tv/promo')
+        this.$router.push('/lk/vpn/promo')
       }
     })
       .finally(() => {
