@@ -97,7 +97,11 @@
                 :disabled="currentServiceCode === currentVideoArchiveCode"
                 @input="onVideoArchiveInput"
               )
-              er-price {{ videoArchivePrice | price }}
+              er-price
+                template(v-if="currentServiceCode && currentServiceCode === currentVideoArchiveCode")
+                  | {{ videoArchivePrice | price }}
+                template(v-else)
+                  | {{ videoArchiveCurrentPrice | price }}
 
         .addon__list
           .addon
@@ -150,7 +154,7 @@
             :isWaitOrder="currentServiceCode === item.code"
             :isLoading="false",
             :icon-name="getAnalyticItemIcon(item.code)"
-            :info-link="`/lk/videocontrol/analytics/${item.code}`"
+            :info-link="`/lk/videocontrol/forpost/products/${item.code}`"
             :disabled="isOrderMode"
             :value="serviceStatuses[item.code]"
             :status="item.status"

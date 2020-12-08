@@ -39,7 +39,9 @@ div(:class="`${pre}`")
             :key="subIndex"
             :to="subItem.url ? subItem.url : '/'"
           )
-            | {{ subItem.name }}
+            .subitem__name(:class="{main: subItem.subname}") {{ subItem.name }}
+            span.subitem__subname(v-if="subItem.subname") {{ subItem.subname }}
+
   div(:class="`${pre}__top`")
     div(:class="`${pre}__top__burger`", @click="toggleLeftMenu")
       er-icon(name="burger")

@@ -2,7 +2,8 @@ import { concat } from 'lodash'
 
 interface SubMenuItem {
   name: string
-  url: string
+  url: string,
+  subname?: string
 }
 
 interface MenuItem {
@@ -97,16 +98,21 @@ const MenuItemList = (listProduct: { code: string, name: string, price: number }
       name: 'Видеонаблюдение',
       icon: 'watch',
       isOpen: false,
-      url: '/lk/videocontrol/',
-      subitem: isConnectProduct(listProduct, 'Форпост')
+      url: '/lk/videocontrol/forpost/',
+      subitem: isConnectProduct(listProduct, 'Форпост') || isConnectProduct(listProduct, 'iVideon')
         ? [
           {
             name: 'Видеоаналитика',
-            url: '/lk/videocontrol/analytics'
+            url: '/lk/videocontrol/forpost/products'
           },
           {
             name: 'Портал видеонаблюдения',
-            url: '/lk/videocontrol/go-to-forpost'
+            url: '/lk/videocontrol/forpost/go-to-forpost'
+          },
+          {
+            name: 'Видеонаблюдение',
+            subname: 'Энфорта',
+            url: '/lk/videocontrol/enforta/'
           }
         ]
         : []

@@ -380,7 +380,8 @@ const router = new Router({
               component: VCAddonListPage
             },
             {
-              path: 'ForpostIndex/:code',
+              path: 'products/:code',
+              name: 'vc-product-detail',
               component: VCAddonDetailPage,
               props: true
             },

@@ -10,12 +10,16 @@
           .user-count__input
             label.user-count__label(for="input-user-count") Пользователей портала
 
-            er-number-input#input-user-count(
-              :min="1"
-              v-model="domainUserCount"
-              @input="onChangeUserCount",
-              :disabled="isUserCountOrdered"
-            )
+            template(v-if="isDisableChangeUserCount")
+              .user-count__value {{ domainUserCount }}
+
+            template(v-else)
+              er-number-input#input-user-count(
+                :min="0"
+                v-model="domainUserCount"
+                @input="onChangeUserCount",
+                :disabled="isUserCountOrdered"
+              )
 
           .user-count__price
             er-price {{ computedUserPrice | price }}
@@ -77,6 +81,18 @@
     @close="onClosePlugProduct"
     @cancelOrder="onCancelOrder"
   )
+
+  er-activation-modal(
+    type="question"
+    v-model="isShowDisableUserCountModal"
+    title="Отключение услуги"
+    actionButtonText="Отключить"
+    :persistent="true"
+    @confirm="sendOrder"
+    @cancel="cancelOrder"
+  )
+    template(v-slot:description)
+      | Вы действительно хотите отключить услугу "Дополнительные пользователи"?
 
   er-activation-modal(
     type="success"

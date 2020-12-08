@@ -26,6 +26,12 @@ export default class VCAddonCard extends Vue {
   }
 
   onClick () {
-    this.$router.push(`/lk/videocontrol/analytics/${this.$props.code}`)
+    this.$router.push({
+      name: 'vc-product-detail',
+      params: {
+        code: this.$props.code,
+        type: 'forpost'
+      }
+    })
   }
 }

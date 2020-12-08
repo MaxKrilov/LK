@@ -9,6 +9,7 @@ import { logInfo } from '@/functions/logging'
 import { mapState, mapGetters } from 'vuex'
 import { ILocationOfferInfo } from '@/tbapi'
 import { ErtPageWithDialogsMixin } from '@/mixins2/ErtPageWithDialogsMixin'
+import { STATUS_DISCONNECTED } from '@/constants/status'
 
 const components = {
   'vc-domain': VCDomain,
@@ -16,7 +17,7 @@ const components = {
   VCPromo
 }
 
-const MIN_USER_COUNT = 1
+const MIN_USER_COUNT = 0
 const USER_COST = '60'
 
 const computed = {
@@ -66,12 +67,13 @@ export default class VideocontrolProductPage extends ErtPageWithDialogsMixin {
     const services = domain?.services
 
     const isUserType = (el: IDomainService) => el.offer.code === VC_TYPES.USERS
+    const notDisconnectedStatus = (el: IDomainService) => el.status !== STATUS_DISCONNECTED
 
-    return services ? Object.values(services).find(isUserType) : null
+    return services ? Object.values(services).filter(notDisconnectedStatus).find(isUserType) : null
   }
 
   getDomainUserProductId (domainKey: string) {
-    return this.getDomainUsers(domainKey)?.offer?.id
+    return this.getDomainUsers(domainKey)?.id
   }
 
   getDomainUserCount (domainKey: string): number {

@@ -85,6 +85,25 @@
         position: relative;
       }
 
+      &__value {
+        $md-width: 147px;
+        $width: 136px;
+
+        @extend %h3-font;
+        height: $padding-x10;
+        padding: 0 $padding-x1;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid map-get($gray, '4');
+        width: $width;
+        border-radius: $padding-x2;
+
+        @include min-breakpoint(md) {
+          width: $md-width;
+        }
+      }
+
       &__add-btn {
         @include min-breakpoint("lg") {
           max-height: $padding-x10;

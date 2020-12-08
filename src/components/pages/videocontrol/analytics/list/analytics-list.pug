@@ -3,7 +3,7 @@
     er-page-header(
       title="Видеоаналитика"
       link-text="Назад в видеонаблюдение"
-      backlink="/lk/videocontrol"
+      :backlink="{name: 'vc-index', type: 'forpost'}"
     )
     .header-info Стоимость указана с НДС
 
@@ -33,5 +33,5 @@
   .vc-addon-list-page__footer(v-if="isLoaded && !isEmpty")
     er-button(
       color="yellow"
-      @click="$router.push('/lk/videocontrol/')"
+      @click="$router.push({name: 'vc-index', type: 'forpost'})"
     ) Видеонаблюдение

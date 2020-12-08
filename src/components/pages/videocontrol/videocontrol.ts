@@ -36,6 +36,12 @@ export default class VCTemplate extends Vue {
     }
   }
 
+  @Watch('productType')
+  onProductTypeChanged () {
+    this.$store.dispatch('videocontrol/setProductType', this.$props.type)
+    this.fetchData()
+  }
+
   @Watch('billingAccountId')
   onBillingAccountIdChange (value: any) {
     if (value) {
@@ -45,7 +51,7 @@ export default class VCTemplate extends Vue {
 
   cleanupData () {
     this.$store.commit('videocontrol/SET_DOMAINS', {})
-    this.$store.commit('videocontrol/SET_DOMAINS_IS_LOADED', false)
+    this.$store.dispatch('videocontrol/setVCDataIsLoaded', false)
   }
 
   fetchData () {
