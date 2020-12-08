@@ -34,8 +34,7 @@ export default {
     }
   },
   mounted () {
-    console.log('make redirect')
-    this.getRedirectLink()
+    this.getForpostLoginLink()
       .then(data => { window.location = data.loginLink })
   }
 }
