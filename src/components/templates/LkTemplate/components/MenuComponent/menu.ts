@@ -128,19 +128,19 @@ const MenuItemList = (listProduct: { code: string, name: string, price: number }
             {
               name: 'Сервисы авторизации',
               url: '/lk/wifi/services-auth'
-            },
-            {
-              name: 'Конструктор страницы авторизации',
-              url: '/lk/wifi/personalization'
-            },
+            }
+            // {
+            //   name: 'Конструктор страницы авторизации',
+            //   url: '/lk/wifi/personalization'
+            // },
             // {
             //   name: 'Контент-фильтрация',
             //   url: '/lk/wifi/content'
             // },
-            {
-              name: 'Аналитика',
-              url: '/lk/wifi/analytics/statistics'
-            }
+            // {
+            //   name: 'Аналитика',
+            //   url: '/lk/wifi/analytics/statistics'
+            // }
           ]
           : [],
         {
