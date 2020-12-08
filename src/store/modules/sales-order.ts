@@ -3,6 +3,7 @@ import { API } from '@/functions/api'
 import { AxiosError } from 'axios'
 import { ISaleOrder, IOrderItem, IOffer, IOfferingRelationship, IUpdateElement } from '@/tbapi'
 import { TYPE_JSON } from '@/constants/type_request'
+import MESSAGES from '@/constants/messages'
 
 const ACTION_ADD = 'add'
 
@@ -87,6 +88,11 @@ const actions = {
     if (!locationId) throw new Error('Missing required parameter')
     const clientId = getClientId(context)
     const marketingBrandId = context.rootGetters['user/getMarketingBrandId']
+
+    if (!marketingBrandId) {
+      throw new Error(MESSAGES.MARKETING_BRAND_ID_NOT_FOUND)
+    }
+
     return new Promise((resolve, reject) => {
       api()
         .setWithCredentials()

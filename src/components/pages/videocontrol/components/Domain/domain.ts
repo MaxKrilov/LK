@@ -5,13 +5,21 @@ import Camera from '../Camera/index.vue'
 import ErPlugProduct from '@/components/blocks/ErPlugProduct/index.vue'
 import OfferDialog from '@/components/dialogs/OfferDialog/index.vue'
 
-import { CODES, CHARS, ADDITION_USERS, MESSAGES, VC_DOMAIN_STATUSES } from '@/constants/videocontrol'
-import { IVideocontrol, IOffer } from '@/interfaces/videocontrol'
+import {
+  CODES,
+  CHARS,
+  ADDITION_USERS,
+  MESSAGES,
+  VC_DOMAIN_STATUSES,
+  VC_TYPES
+} from '@/constants/videocontrol'
+import { IVideocontrol, IOffer, IDomainService } from '@/interfaces/videocontrol'
 import { logInfo } from '@/functions/logging'
 import { OFFER_LINKS } from '@/constants/url'
 import { VueTransitionFSM } from '@/mixins/FSMMixin'
 import { ILocationOfferInfo } from '@/tbapi'
 import ErActivationModal from '@/components/blocks/ErActivationModal/index.vue'
+import { STATUS_DISCONNECTED } from '@/constants/status'
 
 interface IAddressListItem {
   bpi: string
@@ -40,10 +48,11 @@ const props = {
   domain: Object,
   userCount: Number,
   userCost: Number,
-  userPrice: String,
-  userProductId: String
+  userPrice: String
 }
 const RELOAD_DOMAIN_DATA_DELAY = 800
+const MIN_USER_COUNT = 0
+const USER_COST = '60'
 
 @Component({
   name: 'vc-domain',
@@ -52,6 +61,10 @@ const RELOAD_DOMAIN_DATA_DELAY = 800
   computed
 })
 export default class VCDomain extends VueTransitionFSM {
+  /* config */
+  // TODO: Отключить когда починят механизм подключения/отключения доп.пользователей в TBAPI
+  isDisableChangeUserCount: boolean = true
+
   stateList = [
     'ready', // готов к приключениям
     'order', // заказ пользователей
@@ -96,6 +109,8 @@ export default class VCDomain extends VueTransitionFSM {
 
   isShowOfferDialog: boolean = false
 
+  isShowDisableUserCountModal: boolean = false
+
   isShowSuccessOrderModal: boolean = false
 
   orderData: {} = {
@@ -110,7 +125,7 @@ export default class VCDomain extends VueTransitionFSM {
     type: ''
   }
 
-  domainUserCount: number = 1
+  domainUserCount: number = MIN_USER_COUNT
 
   get isModificationInProgress () {
     return this.$props.domain.status === VC_DOMAIN_STATUSES.MODIFICATION
@@ -157,18 +172,37 @@ export default class VCDomain extends VueTransitionFSM {
 
   get computedUserPrice (): string {
     if (this.isUserCountChanged) {
-      const price = this.domainUserCount * this.payPerUser
+      const price = this.domainUserCount * parseInt(USER_COST, 10)
       return price.toString()
     }
 
-    return this.$props.userPrice.toString()
+    return this.userCountProductPrice
   }
 
-  get userCountOfferId () {
-    // @ts-ignore
-    return Object.values(this.$props.domain.services).find(
-      (el: any) => el.offer.code === 'VIDCUSERS'
-    ).id
+  get userCountProduct () {
+    const services = this.$props.domain?.services
+
+    const isUserType = (el: IDomainService) => el.offer.code === VC_TYPES.USERS
+    const notDisconnectedStatus = ({ status }: IDomainService) => status !== STATUS_DISCONNECTED
+
+    return services
+      ? Object.values(services)
+        // @ts-ignore
+        .filter(notDisconnectedStatus)
+        .find(isUserType)
+      : null
+  }
+
+  get userCountProductPrice () {
+    return this.userCountProduct?.purchasedPrices?.recurrentTotal?.value || '0'
+  }
+
+  get userCountProductOfferId () {
+    return this.userCountProduct?.offer?.id
+  }
+
+  get userCountProductId () {
+    return this.userCountProduct?.id
   }
 
   get location () {
@@ -228,33 +262,39 @@ export default class VCDomain extends VueTransitionFSM {
       const userDiff = this.domainUserCount - this.$props.userCount
       this.isUserOrderMode = true
 
-      if (this.domainUserCount === 1) { // Отключение услуги
-        logInfo('отмена услуги «Дополнительные пользователи»')
+      if (this.domainUserCount === MIN_USER_COUNT) { // Отключение услуги
         const payload = {
           locationId: this.locationId,
-          bpi: this.$props.domain.id,
-          productId: this.$props.userProductId,
+          productId: this.userCountProductId,
           disconnectDate: this.$moment().format()
         }
 
-        // TODO: доработать когда починят отключение услуги в Netcracker
         this.$store.dispatch('salesOrder/createDisconnectOrder', payload)
-          .catch(data => {
-            this.$emit('error', data.message)
+          .catch(() => {
+            this.$emit('error', { message: MESSAGES.ORDER_ERROR })
             this.isUserOrderMode = false
+            throw new Error('')
           })
-      } else if (this.$props.userCount === 1 && userDiff) { // Заказ пользователей
+          .then(() => {
+            this.isShowDisableUserCountModal = true
+          })
+      } else if (this.$props.userCount === MIN_USER_COUNT && userDiff) { // Заказ пользователей
         this.onAddUser()
       } else { // Изменение количества
         const payload = {
           locationId: this.videocontrolList[0].locationId,
-          bpi: this.userCountOfferId,
+          bpi: this.userCountProductOfferId,
           chars: {
             [CHARS.USER_COUNT]: this.domainUserCount,
             ...INVOICE_USERS
           }
         }
         this.$store.dispatch('salesOrder/createModifyOrder', payload)
+          .catch(() => {
+            this.showError(MESSAGES.ORDER_ERROR)
+            this.isUserOrderMode = false
+            throw new Error('при заказе произошла ошибка')
+          })
           .then(() => {
             // показываем принятие оферты
             this.setState('offer')
@@ -275,7 +315,7 @@ export default class VCDomain extends VueTransitionFSM {
     })
       .then(data => {
         if (data.code === HTTP_UNPROCESSABLE_ENTITY_CODE) {
-          this.showError(MESSAGES.USER_MODIFY_ORDER_ERROR)
+          this.showError(MESSAGES.ORDER_ERROR)
         } else if (data.submit_statuses && data.submit_statuses[0].submitStatus === 'FAILED') {
           this.showError(data.submit_statuses[0].submitError)
         } else {
@@ -289,11 +329,12 @@ export default class VCDomain extends VueTransitionFSM {
         this.isUserOrderMode = false
         this.setState('error')
         this.$emit('error', data.message)
+        throw new Error('')
       })
   }
 
   showError (message: string) {
-    this.$emit('error', message)
+    this.$emit('error', { title: 'Ошибка', message })
     this.setState('error')
   }
 

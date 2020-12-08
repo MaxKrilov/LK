@@ -191,6 +191,18 @@
         cursor: pointer;
         text-decoration: none;
 
+        .subitem__name {
+          &.main {
+            @extend %menu-head-font;
+          }
+        }
+
+        .subitem__subname {
+          display: block;
+          margin-top: $padding-x1;
+          @extend %caption1;
+        }
+
         &.main {
           @extend %menu-head-font;
         }

@@ -2,7 +2,10 @@
   .rename-field
     .rename-field__label {{ label }}
     .rename-field__body
-      er-text-field.rename-field__input(v-model="newValue")
+      er-text-field.rename-field__input(
+        v-model="newValue"
+        appendInnerIcon="edit"
+      )
       er-button(
         :loading="isLoading"
         v-if="isValueChanged"

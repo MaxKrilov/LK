@@ -3,11 +3,13 @@ import { IEnfortaVideocontrol } from '@/interfaces/videocontrol'
 import EnfortaVideocontrol from './components/EnfortaVideocontrol/index.vue'
 import { ILocationOfferInfo } from '@/tbapi'
 import ErPlugProduct from '@/components/blocks/ErPlugProduct/index.vue'
+import Promo from '../promo/index.vue'
 import { PLUG_URL } from '@/constants/videocontrol'
 
 const components = {
   EnfortaVideocontrol,
-  ErPlugProduct
+  ErPlugProduct,
+  Promo
 }
 
 @Component({ components })
@@ -25,6 +27,10 @@ export default class VCEnfortaProductList extends Vue {
 
   get isLoaded () {
     return this.$store.state.videocontrol.isDomainRegistryLoaded
+  }
+
+  get isProductPlugged (): boolean {
+    return this.videocontrolList.length
   }
 
   get totalPrice () {

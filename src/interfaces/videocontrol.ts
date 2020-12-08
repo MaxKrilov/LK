@@ -34,6 +34,7 @@ export interface IDomainService {
   offer: IOffer
   chars: IOrderChar
   purchasedPrices: IPurchasedPrice
+  status: string
 }
 
 export interface IDomainRegistry {

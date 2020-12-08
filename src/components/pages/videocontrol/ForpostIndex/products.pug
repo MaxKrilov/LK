@@ -2,6 +2,7 @@
     .vc-product-page__content
       er-page-header(
         title="Видеонаблюдение"
+        backlink="/lk/"
       )
 
     .vc-product-page__list
@@ -23,6 +24,7 @@
               :user-product-id="getDomainUserProductId(key)"
               @change="onChangeDomain"
               @info="onInfo"
+              @error="onError"
             )
 
         .total-block

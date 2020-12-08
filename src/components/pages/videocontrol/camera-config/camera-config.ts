@@ -391,6 +391,12 @@ export default class VCCameraConfigPage extends Mixins(VueTransitionFSM, ErtPage
       : CODES.HD_ARCHIVE
   }
 
+  get videoArchiveCurrentPrice () {
+    const isArchiveProductOffering = (el: IProductOffering): boolean => el?.offer?.code === this.currentVideoArchiveCode
+    const service = this.enabledServiceList.find(isArchiveProductOffering)
+    return service?.purchasedPrices?.recurrentTotal?.value || '0'
+  }
+
   get videoArchivePrice () {
     return this.videoArchiveOfferList?.[this.videoArchiveValueIndex]?.amount || 0
   }

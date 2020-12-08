@@ -4,7 +4,7 @@
       er-page-header(
         :title="analyticItem.name"
         link-text="Назад в видеонаблюдение"
-        backlink="/lk/videocontrol/analytics"
+        :backlink="{name: 'vc-product-list'}"
       )
       .head-info
         .col
@@ -54,7 +54,7 @@
     er-button(color="blue") Подключить {{ analyticItem.name }}
     er-button(
       color="gray"
-      @click="$router.push('/lk/videocontrol/analytics')"
+      @click="$router.push({name: 'vc-product-list'})"
     ) Отмена
 
   er-plug-product(
