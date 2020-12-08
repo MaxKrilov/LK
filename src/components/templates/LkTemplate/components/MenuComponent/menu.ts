@@ -105,10 +105,10 @@ const MenuItemList = (listProduct: { code: string, name: string, price: number }
             name: 'Видеоаналитика',
             url: '/lk/videocontrol/forpost/products'
           },
-          {
-            name: 'Портал видеонаблюдения',
-            url: '/lk/videocontrol/forpost/go-to-forpost'
-          },
+          // {
+          //   name: 'Портал видеонаблюдения',
+          //   url: '/lk/videocontrol/forpost/go-to-forpost'
+          // },
           {
             name: 'Видеонаблюдение',
             subname: 'Энфорта',
@@ -188,14 +188,7 @@ const MenuItemList = (listProduct: { code: string, name: string, price: number }
       name: 'Сетевая инфраструктура',
       icon: 'vpn',
       isOpen: false,
-      url: '/lk/vpn',
-      subitem: [
-        {
-          name: 'promo',
-          url: '/lk/vpn/promo'
-        }
-      ]
-
+      url: '/lk/vpn'
     }
   ]
 }
