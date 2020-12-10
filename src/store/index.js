@@ -34,6 +34,7 @@ import tv from './modules/tv'
 import profile from './modules/profile'
 import wifi from './modules/wifi'
 import catalog from './modules/catalog'
+import oats from './modules/oats'
 
 const debug = process.env.NODE_ENV !== 'production'
 
@@ -71,7 +72,8 @@ export default new Vuex.Store({
     tv,
     wifi,
     profile,
-    catalog
+    catalog,
+    oats
   },
   strict: debug,
   plugins: [createPersistedState({

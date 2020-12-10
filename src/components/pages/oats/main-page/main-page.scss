@@ -1,0 +1,48 @@
+.oats-main-page {
+  &__header {
+    @extend %main-content-padding-top;
+  }
+
+  &__header,
+  &__content,
+  &__footer {
+    @extend %main-content-width;
+    @extend %margin-left--menu-width;
+    @extend %main-content-padding-h;
+  }
+
+  &__content-wide {
+    @extend %margin-left--menu-width;
+    @extend %main-content-width;
+
+    @include min-breakpoint(md) {
+      padding: 0 map_get($main-content-padding, md);
+    }
+
+    @include min-breakpoint(lg) {
+      padding: 0 map_get($main-content-padding, lg);
+    }
+
+    @include min-breakpoint(xl) {
+      padding: 0 map_get($main-content-padding, xl);
+    }
+
+    @include min-breakpoint(xxl) {
+      padding: 0 $padding-x16;
+    }
+  }
+
+  &__footer {
+    margin-top: $padding-x8;
+
+    @include min-breakpoint(md) {
+      margin-top: $padding-x10;
+    }
+
+    .er-button {
+      @include min-breakpoint(md) {
+        width: 40%;
+      }
+    }
+  }
+}
