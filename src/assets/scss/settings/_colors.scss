@@ -161,3 +161,52 @@ $tv-standart-1: radial-gradient(67.34% 47.61% at 67.34% 28.19%, #55D4FF 0%, #1EC
 $tv-standart-2: radial-gradient(71.09% 33.37% at 63.59% 71.48%, #55D4FF 0%, #1EC3FF 44.79%, #34A0E3 100%);
 $tv-standart-3: radial-gradient(34.5% 81.18% at 74.11% 57.75%, #55D4FF 0%, #1EC3FF 44.79%, #34A0E3 100%);
 
+$phoneCategoryGradients: (
+  // цвета для иконки номера телефона (в ОАТС)
+  // "бронзовый", "серебряный" и т.д.
+  'bronze': linear-gradient(
+    26.96deg,
+    #D9A167 18.32%,
+    #BF7D19 38.23%,
+    #D49800 48.25%,
+    #F8E99F 50.06%,
+    #C7973B 75.15%,
+    #A66534 86.41%
+  ),
+  'silver': linear-gradient(
+    19deg,
+    #c4c4c4 10.36%,
+    #a8a8a8 27.15%,
+    #818181 50.09%,
+    #ffffff 52.97%,
+    #c4c4c4 78.06%,
+    #ffffff 104.21%
+  ),
+  'gold': linear-gradient(
+    19deg,
+    #f4cd00 9.71%,
+    #e2c404 35.42%,
+    #d4a500 48.35%,
+    #fff19a 50.69%,
+    #f3d827 83.09%,
+    #fff19a 97.62%
+  ),
+  'platinum': linear-gradient(
+    19deg,
+    #e4e4da 9.94%,
+    #cecdc6 26.05%,
+    #6a6961 48.07%,
+    #eae9db 50.83%,
+    #c8c8bc 74.91%,
+    #fffeeb 100%
+  ),
+  'californium': linear-gradient(
+    25.97deg,
+    #E4E4DA 22.41%,
+    #CECDC6 35%,
+    #6A6961 46.78%,
+    #EAE9DB 48.18%,
+    #C8C8BC 60.39%,
+    #FFFEEB 73.11%
+  )
+);

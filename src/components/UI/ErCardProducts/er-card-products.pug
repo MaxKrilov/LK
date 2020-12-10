@@ -25,12 +25,13 @@ div(:class="`${pre}`")
                         | Подробно
           template(v-if="!stopped")
             div(:class="`${pre}__data-wrap`")
-              div(:class="`${pre}__activate-date`" v-if="date")
-                div(class="title")
-                  slot(name="date-title")
-                    | Дата активации:
-                skeleton(:loading="loading")
-                  div(:class="`${pre}__h4`") {{ date }}
+              slot(name="middle-block")
+                div(:class="`${pre}__activate-date`" v-if="date")
+                  div(class="title")
+                    slot(name="date-title")
+                      | Дата активации:
+                  skeleton(:loading="loading")
+                    div(:class="`${pre}__h4`") {{ date }}
               div(:class="`${pre}__price`")
                 div(class="title") Абонентская плата
                 skeleton(:loading="loading")
@@ -38,9 +39,10 @@ div(:class="`${pre}`")
                     span(:class="`${pre}__h4`") {{ price | priceFormatted }}
                     span(:class="`${pre}__units`") &nbsp;₽/месяц
           template(v-else)
-            div(:class="`${pre}__stopped-block`")
-              er-icon(name="no_enter" :class="['icon']")
-              div Приостановлена
+            slot(name="stopped-block")
+              div(:class="`${pre}__stopped-block`")
+                er-icon(name="no_enter" :class="['icon']")
+                div Приостановлена
         div(:class="`${pre}__active-line`")
   er-slide-up-down(:active="isOpen" :duration="200")
     div(:class="[`${pre}__slider`, { [`${pre}__slider_active`]: isOpen }]")
