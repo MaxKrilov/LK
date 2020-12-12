@@ -62,8 +62,7 @@ const CHARS = {
 
 const CHAR_VALUES = {
   YES: 'Да',
-  NO: 'Нет',
-  PHONE_NUMBER: 'Абонентский номер'
+  NO: 'Нет'
 }
 
 const MESSAGES = {

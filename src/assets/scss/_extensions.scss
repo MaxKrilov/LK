@@ -170,17 +170,6 @@
   }
 }
 
-%wait-dots-animation {
-  display: inline-block;
-
-  &::after {
-    content: '';
-    display: inline-block;
-    animation: waitDots 1s;
-    animation-iteration-count: infinite;
-  }
-}
-
 %link-behaviour {
   cursor: pointer;
 
