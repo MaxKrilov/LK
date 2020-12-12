@@ -3,7 +3,6 @@
 
   &__sum {
     @extend %h4;
-    white-space: nowrap;
   }
 
   &__units {
@@ -15,7 +14,7 @@
 
   &__month {
     &::before {
-      content: "/";
+      content: '/'
     }
   }
 }
