@@ -136,13 +136,13 @@ const actions = {
   allowedOffers (context: ActionContext<IState, any>, { api, id, marketId }: { api: API, id: string | number, marketId: string | number }) {
     const { toms: clientId } = context.rootGetters['auth/user']
     const brandId = context.rootGetters['user/getMarketingBrandId']
-    const marketId = context.rootGetters['user/getMarketId']
+    const _marketId = marketId || context.rootGetters['user/getMarketId']
 
     return new Promise((resolve, reject) => {
       api
         .setData({
           brandId,
-          marketId,
+          marketId: _marketId,
           customerCategoryId: 146,
           distributionChannelId: 144,
           clientId,
