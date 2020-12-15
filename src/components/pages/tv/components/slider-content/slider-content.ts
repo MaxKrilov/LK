@@ -61,10 +61,10 @@ export default class TvSlider extends Vue {
 
             const linePrice: string | undefined = Object.values(line.offer.prices)
               .find((el: ITVLineOfferPrice) => el?.chars?.['Тип подключения к IP-сети'] === line?.chars?.['Тип подключения к IP-сети'])?.amount
-
             return {
               id: line.id,
               status: line.status,
+              marketId: line.market.id,
               tvType: line?.chars?.['Тип TV'],
               stb: stb?.[0],
               price: line.purchasedPrices.recurrentTotal.value,

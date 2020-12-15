@@ -47,6 +47,9 @@ export interface ITVLine {
       [key: string]: ITVLineOfferPrice
     }
   }
+  market: {
+    id: string
+  }
   stb: {
     [key: string]: ITVSTB
   }
@@ -67,6 +70,7 @@ export interface IModuleInfo {
   addressId: string
   fulladdress: string
   locationId: string
+  marketId: string | number
   linePrice: string | undefined
   price: string
   tvType: string

@@ -163,7 +163,7 @@ export default class TVPackagesPage extends Vue {
       this.$store.dispatch('tv/packs', { api: this.$api })
         .then((answer: ITVPacketPage[]) => {
           this.packages = answer
-          this.$store.dispatch('productnservices/allowedOffers', { api: this.$api, id: this.line?.offerId })
+          this.$store.dispatch('productnservices/allowedOffers', { api: this.$api, id: this.line?.offerId, marketId: this.line?.marketId })
             .then((answer: IProductOffering[]) => {
               // формируем список доступных кодов для подключения
               this.allowedPackagesCodes = answer[0].offeringRelationships
@@ -231,6 +231,7 @@ export default class TVPackagesPage extends Vue {
                   if (packet) {
                     packet.productId = connectedPacket.id
                     packet.price = connectedPacket.price
+                    packet.count = `${packet.count} ${getNoun(packet.count, 'канал', 'канала', 'каналов')}`
                     try {
                       packet.img = packet.backgroundMobile ? require(`@/assets/images/tv/${packet.backgroundMobile}.png`) : ''
                     } catch {
