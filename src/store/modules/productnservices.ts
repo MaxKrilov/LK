@@ -133,7 +133,7 @@ const actions = {
         .catch((err: AxiosError) => reject(err))
     })
   },
-  allowedOffers (context: ActionContext<IState, any>, { api, id }: { api: API, id: string | number }) {
+  allowedOffers (context: ActionContext<IState, any>, { api, id, marketId }: { api: API, id: string | number, marketId: string | number }) {
     const { toms: clientId } = context.rootGetters['auth/user']
     const brandId = context.rootGetters['user/getMarketingBrandId']
 
@@ -141,7 +141,7 @@ const actions = {
       api
         .setData({
           brandId,
-          marketId: 68,
+          marketId,
           customerCategoryId: 146,
           distributionChannelId: 144,
           clientId,
