@@ -194,7 +194,8 @@ const getters = {
       acc.push({
         code: product.offeringCategory.code,
         name: product.offeringCategory.name,
-        price: Number(product.amount.value)
+        price: Number(product.amount.value),
+        offerName: product.offer.name
       })
       return acc
     }, [])
@@ -213,6 +214,9 @@ const getters = {
   },
   getMarketingBrandId (state) {
     return state.paymentInfo?.marketingBrandId
+  },
+  getMarketId (state) {
+    return state.paymentInfo.market?.id || ''
   }
 }
 

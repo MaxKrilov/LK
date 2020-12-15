@@ -150,93 +150,112 @@ const actions = {
     return tokens
   },
 
-  signIn: async (context, payload) => {
-    let actions = userActions
+  signIn (context, payload) {
+    return new Promise((resolve, reject) => {
+      const actions = context.state.isManager
+        ? managerActions
+        : userActions
 
-    if (context.state.isManager) {
-      actions = managerActions
-    }
+      // Костыль на случай, если авторизация в фрейме не сработала
+      // Проблема происходит в FF, но не исключены проблемы в других браузерах
+      const urlParams = getAllUrlParams()
+      if (Object.keys(urlParams).length > 0) {
+        const billingAccount = urlParams.billing_account
+        const totalAmount = urlParams.total_amount
 
-    // Костыль на случай, если авторизация в фрейме не сработала
-    // Проблема происходит в FF, но не исключены проблемы в других браузерах
-    const urlParams = getAllUrlParams()
-    if (Object.keys(urlParams).length > 0) {
-      const billingAccount = urlParams.billing_account
-      const totalAmount = urlParams.total_amount
-
-      if (billingAccount && totalAmount) {
-        Cookie.set('ff_billing_account', billingAccount, {})
-        Cookie.set('ff_total_amount', totalAmount, {})
+        if (billingAccount && totalAmount) {
+          Cookie.set('ff_billing_account', billingAccount, {})
+          Cookie.set('ff_total_amount', totalAmount, {})
+        }
       }
-    }
 
-    return actions.signIn(context, payload)
+      actions.signIn(context, payload)
+        .then(response => resolve(response))
+        .catch(error => reject(error))
+    })
   },
 
-  fetchRefreshToken: async ({ commit, dispatch, state: { error, refreshToken } }, { api }) => {
-    commit(REFRESH_REQUEST)
+  fetchRefreshToken (
+    { commit, dispatch, state: { error, refreshToken } },
+    { api }
+  ) {
+    return new Promise((resolve, reject) => {
+      commit(REFRESH_REQUEST)
 
-    if (!refreshToken && !error) {
-      return dispatch('signIn', { api })
-    }
+      if (!refreshToken && !error) {
+        return dispatch('signIn', { api })
+      }
 
-    try {
       const url = generateUrl('refreshToken')
-      const response = await api
+      api
         .setWithCredentials()
         .setData({
           token: refreshToken
         })
         .query(url)
-
-      try {
-        const tokens = await makeTokens(response)
-        commit(SET_AUTH_TOKENS, tokens)
-        commit(REFRESH_SUCCESS)
-      } catch (e) {
-        commit(REMOVE_AUTH_TOKENS)
-        commit(REMOVE_USER_INFO)
-        commit(REFRESH_ERROR, 'Не удалось сохранить токены')
-      }
-    } catch (e) {
-      commit(REFRESH_ERROR, `Ошибка обновления токена ${e.toString()}`)
-      throw new Error(e)
-    }
+        .then(response => {
+          makeTokens(response)
+            .then(tokens => {
+              commit(SET_AUTH_TOKENS, tokens)
+              commit(REFRESH_SUCCESS)
+              resolve(true)
+            })
+            .catch(e => {
+              commit(REMOVE_AUTH_TOKENS)
+              commit(REMOVE_USER_INFO)
+              commit(REFRESH_ERROR, 'Не удалось сохранить токены')
+              reject(e.toString())
+            })
+        })
+        .catch(e => {
+          commit(REFRESH_ERROR, `Ошибка обновления токена ${e.toString()}`)
+          reject(e.toString())
+        })
+    })
   },
 
-  signOut: async ({ commit, rootState, state }, { api, isRefreshExpired }) => {
-    if (state.isManager) {
-      commit(AUTH_LOGOUT)
-      const redirectLink = isCombat()
-        ? MANAGER_LOGOUT.combat
-        : isServer('psi2')
-          ? MANAGER_LOGOUT.psi2
-          : MANAGER_LOGOUT.psi1
-      location.href = `${redirectLink}?redirect_uri=${location.href}`
-      return
-    }
-    commit(LOGOUT_REQUEST)
-    try {
-      const { accessToken } = rootState.auth
-      const result = await api
-        .setWithCredentials()
-        .setData({
-          token: accessToken
-        })
-        .query('/sso/default/reject-token')
-      if (result.success) {
+  signOut (
+    { commit, rootState, state },
+    { api }
+  ) {
+    return new Promise((resolve, reject) => {
+      if (state.isManager) {
         commit(AUTH_LOGOUT)
-        commit(LOGOUT_SUCCESS)
-        location.href = result.redirect
+        const redirectLink = isCombat()
+          ? MANAGER_LOGOUT.combat
+          : isServer('psi2')
+            ? MANAGER_LOGOUT.psi2
+            : MANAGER_LOGOUT.psi1
+        location.href = `${redirectLink}?redirect_uri=${location.href}`
+        resolve()
+      } else {
+        commit(LOGOUT_REQUEST)
+        const { accessToken: token } = rootState.auth
+        api
+          .setWithCredentials()
+          .setData({
+            token
+          })
+          .query('/sso/default/reject-token')
+          .then(response => {
+            if (response.success) {
+              commit(AUTH_LOGOUT)
+              commit(LOGOUT_SUCCESS)
+              location.href = response.redirect
+              resolve()
+            } else {
+              reject()
+            }
+          })
+          .catch(error => {
+            commit(LOGOUT_ERROR)
+            setTimeout(() => {
+              commit(ERROR_MODAL, true, { root: true })
+            })
+            reject(error)
+          })
       }
-    } catch (e) {
-      commit(LOGOUT_ERROR)
-      setTimeout(() => {
-        commit(ERROR_MODAL, true, { root: true })
-      })
-      // todo Логирование
-    }
-    // commit(AUTH_LOGOUT)
+    })
   },
   updateUserInfo ({ commit }, data) {
     const fData = {
@@ -306,19 +325,19 @@ const mutations = {
     state.toms = null
   },
   [REFRESH_REQUEST]: (state) => {
-    state.isLogging = true
+    // state.isLogging = true
     state.refreshedToken.isFetching = true
     state.refreshedToken.isFetched = false
     state.refreshedToken.error = null
   },
   [REFRESH_SUCCESS]: (state) => {
-    state.isLogging = false
+    // state.isLogging = false
     state.refreshedToken.isFetching = false
     state.refreshedToken.isFetched = true
     state.refreshedToken.error = null
   },
   [REFRESH_ERROR]: (state, payload) => {
-    state.isLogging = false
+    // state.isLogging = false
     state.refreshedToken.isFetching = false
     state.refreshedToken.isFetched = false
     state.refreshedToken.error = payload

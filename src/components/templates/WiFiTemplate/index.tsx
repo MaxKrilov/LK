@@ -39,10 +39,11 @@ export default class WiFiTemplate extends Vue {
       productType: 'Wi-Fi'
     })
       .then(response => {
-        if (response.length === 0) {
+        const listPoint = response.filter((point: any) => ~point.offer.name.toLowerCase().indexOf('mono'))
+        if (listPoint.length === 0) {
           this.$router.push('/lk/wifi/promo')
         } else {
-          this.listPoint = response.filter((point: any) => ~point.offer.name.toLowerCase().indexOf('mono'))
+          this.listPoint = listPoint
         }
       })
       .catch(() => {

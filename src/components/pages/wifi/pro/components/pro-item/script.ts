@@ -65,7 +65,9 @@ export default class ErtWifiProItem extends Vue {
 
   // Computed
   get getPrice () {
-    return Number(this.content.purchasedPrices.recurrentTotal.value)
+    return Object.keys(this.content.services).reduce((acc, serviceId) => {
+      return (acc += Number(this.content.services[serviceId].purchasedPrices.recurrentTotal.value))
+    }, 0)
   }
 
   get getSmsPackets () {

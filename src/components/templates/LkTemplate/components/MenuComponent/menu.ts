@@ -14,11 +14,26 @@ interface MenuItem {
   subitem?: SubMenuItem[]
 }
 
-const isConnectProduct = (listProduct: { code: string, name: string, price: number }[], productCode: string) => {
+interface IProductItem {
+  code: string,
+  name: string,
+  price: number,
+  offerName: string
+}
+
+const isConnectProduct = (listProduct: IProductItem[], productCode: string) => {
   return listProduct.findIndex(product => product.code === productCode) > -1
 }
 
-const MenuItemList = (listProduct: { code: string, name: string, price: number }[]): MenuItem[] => {
+const isConnectWifiMono = (listProduct: IProductItem[]) => {
+  return listProduct.some(productItem => ~productItem.offerName.toLowerCase().indexOf('mono'))
+}
+
+const isConnectWifiPro = (listProduct: IProductItem[]) => {
+  return listProduct.some(productItem => ~productItem.offerName.toLowerCase().indexOf('pro'))
+}
+
+const MenuItemList = (listProduct: IProductItem[]): MenuItem[] => {
   return [
     {
       name: 'Главная',
@@ -123,7 +138,7 @@ const MenuItemList = (listProduct: { code: string, name: string, price: number }
       isOpen: false,
       url: '/lk/wifi',
       subitem: concat(
-        isConnectProduct(listProduct, 'Wi-Fi')
+        isConnectWifiMono(listProduct)
           ? [
             {
               name: 'Сервисы авторизации',
@@ -143,10 +158,14 @@ const MenuItemList = (listProduct: { code: string, name: string, price: number }
             // }
           ]
           : [],
-        {
-          name: 'Wi-Fi PRO',
-          url: '/lk/wifi/pro'
-        }
+        isConnectWifiPro(listProduct)
+          ? [
+            {
+              name: 'Wi-Fi PRO',
+              url: '/lk/wifi/pro'
+            }
+          ]
+          : []
       )
     },
     {

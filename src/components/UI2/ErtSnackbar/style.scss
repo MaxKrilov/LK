@@ -1,0 +1,110 @@
+.ert-snackbar {
+  position: fixed;
+  display: flex;
+  will-change: transform, opacity;
+  z-index: map-get($z-index, "snackbar");
+
+  &--bottom-right {
+    right: 20px;
+    bottom: 20px;
+  }
+
+  &--bottom-center {
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+
+  &--bottom-left {
+    left: 20px;
+    bottom: 20px;
+  }
+
+  &--top-right {
+    right: 20px;
+    top: 20px;
+  }
+
+  &--top-center {
+    left: 0;
+    right: 0;
+    top: 0;
+  }
+
+  &--top-left {
+    left: 20px;
+    top: 20px;
+  }
+
+  &__wrap {
+    width: auto;
+    min-width: 300px;
+    max-width: 550px;
+    margin: 0 auto;
+    padding: 15px;
+    border-radius: 8px;
+    box-sizing: border-box;
+    border-left: 4px solid;
+  }
+
+  &--success .ert-snackbar__wrap {
+    background-color: map-get($green, 'base');
+    border-left-color: map-get($green, 'darken-1');
+    color: map-get($shades, 'white');
+  }
+
+  &--info .ert-snackbar__wrap {
+    background-color: map-get($blue, 'base');
+    border-left-color: map-get($blue, 'darken-1');
+    color: map-get($shades, 'white');
+  }
+
+  &--warning .ert-snackbar__wrap {
+    background-color: map-get($yellow, 'base');
+    border-left-color: map-get($yellow, 'darken-1');
+    color: map-get($shades, 'black');
+  }
+
+  &--error .ert-snackbar__wrap {
+    background-color: map-get($red, 'base');
+    border-left-color: map-get($red, 'darken-1');
+    color: map-get($shades, 'white');
+  }
+
+  &__body {
+    display: flex;
+    align-items: center;
+    @extend %caption1-font;
+  }
+}
+
+.snackbar-enter-active, .snackbar-leave-active {
+  transition: all 250ms cubic-bezier(.4,0,.2,1);
+}
+
+.snackbar--bottom-center.snackbar-enter,
+.snackbar--bottom-center.snackbar-leave-to {
+  opacity: .5;
+  transform: translate3d(0, 100%, 0);
+}
+
+.snackbar--top-center.snackbar-enter,
+.snackbar--top-center.snackbar-leave-to {
+  opacity: .5;
+  transform: translate3d(0, -100%, 0);
+}
+
+.snackbar--bottom-left.snackbar-enter,
+.snackbar--bottom-left.snackbar-leave-to,
+.snackbar--bottom-right.snackbar-enter,
+.snackbar--bottom-right.snackbar-leave-to {
+  opacity: .5;
+  transform: translate3d(0, calc(100% + 20px), 0);
+}
+.snackbar--top-left.snackbar-enter,
+.snackbar--top-left.snackbar-leave-to,
+.snackbar--top-right.snackbar-enter,
+.snackbar--top-right.snackbar-leave-to {
+  opacity: .5;
+  transform: translate3d(0, calc(-100% - 20px), 0);
+}

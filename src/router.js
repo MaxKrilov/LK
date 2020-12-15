@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import store from './store'
-import { API } from '@/functions/api.ts'
+// import { API } from '@/functions/api.ts'
 
 // Шаблоны
 import LkTemplate from './components/templates/LkTemplate/index'
@@ -142,7 +142,7 @@ import OldBrowserPage from './components/pages/errors/old-browsers'
 Vue.use(Router)
 
 const MANAGER_AUTH_PATH = '/manager'
-const api = new API()
+// const api = new API()
 
 const router = new Router({
   mode: 'history',
@@ -562,13 +562,14 @@ router.beforeEach((to, from, next) => {
   }
 
   if (to.matched.some(r => r.meta.requiresAuth)) {
+    next()
     if (!hasAccess) {
-      const tokenIsFetching = store.state.auth.refreshedToken.isFetching
-      const serverError = store.getters['auth/serverErrorMessage']
-      if (!tokenIsFetching && !serverError) {
-        store.dispatch('auth/checkAuth', { api })
-          .then(data => data && next())
-      }
+      // const tokenIsFetching = store.state.auth.refreshedToken.isFetching
+      // const serverError = store.getters['auth/serverErrorMessage']
+      // if (!tokenIsFetching && !serverError) {
+      //   store.dispatch('auth/checkAuth', { api })
+      //     .then(data => data && next())
+      // }
     } else {
       next()
     }

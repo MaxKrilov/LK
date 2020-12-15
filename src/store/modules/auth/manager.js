@@ -17,33 +17,34 @@ const getters = {
 }
 
 const actions = {
-  signIn: async ({ commit }, { api }) => {
-    commit(AUTH_REQUEST)
-    try {
+  signIn ({ commit }, { api }) {
+    return new Promise((resolve, reject) => {
+      commit(AUTH_REQUEST)
       const params = authParamsAfterRedirect()
       const url = generateUrl('authManager')
 
-      const response = await api
+      api
         .setWithCredentials()
         .setData(params)
         .query(url)
-        .then(data => {
-          return data
+        .then(response => {
+          makeTokens(response)
+            .then(tokens => {
+              commit(SET_AUTH_TOKENS, tokens)
+              commit(AUTH_SUCCESS, response)
+              resolve(tokens)
+            })
+            .catch(error => {
+              commit(REMOVE_AUTH_TOKENS)
+              commit(AUTH_ERROR, `Не удалось авторизоваться: ${error?.toString() || ''}`)
+              reject(error)
+            })
         })
-
-      try {
-        const tokens = await makeTokens(response)
-        commit(SET_AUTH_TOKENS, tokens)
-        commit(AUTH_SUCCESS, response)
-        return tokens
-      } catch (e) {
-        commit(REMOVE_AUTH_TOKENS)
-        commit(AUTH_ERROR, `Не удалось авторизоваться: ${e.toString()}`)
-        return false
-      }
-    } catch (e) {
-      commit(AUTH_ERROR, `Ошибка сервера ${e.toString()}`)
-    }
+        .catch(error => {
+          commit(AUTH_ERROR, `Ошибка сервера ${error?.toString() || ''}`)
+          reject(error)
+        })
+    })
   }
 }
 
