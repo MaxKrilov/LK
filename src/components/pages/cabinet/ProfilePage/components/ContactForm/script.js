@@ -26,8 +26,8 @@ export default {
     updatedFailText: 'При обновлении контакта произошла ошибка. Попробуйте обновить позже.',
     removeContactSuccessText: 'Контакт сотрудника удален.',
     removeContactFailText: 'При удалении контакта произошла ошибка. Попробуйте удалить еще раз',
-    emailAlreadyExistsText: 'Имейл уже существует',
-    phoneAlreadyExistsText: 'Телефон уже существует',
+    emailAlreadyExistsText: 'E-mail уже используется',
+    phoneAlreadyExistsText: 'Телефон уже используется',
     sectionContactData: {
       canSign: false,
       lastName: '',

@@ -1,0 +1,9 @@
+@include theme(ert-sheet) using ($theme) {
+  background-color: map-get($theme, 'cards');
+  border-color: map-get($theme, 'cards');
+  color: map-deep-get($theme, 'text', 'rest-primary');
+
+  &--outlined {
+    border: thin solid map-get($theme, 'dividers');
+  }
+}

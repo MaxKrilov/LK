@@ -311,7 +311,7 @@ const actions = {
     try {
       const { accessToken } = rootState.auth
       const url = generateUrl('changeAttributes')
-      const { success, message, output } = await api
+      const { success, output } = await api
         .setWithCredentials()
         .setData({
           token: accessToken,
@@ -330,7 +330,7 @@ const actions = {
         return commit(CHANGE_ATTRIBUTES_ERROR, output?.message)
       }
 
-      commit(CHANGE_ATTRIBUTES_ERROR, `Ошибка обновления атрибутов: ${message.toString()}`)
+      commit(CHANGE_ATTRIBUTES_ERROR, `Ошибка обновления атрибутов: ${output?.message?.toString()}`)
     } catch (error) {
       commit(CHANGE_ATTRIBUTES_ERROR, 'Сервер не отвечает. Попробуйте обновить страницу.')
     }

@@ -85,5 +85,7 @@ $ert: (
   ),
   'slider': (
     'base': map-get($blue, 'base')
-  )
+  ),
+  'cards': map-get($shades, 'white'),
+  'dividers': rgba(map-get($shades, 'black'), 0.15)
 );

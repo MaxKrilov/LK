@@ -6,7 +6,12 @@ import AccessSection from './components/AccessSection'
 import EditConfirm from './components/EditConfirm'
 import RemoveAccount from '../RemoveAccount'
 import { copyObject, eachArray, toDefaultPhoneNumber } from '@/functions/helper'
-import { USER_EXISTS_WITH_EMAIL, USER_FOUND_BY_PHONE } from '@/constants/status_response'
+import {
+  USER_EXISTS_WITH_EMAIL,
+  USER_FOUND_BY_PHONE,
+  USER_EXISTS_WITH_PHONE_UPDATE,
+  USER_EXISTS_WITH_EMAIL_UPDATE
+} from '@/constants/status_response'
 import Responsive from '@/mixins/ResponsiveMixin'
 import { SYSTEM_NAMES } from '@/constants/profile'
 
@@ -31,11 +36,11 @@ export default {
     createdFailText: 'Не удалось создать учетную запись сотрудника',
     updatedSuccessText: 'Учетная запись сотрудника изменена',
     updatedYourselfSuccessText: 'Данные профиля успешно изменены',
-    updatedFailText: 'При обновлении учетной записи произошла ошибка. Попробуйте обновить позже.',
+    updatedFailText: `При создании/обновлении учетной записи произошла ошибка.`,
     removeAccountSuccessText: 'Учетная запись сотрудника удалена.',
     removeAccountFailText: 'При удалении учетной записи произошла ошибка. Попробуйте удалить еще раз',
-    emailAlreadyExistsText: 'Имейл уже существует',
-    phoneAlreadyExistsText: 'Телефон уже существует',
+    emailAlreadyExistsText: 'E-mail уже используется',
+    phoneAlreadyExistsText: 'Телефон уже используется',
     contactsEmptyErrorText: 'В Контактных данных необходимо указать телефон или электронную почту',
     sectionLprData: {
       lastName: '',
@@ -407,7 +412,7 @@ export default {
           this.onSuccess(this.updatedSuccessText, this.userPostId)
         }
       } catch (error) {
-        if (~this.createdUserLprInfo.error.indexOf(USER_EXISTS_WITH_EMAIL)) {
+        if (~error.indexOf(USER_EXISTS_WITH_EMAIL_UPDATE)) {
           this.isEmailExistsError = true
           if (!this.isLPR) {
             this.$refs.editSec.$refs.email.messages.push(this.emailAlreadyExistsText)
@@ -416,7 +421,7 @@ export default {
           }
           this.isLoading = false
           this.setConfirmModalVisibility({ isOpen: false, isFetching: false })
-        } else if (~this.createdUserLprInfo.error.indexOf(USER_FOUND_BY_PHONE)) {
+        } else if (~error.indexOf(USER_EXISTS_WITH_PHONE_UPDATE)) {
           this.isPhoneExistsError = true
           if (!this.isLPR) {
             this.$refs.editSec.$refs.phone.messages.push(this.phoneAlreadyExistsText)

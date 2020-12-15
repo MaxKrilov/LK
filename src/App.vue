@@ -9,17 +9,28 @@
         not-access-page
       template(v-else)
         router-view
+        ErtSnackbar(
+          :value="isShowWarningMessage"
+          type="warning"
+          :infinity="true"
+        )
+          div
+            div Вы отсутствовали более {{ halfLifetimeRefreshToken }} минут. Для безопасности вашего аккаунта в скором времени&nbsp;
+              | произойдёт логаут
+            div.snackbar-continue-button.mt-8(@click="updateTokens")
+              button
+                | Продолжить
 </template>
 
 <script>
 import { mapGetters, mapState, mapActions } from 'vuex'
 import { SCREEN_WIDTH } from './store/actions/variables'
-import { generateUrl, getScreenWidth } from './functions/helper'
-import axios from 'axios'
+import { getScreenWidth } from './functions/helper'
 import NotAccessPage from './components/pages/errors/not-access'
 import WorkInProgress from '@/components/pages/errors/work-in-progress'
 import ErPreloader from './components/blocks/ErPreloader'
-import { validationToken } from './functions/auth'
+
+import ErtTokens from '@/mixins2/ErtTokens'
 
 import {
   GET_CLIENT_INFO,
@@ -39,6 +50,9 @@ export default {
     NotAccessPage,
     ErPreloader
   },
+  mixins: [
+    ErtTokens
+  ],
   props: {
     isWorkInProgress: {
       type: Boolean,
@@ -49,11 +63,11 @@ export default {
     model: ''
   }),
   watch: {
-    isAccessGranted (val) {
-      if (val) {
-        this.fetchUserData()
-      }
-    },
+    // isAccessGranted (val) {
+    //   if (val) {
+    //     this.fetchUserData()
+    //   }
+    // },
     rebootBillingAccount (val) {
       if (!val) {
         const context = { api: this.$api }
@@ -71,45 +85,45 @@ export default {
     }
   },
   async created () {
-    if (USE_SSO_AUTH) {
-      const tokenInterceptorsRequest = () => async config => {
-        const isValidAccessToken = validationToken(this.accessToken)
-        const isValidRefreshToken = validationToken(this.refreshToken)
-
-        if (
-          ~config.url.indexOf(generateUrl('authUser')) ||
-            ~config.url.indexOf(generateUrl('authManager')) ||
-            ~config.url.indexOf(generateUrl('refreshToken'))
-        ) return config
-
-        if (isValidAccessToken) return config
-
-        if (isValidRefreshToken) {
-          await this.$store.dispatch('auth/fetchRefreshToken', { api: this.$api })
-          return config
-        }
-
-        await this.$store.dispatch('auth/signIn', { api: this.$api })
-
-        return config
-      }
-
-      const tIR = tokenInterceptorsRequest()
-
-      axios.interceptors.request.use(tIR)
-
-      axios.interceptors.response.use(response => response, err => {
-        return new Promise((resolve, reject) => {
-          if (err && err.response && [403, 401].includes(err.response.status)) {
-            this.$store.dispatch('auth/signIn', { api: this.$api })
-          }
-          reject(err)
-        })
+    this.createdHook()
+      .then(() => {
+        this.isAccessGranted && this.fetchUserData()
       })
-    }
-
-    if (this.isAccessGranted) {
-      this.fetchUserData()
+    if (USE_SSO_AUTH) {
+      // const tokenInterceptorsRequest = () => async config => {
+      //   const isValidAccessToken = validationToken(this.accessToken)
+      //   const isValidRefreshToken = validationToken(this.refreshToken)
+      //
+      //   if (
+      //     ~config.url.indexOf(generateUrl('authUser')) ||
+      //       ~config.url.indexOf(generateUrl('authManager')) ||
+      //       ~config.url.indexOf(generateUrl('refreshToken'))
+      //   ) return config
+      //
+      //   if (isValidAccessToken) return config
+      //
+      //   if (isValidRefreshToken) {
+      //     await this.$store.dispatch('auth/fetchRefreshToken', { api: this.$api })
+      //     return config
+      //   }
+      //
+      //   await this.$store.dispatch('auth/signIn', { api: this.$api })
+      //
+      //   return config
+      // }
+      //
+      // const tIR = tokenInterceptorsRequest()
+      //
+      // axios.interceptors.request.use(tIR)
+      //
+      // axios.interceptors.response.use(response => response, err => {
+      //   return new Promise((resolve, reject) => {
+      //     if (err && err.response && [403, 401].includes(err.response.status)) {
+      //       this.$store.dispatch('auth/signIn', { api: this.$api })
+      //     }
+      //     reject(err)
+      //   })
+      // })
     }
   },
   beforeCreate () {
@@ -133,6 +147,9 @@ export default {
       '%c Считаете, что можете сделать лучше? Тогда скорее отправляйте нам своё резюме на http://job.ertelecom.ru/ :)',
       'font-size: 10px'
     )
+  },
+  mounted () {
+    this.onHandleInaction()
   },
   methods: {
     ...mapActions({
@@ -210,6 +227,12 @@ export default {
 
     &__height-auto {
       min-height: auto;
+    }
+
+    .snackbar-continue-button button {
+      padding: 4px;
+      border: 1px solid currentColor;
+      border-radius: 4px;
     }
   }
 }
