@@ -78,12 +78,17 @@ function isPostponedTillExpired (postponedTill: Date, endDTTM: Date): boolean {
   return !isPostponedTillActual(postponedTill, endDTTM)
 }
 
+const removeTextQuestion = (el: ISurveyQuestion) => !isTextQuestion(el.questionType)
+
 function processSurvey (data: any): any {
   data.postponedTill = data.postponedTill
     ? new Date(data.postponedTill)
     : undefined
 
   data.surveyQuestion = getOrderedQuestionList(data.surveyQuestion)
+    // Скрыть вопрос с произвольным ответом
+    .filter(removeTextQuestion)
+
   return data
 }
 
