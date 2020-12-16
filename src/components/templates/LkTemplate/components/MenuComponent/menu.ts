@@ -120,10 +120,10 @@ const MenuItemList = (listProduct: IProductItem[]): MenuItem[] => {
             name: 'Видеоаналитика',
             url: '/lk/videocontrol/forpost/products'
           },
-          // {
-          //   name: 'Портал видеонаблюдения',
-          //   url: '/lk/videocontrol/forpost/go-to-forpost'
-          // },
+          {
+            name: 'Портал видеонаблюдения',
+            url: '/lk/videocontrol/forpost/go-to-forpost'
+          },
           {
             name: 'Видеонаблюдение',
             subname: 'Энфорта',
