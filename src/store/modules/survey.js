@@ -9,6 +9,11 @@ import { processSurvey, surveyStatusIsDone } from '@/functions/survey'
 
 const SET_USER_SURVEYS = 'SET_USER_SURVEYS'
 const SET_CURRENT_SURVEY = 'SET_CURRENT_SURVEY'
+
+/*
+  Используется для тестирования.
+  Можно отключить, когда нужно пройти анкету но не отсылать результаты на бэкенд.
+ */
 const SEND_RESPONSE = true
 const REMOVE_SURVEY = 'REMOVE_SURVEY'
 

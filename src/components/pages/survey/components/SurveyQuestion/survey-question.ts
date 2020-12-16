@@ -2,10 +2,10 @@ import { Vue, Component, Prop } from 'vue-property-decorator'
 import { isTextQuestion } from '@/functions/survey.ts'
 
 @Component
-export default class SurveyPage extends Vue {
+export default class SurveyQuestion extends Vue {
   @Prop([String, Number]) readonly id!: string | number
   @Prop(String) readonly title!: string
-  @Prop({ type: Array, default: [] }) readonly variants!: any[]
+  @Prop({ type: Array, default: () => [] }) readonly variants!: any[]
   @Prop(String) readonly type!: string
 
   text: string = ''

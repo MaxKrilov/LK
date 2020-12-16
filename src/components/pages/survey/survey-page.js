@@ -1,20 +1,16 @@
-import SurveyPage from './components/SurveyPage/index'
-import { mapGetters, mapState, mapActions } from 'vuex'
+import SurveyQuestion from './components/SurveyQuestion/index'
+import { mapActions, mapGetters, mapState } from 'vuex'
 import { logError, logInfo } from '@/functions/logging.ts'
-import {
-  isSurvey,
-  isSurveyTicket,
-  isSurveyReception
-} from '@/functions/notifications'
+import { isSurvey, isSurveyReception, isSurveyTicket } from '@/functions/notifications'
 
 import {
-  questionIsVisibleInSSP,
-  isRequiredQuestion,
   isChildQuestion,
-  isTextQuestion,
-  surveyStatusIsDone,
   isMaxPostponedTimes,
-  isPostponedTillExpired
+  isPostponedTillExpired,
+  isRequiredQuestion,
+  isTextQuestion,
+  questionIsVisibleInSSP,
+  surveyStatusIsDone
 } from '@/functions/survey.ts'
 
 function isNumber (val) {
@@ -22,9 +18,9 @@ function isNumber (val) {
 }
 
 export default {
-  name: 'survey',
+  name: 'SurveyPage',
   components: {
-    SurveyPage
+    SurveyQuestion
   },
   props: {
     id: String
@@ -50,6 +46,7 @@ export default {
     },
     survey () {
       this.isSurveyLoaded = true
+      this.currentQuestionIndex = this.survey.surveyQuestion.findIndex(isRequiredQuestion)
     },
     $route () {
       this.isAnswerSelected = false
@@ -57,11 +54,11 @@ export default {
   },
   computed: {
     ...mapState({
+      survey: state => state.survey.current,
       surveyList: state => state.survey.list,
       notificationList: state => state.campaign.list
     }),
     ...mapGetters({
-      survey: 'survey/getSurvey',
       actualSurveyList: 'survey/getActualSurveyList',
       actualSurveyCount: 'survey/getActualSurveyCount',
       allActualSurveyCount: 'survey/getAllActualSurveyCount'
@@ -106,6 +103,12 @@ export default {
     async isNextSurveyActive () {
       // есть ещё актуальные анкеты кроме этой
       return await this.actualSurveyCount > 0
+    },
+    surveyQuestionIdList () {
+      return this.survey.surveyQuestion.map(el => el.id)
+    },
+    currentQuestionChildren () {
+      return this.survey.surveyQuestion.filter(isChildQuestion)
     }
   },
   methods: {
@@ -167,12 +170,12 @@ export default {
 
       this.getSurveyByClient({ api: this.$api })
     },
-    async getCurrentQuestion () {
-      const survey = await this.survey
+    getCurrentQuestion () {
+      const survey = this.survey
       return survey.surveyQuestion[this.currentQuestionIndex]
     },
     allAnswersIsNumber (answerList) {
-      return answerList.every(el => isNumber(el.name))
+      return answerList?.every(el => isNumber(el.name)) || false
     },
     backsortAnswers (answerList) {
       return [...answerList]
@@ -183,11 +186,10 @@ export default {
     sortPossibleAnswers (answers) {
       if (this.allAnswersIsNumber(answers)) {
         const newAnswerList = this.backsortAnswers(answers)
-        logInfo(newAnswerList)
         return newAnswerList
       }
 
-      return [...answers]
+      return answers
     },
     onQuestionSelected (answer) {
       this.isAnswerSelected = true
@@ -269,7 +271,6 @@ export default {
       }
     },
     onNextSurvey () {
-      logInfo('onNextSurvey')
       if (this.isNextSurveyActive) {
         const fixDuplicatedIds = this.actualSurveyList.filter(
           el => el.id !== this.survey.id

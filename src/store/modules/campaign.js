@@ -10,6 +10,8 @@ const NO_ITEMS_FOUND_MESSAGE = 'No items found.'
 
 const SET_NOTIFICATIONS = 'SET_NOTIFICATIONS'
 const SET_PPR = 'SET_PPR'
+
+// Не отправлять запросы в кампейн. Используется для тестирования.
 const SEND_RESPONSE = true
 const HIDE_ITEM = 'HIDE_ITEM'
 

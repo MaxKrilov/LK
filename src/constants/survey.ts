@@ -10,9 +10,9 @@ const QUESTION_NOT_REQUIRED = MANDATORY_02
 const QUESTION_SENDED = 'Отправлен'
 const QUESTION_CANCELED = 'Отменен'
 const QUESTION_TYPES = {
-  NPS_INDEX: 'Индекс NPS',
-  TEXT: 'Произвольный Ответ',
-  CSAT_INDEX: 'Индекс CSAT',
+  NPS_INDEX: 'Индекс NPS',
+  TEXT: 'Произвольный Ответ',
+  CSAT_INDEX: 'Индекс CSAT',
   LIST: 'Список'
 }
 const QUESTION_TYPE_TEXT = QUESTION_TYPES.TEXT
