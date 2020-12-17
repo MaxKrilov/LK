@@ -1,0 +1,169 @@
+.oats-point-content {
+  &__head {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: $padding-x8;
+
+    .tariff-name {
+      white-space: initial;
+    }
+
+    .er-icon {
+      @include color-black(0.2);
+      svg {
+        width: $padding-x6;
+        height: $padding-x6;
+      }
+
+      @include min-breakpoint(md) {
+        svg {
+          width: $padding-x8;
+          height: $padding-x8;
+        }
+      }
+    }
+  }
+
+  &__uber-head {
+    margin-bottom: $padding-x6;
+
+    @include min-breakpoint(sm) {
+      display: none;
+    }
+  }
+
+  &__active-date {
+    .active-date {
+      @include color-black(0.8);
+    }
+  }
+
+  &__portal-link {
+    display: inline-flex;
+    align-items: center;
+    gap: $padding-x2;
+
+    @include min-breakpoint(sm) {
+      display: none;
+    }
+
+    .er-icon {
+      @include color-black(0.2);
+
+      svg {
+        width: $padding-x6;
+        height: $padding-x6;
+      }
+
+      @include min-breakpoint(md) {
+        svg {
+          width: $padding-x8;
+          height: $padding-x8;
+        }
+      }
+    }
+
+    .link {
+      @extend %button-font;
+      @extend %link-behaviour;
+      @include color-black(0.5);
+    }
+  }
+
+  &__phones,
+  &__services,
+  &__actions {
+    margin-top: $padding-x8;
+
+    @include min-breakpoint(md) {
+      margin-top: $padding-x10;
+    }
+  }
+
+  &__actions {
+    @extend %action-buttons-block;
+
+    @include min-breakpoint(lg) {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .er-button {
+      position: relative;
+
+      .er-icon {
+        position: absolute;
+        left: $padding-x4;
+        top: -50%;
+
+        @include color-black(0.2);
+      }
+    }
+  }
+
+  .section {
+    &__title {
+      @extend %h3;
+    }
+
+    &__content {
+      margin-top: $padding-x4;
+
+      @include min-breakpoint(md) {
+        margin-top: $padding-x6;
+      }
+    }
+  }
+
+  .oats-service,
+  .oats-phone {
+    display: flex;
+    flex-direction: row;
+    min-height: $padding-x12;
+    border-top: 1px solid rgba(map-get($shades, "black"), 0.2);
+    justify-content: space-between;
+    align-items: center;
+    padding: $padding-x2 0;
+
+    @include min-breakpoint(sm) {
+      padding: $padding-x2;
+    }
+
+    &:last-child {
+      border-bottom: 1px solid rgba(map-get($shades, "black"), 0.2);
+    }
+
+    &__name {
+      @extend %body;
+    }
+
+    &__description {
+      @extend %caption2;
+      margin-left: $padding-x4;
+
+      &:empty {
+        display: none;
+      }
+    }
+
+    &__price {
+      margin-left: $padding-x8;
+
+      .er-price {
+        display: inline-flex;
+        flex-direction: column;
+        align-items: flex-end;
+      }
+    }
+  }
+
+  .columns {
+    display: flex;
+    flex-direction: row;
+    column-gap: $padding-x2;
+
+    @include min-breakpoint(md) {
+      column-gap: $padding-x4;
+    }
+  }
+}

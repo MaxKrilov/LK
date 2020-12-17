@@ -1,0 +1,252 @@
+.oats-point {
+  &:hover {
+    .oats-point__portal-link {
+      .er-icon {
+        transition: color $primary-transition;
+        color: map-get($yellow, base);
+      }
+    }
+  }
+
+  &:active {
+    &.er-card-products {
+      .er-card-products__point-content {
+        background-color: map-get($yellow, base);
+      }
+    }
+  }
+
+  .er-card-products__point-item:active {
+    .er-card-products__point-content:active {
+      background-color: map-get($yellow, base);
+    }
+  }
+
+  .er-card-products__point-content:active {
+    background-color: map-get($yellow, base);
+  }
+
+  &__title {
+    @extend %h4;
+  }
+
+  &__subtitle {
+    @extend %caption2;
+  }
+
+  &.er-card-products {
+    $self: ".er-card-products";
+
+    > #{$self}__point-item {
+      padding-right: 0;
+      padding-left: 0;
+      @include max-breakpoint(md) {
+        border-radius: 0;
+      }
+
+      &:not(.stopped):hover {
+        .er-card-products__point-icon {
+          .er-icon {
+            > svg {
+              @include color-black(.2);
+            }
+          }
+        }
+      }
+    }
+
+    .er-card-products__active-line {
+      width: $padding-x1;
+      margin: 0;
+    }
+
+    #{$self}__point-icon {
+      $point-icon-margin: -28px;
+      $point-icon-margin-md: -36px;
+
+      margin-left: $point-icon-margin;
+
+      @include min-breakpoint(md) {
+        margin-left: $point-icon-margin-md;
+      }
+
+      @include min-breakpoint(lg) {
+        margin-left: $point-icon-margin;
+      }
+
+      .icon {
+        $icon-width: (
+          xs: 64px,
+          md: 80px,
+          lg: 96px
+        );
+
+        svg {
+          width: map-get($icon-width, xs);
+
+          @include min-breakpoint(md) {
+            width: map-get($icon-width, md);
+          }
+
+          @include min-breakpoint(lg) {
+            width: map-get($icon-width, lg);
+          }
+        }
+      }
+    }
+
+    .er-card-products__slider {
+      @include max-breakpoint(md) {
+        margin: 0;
+      }
+    }
+  }
+
+  .er-card-products {
+    $self: ".er-card-products";
+    $price-width: 110px;
+
+    &__point-item {
+      &.stopped {
+        #{$self}__switcher {
+          display: none;
+        }
+      }
+    }
+
+    &__price {
+      max-width: $price-width;
+      flex-grow: 1;
+
+      .title {
+        text-align: right;
+      }
+    }
+
+    &__point-wrapper {
+      margin-left: $padding-x2;
+    }
+
+    &__point-content {
+      #{$self}__point-wrapper {
+        flex-direction: row;
+
+        #{$self}__data-wrap {
+          flex-grow: 1;
+          padding-top: 0;
+          padding-left: $padding-x2;
+        }
+      }
+    }
+
+    &__title-block {
+      $title-block-max-width: 154px;
+      $title-block-max-width-lg: 190px;
+
+      width: $title-block-max-width;
+      max-width: $title-block-max-width;
+
+      @include min-breakpoint(lg) {
+        width: $title-block-max-width-lg;
+        max-width: $title-block-max-width-lg;
+      }
+
+      > #{$self}__switcher {
+        position: inherit;
+
+        .icon {
+          padding-right: $padding-x1;
+        }
+
+        #{$self}__service-count {
+          display: initial;
+
+          .service-plugged-count-label {
+            display: none;
+
+            @include min-breakpoint(lg) {
+              display: inherit;
+              margin-right: $padding-x1;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .stopped-message {
+    display: inline-flex;
+    @extend %body-font;
+    gap: $padding-x2;
+
+    @include min-breakpoint(sm) {
+      display: block;
+      text-align: right;
+
+      &__title,
+      .link-wrap {
+        display: inline;
+      }
+
+      .link-wrap {
+        margin-left: $padding-x1;
+      }
+    }
+    &__title {
+      display: none;
+      @include min-breakpoint(sm) {
+        display: initial;
+      }
+    }
+
+    &__link {
+      @extend %link-behaviour;
+      @extend %button-font;
+      text-decoration: none;
+      color: map-get($green, "base");
+    }
+  }
+
+  .middle-block {
+    display: flex;
+    justify-content: flex-start;
+    flex-grow: 1;
+
+    @include min-breakpoint(lg) {
+      margin-left: $padding-x10;
+    }
+  }
+
+  &__portal-link {
+    display: none;
+    align-items: center;
+    gap: $padding-x2;
+
+    @include min-breakpoint(sm) {
+      display: inline-flex;
+    }
+
+    .er-icon {
+      @include color-black(0.2);
+
+      svg {
+        width: $padding-x6;
+        height: $padding-x6;
+      }
+
+      @include min-breakpoint(md) {
+        svg {
+          width: $padding-x8;
+          height: $padding-x8;
+        }
+      }
+    }
+
+    .link {
+      @extend %button-font;
+      @extend %link-behaviour;
+      @include color-black(0.5);
+      min-width: 80px;
+    }
+  }
+}

@@ -97,18 +97,18 @@ const MenuItemList = (listProduct: IProductItem[]): MenuItem[] => {
         ]
         : []
     },
-    // {
-    //   name: 'Облачная телефония',
-    //   icon: 'cloud_telephone',
-    //   isOpen: false,
-    //   url: '/lk/oats/promo',
-    //   subitem: [
-    //     {
-    //       name: 'Портал ОАТС',
-    //       url: '/lk/oats'
-    //     }
-    //   ]
-    // },
+    {
+      name: 'Облачная телефония',
+      icon: 'cloud_telephone',
+      isOpen: false,
+      url: '/lk/oats/',
+      subitem: [
+        {
+          name: 'Портал ОАТС',
+          url: '/lk/oats/go-to-portal'
+        }
+      ]
+    },
     {
       name: 'Видеонаблюдение',
       icon: 'watch',
