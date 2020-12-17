@@ -104,18 +104,18 @@ const MenuItemList = (listProduct: IProductItem[]): MenuItem[] => {
           url: '/lk/internet/ip-transit'
         }]
     },
-    {
-      name: 'Облачная телефония',
-      icon: 'cloud_telephone',
-      isOpen: false,
-      url: '/lk/oats/',
-      subitem: [
-        {
-          name: 'Портал ОАТС',
-          url: '/lk/oats/go-to-portal'
-        }
-      ]
-    },
+    // {
+    //   name: 'Облачная телефония',
+    //   icon: 'cloud_telephone',
+    //   isOpen: false,
+    //   url: '/lk/oats/',
+    //   subitem: [
+    //     {
+    //       name: 'Портал ОАТС',
+    //       url: '/lk/oats/go-to-portal'
+    //     }
+    //   ]
+    // },
     {
       name: 'Видеонаблюдение',
       icon: 'watch',

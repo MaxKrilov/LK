@@ -415,7 +415,7 @@ const actions = {
       }
       // Если в куках нет л/с - устанавливаем первый (без префиксов)
       if (Array.isArray(result) && result.length !== 0) {
-        const findBillingAccount = result.find(billingAccount => !/[\D]+/.test(billingAccount.accountNumber))
+        const findBillingAccount = result.find(billingAccount => !/[A-Za-z]/.test(billingAccount.accountNumber))
         if (findBillingAccount) {
           commit(SET_ACTIVE_BILLING_ACCOUNT, findBillingAccount.billingAccountId)
           commit(SET_ACTIVE_BILLING_ACCOUNT_NUMBER, findBillingAccount.accountNumber)
