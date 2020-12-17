@@ -2,6 +2,7 @@
   background-color: map-get($gray, '3');
   display: flex;
   flex-direction: column;
+  height: 100%;
   &__head {
     width: 100%;
     height: 56px;

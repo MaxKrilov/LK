@@ -1,5 +1,5 @@
 <template lang="pug">
-  er-dialog(
+  ErtDialog(
     v-model="internalValue"
     fullscreen
     transition="dialog-bottom-transition"
