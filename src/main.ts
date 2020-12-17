@@ -8,7 +8,7 @@ import store from './store'
 import App from './App'
 import WorkInProgressPage from './components/pages/errors/work-in-progress.vue'
 
-import { eachArray, eachObject } from './functions/helper'
+import { eachArray, eachObject, isLocalhost } from './functions/helper'
 import { API } from './functions/api'
 import * as Filters from './functions/filters'
 import Directives from './directives'
@@ -22,6 +22,9 @@ import Skeleton from 'vue-loading-skeleton'
 
 import * as ErtComponents from './components/UI2'
 import { install } from '@/install'
+
+import * as Sentry from '@sentry/vue'
+// import VueGtm from './utils/gtm'
 
 // Подключение стилей
 import './assets/scss/main.scss'
@@ -96,5 +99,17 @@ const WIP_CONFIG = {
 const CONFIG = WORK_IN_PROGRESS_BEFORE_AUTH
   ? WIP_CONFIG
   : DEFAULT_CONFIG
+
+if (!isLocalhost()) {
+  Sentry.init({
+    Vue,
+    dsn: 'https://77a765dcd28c40e196c504a62525e4bd@sentry.ertelecom.ru/69'
+  })
+}
+
+// Vue.use(VueGtm, {
+//   id: 'G-BB74PC3KGX',
+//   vueRouter: router
+// })
 
 new Vue(CONFIG).$mount('#app')

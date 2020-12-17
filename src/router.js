@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import store from './store'
-// import { API } from '@/functions/api.ts'
 
 // Шаблоны
 import LkTemplate from './components/templates/LkTemplate/index'

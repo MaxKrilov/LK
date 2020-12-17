@@ -12,6 +12,7 @@
     "@amcharts/amcharts4": "^4.9.26",
     "@caohenghu/vue-colorpicker": "^1.2.4",
     "@chenfengyuan/create-vue-component": "^1.1.0",
+    "@sentry/vue": "^5.29.0",
     "@types/d3": "^5.7.2",
     "@types/iframe-resizer": "^3.5.8",
     "@types/leaflet": "^1.5.12",
