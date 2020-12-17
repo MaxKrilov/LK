@@ -55,6 +55,8 @@ const components = {
 }
 @Component({ components })
 export default class OATSMainPage extends Vue {
+  isPointsLoaded: boolean = false
+
   @StoreGetter('user/getActiveBillingAccount')
   billingAccountId!: any
 
@@ -85,9 +87,13 @@ export default class OATSMainPage extends Vue {
   }
 
   fetchData () {
+    this.isPointsLoaded = false
     this.pullPoints()
-      .then(() => {
-        this.$store.dispatch('oats/pullDomains', this.pointBpiList)
+      .then(points => {
+        this.isPointsLoaded = true
+        if (points.length) {
+          this.$store.dispatch('oats/pullDomains', this.pointBpiList)
+        }
       })
   }
 
