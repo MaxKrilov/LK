@@ -9,9 +9,6 @@ import { cloneDeep } from 'lodash'
 const MAX_WIDTH = 674
 
 const GUEST_AUTH = [
-  { title: 'SMS', name: 'sms', iconType: 'none', field: 'field_phone_confirm_sms' },
-  { title: 'Входящий звонок', name: 'call', iconType: 'none', field: 'field_phone_confirm_callback' },
-  // { title: 'Госуслуги', name: 'esia', iconType: 'img', src: require('@/components/pages/wifi/personalization/images/esia.svg') },
   { title: 'Вконтакте', name: 'vk', iconType: 'icon', iconName: 'vk', field: 'field_social_auth_vk' },
   { title: 'Одноклассники', name: 'ok', iconType: 'icon', iconName: 'odnoklassniki', field: 'field_social_auth_ok' },
   { title: 'Facebook', name: 'fb', iconType: 'icon', iconName: 'facebook', field: 'field_social_auth_fb' },
@@ -49,7 +46,8 @@ function parseColor (color: string): ErtColorPickerColor {
     socialNetworks: {
       type: Object,
       default: () => ({})
-    }
+    },
+    isActiveSocialNetwork: Boolean
   },
   watch: {
     buttons (val) {
@@ -77,6 +75,7 @@ export default class ErtWifiPersonalizationDialogButton extends Vue {
   readonly buttons!: IButtons
   readonly buttonStyles!: Record<string, string>
   readonly socialNetworks!: Record<string, number>
+  readonly isActiveSocialNetwork!: boolean
 
   // Data
   dialogMaxWidth = MAX_WIDTH

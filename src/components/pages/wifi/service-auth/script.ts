@@ -15,6 +15,8 @@ import { SERVICES_AUTH } from '@/components/pages/wifi/index/constants'
 import { head } from 'lodash'
 import { ServiceStatus, STATUS_DISCONNECTED } from '@/constants/status'
 import { price as priceFormatted } from '@/functions/filters'
+import { mapActions } from 'vuex'
+import { IAvailableFunds } from '@/tbapi'
 
 @Component<InstanceType<typeof ErtWifiServiceAuth>>({
   components: {
@@ -36,6 +38,9 @@ import { price as priceFormatted } from '@/functions/filters'
     customerProduct (val) {
       val && this.$nextTick(() => {
         this.isLoadingCustomerProduct = false
+        this.$store.dispatch('wifi/getResource', {
+          bpi: this.activePoint!.bpi
+        })
       })
     },
     activePoint (newVal, oldVal) {
@@ -43,6 +48,11 @@ import { price as priceFormatted } from '@/functions/filters'
       this.isLoadingCustomerProduct = true
       Page.options.watch.activePoint.call(this, newVal, oldVal)
     }
+  },
+  methods: {
+    ...mapActions({
+      getAvailableFunds: 'salesOrder/getAvailableFunds'
+    })
   }
 })
 export default class ErtWifiServiceAuth extends mixins(Page) implements iPageComponent {
@@ -59,12 +69,16 @@ export default class ErtWifiServiceAuth extends mixins(Page) implements iPageCom
   isShowPlugProductPluginManager: boolean = false
   isSuccessUpdate: boolean = false
   isErrorUpdate: boolean = false
+  isShowMoneyModal: boolean = false
+  isErrorMoney: boolean = false
 
   /// Order Data
   productCode: string = ''
   chars: Record<string, string | number> | null = null
   title: string = ''
   productId: string = ''
+
+  availableFundsAmt: number = 0
 
   // Computed
   get getListServiceAuth () {
@@ -156,16 +170,37 @@ export default class ErtWifiServiceAuth extends mixins(Page) implements iPageCom
     return this.currentSLOByCode?.status === ServiceStatus.STATUS_ACTIVE
   }
 
+  /// Vuex Methods
+  getAvailableFunds!: <T = Promise<IAvailableFunds>>() => T
+
   // Methods
   onConnect (code: string, e: any) {
     this.productCode = code
-    this.chars = typeof e !== 'undefined' ? e : null
 
-    if (code === 'WIFIHSCLONET') {
-      this.isShowPlugProductPluginManager = true
-    } else {
-      this.isShowPlugProductPlugin = true
-    }
+    this.getAvailableFunds()
+      .then(response => {
+        const availableFunds = Number(response.availableFundsAmt)
+        this.availableFundsAmt = availableFunds
+        if (
+          this.getOrderTitleNPrice !== null &&
+          availableFunds - Number(this.getOrderTitleNPrice.price) > 0
+        ) {
+          this.chars = typeof e !== 'undefined' ? e : null
+
+          if (code === 'WIFIHSCLONET') {
+            this.isShowPlugProductPluginManager = true
+          } else {
+            this.isShowPlugProductPlugin = true
+          }
+        } else {
+          this.isShowMoneyModal = true
+          this.resetOrderData()
+        }
+      })
+      .catch(() => {
+        this.isErrorMoney = true
+        this.resetOrderData()
+      })
   }
 
   resetOrderData () {
@@ -222,7 +257,11 @@ export default class ErtWifiServiceAuth extends mixins(Page) implements iPageCom
       Page.options.methods.getListPoint.call(this)
         .then(() => {
           this.listPoint = this.listPoint.filter((point: any) => ~point.offerName.toLowerCase().indexOf('mono'))
-          this.activePoint = head(this.listPoint) || null
+          if (this.$route.params.hasOwnProperty('bpi')) {
+            this.activePoint = this.listPoint.find(point => point.bpi === this.$route.params.bpi) || null
+          } else {
+            this.activePoint = head(this.listPoint) || null
+          }
           resolve(this.listPoint)
         })
         .catch((error: any) => reject(error))
@@ -255,5 +294,16 @@ export default class ErtWifiServiceAuth extends mixins(Page) implements iPageCom
         this.isErrorUpdate = true
         this.onErrorOrder()
       })
+  }
+
+  onToPayment () {
+    this.$router.push({
+      name: 'add-funds',
+      params: {
+        total_amount: this.getOrderTitleNPrice
+          ? String(Number(this.getOrderTitleNPrice.price) - this.availableFundsAmt)
+          : '0'
+      }
+    })
   }
 }

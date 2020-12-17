@@ -23,8 +23,8 @@
       ErPromo(
         banner="personalization.png"
         :featureList="promoFeatureList"
-        :isLoadingConnectButton="isShowPlugProductPlugin"
-        @click="() => { isShowPlugProductPlugin = true }"
+        :isLoadingConnectButton="isShowPlugProductPlugin || isCheckingMoney"
+        @click="onConnect"
       )
       .h4.mt-16 Стоимость услуги - {{ getPriceForConnection }} ₽/месяц
       ErPlugProduct(
@@ -38,6 +38,30 @@
         template(v-slot:offerDescription)
           div.caption1.my-8
             | Стоимость услуги составит {{ getPriceForConnection | priceFormatted }} ₽/мес
+
+      ErActivationModal(
+        type="info"
+        v-model="isShowMoneyModal"
+        actionButtonText="Пополнить счёт"
+        @confirm="onToPayment()"
+        cancel-button-text="Закрыть"
+      )
+        template(v-slot:description)
+          .h4 Уважаемый клиент, для завершения заказа на лицевом счете не достаточно денежных средств. Пополните лицевой счет и повторите покупку.
+          .caption.text-color-black08 Стоимость подключения: <b>{{ getPriceForConnection }}</b> ₽
+          .caption.text-color-black08 Ваши доступные средства: <b>{{ availableFundsAmt }}</b> ₽
+
+      ErActivationModal(
+        type="error"
+        v-model="isErrorMoney"
+        title="Возникла ошибка"
+        :isShowActionButton="false"
+        :persistent="true"
+        cancelButtonText="Закрыть"
+      )
+        template(slot="description")
+          div Уважаемый Клиент, в данный момент операция не доступна, обратитесь к персональному менеджеру
+
     template(v-else)
       ErtWifiPersonalizationSettings.mb-24.mb-sm-16.mb-md-32(
         :listScreenOrientation="listScreenOrientation"
@@ -92,6 +116,7 @@
         :buttons="getButtons"
         :buttonStyles="getButtonStyles"
         :socialNetworks="getSocialNetworks"
+        :isActiveSocialNetwork="isActiveSocialNetwork"
         @save="onSaveButtons"
       )
 

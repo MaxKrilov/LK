@@ -89,7 +89,7 @@ export default {
     this.changeWidth()
     this.listEmail()
     // Проверяем - есть ли в GET параметрах сумма. Если да, то устанавливаем её
-    const sumPay = this.$route.query.total_amount ||
+    const sumPay = this.$route.query.total_amount || this.$route.params.total_amount ||
       Cookie.get('ff_total_amount')
     if (sumPay) {
       this.sumPay = Number(roundUp(sumPay, 2)).toFixed(2).replace('.', ',')

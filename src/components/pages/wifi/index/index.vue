@@ -55,21 +55,40 @@
               template(v-if="!issetCustomerProduct(getBPIByAddressUnit(addressUnit.id))")
                 PuSkeleton.mr-24(height="32px" width="32px")
               template(v-else)
-                button.mr-24(:class="{ 'on': isOnContent(getBPIByAddressUnit(addressUnit.id)) }")
+                button.mr-24(
+                  :class="{ 'on': isOnContent(getBPIByAddressUnit(addressUnit.id)) }"
+                )
                   er-icon(name="filter")
+
               template(v-if="!issetCustomerProduct(getBPIByAddressUnit(addressUnit.id))")
                 PuSkeleton.mr-24(height="32px" width="32px")
               template(v-else)
-                button.mr-24(:class="{ 'on': isOnAnalytic(getBPIByAddressUnit(addressUnit.id)) }")
+                button.mr-24(
+                  :class="{ 'on': isOnAnalytic(getBPIByAddressUnit(addressUnit.id)) }"
+                  @click="$router.push({ name: 'analytics-visitors', params: { bpi: getBPIByAddressUnit(addressUnit.id) } })"
+                )
                   er-icon(name="stat")
+
+              template(v-if="!issetCustomerProduct(getBPIByAddressUnit(addressUnit.id))")
+                PuSkeleton.mr-24(height="32px" width="32px")
+              template(v-else)
+                button.mr-8(
+                  :class="{ 'on': isOnServiceAuth(getBPIByAddressUnit(addressUnit.id)) }"
+                  @click="$router.push({ name: 'wifi-services-auth', params: { bpi: getBPIByAddressUnit(addressUnit.id) } })"
+                )
+                  er-icon(name="settings")
+                .count.mr-24
+                  | {{ countOfActiveAuthService(getBPIByAddressUnit(addressUnit.id)) }}
+                  span /{{ countOfAuthService(getBPIByAddressUnit(addressUnit.id)) }}
+
               template(v-if="!issetCustomerProduct(getBPIByAddressUnit(addressUnit.id))")
                 PuSkeleton.mr-8(height="32px" width="32px")
               template(v-else)
-                button.mr-8
-                  er-icon(name="settings")
-                .count
-                  | {{ countOfActiveAuthService(getBPIByAddressUnit(addressUnit.id)) }}
-                  span /{{ countOfAuthService(getBPIByAddressUnit(addressUnit.id)) }}
+                button.mr-8(
+                  :class="{ 'on': isOnPersonalisation(getBPIByAddressUnit(addressUnit.id)) }"
+                  @click="$router.push({ name: 'wifi-personalization', params: { bpi: getBPIByAddressUnit(addressUnit.id) } })"
+                )
+                  er-icon(name="page_constructor")
     .wifi-index-page__points
       er-card-products(
         v-for="point in listPoint"
@@ -117,6 +136,9 @@
             :isOnAnalitic="isOnAnalytic(point.bpi)"
             :isOnContentFilter="isOnContent(point.bpi)"
             :isLoadingCustomerProduct="!issetCustomerProduct(point.bpi)"
+            :isOnServiceAuth="isOnServiceAuth(point.bpi)"
+            :isOnPersonalisation="isOnPersonalisation(point.bpi)"
+            :bpi="point.bpi"
           )
         template(slot="date-title")
           | Тариф

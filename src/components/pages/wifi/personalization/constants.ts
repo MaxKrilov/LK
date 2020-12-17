@@ -1,8 +1,4 @@
-import { isCombat } from '@/functions/helper'
-
-export const HOST_WIFI_BACKEND = isCombat()
-  ? 'https://wifi-backend.domru.ru'
-  : 'https://master.wifi-backend.wifi.t2.ertelecom.ru'
+export const HOST_WIFI_BACKEND = 'https://wifi-backend.domru.ru'
 
 export const DEFAULT_BUTTON_STYLE: Partial<CSSStyleDeclaration> = {
   color: '#000000',
@@ -13,3 +9,4 @@ export const DEFAULT_BUTTON_STYLE: Partial<CSSStyleDeclaration> = {
 }
 
 export const SLO_CODE = 'WIFIDESIGNOPT'
+export const SLO_CODE_SOCIAL_NETWORK = 'WIFIAUTCNHS'

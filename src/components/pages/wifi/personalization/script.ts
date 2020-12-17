@@ -21,8 +21,8 @@ import { head, cloneDeep } from 'lodash'
 import { mapState, mapActions } from 'vuex'
 import { SCREEN_WIDTH } from '@/store/actions/variables'
 import { BREAKPOINT_LG } from '@/constants/breakpoint'
-import { IWifiResourceInfo, WifiData } from '@/tbapi'
-import { HOST_WIFI_BACKEND, SLO_CODE } from '@/components/pages/wifi/personalization/constants'
+import { IAvailableFunds, IWifiResourceInfo, WifiData } from '@/tbapi'
+import { HOST_WIFI_BACKEND, SLO_CODE, SLO_CODE_SOCIAL_NETWORK } from '@/components/pages/wifi/personalization/constants'
 import { IButtons } from './types'
 import { camelize } from '@/functions/helper2'
 import { ServiceStatus } from '@/constants/status'
@@ -52,6 +52,21 @@ function parseStyles (field: string | null) {
   })
 
   return Object.assign({}, defaultStyles, result)
+}
+
+function defineSNParams (sn: string) {
+  switch (sn) {
+    case 'field_social_auth_vk':
+      return 514
+    case 'field_social_auth_ok':
+      return 515
+    case 'field_social_auth_fb':
+      return 516
+    case 'field_social_auth_in':
+      return 517
+    case 'field_social_auth_tw':
+      return 518
+  }
 }
 
 @Component<InstanceType<typeof WifiPersonalizationPage>>({
@@ -125,7 +140,8 @@ function parseStyles (field: string | null) {
   },
   methods: mapActions({
     getResource: 'wifi/getResource',
-    getData: 'wifi/getData'
+    getData: 'wifi/getData',
+    getAvailableFunds: 'salesOrder/getAvailableFunds'
   })
 })
 export default class WifiPersonalizationPage extends mixins(Page) implements iPageComponent {
@@ -138,6 +154,7 @@ export default class WifiPersonalizationPage extends mixins(Page) implements iPa
   // Vuex actions
   getResource!: <T = { bpi: string }, R = Promise<IWifiResourceInfo[]>>(args: T) => R
   getData!: <T = { vlan: string }, R = Promise<WifiData>>(args: T) => R
+  getAvailableFunds!: <R = Promise<IAvailableFunds>>() => R
 
   // Data
   /// Data
@@ -202,6 +219,12 @@ export default class WifiPersonalizationPage extends mixins(Page) implements iPa
   promoFeatureList: { icon: string, name: string, description: string }[] = personalizationFutureList
   isShowPlugProductPlugin: boolean = false
   isShowDisconnectProductPlugin: boolean = false
+
+  isCheckingMoney: boolean = false
+  isShowMoneyModal: boolean = false
+  availableFundsAmt: number = 0
+
+  isErrorMoney: boolean = false
 
   // Computed
   get isPortrait () {
@@ -289,8 +312,6 @@ export default class WifiPersonalizationPage extends mixins(Page) implements iPa
 
   get getServerSocialNetworks () {
     const socialNetworks: Record<string, number> = {
-      field_phone_confirm_sms: 0,
-      field_phone_confirm_callback: 0,
       field_social_auth_vk: 0,
       field_social_auth_ok: 0,
       field_social_auth_fb: 0,
@@ -324,9 +345,16 @@ export default class WifiPersonalizationPage extends mixins(Page) implements iPa
       : false
   }
 
+  get isActiveSocialNetwork () {
+    return this.customerProduct
+      ? this.customerProduct.slo
+        .find(sloItem => sloItem.code === SLO_CODE_SOCIAL_NETWORK)!.status === ServiceStatus.STATUS_ACTIVE
+      : false
+  }
+
   get getPriceForConnection () {
     return this.customerProduct && !this.isActiveProduct
-      ? head(this.customerProduct!.slo.find(sloItem => sloItem.code === SLO_CODE)!.prices)!.amount
+      ? Number(head(this.customerProduct!.slo.find(sloItem => sloItem.code === SLO_CODE)!.prices)!.amount)
       : 0
   }
 
@@ -442,7 +470,23 @@ export default class WifiPersonalizationPage extends mixins(Page) implements iPa
     this.$store.dispatch('wifi/setData', data)
       .then(response => {
         if (response) {
-          this.isSuccessSetData = true
+          if (this.internalSocialNetworks) {
+            // Для установки социальных сетей используется другой метод
+            Promise.all(Object.keys(this.internalSocialNetworks).map(sn => {
+              const snData = new FormData()
+              snData.append('vlan', this.vlan)
+              snData.append('city_id', this.cityId)
+              snData.append('params[param_id]', defineSNParams(sn)!.toString())
+              snData.append('params[value]', this.internalSocialNetworks![sn].toString())
+              return this.$store.dispatch('wifi/hotspotUpdate', snData)
+            }))
+              .then(response => {
+                if (response.every(responseItem => !!responseItem)) this.isSuccessSetData = true
+                else this.isErrorSetData = true
+              })
+          } else {
+            this.isSuccessSetData = true
+          }
         } else {
           this.isErrorSetData = true
         }
@@ -460,7 +504,13 @@ export default class WifiPersonalizationPage extends mixins(Page) implements iPa
       Page.options.methods.getListPoint.call(this)
         .then(() => {
           this.listPoint = this.listPoint.filter((point: any) => ~point.offerName.toLowerCase().indexOf('mono'))
-          this.activePoint = head(this.listPoint) || null
+
+          if (this.$route.params.hasOwnProperty('bpi')) {
+            this.activePoint = this.listPoint.find(point => point.bpi === this.$route.params.bpi) || null
+          } else {
+            this.activePoint = head(this.listPoint) || null
+          }
+
           resolve(this.listPoint)
         })
         .catch((error: any) => {
@@ -470,6 +520,38 @@ export default class WifiPersonalizationPage extends mixins(Page) implements iPa
           this.isLoadingWifiData = false
           reject(error)
         })
+    })
+  }
+
+  onConnect () {
+    this.isCheckingMoney = true
+    this.getAvailableFunds()
+      .then(response => {
+        const availableFunds = Number(response.availableFundsAmt)
+        this.availableFundsAmt = availableFunds
+
+        if (availableFunds - this.getPriceForConnection > 0) {
+          this.isShowPlugProductPlugin = true
+        } else {
+          this.isShowMoneyModal = true
+        }
+      })
+      .catch(() => {
+        this.isErrorMoney = true
+      })
+      .finally(() => {
+        this.isCheckingMoney = false
+      })
+  }
+
+  onToPayment () {
+    this.$router.push({
+      name: 'add-funds',
+      params: {
+        total_amount: this.getPriceForConnection
+          ? String(this.getPriceForConnection - this.availableFundsAmt)
+          : '0'
+      }
     })
   }
 

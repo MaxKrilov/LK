@@ -100,7 +100,9 @@
                         :value="['white', 'rgb(255, 255, 255)', '#fff', '#fff'].includes((this.lazyButtonStyle.color || '').toLowerCase())"
                         @change="(e) => this.lazyButtonStyle.color = e ? 'rgb(255, 255, 255)' : 'rgb(0, 0, 0)'"
                       )
-          .ert-wifi-personalization-dialog-button__guest-auth
+          //- todo Вернуть после включения продукта на стороне BSS
+          //- .ert-wifi-personalization-dialog-button__guest-auth(v-if="isActiveSocialNetwork")
+          .ert-wifi-personalization-dialog-button__guest-auth(v-if="false")
             button.ert-wifi-personalization-dialog-button__toggle-button(
               :class="{ open: isVisibleGuestAuth }"
               @click="onToggleVisibleGuestAuth"
@@ -118,8 +120,8 @@
                 )
                   ErtCheckbox(
                     hideDetails
-                    :value="socialNetworks[guestAuth.field]"
-                    @change="e => { socialNetworks[guestAuth.field] = e ? 1 : 0 }"
+                    :value="lazySocialNetworks[guestAuth.field]"
+                    @change="e => { lazySocialNetworks[guestAuth.field] = e ? 1 : 0 }"
                   )
                     template(v-slot:label)
                       .title

@@ -5,6 +5,8 @@ import { IWifiPro, IWifiResourceInfo } from '@/tbapi'
 
 const api = () => new API()
 
+const VOUCHER_REQUEST = '/internet/analytics/voucher'
+
 const actions = {
   getResource (
     context: ActionContext<undefined, any>,
@@ -160,6 +162,212 @@ const actions = {
         .setType(TYPE_JSON)
         .setData(data)
         .query('/hotspot/default/set-data')
+        .then(response => resolve(response))
+        .catch(error => reject(error))
+    })
+  },
+  hotspotUpdate (
+    context: ActionContext<undefined, any>,
+    data: FormData
+  ) {
+    return new Promise((resolve, reject) => {
+      api()
+        .setWithCredentials()
+        .setType(TYPE_JSON)
+        .setData(data)
+        .query('/hotspot/default/update')
+        .then(response => resolve(response))
+        .catch(error => reject(error))
+    })
+  },
+  voucherView (
+    context: ActionContext<undefined, any>,
+    { vlan, cityId }: { vlan: string, cityId: string }
+  ) {
+    const { toms: clientId } = context.rootGetters['auth/user']
+    return new Promise((resolve, reject) => {
+      api()
+        .setWithCredentials()
+        .setType(TYPE_JSON)
+        .setData({
+          category: 'voucher',
+          action: 'point/view',
+          data: {
+            client_id: clientId,
+            vlan,
+            city_id: cityId
+          }
+        })
+        .query(VOUCHER_REQUEST)
+        .then(response => resolve(response))
+        .catch(error => reject(error))
+    })
+  },
+  managerCreate (
+    context: ActionContext<undefined, any>,
+    {
+      password,
+      vlan,
+      cityId,
+      fullName
+    }: {
+      password: string,
+      vlan: string,
+      cityId: string,
+      fullName: string
+    }
+  ) {
+    const { toms: clientId } = context.rootGetters['auth/user']
+    return new Promise((resolve, reject) => {
+      api()
+        .setWithCredentials()
+        .setType(TYPE_JSON)
+        .setData({
+          category: 'voucher',
+          action: 'manager/create',
+          data: {
+            client_id: clientId,
+            password,
+            vlan,
+            city_id: cityId,
+            full_name: fullName
+          }
+        })
+        .query(VOUCHER_REQUEST)
+        .then(response => resolve(response))
+        .catch(error => reject(error))
+    })
+  },
+  managerUpdate (
+    context: ActionContext<undefined, any>,
+    {
+      password,
+      vlan,
+      cityId,
+      fullName,
+      managerId
+    }: {
+      password: string,
+      vlan: string,
+      cityId: string,
+      fullName: string,
+      managerId: number
+    }
+  ) {
+    const { toms: clientId } = context.rootGetters['auth/user']
+    return new Promise((resolve, reject) => {
+      api()
+        .setWithCredentials()
+        .setType(TYPE_JSON)
+        .setData({
+          category: 'voucher',
+          action: 'manager/update',
+          data: {
+            client_id: clientId,
+            password,
+            vlan,
+            city_id: cityId,
+            full_name: fullName,
+            manager_id: managerId
+          }
+        })
+        .query(VOUCHER_REQUEST)
+        .then(response => resolve(response))
+        .catch(error => reject(error))
+    })
+  },
+  managerView (
+    context: ActionContext<undefined, any>,
+    {
+      vlan,
+      cityId,
+      managerId
+    }: {
+      vlan: string,
+      cityId: string,
+      managerId: number
+    }
+  ) {
+    const { toms: clientId } = context.rootGetters['auth/user']
+    return new Promise((resolve, reject) => {
+      api()
+        .setWithCredentials()
+        .setType(TYPE_JSON)
+        .setData({
+          category: 'voucher',
+          action: 'manager/view',
+          data: {
+            client_id: clientId,
+            vlan,
+            city_id: cityId,
+            manager_id: managerId
+          }
+        })
+        .query(VOUCHER_REQUEST)
+        .then(response => resolve(response))
+        .catch(error => reject(error))
+    })
+  },
+  managerDelete (
+    context: ActionContext<undefined, any>,
+    {
+      vlan,
+      cityId,
+      managerId
+    }: {
+      vlan: string,
+      cityId: string,
+      managerId: number
+    }
+  ) {
+    const { toms: clientId } = context.rootGetters['auth/user']
+    return new Promise((resolve, reject) => {
+      api()
+        .setWithCredentials()
+        .setType(TYPE_JSON)
+        .setData({
+          category: 'voucher',
+          action: 'manager/delete',
+          data: {
+            client_id: clientId,
+            vlan,
+            city_id: cityId,
+            manager_id: managerId
+          }
+        })
+        .query(VOUCHER_REQUEST)
+        .then(response => resolve(response))
+        .catch(error => reject(error))
+    })
+  },
+  managerRestore (
+    context: ActionContext<undefined, any>,
+    {
+      vlan,
+      cityId,
+      managerId
+    }: {
+      vlan: string,
+      cityId: string,
+      managerId: number
+    }
+  ) {
+    const { toms: clientId } = context.rootGetters['auth/user']
+    return new Promise((resolve, reject) => {
+      api()
+        .setWithCredentials()
+        .setType(TYPE_JSON)
+        .setData({
+          category: 'voucher',
+          action: 'manager/restore',
+          data: {
+            client_id: clientId,
+            vlan,
+            city_id: cityId,
+            manager_id: managerId
+          }
+        })
+        .query(VOUCHER_REQUEST)
         .then(response => resolve(response))
         .catch(error => reject(error))
     })

@@ -40,7 +40,7 @@ div(:class="`${pre}`")
     div(:class="`${pre}__table-body`")
       template(v-for="row in rows")
         user-row(:user="row" :selected="row === currentRow" @select="selectRow")
-  page-footer
+  page-footer(:disconnectData="disconnectData")
   user-dialog(v-model="showDialog" :fullscreen="isFullscreenDialog" :width="getWidth")
     div(:class="`${pre}__modal`")
       div(:class="`${pre}__modal-content`")
