@@ -35,6 +35,7 @@ import profile from './modules/profile'
 import wifi from './modules/wifi'
 import catalog from './modules/catalog'
 import tokens from './modules/tokens'
+import oats from './modules/oats'
 
 const debug = process.env.NODE_ENV !== 'production'
 
@@ -73,7 +74,8 @@ export default new Vuex.Store({
     wifi,
     profile,
     catalog,
-    tokens
+    tokens,
+    oats
   },
   strict: debug,
   plugins: [createPersistedState({

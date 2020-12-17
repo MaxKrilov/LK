@@ -1,0 +1,12 @@
+.oats-phone
+  .oats-phone__name {{ number }}
+  .oats-phone__type
+    template(v-if="category")
+      .phone-type(v-class-mod="[categoryClass]")
+        .phone-type__icon-wrap
+          .phone-type__icon
+
+        .phone-type__name {{ category }}
+
+  .oats-phone__price
+    er-price(period="мес") {{ price }}

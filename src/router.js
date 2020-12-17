@@ -76,8 +76,6 @@ import StatisticInternetPage from '@/components/pages/internet/StatisticPage/ind
 // Создание клиента (для DMP)
 import DMPFormPage from './components/pages/dmp-form/index'
 
-import OATSMainPage from './components/pages/oats/index'
-
 // Телефония
 import TelephonyPromoPage from './components/pages/telephony/promo/index'
 import TelephonyPlugPage from './components/pages/telephony/plug/index'
@@ -88,8 +86,10 @@ import IpPage from './components/pages/internet/ip/index'
 import ContentFilterPromoPage from './components/pages/internet/content-filter/promo/index'
 import ContentFilterPlugPage from './components/pages/internet/content-filter/plug/index'
 import ContentFilterMainPage from './components/pages/internet/content-filter/index'
-// import OATSMainPage from './components/pages/oats/index'
-import OATSPromoPage from './components/pages/oats/promo/index'
+
+// ОАТС
+import OATSMainPage from './components/pages/oats/main-page/index'
+import GoToOATSPortal from './components/pages/oats/components/GoToOATSPortal'
 
 // Видеоконтроль
 import VCTemplate from './components/pages/videocontrol/index'
@@ -249,6 +249,11 @@ const router = new Router({
           component: OATSMainPage
         },
         {
+          name: 'go-to-oats-portal',
+          path: 'oats/go-to-portal',
+          component: GoToOATSPortal
+        },
+        {
           path: 'telephony/promo',
           component: TelephonyPromoPage
         },
@@ -261,10 +266,6 @@ const router = new Router({
         {
           path: 'telephony',
           component: TelephonyPage
-        },
-        {
-          path: 'oats/promo',
-          component: OATSPromoPage
         },
         {
           path: 'support',

@@ -71,3 +71,7 @@ export function cutText (text, charCount) {
 export function fileName (str) {
   return str.replace(/^.*[\\/]/, '')
 }
+
+export function removeNumberFromTitle (title) {
+  return title.split('#')[0]
+}
