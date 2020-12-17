@@ -45,7 +45,11 @@ export default {
   }),
   props: {
     vlan: String,
-    cityId: String
+    cityId: String,
+    disconnectData: {
+      type: Object,
+      default: () => ({})
+    }
   },
   watch: {
     vlan () {
@@ -73,7 +77,7 @@ export default {
     },
     init () {
       this.mock.connections = {}
-      if (!this.vlan || !this.cityId) return
+      if (!this.vlan || !this.cityId || !this.periodDate.from || !this.periodDate.to) return
       this.isLoadingData = true
       this.isErrorLoad = false
       this.$store.dispatch('wifi/bigDataStatAudience', {

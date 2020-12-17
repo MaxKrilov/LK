@@ -91,6 +91,51 @@
     max-width: 208px;
   }
 
+  &__list-manager-voucher {
+    .head {
+      display: flex;
+      margin-bottom: $padding-x2;
+    }
+
+    .head > * {
+      @extend %caption2-font;
+      @include color-black(0.3);
+    }
+
+    .head .login,
+    .head .updated {
+      flex: 1;
+    }
+
+    .body-row {
+      display: flex;
+      align-items: center;
+    }
+
+    .body-row .login,
+    .body-row .updated,
+    .body-row .password {
+      flex: 1;
+    }
+
+    .body-row .actions > * {
+      @include color-black(0.2);
+      transition: $primary-transition;
+
+      &:hover {
+        @include color-black(0.5);
+      }
+    }
+
+    .body-row .actions > * > button {
+      outline: none;
+    }
+
+    .body-row .actions > *:first-child {
+      margin-right: $padding-x4;
+    }
+  }
+
   @include min-breakpoint('sm') {
     &__content {
       padding: 24px 40px;

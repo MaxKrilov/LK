@@ -10,7 +10,10 @@
         template(v-if="isLoadingCustomerProduct")
           PuSkeleton
         template(v-else)
-          .services-component__item(:class="{ 'on': service.isOn }")
+          .services-component__item(
+            :class="{ 'on': service.isOn }"
+            @click="service.onClick"
+          )
             .content
               .icon
                 er-icon(:name="service.icon")

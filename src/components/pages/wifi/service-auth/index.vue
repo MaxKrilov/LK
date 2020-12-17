@@ -26,6 +26,7 @@
           :status="serviceAuth.status"
           :price="getSLOPrice(serviceAuth)"
           :chars="serviceAuth.chars"
+          :bpi="activePoint.bpi"
           :ref="`service-auth__${serviceAuth.code.toLowerCase()}`"
           @connect="(e) => onConnect(serviceAuth.code, e)"
           @disconnect="onDisconnect(serviceAuth.code, serviceAuth.productId)"
@@ -61,6 +62,30 @@
       @errorOrder="onErrorOrder"
       @successOrder="onSuccessOrder"
     )
+
+    //- Выводим в случае, если денежных средств недостаточно
+    ErActivationModal(
+      type="info"
+      v-model="isShowMoneyModal"
+      actionButtonText="Пополнить  счёт"
+      @confirm="onToPayment()"
+      cancel-button-text="Закрыть"
+    )
+      template(v-slot:description)
+        .h4 Уважаемый клиент, для завершения заказа на лицевом счете не достаточно денежных средств. Пополните лицевой счет и повторите покупку.
+        .caption.text-color-black08 Стоимость подключения: <b>{{ getOrderTitleNPrice && getOrderTitleNPrice.price }}</b> ₽
+        .caption.text-color-black08 Ваши доступные средства: <b>{{ availableFundsAmt }}</b> ₽
+
+    ErActivationModal(
+      type="error"
+      v-model="isErrorMoney"
+      title="Возникла ошибка"
+      :isShowActionButton="false"
+      :persistent="true"
+      cancelButtonText="Закрыть"
+    )
+    template(slot="description")
+      div Уважаемый Клиент, в данный момент операция не доступна, обратитесь к персональному менеджеру
 </template>
 
 <script lang="ts" src="./script.ts"></script>

@@ -48,6 +48,7 @@ div
     actionButtonText="Спасибо"
     :persistent="true"
     @confirm="closeSuccessRequestModal"
+    key="success-request-modal"
   )
     template(slot="description")
       | Заявка отправлена вашему персональному менеджеру. Статус заявки {{ requestId }} можно отследить в разделе Поддержка
@@ -59,6 +60,7 @@ div
     :persistent="true"
     cancelButtonText="Закрыть"
     @close="onCloseErrorModal"
+    key="error-request-modal"
   )
     template(slot="description")
       div Уважаемый Клиент, в данный момент операция не доступна, обратитесь к персональному менеджеру
@@ -86,6 +88,7 @@ div
     actionButtonText="Спасибо"
     :persistent="true"
     @confirm="closeSuccessOrderModal"
+    key="success-order-modal"
   )
     template(slot="description")
       | Заказ создан успешно. Выполнение заказа может занять некоторое время. Актуальный статус можно узнать в разделе Заказы.
@@ -98,6 +101,7 @@ div
     :persistent="true"
     cancelButtonText="Закрыть"
     @close="closeErrorOrderModal"
+    key="error-order-modal"
   )
     template(slot="description")
       div Уважаемый Клиент, в данный момент операция не доступна, обратитесь к персональному менеджеру

@@ -5,7 +5,7 @@ import { LMap, LTileLayer, LMarker, LPopup } from 'vue2-leaflet'
 import ServicesComponent from '../blocks/services/index.vue'
 import { IAddressUnit, ICustomerProduct, ILocationOfferInfo } from '@/tbapi'
 import moment from 'moment'
-import { WIFIANALYTICS, WIFIKONTFIL, SERVICES_AUTH } from '@/components/pages/wifi/index/constants'
+import { WIFIANALYTICS, WIFIKONTFIL, SERVICES_AUTH, WIFIDESIGNOPT } from '@/components/pages/wifi/index/constants'
 
 const MAP_URL = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
 
@@ -181,6 +181,12 @@ export default class WifiIndexPage extends Vue {
       : false
   }
 
+  get isOnPersonalisation () {
+    return (id: string) => this.tracker
+      ? this.listCustomerProduct.get(id)?.slo.find(slo => slo.code === WIFIDESIGNOPT)?.status === 'Active'
+      : false
+  }
+
   get isOnContent () {
     return (id: string) => this.tracker
       ? this.listCustomerProduct.get(id)?.slo.find(slo => slo.code === WIFIKONTFIL)?.status === 'Active'
@@ -229,6 +235,12 @@ export default class WifiIndexPage extends Vue {
         ? this.listCustomerProduct.has(id)
         : false
     }
+  }
+
+  get isOnServiceAuth () {
+    return (id: string) => this.tracker
+      ? (this.countOfActiveAuthService(id)! > 0)
+      : false
   }
 
   // Methods

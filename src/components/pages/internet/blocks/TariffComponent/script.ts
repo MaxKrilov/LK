@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Component from 'vue-class-component'
-import { ICustomerProduct } from '@/tbapi'
+import { ICustomerProduct, IAvailableFunds } from '@/tbapi'
 import * as d3 from 'd3'
 import moment from 'moment'
 import { tweenText } from '@/components/pages/internet/functions/animation'
@@ -11,6 +11,7 @@ import SpeedComponent from '@/components/pages/internet/blocks/SpeedComponent/in
 import ErActivationModal from '@/components/blocks/ErActivationModal/index.vue'
 import ErDisconnectProduct from '@/components/blocks/ErDisconnectProduct/index.vue'
 import { OFFER_LINKS } from '@/constants/url'
+import { mapActions } from 'vuex'
 
 const SPEED_N_LIMIT_WIDTH = 104
 const STROKE_WIDTH = 2
@@ -63,6 +64,11 @@ const arc = d3.arc()
     isShowOfferDialog (val) {
       !val && this.isOffering && this.cancelSailOrder()
     }
+  },
+  methods: {
+    ...mapActions({
+      getAvailableFunds: 'salesOrder/getAvailableFunds'
+    })
   }
 })
 export default class TariffComponent extends Vue {
@@ -73,6 +79,9 @@ export default class TariffComponent extends Vue {
   readonly customerProduct!: ICustomerProduct | null
   readonly isLoadingCustomerProduct!: boolean
   readonly locationId!: number | string
+
+  // Vuex Methods
+  getAvailableFunds!: <R = Promise<IAvailableFunds>>() => R
 
   // Data
   isBlur = false
@@ -98,6 +107,11 @@ export default class TariffComponent extends Vue {
   offerLink = OFFER_LINKS.internet
 
   errorText = ''
+
+  availableFundsAmt: number = 0
+  isShowMoneyModal: boolean = false
+  isErrorMoney: boolean = false
+  _priceIncrease: number = 0
 
   // Computed
   /**
@@ -543,6 +557,7 @@ export default class TariffComponent extends Vue {
 
     const choosingInternetSpeed = this.internetSpeed
     let char: Record<string, string> | Record<string, string>[] = {}
+    let _price: number = 0
     if (this.isTurboActivation) {
       if (!this.isAvailableTurbo) return
 
@@ -558,6 +573,7 @@ export default class TariffComponent extends Vue {
         char[CHAR_START_DATE_TURBO] = moment(from).format()
         char[CHAR_STOP_DATE_TURBO] = moment(to).format()
       }
+      _price = Number(price.amount)
     } else {
       if (!this.isAvailableSpeedIncrease) return
 
@@ -566,23 +582,43 @@ export default class TariffComponent extends Vue {
           Number(price.chars[CHARS_SPEED_INCREASE].replace(/[\D]+/g, '')) === choosingInternetSpeed)
       if (!price) return
       char[CHARS_SPEED_INCREASE] = price.chars[CHARS_SPEED_INCREASE]
+      _price = Number(price.amount)
     }
 
+    this._priceIncrease = _price
+
     this.isLoadingConnect = true
-    this.$store.dispatch(
-      `salesOrder/${this.isTurboActivation ? 'createSaleOrder' : 'createModifyOrder'}`,
-      {
-        locationId,
-        bpi,
-        offerId,
-        chars: char,
-        productCode: this.isTurboActivation
-          ? OFFER_CODE_TEMP_SPEED_INCREASE
-          : OFFER_CODE_SPEED_INCREASE
-      })
-      .then(() => {
-        this.isShowOfferDialog = true
-        this.isOffering = true
+
+    this.getAvailableFunds()
+      .then(response => {
+        const availableFunds = Number(response.availableFundsAmt)
+        this.availableFundsAmt = availableFunds
+
+        if (availableFunds - _price > 0) {
+          this.$store.dispatch(
+            `salesOrder/${this.isTurboActivation ? 'createSaleOrder' : 'createModifyOrder'}`,
+            {
+              locationId,
+              bpi,
+              offerId,
+              chars: char,
+              productCode: this.isTurboActivation
+                ? OFFER_CODE_TEMP_SPEED_INCREASE
+                : OFFER_CODE_SPEED_INCREASE
+            })
+            .then(() => {
+              this.isShowOfferDialog = true
+              this.isOffering = true
+            })
+            .catch(() => {
+              this.isShowErrorDialog = true
+            })
+            .finally(() => {
+              this.isLoadingConnect = false
+            })
+        } else {
+          this.isShowMoneyModal = true
+        }
       })
       .catch(() => {
         this.isShowErrorDialog = true
@@ -638,6 +674,17 @@ export default class TariffComponent extends Vue {
         ? Number(elementPrice.chars[chars].replace(/[\D]+/g, ''))
         : 0
     }
+  }
+
+  onToPayment () {
+    this.$router.push({
+      name: 'add-funds',
+      params: {
+        total_amount: this._priceIncrease
+          ? String(this._priceIncrease - this.availableFundsAmt)
+          : '0'
+      }
+    })
   }
 
   // Hooks

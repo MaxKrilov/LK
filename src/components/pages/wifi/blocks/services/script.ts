@@ -10,7 +10,10 @@ import { getNoun } from '@/functions/helper'
     },
     isLoadingCustomerProduct: Boolean,
     isOnAnalitic: Boolean,
-    isOnContentFilter: Boolean
+    isOnContentFilter: Boolean,
+    isOnServiceAuth: Boolean,
+    isOnPersonalisation: Boolean,
+    bpi: String
   }
 })
 export default class ServicesComponent extends Vue {
@@ -19,12 +22,52 @@ export default class ServicesComponent extends Vue {
   readonly isLoadingCustomerProduct!: boolean
   readonly isOnAnalitic!: boolean
   readonly isOnContentFilter!: boolean
+  readonly isOnServiceAuth!: boolean
+  readonly isOnPersonalisation!: boolean
+  readonly bpi!: string
+
   // Computed
   get listService () {
     return [
-      { icon: 'stat', name: 'Аналитика', isOn: this.isOnAnalitic },
-      { icon: 'filter', name: 'Контент-фильтрация', isOn: this.isOnContentFilter },
-      { icon: 'settings', name: 'Сервисы авторизации', isOn: false }
+      {
+        icon: 'stat',
+        name: 'Аналитика',
+        isOn: this.isOnAnalitic,
+        onClick: () => {
+          this.$router.push({
+            name: 'analytics-visitors',
+            params: { bpi: this.bpi }
+          })
+        }
+      },
+      {
+        icon: 'filter',
+        name: 'Контент-фильтрация',
+        isOn: this.isOnContentFilter,
+        onClick: () => {}
+      },
+      {
+        icon: 'settings',
+        name: 'Сервисы авторизации',
+        isOn: this.isOnServiceAuth,
+        onClick: () => {
+          this.$router.push({
+            name: 'wifi-services-auth',
+            params: { bpi: this.bpi }
+          })
+        }
+      },
+      {
+        icon: 'page_constructor',
+        name: 'Конструктор страницы авторизации',
+        isOn: this.isOnPersonalisation,
+        onClick: () => {
+          this.$router.push({
+            name: 'wifi-personalization',
+            params: { bpi: this.bpi }
+          })
+        }
+      }
     ]
   }
 

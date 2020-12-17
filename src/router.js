@@ -416,12 +416,14 @@ const router = new Router({
             // },
             {
               path: 'personalization',
+              name: 'wifi-personalization',
               component: WifiPersonalizationPage
             }
           ]
         },
         {
           path: 'wifi/services-auth',
+          name: 'wifi-services-auth',
           component: WifiServiceAuth
         },
         {

@@ -14,10 +14,9 @@ import { SCREEN_WIDTH } from '@/store/actions/variables'
 import { BREAKPOINT_SM, BREAKPOINT_MD, BREAKPOINT_LG, BREAKPOINT_XL } from '@/constants/breakpoint'
 
 import moment from 'moment'
-import { head } from 'lodash'
 
 import Window from './window'
-import { IWifiResourceInfo, IWifiStatUser } from '@/tbapi'
+import { IWifiStatUser } from '@/tbapi'
 
 const DATE_FORMAT = 'DD.MM.YYYY'
 const DATE_FORMAT_REQUEST = 'YYYYMMDDHH'
@@ -105,7 +104,9 @@ const transformData = (data: IWifiStatUser[]) => {
       type: String,
       default: 'asc'
     },
-    vlanInfo: {
+    vlan: String,
+    cityId: String,
+    disconnectData: {
       type: Object,
       default: () => ({})
     }
@@ -147,7 +148,9 @@ export default class WifiUsersRegistry extends Vue {
   // Props
   readonly sortField!: string
   readonly sortOrder!: string
-  readonly vlanInfo!: IWifiResourceInfo
+  readonly vlan!: string
+  readonly cityId!: string
+  readonly disconnectData!: Record<string, any>
 
   // Data
   pre = 'stat-template'
@@ -230,11 +233,10 @@ export default class WifiUsersRegistry extends Vue {
     return this.period
   }
   init () {
-    if (!this.vlanInfo || !this.vlanInfo.hasOwnProperty('vlan')) return
-    const { cityId, number } = head(this.vlanInfo.vlan)!
+    if (!this.vlan || !this.cityId) return
     this.$store.dispatch('wifi/bigDataStatUser', {
-      vlan: number,
-      cityId,
+      vlan: this.vlan,
+      cityId: this.cityId,
       dateFrom: this.periodDate.from,
       dateTo: this.periodDate.to
     })

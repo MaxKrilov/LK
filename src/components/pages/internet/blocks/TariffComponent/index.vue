@@ -142,6 +142,19 @@
       :delete-order-data="turboDetails"
       is-send-order
     )
+
+    ErActivationModal(
+      type="info"
+      v-model="isShowMoneyModal"
+      actionButtonText="Пополнить  счёт"
+      @confirm="onToPayment()"
+      cancel-button-text="Закрыть"
+    )
+      template(v-slot:description)
+        .h4 Уважаемый клиент, для завершения заказа на лицевом счете не достаточно денежных средств. Пополните лицевой счет и повторите покупку.
+        .caption.text-color-black08 Стоимость подключения: <b>{{ _priceIncrease }}</b> ₽
+        .caption.text-color-black08 Ваши доступные средства: <b>{{ availableFundsAmt }}</b> ₽
+
 </template>
 
 <script lang="ts" src="./script.ts"></script>

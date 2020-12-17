@@ -25,7 +25,6 @@ const actions = {
         .setWithCredentials()
         .setData(data)
         .setType(TYPE_ARRAY)
-        .setBranch('master')
         .query('/catalog/tv/packs')
         .then((response) => {
           if (response?.error) {
@@ -65,7 +64,6 @@ const actions = {
       payload.api
         .setData(data)
         .setType(TYPE_ARRAY)
-        .setBranch('master')
         .query('/catalog/tv/pack')
         .then((response: ITVChannel[]) => {
           resolve(response)

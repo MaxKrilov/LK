@@ -678,3 +678,9 @@ export interface WifiData {
   field_blacklist_mac: string;
   field_subscription_is_active: number;
 }
+
+export interface IAvailableFunds {
+  accountCurrency: string
+  availableFundsAmt: string
+  paymentScheme: number
+}

@@ -3,16 +3,30 @@ import ListPointComponent from '@/components/templates/InternetTemplate/blocks/L
 import Submenu from './components/Submenu'
 import { mapActions } from 'vuex'
 import { head } from 'lodash'
-// import { transformListPoint } from '../../../../blocks/ErListPoints/script'
 import Page from '../../../../helpers/Page'
+import { ServiceStatus } from '@/constants/status'
+import ErPromo from '@/components/blocks/ErPromo'
+import ErPlugProduct from '@/components/blocks/ErPlugProduct'
+import { price as priceFormatted } from '@/functions/filters'
+import ErActivationModal from '@/components/blocks/ErActivationModal/index.vue'
+
+const analyticFutureList = require('./promo.json')
+
+const SLO_CODE = 'WIFIANALYTICS'
 
 export default {
   name: 'wifi-analytics-statistics',
   components: {
     ListPointComponent,
-    Submenu
+    Submenu,
+    ErPromo,
+    ErPlugProduct,
+    ErActivationModal
   },
   mixins: [ResponsiveMixin, Page],
+  filters: {
+    priceFormatted
+  },
   props: {},
   data: () => ({
     pre: 'statistics',
@@ -26,11 +40,48 @@ export default {
     isLoadingListPoint: true,
     isLoadingCustomerProduct: true,
     isLoadingWifiData: true,
-    isErrorLoad: false
+    isErrorLoad: false,
+    promoFeatureList: analyticFutureList,
+    isShowPlugProductPlugin: false,
+    isShowMoneyModal: false,
+    isErrorMoney: false,
+    isCheckingMoney: false,
+    availableFundsAmt: 0
   }),
   computed: {
     isMobile () {
       return this.isXS || this.isSM
+    },
+    isActiveProduct () {
+      return this.customerProduct
+        ? this.customerProduct.slo
+          .find(sloItem => sloItem.code === SLO_CODE).status === ServiceStatus.STATUS_ACTIVE
+        : false
+    },
+    getPriceForConnection () {
+      return this.customerProduct && !this.isActiveProduct
+        ? Number(head(this.customerProduct.slo.find(sloItem => sloItem.code === SLO_CODE).prices).amount)
+        : 0
+    },
+    getOrderData () {
+      return {
+        locationId: this.activePoint?.id,
+        bpi: this.activePoint?.bpi,
+        productCode: SLO_CODE,
+        offer: 'wifi',
+        title: 'Вы уверены, что хотите подключить услугу «Аналитика по пользователям»?'
+      }
+    },
+    getDisconnectData () {
+      const productId = this.customerProduct && this.isActiveProduct
+        ? this.customerProduct.slo.find(sloItem => sloItem.code === SLO_CODE).productId
+        : ''
+      return {
+        bpi: this.activePoint?.bpi,
+        locationId: this.activePoint?.id,
+        productId,
+        title: 'Вы уверены, что хотите отключить услугу «Аналитика по пользователям»?'
+      }
     }
   },
   watch: {
@@ -79,7 +130,11 @@ export default {
         Page.options.methods.getListPoint.call(this)
           .then(() => {
             this.listPoint = this.listPoint.filter(point => ~point.offerName.toLowerCase().indexOf('mono'))
-            this.activePoint = head(this.listPoint) || null
+            if (this.$route.params.hasOwnProperty('bpi')) {
+              this.activePoint = this.listPoint.find(point => point.bpi === this.$route.params.bpi) || null
+            } else {
+              this.activePoint = head(this.listPoint) || null
+            }
             resolve(this.listPoint)
           })
           .catch(error => {
@@ -93,8 +148,39 @@ export default {
     },
     ...mapActions({
       getResource: 'wifi/getResource',
-      getData: 'wifi/getData'
-    })
+      getData: 'wifi/getData',
+      getAvailableFunds: 'salesOrder/getAvailableFunds'
+    }),
+    onConnect () {
+      this.isCheckingMoney = true
+      this.getAvailableFunds()
+        .then(response => {
+          const availableFunds = Number(response.availableFundsAmt)
+          this.availableFundsAmt = availableFunds
+
+          if (availableFunds - this.getPriceForConnection > 0) {
+            this.isShowPlugProductPlugin = true
+          } else {
+            this.isShowMoneyModal = true
+          }
+        })
+        .catch(() => {
+          this.isErrorMoney = true
+        })
+        .finally(() => {
+          this.isCheckingMoney = false
+        })
+    },
+    onToPayment () {
+      this.$router.push({
+        name: 'add-funds',
+        params: {
+          total_amount: this.getPriceForConnection
+            ? String(this.getPriceForConnection - this.availableFundsAmt)
+            : '0'
+        }
+      })
+    }
   },
   beforeRouteUpdate (to, from, next) {
     this.subpage = to.name

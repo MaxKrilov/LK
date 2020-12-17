@@ -6,8 +6,18 @@ import { STATUS_TEXT, ServiceStatus, STATUS_ACTIVE } from '@/constants/status'
 
 import { price as priceFormatted } from '@/functions/filters'
 import ErtForm from '@/components/UI2/ErtForm'
+import { mapActions } from 'vuex'
+import { IVoucherManager, ManagerResult, Result as IVoucherManagerResult } from '@/tbapi/voucher_manager'
+import { IWifiResourceInfo } from '@/tbapi'
+import ErActivationModal from '@/components/blocks/ErActivationModal/index.vue'
 
-const filters = { priceFormatted }
+import { head } from 'lodash'
+import moment from 'moment'
+
+const filters = {
+  priceFormatted,
+  dateTimeFormatted: (val: string) => moment(val).format('DD.MM.YYYY HH:mm')
+}
 
 const generatePassword = require('password-generator')
 
@@ -20,7 +30,8 @@ const props = {
   chars: {
     type: [Object, String],
     default: () => ({})
-  }
+  },
+  bpi: String
 }
 
 const INTERNAL_STATUS_CONNECTING = 'Connecting'
@@ -48,20 +59,35 @@ const CHAR_WIFIACCCHANGE_PIN = 'Пин-код'
 const CHAR_WIFIACCCHANGE_INTERVAL = 'Длительность авторизации (час)'
 const CHAR_WIFIHSCLONET_NAME = 'Имя сети Wi-Fi (SSID)'
 const CHAR_WIFIHSCLONET_PASSWORD = 'Пароль закрытой сети'
+const CHAR_WIFIAVTVOUCH_PREFIX = 'Префикс логина'
 
 @Component<InstanceType<typeof ErtWifiServiceAuthItem>>({
+  components: {
+    ErActivationModal
+  },
   filters,
   props,
   watch: {
     status (val) {
       this.lazyStatus = val || ServiceStatus.STATUS_DISCONNECTED
     }
+  },
+  methods: {
+    ...mapActions({
+      voucherView: 'wifi/voucherView',
+      getResource: 'wifi/getResource',
+      managerCreate: 'wifi/managerCreate',
+      managerDelete: 'wifi/managerDelete',
+      managerUpdate: 'wifi/managerUpdate',
+      managerRestore: 'wifi/managerRestore'
+    })
   }
 })
 export default class ErtWifiServiceAuthItem extends Vue {
   // Options
   $refs!: {
-    form: InstanceType<typeof ErtForm>
+    form: InstanceType<typeof ErtForm>,
+    'manager-add': InstanceType<typeof ErtForm>
   }
   // Props
   /**
@@ -93,6 +119,8 @@ export default class ErtWifiServiceAuthItem extends Vue {
    */
   readonly chars!: Record<string, string> | string
 
+  readonly bpi!: string
+
   // Data
   lazyStatus: string = this.status || InternalServiceStatuses.STATUS_DISCONNECTED
   loadingServiceWithParams: boolean = false
@@ -103,12 +131,16 @@ export default class ErtWifiServiceAuthItem extends Vue {
     wifiAccChangePIN: '', // PIN код заведения
     wifiAccChangeInterval: '', // Интервал авторизации
     wifiHSClosNetName: '', // Название закрытой сети
-    wifiHSCloseNetPassword: '' // Пароль закрытой сети
+    wifiHSCloseNetPassword: '', // Пароль закрытой сети
+    wifiVoucherPrefix: '',
+    wifiVoucherManagerName: '',
+    wifiVoucherManagerPassword: ''
   }
 
   vModelTypeList = {
     wifiAccChangePIN: 'password',
-    wifiHSCloseNetPassword: 'password'
+    wifiHSCloseNetPassword: 'password',
+    wifiVoucherManagerPassword: 'password'
   }
 
   vModelRuleList = {
@@ -117,8 +149,28 @@ export default class ErtWifiServiceAuthItem extends Vue {
     wifiAccChangePIN: [closedNetworkRule('Пин-код')],
     wifiAccChangeInterval: [requiredRule, isNumberRule, intervalRule],
     wifiHSClosNetName: [requiredRule, minLengthRule(8), closedNetworkRule('Название')],
-    wifiHSCloseNetPassword: [requiredRule, minLengthRule(8), closedNetworkRule('Пароль')]
+    wifiHSCloseNetPassword: [requiredRule, minLengthRule(8), closedNetworkRule('Пароль')],
+    wifiVoucherPrefix: [requiredRule],
+    wifiVoucherManagerName: [requiredRule],
+    wifiVoucherManagerPassword: [requiredRule]
   }
+
+  cityId: string = ''
+  vlan: string = ''
+
+  voucherManagerInfo: IVoucherManagerResult | null = null
+
+  isAddingVoucherManager: boolean = false
+  isAddingVoucherManagerRequest: boolean = false
+  isRemovingVoucherManagerRequest: boolean = false
+  isUpdatingVoucherManager: boolean = false
+  isUpdatingVoucherManagerRequest: boolean = false
+  isRestoringVoucherManagerRequest: boolean = false
+
+  isSuccessVoucherManager: boolean = false
+  isErrorVoucherManager: boolean = false
+
+  managerIdAction: number = 0
 
   // Computed
   /**
@@ -213,10 +265,14 @@ export default class ErtWifiServiceAuthItem extends Vue {
         [CHAR_WIFIACCCHANGE_PIN]: this.vModelList.wifiAccChangePIN,
         [CHAR_WIFIACCCHANGE_INTERVAL]: this.vModelList.wifiAccChangeInterval
       }
-    } else {
+    } else if (this.code === 'WIFIHSCLONET') {
       return {
         [CHAR_WIFIHSCLONET_NAME]: this.vModelList.wifiHSClosNetName,
         [CHAR_WIFIHSCLONET_PASSWORD]: this.vModelList.wifiHSCloseNetPassword
+      }
+    } else if (this.code === 'WIFIAVTVOUCH') {
+      return {
+        [CHAR_WIFIAVTVOUCH_PREFIX]: this.vModelList.wifiVoucherPrefix
       }
     }
   }
@@ -264,6 +320,180 @@ export default class ErtWifiServiceAuthItem extends Vue {
     this.$emit('connect', this.getChars)
   }
 
+  onCreateManager () {
+    if (!this.$refs['manager-add'].validate()) return
+    this.isAddingVoucherManagerRequest = true
+    this.managerCreate({
+      password: this.vModelList.wifiVoucherManagerPassword,
+      fullName: this.vModelList.wifiVoucherManagerName,
+      vlan: this.vlan,
+      cityId: this.cityId
+    })
+      .then(response => {
+        if (response.status === 'ok') {
+          this.voucherManagerInfo?.managers.push({
+            manager_id: response.result.manager_id,
+            point_id: response.result.point_id,
+            full_name: response.result.full_name,
+            authorized_at: response.result.authorized_at,
+            created_at: response.result.created_at,
+            removed_at: response.result.removed_at,
+            updated_at: response.result.updated_at
+          })
+          this.isSuccessVoucherManager = true
+        } else {
+          this.isErrorVoucherManager = true
+        }
+      })
+      .catch(() => {
+        this.isErrorVoucherManager = true
+      })
+      .finally(() => {
+        this.isAddingVoucherManagerRequest = false
+        this.isAddingVoucherManager = false
+        this.vModelList.wifiVoucherManagerPassword = ''
+        this.vModelList.wifiVoucherManagerName = ''
+      })
+  }
+
+  onRemoveManager (managerId: number) {
+    this.isRemovingVoucherManagerRequest = true
+    this.managerIdAction = managerId
+    this.managerDelete({
+      vlan: this.vlan,
+      cityId: this.cityId,
+      managerId
+    })
+      .then(response => {
+        if (response.status === 'ok' && response.result) {
+          const index = this.voucherManagerInfo?.managers.findIndex(manager => manager.manager_id === managerId) as number
+          if (index > -1) {
+            this.voucherManagerInfo!.managers[index].removed_at = moment().format('YYYY-MM-DD HH:mm:ss')
+            this.isSuccessVoucherManager = true
+          }
+        } else {
+          this.isErrorVoucherManager = true
+        }
+      })
+      .catch(() => {
+        this.isErrorVoucherManager = true
+      })
+      .finally(() => {
+        this.isRemovingVoucherManagerRequest = false
+        this.managerIdAction = 0
+      })
+  }
+
+  onManagerUpdate () {
+    this.isUpdatingVoucherManagerRequest = true
+    this.managerUpdate({
+      vlan: this.vlan,
+      cityId: this.cityId,
+      managerId: this.managerIdAction,
+      password: this.vModelList.wifiVoucherManagerPassword,
+      fullName: this.vModelList.wifiVoucherManagerName
+    })
+      .then(response => {
+        if (response.status === 'ok') {
+          const index = this.voucherManagerInfo?.managers.findIndex(manager => manager.manager_id === this.managerIdAction) as number
+          if (index > -1) {
+            this.voucherManagerInfo!.managers[index] = {
+              manager_id: response.result.manager_id,
+              point_id: response.result.point_id,
+              full_name: response.result.full_name,
+              authorized_at: response.result.authorized_at,
+              created_at: response.result.created_at,
+              removed_at: response.result.removed_at,
+              updated_at: response.result.updated_at
+            }
+            this.isSuccessVoucherManager = true
+          }
+        } else {
+          this.isErrorVoucherManager = true
+        }
+      })
+      .catch(() => {
+        this.isErrorVoucherManager = true
+      })
+      .finally(() => {
+        this.onCloseUpdateForm()
+      })
+  }
+
+  onManagerRestore (managerId: number) {
+    this.isRestoringVoucherManagerRequest = true
+    this.managerIdAction = managerId
+    this.managerRestore({
+      vlan: this.vlan,
+      cityId: this.cityId,
+      managerId
+    })
+      .then(response => {
+        if (response.status === 'ok') {
+          const index = this.voucherManagerInfo?.managers.findIndex(manager => manager.manager_id === this.managerIdAction) as number
+          if (index > -1) {
+            this.voucherManagerInfo!.managers[index].removed_at = null
+            this.isSuccessVoucherManager = true
+          }
+        } else {
+          this.isErrorVoucherManager = true
+        }
+      })
+      .catch(() => {
+        this.isErrorVoucherManager = true
+      })
+      .finally(() => {
+        this.isRestoringVoucherManagerRequest = false
+        this.managerIdAction = 0
+      })
+  }
+
+  onOpenUpdateForm (managerId: number) {
+    this.managerIdAction = managerId
+    const manager = this.voucherManagerInfo?.managers.find(manager => manager.manager_id === managerId)!
+    this.vModelList.wifiVoucherManagerName = manager.full_name
+    this.isUpdatingVoucherManager = true
+  }
+
+  onCloseUpdateForm () {
+    this.isUpdatingVoucherManager = false
+    this.managerIdAction = 0
+    this.vModelList.wifiVoucherManagerName = ''
+    this.vModelList.wifiVoucherManagerPassword = ''
+    this.isUpdatingVoucherManagerRequest = false
+  }
+
+  /// Vuex actions
+  getResource!: <
+    P = { bpi: string },
+    R = Promise<IWifiResourceInfo[]>
+    >(args: P) => R
+
+  voucherView!: <
+    P = { vlan: string, cityId: string },
+    R = Promise<IVoucherManager>
+    >(args: P) => R
+
+  managerCreate!: <
+    P = { vlan: string, cityId: string, password: string, fullName: string },
+    R = Promise<ManagerResult>
+    >(args: P) => R
+
+  managerDelete!: <
+    P = { vlan: string, cityId: string, managerId: number },
+    R = Promise<{ status: string, result: boolean }>
+    >(args: P) => R
+
+  managerUpdate!: <
+    P = { vlan: string, cityId: string, password: string, fullName: string, managerId: number },
+    R = Promise<ManagerResult>
+    >(args: P) => R
+
+  managerRestore!: <
+    P = { vlan: string, cityId: string, managerId: number },
+    R = Promise<ManagerResult>
+    >(args: P) => R
+
   // Hooks
   mounted () {
     if (
@@ -278,9 +508,25 @@ export default class ErtWifiServiceAuthItem extends Vue {
       } else if (this.code === 'WIFIACCCHANGE') {
         this.vModelList.wifiAccChangePIN = this.chars[CHAR_WIFIACCCHANGE_PIN] || ''
         this.vModelList.wifiAccChangeInterval = this.chars[CHAR_WIFIACCCHANGE_INTERVAL] || ''
-      } else {
+      } else if (this.code === 'WIFIHSCLONET') {
         this.vModelList.wifiHSClosNetName = this.chars[CHAR_WIFIHSCLONET_NAME] || ''
         this.vModelList.wifiHSCloseNetPassword = this.chars[CHAR_WIFIHSCLONET_PASSWORD] || ''
+      } else if (this.code === 'WIFIAVTVOUCH') {
+        this.vModelList.wifiVoucherPrefix = this.chars[CHAR_WIFIAVTVOUCH_PREFIX] || ''
+
+        this.getResource({ bpi: this.bpi })
+          .then(response => {
+            const vlan = head(response)!.vlan
+            if (!vlan || typeof head(vlan) === 'undefined') return
+            // this.cityId = head(vlan)!.cityId
+            this.cityId = '1'
+            this.vlan = head(vlan)!.number
+
+            this.voucherView({ vlan: this.vlan, cityId: this.cityId })
+              .then(response1 => {
+                this.voucherManagerInfo = response1.result
+              })
+          })
       }
     }
   }
