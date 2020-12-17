@@ -131,6 +131,10 @@ export default class ErtTokens extends Vue {
 
           resolve()
         })
+
+      if (this.isManager) {
+        resolve()
+      }
     })
   }
 
