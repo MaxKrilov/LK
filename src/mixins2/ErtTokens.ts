@@ -11,7 +11,8 @@ import { API } from '@/functions/api'
   computed: {
     ...mapState({
       accessToken: (state: any) => state.auth.accessToken,
-      refreshToken: (state: any) => state.auth.refreshToken
+      refreshToken: (state: any) => state.auth.refreshToken,
+      isManager: (state: any) => state.auth.isManager
     })
   },
   methods: {
@@ -26,6 +27,7 @@ export default class ErtTokens extends Vue {
   // Vuex state
   accessToken!: string
   refreshToken!: string
+  isManager!: boolean
 
   // Vuex actions
   signIn!: ({ api }: { api: API }) => Promise<any>
@@ -115,14 +117,14 @@ export default class ErtTokens extends Vue {
       if (!this.accessToken || !this.isValidToken(this.accessToken)) {
         this.signIn({ api: new API() })
           .then(response => {
-            this.onProccessingAccessToken()
+            !this.isManager && this.onProccessingAccessToken()
             resolve(response)
           })
           .catch(error => reject(error))
         return
       }
 
-      this.fetchRefreshToken({ api: new API() })
+      !this.isManager && this.fetchRefreshToken({ api: new API() })
         .then(response => {
           if (!response) reject()
           this.onProccessingAccessToken()
