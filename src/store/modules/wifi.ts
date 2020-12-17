@@ -31,7 +31,6 @@ const actions = {
     return new Promise((resolve, reject) => {
       api()
         .setWithCredentials()
-        // .setBranch('web-20066')
         .setData({
           client_id: toms,
           vlan,
@@ -67,7 +66,6 @@ const actions = {
     return new Promise((resolve, reject) => {
       api()
         .setWithCredentials()
-        // .setBranch('web-20066')
         .setData({
           method: 'stat_audiences',
           cityId,
@@ -107,7 +105,6 @@ const actions = {
     return new Promise((resolve, reject) => {
       api()
         .setWithCredentials()
-        // .setBranch('web-20066')
         .setData({
           method: 'stat_users',
           cityId,
@@ -130,7 +127,6 @@ const actions = {
       api()
         .setWithCredentials()
         .setType(TYPE_JSON)
-        .setBranch('web-bss-psi2')
         .setData({
           clientId,
           parentIds: payload.parentIds

@@ -413,10 +413,16 @@ const actions = {
           return true
         }
       }
-      // Если в куках нет л/с - устанавливаем первый
+      // Если в куках нет л/с - устанавливаем первый (без префиксов)
       if (Array.isArray(result) && result.length !== 0) {
-        commit(SET_ACTIVE_BILLING_ACCOUNT, result[0].billingAccountId)
-        commit(SET_ACTIVE_BILLING_ACCOUNT_NUMBER, result[0].accountNumber)
+        const findBillingAccount = result.find(billingAccount => !/[\D]+/.test(billingAccount.accountNumber))
+        if (findBillingAccount) {
+          commit(SET_ACTIVE_BILLING_ACCOUNT, findBillingAccount.billingAccountId)
+          commit(SET_ACTIVE_BILLING_ACCOUNT_NUMBER, findBillingAccount.accountNumber)
+        } else { // Если таких нет - устанавливаем первый
+          commit(SET_ACTIVE_BILLING_ACCOUNT, result[0].billingAccountId)
+          commit(SET_ACTIVE_BILLING_ACCOUNT_NUMBER, result[0].accountNumber)
+        }
       }
       return Array.isArray(result) && result.length !== 0
     } catch (error) {
