@@ -19,6 +19,8 @@
                   er-icon(name="geolocation")
                 .address
                   | {{ getActiveFulladdress  }}
+                .point-status(v-if="showSuspendedStatus && currentIsSuspendedStatus")
+                  | Приостановлено
                 .toggle
                   er-icon(name="corner_down")
           .list-point-component__modal
@@ -41,6 +43,9 @@
                   .tariff
                     | Тариф:&nbsp;
                     span {{ point.offerName }}
+                .point-status(v-if="showSuspendedStatus && isSuspendedStatus(point.status)")
+                  | Приостановлено
+
     .list-point-component--desktop(:class="{ 'open': isOpen }")
       template(v-if="getIsLoadingListPoint")
         .list-point-component__item.preloader
@@ -67,6 +72,9 @@
               .tariff
                 | Тариф:&nbsp;
                 span {{ point.offerName }}
+            template(v-if="showSuspendedStatus && isSuspendedStatus(point.status)")
+              .point-status Приостановлено
+
         .list-point-component__toggle
           .line
           button(@click="toggleList")

@@ -1,0 +1,85 @@
+.ip-transit
+  template(v-if="!isPointsLoaded")
+    er-page-header(
+      title="IP Транзит"
+      backlink="/lk/internet"
+      linkText="Назад в Интернет"
+    )
+
+    er-list-points(
+      is-loading
+    )
+
+  template(v-else-if="pointList.length")
+    er-page-header(
+      title="IP Транзит"
+      backlink="/lk/internet"
+      linkText="Назад в Интернет"
+    )
+
+    er-list-points(
+      :list="pointList"
+      v-model="currentPoint"
+      :showSuspendedStatus="true"
+    )
+
+    template(v-if="isPointsLoaded")
+      .ip-transit__content
+        template(v-if="isSuspendedStatus(currentPoint.status)")
+        template(v-else)
+          .ip-transit__tariff
+            block-with-icon(
+              icon="vpn"
+              label="Услуга"
+              :value="tariffName"
+            )
+            block-with-icon(
+              icon="time"
+              label="Активен с"
+              :value="tariffDate"
+            ).block-with-icon--date
+
+          .ip-transit__chars
+            block-with-icon(
+              icon="profile"
+              label="Номер AS Клиента"
+              :value="clientASNumber"
+            )
+            block-with-icon(
+              v-if="showIpPrefix"
+              icon="ip"
+              label="Стыковочный IPv6 префикс"
+              value="000987899"
+            )
+            div.empty-block(v-else)
+
+            block-with-icon(
+              icon="speedup"
+              label="Скорость доступа"
+              :value="accessSpeed"
+            )
+
+      .ip-transit__price(v-if="!isSuspendedStatus(currentPoint.status)")
+        .ip-transit-price__label Абонентская плата
+        .ip-transit-price__value
+          er-price {{ tariffPrice }}
+
+      .ip-transit__actions(v-if="!isSuspendedStatus(currentPoint.status)")
+        er-button(
+          @click="onIncreaseSpeed"
+        ) Увеличить скорость
+        er-button(
+          @click="onSuspend"
+          flat
+        ) Приостановить услугу
+
+  template(v-else)
+    IpTransitPromo
+
+  er-plug-product(
+    v-model="isRequestModalVisible",
+    :requestData="requestData",
+    :isSendOrder="false",
+    :isSendManagerRequest="true"
+    @closeSuccess="onCloseSuccess"
+  )

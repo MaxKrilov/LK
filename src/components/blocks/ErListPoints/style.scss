@@ -1,5 +1,16 @@
 .list-point-component {
   $root: &;
+
+  .point-status {
+    @extend %caption2;
+
+    flex-grow: 1;
+    width: 100px;
+    height: auto;
+    align-self: center;
+    text-align: right;
+  }
+
   &--mobile {
     #{$root} {
       &__point {
@@ -55,6 +66,15 @@
           @extend %caption1;
           padding-right: 16px;
           user-select: none;
+        }
+        .point-status {
+          @extend %caption2;
+
+          flex-grow: 1;
+          width: 100px;
+          height: auto;
+          align-self: center;
+          text-align: right;
         }
         .ip {
           display: none;
@@ -140,6 +160,15 @@
             @include color-black(0.5);
             transition: inherit;
           }
+        }
+        .point-status {
+          @extend %caption2;
+
+          flex-grow: 1;
+          width: 100px;
+          height: auto;
+          align-self: center;
+          text-align: right;
         }
         .ip {
           margin-bottom: 4px;

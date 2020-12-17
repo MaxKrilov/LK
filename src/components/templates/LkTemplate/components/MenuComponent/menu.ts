@@ -89,13 +89,20 @@ const MenuItemList = (listProduct: IProductItem[]): MenuItem[] => {
           {
             name: 'Дополнительные IP-адреса',
             url: '/lk/internet/ip'
+          },
+          {
+            name: 'IP Транзит',
+            url: '/lk/internet/ip-transit'
           }
           // {
           //   name: 'Защита от DDoS атак',
           //   url: '/lk/internet/ddos/'
           // }
         ]
-        : []
+        : [{
+          name: 'IP Транзит',
+          url: '/lk/internet/ip-transit'
+        }]
     },
     {
       name: 'Облачная телефония',

@@ -72,6 +72,8 @@ import ReverceZonesPage from '@/components/pages/internet/ReverceZonesPage/index
 // Статистика
 import StatisticInternetPage from '@/components/pages/internet/StatisticPage/index'
 
+import IpTransitPage from '@/components/pages/internet/ip-transit/index'
+
 // Создание клиента (для DMP)
 import DMPFormPage from './components/pages/dmp-form/index'
 
@@ -312,6 +314,10 @@ const router = new Router({
         {
           path: 'internet/content-filter',
           component: ContentFilterMainPage
+        },
+        {
+          path: 'internet/ip-transit',
+          component: IpTransitPage
         },
         {
           path: 'internet',
