@@ -1,0 +1,109 @@
+.chat-button {
+  position: fixed;
+  cursor: pointer;
+  left: 16px;
+  bottom: 16px;
+
+  @include min-breakpoint('sm') {
+    left: 24px;
+    bottom: 24px;
+  }
+
+  @include min-breakpoint('lg') {
+    left: 32px;
+    bottom: 32px;
+  }
+
+  @include min-breakpoint('xl') {
+    left: 48px;
+    bottom: 48px;
+  }
+
+  z-index: 10;
+
+  .er-icon {
+
+    svg {
+      color: map-get($shades, 'white');
+    }
+  }
+
+  &__content {
+    // кнопка
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background-color: map-get($green, 'base');
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
+
+    &:hover {
+      background-color: map-get($green, 'other-1');
+
+    }
+
+    &::before {
+      // прозначная волна
+      position: absolute;
+      display: block;
+      content: "";
+      width: 48px;
+      height: 48px;
+      background-color: map-get($green, 'base');
+      border-radius: 50%;
+      z-index: -1;
+    }
+  }
+
+
+  $animation-duration: 3s;
+
+  .decrease-animation {
+    animation: decreaseAnimation $animation-duration ease-in;
+    animation-iteration-count: 1;
+  }
+
+  .blink-animation::before {
+    animation: blinkAnimation $animation-duration ease-out;
+    animation-iteration-count: 1;
+  }
+
+
+  @keyframes decreaseAnimation {
+    0% {
+      transform: scale(1);
+    }
+
+    20% {
+      transform: scale(.9);
+    }
+
+    30% {
+      transform: scale(1);
+    }
+  }
+
+  @keyframes blinkAnimation {
+    0% {
+      transform: scale(1);
+      opacity: 0.5;
+    }
+
+    29% {
+      transform: scale(1);
+      opacity: 0.5;
+    }
+
+    70% {
+      transform: scale(2);
+      opacity: 0.0;
+    }
+
+    71% {
+      transform: scale(1);
+      opacity: 0.0;
+    }
+  }
+}
