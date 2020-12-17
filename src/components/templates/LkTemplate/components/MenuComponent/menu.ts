@@ -154,15 +154,15 @@ const MenuItemList = (listProduct: IProductItem[]): MenuItem[] => {
             {
               name: 'Конструктор страницы авторизации',
               url: '/lk/wifi/personalization'
-            },
+            }
             // {
             //   name: 'Контент-фильтрация',
             //   url: '/lk/wifi/content'
             // },
-            {
-              name: 'Аналитика',
-              url: '/lk/wifi/analytics/statistics'
-            }
+            // {
+            //   name: 'Аналитика',
+            //   url: '/lk/wifi/analytics/statistics'
+            // }
           ]
           : [],
         isConnectWifiPro(listProduct)
