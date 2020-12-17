@@ -2,6 +2,8 @@ import { ERROR_MODAL } from '../actions/variables'
 import moment from 'moment'
 import { getFirstElement } from '../../functions/helper'
 
+const FISCAL_CHECK_ATTRIBUTE = 'FISCAL_CHECK'
+
 const state = {
   numCard: 0,
   save: 0,
@@ -454,6 +456,13 @@ const mutations = {
         timestamp: Number(historyItem.paymentDate),
         chargePeriod: '',
         type: 'replenishment'
+      }
+
+      const fiscalCheckAttribute = historyItem.paymentAttributes
+        .find(paymentAttribute => paymentAttribute.name === FISCAL_CHECK_ATTRIBUTE)
+
+      if (fiscalCheckAttribute) {
+        resultObject.fiscalCheck = fiscalCheckAttribute.value
       }
 
       if (index > -1) {

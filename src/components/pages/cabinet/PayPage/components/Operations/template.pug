@@ -18,6 +18,10 @@ er-row(no-gutters)
           ) {{ item.title }}
             div(:class="`${pre}__type-charge`") {{ item.description }}
             div(:class="`${pre}__type-charge`") {{ item.chargePeriod }}
+            div.caption2(:class="`${pre}__fiscal-check`" v-if="item.hasOwnProperty('fiscalCheck')")
+              a.link--dashed--yellow(
+                :href="item.fiscalCheck" target="_blank"
+              ) Получить чек
           er-flex(
             xs12
             sm4 md3 lg2 xl3
