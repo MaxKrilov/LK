@@ -25,12 +25,14 @@
 <script>
 import { mapGetters, mapState, mapActions } from 'vuex'
 import { SCREEN_WIDTH } from './store/actions/variables'
-import { getScreenWidth } from './functions/helper'
+import { getScreenWidth, isLocalhost } from './functions/helper'
 import NotAccessPage from './components/pages/errors/not-access'
 import WorkInProgress from '@/components/pages/errors/work-in-progress'
 import ErPreloader from './components/blocks/ErPreloader'
 
 import ErtTokens from '@/mixins2/ErtTokens'
+
+import * as Sentry from '@sentry/vue'
 
 import {
   GET_CLIENT_INFO,
@@ -89,42 +91,7 @@ export default {
       .then(() => {
         this.isAccessGranted && this.fetchUserData()
       })
-    if (USE_SSO_AUTH) {
-      // const tokenInterceptorsRequest = () => async config => {
-      //   const isValidAccessToken = validationToken(this.accessToken)
-      //   const isValidRefreshToken = validationToken(this.refreshToken)
-      //
-      //   if (
-      //     ~config.url.indexOf(generateUrl('authUser')) ||
-      //       ~config.url.indexOf(generateUrl('authManager')) ||
-      //       ~config.url.indexOf(generateUrl('refreshToken'))
-      //   ) return config
-      //
-      //   if (isValidAccessToken) return config
-      //
-      //   if (isValidRefreshToken) {
-      //     await this.$store.dispatch('auth/fetchRefreshToken', { api: this.$api })
-      //     return config
-      //   }
-      //
-      //   await this.$store.dispatch('auth/signIn', { api: this.$api })
-      //
-      //   return config
-      // }
-      //
-      // const tIR = tokenInterceptorsRequest()
-      //
-      // axios.interceptors.request.use(tIR)
-      //
-      // axios.interceptors.response.use(response => response, err => {
-      //   return new Promise((resolve, reject) => {
-      //     if (err && err.response && [403, 401].includes(err.response.status)) {
-      //       this.$store.dispatch('auth/signIn', { api: this.$api })
-      //     }
-      //     reject(err)
-      //   })
-      // })
-    }
+    if (USE_SSO_AUTH) {}
   },
   beforeCreate () {
     this.$store.commit(SCREEN_WIDTH, getScreenWidth())
@@ -163,6 +130,11 @@ export default {
       this.fetchPPR(context)
       this.fetchClientInfo(context)
         .then(clientInfo => {
+          if (!isLocalhost()) {
+            Sentry.configureScope(scope => {
+              scope.setUser({ clientId: this.user.toms })
+            })
+          }
           if (Object.keys(clientInfo).length !== 0) {
             this.$store.dispatch(`user/${GET_MANAGER_INFO}`, context)
             this.$store.dispatch(`request/${GET_REQUEST}`, context)

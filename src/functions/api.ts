@@ -1,12 +1,16 @@
 /* eslint-disable */
 import axios, { AxiosRequestConfig, Method, ResponseType } from 'axios'
 import { TYPE_OBJECT, TYPE_ARRAY, TYPE_JSON, TYPE_FILE } from '@/constants/type_request'
-import { eachArray, eachObject, isCombat, isStaging, wrapHttps } from '@/functions/helper'
+import { eachArray, eachObject, isCombat, isLocalhost, isStaging, wrapHttps } from '@/functions/helper'
 import { BACKEND_COMBAT, BACKEND_STAGING, BACKEND_TESTING } from '@/constants/url'
 import { API_DADATA } from '@/store/actions/api'
 import store from '../store'
 
-const BASE_BRANCH = 'master'
+import { cloneDeep } from 'lodash'
+
+import * as Sentry from '@sentry/vue'
+
+const BASE_BRANCH = 'psi1'
 
 export class API {
   private _branch = BASE_BRANCH
@@ -175,6 +179,8 @@ export class API {
     if (this._uploadCallback) {
       config.onUploadProgress = this._uploadCallback
     }
+    // Для Sentry
+    const _internalData = cloneDeep(this._data)
     return new Promise((resolve, reject) => {
       axios(config)
         .then(response => {
@@ -185,6 +191,13 @@ export class API {
           resolve(response.data)
         })
         .catch(error => {
+          if (!isLocalhost()) {
+            Sentry.captureException(new Error(`Ошибка запроса ${config.url}`), scope => {
+              scope.setExtra('Request Param', _internalData)
+              scope.setExtra('Error Data', error.response.data)
+              return scope
+            })
+          }
           reject(error)
         })
         .finally(() => {
