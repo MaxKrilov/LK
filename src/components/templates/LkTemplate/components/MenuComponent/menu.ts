@@ -143,11 +143,11 @@ const MenuItemList = (listProduct: IProductItem[]): MenuItem[] => {
             {
               name: 'Сервисы авторизации',
               url: '/lk/wifi/services-auth'
+            },
+            {
+              name: 'Конструктор страницы авторизации',
+              url: '/lk/wifi/personalization'
             }
-            // {
-            //   name: 'Конструктор страницы авторизации',
-            //   url: '/lk/wifi/personalization'
-            // },
             // {
             //   name: 'Контент-фильтрация',
             //   url: '/lk/wifi/content'
