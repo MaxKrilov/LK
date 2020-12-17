@@ -4,12 +4,14 @@ import { mapGetters, mapState, mapMutations } from 'vuex'
 import ErErrorModal from '@/components/blocks/ErErrorModal'
 
 import ChatWrap from './components/ChatWrap'
+import ChatButton from './components/ChatButton'
 import NotificationPanel from './components/NotificationPanel'
 
 export default {
   name: 'lk-template',
   components: {
     ChatWrap,
+    ChatButton,
     ErErrorModal,
     ErFooter,
     MenuComponent,
