@@ -1,19 +1,26 @@
-import { Vue, Component, Prop } from 'vue-property-decorator'
+import { Component, Prop, Vue } from 'vue-property-decorator'
 import { ILocationOfferInfo } from '@/tbapi'
 import { uniq } from '@/functions/helper'
+
+const STATUSES = {
+  SUSPENSION_PONR: 'Suspension passed PONR',
+  SUSPENDED: 'Suspended'
+}
 
 export interface iPointItem {
   id: string | number,
   fulladdress: string,
   bpi: string | number,
-  offerName: string
+  offerName: string,
+  status?: string
 }
 
 export const transformListPoint = (listPoint: ILocationOfferInfo[]): iPointItem[] => uniq(listPoint.map(item => ({
   id: item.id,
   fulladdress: item.fulladdress,
   bpi: item.bpi,
-  offerName: item.offer.name
+  offerName: item.offer.name,
+  status: item?.status
 })), 'bpi')
 
 @Component
@@ -21,6 +28,7 @@ export default class ListPointComponent extends Vue {
   @Prop({ type: Array, default: () => ([]) }) readonly list!: iPointItem[]
   @Prop({ type: Object }) readonly value!: iPointItem
   @Prop({ type: Boolean }) readonly isLoading!: boolean
+  @Prop({ type: Boolean, default: false }) readonly showSuspendedStatus!: boolean
 
   isOpen: boolean = false
   isOpenModal: boolean = false
@@ -45,8 +53,16 @@ export default class ListPointComponent extends Vue {
     return this.isLoading
   }
 
+  get currentIsSuspendedStatus () {
+    return this.isSuspendedStatus(this?.value?.status || '')
+  }
+
   setActivePoint (point: iPointItem) {
     this.$emit('input', point)
     this.isOpenModal = false
+  }
+
+  isSuspendedStatus (status: string) {
+    return Object.values(STATUSES).includes(status)
   }
 }

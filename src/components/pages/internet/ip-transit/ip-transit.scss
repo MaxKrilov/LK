@@ -1,0 +1,70 @@
+.ip-transit {
+  @extend %main-content;
+
+  .list-point-component {
+    &__toggle {
+      .text {
+        @extend %link-behaviour;
+        border-bottom: none;
+      }
+    }
+  }
+
+  &__tariff {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: $padding-x4;
+    @include min-breakpoint(sm) {
+      flex-direction: row;
+    }
+  }
+
+  &__price {
+    margin-top: $padding-x6;
+
+    .ip-transit-price {
+      &__label {
+        @extend %caption2;
+      }
+    }
+  }
+
+  &__chars {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: $padding-x4;
+    gap: $padding-x4;
+
+    > * {
+      @include min-breakpoint(sm) {
+        width: 48%
+      }
+    }
+  }
+
+  .block-with-icon--date {
+    order: -1;
+
+    @include min-breakpoint(sm) {
+      order: initial;
+    }
+
+    .block-with-icon__value {
+      @extend %body;
+    }
+  }
+
+  &__actions {
+    @extend %action-buttons-block;
+    margin-top: $padding-x8;
+
+    @include min-breakpoint(md) {
+      margin-top: $padding-x10;
+    }
+
+    @include min-breakpoint(lg) {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+}
