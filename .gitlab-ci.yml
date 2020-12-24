@@ -103,7 +103,7 @@ Save dhub:
         - /^\d+\.\d+\.\d+$/
 
 .job_template: &k8s_deployment
-    image: harbor.ertelecom.ru/devops/kubectl:1.16.3
+    image: harbor.ertelecom.ru/devops/kubectl-helm:latest
     script:
         - export FULL_PROJECT_NAME=$(echo ${PROJECT_GROUP}-${PROJECT_NAME}|sed -e 's/\W//g')
         - helm repo add base-images http://harbor.ertelecom.ru/chartrepo/base-images
