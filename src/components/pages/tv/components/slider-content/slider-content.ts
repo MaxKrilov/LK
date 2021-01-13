@@ -31,7 +31,8 @@ export default class TvSlider extends Vue {
       parentIds: [this.bpi]
     })
       .then((response:ITVProduct) => {
-        const data = Object.values(Object.values(response)?.[0].tvLines)
+        // @ts-ignore
+        const data = Object.values(Object.values(response)?.[0].tvLines || Object.values(response)?.[0].tvlines || {})
           .filter((line: ITVLine) => ARRAY_STATUS_SHOWN.includes(line?.status))
           .map((line: ITVLine) => {
             const stb: {id: string, name: string, price: number, type: string}[] = line?.stb ? Object.values(line?.stb).map((stbItem:ITVSTB) => {
