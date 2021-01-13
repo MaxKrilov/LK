@@ -31,7 +31,7 @@ export default class TvSlider extends Vue {
       parentIds: [this.bpi]
     })
       .then((response:ITVProduct) => {
-        const data = Object.values(Object.values(response)?.[0].tvlines)
+        const data = Object.values(Object.values(response)?.[0].tvLines)
           .filter((line: ITVLine) => ARRAY_STATUS_SHOWN.includes(line?.status))
           .map((line: ITVLine) => {
             const stb: {id: string, name: string, price: number, type: string}[] = line?.stb ? Object.values(line?.stb).map((stbItem:ITVSTB) => {
@@ -59,7 +59,7 @@ export default class TvSlider extends Vue {
                 }
               })
 
-            const linePrice: string | undefined = Object.values(line.offer.prices)
+            const linePrice: string | undefined = Object.values(line.offer.prices || {})
               .find((el: ITVLineOfferPrice) => el?.chars?.['Тип подключения к IP-сети'] === line?.chars?.['Тип подключения к IP-сети'])?.amount
             return {
               id: line.id,
@@ -80,7 +80,9 @@ export default class TvSlider extends Vue {
         this.moduleList = data
         this.loading = false
       })
-      .catch(() => {})
+      .catch((error) => {
+        console.error(error)
+      })
   }
   openPackages (data: any) {
     this.$router.push({
