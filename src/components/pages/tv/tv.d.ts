@@ -13,7 +13,7 @@ export interface ITVProduct {
     name: string
     id: string
     status: string
-    tvlines: {
+    tvLines: {
       [key: string]: ITVLine
     }
   }
