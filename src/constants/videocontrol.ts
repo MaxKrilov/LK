@@ -89,7 +89,7 @@ const SERVICE_ORDER_MAP: Record<string, boolean> = {
   'VIDCARHD': true, // видеоархив
   'VIDCARFHD': true, // видеоархив FullHD
   'VIDCSOUND': true, // запись звука
-  'VIDCFTAFF': true, // контроль активности
+  'VIDCSTAFF': true, // контроль активности
   'VIDCPSEC': true, // пакет "Security"
   'VIDCPTZ': true, // Поворотный модуль
   'VIDCCOUNT': true, // подсчёт посетителей

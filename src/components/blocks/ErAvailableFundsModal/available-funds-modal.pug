@@ -1,0 +1,14 @@
+.available-funds-modal
+  er-activation-modal(
+    type="question"
+    v-model="value"
+    actionButtonText="Пополнить счет"
+    cancel-button-text="Закрыть"
+    @confirm="onConfirm"
+    @close="onClose"
+  )
+    template(slot="description")
+      p Уважаемый клиент, для завершения заказа на лицевом счете недостаточно денежных средств. Пополните лицевой счет и повторите покупку.
+      br
+      p Стоимость подключения: <strong>{{ cost }}</strong>&nbsp;руб.
+      p Ваши доступные средства: <strong>{{ available }}</strong>&nbsp;руб.

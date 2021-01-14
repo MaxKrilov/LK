@@ -2,6 +2,7 @@ import { Component, Mixins } from 'vue-property-decorator'
 import ErPlugProduct from '@/components/blocks/ErPlugProduct/index.vue'
 import ProductItem from '../components/ProductItem/index.vue'
 import ErActivationModal from '@/components/blocks/ErActivationModal/index.vue'
+import ErAvailableFundsModal from '@/components/blocks/ErAvailableFundsModal/index.vue'
 
 import RenameField from './components/rename-field.vue'
 
@@ -27,6 +28,7 @@ import { ILocationOfferInfo, ISLOPricesItem } from '@/tbapi'
 import { mapState, mapGetters } from 'vuex'
 import { VueTransitionFSM } from '@/mixins/FSMMixin'
 import { ErtPageWithDialogsMixin } from '@/mixins2/ErtPageWithDialogsMixin'
+import { ErtFetchAvailableFundsMixin } from '@/mixins2/ErtFetchAvailableFundsMixin'
 
 /* FUNCTIONS */
 const isFullHD = (el: IOffer) => el.code === CODES.FULLHD
@@ -37,7 +39,8 @@ const components = {
   ProductItem,
   ErActivationModal,
   ErPlugProduct,
-  RenameField
+  RenameField,
+  ErAvailableFundsModal
 }
 
 const props = {
@@ -90,7 +93,11 @@ const getCameraDevice = (camera: ICamera): ICameraDevice => {
   props,
   computed
 })
-export default class VCCameraConfigPage extends Mixins(VueTransitionFSM, ErtPageWithDialogsMixin) {
+export default class VCCameraConfigPage extends Mixins(
+  VueTransitionFSM,
+  ErtPageWithDialogsMixin,
+  ErtFetchAvailableFundsMixin
+) {
   /* === Config === */
   isActionButtonsVisible: boolean = false
   isForpostPortalWorking: boolean = false
@@ -548,9 +555,7 @@ export default class VCCameraConfigPage extends Mixins(VueTransitionFSM, ErtPage
       this.onInfo({ message: MESSAGES.MIP_MESSAGE })
     } else {
       this.currentServiceCode = code
-
       this.serviceStatuses[code] = value
-
       this.currentValue = value
       this.isManagerRequest = !SERVICE_ORDER_MAP[code]
 
@@ -590,7 +595,12 @@ export default class VCCameraConfigPage extends Mixins(VueTransitionFSM, ErtPage
           this.disableService(code, value)
         }
       } else {
-        this.enableService(code, value)
+        if (SERVICE_ORDER_MAP[code]) {
+          this.checkFunds(+this.currentServicePrice)
+            .then(() => {
+              this.enableService(code, value)
+            })
+        }
       }
     }
   }
@@ -739,7 +749,10 @@ export default class VCCameraConfigPage extends Mixins(VueTransitionFSM, ErtPage
     if (isDisabling) {
       this.disableService(this.currentVideoArchiveCode, false)
     } else {
-      this.enableService(this.currentVideoArchiveCode, value)
+      this.checkFunds(+this.currentServicePrice)
+        .then(() => {
+          this.enableService(this.currentVideoArchiveCode, value)
+        })
     }
   }
 
@@ -838,5 +851,11 @@ export default class VCCameraConfigPage extends Mixins(VueTransitionFSM, ErtPage
 
   onInfoClose () {
     this.isInfoMode = false
+  }
+
+  onCloseAvailableFundsModal () {
+    this.setState('ready')
+    this.serviceStatuses[this.currentServiceCode] = !this.serviceStatuses[this.currentServiceCode]
+    this.currentServiceCode = ''
   }
 }

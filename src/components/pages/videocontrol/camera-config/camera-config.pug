@@ -231,6 +231,13 @@
   )
     p(v-html="infoMessage")
 
+  er-available-funds-modal(
+    v-model="isFundsModalVisible"
+    :available="availableFunds"
+    :cost="currentServicePrice"
+    @close="onCloseAvailableFundsModal"
+  )
+
   .vc-config-page__actions
     .total-info
       .total-info__label Абонентская плата:
