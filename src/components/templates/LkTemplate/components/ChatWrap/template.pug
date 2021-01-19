@@ -3,4 +3,16 @@ er-side-modal(
   :side="modalSide"
   @click-outside="onClickClose"
 )
-  .chat__wrap(ref="chatWrap")
+  .chat__wrap(v-show="isAllDataLoaded" ref="chatWrap")
+  .chat__loading(v-if="!isAllDataLoaded && !getChatTokenError")
+    .chat__loading__header
+      ert-icon(name="close" @click="onClickClose")
+    .chat__loading__content
+      er-preloader(active icon)
+  .chat__error(v-if="getChatTokenError")
+    .chat__loading__header
+      ert-icon(name="close" @click="onClickClose")
+    .chat__error__content
+      ert-icon(name="no")
+      .chat__error__content__text Что-то пошло не так. Чат не отвечает. Попробуйте обновить страницу
+

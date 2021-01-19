@@ -118,10 +118,7 @@ export default class TelephonyBlacklistPage extends Vue {
           this.freePhonesList = this.phonesList.filter(el => {
             return !this.blackList.map(_el => _el.phoneId).includes(el.id)
           })
-
-          if (this.freePhonesList.length && !this.blackList.length) {
-            this.isConnectNewBlackList = true
-          }
+          this.isConnectNewBlackList = !!this.freePhonesList.length && !this.blackList.length
         })
       // добавить проверку по статусу disconected так как могут приходить уже отключенные slo
     })

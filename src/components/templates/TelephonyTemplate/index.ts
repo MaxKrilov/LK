@@ -5,8 +5,6 @@ import { ICustomerProduct } from '@/tbapi'
 import { iPointItem, transformListPoint } from '@/components/blocks/ErListPoints/script'
 import { getFirstElement } from '@/functions/helper'
 
-const PHONE_NUMBER_SLO_CODE = 'PHNUMBVN'
-
 // eslint-disable-next-line no-use-before-define
 @Component<InstanceType<typeof TelephonyTemplate>>({
   computed: {
@@ -84,8 +82,7 @@ export default class TelephonyTemplate extends Vue {
     return new Promise((resolve, reject) => {
       this.$store.dispatch('productnservices/getAllSlo', {
         api: this.$api,
-        parentIds: this.listBPI,
-        code: PHONE_NUMBER_SLO_CODE
+        parentIds: this.listBPI
       })
         .then(response => {
           this.listPhoneNumbers = response

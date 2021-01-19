@@ -55,7 +55,7 @@ div(:class="`${pre}`")
               .text Добавить
       .button  
         er-button(v-if="!isAddRecord" @click="isAddRecord = true" :disabled="modifyingOrder") Добавить запись
-        er-button(v-if="!isAddRecord && blockedPhones.length" flat @click="deleteNumbersOrder" :disabled="modifyingOrder" :loading="modifyingOrder") Удалить запись
+        er-button(v-if="!isAddRecord && blockedPhones.length" flat @click="deleteNumbersOrder" :disabled="modifyingOrder || !checkedNumbersForDelete.length" :loading="modifyingOrder") Удалить запись
         er-button(v-if="isAddRecord" :disabled="!addedPhones.length" @click="addNewNumbersOrder" :loading="modifyingOrder") Сохранить
         er-button(v-if="isAddRecord" flat @click="cancelAdded" :disabled="modifyingOrder") Отмена
   er-activation-modal(
