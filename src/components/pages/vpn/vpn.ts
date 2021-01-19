@@ -20,7 +20,7 @@ export default class VPNMainPage extends Vue {
     }
   }
   get amountPrice () {
-    return Number(this.addressList.reduce((acc: number, el: any) => acc + Number(el.amount), 0)).toFixed(2)
+    return Number(this.addressList.reduce((acc: number, el: any) => acc + Number(el.amount), 0)).toFixed(2).replace('.', ',')
   }
   getPoints () {
     this.isLoading = true

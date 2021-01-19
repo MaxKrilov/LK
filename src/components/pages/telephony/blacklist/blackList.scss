@@ -23,6 +23,10 @@
   }
 
   &__plug {
+    margin-top: 16px;
+    &__item {
+      margin-bottom: 8px;
+    }
     &__button {
       margin-top: 32px;
       display: grid;

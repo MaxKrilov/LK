@@ -11,6 +11,9 @@ const getters = {
   getChatToken (state) {
     return state.chatToken
   },
+  getChatTokenError (state) {
+    return state.chatTokenError
+  },
   getChatTokenTimeStapm (state) {
     return state.chatTokenTimeStapm
   },

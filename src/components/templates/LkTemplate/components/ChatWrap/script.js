@@ -33,7 +33,7 @@ export default {
       this.getChatToken && this.getTOMS && this.getChatTokenTimeStapm
     },
     ...mapGetters('user', ['getClientInfo', 'getActiveBillingAccount', 'getActiveBillingAccountNumber']),
-    ...mapGetters('chat', ['getChatToken', 'getChatTokenTimeStapm']),
+    ...mapGetters('chat', ['getChatToken', 'getChatTokenTimeStapm', 'getChatTokenError']),
     ...mapGetters('auth', ['getTOMS'])
   },
   mounted () {
