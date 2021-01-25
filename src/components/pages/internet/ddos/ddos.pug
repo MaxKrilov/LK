@@ -30,10 +30,16 @@ div(:class="`${pre} main-content main-content--top-menu-fix`")
               //-     div 10.95.217.183
 
             div(:class="`${pre}__slider-buttons`")
-              er-button(color="yellow")
-                div(class="content-text") Настроить защиту
+              template(v-if="!item.link")
+                er-button(color="yellow" disabled)
+                  div(class="content-text")
+                    | Защита в процессе активации
+              template(v-else)
+                er-button(color="yellow" :href="item.link" tag="a" target="_blank")
+                  div(class="content-text")
+                    | Настроить защиту
 
-              er-button(flat  @click="deleteDdos(item.deleteData)" :loading="isDisconnection")
+              er-button(flat  @click="deleteDdos(item.deleteData)" :loading="isDisconnection && item.deleteData.productId === deleteData.productId")
                 div(class="content-text") Отключить защиту
 
         div(:class="`${pre}__total`")

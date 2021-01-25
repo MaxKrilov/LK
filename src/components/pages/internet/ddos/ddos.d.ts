@@ -5,6 +5,8 @@ export interface IDdosItem {
     fulladdress: string
     price: string
     bpi: string
+    productId: string
+    link: string
     deleteData: IDeleteOrderData,
     isDisconnected: boolean
 }

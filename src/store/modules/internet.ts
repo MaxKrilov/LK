@@ -1,6 +1,7 @@
 import { API } from '@/functions/api'
 import { ActionContext } from 'vuex'
 import { AxiosError } from 'axios'
+import { TYPE_ARRAY } from '@/constants/type_request'
 
 const REVERCE_ZONE_QUERY = {
   GET: '/internet/revercezonebss/list',
@@ -93,6 +94,25 @@ const actions = {
           eventSource
         })
         .query('/billing/packets/events')
+        .then(response => resolve(response))
+        .catch((err) => {
+          console.error(err)
+          reject(err)
+        })
+    })
+  },
+  getDDoSLink (context: ActionContext<any, any>, payload: { productIds: string[] }) {
+    const { toms: clientId } = context.rootGetters['auth/user']
+
+    return new Promise((resolve, reject) => {
+      api()
+        .setWithCredentials()
+        .setType(TYPE_ARRAY)
+        .setData({
+          clientId,
+          bpiId: payload.productIds
+        })
+        .query('/internet/guard/index2')
         .then(response => resolve(response))
         .catch((err) => {
           console.error(err)

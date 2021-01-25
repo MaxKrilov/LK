@@ -55,7 +55,7 @@ div(:class="`${pre}`").main-content--padding
         div(v-if="ddosPrice").d--flex.align-items-baseline.mr-24
           .caption Стоимость:&nbsp;
           div <b>{{ ddosPrice }}</b> 	₽/мес
-      .caption.mt-8 После смены тарифа, вам нужно перезагрузить страницу и настроить фильтрацию
+      .caption.mt-8 После успешного подключения, для применения новых конфигураций необходимо перезагрузить оборудование
   er-activation-modal(
     type="error"
     v-model="isShowErrorModal"
@@ -70,6 +70,9 @@ div(:class="`${pre}`").main-content--padding
     :isShowActionButton="false"
     cancel-button-text="Спасибо"
   )
+    template(slot="description")
+      div  Уважаемый клиент, после завершения заказа необходимо перезагрузить оборудование
+
 
   er-activation-modal(
   type="question"
