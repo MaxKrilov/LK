@@ -47,6 +47,7 @@ export default class DdosPage extends Vue {
       api: this.$api,
       productType: 'Интернет'
     }).then(answer => {
+      if (!answer.length) this.$router.push('/lk')
       const points = answer.reduce((acc: any, el: any) => {
         acc[el.bpi] = el.fulladdress
         return acc
@@ -76,7 +77,9 @@ export default class DdosPage extends Vue {
                   date: this.$moment(ddosSlo.actualStartDate).format('DD.MM.YY'),
                   price: ddosSlo.purchasedPrices.recurrentTotal.value,
                   bpi: el.tlo.id,
+                  productId: ddosSlo.id,
                   isDisconnected: false,
+                  link: '',
                   deleteData: {
                     locationId: el.tlo.locationId,
                     bpi: el.tlo.id,
@@ -89,6 +92,17 @@ export default class DdosPage extends Vue {
                 return acc
               }
             }, [])
+          if (this.data.length) {
+            this.$store.dispatch('internet/getDDoSLink', { productIds: this.data.map((el) => el.productId) })
+              .then((links) => {
+                this.data = this.data.map((el) => {
+                  if (links?.[el.productId] && links?.[el.productId].status === 'ok' && links?.[el.productId]?.redirect_url) {
+                    el.link = links[el.productId].redirect_url
+                  }
+                  return el
+                })
+              })
+          }
 
           this.freePoints = this.freePoints.filter(el => !this.data.map((el: IDdosItem) => el.bpi).includes(el.bpi))
           if (this.freePoints.length && !this.data.length) this.isShowConnection = true
