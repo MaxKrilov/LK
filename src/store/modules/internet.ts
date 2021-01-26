@@ -73,11 +73,13 @@ const actions = {
     fromDate,
     toDate,
     productInstance,
-    eventSource
+    eventSource,
+    page
   }: {
     fromDate: string,
     toDate: string,
     productInstance: string,
+    page: string,
     eventSource: string
   }) {
     const billingAccountId = context.rootGetters['user/getActiveBillingAccount']
@@ -91,6 +93,7 @@ const actions = {
           dateFrom: fromDate,
           dateTo: toDate,
           productInstance,
+          page,
           eventSource
         })
         .query('/billing/packets/events')
