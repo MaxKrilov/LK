@@ -39,6 +39,9 @@ const getFieldByName = (name: typeSortOrder) => {
     number: String
   },
   watch: {
+    pagCurrentPage () {
+      this.getStatistic()
+    },
     isOpened (val) {
       if (val && this.listStatistic.length === 0) {
         this.getStatistic()
@@ -57,6 +60,9 @@ export default class PhoneStatistic extends Vue {
   sortField: typeSortOrder = ''
   sortOrder: 'asc' | 'desc' = 'asc'
 
+  pagCurrentPage = 1
+  pagLength = 1
+  loadingStatistic = true
   // Computed
   get listStatisticGroupByDate () {
     return this.listStatistic.reduce((acc, item) => {
@@ -98,14 +104,22 @@ export default class PhoneStatistic extends Vue {
 
   getStatistic () {
     const today = new Date()
+    this.loadingStatistic = true
+
     const beforeMonth = (new Date()).setDate((new Date()).getDate() - 29)
     this.$store.dispatch('internet/getStatistic', {
       fromDate: moment(beforeMonth).format(),
       toDate: moment(today).format(),
+      page: this.pagCurrentPage,
       productInstance: this.product,
       eventSource: this.number.replace(/[\D]+/g, '')
     })
-      .then(response => { this.listStatistic = response })
+      .then((response: {requests: IBillingStatisticResponse[], range: string}) => {
+        this.listStatistic = response.requests
+        const m = response.range?.match(/^(?:items )?(\d+)-(\d+)\/(\d+|\*)$/)
+        this.pagLength = Math.trunc(+m![3] / 25) + 1
+        this.loadingStatistic = false
+      })
   }
 
   setSort (sortField: typeSortOrder) {

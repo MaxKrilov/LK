@@ -41,6 +41,9 @@ const getHtmlVolume = (volume: number) => {
     })
   },
   watch: {
+    pagCurrentPage () {
+      this.getStatistic()
+    },
     customerProduct (val) {
       if (val !== null) {
         this.$nextTick(() => {
@@ -89,6 +92,9 @@ export default class StatisticPage extends Vue {
   sortField = ''
   sortDirection = 'asc'
 
+  pagCurrentPage = 1
+  pagLength = 1
+
   // Getters Vuex
   readonly allOtherDocuments!: (DocumentInterface | DocumentInterface[])[]
 
@@ -136,16 +142,19 @@ export default class StatisticPage extends Vue {
     this.$store.dispatch('internet/getStatistic', {
       fromDate,
       toDate,
+      page: this.pagCurrentPage,
       productInstance: this.customerProduct!.tlo.id,
       eventSource: this.customerProduct!.tlo.chars?.['Идентификатор сервиса'] || ''
     })
-      .then((response: IBillingStatisticResponse[]) => {
-        this.listStatistic = response.map(item => ({
+      .then((response: {requests: IBillingStatisticResponse[], range: string}) => {
+        this.listStatistic = response.requests.map(item => ({
           ip: item.service,
           start: item.createdDate,
           bytes: Number(item.duration),
           type: item.priceEventSpecification.name
         }))
+        const m = response.range?.match(/^(?:items )?(\d+)-(\d+)\/(\d+|\*)$/)
+        this.pagLength = Math.trunc(+m![3] / 25) + 1
       })
       .finally(() => {
         this.isLoading = false

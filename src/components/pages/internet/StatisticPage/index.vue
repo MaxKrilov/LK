@@ -28,52 +28,61 @@
             .value
               span 000.0
               | КБ.
-    .statistic-internet-page__table.mb-24
-      .statistic-internet-page__head.main-content.main-content--h-padding.py-8
-        .filter--ip
+    template(v-if="pagCurrentPage === 1 && listStatistic.length === 0")
+      .main-content.main-content--h-padding.d--flex.justify-content-center.caption.mt-16.mb-16 За выбранный период статистика не найдена.
+    template(v-else)
+      .statistic-internet-page__table.mb-24
+        .statistic-internet-page__head.main-content.main-content--h-padding.py-8
+          .filter--ip
+            template(v-if="isLoading")
+              PuSkeleton
+            template(v-else)
+              input(placeholder="IP адрес")
+          .filter--start
+            template(v-if="isLoading")
+              PuSkeleton
+            template(v-else)
+              er-table-filter(
+                title="Начало сессии"
+                @change-filter="e => { sortBy('start', e) }"
+                :value="sortField === 'start'"
+                :order="sortField === 'start' ? sortDirection : 'asc'"
+                )
+          .filter--volume
+            template(v-if="isLoading")
+              PuSkeleton
+            template(v-else)
+              er-table-filter(
+                title="Объём"
+                @change-filter="e => { sortBy('bytes', e) }"
+                :value="sortField === 'bytes'"
+                :order="sortField === 'bytes' ? sortDirection : 'asc'"
+                )
+          .filter--type
+            template(v-if="isLoading")
+              PuSkeleton
+            template(v-else)
+              er-table-filter(
+                title="Тип"
+                @change-filter="e => { sortBy('type', e) }"
+                :value="sortField === 'type'"
+                :order="sortField === 'type' ? sortDirection : 'asc'"
+                )
+        .statistic-internet-page__body
           template(v-if="isLoading")
-            PuSkeleton
+            include ./internet-statistic-component-loading.pug
+          template(v-else-if="listStatistic.length === 0")
           template(v-else)
-            input(placeholder="IP адрес")
-        .filter--start
-          template(v-if="isLoading")
-            PuSkeleton
-          template(v-else)
-            er-table-filter(
-              title="Начало сессии"
-              @change-filter="e => { sortBy('start', e) }"
-              :value="sortField === 'start'"
-              :order="sortField === 'start' ? sortDirection : 'asc'"
-              )
-        .filter--volume
-          template(v-if="isLoading")
-            PuSkeleton
-          template(v-else)
-            er-table-filter(
-              title="Объём"
-              @change-filter="e => { sortBy('bytes', e) }"
-              :value="sortField === 'bytes'"
-              :order="sortField === 'bytes' ? sortDirection : 'asc'"
-              )
-        .filter--type
-          template(v-if="isLoading")
-            PuSkeleton
-          template(v-else)
-            er-table-filter(
-              title="Тип"
-              @change-filter="e => { sortBy('type', e) }"
-              :value="sortField === 'type'"
-              :order="sortField === 'type' ? sortDirection : 'asc'"
-              )
-      .statistic-internet-page__body
-        template(v-if="isLoading")
-          include ./internet-statistic-component-loading.pug
-        template(v-else-if="listStatistic.length === 0")
-        template(v-else)
-          internet-statistic-component(
-            v-for="(item, index) in computedListStatistic"
-            :key="index"
-            v-bind="item"
+            internet-statistic-component(
+              v-for="(item, index) in computedListStatistic"
+              :key="index"
+              v-bind="item"
+            )
+      .main-content.main-content--h-padding.d--flex.justify-content-center
+        er-pagination(
+          v-model="pagCurrentPage"
+          :length="pagLength"
+          :total-visible="pagLength"
           )
     .statistic-internet-page__files.main-content.main-content--h-padding
       h2 Список файлов
