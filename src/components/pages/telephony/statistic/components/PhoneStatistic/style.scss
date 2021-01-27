@@ -76,6 +76,7 @@ $head-col-height: 80px;
   .col-price {
     display: none;
     white-space: nowrap;
+    text-align: center;
 
     @include min-breakpoint('lg') {
       display: table-cell;

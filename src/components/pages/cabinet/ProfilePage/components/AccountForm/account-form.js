@@ -152,7 +152,7 @@ export default {
     ]),
     // Helpers
     getPhoneNumberWithoutCode (phone) {
-      if (phone.startsWith('+')) return toDefaultPhoneNumber(phone).substring(1)
+      if (phone && phone.startsWith('+')) return toDefaultPhoneNumber(phone).substring(1)
       else return phone
     },
     getCorrectedPhoneNumber (phone) {
@@ -169,7 +169,7 @@ export default {
     generateForpostUsersSnapshot () {
       const forpostRights = this.sectionAccessRightsData?.[SYSTEM_NAMES.FORPOST]
 
-      return forpostRights ? Object.keys(forpostRights.users) : []
+      return forpostRights ? Object.keys(forpostRights.users || {}) : []
     },
     getFormData () {
       const formData = this.sectionLprData
@@ -207,7 +207,7 @@ export default {
     validForm () {
       // TODO: рефакторить - возвращать значение вместо изменения isSuccess
       if (!this.isLPR && this.isUpdate) {
-        this.isSuccess = this.$refs.accountForm.validate() && this.validateContactsData()
+        this.isSuccess = this.$refs.accountForm.validate()
       } else {
         this.isSuccess = this.$refs.accountForm.validate() && this.sectionLprData.role
       }
@@ -381,7 +381,7 @@ export default {
     syncForpostUsers (userId) {
       const ForpostAccess = this.sectionAccessRightsData?.[SYSTEM_NAMES.FORPOST]
       if (ForpostAccess) {
-        const userList = Object.keys(ForpostAccess.users)
+        const userList = Object.keys(ForpostAccess.users || {})
         // 1 to delete
         const toDelete = this._.difference(this.forpostUsersSnapshot, userList)
         this.unbindForpostUsers(userId, toDelete)
@@ -412,6 +412,7 @@ export default {
           this.onSuccess(this.updatedSuccessText, this.userPostId)
         }
       } catch (error) {
+        console.log(error)
         if (~error.indexOf(USER_EXISTS_WITH_EMAIL_UPDATE)) {
           this.isEmailExistsError = true
           if (!this.isLPR) {
@@ -575,7 +576,7 @@ export default {
         .map(key => key !== 'roles' ? (formData[key]) : undefined)
         .filter(item => item !== undefined)
         .filter(item => !item)
-      const isFullPhone = this.getPhoneNumberWithoutCode(formData.phoneNumber).length === 10
+      const isFullPhone = (this.getPhoneNumberWithoutCode(formData.phoneNumber)?.length || 0) === 10
 
       return data.length === 0 && isFullPhone
     },

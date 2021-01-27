@@ -31,6 +31,21 @@ export default {
       'userResourceAccess',
       'serverErrorMessage'
     ]),
-    ...mapGetters('contacts', ['getCurrentClientContacts'])
+    ...mapGetters('contacts', ['getCurrentClientContacts']),
+    computedLastname () {
+      return this.user.lastName ||
+        this.user.givenName?.split(' ')?.[0] ||
+        ''
+    },
+    computedFirstName () {
+      return this.user.firstName ||
+        this.user.givenName?.split(' ')?.[1] ||
+        ''
+    },
+    computedMiddleName () {
+      return this.user.middleName ||
+        this.user.givenName?.split(' ')?.[2] ||
+        ''
+    }
   }
 }

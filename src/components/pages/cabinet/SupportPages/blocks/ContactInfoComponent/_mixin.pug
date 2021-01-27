@@ -25,7 +25,7 @@ mixin contactsPhone
         | Федеральный телефон поддержки:
       .value.mb-8
         a(href="tel:78003339000") +7 800 333 9000
-    .b-contact-info__contact
+    //-.b-contact-info__contact
       .caption.mb-4
         | Телефон поддержки г. Санкт-Петербург:
       .value
@@ -37,8 +37,12 @@ mixin addresses
       .caption.mb-4
         | Центральный офис:
       .value.mb-8
-        a(href="#") АО «ЭР-Телеком Холдинг» 614000, г. Пермь, Шоссе Космонавтов 111, к1
-    .b-contact-info__address
+        a(
+          href="https://goo.gl/maps/LrX8KCUPvb1caiHUA"
+          target="_blank"
+          rel="noopener"
+        ) АО «ЭР-Телеком Холдинг» 614000, г. Пермь, Шоссе Космонавтов 111, к1
+    //-.b-contact-info__address
       .caption.mb-4
         | Офис г. Санкт-Петербург:
       .value
