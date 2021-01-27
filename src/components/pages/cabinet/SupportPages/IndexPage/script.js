@@ -144,7 +144,7 @@ export default class SupportIndexPage extends Vue {
    * @return {number}
    */
   get getCountActiveRequest () {
-    return this.listRequest.filter(item => !item.resolvedWhen && !item.cancelledWhen).length
+    return this.listRequest.filter(item => !item.resolvedWhen && !item.cancelledWhen && !item.closedWhen).length
   }
 
   /**
