@@ -1,31 +1,10 @@
-.tv-packages {
+.tv-package-list {
   &__button {
     @include min-breakpoint("md") {
       width: 200px;
     }
   }
-  &__wrap-stb {
-    display: flex;
-  }
-  &__wrap-name {
-    margin-top: 8px;
-    display: flex;
-    align-items: center;
-    max-width: 500px;
-    .er-button {
-      width: 200px;
-      margin-left: 16px;
-    }
-    .er-icon {
-      cursor: pointer;
-      margin-left: 8px;
-      svg {
-        @include color-black(.3);
-        width: 16px;
-      }
-    }
-  }
-
+  
   &__packages {
     display: grid;
     grid-gap: 16px;
@@ -108,10 +87,7 @@
       }
     }
 
-    .not-connected {
-      justify-content: flex-end;
-      background-color: map-get($gray, '9');
-    }
+    
 
 
     &__content {

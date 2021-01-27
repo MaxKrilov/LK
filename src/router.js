@@ -275,6 +275,7 @@ const router = new Router({
             {
               name: 'support',
               path: '/',
+              props: true,
               component: SupportIndexPage
             }
           ]

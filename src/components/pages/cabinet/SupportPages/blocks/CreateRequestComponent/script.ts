@@ -181,6 +181,9 @@ export default class CreateRequestComponent extends Vue {
   @Watch('requestTheme')
   onRequestThemeChange () {
     this.reset()
+    if (this.$route.params.addressId) {
+      this.address = this.getAddressList.find((item: iListAddressItem) => item.id === this.$route.params.addressId)
+    }
   }
 
   @Watch('firstPersonalAccount')
@@ -224,6 +227,9 @@ export default class CreateRequestComponent extends Vue {
           value: item.chars && item.chars['Имя в счете'] ? item.chars['Имя в счете'] : item.name,
           typeAuth: item.chars && item.chars['Тип авторизации'] ? item.chars['Тип авторизации'] : undefined
         }))
+        if (this.$route.params.bpi) {
+          this.service = this.listService.find((item: any) => item.id === this.$route.params.bpi) || {}
+        }
         this.loadingService = false
       })
   }

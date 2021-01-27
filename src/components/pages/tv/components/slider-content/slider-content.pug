@@ -3,11 +3,21 @@ div(class="iptv-slider")
     er-preloader(:active="true" icon icon-type="2")
   template(v-else)
     template(v-if="moduleList.length")
+      div(class="iptv-slider__info")
+        div(class="iptv-slider__info__date")
+          .caption2 Активна с:
+          div {{ $moment(date || '' ).format('DD.MM.YYYY') }}
+        div(class="iptv-slider__info__service")
+          span(class="iptv-slider__info__service__content" @click="openService")
+            ert-icon(name="service")
+            span Заявка на обслуживание
+
       h2 Подключенные модули
       div(class="iptv-slider__modules")
         div(class="iptv-slider__modules__header").mt-8
-          div(class="iptv-slider__modules__id").caption2 ID оборудования
-          div(class="iptv-slider__modules__id").caption2 Имя оборудования
+          div(class="iptv-slider__modules__header-item").caption2 ID оборудования
+          div(class="iptv-slider__modules__header-item").caption2 Имя оборудования
+          div(class="iptv-slider__modules__header-item").caption2 ТВ Пакеты
         div(class="iptv-slider__modules__item" v-for="item in moduleList" :key="item.id" @click="openPackages(item)").pt-8
           div(class="iptv-slider__modules__item__type") {{ item.stb.stbName }}
           div(class="iptv-slider__modules__item__mac") {{ item.stb.name }}

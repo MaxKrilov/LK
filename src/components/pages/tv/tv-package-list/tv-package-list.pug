@@ -3,15 +3,15 @@ div.main-content.main-content--padding.main-content--top-menu-fix
   template(v-if="loading")
     er-preloader(:active="true" icon icon-type="2")
   template(v-else)
-    div(class="tv-packages__packages").mt-16.mt-md-24.mt-lg-32
+    div(class="tv-package-list__packages").mt-16.mt-md-24.mt-lg-32
 
 
       er-card(v-for="(item, index) in packages" :key="item.id")
-        div(:style="`background: ${item.background}`" class="tv-packages__packages-active" @click="$router.push(`/lk/tv/channel-list/${item.id}`)")
-          div(class="tv-packages__packages__img" :style="{'background-image': `url(${item.img})`}")
+        div(:style="`background: ${item.background}`" class="tv-package-list__packages-active" @click="$router.push(`/lk/tv/channel-list/${item.id}`)")
+          div(class="tv-package-list__packages__img" :style="{'background-image': `url(${item.img})`}")
 
-          div(class="tv-packages__packages__header")
+          div(class="tv-package-list__packages__header")
             div
-              div(class="tv-packages__packages__title").mb-4 Пакет каналов
-              div(class="tv-packages__packages__name").mb-32 {{ item.title }}
-              div(class="tv-packages__packages__count" @click="$router.push(`/lk/tv/channel-list/${item.id}`)") {{ item.count }}
+              div(class="tv-package-list__packages__title").mb-4 Пакет каналов
+              div(class="tv-package-list__packages__name").mb-32 {{ item.title }}
+              div(class="tv-package-list__packages__count" @click="$router.push(`/lk/tv/channel-list/${item.id}`)") {{ item.count }}
