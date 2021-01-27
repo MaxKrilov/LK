@@ -117,7 +117,11 @@ export default class SupportIndexPage extends Vue {
         ? a[sortBy] > b[sortBy] ? 1 : (a[sortBy] < b[sortBy] ? -1 : 0)
         : a[sortBy] > b[sortBy] ? -1 : (a[sortBy] < b[sortBy] ? 1 : 0)
     })
-    const filteredByActive = mapped.filter(item => this.typeFilterRequest === TYPE_FILTER_REQUEST_ACTIVE ? !item.resolvedWhen && !item.cancelledWhen : true)
+    const filteredByActive = mapped
+      .filter(item => this.typeFilterRequest === TYPE_FILTER_REQUEST_ACTIVE
+        ? !item.resolvedWhen && !item.cancelledWhen && !item.closedWhen
+        : true
+      )
     return this.city.length === 0
       ? filteredByActive
       : filteredByActive.filter(item => this.getListShowRequestByCity.includes(item.ticketId))

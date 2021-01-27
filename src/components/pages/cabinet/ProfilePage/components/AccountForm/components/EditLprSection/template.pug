@@ -105,7 +105,6 @@ div(:class="`${pre}`")
                 isShowLabelRequired
                 isShowSuccess
                 ref="phone"
-                :disabled="!isLPR && !isAdding"
                 :rules="phoneRule")
             div(:class="`${pre}__fields-container__input-block`")
               div(v-if="isEmailChanged" :class="`${pre}__changed`")
@@ -120,7 +119,6 @@ div(:class="`${pre}`")
                 isShowLabelRequired
                 isShowSuccess
                 ref="email"
-                :disabled="!isLPR && !isAdding"
                 :rules="emailRule")
           er-flex(
             xs12
@@ -169,7 +167,6 @@ div(:class="`${pre}`")
             isShowLabelRequired
             isShowSuccess
             ref="phone"
-            :disabled="!isLPR && !isAdding"
             :rules="phoneRule")
         div(:class="`${pre}__fields-container__input-block`")
           div(v-if="isEmailChanged" :class="`${pre}__changed`")
@@ -184,7 +181,6 @@ div(:class="`${pre}`")
             isShowLabelRequired
             isShowSuccess
             ref="email"
-            :disabled="!isLPR && !isAdding"
             :rules="emailRule")
         div(v-if="isMD && isAdding")
           p(:class="`${pre}__fields-container__group__text-info`")

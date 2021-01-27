@@ -53,6 +53,7 @@ export default {
     showFirstTab () {
       const currData = this.value
       const first = currData[Object.keys(currData)[0]]
+      if (!first) return
       currData[first.code].menu.selected = true
       this.currSelectedMenuItem = first
       this.$emit('input', { ...this.value, ...currData })

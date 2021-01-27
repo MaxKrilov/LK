@@ -33,9 +33,9 @@ div(:class="`${pre}`")
             isUpdate
             :class="`${pre}__edit-form`"
             :userId="user.userId"
-            :lastName="user.lastName",
-            :firstName="user.firstName",
-            :middleName="user.middleName",
+            :lastName="computedLastname",
+            :firstName="computedFirstName",
+            :middleName="computedMiddleName",
             :phoneNumber="user.phone",
             :email="user.email",
             :systems="userResourceAccess"

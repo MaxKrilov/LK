@@ -1,6 +1,11 @@
 import { generateUrl } from '../../functions/helper'
 import { USER_FOUND_BY_PHONE, USER_EXISTS_WITH_EMAIL } from '@/constants/status_response'
 import { TYPE_JSON } from '../../constants/type_request'
+import {
+  USER_EXISTS_WITH_EMAIL_UPDATE,
+  USER_EXISTS_WITH_PHONE_UPDATE,
+  USER_EXISTS_WITH_SAME
+} from '../../constants/status_response'
 
 const ACCOUNT_FORM_MODAL = 'ACCOUNT_FORM_MODAL'
 const ACCOUNT_FORM_REQUEST = 'ACCOUNT_FORM_REQUEST'
@@ -295,7 +300,13 @@ const actions = {
         return commit(UPDATE_USER_SUCCESS, { ...output })
       }
 
-      if (output?.errorMessage === USER_EXISTS_WITH_EMAIL) {
+      if ([
+        USER_EXISTS_WITH_EMAIL_UPDATE,
+        USER_EXISTS_WITH_PHONE_UPDATE,
+        USER_EXISTS_WITH_EMAIL,
+        USER_FOUND_BY_PHONE,
+        USER_EXISTS_WITH_SAME
+      ].includes(output?.errorMessage)) {
         return commit(UPDATE_USER_ERROR, output?.errorMessage)
       }
 
