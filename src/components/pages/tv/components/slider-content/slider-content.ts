@@ -1,5 +1,5 @@
 import { Vue, Component, Prop } from 'vue-property-decorator'
-import { ITVProduct, ITVLine, ITVSTB, ITVPacket, IModuleInfo, ITVLineOfferPrice } from '@/components/pages/tv/tv.d.ts'
+import { ITVProduct, ITVLine, ITVSTB, ITVPacket, IModuleInfo } from '@/components/pages/tv/tv.d.ts'
 import { ARRAY_STATUS_SHOWN } from '@/constants/status'
 import ErPlugProduct from '@/components/blocks/ErPlugProduct/index.vue'
 
@@ -12,6 +12,7 @@ export default class TvSlider extends Vue {
   @Prop({ type: String }) readonly addressId: string | undefined
   moduleList: IModuleInfo[] = []
   loading: boolean = true
+  date: string = ''
   isError: boolean = false
   isConnection: boolean = false
 
@@ -31,24 +32,37 @@ export default class TvSlider extends Vue {
       parentIds: [this.bpi]
     })
       .then((response:ITVProduct) => {
+        this.date = Object.values(response)?.[0]?.actualStartDate
         // @ts-ignore
         const data = Object.values(Object.values(response)?.[0].tvLines || Object.values(response)?.[0].tvlines || {})
           .filter((line: ITVLine) => ARRAY_STATUS_SHOWN.includes(line?.status))
           .map((line: ITVLine) => {
-            const stb: {id: string, name: string, price: number, type: string}[] = line?.stb ? Object.values(line?.stb).map((stbItem:ITVSTB) => {
+            const stb: {
+              id: string,
+              name: string,
+              price: number,
+              type: string,
+              guarantee: string,
+              model: string
+            }[] = line?.stb ? Object.values(line?.stb).map((stbItem:ITVSTB) => {
               return {
                 id: stbItem.id,
                 type: stbItem.chars['Способ передачи оборудования'],
                 price: Number(stbItem.purchasedPrices.recurrentTotal.value),
                 stbName: stbItem.name,
+                guarantee: Object.values(stbItem?.services)?.[0]?.chars?.['Гарантийный срок (до)'] || '',
+                model: stbItem.chars?.['Модель'],
                 name: stbItem.chars?.['Имя оборудования']
               }
             }) : [{
               id: '',
               price: 0,
               type: '',
+              guarantee: '',
+              model: '',
               name: ''
             }]
+
             const packets: {id: string, name: string, price: number, code: string}[] = Object.values(line.packets)
               .filter((packet:ITVPacket) => packet.status === 'Active')
               .map((packet:ITVPacket) => {
@@ -60,8 +74,6 @@ export default class TvSlider extends Vue {
                 }
               })
 
-            const linePrice: string | undefined = Object.values(line.offer.prices || {})
-              .find((el: ITVLineOfferPrice) => el?.chars?.['Тип подключения к IP-сети'] === line?.chars?.['Тип подключения к IP-сети'])?.amount
             return {
               id: line.id,
               status: line.status,
@@ -69,7 +81,6 @@ export default class TvSlider extends Vue {
               tvType: line?.chars?.['Тип TV'],
               stb: stb?.[0],
               price: line.purchasedPrices.recurrentTotal.value,
-              linePrice,
               name: line.chars['Имя в счете'],
               locationId: line.locationId,
               offerId: line.offer.id,
@@ -90,6 +101,16 @@ export default class TvSlider extends Vue {
       name: 'tv-packages',
       params: {
         line: data
+      }
+    })
+  }
+  openService () {
+    this.$router.push({
+      name: 'support',
+      query: { form: 'technical_issues' },
+      params: {
+        bpi: this.bpi || '',
+        addressId: this.addressId || ''
       }
     })
   }

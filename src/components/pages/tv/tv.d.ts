@@ -12,6 +12,7 @@ export interface ITVProduct {
   [key: string]: {
     name: string
     id: string
+    actualStartDate: string
     status: string
     tvLines: {
       [key: string]: ITVLine
@@ -71,12 +72,11 @@ export interface IModuleInfo {
   fulladdress: string
   locationId: string
   marketId: string | number
-  linePrice: string | undefined
   price: string
   tvType: string
   name: string
   id: string
-  stb: { id: string; name: string; type: string, price: number; }
+  stb: { id: string; name: string; type: string; model: string, price: number; guarantee: string; }
   packets: ITVPacketsInModule[]
 }
 export interface ITVPacketsInModule {
@@ -107,6 +107,9 @@ export interface ITVSTB{
   locationId: string
   id: string
   status: string
+  services: {
+    [key: string] : ITVSTBServices
+  }
   purchasedPrices: {
     recurrent: IPriceItem
     recurrentDisacount: IPriceItem
@@ -116,6 +119,11 @@ export interface ITVSTB{
     'Модель': string,
     'Способ передачи оборудования': string,
     'Имя оборудования': string
+  }
+}
+export interface ITVSTBServices{
+  chars: {
+    'Гарантийный срок (до)'?: string
   }
 }
 export interface ITVPacketRequest{

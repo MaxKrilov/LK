@@ -102,8 +102,29 @@ export default class TVPackagesPage extends Vue {
   get stbType () {
     return this.line?.stb.type || ''
   }
+  get stbModel () {
+    return this.line?.stb.model || ''
+  }
+  get stbPrice () {
+    if (this.stbType === 'Продажа') {
+      return ''
+    }
+    return this.line?.stb.price || ''
+  }
   get tariffname () {
     return this.line?.name?.replace('Абонентская линия', '')
+  }
+  get guarantee () {
+    if (this.stbType === 'Аренда') {
+      return '∞'
+    }
+    if (this.stbType === 'Продажа') {
+      return this.$moment(this.line?.stb.guarantee).format('DD.MM.YYYY')
+    }
+    return ''
+  }
+  get safeStorage () {
+    return this.stbType === 'Ответственное хранение'
   }
   get standartPackageName () {
     return this.standartPackage?.title
@@ -156,7 +177,11 @@ export default class TVPackagesPage extends Vue {
     this.isEditMode = true
   }
   saveName () {
-    this.isEditingName = true
+    if (this.stbName !== this.line?.stb?.name) {
+      this.isEditingName = true
+    } else {
+      this.isEditMode = false
+    }
   }
   mounted () {
     if (this.line) {
