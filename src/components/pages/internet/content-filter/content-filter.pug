@@ -20,7 +20,7 @@ div(:class="`${pre} main-content main-content--top-menu-fix`")
                 er-icon(class="icon" name="filter")
                 div(:class="`${pre}__caption2`") Тариф:
                 div(:class="`${pre}__h4`") {{ item.tariff }}
-              div(:class="`${pre}__login`")
+              div(:class="`${pre}__login`" v-if="item.login")
                 er-icon(class="icon" name="profile")
                 div(:class="`${pre}__caption2`") Логин:
                 div() {{ item.login }}
@@ -31,7 +31,7 @@ div(:class="`${pre} main-content main-content--top-menu-fix`")
                 :disabled="isCreatingOrder"
                 :loading="isCreatingOrder"
                 flat
-                @click="disconnect(item.offerId, item.locationId, item.bpi, item.productId)"
+                @click="disconnect(item.offerId, item.locationId, item.bpi, item.productId, item.date)"
                 ) Отключить фильтрацию
         div(:class="`${pre}__total`")
           div(:class="`${pre}__h4`") Итого:
@@ -53,6 +53,15 @@ div(:class="`${pre} main-content main-content--top-menu-fix`")
   )
     template(slot="description")
       div Уважаемый Клиент, в данный момент операция не доступна, обратитесь к персональному менеджеру
+  er-activation-modal(
+    type="error"
+    title="Произошла ошибка"
+    v-model="isShowErrorDisconnectModal"
+    :isShowActionButton="false"
+    cancel-button-text="Закрыть"
+  )
+    template(slot="description")
+      div Обращаем Ваше внимание, что отключить сервис Контент-фильтрация будет возможно только на следующий календарный день после активации.
 
   er-activation-modal(
     title="Заказ успешно сформирован"

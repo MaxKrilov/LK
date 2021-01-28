@@ -17,6 +17,7 @@ export default {
       offer: false,
       isShowDisconnectModal: false,
       isShowErrorModal: false,
+      isShowErrorDisconnectModal: false,
       offerAcceptedOn: '',
       sendingOrder: false,
       isCreatingOrder: false,
@@ -141,7 +142,11 @@ export default {
           this.offer = false
         })
     },
-    disconnect (offerId, locationId, bpi, productId) {
+    disconnect (offerId, locationId, bpi, productId, date) {
+      if (date === moment().format('DD.MM.YY')) {
+        this.isShowErrorDisconnectModal = true
+        return
+      }
       this.isCreatingOrder = true
       this.$store.dispatch('salesOrder/createDisconnectOrder', {
         locationId,
