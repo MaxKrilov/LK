@@ -589,43 +589,61 @@ export default class TariffComponent extends Vue {
 
     this.isLoadingConnect = true
 
-    this.getAvailableFunds()
-      .then(response => {
-        const availableFunds = Number(response.availableFundsAmt)
-        this.availableFundsAmt = availableFunds
+    if (this.isTurboActivation) {
+      this.$store.dispatch('salesOrder/createSaleOrder', {
+        locationId,
+        bpi,
+        offerId,
+        chars: char,
+        productCode: OFFER_CODE_TEMP_SPEED_INCREASE
+      })
+        .then(() => {
+          this.isShowOfferDialog = true
+          this.isOffering = true
+        })
+        .catch(() => {
+          this.isShowErrorDialog = true
+        })
+        .finally(() => {
+          this.isLoadingConnect = false
+        })
+    } else {
+      this.getAvailableFunds()
+        .then(response => {
+          const availableFunds = Number(response.availableFundsAmt)
+          this.availableFundsAmt = availableFunds
 
-        if (availableFunds - _price > 0) {
-          this.$store.dispatch(
-            `salesOrder/${this.isTurboActivation ? 'createSaleOrder' : 'createModifyOrder'}`,
-            {
-              locationId,
-              bpi,
-              offerId,
-              chars: char,
-              productCode: this.isTurboActivation
-                ? OFFER_CODE_TEMP_SPEED_INCREASE
-                : OFFER_CODE_SPEED_INCREASE
-            })
-            .then(() => {
-              this.isShowOfferDialog = true
-              this.isOffering = true
-            })
-            .catch(() => {
-              this.isShowErrorDialog = true
-            })
-            .finally(() => {
-              this.isLoadingConnect = false
-            })
-        } else {
-          this.isShowMoneyModal = true
-        }
-      })
-      .catch(() => {
-        this.isShowErrorDialog = true
-      })
-      .finally(() => {
-        this.isLoadingConnect = false
-      })
+          if (availableFunds - _price > 0) {
+            this.$store.dispatch(
+              `salesOrder/createModifyOrder`,
+              {
+                locationId,
+                bpi,
+                offerId,
+                chars: char,
+                productCode: OFFER_CODE_SPEED_INCREASE
+              })
+              .then(() => {
+                this.isShowOfferDialog = true
+                this.isOffering = true
+              })
+              .catch(() => {
+                this.isShowErrorDialog = true
+              })
+              .finally(() => {
+                this.isLoadingConnect = false
+              })
+          } else {
+            this.isShowMoneyModal = true
+          }
+        })
+        .catch(() => {
+          this.isShowErrorDialog = true
+        })
+        .finally(() => {
+          this.isLoadingConnect = false
+        })
+    }
   }
 
   sendSailOrder () {
