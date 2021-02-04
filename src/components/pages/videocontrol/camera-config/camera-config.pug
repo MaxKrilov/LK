@@ -103,6 +103,23 @@
                 template(v-else)
                   | {{ videoArchiveCurrentPrice | price }}
 
+          .col.col-4
+            .camera-main-fields__field(v-if="isAnalyticsLoaded")
+              er-select(
+                class="camera__archive-record-select"
+                placeholder="Режим записи в архив",
+                :items="archiveRecordValueList"
+                :value="archiveRecordValue"
+                :loading="isOrderMode"
+                :disabled="isOrderMode"
+                @input="onArchiveRecordInput"
+              )
+              template(v-if="archiveRecordValue.code === CODES.DETECTOR_RECORD")
+                .included-in-price.ml-16 Включено в стоимость
+              template(v-else)
+                er-price
+                  | {{ archiveRecordPrice | price }}
+
         .addon__list
           .addon
             h4.addon__title Запись звука

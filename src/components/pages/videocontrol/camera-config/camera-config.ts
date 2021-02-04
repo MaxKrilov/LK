@@ -34,6 +34,7 @@ import { ErtFetchAvailableFundsMixin } from '@/mixins2/ErtFetchAvailableFundsMix
 const isFullHD = (el: IOffer) => el.code === CODES.FULLHD
 const isFullHDArchive = (el: IOffer) => el.code === CODES.FULLHD_ARCHIVE
 const isHDArchive = (el: IOffer) => el.code === CODES.HD_ARCHIVE
+const isArchiveRecordConst = (el: IOffer) => el.code === CODES.CONST_RECORD
 
 const components = {
   ProductItem,
@@ -50,6 +51,11 @@ const props = {
 interface iVideoQualityValueItem {
   id: number
   value: string
+}
+
+interface iArchiveRecordValue {
+  value: string
+  code: string
 }
 
 const HD_VALUE = 'HD'
@@ -176,6 +182,19 @@ export default class VCCameraConfigPage extends Mixins(
   /* === Form === */
   soundRecordValue: boolean = false
   videoQualityValue: iVideoQualityValueItem = VIDEO_QUALITY_VALUE_LIST[0]
+
+  archiveRecordValueList: iArchiveRecordValue[] = [
+    {
+      value: 'Детектор движения',
+      code: CODES.DETECTOR_RECORD
+    },
+    {
+      value: 'Непрерывная запись',
+      code: CODES.CONST_RECORD
+    }
+  ]
+
+  archiveRecordValue: any = this.archiveRecordValueList[0]
 
   PTZValue: boolean = false
 
@@ -408,6 +427,19 @@ export default class VCCameraConfigPage extends Mixins(
     return this.videoArchiveOfferList?.[this.videoArchiveValueIndex]?.amount || 0
   }
 
+  get archiveRecordPrice (): string {
+    return this.archiveRecordIsDetector
+      ? '0'
+      : this.availableServiceList
+        ?.find(isArchiveRecordConst)
+        ?.prices?.[0]
+        ?.amount || '0'
+  }
+
+  get archiveRecordIsDetector (): boolean {
+    return this.archiveRecordValue.code === CODES.DETECTOR_RECORD
+  }
+
   get isPTZExists () {
     /* Есть поворотный модуль */
     return this?.camera?.chars?.[CHARS.PTZ] === CHAR_VALUES.YES
@@ -600,6 +632,8 @@ export default class VCCameraConfigPage extends Mixins(
             .then(() => {
               this.enableService(code, value)
             })
+        } else {
+          this.enableService(code, value)
         }
       }
     }
@@ -754,6 +788,10 @@ export default class VCCameraConfigPage extends Mixins(
           this.enableService(this.currentVideoArchiveCode, value)
         })
     }
+  }
+
+  onArchiveRecordInput (archiveRecord: iArchiveRecordValue) {
+    this.switchFunctionality(archiveRecord.code, true)
   }
 
   onPlay () {
