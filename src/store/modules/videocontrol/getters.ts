@@ -13,6 +13,7 @@ import {
   ANALYTIC_NAME,
   BF_CATEGORY_ID,
   BF_CATEGORY_NAME,
+  BF_CATEGORY_NAME_2,
   VIDEOCONTROL_OFFER_NAME
 } from '@/constants/videocontrol'
 import { IOfferingRelationship } from '@/interfaces/offering'
@@ -32,7 +33,7 @@ const isBFAnalyticByName = (item: IOfferingRelationship) =>
 const isBFAnalytic = isBFAnalyticByName
 
 const isBFAddon = (item: IOfferingRelationship) =>
-  item.categoryId === BF_CATEGORY_ID || item.name === BF_CATEGORY_NAME
+  item.categoryId === BF_CATEGORY_ID || item.name === BF_CATEGORY_NAME || item.name === BF_CATEGORY_NAME_2
 
 export const getters = {
   BPIList (state: IState) {
@@ -149,11 +150,11 @@ export const getters = {
     return (BFOfferId: string) => {
       return getters.allowedOfferByBFOId(BFOfferId)?.[0]
         ?.offeringRelationships
-        ?.find(
-          (el: IOfferingRelationship) => isBFAddon(el)
-        )
-        ?.offerings
-        ?.filter((el: IOffer) => isActiveOffering(el))
+        ?.filter(isBFAddon)
+        ?.reduce((acc: [], el: any) => {
+          return [ ...acc, ...el.offerings ]
+        }, [])
+        ?.filter(isActiveOffering)
     }
   },
   uniqPointList (state: IState) {

@@ -11,6 +11,7 @@ const ANALYTIC_CATEGORY_ID = 230
 const ANALYTIC_NAME = 'Базовая функциональность видеоконтроля к Сервисы видеоаналитики'
 const BF_CATEGORY_ID = 187
 const BF_CATEGORY_NAME = 'Базовая функциональность видеоконтроля к Дополнительные услуги Видеоконтроль'
+const BF_CATEGORY_NAME_2 = 'Базовая функциональность видеоконтроля к Тип записи'
 
 const VIDEOARCHIVE_DAY_COUNT = 'Количество дней архива'
 const ADDITION_USERS = 'Дополнительные пользователи'
@@ -34,7 +35,9 @@ const CODES = {
   PTZ: 'VIDCPTZ',
   HD_ARCHIVE: 'VIDCARHD',
   FULLHD_ARCHIVE: 'VIDCARFHD',
-  HEAT_MAP: 'VIDCMAP'
+  HEAT_MAP: 'VIDCMAP',
+  CONST_RECORD: 'VIDCCONST',
+  DETECTOR_RECORD: 'VIDCDETС'
 }
 
 const VC_TYPES = {
@@ -96,10 +99,11 @@ const SERVICE_ORDER_MAP: Record<string, boolean> = {
   'VIDCFHD': true, // разрешение FullHD
   'VIDCMAP': true, // тепловая карта
 
-  'VIDCCONST': false, // постоянный режим записи
   'VIDCSEGM': false, // сегментация клиента
   'VIDCCAR': false, // распознавание номеров
-  'VIDCBARR': false // умный шлагбаум
+  'VIDCBARR': false, // умный шлагбаум
+  [CODES.DETECTOR_RECORD]: false,
+  [CODES.CONST_RECORD]: false
 }
 
 export {
@@ -108,6 +112,7 @@ export {
   ANALYTIC_NAME,
   BF_CATEGORY_ID,
   BF_CATEGORY_NAME,
+  BF_CATEGORY_NAME_2,
   CAMERA_SALE_TYPES,
   CHARS,
   CHAR_VALUES,

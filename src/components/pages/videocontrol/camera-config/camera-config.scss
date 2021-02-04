@@ -245,6 +245,11 @@
   }
 }
 
+.included-in-price {
+  color: map-get($green, 'base');
+  @extend %caption2;
+}
+
 .vc-camera-edit-form {
   .camera-main-fields {
     $camera-config-input-width: 250px;
@@ -252,13 +257,24 @@
     display: grid;
     gap: $padding-x8 0;
 
+    grid-template-columns: 1fr;
     grid-template-areas:
       "col1"
       "col2"
-      "col3";
+      "col3"
+      "col4";
 
-    @include min-breakpoint("md") {
+    @include min-breakpoint(md) {
       gap: $padding-x10 $padding-x4;
+      grid-template-columns: 1fr 1fr;
+      grid-template-areas:
+        "col1 none"
+        "col2 none"
+        "col3 col4";
+    }
+
+    .camera__archive-record-select {
+      max-width: $camera-config-input-width;
     }
 
     .col-1 {
@@ -271,6 +287,10 @@
 
     .col-3 {
       grid-area: col3;
+    }
+
+    .col-4 {
+      grid-area: col4;
     }
 
     .er-input {
