@@ -7,14 +7,19 @@ div(:class="`${pre} main-content main-content--top-menu-fix`")
       er-card-products(:loading="true")
   template(v-else)
     div(:class="`${pre}__points`")
-      er-card-products(v-for="(item, index) in data" :key="index" :stopped="item.status ==='Suspended'" :price="item.price" :date="item.tariff")
+      er-card-products(
+        v-for="(item, index) in data"
+        :key="index"
+        :stopped="item.status ==='Suspended'"
+        :price="item.price"
+        :date="item.tariff"
+      )
         | {{ item.fulladdress}}
         template(#date-title)
           | Тариф:
         template(#slider-content)
           slider-content(:parent-id="item.bpi" :addressId="item.addressId" :fulladdress="item.fulladdress")
 
-          
       div(:class="`${pre}__total`")
         div(:class="`${pre}__h4`") Итого:
         div(class="price")
@@ -22,5 +27,4 @@ div(:class="`${pre} main-content main-content--top-menu-fix`")
           span(class="units") &nbsp₽/месяц
     .button
       er-button(color="blue" tag="a" href="https://b2b.domru.ru/products/telefoniya" target="_blank") Подключить
- 
 

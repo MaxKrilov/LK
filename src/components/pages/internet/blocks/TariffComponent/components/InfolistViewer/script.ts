@@ -6,7 +6,11 @@ const _mime = require('mime-types')
 @Component<InstanceType<typeof InfolistViewer>>({
   props: {
     id: String,
-    value: Boolean
+    value: Boolean,
+    fileName: {
+      type: String,
+      default: 'Информационный лист Интернет.pdf'
+    }
   },
   watch: {
     internalValue (val) {
@@ -23,7 +27,6 @@ export default class InfolistViewer extends Vue {
 
   // Data
   file: string = ''
-  fileName = 'Информационный лист Интернет.pdf'
   isLoading = false
 
   // Computed
@@ -64,7 +67,7 @@ export default class InfolistViewer extends Vue {
     })
       .then(response => {
         if (response instanceof Blob) {
-          this.__toBase64(response, this.fileName)
+          this.__toBase64(response, this.$props.fileName)
             .then(resultBase64 => {
               this.file = resultBase64
             })
@@ -79,7 +82,7 @@ export default class InfolistViewer extends Vue {
     const tempLink = document.createElement('a')
     tempLink.style.display = 'none'
     tempLink.href = this.file as string
-    tempLink.setAttribute('download', this.fileName)
+    tempLink.setAttribute('download', this.$props.fileName)
     document.body.appendChild(tempLink)
     tempLink.click()
     setTimeout(function () {

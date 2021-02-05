@@ -16,7 +16,24 @@
     @include color-black(0.5);
   }
 
+  &__infolist {
+    grid-area: infolist;
+  }
   &__slider {
+    .infolist-link {
+      @extend %link-behaviour;
+      text-decoration: none;
+      border-bottom: 0;
+      display: inline-flex;
+      flex-direction: row;
+      align-items: center;
+      gap: $padding-x2;
+      color: map-get($gray, '5');
+
+      .infolist-link__label {
+        border-bottom: 1px dashed;
+      }
+    }
 
     &__tariff-wrapper,
     &__date-wrapper {
@@ -56,7 +73,7 @@
       display: grid;
       column-gap: 8px;
       row-gap: 4px;
-      grid-template-areas: 
+      grid-template-areas:
         "icon caption2"
         "icon count";
       .er-icon {
@@ -95,7 +112,7 @@
       margin-bottom: 32px;
       display: grid;
       grid-template-columns: 1fr 1fr;
-      grid-template-areas: 
+      grid-template-areas:
       "date tariff"
       "channels channels";
       @include min-breakpoint("sm") {
@@ -104,17 +121,17 @@
 
       @include min-breakpoint("md") {
         grid-template-columns: 1fr 1fr 1fr;
-        grid-template-areas: 
-          "date . tariff"
+        grid-template-areas:
+          "date tariff infolist"
           "channels channels .";
         margin-bottom: 40px;
       }
       @include min-breakpoint("lg") {
         grid-template-columns: 3fr 4fr 3fr;
         align-items: center;
-        justify-items: center;        
-        grid-template-areas: 
-          "tariff channels date";
+        justify-items: center;
+        grid-template-areas:
+          "tariff channels date infolist";
       }
     }
 
@@ -227,8 +244,8 @@
       .er-icon {
         transition: $primary-transition;
         position: absolute;
-        bottom: 0px;
-        right: 0px;
+        bottom: 0;
+        right: 0;
 
         svg {
           transition: $primary-transition;
