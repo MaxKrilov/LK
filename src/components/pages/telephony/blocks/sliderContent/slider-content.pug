@@ -21,7 +21,7 @@ div(:class="`${pre}`" )
               div(:class="`${pre}__slider__channels-select`")
                 div(:class="`${pre}__slider__channels`")
                   ErNumberField(v-model="serChannelsValue")
-                div(:class="`${pre}__slider__channels-price`" v-if="serChannelsPrice").h4 
+                div(:class="`${pre}__slider__channels-price`" v-if="serChannelsPrice").h4
                   template(v-if="isChangedChannels")
                     er-button(@click="changeChannels" :loading="isChangingChannels") Изменить
                   template(v-else)
@@ -31,16 +31,23 @@ div(:class="`${pre}`" )
                 er-icon(name="integration")
                 div(class="caption2") Канал связи:
                 div(class="h4") {{ serChannelsE1 }}
-            
 
-
+          div(:class="`${pre}__infolist`" v-if="isVirtualNumber")
+            .infolist-link(@click="onClickVirtualNumberInfolist")
+              er-icon(name="settings")
+              .infolist-link__label Настройки
+            infolist-viewer(
+              v-model="isShowInfolistViewer"
+              :id="parentId"
+              fileName="Информационный лист Виртуальный номер.pdf"
+            )
         template(v-if="phones.length")
           h3(:class="`${pre}__phone-title`") Подключенные телефоны
           connected-phone(v-for="(phone, index) in phones" :key="index" :phone="phone" @disconnect="disconnectNumber(phone.number)")
-        
+
         div(:class="`${pre}__slider-buttons`" v-if="!isStopped").add-button
           er-button(pre-icon="add_round" color="yellow" @click="connectNewNumber" :loading="isConnection") Добавить телефон
-        
+
         h3(:class="`${pre}__packages-title`" v-if="localConnected|| globalConnected || !isStopped") Пакеты минут
         div(:class="`${pre}__packages`")
           PackageMinuteCard(
@@ -57,7 +64,7 @@ div(:class="`${pre}`" )
             :phones="phones"
             :char="'Тип Пакета (Пакет Минут)'")
 
-          div(@click="plugPackages" v-if="(localPlug || globalPlug) && !isStopped")  
+          div(@click="plugPackages" v-if="(localPlug || globalPlug) && !isStopped")
             er-card(:class="[`${pre}__plug-package`, `${pre}__card-package`]")
               div(:class="`${pre}__plug-package__title`") Подключить пакет минут
               div(:class="`${pre}__plug-package__footer`")
@@ -70,7 +77,7 @@ div(:class="`${pre}`" )
             er-button(color="yellow"  @click="$router.push('/lk/support?form=restoring_a_contract_or_service')") Восстановить
           template(v-else)
             er-button(color="yellow"  @click="$router.push('/lk/support?form=suspension_of_a_contract_or_service')") Приостановить Телефонию
-  
+
   ErPlugProduct(
     v-model="isConnection"
     :requestData="requestData"

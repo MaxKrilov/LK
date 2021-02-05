@@ -6,8 +6,13 @@ import ErDisconnectProduct from '@/components/blocks/ErDisconnectProduct'
 import ErNumberField from '@/components/blocks/ErNumberField'
 import ErActivationModal from '@/components/blocks/ErActivationModal/index.vue'
 import PackageMinuteCard from '@/components/pages/telephony/blocks/packageMinute/index.vue'
+import InfolistViewer from '@/components/pages/internet/blocks/TariffComponent/components/InfolistViewer/index.vue'
 import { ARRAY_SHOWN_PHONES, CODE_PACGLOCMIN, CODE_PACGMIN, CODE_PHONE_SERSELCHTR } from '@/constants/product-code'
 import { ARRAY_STATUS_SHOWN } from '@/constants/status'
+
+const CODES = {
+  VIRTUAL_NUMBER: 'VIRTNUMB'
+}
 
 export default {
   name: 'slider-content',
@@ -18,7 +23,8 @@ export default {
     ErDisconnectProduct,
     ErActivationModal,
     ErNumberField,
-    PackageMinuteCard
+    PackageMinuteCard,
+    InfolistViewer
   },
   props: {
     parentId: {
@@ -48,6 +54,7 @@ export default {
       isConnection: false,
       isDisconnection: false,
       isLoading: true,
+      isShowInfolistViewer: false,
 
       serChannels: 0,
       serChannelsValue: 0,
@@ -103,6 +110,9 @@ export default {
     },
     isStopped () {
       return this.tlo?.status === 'Suspended'
+    },
+    isVirtualNumber () {
+      return this.tlo?.offer?.code === CODES.VIRTUAL_NUMBER
     }
   },
   methods: {
@@ -133,6 +143,9 @@ export default {
     },
     cancelOrder () {
       this.$store.dispatch('salesOrder/cancel')
+    },
+    onClickVirtualNumberInfolist () {
+      this.isShowInfolistViewer = true
     }
   },
   mounted () {

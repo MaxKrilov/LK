@@ -27,7 +27,7 @@
       .er-document-viewer__body
         div(v-if="isLoading")
           div.no-download Загружаем...
-        div(v-else-if="isExistsFile" key="fileExists")
+        div(v-else-if="isExistsFile" :key="fileExists")
           embed(:src="file")
         div(v-else key="fileNotExists")
           div.no-download Документ не загружен или не найден
