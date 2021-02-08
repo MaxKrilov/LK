@@ -14,11 +14,11 @@ export const WIFIDESIGNOPT = 'WIFIDESIGNOPT' // Конструктор стра�
 // todo Закомментированные вернуть после включения продукта на стороне BSS
 export const SERVICES_AUTH = [
   WIFIAUTOECIA,
-  // WIFIAUTCNHS,
-  // WIFIADVCANCEL,
-  WIFIHSCLONET
+  WIFIAUTCNHS,
+  WIFIADVCANCEL,
+  WIFIHSCLONET,
   // WIFIACCCHANGE
-  // WIFIAVTVOUCH
-  // WIFINAME,
-  // WIFIREDIR
+  WIFIAVTVOUCH,
+  WIFINAME,
+  WIFIREDIR
 ]
