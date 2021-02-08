@@ -40,12 +40,12 @@ export default class ServicesComponent extends Vue {
           })
         }
       },
-      {
-        icon: 'filter',
-        name: 'Контент-фильтрация',
-        isOn: this.isOnContentFilter,
-        onClick: () => {}
-      },
+      // {
+      //   icon: 'filter',
+      //   name: 'Контент-фильтрация',
+      //   isOn: this.isOnContentFilter,
+      //   onClick: () => {}
+      // },
       {
         icon: 'settings',
         name: 'Сервисы авторизации',
