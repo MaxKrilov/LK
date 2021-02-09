@@ -96,9 +96,6 @@ export default class TelephonyBlacklistCard extends Vue {
   cancelOrder () {
     this.$store.dispatch('salesOrder/cancel')
   }
-  update () {
-    this.$emit('update')
-  }
 
   modify (numbers: string[]) { // изменение списка заблокированных номеров
     this.modifyingOrder = true
@@ -113,7 +110,7 @@ export default class TelephonyBlacklistCard extends Vue {
       .then(() => {
         this.$store.dispatch('salesOrder/send')
           .then(() => {
-            this.isShowSuccessModal = true
+            this.$emit('update')
           })
           .catch(() => {
             this.isShowErrorModal = true
@@ -138,10 +135,8 @@ export default class TelephonyBlacklistCard extends Vue {
     this.$store.dispatch('salesOrder/send')
       .then(() => {
         this.sendingOrderDeleteBlackList = false
+        this.isShowSuccessModal = true
         this.isShowDeletBlackListModal = false
-        setTimeout(() => {
-          this.isShowSuccessModal = true
-        }, 1000)
       })
       .catch(() => {
         this.isShowDeletBlackListModal = false

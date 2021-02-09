@@ -2,13 +2,10 @@ import { Vue, Component, Watch } from 'vue-property-decorator'
 import ListPointComponent from '@/components/templates/InternetTemplate/blocks/ListPointComponent/index.vue'
 import { IPointItem, IPhone, IBlacklistPhone } from '@/components/pages/telephony/telephony'
 import { mapGetters } from 'vuex'
-import { CODE_BLACKLIST, ARRAY_SHOWN_PHONES } from '@/constants/product-code'
+import { CODE_PHONE, CODE_PHONE_VPN, CODE_BLACKLIST } from '@/constants/product-code'
 import ErActivationModal from '@/components/blocks/ErActivationModal/index.vue'
 import blackListCard from '@/components/pages/telephony/blocks/blackListCard/index.vue'
 import { ARRAY_STATUS_SHOWN } from '@/constants/status.ts'
-import { PATTERN_RUSSIAN_PHONE } from '@/constants/regexp'
-import { ErtTextField } from '@/components/UI2'
-import Inputmask from 'inputmask'
 
 const components = {
   ListPointComponent,
@@ -21,17 +18,12 @@ const components = {
     ...mapGetters({ billingAccountId: 'user/getActiveBillingAccount' })
   } })
 export default class TelephonyBlacklistPage extends Vue {
-  $refs!: {
-    'black-list-phone': InstanceType<typeof ErtTextField>
-  }
   currentAddress: IPointItem | null = null
   phonesList: IPhone[] = []
   selectedNewPhones: string = ''
-  newNumber: string = ''
   freePhonesList: IPhone[] = []
   blackList: IBlacklistPhone[] = []
   addressList: IPointItem[] = []
-  newBlackList: string[] = []
   billingAccountId!: string | number
   isLoading:boolean = true
   isLoadingPhones:boolean = false
@@ -54,28 +46,6 @@ export default class TelephonyBlacklistPage extends Vue {
     if (val?.bpi) {
       this.getPhones(val.bpi)
     }
-  }
-  @Watch('selectedNewPhones')
-  onSelectedNewPhones (val: any) {
-    if (val && this.$refs['black-list-phone']) {
-      const inputMask = new Inputmask(
-        '+7 (999) 999-99-99'
-      )
-      inputMask.mask(this.$refs['black-list-phone'].$refs.input)
-    }
-  }
-  validPhone (phone: string) {
-    if (PATTERN_RUSSIAN_PHONE.test(phone) || !phone) {
-      return true
-    } else {
-      return 'Неверный формат телефонного номера'
-    }
-  }
-  get phoneRule () {
-    return [this.validPhone]
-  }
-  get numbersForOrder () {
-    return this.newBlackList.map((el) => el.replace(/[^\d]/g, ''))
   }
 
   getPoints () {
@@ -109,7 +79,7 @@ export default class TelephonyBlacklistPage extends Vue {
       api: this.$api,
       parentId: bpi
     }).then(answer => {
-      const phonesIdWithNumbers = answer?.slo.filter((el: any) => ARRAY_SHOWN_PHONES.includes(el?.code))
+      const phonesIdWithNumbers = answer?.slo.filter((el: any) => el?.code === CODE_PHONE_VPN || el?.code === CODE_PHONE)
         .reduce((acc: any, el: any) => {
           acc[el.productId] = el?.chars?.['Номер телефона']
           return acc
@@ -160,13 +130,6 @@ export default class TelephonyBlacklistPage extends Vue {
   cancelOrder () {
     this.$store.dispatch('salesOrder/cancel')
   }
-  addPhoneToBlock () {
-    this.newBlackList.push(this.newNumber)
-    this.newNumber = ''
-  }
-  deleteNumber (number: string) {
-    this.newBlackList = this.newBlackList.filter((el: string) => el !== number)
-  }
 
   plugBlackList () { // подключаем черный список на номер
     this.creatingOrder = true
@@ -177,7 +140,7 @@ export default class TelephonyBlacklistPage extends Vue {
         bpi: this.selectedNewPhones,
         productCode: CODE_BLACKLIST,
         chars: {
-          'Заблокированные номера': this.numbersForOrder
+          'Заблокированные номера': ['']
         }
       })
       .then(() => {
@@ -196,12 +159,9 @@ export default class TelephonyBlacklistPage extends Vue {
     this.$store.dispatch('salesOrder/send')
       .then(() => {
         this.sendingOrder = false
+        this.isShowSuccessModal = true
         this.isShowModal = false
-
-        setTimeout(() => {
-          this.isShowSuccessModal = true
-        }, 1000)
-        this.update() // пока не отрабатывает бекенд
+        // this.update() пока не отрабатывает бекенд
       })
       .catch(() => {
         this.isShowModal = false
@@ -212,9 +172,9 @@ export default class TelephonyBlacklistPage extends Vue {
         this.selectedNewPhones = ''
       })
   }
-  update () { // оставим, пока работает с ошибкой
-    if (this.currentAddress?.bpi) this.getPhones(this.currentAddress?.bpi)
-  }
+  // update () { // оставим, пока работает с ошибкой
+  //   if (this.currentAddress?.bpi) this.getPhones(this.currentAddress?.bpi)
+  // }
   mounted () {
     if (this.billingAccountId) {
       this.getPoints()
