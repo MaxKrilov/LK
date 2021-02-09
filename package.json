@@ -15,6 +15,7 @@
     "@sentry/vue": "^5.29.0",
     "@types/d3": "^5.7.2",
     "@types/iframe-resizer": "^3.5.8",
+    "@types/inputmask": "^5.0.0",
     "@types/leaflet": "^1.5.12",
     "@types/lodash": "^4.14.159",
     "@vue/babel-helper-vue-jsx-merge-props": "^1.0.0",
