@@ -270,7 +270,9 @@ export default {
       if (this.isEntity) {
         editData['kpp'] = this.modelData.registrationReasonCode
       } else {
-        editData['idSerialNumber'] = this.modelData.passport
+        const [serialNumber, number] = this.modelData.passport.split('-')
+        editData['idSerialNumber'] = serialNumber
+        editData['idNumber'] = number
         editData['issuedDate'] = this.modelData.dateOfPassport
         editData['issuedBy'] = this.modelData.passportIssuedBy
       }

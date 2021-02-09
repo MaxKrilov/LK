@@ -15,11 +15,10 @@
           :infinity="true"
         )
           div
-            div Вы отсутствовали более {{ halfLifetimeRefreshToken }} минут. Для безопасности вашего аккаунта в скором времени&nbsp;
-              | произойдёт логаут
+            div Вы отсутствовали более {{ halfLifetimeRefreshToken }} минут. Для безопасности вашего аккаунта сессия скоро будет завершена.
             div.snackbar-continue-button.mt-8(@click="updateTokens")
               button
-                | Продолжить
+                | Остаться в системе
 </template>
 
 <script>

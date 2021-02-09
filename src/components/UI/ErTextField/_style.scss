@@ -57,10 +57,16 @@
       transform-origin: left;
       height: 20px;
       left: 0;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      max-width: 100%;
+      overflow: hidden;
+
       &.er-text-field,
       &.er-textarea {
         &--active {
           transform: scale(0.85) translateY(-37px);
+          max-width: 133%;
           @include media-query((
             transform: (
               md: scale(0.85) translateY(-36px),

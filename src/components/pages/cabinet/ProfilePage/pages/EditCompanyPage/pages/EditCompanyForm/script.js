@@ -40,6 +40,9 @@ export default {
       this.somethingWrong = false
       this.isSuccess = (this.$refs.companyForm.validate() && this.$refs.lprForm.isFileValid)
       if (this.isSuccess) {
+        const [serialNumber, number] = this.editableCompanyClientObject.idSerialNumber.split('-')
+        this.editableCompanyClientObject.idSerialNumber = serialNumber
+        this.editableCompanyClientObject.idNumber = number
         const responseClient = await this[UPDATE_CLIENT_INFO]({ api: this.$api, formData: this.editableCompanyClientObject })
         if (!responseClient) {
           this.somethingWrong = true
