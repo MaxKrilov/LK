@@ -56,6 +56,7 @@ div(:class="`${pre}`")
           :disabled="isFetched && uneditableSerial"
           label="Паспорт"
           :class="`${pre}__field__input`"
+          mask="9999-999999"
         )
       er-flex(:class="`${pre}__field passport`").xs6
         er-text-field(

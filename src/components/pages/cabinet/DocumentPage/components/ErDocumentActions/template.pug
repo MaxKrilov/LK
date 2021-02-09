@@ -31,11 +31,8 @@
     )
       er-container.full.container--no-padding.er-document-actions__list
         er-row.flex-grow-1
-          er-flex.lg3.md4.sm6
-            er-button
-              | Скачать
           er-flex.lg3.md4.sm6.r-offset-md4.r-offset-lg0
-            er-button(:color="'gray'")
+            er-button(:color="'gray'" @click="$router.push('/lk/support?form=order_a_document')")
               | Заказать дубликат
           er-flex.lg3.md4.sm6
             er-button(:color="'gray'" @click="sendOnEmail" :loading="loadingSending")

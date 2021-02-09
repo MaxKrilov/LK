@@ -19,27 +19,28 @@ export default class ServicesComponent extends Vue {
   // Computed
   get listService () {
     const result = [
-      { icon: 'stat', name: 'Статистика', isOn: true, link: '/lk/internet/statistic' }
-      // { icon: 'reload', name: 'Обратные зоны', isOn: true, link: '/lk/internet/reverce-zones' }
+      { icon: 'stat', name: 'Статистика', isOn: true, link: '/lk/internet/statistic', code: 'STATISTIC' },
+      { icon: 'reload', name: 'Обратные зоны', isOn: true, link: '/lk/internet/reverce-zones', code: 'REVERCEZONE' }
     ]
     const additionalServices = [
       SERVICE_CONTENT_FILTER,
-      // SERVICE_DDOS_PROTECT,
+      SERVICE_DDOS_PROTECT,
       SERVICE_ADDITIONAL_IP
     ]
     if (this.customerProduct === null) {
       result.push(
-        { icon: 'filter', name: 'Контент-фильтрация', isOn: false, link: '/lk/internet/content-filter' },
-        // { icon: 'deffence_ddos', name: 'Защита от DDoS-атак', isOn: false, link: '/lk/internet/' },
-        { icon: 'add_ip', name: 'Дополнитель. IP адреса', isOn: false, link: '/lk/internet/ip' }
+        { icon: 'filter', name: 'Контент-фильтрация', isOn: false, link: '/lk/internet/content-filter', code: SERVICE_CONTENT_FILTER },
+        { icon: 'deffence_ddos', name: 'Защита от DDoS-атак', isOn: false, link: '/lk/internet/', code: SERVICE_DDOS_PROTECT },
+        { icon: 'add_ip', name: 'Дополнитель. IP адреса', isOn: false, link: '/lk/internet/ip', code: SERVICE_ADDITIONAL_IP }
       )
       return result
     }
     this.customerProduct.slo.forEach(slo => {
-      if (additionalServices.includes(slo.code)) {
+      if (additionalServices.includes(slo.code) && !result.find(resultItem => resultItem.code === slo.code)) {
         result.push({
           ...this.getIconNNameByService(slo.code)!,
-          isOn: slo.activated
+          isOn: slo.activated,
+          code: slo.code
         })
       }
     })
