@@ -17,23 +17,45 @@
   
   template(v-if="!isLoading && blackList.length && !isLoadingPhones")
     .telephony-blacklist-page__phones
-      blackListCard(v-for="item in blackList" :data="item" :key="item.id")
+      blackListCard(v-for="item in blackList" :data="item" :key="item.id" @update="update")
       .telephony-blacklist-page__button
         er-button(color="blue" v-if="freePhonesList.length && !isConnectNewBlackList" @click="isConnectNewBlackList = true") Добавить черный список
-  .telephony-blacklist-page__content.main-content--top-menu-fix(v-if="isConnectNewBlackList && !isLoadingPhones")
-    h2 Новый черный список на номер:
-    .telephony-blacklist-page__plug(v-for="phone in freePhonesList")
-      .telephony-blacklist-page__plug__item
-        er-toggle(
-          type="radio"
-          view="radio-check"
-          :value="phone.id"
+  template(v-if="isConnectNewBlackList && !isLoadingPhones")
+    .telephony-blacklist-page__content.main-content--top-menu-fix
+      h2 Новый черный список на номер:
+      div(class="telephony-blacklist-page__number-selector")
+        ert-select(
+          :items="freePhonesList"
+          item-value="id"
+          item-text="phone"
+          label="Номер"
+          hideDetails
           v-model="selectedNewPhones"
-          :label="phone.phone"
-        ) 
-    .telephony-blacklist-page__plug__button
-      er-button(:disabled="!selectedNewPhones" @click="plugBlackList" :loading="creatingOrder") Добавить черный список
-      er-button(flat v-if="blackList.length" @click="isConnectNewBlackList=false") Отмена
+        )
+      template(v-if="selectedNewPhones && newBlackList.length")  
+        b.ml-md-24 Заблокировать номера
+        div(class="telephony-blacklist-page__list")
+          div(class="telephony-blacklist-page__list__item" v-for="phone in newBlackList" :key="phone")
+            div {{ phone }}
+            div(class="delete-icon" @click="deleteNumber(phone)")
+              er-icon(name="trashbox")
+    
+      div Звонящий вам услышит в телефонной трубке фразу: «<b>Абонент просил не беспокоить</b>»
+      div(class="telephony-blacklist-page__add-wrapper" v-show="selectedNewPhones")  
+        div(class="telephony-blacklist-page__number-input")
+          ert-text-field(
+            v-model="newNumber"
+            :rules="phoneRule"
+            :is-show-success="true"
+            label="Введите номер телефона"
+            ref="black-list-phone"
+            )
+        .button
+          er-button(@click="addPhoneToBlock" :disabled="!newNumber") Добавить запись
+
+      .telephony-blacklist-page__plug__button
+        er-button(:disabled="!selectedNewPhones || !newBlackList.length" @click="plugBlackList" :loading="creatingOrder") Добавить черный список
+        er-button(flat v-if="blackList.length" @click="isConnectNewBlackList=false") Отмена
   
   er-activation-modal(
     type="question"
