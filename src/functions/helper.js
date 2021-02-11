@@ -690,3 +690,8 @@ export function removeObjectKey (keyName, object) {
   const { [keyName]: removedKey, ...newObject } = object
   return newObject
 }
+
+export function dataLayerPush (object) {
+  window.dataLayer = window.dataLayer || []
+  window.dataLayer.push(object)
+}

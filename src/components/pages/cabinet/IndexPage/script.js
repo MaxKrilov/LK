@@ -3,6 +3,7 @@ import { leadingZero, price } from '../../../../functions/filters'
 import ProductItemComponent from './blocks/ProductItemComponent/index.vue'
 import ErDocumentViewer from '../../../blocks/ErDocumentViewer/index.vue'
 import ErToastStack from '@/components/blocks/ErToastStack/index'
+import { dataLayerPush } from '@/functions/helper'
 import ErActivationModal from '../../../blocks/ErActivationModal/index'
 
 export default {
@@ -118,6 +119,11 @@ export default {
         }
       }
       return on
+    },
+    dataLayerPush (action) {
+      dataLayerPush(
+        { 'event': 'UAevent', 'category': 'quick links', 'action': action }
+      )
     }
   },
   watch: {
