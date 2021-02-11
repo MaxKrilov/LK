@@ -26,7 +26,7 @@ div(:class="`${pre}`")
           er-flex.mb-16(xs6 xl3)
             er-preloader(:active="loadingDocuments" icon)
               router-link.index-page__fast-link(to="/lk/documents")
-                .content
+                .content(@click="dataLayerPush('documents')")
                   .title
                     | Мои документы
                   .footer.d--flex.align-items-end.mt-auto
@@ -40,7 +40,7 @@ div(:class="`${pre}`")
           er-flex.mb-16(xs6 xl3)
             er-preloader(:active="loadingRequest" icon)
               router-link.index-page__fast-link(to="/lk/support")
-                .content
+                .content(@click="dataLayerPush('support')")
                   .title
                     | Оставить заявку
                   .footer.d--flex.align-items-end.mt-auto
@@ -54,7 +54,7 @@ div(:class="`${pre}`")
           er-flex.mb-16(xs6 xl3)
             er-preloader(:active="loadingPromisedPayment" icon)
               router-link.index-page__fast-link(to="/lk/promise-pay")
-                .content
+                .content(@click="dataLayerPush('promised payment')")
                   .title
                     | Обещанный платёж
                   .footer.d--flex.align-items-end.mt-auto
@@ -81,7 +81,7 @@ div(:class="`${pre}`")
             )
               template(v-slot:activator="{ on }")
                 a.index-page__fast-link(href="#", v-on="getEventsForInvPayments(on)")
-                  .content
+                  .content(@click="dataLayerPush('invoice payment')")
                     .title
                       | Счёт на оплату
                     .footer.d--flex.align-items-end.mt-auto
