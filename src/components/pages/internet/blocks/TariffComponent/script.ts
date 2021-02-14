@@ -246,13 +246,14 @@ export default class TariffComponent extends Vue {
 
   get turboPriceAfterIncrease () {
     if (!this.customerProduct || !this.isTurboActivation) return 0
-    return this.priceAfterIncrease
-    // if (this.isInfinity) return this.priceAfterIncrease
-    // const [from, to] = this.turboPeriod
-    // const diff = Math.ceil(Math.abs(to.getTime() - from.getTime()) / (1000 * 3600 * 24))
-    // const daysInMonth = (new Date(from.getFullYear(), from.getMonth() + 1, 0)).getDate()
-    //
-    // return this.priceAfterIncrease / daysInMonth * diff
+    if (this.isInfinity) {
+      return this.priceAfterIncrease
+    }
+    const [from, to] = this.turboPeriod
+    const diff = Math.ceil(Math.abs(to.getTime() - from.getTime()) / (1000 * 3600 * 24))
+    const daysInMonth = (new Date(from.getFullYear(), from.getMonth() + 1, 0)).getDate()
+
+    return this.priceAfterIncrease / daysInMonth * diff
   }
 
   get offerIdTLO () {
