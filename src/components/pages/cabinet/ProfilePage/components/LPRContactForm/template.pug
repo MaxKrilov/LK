@@ -208,11 +208,10 @@ div(
           template(v-if="canSign")
             template(v-if="isNewContact || isCanSignRoleAdd")
               div(:class="`${preInput}`")
-                er-select(
-                  placeholder="На основании"
+                er-text-field(
+                  label="На основании"
                   isShowLabelRequired
-                  :items="signDocumentsList"
-                  :rules="[value => erSelectValidate(value)]"
+                  :rules="[value => !!value || 'Поле обязательно к заполнению']"
                   v-model="formData.registrationDocument"
                 )
 

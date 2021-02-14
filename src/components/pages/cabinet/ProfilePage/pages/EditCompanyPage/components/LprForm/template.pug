@@ -103,11 +103,10 @@ div(:class="`${pre}`")
           )
   er-row(:class="`${pre}__row`")
     er-flex(:class="`${pre}__field`").xs12.sm12.md6
-      er-select(
+      er-text-field(
         :class="`${pre}__field`"
-        :placeholder="docsLabel"
-        :items="['Устава', 'Доверенности', 'Другое']"
-        :rules="notEmptyRule"
+        :label="docsLabel"
+        :rules="[v => !!v || 'Поле обязательно к заполнению']"
         v-model="value.confirmationDocName"
         ref="docsRef"
         isShowLabelRequired
