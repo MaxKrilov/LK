@@ -10,6 +10,7 @@ import { mapState, mapGetters } from 'vuex'
 import { ILocationOfferInfo } from '@/tbapi'
 import { ErtPageWithDialogsMixin } from '@/mixins2/ErtPageWithDialogsMixin'
 import { STATUS_DISCONNECTED } from '@/constants/status'
+import { SERVICE_URLS } from '@/constants/url'
 
 const components = {
   'vc-domain': VCDomain,
@@ -114,5 +115,9 @@ export default class VideocontrolProductPage extends ErtPageWithDialogsMixin {
 
   onChangeDomain (data: any) {
     logInfo('change domain data', data)
+  }
+
+  onClickPlug () {
+    window.open(SERVICE_URLS.VIDEOCONTROL)
   }
 }

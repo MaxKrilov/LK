@@ -123,5 +123,16 @@
         }
       }
     }
+
+    margin-bottom: $padding-x8;
+
+    @include min-breakpoint(md) {
+      margin-bottom: $padding-x10;
+    }
+  }
+
+  &__footer {
+    @extend %action-buttons-block;
+    @extend %action-buttons-block--3-cols;
   }
 }

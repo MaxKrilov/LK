@@ -142,6 +142,12 @@
           )
         template(slot="date-title")
           | Тариф
+
+    .wifi-index-page__footer
+      er-button(
+        color="blue"
+        @click="onClickPlug"
+      ) Подключить
 </template>
 
 <script lang="ts" src="./script.ts"></script>

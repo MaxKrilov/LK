@@ -33,12 +33,12 @@ $pre: ".vc-product-page";
   }
 
   &__footer {
-    .er-container {
-      outline: 1px dashed crimson;
-    }
     @extend %main-content-width;
     @extend %margin-left--menu-width;
     @extend %main-content-padding-h;
+
+    @extend %action-buttons-block;
+    @extend %action-buttons-block--3-cols;
 
     margin-top: $padding-x8;
 

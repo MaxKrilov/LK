@@ -53,9 +53,6 @@
       div
         p(v-html="infoMessage")
 
-    .vc-product-page__footer(v-if="isPlugVideocontrolPossible")
-      er-container.container--no-padding.full
-        er-row
-          er-flex.xs12.sm8.md6.lg4
-            er-button(color="blue")
-              | Подключить видеонаблюдение
+    .vc-product-page__footer(v-if="isDomainsLoaded && isVideocontrolPlugged")
+      er-button(color="blue" @click="onClickPlug")
+        | Подключить

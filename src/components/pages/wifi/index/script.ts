@@ -5,6 +5,7 @@ import { LMap, LTileLayer, LMarker, LPopup } from 'vue2-leaflet'
 import ServicesComponent from '../blocks/services/index.vue'
 import { IAddressUnit, ICustomerProduct, ILocationOfferInfo } from '@/tbapi'
 import moment from 'moment'
+import { SERVICE_URLS } from '@/constants/url'
 import { WIFIANALYTICS, WIFIKONTFIL, SERVICES_AUTH, WIFIDESIGNOPT } from '@/components/pages/wifi/index/constants'
 
 const MAP_URL = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
@@ -284,5 +285,9 @@ export default class WifiIndexPage extends Vue {
 
   openPrevPopup (index: number) {
     (this.$refs as any)[`popup__${index - 1}`][0].mapObject.openPopup()
+  }
+
+  onClickPlug () {
+    window.open(SERVICE_URLS.WIFI_HOT_SPOT)
   }
 }

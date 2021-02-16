@@ -36,3 +36,9 @@ export const MANAGER_LOGOUT = {
   'psi2': 'https://public-gateway-dmp-uat2.nonprod.cloud-bss.loc/api/v1/identity-provider/auth/realms/cdf6f4e0-ef43-4a8e-9a12-0a18d63824b0/protocol/openid-connect/logout',
   'combat': 'https://public-gateway.online.domru.ru/api/v1/identity-provider/auth/realms/7404b7f5-b4b3-48a9-8bbd-97a4ff8e1ef0/protocol/openid-connect/logout'
 }
+
+export const SERVICE_URLS = {
+  WIFI_HOT_SPOT: 'https://b2b.domru.ru/products/wi-fi-hot-spot',
+  VIDEOCONTROL: 'https://b2b.domru.ru/products/videonablyudenie',
+  INTERNET: 'https://b2b.domru.ru/products/internet'
+}
