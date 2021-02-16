@@ -6,6 +6,7 @@ import ServicesComponent from '@/components/pages/internet/blocks/ServicesCompon
 import PriceServicesComponent from '@/components/pages/internet/blocks/PriceServicesComponent/index.vue'
 import { API } from '@/functions/api'
 import { ICustomerProduct } from '@/tbapi'
+import { SERVICE_URLS } from '@/constants/url'
 
 export interface iPointItem {
   id: string | number,
@@ -41,5 +42,9 @@ export default class IndexPage extends Vue {
   // Methods
   updateData () {
     this.$emit('update')
+  }
+
+  onClickPlug () {
+    window.open(SERVICE_URLS.INTERNET)
   }
 }

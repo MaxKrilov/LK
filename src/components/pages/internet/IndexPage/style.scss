@@ -1,0 +1,13 @@
+.internet-index-page {
+
+  &__footer {
+    @extend %action-buttons-block;
+    @extend %action-buttons-block--3-cols;
+
+    margin-top: $padding-x8;
+
+    @include min-breakpoint("md") {
+      margin-top: $padding-x10;
+    }
+  }
+}

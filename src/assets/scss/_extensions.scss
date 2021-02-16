@@ -500,6 +500,12 @@
   }
 }
 
+%action-buttons-block--3-cols {
+  @include min-breakpoint('lg') {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+}
+
 %dialog-block {
   max-height: 100vh;
   width: initial !important;
