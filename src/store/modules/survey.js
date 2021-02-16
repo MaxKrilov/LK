@@ -7,20 +7,24 @@ import {
 import { logInfo } from '@/functions/logging.ts'
 import { processSurvey, surveyStatusIsDone } from '@/functions/survey'
 
-const SET_USER_SURVEYS = 'SET_USER_SURVEYS'
-const SET_CURRENT_SURVEY = 'SET_CURRENT_SURVEY'
+const MUTATIONS = {
+  SET_CURRENT_SURVEY_IS_LOADED: 'SET_CURRENT_SURVEY_IS_LOADED',
+  SET_USER_SURVEYS: 'SET_USER_SURVEYS',
+  SET_CURRENT_SURVEY: 'SET_CURRENT_SURVEY',
+  REMOVE_SURVEY: 'REMOVE_SURVEY'
+}
 
 /*
   Используется для тестирования.
-  Можно отключить, когда нужно пройти анкету но не отсылать результаты на бэкенд.
+  Нужно отключить, если нужно пройти анкету но не отсылать результаты на бэкенд кампейна.
  */
 const SEND_RESPONSE = true
-const REMOVE_SURVEY = 'REMOVE_SURVEY'
 
 const state = {
   list: [],
   actualList: [],
   current: {},
+  currentIsLoaded: false,
   removed: []
 }
 
@@ -40,7 +44,7 @@ const getters = {
     // кол-во актуальных анкет кроме текущей
     return state.actualList.filter(
       el => el.id !== state.current.id
-    ).length > 0
+    ).length
   },
   getActualSurveyList (state) {
     return state.actualList.filter(el => {
@@ -53,9 +57,12 @@ const getters = {
 
 const actions = {
   fetchCurrentSurvey: ({ commit, dispatch }, { api, id }) => {
+    commit(MUTATIONS.SET_CURRENT_SURVEY_IS_LOADED, false)
+
     return dispatch('fetchSurveyById', { api, id })
       .then(data => {
-        commit(SET_CURRENT_SURVEY, data)
+        commit(MUTATIONS.SET_CURRENT_SURVEY, data)
+        commit(MUTATIONS.SET_CURRENT_SURVEY_IS_LOADED, true)
         return data
       })
   },
@@ -69,6 +76,9 @@ const actions = {
         id
       })
       .query(url)
+      .catch(data => {
+        throw new Error()
+      })
       .then(data => {
         return processSurvey(data)
       })
@@ -84,7 +94,7 @@ const actions = {
       .query(url)
       .then(data => {
         const processedData = data.map(el => processSurvey(el))
-        commit(SET_USER_SURVEYS, processedData)
+        commit(MUTATIONS.SET_USER_SURVEYS, processedData)
         return processedData
       })
   },
@@ -125,15 +135,15 @@ const actions = {
     return dispatch('response', payload)
   },
   remove: ({ commit }, payload) => {
-    commit(REMOVE_SURVEY, payload)
+    commit(MUTATIONS.REMOVE_SURVEY, payload)
   }
 }
 
 const mutations = {
-  [REMOVE_SURVEY]: (state, payload) => {
+  [MUTATIONS.REMOVE_SURVEY]: (state, payload) => {
     state.removed.push(payload.id)
   },
-  [SET_USER_SURVEYS]: (state, payload) => {
+  [MUTATIONS.SET_USER_SURVEYS]: (state, payload) => {
     state.list = payload
     state.actualList = payload.filter(el => {
       const isRemoved = state.removed.includes(el.id)
@@ -141,8 +151,11 @@ const mutations = {
       return !isRemoved && !isDone
     })
   },
-  [SET_CURRENT_SURVEY]: (state, payload) => {
+  [MUTATIONS.SET_CURRENT_SURVEY]: (state, payload) => {
     state.current = payload
+  },
+  [MUTATIONS.SET_CURRENT_SURVEY_IS_LOADED]: (state, payload) => {
+    state.currentIsLoaded = payload
   }
 }
 

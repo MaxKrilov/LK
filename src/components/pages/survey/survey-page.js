@@ -9,9 +9,9 @@ import {
   isPostponedTillExpired,
   isRequiredQuestion,
   isTextQuestion,
-  questionIsVisibleInSSP,
   surveyStatusIsDone
 } from '@/functions/survey.ts'
+import { Cookie } from '@/functions/storage'
 
 function isNumber (val) {
   return !isNaN(val)
@@ -32,21 +32,26 @@ export default {
       isAnswerSelected: false,
       isSurveyLoaded: false,
       showPutOffButton: false,
-      bindedCampaign: {},
+      linkedCampaign: {},
       surveyDate: '',
-      prevAnswer: {}
+      prevAnswer: {},
+      isNotFound: false
     }
   },
   async created () {
     await this.fetchData(this.id)
   },
   watch: {
-    id (val) {
-      this.fetchData(val)
+    id (value, oldValue) {
+      if (value !== oldValue) {
+        this.fetchData(value)
+      }
     },
-    survey () {
-      this.isSurveyLoaded = true
-      this.currentQuestionIndex = this.survey.surveyQuestion.findIndex(isRequiredQuestion)
+    survey (value) {
+      if (value) {
+        this.isSurveyLoaded = true
+        this.currentQuestionIndex = this.survey.surveyQuestion.findIndex(isRequiredQuestion)
+      }
     },
     $route () {
       this.isAnswerSelected = false
@@ -56,6 +61,7 @@ export default {
     ...mapState({
       survey: state => state.survey.current,
       surveyList: state => state.survey.list,
+      surveyIsLoaded: state => state.survey.currentIsLoaded,
       notificationList: state => state.campaign.list
     }),
     ...mapGetters({
@@ -64,32 +70,25 @@ export default {
       allActualSurveyCount: 'survey/getAllActualSurveyCount'
     }),
     maxPage () {
-      const count = this.survey.surveyQuestion.length
-      return count
+      return this.survey.surveyQuestion.length
     },
-    async isQuestionVisibleInSSP () {
-      const result = await questionIsVisibleInSSP(this.getCurrentQuestion())
-      return result
-    },
-    async isNextActive () {
-      const currentQuestion = await this.getCurrentQuestion()
-      const isRequired = isRequiredQuestion(currentQuestion)
+    isNextActive () {
+      const isRequired = this.currentQuestion
+        ? isRequiredQuestion(this.currentQuestion)
+        : false
       return !isRequired || this.isAnswerSelected
     },
     isSurvey () {
-      const communicationType = this.bindedCampaign.communication_type
-      const result = isSurvey(communicationType)
-      return result
+      const communicationType = this.linkedCampaign.communication_type
+      return isSurvey(communicationType)
     },
     isSurveyTicket () {
-      const communicationType = this.bindedCampaign.communication_type
-      const result = isSurveyTicket(communicationType)
-      return result
+      const communicationType = this.linkedCampaign.communication_type
+      return isSurveyTicket(communicationType)
     },
     isSurveyReception () {
-      const communicationType = this.bindedCampaign.communication_type
-      const result = isSurveyReception(communicationType)
-      return result
+      const communicationType = this.linkedCampaign.communication_type
+      return isSurveyReception(communicationType)
     },
     isLastRequiredQuestion () {
       const remainsQuestionList = this.survey.surveyQuestion.slice(this.currentQuestionIndex + 1)
@@ -97,12 +96,15 @@ export default {
       return !requiredQuestionList.length
     },
     async currentSurveyInSurveyList () {
-      const surveyList = await this.surveyList
+      const surveyList = this.surveyList
       return surveyList.filter(el => el.id === this.id)
     },
-    async isNextSurveyActive () {
+    isNextSurveyActive () {
       // есть ещё актуальные анкеты кроме этой
-      return await this.actualSurveyCount > 0
+      return this.actualSurveyCount > 0
+    },
+    currentQuestion () {
+      return this.survey?.surveyQuestion?.[this.currentQuestionIndex]
     },
     surveyQuestionIdList () {
       return this.survey.surveyQuestion.map(el => el.id)
@@ -128,14 +130,20 @@ export default {
       this.isSurveyLoaded = false
       this.done = false
       this.showPutOffButton = false
+      this.isNotFound = false
 
       this.getSurvey({ api: this.$api, id })
+        .catch(() => {
+          this.isNotFound = true
+          this.isSurveyLoaded = true
+          this.done = true
+        })
         .then(async data => {
           const id = this.id
-          const bindedCampaign = await this.fetchByTaskId({ api: this.$api, taskId: id })
+          const linkedCampaign = await this.fetchByTaskId({ api: this.$api, taskId: id })
 
-          this.bindedCampaign = bindedCampaign
-          this.surveyDate = bindedCampaign.req_date
+          this.linkedCampaign = linkedCampaign
+          this.surveyDate = linkedCampaign.req_date
 
           const postponedTimes = data.postponedTimes
             ? parseInt(data.postponedTimes)
@@ -156,15 +164,21 @@ export default {
           if (data.postponedTill) {
             const isEnded = isPostponedTillExpired(
               data.postponedTill,
-              this.bindedCampaign.communication_end_dttm
+              this.linkedCampaign.communication_end_dttm
             )
 
             if (isEnded) {
-              logInfo('survey isEnded', data.postponedTill, this.bindedCampaign.communication_end_dttm)
+              logInfo('survey isEnded', data.postponedTill, this.linkedCampaign.communication_end_dttm)
               this.onDone()
               this.onNextSurvey()
             }
           }
+
+          const storedAnswer = Cookie.get(`survey-${this.id}`)
+          if (storedAnswer) {
+            this.prevAnswer = JSON.parse(storedAnswer)
+          }
+
           return data
         })
 
@@ -172,7 +186,7 @@ export default {
     },
     getCurrentQuestion () {
       const survey = this.survey
-      return survey.surveyQuestion[this.currentQuestionIndex]
+      return survey?.surveyQuestion?.[this.currentQuestionIndex]
     },
     allAnswersIsNumber (answerList) {
       return answerList?.every(el => isNumber(el.name)) || false
@@ -185,8 +199,7 @@ export default {
     },
     sortPossibleAnswers (answers) {
       if (this.allAnswersIsNumber(answers)) {
-        const newAnswerList = this.backsortAnswers(answers)
-        return newAnswerList
+        return this.backsortAnswers(answers)
       }
 
       return answers
@@ -201,7 +214,7 @@ export default {
     },
     async onNextQuestion () {
       const currentQuestion = await this.getCurrentQuestion()
-      const lastQuestionIndex = (await this.maxPage - 1)
+      const lastQuestionIndex = (this.maxPage - 1)
       const isLastQuestion = this.currentQuestionIndex >= lastQuestionIndex
 
       if (this.currentAnswer || isRequiredQuestion(currentQuestion)) {
@@ -228,7 +241,7 @@ export default {
           }
         }
 
-        this.sendQuestionResponse(question)
+        await this.sendQuestionResponse(question)
         this.prevAnswer = { ...this.currentAnswer }
       } else {
         this.prevAnswer = {}
@@ -238,7 +251,7 @@ export default {
         // Удаление из кампейна
         const deletePayload = {
           api: this.$api,
-          id: this.bindedCampaign.id
+          id: this.linkedCampaign.id
         }
         this.campaignDelete(deletePayload)
           .then(data => {
@@ -277,10 +290,12 @@ export default {
         )
 
         const nextSurvey = fixDuplicatedIds[0]
-        this.$router.push({
-          name: 'survey',
-          params: { id: nextSurvey.id }
-        }).catch(err => { logError(err) })
+        if (nextSurvey) {
+          this.$router.push({
+            name: 'survey',
+            params: { id: nextSurvey.id }
+          }).catch(err => { logError(err) })
+        }
       }
     },
     async sendQuestionResponse (question) {
@@ -291,6 +306,8 @@ export default {
         surveyQuestion: [question]
       }
 
+      Cookie.set(`survey-${this.id}`, JSON.stringify(question), {})
+
       return this.surveyResponseSended(payload)
         .then(data => {
           if (data.businessErrorCode !== undefined) {
@@ -298,11 +315,11 @@ export default {
           } else {
             const payload = {
               api: this.$api,
-              task_rk: this.bindedCampaign.communication_task_rk,
-              task_id: this.bindedCampaign.task_id,
-              RoleAccount: this.bindedCampaign.RoleSSOAccount,
-              Channel: this.bindedCampaign.Channel,
-              type: this.bindedCampaign.communication_type,
+              task_rk: this.linkedCampaign.communication_task_rk,
+              task_id: this.linkedCampaign.task_id,
+              RoleAccount: this.linkedCampaign.RoleSSOAccount,
+              Channel: this.linkedCampaign.Channel,
+              type: this.linkedCampaign.communication_type,
               question_ord: currentQuestion.id
             }
 
@@ -323,10 +340,10 @@ export default {
       const campaignPayload = {
         api: this.$api,
         id: this.survey.id,
-        task_rk: this.bindedCampaign.communication_task_rk,
-        Channel: this.bindedCampaign.Channel,
-        RoleAccount: this.bindedCampaign.RoleSSOAccount,
-        type: this.bindedCampaign.communication_type
+        task_rk: this.linkedCampaign.communication_task_rk,
+        Channel: this.linkedCampaign.Channel,
+        RoleAccount: this.linkedCampaign.RoleSSOAccount,
+        type: this.linkedCampaign.communication_type
       }
 
       this.campaignResponsePutOff(campaignPayload)
@@ -359,7 +376,7 @@ export default {
         communication_task_rk,
         // eslint-disable-next-line camelcase
         task_id
-      } = this.bindedCampaign
+      } = this.linkedCampaign
 
       const refusePayload = {
         api: this.$api,
@@ -376,7 +393,6 @@ export default {
           this.$emit('hide')
         })
 
-      // - ТВАРИ
       const surveyPayload = {
         api: this.$api,
         id: this.id
@@ -386,7 +402,7 @@ export default {
       // - Удаление
       const deletePayload = {
         api: this.$api,
-        id: this.bindedCampaign.id
+        id: this.linkedCampaign.id
       }
       this.campaignDelete(deletePayload)
         .then(data => {

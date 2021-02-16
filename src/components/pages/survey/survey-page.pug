@@ -6,7 +6,7 @@
       backlink="/lk"
     )
 
-  .main-content.main-content--h-padding
+  .main-content.main-content--h-padding(v-if="!isSurveyLoaded")
     transition(name="fade-transition")
       .loading-message(v-show="!isSurveyLoaded")
         h3 Анкета загружается
@@ -23,7 +23,7 @@
       template(v-else)
         | Оцените заявку от: {{ surveyDate }}
 
-  .main-content.main-content--h-padding.pos-relative.height-380
+  .main-content.main-content--h-padding.pos-relative.height-380(v-else-if="!isNotFound")
     transition(name="fade-transition")
       div(v-show="isSurveyLoaded && !done")
         template(v-for="(question, idx) in survey.surveyQuestion")
@@ -90,3 +90,8 @@
                 .d--flex.flex-grow-1
                 | &nbsp;
                 .d--flex.flex-grow-10.justify-content-center Следующая анкета
+              template(v-else)
+                router-link(to="/lk") На главную
+
+  .main-content.main-content--h-padding.pos-relative.height-380(v-else-if="isNotFound && isSurveyLoaded")
+    h2 Анкета не найдена
