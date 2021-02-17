@@ -55,6 +55,22 @@ $pre: ".vc-product-page";
     .page-header {
       margin-bottom: 0;
     }
+
+    & + * {
+      margin-top: $padding-x6;
+
+      @include min-breakpoint(md) {
+        margin-top: $padding-x8;
+      }
+
+      @include min-breakpoint(lg) {
+        margin-top: $padding-x10;
+      }
+
+      @include min-breakpoint(xl) {
+        margin-top: $padding-x12;
+      }
+    }
   }
 
   &__logo {
@@ -129,6 +145,13 @@ $pre: ".vc-product-page";
 
     @include min-breakpoint("md") {
       margin-top: $padding-x10;
+    }
+
+    .er-button {
+      display: inline-flex;
+      align-items: center;
+      width: initial;
+      padding: 0 $padding-x4;
     }
   }
 }

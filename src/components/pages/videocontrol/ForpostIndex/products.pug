@@ -4,6 +4,17 @@
         title="Видеонаблюдение"
         backlink="/lk/"
       )
+      template(v-if="!isPromoPage")
+        .header-info Стоимость указана с НДС
+
+    .vc-product-page__wiki(v-if="!isPromoPage")
+      .wiki
+        er-icon.wiki__icon(name="question")
+        a.wiki__link(
+          href="https://wiki.vs.domru.ru/index.php"
+          target="_blank"
+          rel="noopener"
+        ) База знаний
 
     .vc-product-page__list
       template(v-if="isDomainsLoaded && isVideocontrolPlugged")
@@ -27,14 +38,12 @@
               @error="onError"
             )
 
-        .total-block
-          .total-block__label Итого
-          .total-block__sum
-            er-price
-              | {{ totalPrice|price }}
+        ErTotalPrice {{ totalPrice|price }}
 
       template(v-else-if="!isDomainsLoaded")
         product-folder(:loading="true")
+
+        ErTotalPrice(:loading="true")
 
       template(v-else)
         VCPromo

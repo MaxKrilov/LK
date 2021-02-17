@@ -30,11 +30,11 @@
   &__edit-form {
     margin-top: $padding-x8;
 
-    @include min-breakpoint("md") {
+    @include min-breakpoint(md) {
       margin-top: $padding-x10;
     }
 
-    @include min-breakpoint("xl") {
+    @include min-breakpoint(xl) {
       margin-top: $padding-x12;
     }
 
@@ -47,20 +47,6 @@
       }
     }
 
-    .rename-field .er-icon.er-icon--edit {
-      svg {
-        width: $padding-x6;
-      }
-    }
-
-    .vc-camera-edit-form {
-      margin-top: $padding-x8;
-
-      @include min-breakpoint("md") {
-        margin-top: $padding-x10;
-      }
-    }
-
     .er-select__slot label.er-text-field--active,
     .er-select__slot label.er-textarea--active {
       transform: scale(0.85) translateY(-36px);
@@ -68,23 +54,55 @@
   }
 
   .camera-device {
-    margin-top: $padding-x8;
+    $border-color: rgba(map-get($shades, 'black'), 0.2);
+    margin-top: $padding-x6;
     display: grid;
     gap: $padding-x4;
-    grid-template-areas: "model" "sale-type" "price";
+    grid-template-areas:
+      //"name name name"
+      "cameraName cameraName cameraName"
+      "model model model"
+      "none sale-type price";
+
+    padding: $padding-x4 $padding-x2;
+    border-top: 1px solid $border-color;
+    border-bottom: 1px solid $border-color;
 
     @include min-breakpoint(md) {
-      grid-template-areas: "model model" "sale-type price";
+      padding-bottom: $padding-x4;
+      grid-template-areas:
+        //"name name"
+        "cameraName price"
+        "model model";
+    }
+
+    .col-name {
+      grid-area: name;
+      // вернуть когда Дизайнеру захочется снова отображать название камеры
+      display: none;
+    }
+
+    .col-camera-name {
+      grid-area: cameraName;
     }
 
     .col-model {
       grid-area: model;
+
+      .model-name {
+        @extend %body-font;
+      }
     }
+
     .col-sale-type {
       grid-area: sale-type;
     }
+
     .col-price {
       grid-area: price;
+      display: flex;
+      justify-content: flex-end;
+      gap: $padding-x8;
     }
   }
 
@@ -212,6 +230,10 @@
         margin-right: $padding-x10;
         max-width: 100%;
       }
+
+      .value {
+        white-space: initial;
+      }
     }
 
     .col--watch {
@@ -231,10 +253,8 @@
   }
 
   &__body {
-    margin-top: $padding-x6;
-
     @include min-breakpoint("md") {
-      margin-top: $padding-x8;
+      margin-top: $padding-x10;
     }
 
     .license-pay {
@@ -246,6 +266,7 @@
 }
 
 .included-in-price {
+  white-space: break-spaces;
   color: map-get($green, 'base');
   @extend %caption2;
 }
@@ -268,9 +289,10 @@
       gap: $padding-x10 $padding-x4;
       grid-template-columns: 1fr 1fr;
       grid-template-areas:
-        "col1 none"
-        "col2 none"
-        "col3 col4";
+        "col1"
+        "col2"
+        "col3"
+        "col4";
     }
 
     .camera__archive-record-select {
@@ -398,4 +420,9 @@
       }
     }
   }
+}
+
+
+.er-activation-modal__offer .text span {
+  border-bottom: none;
 }

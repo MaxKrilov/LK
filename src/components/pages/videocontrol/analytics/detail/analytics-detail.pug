@@ -1,12 +1,15 @@
 .vc-addon-detail-page
   .vc-addon-detail-page__header
     template(v-if="isLoaded")
-      er-page-header(
-        :title="analyticItem.name"
-        link-text="Назад в видеонаблюдение"
-        :backlink="{name: 'vc-product-list'}"
-      )
-      .head-info
+      .head-title
+        er-page-header(
+          :title="analyticItem.name"
+          link-text="Назад в видеонаблюдение"
+          :backlink="{name: 'vc-product-list'}"
+        )
+        .nds-info Стоимость указана с НДС
+
+      .head-subtitle
         .col
           er-corner-button(
             :activeDown="true"
@@ -14,7 +17,7 @@
           ) Описание услуги
         .col
           .price-title
-            | Стоимость услуги &mdash;
+            | Стоимость услуги —&nbsp;
             er-price {{ price|price }}
 
     template(v-else)

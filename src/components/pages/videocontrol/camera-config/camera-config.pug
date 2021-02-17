@@ -26,55 +26,40 @@
 
     .camera-edit-form__subhead
       .camera-device
-        .col-model
-          .caption2 Модель
-          .mt-8 {{ device.model }}
+        .col-name
+          .name-field.mt-md-32
+            .name-field__description.caption2 Название
+            .name-field__label {{ cameraName }}
 
-        .col-sale
-          .caption2 {{ CHARS.CAMERA_SALE_TYPE }}
-          .mt-8 {{ device.saleType }}
+        .col-camera-name
+          template(v-if="isAnalyticsLoaded")
+            rename-field(
+              label="Имя"
+              :value="deviceName"
+              @save="onSaveDeviceName"
+              :isLoading="isDeviceRenameMode"
+            )
+          template(v-else)
+            pu-skeleton(width="300px")
+
+        .col-model
+          .caption2 Модель устройства
+          .model-name.mt-4 {{ device.model }}
 
         .col-price
-          .caption2 Стоимость оборудования
-          .mt-8
-            er-price {{ device.price|price }}
+          .warranty-wrap
+            .caption2 Гарантия
+            .mt-4 ----
+
+          .price-wrap
+            .caption2 {{ device.saleType }}
+            .mt-4
+              er-price(period="мес") {{ device.price|price }}
 
     .camera-edit-form__body
-      .d--grid
-        .license-pay(v-if="licensePay")
-          .caption2 Лицензионный платёж
-          .mt-8
-            template(v-if="isAnalyticsLoaded")
-              er-price {{ licensePay | price }}
-            template(v-else)
-              pu-skeleton(width="120px")
-
-        .rent-pay(v-if="isAnalyticsLoaded && hasRentPay")
-          br
-          .caption2 Аренда
-          .mt-8
-            template(v-if="isAnalyticsLoaded")
-              er-price {{ rentPay | price }}
-            template(v-else)
-              pu-skeleton(width="120px")
-
       .vc-camera-edit-form
-        template(v-if="isAnalyticsLoaded")
-          rename-field(
-            label="Название оборудования"
-            :value="deviceName"
-            @save="onSaveDeviceName"
-            :isLoading="isDeviceRenameMode"
-          )
-        template(v-else)
-          pu-skeleton(width="300px")
 
         .camera-main-fields
-          .col.col-name
-            .name-field.mt-md-32
-              .name-field__description.caption2 Название
-              .name-field__label {{ cameraName }}
-
           .col.col-2
             .camera-main-fields__field
               er-select(
@@ -122,9 +107,12 @@
 
         .addon__list
           .addon
-            h4.addon__title Запись звука
+            .addon__head
+              h4.addon__title Запись звука
+
             .addon__text
               | Активируйте на камере запись звука, чтобы не только видеть, но и слышать.
+
             .addon__config
               template(v-if="isAnalyticsLoaded")
                 ert-switch(
@@ -195,7 +183,7 @@
     @closeSuccessRequest="onCloseSuccess"
   )
     template(slot="offerDescription")
-      .caption1 стоимость:&nbsp;
+      .caption1 Стоимость:&nbsp;
         er-price {{ currentServicePrice | price }}
       .mb-24
 
@@ -268,3 +256,4 @@
     .action-buttons(v-if="isActionButtonsVisible")
       er-button(color="yellow") Сохранить
       er-button(color="gray") Отмена
+

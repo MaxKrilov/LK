@@ -1,17 +1,34 @@
-.vc-promo {
-  .promo-component {
-    display: flex;
-    flex-direction: column;
+.promo-component {
+  display: flex;
+  flex-direction: column;
 
-    &__download-offer-wrapper {
-      display: none;
+  @include max-breakpoint(md) {
+    padding: 0 $padding-x4;
+  }
+
+  &__download-offer-wrapper {
+    display: none;
+  }
+
+  &__banner {
+    order: -1;
+    margin-top: 0;
+    //margin-bottom: $padding-x8;
+    padding-top: 0;
+  }
+
+  &__buttons {
+    order: -1;
+    margin-bottom: $padding-x10;
+    margin-top: $padding-x6;
+
+    @include min-breakpoint(md) {
+      margin-bottom: $padding-x12;
+      margin-top: $padding-x8;
     }
 
-    &__banner {
-      order: -1;
-      margin-top: 0;
-      margin-bottom: $padding-x8;
-      padding-top: 0;
+    @include min-breakpoint(xl) {
+      margin-bottom: $padding-x14;
     }
   }
 }

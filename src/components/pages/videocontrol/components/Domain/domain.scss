@@ -136,6 +136,7 @@
 
       .link {
         cursor: pointer;
+        white-space: nowrap;
         @extend %caption1;
         @include color-black(0.5);
         border-color: rgba(map_get($shades, "black"), 0.5);

@@ -111,6 +111,19 @@
   @include color-black(.3);
 }
 
+%page-header-margin {
+  margin-bottom: $padding-x6;
+
+  @include min-breakpoint('md') {
+    margin-bottom: $padding-x8;
+  }
+
+  @include min-breakpoint('xl') {
+    margin-bottom: $padding-x12;
+    display: block;
+  }
+}
+
 %button-font {
   font: 13px/16px $fedra-demi;
   letter-spacing: 0.35px;

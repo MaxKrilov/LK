@@ -85,18 +85,34 @@ $pre: ".product-item";
   }
 
   &__body {
+    $width-md: 186px;
+    $width-lg: 210px;
+    $width-xl: 230px;
+
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
     align-items: center;
+    gap: $padding-x4;
 
     @include min-breakpoint("md") {
-      width: 180px;
-      min-width: 180px;
+      width: $width-md;
+      min-width: $width-md;
+      gap: $padding-x6;
     }
 
+    @include min-breakpoint("lg") {
+      width: $width-lg;
+      min-width: $width-lg;
+      gap: $padding-x8;
+    }
+
+    @include min-breakpoint("xl") {
+      width: $width-xl;
+      min-width: $width-xl;
+      gap: $padding-x12;
+    }
     .er-input {
-      margin-left: $padding-x4;
       flex-grow: 0;
 
       &__slot {
@@ -127,7 +143,6 @@ $pre: ".product-item";
   }
 
   .ert-input.ert-input--switch {
-    margin-left: $padding-x4;
     flex-grow: 0;
   }
 }
