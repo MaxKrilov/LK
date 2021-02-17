@@ -5,3 +5,8 @@ er-promo(
   :link-to-connect="link"
   plug-text="Подключить видеонаблюдение"
 )
+  template(v-slot:extraButtons)
+    er-button(
+      @click="onClickDemo"
+      flat
+    ) Демо

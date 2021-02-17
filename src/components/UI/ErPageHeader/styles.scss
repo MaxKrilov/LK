@@ -1,15 +1,10 @@
 .page-header {
+  @extend %page-header-margin;
   display: flex;
   flex-direction: row;
   align-items: center;
-  margin-bottom: $padding-x6;
-
-  @include min-breakpoint('md') {
-    margin-bottom: $padding-x8;
-  }
 
   @include min-breakpoint('xl') {
-    margin-bottom: $padding-x12;
     display: block;
   }
 

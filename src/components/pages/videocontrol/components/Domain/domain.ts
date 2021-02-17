@@ -1,4 +1,4 @@
-import { Component } from 'vue-property-decorator'
+import { Component, Mixins } from 'vue-property-decorator'
 
 import AddressFolder from '../AddressFolder/index.vue'
 import Camera from '../Camera/index.vue'
@@ -20,6 +20,8 @@ import { VueTransitionFSM } from '@/mixins/FSMMixin'
 import { ILocationOfferInfo } from '@/tbapi'
 import ErActivationModal from '@/components/blocks/ErActivationModal/index.vue'
 import { STATUS_DISCONNECTED } from '@/constants/status'
+import { ErtFetchAvailableFundsMixin } from '@/mixins2/ErtFetchAvailableFundsMixin'
+import ErAvailableFundsModal from '@/components/blocks/ErAvailableFundsModal/index.vue'
 
 interface IAddressListItem {
   bpi: string
@@ -38,7 +40,8 @@ const components = {
   Camera,
   ErPlugProduct,
   OfferDialog,
-  ErActivationModal
+  ErActivationModal,
+  ErAvailableFundsModal
 }
 
 const computed = { }
@@ -60,10 +63,10 @@ const USER_COST = '60'
   components,
   computed
 })
-export default class VCDomain extends VueTransitionFSM {
+export default class VCDomain extends Mixins(VueTransitionFSM, ErtFetchAvailableFundsMixin) {
   /* config */
   // TODO: Отключить когда починят механизм подключения/отключения доп.пользователей в TBAPI
-  isDisableChangeUserCount: boolean = true
+  isDisableChangeUserCount: boolean = false
 
   stateList = [
     'ready', // готов к приключениям
@@ -279,25 +282,31 @@ export default class VCDomain extends VueTransitionFSM {
             this.isShowDisableUserCountModal = true
           })
       } else if (this.$props.userCount === MIN_USER_COUNT && userDiff) { // Заказ пользователей
-        this.onAddUser()
-      } else { // Изменение количества
-        const payload = {
-          locationId: this.videocontrolList[0].locationId,
-          bpi: this.userCountProductOfferId,
-          chars: {
-            [CHARS.USER_COUNT]: this.domainUserCount,
-            ...INVOICE_USERS
-          }
-        }
-        this.$store.dispatch('salesOrder/createModifyOrder', payload)
-          .catch(() => {
-            this.showError(MESSAGES.ORDER_ERROR)
-            this.isUserOrderMode = false
-            throw new Error('при заказе произошла ошибка')
-          })
+        this.checkFunds(parseInt(this.computedUserPrice))
           .then(() => {
-            // показываем принятие оферты
-            this.setState('offer')
+            this.onAddUser()
+          })
+      } else { // Изменение количества
+        this.checkFunds(parseInt(this.computedUserPrice))
+          .then(() => {
+            const payload = {
+              locationId: this.videocontrolList[0].locationId,
+              bpi: this.userCountProductOfferId,
+              chars: {
+                [CHARS.USER_COUNT]: this.domainUserCount,
+                ...INVOICE_USERS
+              }
+            }
+            this.$store.dispatch('salesOrder/createModifyOrder', payload)
+              .catch(() => {
+                this.showError(MESSAGES.ORDER_ERROR)
+                this.isUserOrderMode = false
+                throw new Error('при заказе произошла ошибка')
+              })
+              .then(() => {
+                // показываем принятие оферты
+                this.setState('offer')
+              })
           })
       }
     }
@@ -393,5 +402,10 @@ export default class VCDomain extends VueTransitionFSM {
       name: 'support',
       query: { form: 'suspension_of_a_contract_or_service' }
     })
+  }
+
+  onCloseAvailableFundsModal () {
+    this.setState('ready')
+    this.isUserOrderMode = false
   }
 }

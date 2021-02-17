@@ -20,10 +20,23 @@ $watch-icon-fix-pos: -10px;
   }
 
   #{$card}__point-icon {
+    $vc-camera-icon-width--xl: 80px;
+
     margin-left: $watch-icon-fix-pos;
+
+    @include min-breakpoint(xl) {
+      margin-right: $padding-x2;
+    }
 
     .er-icon--watch {
       transform: scaleX(-1);
+
+      @include min-breakpoint(xl) {
+        svg {
+          width: $vc-camera-icon-width--xl;
+          height: $vc-camera-icon-width--xl;
+        }
+      }
     }
   }
 

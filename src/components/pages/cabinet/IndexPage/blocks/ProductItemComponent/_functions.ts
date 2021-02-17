@@ -15,7 +15,7 @@ export function getIconNameByCode (code: string): string {
   if (~code.indexOf('тв')) {
     return 'tv'
   }
-  if (~code.indexOf('видео') || ~code.indexOf('форпост')) {
+  if (~code.indexOf('видео') || ~code.indexOf('форпост') || ~code.indexOf('ivideon')) {
     return 'watch_right'
   }
 

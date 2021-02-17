@@ -105,3 +105,10 @@
   )
     template(slot="description")
       | Заказ создан успешно. Выполнение заказа может занять некоторое время. Актуальный статус можно узнать в разделе Заказы.
+
+  er-available-funds-modal(
+    v-model="isFundsModalVisible"
+    :available="availableFunds"
+    :cost="computedUserPrice"
+    @close="onCloseAvailableFundsModal"
+  )

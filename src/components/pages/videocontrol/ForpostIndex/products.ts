@@ -2,6 +2,7 @@ import { Component } from 'vue-property-decorator'
 import ProductFolder from '../components/ProductFolder/index.vue'
 import VCDomain from '../components/Domain/index.vue'
 import VCPromo from '../promo/index.vue'
+import ErTotalPrice from '@/components/blocks/ErTotalPrice/index.vue'
 
 import { IDomainRegistry, IDomain, IDomainService } from '@/interfaces/videocontrol'
 import { VC_TYPES, CHARS, VC_DOMAIN_STATUSES } from '@/constants/videocontrol'
@@ -15,7 +16,8 @@ import { SERVICE_URLS } from '@/constants/url'
 const components = {
   'vc-domain': VCDomain,
   ProductFolder,
-  VCPromo
+  VCPromo,
+  ErTotalPrice
 }
 
 const MIN_USER_COUNT = 0
@@ -54,6 +56,10 @@ export default class VideocontrolProductPage extends ErtPageWithDialogsMixin {
 
   get isVideocontrolPlugged () {
     return Object.keys(this.domains).length > 0
+  }
+
+  get isPromoPage () {
+    return this.isDomainsLoaded && !this.isVideocontrolPlugged
   }
 
   get domainsCost () {

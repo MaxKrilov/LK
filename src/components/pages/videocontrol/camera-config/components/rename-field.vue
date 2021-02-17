@@ -35,10 +35,15 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .rename-field {
   $buttonWidth: 170px;
-  margin-bottom: $padding-x4;
+
+  .er-icon.er-icon--edit {
+    svg {
+      width: $padding-x4;
+    }
+  }
 
   &__label {
     @extend %caption2;
@@ -46,12 +51,21 @@ export default {
   }
 
   &__input {
-    max-width: 50%;
+    .er-icon.er-icon--edit {
+      svg {
+        width: $padding-x4;
+        height: $padding-x4;
+      }
+    }
   }
 
   &__body {
     display: flex;
     flex-direction: row;
+
+    .er-input__slot {
+      margin-bottom: initial;
+    }
 
     .er-button {
       display: inline-block;
@@ -59,7 +73,7 @@ export default {
 
       padding: 0 $padding-x4;
       margin-left: $padding-x4;
-      @include min-breakpoint(lg) {
+      @include min-breakpoint(md) {
         height: 40px;
       }
     }
