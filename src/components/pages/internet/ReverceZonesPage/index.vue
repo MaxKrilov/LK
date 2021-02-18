@@ -24,12 +24,14 @@
         template(v-else)
           reverce-zone-item-component(
             v-for="(item, index) in listReverceZone"
-            :key="index"
+            :key="item"
             :ip="currentIP"
             :reverce-zone="item"
+            :is-show-remove-button="listReverceZone.length > 1"
+            @change="(newVal) => { listReverceZone[index] = newVal }"
             @delete="() => { deleteReverceZone(item) }"
           )
-    .reverce-zones-page__add.main-content.main-content--h-padding
+    .reverce-zones-page__add.main-content.main-content--h-padding(v-if="listReverceZone.length === 0")
       er-slide-up-down(:active="isOpenAdding")
         er-form(ref="form")
           er-row.mb-md-40
@@ -59,6 +61,17 @@
         .reverce-zones-page__add-button
           er-button(color="blue" @click="() => { isOpenAdding = true }")
             | Добавить обратную зону
+    ErActivationModal(
+      type="error"
+      v-model="isErrorOfAddingReverceZone"
+      title="На данном IP уже добавлена обратная зона"
+      :isShowCancelButton="false"
+      actionButtonText="Закрыть"
+      :persistent="true"
+      @confirm="() => { isErrorOfAddingReverceZone = false }"
+    )
+      template(slot="description")
+        | Вы можете добавить только одну обратную зону на IP
 </template>
 
 <script lang="ts" src="./script.ts"></script>

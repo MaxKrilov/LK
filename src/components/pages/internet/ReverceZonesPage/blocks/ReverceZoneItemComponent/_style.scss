@@ -48,12 +48,23 @@
     @extend %body-font;
     @include color-black(0.8);
   }
-  .delete {
+
+  .edit,
+  .save,
+  .cancel,
+  .remove {
     @include color-black(0.2);
     padding-left: 16px;
     text-align: right;
     transition: $primary-transition;
     width: 100%;
+
+    button {
+      display: flex;
+      align-items: center;
+      outline: none;
+    }
+
     @include min-breakpoint('md') {
       padding-left: 0;
       margin-left: auto;
@@ -75,6 +86,14 @@
       }
     }
   }
+
+  &.is-edited {
+    background-color: map_get($green, 'other-4') !important;
+    .reverce-zone .value {
+      color: map-get($green, 'base');
+    }
+  }
+
   &.deleted {
     background-color: map_get($red, 'other-2') !important;
     .reverce-zone .value {

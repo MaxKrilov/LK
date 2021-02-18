@@ -3,6 +3,7 @@ import Component from 'vue-class-component'
 import { Route, RawLocation } from 'vue-router'
 
 import ReverceZoneItemComponent from './blocks/ReverceZoneItemComponent'
+import ErActivationModal from '@/components/blocks/ErActivationModal/index.vue'
 
 import { ICustomerProduct } from '@/tbapi'
 import { getFirstElement } from '@/functions/helper'
@@ -14,7 +15,8 @@ const SLO_CHAR = 'IPv4 адрес'
 // eslint-disable-next-line no-use-before-define
 @Component<InstanceType<typeof ReverceZonePage>>({
   components: {
-    ReverceZoneItemComponent
+    ReverceZoneItemComponent,
+    ErActivationModal
   },
   props: {
     customerProduct: {
@@ -80,6 +82,8 @@ export default class ReverceZonePage extends Vue {
   // Переменные-прелоадеры
   isLoadingIP = false
   isLoadingReverceZone = false
+
+  isErrorOfAddingReverceZone = false
   // Methods
   getListReverceZone () {
     return new Promise((resolve) => {
@@ -94,10 +98,16 @@ export default class ReverceZonePage extends Vue {
     })
   }
 
-  deleteReverceZone () {}
+  deleteReverceZone (reverceZone: string) {
+    this.listReverceZone = this.listReverceZone.filter(_reverceZone => _reverceZone !== reverceZone)
+  }
 
   addReverceZone () {
     if (!(this.$refs.form as any).validate()) return
+    if (this.listReverceZone.length > 0) {
+      this.isErrorOfAddingReverceZone = true
+      return
+    }
     this.$store.dispatch('internet/addReverceZone', this.model)
       .then(() => {
         if (this.currentIP === this.model.ip) {
