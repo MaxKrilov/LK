@@ -89,6 +89,7 @@ export default class ErtTokens extends Vue {
   }
 
   onProccessingAccessToken () {
+    clearInterval(this.accessTokenInterval)
     // Определяем время жизни access token и refresh токен (в секундах)
     this.lifetimeAccessToken = this.getTokenLifetime(this.accessToken) - this.getNow()
     this.lifetimeRefreshToken = this.getTokenLifetime(this.refreshToken) - this.getNow()
@@ -148,11 +149,24 @@ export default class ErtTokens extends Vue {
       })
   }
 
+  handleVisibilityChange () {
+    if (!document.hidden) {
+      this.fetchRefreshToken({ api: new API() })
+        .then(response => {
+          if (response) {
+            this.onProccessingAccessToken()
+          }
+        })
+    }
+  }
+
   beforeDestroy () {
     if (this.inactiveEventHandler != null) {
       document.removeEventListener('mousemove', this.inactiveEventHandler)
       document.removeEventListener('keydown', this.inactiveEventHandler)
       document.removeEventListener('scroll', this.inactiveEventHandler)
     }
+
+    document.removeEventListener('visibilitychange', this.handleVisibilityChange, false)
   }
 }

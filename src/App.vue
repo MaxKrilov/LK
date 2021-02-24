@@ -116,6 +116,7 @@ export default {
   },
   mounted () {
     this.onHandleInaction()
+    document.addEventListener('visibilitychange', this.handleVisibilityChange, false)
   },
   methods: {
     ...mapActions({
