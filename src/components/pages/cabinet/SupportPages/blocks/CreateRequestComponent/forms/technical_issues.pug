@@ -24,6 +24,34 @@ er-form(ref="technical_issues" key="technical_issues")
             is-show-required-label
             :rules="requiredRule"
           )
+        er-slide-up-down(:active="isShowListPhoneNumber" :style="{ width: '100%' }")
+          er-row.mb-32.px-16(align-items-center)
+            er-flex(xs8)
+              ert-select(
+                v-model="listSelectedPhoneNumberByTelephone"
+                :items="listPhoneNumberByTelephone"
+                label="Список номеров телефонов"
+                multiple
+                hideDetails
+                :disabled="isAllPhoneNumberByTelephone"
+              )
+            er-flex(xs3)
+              ert-checkbox(src\store\modules\request.js
+                v-model="isAllPhoneNumberByTelephone"
+                hideDetails
+                label="Все номера"
+              )
+        er-flex.mb-56(xs12 v-if="technicalRequestTheme.value !== 'Консультация'")
+          ErtCheckbox(
+            hideDetails
+            label="Оборудование было перезагружено"
+            v-model="isHardwareRestarted"
+          )
+          ErtCheckbox(
+            hideDetails
+            label="На адресе имеется электропитание"
+            v-model="isHasPowerSupply"
+          )
         er-flex.mb-32(xs12 sm6)
           +phoneNumber
         er-flex.mb-32(xs12 sm6)

@@ -1,29 +1,36 @@
 //- Претензия
 include ./_mixins
 er-form(ref="complaint" key="complaint")
-	er-row
-		er-flex(xs12)
-			er-row
-				er-flex.mb-32(xs12)
-					+listRequestTheme
-				er-flex.mb-32(xs12)
-					+address
-				er-flex.mb-32(xs12)
-					+phoneNumber
-				er-flex.mb-32(xs12)
-					er-select(
-						:items="getEmailList"
-						v-model="email"
-						placeholder="Адрес электронной почты"
-						is-show-required-label
-					)
-				er-flex.mb-32(xs12)
-					+name
-				er-flex.mb-32(xs12)
-					er-text-field(
-						v-model="post"
-						label="Ваша должность"
-					)
-		er-flex.mb-32(xs12)
-			+appeal("Обращение (Вы можете указать дополнительную информацию по заявке)")
-		+footer
+  er-row
+    er-flex(xs12)
+      er-row
+        er-flex.mb-32(xs12)
+          +listRequestTheme
+        er-flex.mb-32(xs12)
+          er-select(
+            :items="listClaimTheme"
+            v-model="claimTheme"
+            placeholder="Тема претензии"
+            is-show-required-label
+          )
+        er-flex.mb-32(xs12)
+          +address
+        er-flex.mb-32(xs12)
+          +phoneNumber
+        er-flex.mb-32(xs12)
+          er-select(
+            :items="getEmailList"
+            v-model="email"
+            placeholder="Адрес электронной почты"
+            is-show-required-label
+          )
+        er-flex.mb-32(xs12)
+          +name
+        er-flex.mb-32(xs12)
+          er-text-field(
+            v-model="post"
+            label="Ваша должность"
+          )
+    er-flex.mb-32(xs12)
+      +appeal("Обращение (Вы можете указать дополнительную информацию по заявке)")
+    +footer

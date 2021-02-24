@@ -1,0 +1,48 @@
+.ert-textarea-with-file {
+  > .ert-input__control > .ert-input__slot {
+    flex-direction: column;
+  }
+
+  &__file-input {
+    margin-bottom: 8px;
+  }
+
+  &__file-input input {
+    display: none;
+  }
+
+  &__file-input label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+  }
+
+  &__file-input label .ert-icon {
+    @include color-black(0.2);
+  }
+
+  &__file-input label span {
+    @extend %caption2-font;
+    @include color-black(0.5);
+    border-bottom: 1px dashed;
+  }
+
+  &__list-file {
+    margin-left: 4px;
+    margin-bottom: 16px;
+  }
+
+  &__file-item {
+    @extend %caption2-font;
+    @include color-black(0.6);
+    display: flex;
+    margin-bottom: 4px;
+  }
+
+  &__file-item span {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    border-bottom: 1px dashed;
+  }
+}
