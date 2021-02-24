@@ -28,17 +28,20 @@ mixin name
   )
 
 mixin appeal(label)
-  er-textarea-with-file(
+  ErtTextareaWithFile(
     auto-height
     is-show-required-label
+    validateOnBlur
     label= label
     v-model="comment"
-    :rules="requiredRule"
     maxFileSize="2097152"
-    @file-append="e => { file = e }"
+    :errorMessages="fileMessage"
+    @change:add="(listFile) => { file.push(...listFile); fileMessage = [] }"
+    @change:error="(error) => { fileMessage.push(error) }"
+    @change:remove="(index) => { file.splice(index, 1) }"
   )
   .caption2 Допустимый формат файлов: .doc, .docx, .pdf, .csv, .xls, .xslx, .jpeg, .jpg, .gif, .png, .tiff, .bmp&nbsp;
-    | Размер не должен превышать 2 МБ
+    | Размер не должен превышать 2 МБ. Количество файлов - не более 10 штук
 
 mixin footer
   er-flex.create-request-component__personal-data.mb-24.mt-16(xs12)

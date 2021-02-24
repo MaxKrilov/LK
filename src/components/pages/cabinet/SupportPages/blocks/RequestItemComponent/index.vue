@@ -39,11 +39,16 @@
                 .request-item-detail__detail
                   .request-item-detail__caption
                     | Список файлов
-                  .request-item-detail__value(
+                  ErTooltip(
                     v-for="(item, index) in listFile"
                     :key="index"
                   )
-                    a(href="#") {{ item.file_name }}
+                    template(v-slot:activator="{ on }")
+                      .request-item-detail__value.file-name(
+                        v-on="on"
+                      )
+                        a(href="#" @click.prevent="() => {}") {{ item.file_name }}
+                    | {{ item.file_name }}
           template(v-if="getLabelStatus.id === 'created'")
             .request-item-detail__note-closed
               er-icon(name="warning")
@@ -97,11 +102,17 @@
               template(v-if="listFile.length !== 0")
                 .request-item-detail__caption
                   | Список файлов
-                .request-item-detail__value(
+                ErTooltip(
                   v-for="(item, index) in listFile"
                   :key="index"
+                  right
                 )
-                  a(href="#") {{ item.file_name }}
+                  template(v-slot:activator="{ on }")
+                    .request-item-detail__value.file-name(
+                      v-on="on"
+                    )
+                      a(href="#") {{ item.file_name }}
+                  | {{ item.file_name }}
             .request-item-detail__history
               .request-item-detail__history-row(v-for="historyItem in getHistoryArray", :key="historyItem.id")
                 .request-item-detail__history-text

@@ -69,103 +69,120 @@ const actions = {
       // todo Логирование
     }
   },
-  [CREATE_REQUEST]: async ({ rootGetters, commit, dispatch }, {
-    api,
-    requestName,
-    location,
-    description,
-    customerContact,
-    type,
-    phoneNumber,
-    emailAddress,
-    complainantContactName,
-    complainantPhone,
-    complainantEmail,
-    problemTheme,
-    service,
-    file,
-    complaintTheme
-  }) => {
-    const data = {}
-    const { toms: clientId } = rootGetters['auth/user']
-    data.clientId = clientId
-    data.customerAccount = clientId
-    data.requestName = requestName === 'complaint' && ['9154749993013188892', '9154749993013188891'].includes(complaintTheme)
-      ? 'request'
-      : requestName
-    data.location = location
-    data.channelOfNotification = CHANNEL_OF_NOTIFICATION_VIBER
-    data.description = description
-    data.customerContact = customerContact
-    data.category = requestName.match(/request/i)
-      ? REQUEST_REASON
-      : requestName.match(/problem/i)
-        ? PROBLEM_REASON
-        : ['9154749993013188892', '9154749993013188891'].includes(complaintTheme)
-          ? REQUEST_REASON
-          : COMPLAINT_REASON
-    data.type = requestName.match(/problem/i)
-      ? problemTheme
-      : requestName.match(/complaint/i)
-        ? complaintTheme
-        : type
-    data.phoneNumber = phoneNumber
-    if (emailAddress) {
-      data.emailAddress = emailAddress
+  [CREATE_REQUEST] (
+    { rootGetters, commit, dispatch },
+    {
+      api,
+      requestName,
+      location,
+      description,
+      customerContact,
+      type,
+      phoneNumber,
+      emailAddress,
+      complainantContactName,
+      complainantPhone,
+      complainantEmail,
+      problemTheme,
+      service,
+      file,
+      complaintTheme
     }
-    if (complainantContactName) {
-      data.complainantContactName = complainantContactName
-    }
-    if (complainantPhone) {
-      data.complainantPhone = complainantPhone
-    }
-    if (complainantEmail) {
-      data.complainantEmail = complainantEmail
-    }
-    if (requestName.match(/problem/i)) {
-      data.element = PROBLEM_REASON_THIRD
-      data.affectedProduct = [service]
-    }
-    try {
-      // Создаём заявку
-      const result = await api
+  ) {
+    return new Promise((resolve, reject) => {
+      const data = {}
+      const { toms: clientId } = rootGetters['auth/user']
+      data.clientId = clientId
+      data.customerAccount = clientId
+      data.requestName = requestName === 'complaint' && ['9154749993013188892', '9154749993013188891'].includes(complaintTheme)
+        ? 'request'
+        : requestName
+      data.location = location
+      data.channelOfNotification = CHANNEL_OF_NOTIFICATION_VIBER
+      data.description = description
+      data.customerContact = customerContact
+      data.category = requestName.match(/request/i)
+        ? REQUEST_REASON
+        : requestName.match(/problem/i)
+          ? PROBLEM_REASON
+          : ['9154749993013188892', '9154749993013188891'].includes(complaintTheme)
+            ? REQUEST_REASON
+            : COMPLAINT_REASON
+      data.type = requestName.match(/problem/i)
+        ? problemTheme
+        : requestName.match(/complaint/i)
+          ? complaintTheme
+          : type
+      data.phoneNumber = phoneNumber
+      if (emailAddress) {
+        data.emailAddress = emailAddress
+      }
+      if (complainantContactName) {
+        data.complainantContactName = complainantContactName
+      }
+      if (complainantPhone) {
+        data.complainantPhone = complainantPhone
+      }
+      if (complainantEmail) {
+        data.complainantEmail = complainantEmail
+      }
+      if (requestName.match(/problem/i)) {
+        data.element = PROBLEM_REASON_THIRD
+        data.affectedProduct = [service]
+      }
+
+      api
         .setData(data)
         .setType(TYPE_ARRAY)
         .query('/problem/management/create')
-      if (result && result.hasOwnProperty('ticket_id')) {
-        if (file) {
-          // Прикрепляем файл к заявке
-          const filePath = `${moment().format('MMYYYY')}/${result.ticket_id}`
-          const resultUpload = await dispatch(`fileinfo/uploadFile`, {
-            api,
-            bucket: 'customer-docs',
-            file,
-            filePath
-          }, { root: true })
-          if (!resultUpload) {
-            return false
-          }
-          const resultAttach = await dispatch(ATTACH_FILE, {
-            api,
-            id: result.ticket_id,
-            fileName: file.name,
-            bucket: 'customer-docs',
-            filePath
-          })
-          if (resultAttach) {
-            return result.ticket_name
+        .then(response => {
+          if (response && response.hasOwnProperty('ticket_id')) {
+            if (file && file.length) {
+              Promise.all(file.map((_file, index) => (new Promise((resolve, reject) => {
+                const filePath = `${moment().format('MMYYYY')}/${response.ticket_id}_${index}`
+                dispatch('fileinfo/uploadFile', {
+                  api,
+                  bucket: 'customer-docs',
+                  file: _file,
+                  filePath
+                }, { root: true })
+                  .then(resultUpload => {
+                    if (!resultUpload) {
+                      reject(false)
+                    } else {
+                      dispatch(ATTACH_FILE, {
+                        api,
+                        id: response.ticket_id,
+                        fileName: _file.name,
+                        bucket: 'customer-docs',
+                        filePath
+                      })
+                        .then(resultAttach => {
+                          if (resultAttach) {
+                            resolve()
+                          } else {
+                            reject()
+                          }
+                        })
+                    }
+                  })
+                  .catch(() => { reject(false) })
+              }))))
+                .then(() => {
+                  resolve(response.ticket_name)
+                })
+                .catch(() => { reject(false) })
+            } else {
+              resolve(response.ticket_name)
+            }
           } else {
-            return false
+            reject(false)
           }
-        } else {
-          return result.ticket_name
-        }
-      } else {
-        return false
-      }
-    } catch (err) {
-      return false
-    }
+        })
+        .catch(() => {
+          reject(false)
+        })
+    })
   },
   [GET_REQUEST_BY_ID]: async ({ rootGetters, commit, dispatch }, { api, id, requestName, name }) => {
     const { toms: clientId } = rootGetters['auth/user']

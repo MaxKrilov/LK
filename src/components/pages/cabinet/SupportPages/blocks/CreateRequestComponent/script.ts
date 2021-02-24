@@ -1,9 +1,14 @@
 import { Vue, Component, Watch } from 'vue-property-decorator'
 import { mapState, mapGetters } from 'vuex'
-import { LIST_COMPLAINT_THEME, LIST_REQUEST_THEME, LIST_TECHNICAL_REQUEST_THEME } from '@/store/actions/dictionary'
+import {
+  LIST_CLAIM_THEME,
+  LIST_COMPLAINT_THEME,
+  LIST_REQUEST_THEME,
+  LIST_TECHNICAL_REQUEST_THEME
+} from '@/store/actions/dictionary'
 import ErPhoneSelect from '@/components/blocks/ErPhoneSelect'
 import ErTimePickerRange from '@/components/blocks/ErTimePickerRange'
-import ErTextareaWithFile from '@/components/blocks/ErTextareaWithFile'
+import ErtTextareaWithFile from '@/components/blocks2/ErtTextareaWithFile/index'
 import ErDadataSelect from '@/components/blocks/ErDadataSelect'
 import ErActivationModal from '@/components/blocks/ErActivationModal/index.vue'
 import { SCREEN_WIDTH } from '@/store/actions/variables'
@@ -14,6 +19,7 @@ import { CREATE_REQUEST, GET_REQUEST, GET_SERVICES_BY_LOCATION } from '@/store/a
 import { API } from '@/functions/api'
 
 import moment from 'moment'
+import { ICustomerProduct } from '@/tbapi'
 
 interface standardSelectItem {
   id?: string | number,
@@ -28,6 +34,7 @@ interface iListAddressItem extends standardSelectItem {
 
 interface iItemService extends standardSelectItem {
   typeAuth?: string
+  offerCode?: string
 }
 
 export interface iContactListItem {
@@ -64,6 +71,7 @@ interface iErForm extends HTMLFormElement {
       listRequestTheme: (state: any) => state.dictionary[LIST_REQUEST_THEME],
       listTechnicalRequestTheme: (state: any) => state.dictionary[LIST_TECHNICAL_REQUEST_THEME],
       listComplaintRequestTheme: (state: any) => state.dictionary[LIST_COMPLAINT_THEME],
+      listClaimTheme: (state: any) => state.dictionary[LIST_CLAIM_THEME],
       screenWidth: (state: any) => state.variables[SCREEN_WIDTH],
       listBillingAccount: (state: any) => state.user.listBillingAccount.map((item: any) => item.accountNumber)
     }),
@@ -72,7 +80,7 @@ interface iErForm extends HTMLFormElement {
   components: {
     ErPhoneSelect,
     ErTimePickerRange,
-    ErTextareaWithFile,
+    ErtTextareaWithFile,
     ErDadataSelect,
     ErActivationModal
   }
@@ -119,12 +127,16 @@ export default class CreateRequestComponent extends Vue {
   technicalRequestTheme: iRequestTechnicalTheme | any = {}
   // complaint
   complaintTheme: string = '9156211043213279417'
+
+  claimTheme: { id: string, value: string } | any = {}
+
   email: string = ''
   post: string = ''
   // ===== LISTS =====
   listRequestTheme!: iRequestTheme[]
   listTechnicalRequestTheme!: iRequestTechnicalTheme[]
   listComplaintRequestTheme!: iRequestTechnicalTheme[]
+  listClaimTheme!: { id: string, value: string }
   getAddressList!: iListAddressItem[]
   getListContact!: iContactListItem[]
   listBillingAccount!: string[]
@@ -141,7 +153,15 @@ export default class CreateRequestComponent extends Vue {
 
   loadingCreating = false
 
-  file = ''
+  file: File[] = []
+  fileMessage: string[] = []
+
+  isHardwareRestarted: boolean = false
+  isHasPowerSupply: boolean = false
+
+  listPhoneNumberByTelephone: string[] = []
+  listSelectedPhoneNumberByTelephone: string[] = []
+  isAllPhoneNumberByTelephone: boolean = false
 
   get isReadonlyName () {
     return this.getPhoneList.includes(this.phoneNumber.replace(/[\D]+/g, ''))
@@ -176,6 +196,12 @@ export default class CreateRequestComponent extends Vue {
 
   get computedTicketName () {
     return this.ticketName.split(' ').slice(0, 2).join(' ')
+  }
+
+  get isShowListPhoneNumber () {
+    return this.requestTheme?.form === 'technical_issues' &&
+      (['9154786970013205620', '9154741760013186141'].includes(this.technicalRequestTheme?.id as string)) &&
+      (['VIRTNUMB', 'UNLIMCOMPL', 'TRUNK', 'UNLIMFLE1'].includes(this.service?.offerCode || ''))
   }
 
   @Watch('requestTheme')
@@ -225,7 +251,8 @@ export default class CreateRequestComponent extends Vue {
         this.listService = response.filter((item: any) => item?.offer?.isRoot).map((item: any) => ({
           id: item.id,
           value: item.chars && item.chars['Имя в счете'] ? item.chars['Имя в счете'] : item.name,
-          typeAuth: item.chars && item.chars['Тип авторизации'] ? item.chars['Тип авторизации'] : undefined
+          typeAuth: item.chars && item.chars['Тип авторизации'] ? item.chars['Тип авторизации'] : undefined,
+          offerCode: item.offer?.code || ''
         }))
         if (this.$route.params.bpi) {
           this.service = this.listService.find((item: any) => item.id === this.$route.params.bpi) || {}
@@ -239,6 +266,21 @@ export default class CreateRequestComponent extends Vue {
     if (val) {
       this.services = []
       this.address = {}
+    }
+  }
+
+  @Watch('service')
+  onServiceChange (val: iItemService) {
+    if (this.isShowListPhoneNumber) {
+      this.$store.dispatch('productnservices/getAllSlo', {
+        api: this.$api,
+        parentIds: [val.id]
+      })
+        .then((response: Record<string, ICustomerProduct>) => {
+          this.listPhoneNumberByTelephone = Object.values(response)[0].slo
+            .filter(sloItem => sloItem.chars.hasOwnProperty('Номер телефона'))
+            .map(sloItem => sloItem.chars['Номер телефона'])
+        })
     }
   }
 
@@ -295,7 +337,7 @@ export default class CreateRequestComponent extends Vue {
       problemTheme: this.technicalRequestTheme.id,
       service: this.service.id,
       file: this.file,
-      complaintTheme: this.complaintTheme,
+      complaintTheme: this.claimTheme.id,
       complainantPhone,
       complainantContactName: complainantPhone ? this.name : undefined
       // emailAddress
@@ -408,12 +450,22 @@ export default class CreateRequestComponent extends Vue {
           ${phone};
           ${name}.`
       case `technical_issues`:
-        return `
+        let text = `
           ${comment};
           ${address};
           ${service};
           ${phone};
-          ${name}.`
+          ${name};
+          Доп. информация:
+          * Оборудование было перезагружено: ${this.isHardwareRestarted ? 'Да' : 'Нет/Неизвестно'};
+          * На адресе имеется электропитание: ${this.isHasPowerSupply ? 'Да' : 'Нет/Неизвестно'};
+          `
+        if (this.isShowListPhoneNumber) {
+          text += `
+          Список номеров телефонов, где наблюдается проблема: ${this.isAllPhoneNumberByTelephone ? 'Все номера' : String(this.listSelectedPhoneNumberByTelephone)}
+          `
+        }
+        return text
       case 'complaint':
         return `
           ${comment};
