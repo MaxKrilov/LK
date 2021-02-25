@@ -1,8 +1,13 @@
 import { Vue, Component, Prop } from 'vue-property-decorator'
 import { IRequestData, IOrderData, IDeleteOrderData } from '@/constants/er-plug'
+import { mapGetters } from 'vuex'
 
 @Component({
-})
+  computed: {
+    ...mapGetters({ managerId: 'user/getManagerId' }),
+    ...mapGetters({ getActiveBillingAccountNumber: 'user/getActiveBillingAccountNumber' }),
+    ...mapGetters({ clientInfo: 'user/getClientInfo' })
+  } })
 export default class ErPlugMixin extends Vue {
   @Prop({ type: Boolean, default: false }) readonly isSendManagerRequest!: boolean
   @Prop({ type: Boolean, default: false }) readonly isSendOrder!: boolean
@@ -22,6 +27,9 @@ export default class ErPlugMixin extends Vue {
   isShowErrorOrderModal: boolean = false
   isCreatingOrder: boolean = false
   isShowSuccessOrderModal: boolean = false
+  managerId!: string | number
+  getActiveBillingAccountNumber!: string | number
+  clientInfo!: any
 
   isShowDeleteOrderModal: boolean = false
 
@@ -74,10 +82,23 @@ export default class ErPlugMixin extends Vue {
     this.$store.dispatch('salesOrder/send', data)
       .then((answer: any) => {
         this.sendingOrder = false
+
         if (answer?.submit_statuses?.[0]?.submitStatus === 'FAILED') {
           this.isShowErrorOrderModal = true
           this.errorEmit()
         } else {
+          if (answer?.id && this.deleteOrderData?.bpi) {
+            this.$store.dispatch(`orders/CREATE_TASK`, {
+              owner: this.managerId,
+              orderId: answer.id,
+              name: 'Отключение сервиса из ЛК',
+              type: 'Phone Call Outbound',
+              api: this.$api,
+              dateFrom: this.$moment().format('DD.MM.YYYY HH:mm'),
+              dateTo: `${this.$moment().format('DD.MM.YYYY')} 23:59`,
+              description: `${answer?.name} Имя Клиента: ${this?.clientInfo?.name} Л/С: ${this?.getActiveBillingAccountNumber}`
+            })
+          }
           this.isShowSuccessOrderModal = true
           this.successEmit()
         }

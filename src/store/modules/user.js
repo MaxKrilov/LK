@@ -100,6 +100,9 @@ const getters = {
       email: state.personalManager?.email
     }
   },
+  getManagerId (state) {
+    return state.clientInfo?.accountManager?.id
+  },
   getListContact (state) {
     return state.clientInfo?.contacts?.reduce
       ? state.clientInfo?.contacts?.reduce((acc, item) => {
