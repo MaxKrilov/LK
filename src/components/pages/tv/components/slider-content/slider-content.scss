@@ -14,7 +14,7 @@
       margin-bottom: 48px;
     }
     @include min-breakpoint("lg") {
-      grid-template-columns: 1fr 2fr 2fr;
+      grid-template-columns: 1fr 1fr 1fr;
     }
 
     &__service {
@@ -39,6 +39,14 @@
           opacity: 0.5;
           border-bottom: 1px solid rgba(map_get($shades, 'black'), 0.5);
         }
+      }
+    }
+    &__abon {
+      display: flex;
+      align-items: center;
+      .ert-icon {
+        margin-right: 4px;
+        opacity: 0.2;
       }
     }
 

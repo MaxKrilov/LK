@@ -13,6 +13,7 @@ export default class TvSlider extends Vue {
   moduleList: IModuleInfo[] = []
   loading: boolean = true
   date: string = ''
+  tvCode: string = ''
   isError: boolean = false
   isConnection: boolean = false
 
@@ -25,6 +26,9 @@ export default class TvSlider extends Vue {
       fulladdress: this.fulladdress
     }
   }
+  get isTVC () {
+    return this.tvCode === 'TVCROOT'
+  }
 
   mounted () {
     this.$store.dispatch('productnservices/customerTVProducts', {
@@ -32,9 +36,10 @@ export default class TvSlider extends Vue {
       parentIds: [this.bpi]
     })
       .then((response:ITVProduct) => {
+        this.tvCode = Object.values(response)?.[0]?.offer.code
         this.date = Object.values(response)?.[0]?.actualStartDate
         // @ts-ignore
-        const data = Object.values(Object.values(response)?.[0].tvLines || Object.values(response)?.[0].tvlines || {})
+        const data = Object.values(Object.values(response)?.[0].tvLines || Object.values(response)?.[0].tvines || {})
           .filter((line: ITVLine) => ARRAY_STATUS_SHOWN.includes(line?.status))
           .map((line: ITVLine) => {
             const stb: {
@@ -62,17 +67,18 @@ export default class TvSlider extends Vue {
               model: '',
               name: ''
             }]
+            console.log(stb)
 
-            const packets: {id: string, name: string, price: number, code: string}[] = Object.values(line.packets)
-              .filter((packet:ITVPacket) => packet.status === 'Active')
-              .map((packet:ITVPacket) => {
+            const packets: {id: string, name: string, price: number, code: string}[] = line?.packets ? Object.values(line.packets)
+              ?.filter((packet:ITVPacket) => packet.status === 'Active')
+              ?.map((packet:ITVPacket) => {
                 return {
                   id: packet.id,
                   name: packet.name,
                   code: packet.offer.code,
                   price: Number(packet.purchasedPrices.recurrentTotal.value)
                 }
-              })
+              }) : []
 
             return {
               id: line.id,

@@ -2,11 +2,15 @@ import { Vue, Component, Watch } from 'vue-property-decorator'
 import TvSlider from '@/components/pages/tv/components/slider-content/index.vue'
 import { mapGetters } from 'vuex'
 import { IPointItem } from '@/components/pages/tv/tv.d.ts'
+import { price } from '@/functions/filters'
 
 const components = { TvSlider }
 
 @Component({
   components,
+  filters: {
+    price
+  },
   computed: {
     ...mapGetters({ billingAccountId: 'user/getActiveBillingAccount' })
   } })
