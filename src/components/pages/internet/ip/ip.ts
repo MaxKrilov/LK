@@ -234,9 +234,11 @@ export default class Ip extends Vue {
         const subnetPrices = answer?.slo.find((el: any) => el.code === CODE_IP4SUBNET)?.prices
           .filter((el: any) => el.chars['Тип IPv4 адреса'] === 'Публичный')
           .reduce((acc: any, el: any) => {
-            acc[SUBNRT_IP_COUNT[el.chars['Префикс подсети']]] = {
-              amount: el.amount,
-              chars: el.chars
+            if (SUBNRT_IP_COUNT?.[el.chars['Префикс подсети']]) {
+              acc[SUBNRT_IP_COUNT[el.chars['Префикс подсети']]] = {
+                amount: el.amount,
+                chars: el.chars
+              }
             }
             return acc
           }, {})
