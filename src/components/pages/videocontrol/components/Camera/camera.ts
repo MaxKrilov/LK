@@ -23,6 +23,10 @@ export default class Camera extends Vue {
     return this.$props.data.name
   }
 
+  get modelName () {
+    return this.$props.data.chars[CHARS.MODEL]
+  }
+
   get deviceName () {
     return this.$props.data.chars[CHARS.DEVICE_NAME]
   }

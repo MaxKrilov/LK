@@ -4,10 +4,21 @@ $pre: ".camera";
   display: flex;
   flex-direction: row;
   align-items: center;
+  justify-content: space-between;
   height: $padding-x12;
 
   border-top: 1px solid rgba(map_get($shades, "black"), 0.2);
   padding: 0 $padding-x2;
+
+  @include min-breakpoint(lg) {
+    gap: $padding-x6;
+  }
+
+  &--search-result {
+    #{$pre}__device-name {
+      border-color: map-get($yellow, 'base');
+    }
+  }
 
   &:last-child {
     border-bottom: 1px solid rgba(map_get($shades, "black"), 0.2);
@@ -15,12 +26,20 @@ $pre: ".camera";
 
   &__device-name {
     @extend %h4;
+    white-space: nowrap;
+    text-decoration: none;
+    border-bottom: 1px solid;
+  }
+
+  &__model-name {
     flex-grow: 1;
+    @extend %caption1;
+    @include color-black(.5);
   }
 
   &__title-wrap {
-    min-width: 50%;
-    max-width: 50%;
+    min-width: 35%;
+    max-width: 35%;
     flex-grow: 1;
     display: flex;
   }

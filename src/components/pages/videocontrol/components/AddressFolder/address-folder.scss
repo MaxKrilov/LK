@@ -35,6 +35,13 @@ $pre: ".address-folder";
 
   border-right: $padding-x1 solid $head-color;
 
+  &--search-result {
+    #{$pre}__title {
+      border-bottom: 1px solid;
+      border-color: map-get($yellow, 'base');
+    }
+  }
+
   &--active {
     border-right-color: map_get($yellow, "base");
 

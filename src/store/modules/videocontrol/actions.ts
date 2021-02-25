@@ -174,5 +174,8 @@ export const actions = {
   },
   setEnfortaDataIsLoaded ({ commit }: ActionContext<IState, any>) {
     commit(TYPES.SET_ENFORTA_DATA_IS_LOADED, true)
+  },
+  setSearchCameraText ({ commit }: ActionContext<IState, any>, payload: string) {
+    commit(TYPES.SET_SEARCH_CAMERA_TEXT, payload)
   }
 }

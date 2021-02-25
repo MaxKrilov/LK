@@ -23,6 +23,7 @@ export interface IState {
   allowedOffers: IAllowedOffers
   isAllowedOffersLoaded: boolean
   isEnfortaDataLoaded: boolean
+  searchCamera: string
 }
 
 export const state: IState = {
@@ -35,5 +36,6 @@ export const state: IState = {
   domainUserCount: {},
   allowedOffers: {},
   isAllowedOffersLoaded: false,
-  isEnfortaDataLoaded: false
+  isEnfortaDataLoaded: false,
+  searchCamera: ''
 }
