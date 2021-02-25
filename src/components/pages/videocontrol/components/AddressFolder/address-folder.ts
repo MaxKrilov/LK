@@ -1,4 +1,4 @@
-import { Vue, Component } from 'vue-property-decorator'
+import { Vue, Component, Watch } from 'vue-property-decorator'
 
 const components = {}
 
@@ -13,7 +13,12 @@ const props = {
   props
 })
 export default class AddressFolder extends Vue {
-  isOpened = false
+  isOpened: boolean = false
+
+  @Watch('active')
+  onChangeActiveProp (value: boolean) {
+    this.isOpened = value
+  }
 
   mounted () {
     this.isOpened = this.$props.active

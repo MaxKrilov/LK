@@ -253,6 +253,8 @@
   }
 
   &__body {
+    margin-top: $padding-x8;
+
     @include min-breakpoint("md") {
       margin-top: $padding-x10;
     }
@@ -280,7 +282,7 @@
 
     grid-template-columns: 1fr;
     grid-template-areas:
-      "col1"
+      //"col1"
       "col2"
       "col3"
       "col4";
@@ -289,7 +291,7 @@
       gap: $padding-x10 $padding-x4;
       grid-template-columns: 1fr 1fr;
       grid-template-areas:
-        "col1"
+        //"col1"
         "col2"
         "col3"
         "col4";

@@ -33,23 +33,34 @@
 
     .product__head-title
       h2 Подключенные камеры
+      er-text-field(
+        label="Название камеры",
+        append-inner-icon="lens"
+        :value="searchCameraText"
+        @input="onInputSearchCamera"
+      )
 
   .product__body
     template(v-for="item in addressList")
       address-folder(
         :title="item.location.fulladdress || ''",
         :price="item.data.purchasedPrices.recurrentTotal.value"
+        :active="searchCameraText.length > 1 && searchInputEnd && filterCameraListBySearchText(item.data.cameras).length > 0"
+        v-class-mod="{'search-result': (searchCameraText.length > 1 && searchInputEnd && filterCameraListBySearchText(item.data.cameras).length > 0)}"
       )
         .camera-list__head
-          .col камера
           .col.col--device-name имя оборудования
+          .col Модель камеры
           .col.col--actions
+
         template(v-for="camera in item.data.cameras")
           camera(
             :key="camera.id"
             :data="camera"
-            :price="camera.purchasedPrices.recurrentTotal.value",
+            :showPrice="true"
+            :price="item.data.bf[camera.parentId].purchasedPrices.recurrentTotal.value",
             :services="item.data.bf[camera.parentId]"
+            v-class-mod="{'search-result': matchCameraSearchQuery(camera)}"
           )
 
   .product__footer
@@ -112,3 +123,4 @@
     :cost="computedUserPrice"
     @close="onCloseAvailableFundsModal"
   )
+

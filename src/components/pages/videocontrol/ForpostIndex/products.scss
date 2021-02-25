@@ -139,6 +139,10 @@ $pre: ".vc-product-page";
       margin-top: $padding-x10;
     }
 
+    .er-button {
+      justify-content: center;
+    }
+
     .button-keeper {
       @extend %action-buttons-block;
 

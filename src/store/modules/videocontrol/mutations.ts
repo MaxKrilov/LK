@@ -52,5 +52,8 @@ export const mutations = {
   },
   [TYPES.SET_ENFORTA_DATA_IS_LOADED] (state: IState) {
     state.isEnfortaDataLoaded = true
+  },
+  [TYPES.SET_SEARCH_CAMERA_TEXT] (state: IState, payload: string) {
+    state.searchCamera = payload
   }
 }

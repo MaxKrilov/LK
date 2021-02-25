@@ -13,7 +13,7 @@ import {
   VC_DOMAIN_STATUSES,
   VC_TYPES
 } from '@/constants/videocontrol'
-import { IVideocontrol, IOffer, IDomainService } from '@/interfaces/videocontrol'
+import { IVideocontrol, IOffer, IDomainService, ICamera, ICameraRegistry } from '@/interfaces/videocontrol'
 import { logInfo } from '@/functions/logging'
 import { OFFER_LINKS } from '@/constants/url'
 import { VueTransitionFSM } from '@/mixins/FSMMixin'
@@ -56,6 +56,7 @@ const props = {
 const RELOAD_DOMAIN_DATA_DELAY = 800
 const MIN_USER_COUNT = 0
 const USER_COST = '60'
+const SEARCH_RESULT_DELAY = 1200
 
 @Component({
   name: 'vc-domain',
@@ -129,6 +130,9 @@ export default class VCDomain extends Mixins(VueTransitionFSM, ErtFetchAvailable
   }
 
   domainUserCount: number = MIN_USER_COUNT
+
+  searchInputEnd: boolean = true
+  searchInputTimer: any
 
   get isModificationInProgress () {
     return this.$props.domain.status === VC_DOMAIN_STATUSES.MODIFICATION
@@ -216,8 +220,29 @@ export default class VCDomain extends Mixins(VueTransitionFSM, ErtFetchAvailable
     return this.location.address.id
   }
 
+  get searchCameraText () {
+    return this.$store.state.videocontrol.searchCamera
+  }
+
   mounted () {
     this.domainUserCount = this.$props.userCount
+  }
+
+  matchCameraSearchQuery (camera: ICamera): boolean {
+    if (this.searchCameraText.length < 1) {
+      return false
+    }
+
+    const searchQuery = new RegExp(this.searchCameraText, 'ig')
+    const cameraModel = camera?.chars?.[CHARS.MODEL]
+    const cameraDevName = camera?.chars?.[CHARS.DEVICE_NAME]
+    const searchByModel = cameraModel?.search(searchQuery) >= 0
+    const searchByName = cameraDevName?.search(searchQuery) >= 0
+    return searchByModel || searchByName
+  }
+
+  filterCameraListBySearchText (cameraRegistry: ICameraRegistry) {
+    return Object.values(cameraRegistry).filter(this.matchCameraSearchQuery)
   }
 
   /* === Event handlers === */
@@ -407,5 +432,17 @@ export default class VCDomain extends Mixins(VueTransitionFSM, ErtFetchAvailable
   onCloseAvailableFundsModal () {
     this.setState('ready')
     this.isUserOrderMode = false
+  }
+
+  onInputSearchCamera (value: string) {
+    this.searchInputEnd = false
+
+    clearTimeout(this.searchInputTimer)
+
+    this.searchInputTimer = setTimeout(() => {
+      this.searchInputEnd = true
+    }, SEARCH_RESULT_DELAY)
+
+    this.$store.dispatch('videocontrol/setSearchCameraText', value)
   }
 }
