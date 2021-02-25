@@ -14,6 +14,9 @@ export interface ITVProduct {
     id: string
     actualStartDate: string
     status: string
+    offer: {
+      code: string
+    }
     tvLines: {
       [key: string]: ITVLine
     }
