@@ -9,3 +9,14 @@ div(:class="`${pre}`")
         @click="onPrefer(item.id)"
       )
         er-icon(name="pin" width="14px" height="14px")
+
+    ErActivationModal(
+      v-model="isShowModal"
+      type="info"
+      title="Внимание!"
+      :is-show-action-button="false"
+      cancel-button-text="Закрыть"
+    )
+      template(v-slot:description)
+        | Данный номер телефона или адрес эл. почты используется, как предпочтительный для связи с Вами.&nbsp;
+        | Для того, чтобы удалить данный номер телефона/адрес эл. почты, необходимо установить новый.

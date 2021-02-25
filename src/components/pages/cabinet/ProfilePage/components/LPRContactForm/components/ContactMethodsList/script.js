@@ -1,7 +1,13 @@
+import ErActivationModal from '../../../../../../../blocks/ErActivationModal/index.vue'
+
 export default {
   name: 'contact-methods-list',
+  components: {
+    ErActivationModal
+  },
   data: () => ({
-    pre: 'contact-methods-list'
+    pre: 'contact-methods-list',
+    isShowModal: false
   }),
   props: {
     item: { type: Object },
@@ -17,7 +23,11 @@ export default {
   },
   methods: {
     onRemove () {
-      this.$emit('onRemove')
+      if (this.isPrefer) {
+        this.isShowModal = true
+      } else {
+        this.$emit('onRemove')
+      }
     },
     onPrefer (id) {
       this.$emit('onPrefer', id)
