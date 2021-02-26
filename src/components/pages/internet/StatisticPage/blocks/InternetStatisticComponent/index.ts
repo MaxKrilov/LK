@@ -50,7 +50,7 @@ export default class InternetStatisticComponent extends Vue {
     if (this.bytes >= tb) return `<span>${(this.bytes / tb).toFixed(1)}</span> ТБ`
     if (this.bytes >= gb) return `<span>${(this.bytes / gb).toFixed(1)}</span> ГБ`
     if (this.bytes >= mb) return `<span>${(this.bytes / mb).toFixed(1)}</span> МБ`
-    if (this.bytes >= kb) return `<span>${(this.bytes / mb).toFixed(1)}</span> КБ`
+    if (this.bytes >= kb) return `<span>${(this.bytes / kb).toFixed(1)}</span> КБ`
     return `<span>${this.bytes}</span> Б`
   }
   // Methods

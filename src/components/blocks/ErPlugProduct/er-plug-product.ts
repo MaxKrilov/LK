@@ -74,6 +74,11 @@ export default class ErPlugProduct extends ErPlugMixin {
   }
   get descriptionRequestText () {
     return `Заявка сформирована из ЛК B2B:
+    ${
+  this.requestData.type === 'change-auth-type' && this.requestData.hasOwnProperty('authType')
+    ? `Смена Интернет-протокола: ${this.requestData.authType} на ${this.requestData.authType === 'PPPoE' ? 'IPoE' : 'PPPoE'}`
+    : ''
+}
     Услуги: ${this.requestData.services};
     Адрес: ${this.requestData.fulladdress},
     Контактный номер телефона: ${this.phoneNumber};

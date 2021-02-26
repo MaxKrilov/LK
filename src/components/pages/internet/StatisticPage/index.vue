@@ -15,7 +15,7 @@
           .value {{ getTloName }}
       .statistic-internet-page__traffic.d--flex
         .internet.mr-32
-          .caption.mb-4 Интернет-трафик (ИТ)
+          .caption.mb-4 Интернет-трафик
           template(v-if="isLoading")
             PuSkeleton
           template(v-else)

@@ -4,6 +4,7 @@ export interface IRequestData {
   addressId: string;
   services: string;
   type?: string
+  authType?: string
 }
 
 export interface IOrderData {

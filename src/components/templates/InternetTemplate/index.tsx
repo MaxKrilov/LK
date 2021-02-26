@@ -10,14 +10,16 @@ export interface iPointItem {
   id: string | number,
   fulladdress: string,
   bpi: string | number,
-  offerName: string
+  offerName: string,
+  addressId: string
 }
 
 const transformListPoint = (listPoint: ILocationOfferInfo[]): iPointItem[] => uniq(listPoint.map(item => ({
   id: item.id,
   fulladdress: item.fulladdress,
   bpi: item.bpi,
-  offerName: item.offer.name
+  offerName: item.offer.name,
+  addressId: item.address.id
 })), 'bpi')
 
 // eslint-disable-next-line no-use-before-define
@@ -156,7 +158,9 @@ export default class InternetTemplate extends Vue {
         attrs: {
           locationId: this.activePoint?.id,
           customerProduct: this.customerProduct,
-          isLoadingCustomerProduct: this.isLoadingCustomerProduct
+          isLoadingCustomerProduct: this.isLoadingCustomerProduct,
+          addressId: this.activePoint?.addressId,
+          fullAddress: this.activePoint?.fulladdress
         },
         on: {
           update: () => {
