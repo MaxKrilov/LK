@@ -4,6 +4,8 @@
       :customer-product="customerProduct"
       :is-loading-customer-product="isLoadingCustomerProduct"
       :location-id="locationId"
+      :addressId="addressId"
+      :fullAddress="fullAddress"
       @update="updateData"
       )
     services-component(:customer-product="customerProduct" :is-loading-customer-product="isLoadingCustomerProduct")

@@ -28,7 +28,9 @@ export interface iPointItem {
       default: null
     },
     isLoadingCustomerProduct: Boolean,
-    locationId: [String, Number]
+    locationId: [String, Number],
+    addressId: [String, Number],
+    fullAddress: String
   }
 })
 export default class IndexPage extends Vue {
@@ -38,6 +40,8 @@ export default class IndexPage extends Vue {
   readonly customerProduct!: ICustomerProduct | null
   readonly isLoadingCustomerProduct!: boolean
   readonly locationId!: number | string
+  readonly addressId!: number | string
+  readonly fullAddress!: string
 
   // Methods
   updateData () {

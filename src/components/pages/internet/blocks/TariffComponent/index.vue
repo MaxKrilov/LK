@@ -66,6 +66,10 @@
           template(v-else-if="isAvailableTurbo")
             er-button(pre-icon="speedup" @click="() => { openBlur(true) }")
               | Турбо-режим
+        template(v-if="isLoadingCustomerProduct")
+          PuSkeleton
+        template(v-else)
+
       .tariff-component__price
         template(v-if="isLoadingCustomerProduct")
           PuSkeleton
@@ -92,6 +96,16 @@
           er-icon(name="settings")
           button(@click="getInfoList")
             | Настройки соединения
+      .tariff-component__auth-type
+        template(v-if="isLoadingCustomerProduct")
+          PuSkeleton
+        template(v-else)
+          .caption
+            | Тип авторизации
+          .value
+            | {{ getAuthType }}&nbsp;
+            button.ml-16(@click="() => { isShowModalForChangeAuthType = true }")
+              | Сменить на {{ getAuthTypeForChange }}
     infolist-viewer(
       v-model="isShowInfolistViewer"
       :id="parentId"
@@ -152,9 +166,13 @@
     )
       template(v-slot:description)
         .h4 Уважаемый клиент, для завершения заказа на лицевом счете не достаточно денежных средств. Пополните лицевой счет и повторите покупку.
-        .caption.text-color-black08 Стоимость подключения: <b>{{ _priceIncrease }}</b> ₽
+        .caption.text-color-black08 Стоимость подключения: <b>{{ lazyPriceIncrease }}</b> ₽
         .caption.text-color-black08 Ваши доступные средства: <b>{{ availableFundsAmt }}</b> ₽
-
+    ErPlugProduct(
+      v-model="isShowModalForChangeAuthType"
+      isSendManagerRequest,
+      :requestData="getRequestDataForChangeAuthType"
+    )
 </template>
 
 <script lang="ts" src="./script.ts"></script>

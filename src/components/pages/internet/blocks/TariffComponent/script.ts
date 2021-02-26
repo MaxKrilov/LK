@@ -10,6 +10,7 @@ import { getLastElement, uniq } from '@/functions/helper'
 import SpeedComponent from '@/components/pages/internet/blocks/SpeedComponent/index.vue'
 import ErActivationModal from '@/components/blocks/ErActivationModal/index.vue'
 import ErDisconnectProduct from '@/components/blocks/ErDisconnectProduct/index.vue'
+import ErPlugProduct from '@/components/blocks/ErPlugProduct/index.vue'
 import { OFFER_LINKS } from '@/constants/url'
 import { mapActions } from 'vuex'
 
@@ -26,6 +27,8 @@ const CHARS_TURBO_SPEED_INCREASE = 'Увеличение скорости ДО (
 
 const CHARS_TOTAL_TRAFFIC = 'Объем включенного трафика, Гб'
 
+const CHARS_AUTH_TYPE = 'Тип авторизации'
+
 const CHAR_START_DATE_TURBO = 'Дата активации'
 const CHAR_STOP_DATE_TURBO = 'Дата окончания'
 
@@ -40,7 +43,8 @@ const arc = d3.arc()
     InfolistViewer,
     SpeedComponent,
     ErActivationModal,
-    ErDisconnectProduct
+    ErDisconnectProduct,
+    ErPlugProduct
   },
   filters: {
     price
@@ -51,7 +55,9 @@ const arc = d3.arc()
       default: null
     },
     isLoadingCustomerProduct: Boolean,
-    locationId: [String, Number]
+    locationId: [String, Number],
+    addressId: [String, Number],
+    fullAddress: String
   },
   watch: {
     customerProduct (val) {
@@ -79,6 +85,8 @@ export default class TariffComponent extends Vue {
   readonly customerProduct!: ICustomerProduct | null
   readonly isLoadingCustomerProduct!: boolean
   readonly locationId!: number | string
+  readonly addressId!: number | string
+  readonly fullAddress!: string
 
   // Vuex Methods
   getAvailableFunds!: <R = Promise<IAvailableFunds>>() => R
@@ -111,7 +119,9 @@ export default class TariffComponent extends Vue {
   availableFundsAmt: number = 0
   isShowMoneyModal: boolean = false
   isErrorMoney: boolean = false
-  _priceIncrease: number = 0
+  lazyPriceIncrease: number = 0
+
+  isShowModalForChangeAuthType: boolean = false
 
   // Computed
   /**
@@ -286,6 +296,29 @@ export default class TariffComponent extends Vue {
       }
     }
     return ''
+  }
+
+  get getAuthType () {
+    return this.customerProduct == null
+      ? ''
+      : this.customerProduct.tlo.chars[CHARS_AUTH_TYPE]
+  }
+
+  get getAuthTypeForChange () {
+    return this.customerProduct == null
+      ? ''
+      : this.customerProduct.tlo.chars[CHARS_AUTH_TYPE] === 'PPPoE' ? 'IPoE' : 'PPPoE'
+  }
+
+  get getRequestDataForChangeAuthType () {
+    return {
+      descriptionModal: 'Для смены Интернет-протокола нужно сформировать заявку на вашего персонального менеджера',
+      addressId: this.addressId,
+      services: this.customerProduct ? this.customerProduct.tlo.name : '',
+      fulladdress: this.fullAddress,
+      type: 'change-auth-type',
+      authType: this.customerProduct?.tlo.chars[CHARS_AUTH_TYPE]
+    }
   }
 
   // Methods
@@ -586,7 +619,7 @@ export default class TariffComponent extends Vue {
       _price = Number(price.amount)
     }
 
-    this._priceIncrease = _price
+    this.lazyPriceIncrease = _price
 
     this.isLoadingConnect = true
 
@@ -699,8 +732,8 @@ export default class TariffComponent extends Vue {
     this.$router.push({
       name: 'add-funds',
       params: {
-        total_amount: this._priceIncrease
-          ? String(this._priceIncrease - this.availableFundsAmt)
+        total_amount: this.lazyPriceIncrease
+          ? String(this.lazyPriceIncrease - this.availableFundsAmt)
           : '0'
       }
     })

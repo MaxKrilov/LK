@@ -402,6 +402,7 @@ export default class CreateRequestComponent extends Vue {
       case 'change_of_internet_protocol':
         return `
           ${comment};
+          Смена Интернет-протокола: ${this.service.typeAuth} на ${this.service.typeAuth === 'PPPoE' ? 'IPoE' : 'PPPoE'}
           ${address};
           ${service};
           ${phone};
