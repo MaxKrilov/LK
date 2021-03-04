@@ -111,7 +111,7 @@ if (!isLocalhost()) {
 /**
  * Заглушка для накатов на бой (для отката)
  */
-logInfo('roll-forward-04-03-21')
+logInfo('roll-forward-04-03-21-1')
 
 // Vue.use(VueGtm, {
 //   id: 'G-BB74PC3KGX',
