@@ -1,0 +1,62 @@
+// Payments On
+.payments-on.main-content.main-content--top-menu-fix.main-content--h-padding.main-content--top-padding
+  er-page-header(
+    linkText="Назад в платежи и начисления"
+    title=""
+    backlink="/lk/payments"
+  )
+
+  //- Платёж прошёл
+  template(v-if="isStatus === true")
+    .d--flex.flex-column
+      .d--flex.mb-24.align-items-center
+        .payments-on__icon.payments-on__icon--green.mr-16
+          er-icon(name="circle_ok")
+
+        .payments-on__status
+          .payments-on__status__title Оплата прошла успешно
+
+      .payments-on__status__description.mb-32
+        .h4.mb-4 Чек отправлен
+        .caption2.mb-4 на электронную почту
+        .body {{ email }}
+
+      .payments-on__actions
+        .payments-on__action.success
+          er-button(@click="paypage") В платежи
+
+  //- Платёж не прошёл
+  template(v-else-if="isStatus === false")
+    .d--flex.mb-24.align-items-center
+      .payments-on__icon.payments-on__icon--red.mr-16
+        er-icon(name="cancel")
+
+      .payments-on__status
+        .payments-on__status__title Оплата не прошла
+
+    .payments-on__actions.d--flex.flex-column.flex-sm-row.align-items-sm-center
+      .payments-on__action.mb-20.mb-sm-0.mr-sm-16.error
+        er-button(@click="addfunds") Попробовать снова
+
+      .payments-on__action.payments-on__button-chat(@click="openChat()")
+        er-icon.mr-16(name="chat")
+        a.link--dashed--black Спросить в чате
+
+  //- Платёж в обработке
+  template(v-else)
+    .d--flex.mb-24.align-items-center
+      .payments-on__icon.payments-on__icon--yellow.mr-16
+        er-progress-circular(indeterminate :width="4" :size="computedProgressCircular")
+
+      .payments-on__status
+        .payments-on__status__title Платёж в обработке
+        .body Оплата будет произведена в течение нескольких минут
+
+    .payments-on__actions.d--flex.flex-column.flex-sm-row.align-items-sm-center
+      .payments-on__action.mb-20.mb-sm-0.mr-sm-16.error
+        er-button(@click="currentStatus" :disabled="time !== 0") {{ time || 'Запросить статус' }}
+
+      .payments-on__action.payments-on__button-chat(@click="openChat()")
+        er-icon.mr-16(name="chat")
+        a.link--dashed--black Спросить в чате
+

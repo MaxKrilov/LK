@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Component from 'vue-class-component'
-import { mapGetters, mapState } from 'vuex'
+import { mapState } from 'vuex'
 import { ILocationOfferInfo, IWifiPro } from '@/tbapi'
 
 import ErtWifiProItem from './components/pro-item/index.vue'
@@ -24,10 +24,8 @@ function getBPIWiFiPro (list: ILocationOfferInfo[]): ILocationOfferInfo[] {
   },
   computed: {
     ...mapState({
-      isLoadingBillingAccount: (state: any) => state.loading.menuComponentBillingAccount
-    }),
-    ...mapGetters({
-      billingAccountId: 'payments/getActiveBillingAccount'
+      isLoadingBillingAccount: (state: any) => state.loading.menuComponentBillingAccount,
+      billingAccountId: (state: any) => state.user.activeBillingAccount
     })
   },
   watch: {

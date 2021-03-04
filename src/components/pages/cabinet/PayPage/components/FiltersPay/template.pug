@@ -1,0 +1,49 @@
+// Filters Pay
+
+div(:class="`${pre}`")
+  er-report-filter(
+    :period="reportPeriod"
+    :typesPay="typePay"
+    :typePay="firstTypePay"
+    @change-period="changePeriod($event)"
+    @change-typePay="changeTypePay($event)"
+    @clear-filter-type="clearFilterType"
+    @first-period="firstPeriod"
+  )
+  .wide-content
+    div(
+      :class="`${pre}__arr`"
+      v-if="isVisibleListMonth"
+    )
+      div(
+        :class="`${pre}__icon-arr`"
+        @click="moveMonth('left')"
+        v-if="visArr"
+      )
+        div(:class="`${pre}__left_big__pos`")
+          er-icon(name="corner_down" :class="`${pre}__left_big`")
+
+      div(
+        :class="`${pre}__months-filter-container`"
+      ).main-content.main-content--h-padding
+        div(
+          :style="'margin-left: ' + margLeft"
+          :class="`${pre}__months-filter-move`"
+        )
+          span(
+            v-for="month in typePeriod"
+            :class="`${pre}__months-filter__span`"
+          )
+            er-button(
+              type="button",
+              flat=true,
+              :class="`${pre}__months-filter__text ${pre}__months-filter__${month.active}`"
+              @click="selectMonth($event)"
+            ) {{ month.month }}
+      div(
+        :class="`${pre}__icon-arr ${pre}__icon-arr__right`"
+        @click="moveMonth('right')"
+        v-if="visArr"
+      )
+        er-icon(name="corner_down" :class="`${pre}__right_big`")
+

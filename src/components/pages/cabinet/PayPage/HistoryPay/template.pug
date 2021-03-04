@@ -1,0 +1,36 @@
+// History-pay
+
+div(:class="`${pre}`")
+  div(:class="`${pre}__content`")
+    div(:class="`${pre}__container-main`")
+      div(:class="`${pre}__back-arr`")
+        er-page-header(
+        linkText="Назад"
+        title="История платежей и начислений"
+        backlink="/lk/payments"
+        )
+  .wide-content
+    FiltersPay(
+      :year="currentYear"
+      @period="setPeriodFilter($event)"
+      @typePay="setTypePayFilter($event)"
+      :class="`${pre}__filter`"
+    )
+
+  .main-content
+    div(:class="`${pre}__container-operation`")
+      ActionMonth(v-if="isVisEmpty"
+        :key="value.key"
+        :listPayments="listPaymentsFilter[index]"
+        v-for="(value, index) in listPaymentsFilter"
+        :item="value"
+      )
+      div(
+        v-if="!isVisEmpty"
+        :class="`${pre}__text-empty`"
+      ) За выбранный период операции отсутствуют
+      er-button(id="preloaderPaymentsHistory"
+        :loading="true"
+        flat
+        v-if="isLoadingList"
+      )

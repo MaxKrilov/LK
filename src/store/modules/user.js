@@ -3,6 +3,7 @@ import {
   GET_CLIENT_INFO_SUCCESS,
   GET_COMPANY_INFO_SUCCESS,
   COMPANY_DATA_FETCHED,
+  GET_LIST_BILLING_ACCOUNT,
   GET_LIST_BILLING_ACCOUNT_SUCCESS,
   GET_LIST_PRODUCT_BY_ADDRESS,
   GET_LIST_PRODUCT_BY_ADDRESS_SUCCESS,
@@ -15,12 +16,11 @@ import {
   GET_DOCUMENTS_SUCCESS,
   SET_ACTIVE_BILLING_ACCOUNT,
   GET_LIST_ADDRESS_BY_SERVICES,
+  GET_PAYMENT_INFO,
   GET_PAYMENT_INFO_SUCCESS,
   SET_ACTIVE_BILLING_ACCOUNT_NUMBER,
-  GET_CLIENT_INFO_ERROR,
-  ADD_CLIENT_CONTACTS_STORE,
-  REPLACE_CLIENT_CONTACTS_STORE,
-  DELETE_CLIENT_CONTACTS_STORE,
+  GET_PROMISED_PAYMENT_INFO, GET_CLIENT_INFO_ERROR,
+  ADD_CLIENT_CONTACTS_STORE, REPLACE_CLIENT_CONTACTS_STORE, DELETE_CLIENT_CONTACTS_STORE,
   SET_PROMISED_PAYMENT_INFO
 } from '../actions/user'
 import { ERROR_MODAL } from '../actions/variables'
@@ -32,6 +32,7 @@ import {
   isBlankDocument,
   isReportDocument
 } from '@/functions/document'
+import { Cookie } from '../../functions/storage'
 import moment from 'moment'
 import { TYPE_JSON } from '../../constants/type_request'
 
@@ -367,9 +368,76 @@ const actions = {
         commit('loading/loadingDocuments', false, { root: true })
       })
   },
+  /**
+   * Получение списка лицевых счетов
+   * @param commit
+   * @param rootGetters
+   * @param api
+   * @return {Promise<void>}
+   */
+  [GET_LIST_BILLING_ACCOUNT]: async ({ commit, rootGetters }, { api, route }) => {
+    const toms = rootGetters['auth/getTOMS']
+    try {
+      const result = await api
+        .setWithCredentials()
+        .setData({
+          id: toms,
+          clientId: toms
+        })
+        .query('/payment/account/list')
+      commit(GET_LIST_BILLING_ACCOUNT_SUCCESS, result)
+      // Проверяем - прописан ли какой-либо л/с в GET параметрах
+      const requestBillingNumber = route.query.billing_account || Cookie.get('ff_billing_account')
+      if (requestBillingNumber) {
+        Cookie.remove('ff_billing_account')
+        // // Проверяем - есть ли такой л/с в списке
+        const indexBillingAccount = Array.isArray(result) && !!result.length
+          ? result.findIndex(billingAccount => billingAccount.accountNumber === requestBillingNumber)
+          : -1
+        if (indexBillingAccount > -1) {
+          commit(SET_ACTIVE_BILLING_ACCOUNT, result[indexBillingAccount].billingAccountId)
+          commit(SET_ACTIVE_BILLING_ACCOUNT_NUMBER, result[indexBillingAccount].accountNumber)
+          return true
+        }
+      }
+      // Проверяем - установлен ли какой-то л/с в куках
+      const cookieBillingAccountId = Cookie.get('billingAccountId')
+      if (cookieBillingAccountId !== undefined) {
+        // Проверяем - есть ли такой л/с в списке
+        const indexBillingAccount = Array.isArray(result) && !!result.length
+          ? result.findIndex(billingAccount => billingAccount.billingAccountId === cookieBillingAccountId)
+          : -1
+        // Если такого л/с нет - удаляем из кук
+        if (indexBillingAccount < 0) {
+          Cookie.remove('billingAccountId')
+        } else { // В противном случае - устанавливаем активным
+          commit(SET_ACTIVE_BILLING_ACCOUNT, result[indexBillingAccount].billingAccountId)
+          commit(SET_ACTIVE_BILLING_ACCOUNT_NUMBER, result[indexBillingAccount].accountNumber)
+          return true
+        }
+      }
+      // Если в куках нет л/с - устанавливаем первый (без префиксов)
+      if (Array.isArray(result) && result.length !== 0) {
+        const findBillingAccount = result.find(billingAccount => !/[A-Za-z]/.test(billingAccount.accountNumber))
+        if (findBillingAccount) {
+          commit(SET_ACTIVE_BILLING_ACCOUNT, findBillingAccount.billingAccountId)
+          commit(SET_ACTIVE_BILLING_ACCOUNT_NUMBER, findBillingAccount.accountNumber)
+        } else { // Если таких нет - устанавливаем первый
+          commit(SET_ACTIVE_BILLING_ACCOUNT, result[0].billingAccountId)
+          commit(SET_ACTIVE_BILLING_ACCOUNT_NUMBER, result[0].accountNumber)
+        }
+      }
+      return Array.isArray(result) && result.length !== 0
+    } catch (error) {
+      commit(ERROR_MODAL, true, { root: true })
+      // todo Логирование
+    } finally {
+      commit('loading/menuComponentBillingAccount', false, { root: true })
+    }
+  },
   [GET_LIST_PRODUCT_BY_ADDRESS]: async ({ commit, rootGetters, getters }, { api }) => {
     const toms = rootGetters['auth/getTOMS']
-    const activeBillingAccount = rootGetters['payments/getActiveBillingAccount']
+    const activeBillingAccount = getters.getActiveBillingAccount
     try {
       const result = await api
         .setWithCredentials()
@@ -386,7 +454,7 @@ const actions = {
   },
   [GET_LIST_SERVICE_BY_ADDRESS]: async ({ commit, rootGetters, getters }, { api, address }) => {
     const toms = rootGetters['auth/getTOMS']
-    const activeBillingAccount = rootGetters['payments/getActiveBillingAccount']
+    const activeBillingAccount = getters.getActiveBillingAccount
     try {
       const result = await api
         .setWithCredentials()
@@ -404,7 +472,7 @@ const actions = {
   },
   [GET_LIST_PRODUCT_BY_SERVICE]: async ({ commit, rootGetters, getters }, { api }) => {
     const toms = rootGetters['auth/getTOMS']
-    const activeBillingAccount = rootGetters['payments/getActiveBillingAccount']
+    const activeBillingAccount = getters.getActiveBillingAccount
     try {
       const result = await api
         .setWithCredentials()
@@ -424,7 +492,7 @@ const actions = {
   },
   [GET_LIST_ADDRESS_BY_SERVICES]: async ({ commit, rootGetters, getters }, { api, productType }) => {
     const toms = rootGetters['auth/getTOMS']
-    const activeBillingAccount = rootGetters['payments/getActiveBillingAccount']
+    const activeBillingAccount = getters.getActiveBillingAccount
     try {
       const result = await api
         .setWithCredentials()
@@ -439,6 +507,70 @@ const actions = {
       commit(ERROR_MODAL, true, { root: true })
       // todo Логирование
     }
+  },
+  [GET_PAYMENT_INFO]: async ({ commit, rootGetters, getters }, { api }) => {
+    const activeBillingAccount = getters.getActiveBillingAccount
+    try {
+      const result = await api
+        .setWithCredentials()
+        .setData({
+          id: activeBillingAccount
+        })
+        .query('/payment/billing/get-info')
+      commit(GET_PAYMENT_INFO_SUCCESS, result)
+    } catch (error) {
+      commit(ERROR_MODAL, true, { root: true })
+      // todo Логирование
+    } finally {
+      commit('loading/menuComponentBalance', false, { root: true })
+    }
+  },
+  [GET_PROMISED_PAYMENT_INFO]: ({ commit, rootGetters, getters }, { api }) => {
+    return new Promise((resolve, reject) => {
+      const clientId = rootGetters['auth/getTOMS']
+      const activeBillingAccount = getters.getActiveBillingAccount
+
+      const infoAboutPromisePayment = new Promise((resolve, reject) => {
+        api
+          .setWithCredentials()
+          .setData({
+            id: activeBillingAccount,
+            clientId
+          })
+          .query('/billing/promise/index')
+          .then(response => resolve(response))
+          .catch(error => reject(error))
+      })
+
+      const canBeActivatedPromisePayment = new Promise((resolve, reject) => {
+        api
+          .setWithCredentials()
+          .setData({
+            id: activeBillingAccount,
+            clientId,
+            promiseCode: 1
+          })
+          .query('/payment/billing/check-promise-payment')
+          .then(response => resolve(response))
+          .catch(error => reject(error))
+      })
+
+      Promise.all([
+        infoAboutPromisePayment,
+        canBeActivatedPromisePayment
+      ])
+        .then(response => {
+          commit(SET_PROMISED_PAYMENT_INFO, response)
+          resolve()
+        })
+        .catch(error => {
+          commit(ERROR_MODAL, true, { root: true })
+          reject(error)
+        })
+        .finally(() => {
+          commit('loading/loadingPromisedPayment', false, { root: true })
+        })
+    })
   },
   [ADD_CLIENT_CONTACTS_STORE]: ({ commit }, payload) => {
     commit(ADD_CLIENT_CONTACTS_STORE, payload)

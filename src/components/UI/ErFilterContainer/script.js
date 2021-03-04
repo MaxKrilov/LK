@@ -4,11 +4,7 @@ export default {
   props: {
     // true - режим выбора фильтров
     // false - отображается список выбранных фильтров
-    active: Boolean,
-    iconClick: {
-      type: Function,
-      default: () => {}
-    }
+    active: Boolean
   },
   data () {
     return {

@@ -1,0 +1,39 @@
+// ErReportFilter
+
+er-filter-container.er-report-filter(
+  :class="`${pre}__filter`"
+  :active="isFiltersVisible"
+  @click-outside="onCloseFilters()"
+  @clear-filter-type="closePay"
+)
+  div(slot="selected-filters").er-report-filter__current
+    span.er-filter-container__active-filter(
+      :class="`${pre}__er-filter-mr`"
+      @click="onShowFilters"
+    ) {{ getFormatPeriod }}
+    div(style="display: inline-block")
+      span.er-filter-container__active-filter(
+        @click="onShowFilters"
+        v-if="isClosePay"
+      ) {{ internalTypePay.value }}
+      span(:class="`${pre}__close`" @click="closePay" v-if="isClosePay")
+        er-icon(name="close")
+
+  .er-report-filter__wrap(:class="`${pre}__filterOpen`")
+    .er-report-filter__list.main-content.main-content--h-padding()
+      er-container.full.container--no-padding
+        er-row
+          er-flex.xs12.sm7.md5.lg4
+            er-filter-group(title="Период").er-report-filter__period
+              er-date-picker(
+                v-model="internalPeriod"
+                disabled-date="future"
+              )
+          er-flex.xs12.sm5.md4.lg3()
+            er-filter-group(title="Тип операции")
+              er-select(
+                :items="typesPay"
+                v-model="internalTypePay"
+              )
+          er-flex.md1.lg3.d--flex.align-items-center
+            er-filter-close(@click="isFiltersVisible=false")

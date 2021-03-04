@@ -14,7 +14,7 @@ interface ObserveVNodeDirective extends Omit<VNodeDirective, 'modifiers'> {
   }
 }
 
-function inserted (el: HTMLElement, binding: ObserveVNodeDirective) {
+const inserted = (el: HTMLElement, binding: ObserveVNodeDirective) => {
   const modifiers = binding.modifiers || {}
   const value = binding.value
   const { handler, options } = typeof value === 'object'
@@ -25,12 +25,7 @@ function inserted (el: HTMLElement, binding: ObserveVNodeDirective) {
     observer: IntersectionObserver
   ) => {
     if (!el._observe) return
-    if (
-      handler && (
-        !modifiers.quiet ||
-        el._observe.init
-      )
-    ) {
+    if (handler && (!modifiers.quiet || el._observe.init)) {
       const isIntersecting = Boolean(entries.find(entry => entry.isIntersecting))
 
       handler(entries, observer, isIntersecting)
@@ -45,8 +40,7 @@ function inserted (el: HTMLElement, binding: ObserveVNodeDirective) {
   observer.observe(el)
 }
 
-function unbind (el: HTMLElement) {
-  /* istanbul ignore if */
+const unbind = (el: HTMLElement) => {
   if (!el._observe) return
 
   el._observe.observer.unobserve(el)

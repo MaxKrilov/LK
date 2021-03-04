@@ -18,7 +18,7 @@ const components = {
 @Component({
   components,
   computed: {
-    ...mapGetters({ billingAccountId: 'payments/getActiveBillingAccount' })
+    ...mapGetters({ billingAccountId: 'user/getActiveBillingAccount' })
   } })
 export default class TelephonyBlacklistPage extends Vue {
   $refs!: {

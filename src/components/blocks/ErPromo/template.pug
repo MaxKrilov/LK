@@ -1,8 +1,8 @@
 div(:class="`${pre}`")
-  div(:class="`${pre}__title`" v-if="!onlyFeature")
+  div(:class="`${pre}__title`")
     h2 {{ title }}
 
-  img(:class=("`${pre}__banner`") :src="getImg(banner)" alt="" v-if="!onlyFeature")
+  img(:class=("`${pre}__banner`") :src="getImg(banner)" alt="")
   div(:class="`${pre}__feature`")
     div(:class="`${pre}__feature-item`" v-for="item in featureList" :key="item.id")
       div(:class="`${pre}__feature-icon`")
@@ -27,7 +27,7 @@ div(:class="`${pre}`")
       template(v-else)
         div(:class="`${pre}__feature-description`") {{ item.description }}
 
-  div(:class="`${pre}__buttons`" v-if="!onlyFeature")
+  div(:class="`${pre}__buttons`")
     er-button(
       :class="`${pre}__buttons-item`"
       color="blue"

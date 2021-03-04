@@ -1,0 +1,806 @@
+.pay-card {
+  &__card-butt {
+    position: absolute;
+    width: 480px !important;
+    height: 92px !important;
+    background: map_get($gray, '13');
+    border-radius: 12px;
+    z-index: 4;
+    cursor: pointer;
+    &__lateral-left {
+      position: absolute;
+      width: 60px !important;
+      left: -39px;
+      cursor: pointer;
+      z-index: 1;
+      top: 0;
+      background: map_get($shades, 'transparent');
+      border-radius: 12px;
+      display: block;
+      @include media-query((
+        display: (md: none),
+        width: (sm: 97px !important),
+        background: (sm: map_get($shades, 'transparent'))
+      ));
+    }
+    &__lateral-right {
+      position: absolute;
+      width: 100px !important;
+      background: map_get($shades, 'transparent');
+      border-radius: 12px;
+      right: 17px;
+      top: 0;
+      z-index: 10;
+      cursor: pointer;
+      display: block;
+      @include media-query((
+        display: (md: none),
+        right: (sm: 11px),
+        background: (sm: map_get($shades, 'transparent'))
+      ));
+      &__next {
+        @extend .pay-card__card-butt__lateral-right;
+        right: -26px;
+        @include media-query((
+          right: (sm: 11px)
+        ));
+      }
+    }
+    &__card-height {
+      height: 160px;
+    }
+    &__left {
+      width: 320px !important;
+      background: map_get($gray, '3');
+      box-shadow: 0 1px 2px rgba(map_get($shades, 'black'), 0.1), 0 4px 6px rgba(map_get($shades, 'black'), 0.05);
+      border-radius: 12px;
+      height: 92px;
+      .er-card__content {
+        height: 92px !important;
+      }
+    }
+    & img {
+      width: 186px !important;
+    }
+    & h2 {
+      position: relative;
+      left: 222px;
+   }
+    &__top {
+      top: -116px;
+      display: none;
+      background: map_get($gray, '13');
+      transition: 1s;
+      @include media-query((
+        display: (md: block)
+      ));
+    }
+    &__bottom {
+      bottom: -116px;
+      display: none;
+      background: map_get($gray, '13');
+      opacity: 0;
+      transition: 1s;
+      @include media-query((
+        display: (md: block)
+      ));
+      &__first {
+        bottom: -157px;
+      }
+    }
+  }
+  &__auto-pay {
+    top: 0;
+    left: 324px;
+    position: absolute;
+    display: flex;
+    &__next {
+      @extend .pay-card__auto-pay;
+      top: 53px;
+      left: 346px;
+      @include media-query((
+        top: (
+          xl: 30px,
+        ),
+      ));
+    }
+    &__ertoogle {
+      position: relative;
+      max-width: 30px;
+      margin-top: -16px;
+    }
+    &__title {
+      margin-left: 10px;
+      margin-top: -4px;
+      font-family: $fedra-demi;
+      color: map_get($green, 'base');
+      @include media-query((
+        font-size: (
+          md: 13px,
+          xl: 14px,
+        ),
+        line-height: (
+          md: 16px,
+          xl: 19px
+        ),
+      ));
+    }
+  }
+  &__cvc {
+    position: relative;
+    left: 38px;
+    top: 118px;
+    background: map_get($shades, 'transparent');
+    height: 91px;
+    width: 220px;
+    display: flex;
+    @include media-query((
+      display: (
+        sm: unset
+      ),
+      width: (
+        sm: 100px
+      ),
+      left: (
+        sm: 149px,
+        md: 223px
+      ),
+      top: (
+        sm: 64px,
+        md: 103px,
+      ),
+    ));
+    &__empty {
+      left: 26px;
+    }
+    &__label {
+      font: 11px/16px $fedra-demi;
+      letter-spacing: 0.35px;
+      color: rgba(map_get($shades, 'black'), 0.8);
+      @include media-query((
+        font-size: (
+          md: 13px,
+          lg: 13px,
+          xl: 14px,
+        ),
+        line-height: (
+          md: 16px,
+          lg: 16px,
+          xl: 19px
+        ),
+        letter-spacing: (md: normal),
+      ));
+      &__empty {
+        color: map_get($shades, 'white');
+      }
+    }
+    &__value {
+      position: unset;
+      width: 82px;
+      height: 32px;
+      left: 0;
+      top: 49px;
+      margin-left: 16px;
+      margin-top: -8px;
+      border-radius: 8px;
+      background: white;
+      font: 20px/25px $fedra-demi;
+      color: rgba(map_get($shades, 'black'), 0.8);
+      letter-spacing: -1px;
+      @include media-query((
+        display: (
+          position: absolute
+        ),
+        margin-left: (
+          sm: 0
+        ),
+        margin-top: (
+          sm: 10px,
+          md: 0,
+        )
+      ));
+      & .er-text-field > .er-input__control > .er-input__slot {
+        height: 32px;
+        min-height: 32px !important;
+      }
+    }
+  }
+  &__indicators {
+    position: relative;
+    width: 4px;
+    height: 161px;
+    margin: 0 auto;
+    top: 162px;
+    z-index: 1;
+    transform: rotate(-90deg);
+    @include media-query((
+      position: (
+        md: absolute
+      ),
+      right: (
+        md: 51px,
+        xl: 16px
+      ),
+      top: (
+        sm: 115px,
+        md: 114px),
+      transform: (md: rotate(0deg))
+    ));
+    &__line {
+      position: absolute;
+      width: 4px;
+      height: 97px;
+      background: white;
+      border-radius: 2px;
+      z-index: 1;
+    }
+    &__circle {
+      position: relative;
+      width: 4px;
+      height: 4px;
+      left: 0;
+      margin-bottom: 12px;
+      background: map_get($gray, '24');
+      border-radius: 2px;
+      cursor: pointer;
+      &__down {
+        @extend .pay-card__indicators__circle;
+        top: 60px;
+      }
+      &:hover {
+        background: map_get($yellow, 'base');
+      }
+    }
+    &__disable {
+      position: absolute;
+      width: 4px;
+      height: 197px;
+      border-radius: 2px;
+      z-index: 2;
+      display: block;
+      @include media-query((
+        display: (xl: none),
+      ));
+    }
+  }
+  &__move {
+    position: absolute;
+    top: -48px;
+    left: -8px;
+    transition: 0.5s;
+    @include media-query((
+      transition: (
+        sm: 0.5s
+      ),
+      top: (
+        md: 0,
+      ),
+      padding-left: (
+        md: 26px,
+        xl: 11px
+      )
+    ));
+  }
+  &__container {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+  &__card-height {
+    height: 160px;
+    @include media-query((
+      height: (
+        md: 208px,
+        lg: 208px,
+        xl: 208px,
+      ),
+    ));
+  }
+  &__remcard {
+    display: flex;
+    position: relative;
+    top: 55px;
+    height: 15px;
+    @include media-query((
+      top: (
+        md: 74px,
+        lg: 77px,
+        xl: 69px
+      ),
+    ));
+    &__ertoogle {
+      position: relative;
+      max-width: 30px;
+      margin-top: -16px;
+      transform: scale(0.8);
+      @include media-query((
+        transform: (md: none),
+        margin-top: (
+          md: -11px,
+          lg: -16px
+        )
+      ));
+    }
+    &__hint {
+      margin-left: 8px;
+      margin-top: -16px;
+      display: none;
+      @include media-query((
+        margin-top: (md: -6px),
+        display: (xl: block)
+      ));
+    }
+    &__confirm {
+      position: relative;
+      margin-left: 7px;
+      top: -16px;
+      display: inline-block;
+      opacity: 0.2;
+      cursor: pointer;
+      @include media-query((
+        margin-left: (
+          md: 14px,
+        ),
+        top: (
+          md: -8px,
+        ),
+        display: (xl: none !important)
+      ))
+    }
+    &__text {
+      position: relative;
+      top: -10px;
+      @extend %caption1-font;
+      color: rgba(map_get($shades, 'black'), 0.8) !important;
+      margin-top: -3px;
+      margin-left: 0;
+      margin-bottom: 0;
+      @include media-query((
+        top: (md: 0),
+        margin-top: (md: 0),
+        margin-bottom: (
+          md: -2px,
+          xl: -4px,
+        ),
+        margin-left: (md: 4px),
+      ));
+    }
+    &__over {
+      background: map_get($shades, 'transparent');
+      position: absolute;
+      top: -4px;
+      height: 24px;
+      width: 27px;
+      z-index: 1;
+      cursor: pointer;
+    }
+  }
+  &__card-title {
+    display: flex;
+    position: relative;
+    top: 20px;
+    cursor: pointer;
+    @include media-query((
+      top: (md: 33px),
+    ));
+    &__delete {
+      position: absolute;
+      bottom: 19px;
+      left: 25px;
+      &__icon svg {
+        width: 24px !important;
+        @include media-query((
+          width: (md: 32px !important),
+        ));
+      }
+      &__text {
+        @extend %caption1-font;
+        color: rgba(map_get($shades, 'black'), 0.5) !important;
+        height: min-content;
+        margin-top: 2px;
+        margin-left: 4px;
+        @include media-query((
+          margin-top: (md: 6px),
+        ));
+      }
+    }
+    &__autopay {
+      position: absolute;
+      top: 25px;
+      left: 146px;
+      font: 11px/16px $fedra-demi;
+      letter-spacing: 0.35px;
+      color: rgba(map_get($green, 'base'), 0.3);
+      @include media-query((
+        top: (md: 21px),
+        left: (md: 201px),
+        font-size: (
+          md: 13px,
+          lg: 13px,
+          xl: 14px,
+        ),
+        line-height: (
+          md: 16px,
+          lg: 16px,
+          xl: 19px
+        ),
+        letter-spacing: (md: normal),
+      ));
+      &__icon svg{
+        width: 16px !important;
+        margin-right: 5px;
+      }
+      &__span {
+        font-family: $fedra-demi !important;
+        color: map_get($green, 'base') !important;
+      }
+    }
+    &__circle {
+      height: 13px;
+      width: 73px !important;
+      margin-top: 21px;
+      margin-right: 6px;
+      margin-left: 2px;
+      @include media-query((
+        margin-top: (
+          md: 38px,
+          lg: 35px,
+          xl: 38px
+        ),
+        margin-right: (
+          md: 9px
+        ),
+        margin-left: (
+          md: 9px
+        )
+      ));
+    }
+    &__next {
+      position: relative;
+      top: 14px;
+      letter-spacing: -1px;
+      @include media-query((
+        top: (md: 26px),
+      ));
+    }
+    &__label {
+      position: relative;
+      top: 12px;
+      font: 11px/16px $fedra-demi;
+      letter-spacing: 0.35px;
+      color: rgba(map_get($shades, 'black'), 0.3);
+      @include media-query((
+        top: (md: 22px),
+        font-size: (
+          md: 13px,
+          xl: 14px,
+        ),
+        line-height: (
+          md: 16px,
+          xl: 19px
+        ),
+        letter-spacing: (md: normal),
+      ));
+    }
+  }
+  &__card-row {
+    display: flex;
+    flex-wrap: nowrap !important;
+    @include media-query((
+      flex-wrap: (
+        md: wrap !important
+      ),
+      padding-left: (
+        xs: 30px,
+        md: 0
+      )
+    ));
+    &__direct {
+      flex-direction: row;
+      @include media-query((
+        flex-direction: (md: column)
+      ));
+    }
+  }
+  &__card {
+    position: relative;
+    padding: 0 !important;
+    background: url("../../../../../../../static/get-check-bg.png") no-repeat center;
+    z-index: 2;
+    @include media-query((
+      width: (
+        xs: 256px !important,
+        md: 336px !important,
+      ),
+    ));
+    &__bg {
+      position: absolute;
+      top: -160px;
+      height: 100%;
+      left: 0;
+      z-index: 1;
+      border-radius: 12px;
+      padding: 0;
+      transition: 0.5s;
+      @include media-query((
+        left: (
+          sm: 0px,
+          md: 128px
+        ),
+        top: (
+          sm: -151px,
+          md: -198px
+        ),
+        width: (
+          xs: 256px,
+          md: 336px,
+        ),
+      ));
+      &__content {
+        background: map_get($gray, '4');
+        box-shadow: 0 1px 2px rgba(map_get($shades, 'black'), 0.1), 0 4px 6px rgba(map_get($shades, 'black'), 0.05);
+        border-radius: 12px;
+        &__next {
+          background: radial-gradient(50% 50% at 50% 50%, map_get($yellow, 'base') 55.5%, map_get($yellow, 'other-4') 100%);
+          box-shadow: 0 1px 2px rgba(map_get($shades, 'black'), 0.1), 0 4px 6px rgba(map_get($shades, 'black'), 0.05);
+          border-radius: 12px;
+        }
+      }
+      &__strip {
+        position: absolute;
+        height: 28px;
+        width: 100%;
+        background: map_get($gray, '34');
+        top: 24px;
+        &__next {
+          @extend .pay-card__card__bg__strip;
+          background: map_get($yellow, 'other-12');
+          transform: matrix(1, 0, 0, -1, 0, 0);
+          &__empty {
+            background: map_get($shades, 'black');
+            opacity: 0.2;
+            transform: matrix(1, 0, 0, -1, 0, 0);
+          }
+        }
+      }
+      &__empty {
+        background: map_get($red, 'base');
+        box-shadow: 0 1px 2px rgba(map_get($shades, 'black'), 0.1), 0 4px 6px rgba(map_get($shades, 'black'), 0.05);
+        border-radius: 12px;
+      }
+    }
+    &__img-bg {
+      width: 193px !important;
+      margin-left: 39px;
+      margin-top: -1px;
+      @include media-query((
+        width: (
+          md: 256px !important,
+        ),
+        margin-left: (
+          md: 59px
+        ),
+        margin-top: (
+          md: 14px
+        )
+      ));
+    }
+    &__deleted {
+      position: relative;
+      justify-content: center;
+      display: flex;
+      background: map_get($gray, '13');
+      padding-top: 15px;
+      top: 0;
+      height: 248px;
+      width: 100%;
+      left: -27px;
+      border-radius: 12px;
+      @include media-query((
+        justify-content: (
+          md: start
+        ),
+        height: (
+          sm: 236px,
+          md: 387px
+        ),
+        left: (
+          sm: -15px,
+          md: 5px,
+          lg: -7px,
+          xl: -15px,
+        ),
+        width: (md: 500px),
+        padding-top: (
+          md: 77px,
+          xl: 57px
+        )
+      ));
+      &__size {
+        height: 160px;
+        width: 256px;
+        left: 11%;
+        position: absolute;
+        z-index: 1;
+        @include media-query((
+          height: (
+            md: 208px
+          ),
+          width: (md: 336px),
+        ));
+      }
+      &__content {
+        background: map_get($red, 'other-2');
+        border: 1px solid map_get($red, 'base');
+        box-sizing: border-box;
+        box-shadow: 0 16px 16px rgba(map_get($shades, 'black'), 0.03), 0 8px 6px rgba(map_get($shades, 'black'), 0.02);
+        border-radius: 12px;
+      }
+      &__text {
+        position: absolute;
+        width: 111px;
+        height: 21px;
+        left: 58px;
+        top: 77px;
+        font-family: $fedra-book;
+        font-size: 16px;
+        line-height: 21px;
+        letter-spacing: -0.5px;
+        color: map_get($red, 'base');
+      }
+      &__icon {
+        position: absolute;
+        left: 95px;
+        top: 34px;
+        opacity: 0.1;
+        &__size svg {
+          width: 104px !important;
+        }
+      }
+      &__bg {
+        position: relative;
+        border-radius: 12px;
+        top: 57px;
+        height: 100%;
+        z-index: 1;
+        background: map_get($gray, '4');
+        box-shadow: 0 1px 2px rgba(map_get($shades, 'black'), 0.1), 0 4px 6px rgba(map_get($shades, 'black'), 0.05);
+        @include media-query((
+          top: (
+            sm: 18px,
+            xl: 57px,
+          ),
+        ));
+        &__size {
+          position: absolute;
+          z-index: 0;
+          right: 10%;
+          left: auto;
+          height: 160px;
+          width: 256px;
+          @include media-query((
+            left: (
+              md: 151px,
+              xl: 128px
+            ),
+            right: (
+              sm: 15%,
+              md: 0
+            ),
+            height: (
+              md: 208px
+            ),
+            width: (md: 320px),
+          ));
+        }
+        &__strip {
+          position: absolute;
+          height: 28px;
+          width: 100%;
+          background: map_get($gray, '34');
+          top: 24px;
+        }
+      }
+    }
+  }
+  &__card-pos {
+    flex-basis: auto !important;
+    padding: 0 !important;
+    margin-bottom: 66px;
+    top: 48px;
+    @include media-query((
+      margin-bottom: (
+        sm: 0,
+        md: 66px
+      ),
+    ));
+  }
+  &__logo {
+    position: relative;
+    top: 20px;
+    left: 24px;
+    &__imglogo {
+      width: 48px !important;
+      @include media-query((
+        width: (md: 64px !important),
+      ))
+    }
+    img {
+      width: 71px;
+      @include media-query((
+        width: (
+          md: 64px,
+          lg: 99px,
+        ),
+        top: (md: 20px),
+      ))
+    }
+    &__card {
+      @extend .pay-card__logo;
+      top: 24px;
+      img {
+        @include media-query((
+          width: (xl: 99px)
+        ))
+      }
+    }
+    &__top {
+      top: 45px;
+    }
+    &__top-h2 {
+      top: 10px;
+      width: 100px;
+    }
+    &__bottom  {
+      left: 204px !important;
+      top: -36px;
+      width: 100px;
+      &__next {
+        width: 100px;
+        top: -20px;
+      }
+    }
+  }
+  &__height {
+    height: 0
+  }
+  &__loading {
+    position: absolute;
+    width: 336px;
+    height: 92px;
+    background: map_get($gray, '3');
+    border-radius: 12px;
+    z-index: 4;
+    cursor: pointer;
+    margin-top: 320px;
+    padding-top: 22px;
+    text-align: center;
+    display: none;
+    @include media-query((
+      display: (md: block),
+    ));
+    &__sm {
+      position: absolute;
+      right: 18px;
+      z-index: 3;
+      top: 21px;
+      display: block;
+      @include media-query((
+        display: (md: none),
+      ));
+    }
+    &__del {
+      position: relative;
+      top: -147px;
+      right: -14px;
+      width: 56px;
+      height: 56px;
+      @include media-query((
+        right: (md: -265px),
+        top: (md: -68px)
+      ));
+    }
+  }
+}
+.er-hint__message {
+  width: 80% !important;
+}

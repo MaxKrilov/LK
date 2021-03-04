@@ -19,7 +19,7 @@ const actions = {
   locationOfferInfo (context: ActionContext<IState, any>, payload: { api: API, productType: string | string[]}) {
     const { api, productType } = payload
     const { toms: clientId } = context.rootGetters['auth/user']
-    const billingAccountId = context.rootGetters['payments/getActiveBillingAccount']
+    const billingAccountId = context.rootGetters['user/getActiveBillingAccount']
     return new Promise<ILocationOfferInfo[]>((resolve, reject) => {
       api
         .setWithCredentials()

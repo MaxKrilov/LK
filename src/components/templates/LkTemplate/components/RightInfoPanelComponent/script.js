@@ -21,21 +21,16 @@ export default {
   computed: {
     ...mapGetters({
       getManagerInfo: 'user/getManagerInfo',
-      getBillingAccountsGroupByContract: 'payments/getBillingAccountsGroupByContract',
-      activeBillingAccountId: 'payments/getActiveBillingAccount',
-      activeBillingAccountNumber: 'payments/getActiveBillingAccountNumber'
+      getBillingAccountsGroupByContract: 'user/getBillingAccountsGroupByContract'
     }),
     ...mapState({
       legalName: state => state.user.clientInfo.legalName,
-      balanceInfo: state => state.payments.billingInfo
+      activeBillingAccountId: state => state.user.activeBillingAccount,
+      activeBillingAccountNumber: state => state.user.activeBillingAccountNumber,
+      balanceInfo: state => state.user.paymentInfo
     }),
     isAutopay () {
       return this.balanceInfo?.paymentMethod?.id === IS_ENABLED_AUTOPAY
-    },
-    balance () {
-      return this.balanceInfo.hasOwnProperty('balance')
-        ? 0 - Number(this.balanceInfo.balance)
-        : 0
     }
   },
   methods: {

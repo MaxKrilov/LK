@@ -1,0 +1,367 @@
+.confirm {
+  &__content {
+    width: 100%;
+    background-color: map_get($shades, 'white');
+    position: relative;
+    padding: 24px 24px 0 24px;
+    height: 480px;
+    @include media-query((
+      height: (
+        sm: 288px,
+        md: 353px,
+        xl: 416px,
+      ),
+    ));
+    &__size {
+      margin-bottom: 57px;
+      @include media-query((
+        margin-bottom: (
+        sm: 48px,
+        md: 57px
+        ),
+      ));
+    }
+    &__pos {
+      position: relative;
+      left: 0;
+      top: -47px;
+      width: 100%;
+      @include media-query((
+        width: (
+          sm: 75%,
+          md: 100%,
+        ),
+        top: (
+          sm: -106px,
+          md: -48px,
+        ),
+        left: (
+          sm: 75px,
+          md: 0,
+        ),
+      ));
+    }
+  }
+  &__icon-height svg {
+    position: relative;
+    width: 64px !important;
+    color: map_get($yellow, 'base');
+  }
+  &__container-button {
+    position: absolute;
+    bottom: 26px;
+    width: 83%;
+  }
+  &__close {
+    position: absolute;
+    right: 0;
+    & svg {
+      display: block;
+      opacity: 0.2;
+      width: 16px !important;
+      position: relative;
+      right: 24px;
+      cursor: pointer;
+      @include media-query((
+        display: (xl: block),
+      ));
+    }
+  }
+  &__integer {
+    display: none;
+    @include media-query((
+      display: (sm: inline-block)
+    ));
+  }
+  &__integer-row {
+    display: inline-block;
+    @include media-query((
+      display: (sm: none)
+    ));
+  }
+  &__decimal {
+    opacity: .3;
+    display: none;
+    @include media-query((
+      display: (sm: inline-block)
+    ));
+  }
+  &__decimal-row {
+    opacity: .3;
+    display: inline-block;
+    @include media-query((
+      display: (sm: none)
+    ));
+  }
+  &__currency {
+    margin-top: 6px;
+    margin-left: 4px;
+    opacity: .3;
+    display: none;
+    @include media-query((
+      display: (sm: inline-block)
+    ));
+  }
+  &__currency-row {
+    margin-top: 6px;
+    margin-left: 4px;
+    opacity: .3;
+    display: inline-block;
+    @include media-query((
+      display: (sm: none)
+    ));
+  }
+  &__no-text {
+    display: inline-block;
+    cursor: pointer;
+    font: 13px/120% $fedra-demi;
+    letter-spacing: 0.35px;
+    color: map_get($shades, 'black');
+    border-bottom: 1px dashed map_get($green, 'base');
+    opacity: 0.3;
+    pointer-events: none;
+    @include media-query((
+      font-size: (
+        md: 14px,
+        xxl: 20px
+      ),
+      line-height: (
+        md: 17px,
+        xxl: 26px
+      ),
+      letter-spacing: (
+        md: normal
+      ),
+    ));
+    &__visButt {
+      @extend .confirm__no-text;
+      pointer-events: auto;
+      opacity: 1;
+    }
+  }
+  &__yes-text {
+    display: inline-block;
+    cursor: pointer;
+    font: 13px/120% $fedra-demi;
+    letter-spacing: 0.35px;
+    color: map_get($green, 'base');
+    border-bottom: 1px dashed map_get($green, 'base');
+    @include media-query((
+      font-size: (
+        md: 14px,
+        xxl: 20px
+      ),
+      line-height: (
+        md: 17px,
+        xxl: 26px
+      ),
+      letter-spacing: (
+        md: normal
+      ),
+    ));
+  }
+  &__butt {
+    display: flex !important;
+    justify-content: flex-end;
+    position: relative;
+    @include media-query((
+      display: (xl: none !important),
+      left: (
+        sm: 12px
+      )
+    ));
+    &__xl {
+      display: none !important;
+      @include media-query((
+        display: (xl: flex !important),
+      ));
+    }
+  }
+  &__err {
+    position: absolute;
+    font-family: $fedra-demi !important;
+    color: rgba(map_get($red, 'base'), 1) !important;
+    width: 247px;
+    left: 25px;
+    top: 208px;
+    @include media-query((
+      width: (
+        sm: 378px,
+        md: 343px,
+        xl: 484px
+      ),
+      top: (
+        sm: 128px,
+        md: 190px
+      ),
+      left: (
+        sm: 38px,
+        md: 25px,
+        xl: 27px
+      ),
+    ));
+  }
+  &__text {
+    position: relative;
+    font: 13px/18px $fedra-book;
+    letter-spacing: 0.25px;
+    color: rgba(map_get($gray, '8'), 0.8);
+    width: 100%;
+    @include media-query((
+      width: (
+        sm: 310px,
+        md: 336px
+      ),
+      position: ( sm: relative),
+      top: (
+        sm: -51px,
+        md: -18px,
+      ),
+      left: (
+        sm: 71px,
+        md: 0,
+      ),
+      font-size: (
+        md: 14px,
+        xxl: 20px
+      ),
+      line-height: (
+        md: 19px,
+        xxl: 26px
+      ),
+      letter-spacing: (
+        md: normal
+      )
+    ));
+    &__one-row {
+      @extend .confirm__text;
+      @include media-query((
+        width: (sm: 312px),
+        left: (
+          sm: 71px,
+          md: 0
+        ),
+        top: (
+          sm: -71px,
+          md: 0
+        ),
+      ));
+    }
+    &__header {
+      @extend .confirm__text;
+      position: relative;
+      left: 0;
+      top: -12px;
+      @include media-query((
+        width: (
+          sm: 198px,
+          md: 225px
+        ),
+        top: (
+          sm: -63px,
+          md: -43px
+        ),
+        left: (
+          sm: 171px,
+          md: 77px
+        ),
+        font-size: (
+          md: 14px,
+          xxl: 20px
+        ),
+        line-height: (
+          md: 17px,
+          xxl: 26px
+        ),
+        letter-spacing: (
+          md: nornal
+        )
+      ));
+    }
+    &__title {
+      position: relative;
+      left: 0;
+      top: -12px;
+      @include media-query((
+        width: (
+          sm: 100px
+        ),
+        left: (
+          sm: 71px,
+          md: 78px
+        ),
+        top: (
+          sm: -44px,
+          md: -47px
+        ),
+      ));
+      &__one-row {
+        @extend .confirm__text__title;
+        @include media-query((
+          width: (
+            sm: 290px,
+            md: 244px
+          ),
+          left: (
+            sm: 71px,
+            md: 78px
+          ),
+          top: (
+            sm: -83px,
+            md: -33px
+          ),
+        ));
+      }
+    }
+  }
+  &__header {
+    margin-top: -33px;
+    @include media-query((
+      margin-top: (
+        sm: -70px,
+      ),
+    ));
+  }
+  &__loading {
+    width: 56px;
+    height: 56px;
+    left: 0;
+    top: 0;
+    position: relative;
+    margin-bottom: 57px;
+    @include media-query((
+      margin-bottom: (
+        sm: 48px,
+        md: 57px
+      ),
+    ));
+  }
+}
+#preloaderButton {
+  position: absolute;
+  left: -50px;
+  top: -15px;
+  display: inline-block;
+  height: 36px;
+  width: 156px;
+  color: map_get($shades, 'black');
+  background: map_get($shades, 'transparent');
+  @include media-query((
+    height: (
+      md: 64px,
+      lg: 78px,
+      xl: 32px
+    ),
+  ));
+  & .er-button__loading svg {
+    height: 36px;
+    color: map_get($shades, 'black');
+    @include media-query((
+      height: (
+        md: 64px,
+        lg: 78px,
+        xl: 32px
+      ),
+    ))
+  }
+}

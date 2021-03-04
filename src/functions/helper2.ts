@@ -229,14 +229,3 @@ export function chunk (str: string, size = 1) {
 export function createRange (length: number): number[] {
   return Array.from({ length }, (v, k) => k)
 }
-
-export function throttle<T extends (...args: any[]) => any> (fn: T, limit: number) {
-  let throttling = false
-  return (...args: Parameters<T>): void | ReturnType<T> => {
-    if (!throttling) {
-      throttling = true
-      setTimeout(() => { throttling = false }, limit)
-      return fn(...args)
-    }
-  }
-}

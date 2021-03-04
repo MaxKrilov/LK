@@ -1,0 +1,569 @@
+.add-funds {
+  width: 100%;
+  background: map_get($gray, '3');
+  &__line {
+    left: 0;
+    background: map_get($gray, '13');
+    height: 274px;
+    position: absolute;
+    right: 0;
+    @include media-query((
+      height: (
+        sm: 253px,
+        md: 383px,
+      ),
+    ));
+  }
+  &__container-main {
+    padding: 0;
+    min-width: 320px;
+    margin-left: -16px;
+    @include media-query((
+      margin-top: (
+        xs: -14px,
+        sm: -25px,
+        md: 71px,
+        lg: -21px,
+        xl: -23px,
+      ),
+      margin-left: (
+        sm: 0,
+        xl: 20px,
+      ),
+      margin-bottom: (
+        xs: -7px,
+      ),
+    ));
+  }
+  &__back-arr {
+    margin-left: 10px;
+    @include media-query((
+      margin-left: (
+        sm: -6px,
+        md: -10px,
+        lg: -17px,
+        xl: 0,
+      ),
+      padding-left: (
+        xl: 0,
+      )
+    ));
+  }
+  &__back-main {
+    display: none;
+    &__text {
+      text-decoration: none;
+      &:hover {
+        color: map_get($shades, 'black');
+      }
+    }
+    @include media-query((
+      margin-top: (
+        xl: 11px
+      ),
+      margin-bottom: (lg: 14px),
+      display: (xl: block),
+      padding-right: (lg: 16px !important)
+    ));
+    &:hover {
+      color: map_get($yellow, 'base');
+    }
+  }
+  &__back-main-xs svg {
+    display: block;
+    height: 12px;
+    cursor: pointer;
+    margin-top: 25px;
+    color: rgba(map_get($yellow, 'base'), 0.8);
+    @include media-query((
+      display: (xl: none),
+      margin-top: (
+        md: 27px,
+      ),
+    ));
+  }
+  &__icon-height svg {
+    height: 16px;
+    margin-left: -7px;
+  }
+  &__welcome-title {
+    width: 256px;
+    margin-bottom: 22px;
+    margin-top: 15px;
+    letter-spacing: -1px;
+    @include media-query((
+      margin-top: (
+        xl: -5px,
+        xxl: -4px
+      ),
+      width: (
+        sm: 456px
+      ),
+      margin-bottom: (
+        sm: 24px,
+        lg: 29px,
+        xl: 0
+      )
+    ))
+  }
+  &__main {
+    width: 108%;
+    margin-top: 3px;
+    background: map_get($gray, '13');
+    box-shadow: inset 0 4px 16px rgba(map_get($shades, 'black'), .05);
+    display: flex;
+    overflow: hidden;
+    height: 614px;
+    @include media-query((
+      margin-left: (
+        sm: -24px,
+        md: 0
+      ),
+      height: (
+        sm: 600px,
+        md: 700px,
+        lg: 386px,
+      ),
+      width: (
+        sm: 111%,
+        md: 104%
+      ),
+      margin-top: (
+        sm: 5px,
+        md: 0,
+        xl: 53px,
+      )
+    ));
+  }
+  &__sum {
+    width: 100%;
+    padding-top: 0;
+    background: map_get($gray, '3');
+    &__title {
+      margin: 0;
+      @include media-query((
+        margin-top: (
+          sm: -25px,
+          md: 47px,
+        )
+      ));
+    }
+    &__input {
+      width: 288px;
+      margin-top: 19px;
+      position: relative;
+      @include media-query((
+        width: (
+          sm: 203px,
+          md: 203px
+        ),
+        margin-top: (
+          sm: 17px,
+          md: 23px,
+          lg: 18px,
+        ),
+      ));
+      & input {
+        position: relative;
+        font: 17px/22px $fedra-demi !important;
+        letter-spacing: -0.5px;
+        color: map_get($shades, 'black') !important;
+        @include media-query((
+          font-size: (
+            md: 18px,
+            xxl: 20px
+          ),
+          line-height: (
+            md: 23px,
+            xxl: 26px
+          ),
+          letter-spacing: (
+            md: -1px
+          )
+        ))
+      }
+      & .er-text-field .er-input__control .er-input__slot {
+        min-height: 39px !important;
+      }
+      .er-text-field > .er-input__control > .er-messages > .er-messages__wrapper > .er-messages__message {
+        word-break: normal;
+        a {
+          display: block;
+          pointer-events: auto;
+        }
+      }
+    }
+    &__on-autopay {
+      margin-top: 20px;
+      display: flex;
+      align-items: center;
+      width: 280px;
+      position: relative;
+
+      @include media-query((
+        margin-top: (
+          lg: 13px,
+        ),
+      ));
+      &__over {
+        background: map_get($gray, '3');
+        position: absolute;
+        left: -4px;
+        top: 84px;
+        height: 57px;
+        width: 291px;
+        z-index: 1;
+        cursor: pointer;
+        @include media-query((
+          top: (
+            sm: 70px,
+            md: 152px
+          ),
+          background: (
+            lg: map_get($gray, '13'),
+          ),
+        ));
+      }
+    }
+    &__button {
+      width: 288px;
+      margin-top: 31px;
+      @include media-query((
+        margin-top: (
+          sm: 44px,
+          md: 34px,
+          lg: 53px,
+          xl: 40px,
+        ),
+        width: (
+          sm: 203px,
+          md: 203px
+        ),
+      ));
+    }
+    &__text {
+      position: relative;
+      margin-left: 11px;
+      cursor: pointer;
+      @extend %caption1-font;
+      width: 288px;
+      left: 0;
+      top: 18px;
+      border-bottom: none;
+      color: rgba(map_get($shades, 'black'), 0.5);
+      @include media-query((
+        top: (
+          sm: -37px,
+          md: -41px,
+          lg: 30px
+        ),
+        left: (
+          sm: 219px,
+          md: 286px,
+          lg: -11px,
+        ),
+        width: (
+          sm: 249px,
+          md: 270px
+        ),
+      ));
+      & a {
+        color: rgba(map_get($shades, 'black'), 0.5);
+        &:hover {
+          color: map_get($shades, 'black');
+        }
+      }
+    }
+    &__move-card {
+      max-width: 519px;
+      height: 307px;
+      overflow: hidden;
+      top: 16px;
+      left: 16px;
+      @include media-query((
+        left: (
+          sm: 16px,
+          md: 0
+        ),
+        top: (
+          sm: 32px,
+          md: 0
+        ),
+        height: (
+          sm: 313px,
+          md: 383px
+        ),
+      ));
+    }
+    &__pos {
+      padding-left: 31px !important;
+      @include media-query((
+        padding-left: (
+          sm: 39px !important,
+          md: 23px !important,
+          lg: 0 !important,
+        )
+      ));
+    }
+    &__hint {
+      position: relative;
+      margin-left: 7px;
+      top: -4px;
+      display: none !important;
+      @include media-query((
+        margin-left: (
+          md: 14px,
+        ),
+        display: (xl: inline-block !important)
+      ));
+      &__check {
+        @extend .add-funds__sum__hint;
+        display: inline-block;
+        @include media-query((
+          top: (
+            xl: 0,
+          ),
+          margin-left: (
+            xl: -28px,
+          ),
+        ));
+      }
+    }
+    &__confirm {
+      position: relative;
+      margin-left: 7px;
+      top: -4px;
+      display: inline-block;
+      opacity: 0.2;
+      cursor: pointer;
+      @include media-query((
+        margin-left: (
+          md: 14px,
+        ),
+        display: (xl: none !important)
+      ));
+      &__check {
+        @extend .add-funds__sum__confirm;
+        top: 0;
+        margin-left: -23px;
+        @include media-query((
+          margin-left: (
+            sm: -29px,
+            md: -24px,
+          ),
+        ));
+      }
+    }
+    &__autopay {
+      position: relative;
+      margin-left: 11px;
+      top: -3px;
+      cursor: pointer;
+      border-bottom: 1px dashed map_get($shades, 'black');
+      font: 11px/16px $fedra-demi;
+      letter-spacing: 0.35px;
+      color: rgba(map_get($shades, 'black'), 0.8);
+      @include media-query((
+        font-size: (
+          md: 13px,
+          xl: 14px,
+        ),
+        line-height: (
+          md: 16px,
+          xl: 19px,
+        ),
+        letter-spacing: (
+          md: normal
+        )
+      ));
+      &__over {
+        background: map-get($shades, 'transparent');
+        position: absolute;
+        left: 30px;
+        top: 103px;
+        height: 24px;
+        width: 49px;
+        z-index: 1;
+        cursor: pointer;
+        @include media-query((
+          left: (
+            sm: 38px,
+            md: 22px,
+            lg: 0,
+          ),
+          top: (
+            sm: 76px,
+            md: 164px,
+            lg: 156px,
+            xl: 165px,
+          ),
+        ));
+      }
+      &:hover {
+        color: map_get($shades, 'black');
+        border-bottom: 1px dashed map_get($yellow, 'base');
+      }
+    }
+    &__left {
+      @include media-query((
+        margin-left: (
+          md: -21px !important,
+          lg: 0 !important,
+          xl: 5px !important,
+        )
+      ));
+      &__direct {
+        flex-wrap: wrap;
+        margin-right: -15px;
+        margin-left: -15px;
+      }
+    }
+  }
+  &__check {
+    margin-top: 0;
+    width: 313px;
+    position: relative;
+    z-index: 1;
+    margin-left: 4px;
+    @include media-query((
+      width: (md: 420px),
+      margin-top: (
+        sm: -50px,
+        md: 27px,
+        lg: 58px,
+      ),
+      margin-left: (
+        sm: 0,
+        md: 3px,
+        lg: 0,
+        xl: 4px
+      ),
+    ));
+    &__decoration {
+      position: relative;
+      width: 100%;
+      height: 26px;
+      background-color: map_get($gray, '10');
+      border-radius: 12px;
+    }
+    &__decoration-line {
+      position: absolute;
+      top: 10px;
+      left: 13px;
+      width: calc(100% - 26px);
+      height: 6px;
+      background-color: map_get($gray, '35');
+      box-shadow: inset -2px 2px 2px rgba(map_get($shades, 'black'), .3);
+      border-radius: 4px;
+    }
+    &__get-check {
+      width: 288px;
+      height: 227px;
+      padding: 50px 20px 37px 16px;
+      margin-top: -13px;
+      margin-left: 13px;
+      margin-bottom: 47px;
+      position: relative;
+      background-image: url("../../../../../../static/get-check-bg.png");
+      background-position: center;
+      background-repeat: no-repeat;
+      filter: drop-shadow(-4px 6px 6px rgba(map_get($shades, 'black'), .15));
+      background-size: 288px 100%;
+      @include media-query((
+        padding: (
+          md: 50px 40px 37px 34px,
+        ),
+        height: (md: 263px),
+        width: (md: 392px),
+        background-size: (md: 392px)
+      ));
+    }
+    &__header {
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding-bottom: 16px;
+      border-bottom: 1px dashed map_get($gray, '36');
+      margin-top: -7px;
+    }
+    &__title {
+      margin-right: 32px;
+    }
+    &__body {
+      margin-top: 27px;
+      &__border > .er-text-field .er-input__control .er-input__slot {
+        border: 1px solid map_get($red, 'base') !important;
+      }
+    }
+    &__input {
+      position: relative;
+      top: -13px;
+      text-align: center;
+      z-index: 3;
+      &__over {
+        position: absolute;
+        height: 20px;
+        width: 249px;
+        left: 18px;
+        top: 108px;
+        background: map_get($gray, '2');
+        z-index: 2;
+        @include media-query((
+          height: (md: 29px),
+          left: (md: 36px),
+          width: (md: 317px),
+        ));
+      }
+      &__select {
+        & .er-input__control > .er-input__slot {
+          max-height: 40px;
+          min-height: 40px !important;
+          font: 13px/18px $fedra-book;
+          letter-spacing: 0.25px;
+          color: rgba(map_get($shades, 'black'), 0.8);
+          @include media-query((
+            font-size: (
+              md: 14px,
+              xl: 16px
+            ),
+            line-height: (
+              md: 19px,
+              xl: 21px
+            ),
+            letter-spacing: (
+              md: normal
+            ),
+            min-height: (
+              xl: 48px !important
+            )
+          ));
+        }
+      }
+    }
+    &__empty {
+      margin-left: 112px;
+      font: 10px/120% $fedra-demi;
+      color: map_get($red, 'base');
+      letter-spacing: 0.5px;
+      @include media-query((
+        font-size: (
+          md: 12px,
+        ),
+        line-height: (
+          md: 16px,
+        ),
+        letter-spacing: (
+          md: normal,
+        ),
+        margin-left: (
+          md: 161px,
+          xl: 165px
+        )
+      ));
+    }
+  }
+}
+.er-hint__message {
+  max-width: 410px !important;
+}

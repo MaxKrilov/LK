@@ -33,21 +33,25 @@ import SupportTemplate from './components/templates/SupportTemplate'
 // Главная поддержки
 import SupportIndexPage from './components/pages/cabinet/SupportPages/IndexPage/index'
 
-// Платежи
-/// Главная
-import PaymentIndexPage from './components/pages/cabinet/PaymentPages/IndexPage/index'
+// Страница платежи
+import PayPage from './components/pages/cabinet/PayPage/index'
 
-/// История
-import PaymentHistoryPage from '@/components/pages/cabinet/PaymentPages/HistoryPage/index'
+/*
+// Обещанный платеж
+import PromiseOn from './components/pages/cabinet/PayPage/components/PromiseOn/index'
+*/
 
-/// Обещанный платёж
-import PromisePaymentPage from '@/components/pages/cabinet/PaymentPages/PromisePaymentPage/index'
+// Успешный платеж
+import PaymentsOn from './components/pages/cabinet/PayPage/components/PaymentsOn/index'
 
-/// Оплата картой
-import CardPaymentPage from '@/components/pages/cabinet/PaymentPages/CardPaymentPage/index'
+// Страница обещанный платеж
+import PromisePay from './components/pages/cabinet/PayPage/PromisePay/index'
 
-/// Результат платежа
-import PaymentResultPage from '@/components/pages/cabinet/PaymentPages/PaymentResultPage/index'
+// Страница история платежей
+import HistoryPay from './components/pages/cabinet/PayPage/HistoryPay/index'
+
+// Страница пополнения счета
+import AddFunds from './components/pages/cabinet/PayPage/AddFunds/index'
 
 // Цифровые продукты (от DMP)
 import DigitalProductsIndexPage from './components/pages/digital-products/IndexPage/index'
@@ -197,50 +201,26 @@ const router = new Router({
         },
         {
           path: 'payments',
-          component: PaymentIndexPage
+          component: PayPage
         },
         {
-          path: 'payments/history',
-          component: PaymentHistoryPage
-        },
-        {
-          path: 'payments/promise-payments',
-          component: PromisePaymentPage
-        },
-        {
+          name: 'add-funds',
           path: 'add-funds',
-          redirect: 'payments/card-payment'
+          component: AddFunds,
+          props: true
         },
         {
-          path: 'payments/card-payment',
-          component: CardPaymentPage
+          path: 'payment-result',
+          component: PaymentsOn
         },
         {
-          path: 'payments/result',
-          component: PaymentResultPage
+          path: 'promise-pay',
+          component: PromisePay
         },
-        // {
-        //   path: 'payments',
-        //   component: PayPage
-        // },
-        // {
-        //   name: 'add-funds',
-        //   path: 'add-funds',
-        //   component: AddFunds,
-        //   props: true
-        // },
-        // {
-        //   path: 'payment-result',
-        //   component: PaymentsOn
-        // },
-        // {
-        //   path: 'promise-pay',
-        //   component: PromisePay
-        // },
-        // {
-        //   path: 'history-pay',
-        //   component: HistoryPay
-        // },
+        {
+          path: 'history-pay',
+          component: HistoryPay
+        },
         {
           name: 'documents',
           path: 'documents/',

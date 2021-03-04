@@ -82,7 +82,7 @@ const actions = {
     page: string,
     eventSource: string
   }) {
-    const billingAccountId = context.rootGetters['payments/getActiveBillingAccount']
+    const billingAccountId = context.rootGetters['user/getActiveBillingAccount']
     const { toms: clientId } = context.rootGetters['auth/user']
     return new Promise((resolve, reject) => {
       api()
@@ -139,7 +139,7 @@ const actions = {
     })
   },
   getFileStatistic (context: ActionContext<any, any>, { fromDate, toDate, productInstance }: { fromDate: string, toDate: string, productInstance: string }) {
-    const billingAccountId = context.rootGetters['payments/getActiveBillingAccount']
+    const billingAccountId = context.rootGetters['user/getActiveBillingAccount']
     const { toms: clientId } = context.rootGetters['auth/user']
     return new Promise((resolve, reject) => {
       api()

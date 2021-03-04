@@ -1,0 +1,374 @@
+.button-pay {
+  &__icon-height {
+    vertical-align: unset !important;
+    svg {
+      height: 16px;
+      margin-left: -7px;
+    }
+  }
+  &__icon-span {
+    display: inline-block;
+    position: absolute;
+    vertical-align: top;
+    width: 50px;
+    @extend %caption1-font;
+    @include media-query((
+      width: (
+        sm: 160px,
+      ),
+    ));
+  }
+  &__inf-promise {
+    bottom: 70px;
+    left: 18px;
+    top: 68px;
+    width: min-content;
+    display: inline-block;
+    position: absolute;
+    vertical-align: top;
+    z-index: 1;
+    @include media-query((
+      left: (sm: 27px),
+      top: (sm: auto)
+    ));
+    @extend %caption2-font;
+  }
+  &__card-height {
+    height: 147px;
+    @include media-query((
+      height: (
+        md: 166px,
+        lg: 190px
+      ),
+    ));
+  }
+  &__card-title {
+    font-family: $fedra-demi;
+    font-size: 15px;
+    width: 100px;
+    color: rgba(map_get($shades, 'black'), 0.8);
+    letter-spacing: -0.35px;
+    margin-top: -4px;
+    @include media-query((
+      width: (
+        md: 160px,
+        xl: 140px
+      ),
+      margin-top: (
+        sm: -11px,
+        md: 0px,
+        xxl: 2px
+      ),
+      font-size: (
+        md: 18px,
+        xxl: 20px
+      ),
+      letter-spacing: (
+        md: -1px
+      )
+    ));
+    &__promise {
+      @extend .button-pay__card-title;
+      @include media-query((
+        width: (
+          md: 177px,
+          xl: 140px
+        ),
+      ));
+    }
+  }
+  &__card-row {
+    @include media-query((
+      margin-left: (
+        xs: 5.6vw !important,
+        sm: 4.4vw !important,
+        md: 0 !important,
+      ),
+    ));
+  }
+  &__card-scale {
+    flex-basis: auto !important;
+    padding: 0 !important;
+    @include media-query((
+      width: (
+        xs: 42vw !important,
+        sm: 43vw !important,
+        md: 44vw !important,
+        lg: 22vw !important,
+        xl: 16vw !important,
+        xxl: 208px !important,
+      ),
+      max-width: (
+        md: 293px !important,
+        lg: 210px !important,
+        xl: 190px !important,
+      )
+    ));
+    &__left {
+      margin-right: 24px;
+      @include media-query((
+        margin-right: (
+          xs: 16px,
+          sm: 16px
+        )
+      ));
+    }
+    &__right-top {
+      @include media-query((
+        margin-right: (
+          md: 16px,
+        )
+      ));
+    }
+  }
+  &__card-shadow:hover {
+    border-radius: 12px;
+    background: map_get($yellow, 'other-11');
+    box-shadow: -4px 5px 32px map_get($yellow, 'other-8') !important;
+  }
+  &__fast-links {
+    a {
+      display: flex;
+      flex-direction: column;
+      padding: 17px;
+      text-decoration: none;
+      height: 149px;
+      position: relative;
+      overflow: hidden;
+      @include media-query((
+        padding: (sm: 24px),
+        height: (
+          sm: 158px,
+          md: 170px,
+          lg: 193px,
+        )
+      ));
+      .button-pay {
+        &__card-icon {
+          position: relative;
+          transition: 0.15s transform;
+          transform: scale(1, 1);
+          left: 11px;
+          top: 10px;
+          @include media-query((
+            left: (
+              sm: 20px,
+              md: 3px,
+              lg: -3px,
+              xl: 0,
+              xxl: 1px
+            ),
+            top: (
+              md: 2px,
+              lg: 1px,
+              xl: -2px
+            ),
+          ));
+        }
+      }
+    }
+    a:hover {
+      background: radial-gradient(map_get($yellow, 'other-4') 55.5%, map_get($yellow, 'base') 100%);
+      .button-pay {
+        &__card-icon {
+          position: relative;
+          color: map_get($yellow, 'other-9') !important;
+          left: 58px;
+          top: 26px;
+          transform: scale(8,8);
+          @include media-query((
+            left: (
+              sm: 49px,
+              md: 21px,
+              lg: 11px,
+              xl: 6px,
+              xxl: 51px,
+            ),
+            top: (
+              sm: 20px,
+              md: 30px,
+              lg: 26px,
+              xxl: 30px
+            ),
+            transform: (
+              md: scale(6,7),
+              lg: scale(6,6.3),
+              xxl: scale(8,8),
+            )
+          ));
+        }
+        &__icon-span {
+          color: map_get($shades, 'white') !important;
+        }
+        &__icon-height svg {
+          color: map_get($shades, 'white') !important;
+        }
+      }
+    }
+  }
+  &__timer {
+    position: relative;
+    z-index: 0;
+    margin-top: 41px;
+    @include media-query((
+      margin-top: (
+        sm: 41px,
+        md: 51px,
+        lg: 77px,
+        xl: 43px,
+      )
+    ));
+    &__label {
+      width: 120px;
+      font: 10px/120% $fedra-demi;
+      color: rgba(map_get($shades, 'black'), 0.3);
+      letter-spacing: 0.5px;
+      @include media-query((
+        font-size: (
+          md: 12px,
+        ),
+        line-height: (
+          md: 16px,
+        ),
+        letter-spacing: (
+          md: normal,
+        ),
+        margin-bottom: (
+          md: -5px,
+          lg: 0
+        )
+      ))
+    }
+    &__time-title {
+      margin: -65px 0 21px 18px;
+      position: relative;
+      z-index: 100;
+      @include media-query((
+        left: (sm: auto),
+        top: (
+          sm: 22px,
+          md: 26px,
+        ),
+        right: (
+          sm: -298px,
+          md: -292px,
+          xl: -236px
+        ),
+        font-size: (
+          md: 14px,
+          xl: 16px
+        ),
+        line-height: (
+          md: 19px,
+          xl: 21px
+        ),
+        letter-spacing: (
+          md: normal,
+          xl: -0.5px
+        )
+      ))
+    }
+    &__day {
+      display: inline-block;
+      margin-right: 8px;
+      @include media-query((
+        margin-right: (md: 16px,)
+      ));
+      &__value {
+        opacity: 0.8;
+      }
+    }
+    &__hour {
+      display: inline-block;
+      margin-right: 8px;
+      @include media-query((
+        margin-right: (md: 16px,)
+      ));
+      &__value {
+        opacity: 0.5;
+      }
+    }
+    &__min {
+      display: inline-block;
+      &__value {
+        opacity: 0.3;
+      }
+    }
+  }
+  &__expired {
+    position: relative;
+    top: -67px;
+    color: map_get($red, 'base');
+    @include media-query((
+      top: (
+        md: -80px,
+        lg: -109px,
+        xl: -88px
+      ),
+    ));
+    & svg {
+      margin-top: 0;
+      @include media-query((
+        margin-top: (
+          md: -80px,
+          lg: -109px,
+          xl: 2px
+        ),
+      ));
+    }
+  }
+  &__progressbar {
+    position: absolute;
+    width: 94%;
+    height: 4px;
+    bottom: 0;
+    left: 6px;
+    overflow: hidden;
+    background: map_get($gray, '9');
+    border-radius: 0 0 36px 36px;
+    @include media-query((
+      width: (
+        md: 96%,
+        lg: 95%,
+        xl: 94%
+      ),
+    ));
+    &__wrapper {
+      @extend .button-pay__progressbar;
+      height: 4px;
+      left: 0;
+      background: map_get($gray, '23');
+      width: 100% !important;
+      border-bottom-left-radius: 36px;
+      border-bottom-right-radius: 36px;
+    }
+    &__width {
+      @extend .button-pay__progressbar;
+      left: 0;
+      height: 4px;
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
+      background: map_get($red, 'base');
+    }
+  }
+}
+#preloaderPromisePay {
+  position: relative;
+  text-align: start;
+  left: 28px;
+  top: 17px;
+  @include media-query((
+    left: (
+      sm: 27px,
+      md: 39px,
+      lg: 64px,
+      xl: 55px
+    ),
+    top: (
+      md: 23px,
+      lg: 52px,
+      xl: 22px
+    ),
+  ));
+}
+

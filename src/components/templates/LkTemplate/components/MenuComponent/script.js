@@ -48,18 +48,18 @@ export default {
     ...mapGetters({
       SCREEN_WIDTH,
       getManagerInfo: 'user/getManagerInfo',
-      getBillingAccountsGroupByContract: 'payments/getBillingAccountsGroupByContract',
+      getBillingAccountsGroupByContract: 'user/getBillingAccountsGroupByContract',
       menuComponentBillingAccount: 'loading/menuComponentBillingAccount',
       menuComponentBalance: 'loading/menuComponentBalance',
       menuComponentManager: 'loading/menuComponentManager',
       notificationCountPromise: 'campaign/getCount',
-      listProductByService: 'user/getListProductByService',
-      activeBillingAccountId: 'payments/getActiveBillingAccount',
-      activeBillingAccountNumber: 'payments/getActiveBillingAccountNumber'
+      listProductByService: 'user/getListProductByService'
     }),
     ...mapState({
       legalName: state => state.user.clientInfo.legalName,
-      balanceInfo: state => state.payments.billingInfo
+      activeBillingAccountId: state => state.user.activeBillingAccount,
+      activeBillingAccountNumber: state => state.user.activeBillingAccountNumber,
+      balanceInfo: state => state.user.paymentInfo
     }),
     isOpenSubMenu () {
       return !!this.menu.filter(item => item.isOpen).length
@@ -69,11 +69,6 @@ export default {
     },
     isAutopay () {
       return this.balanceInfo?.paymentMethod?.id === IS_ENABLED_AUTOPAY
-    },
-    balance () {
-      return this.balanceInfo.hasOwnProperty('balance')
-        ? 0 - Number(this.balanceInfo.balance)
-        : 0
     }
   },
   methods: {

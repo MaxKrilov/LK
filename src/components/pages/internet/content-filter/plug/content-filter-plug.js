@@ -116,7 +116,7 @@ export default {
   },
   computed: {
     ...mapGetters({
-      billingAccountId: 'payments/getActiveBillingAccount'
+      billingAccountId: 'user/getActiveBillingAccount'
     }),
     selectedPrice () {
       return this.selectedTariff.price || 0

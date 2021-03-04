@@ -1,6 +1,6 @@
 import Vue, { CreateElement } from 'vue'
 import Component from 'vue-class-component'
-import { mapGetters, mapState } from 'vuex'
+import { mapState } from 'vuex'
 import { ICustomerProduct } from '@/tbapi'
 import { iPointItem, transformListPoint } from '@/components/blocks/ErListPoints/script'
 import { getFirstElement } from '@/functions/helper'
@@ -9,10 +9,8 @@ import { getFirstElement } from '@/functions/helper'
 @Component<InstanceType<typeof TelephonyTemplate>>({
   computed: {
     ...mapState({
-      loadingBillingAccount: (state: any) => state.loading.menuComponentBillingAccount
-    }),
-    ...mapGetters({
-      billingAccountId: 'payments/getActiveBillingAccount'
+      loadingBillingAccount: (state: any) => state.loading.menuComponentBillingAccount,
+      billingAccountId: (state: any) => state.user.activeBillingAccount
     })
   },
   watch: {

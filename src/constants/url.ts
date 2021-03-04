@@ -28,8 +28,7 @@ export const OFFER_LINKS: Record<string, string> = {
   'telephonya': 'https://beta-lkb2b.domru.ru/files/oferta-telephonya.pdf',
   'tv': 'https://beta-lkb2b.domru.ru/files/oferta-tv.pdf',
   'internet': 'https://beta-lkb2b.domru.ru/files/oferta-internet.pdf',
-  'wifi': 'https://beta-lkb2b.domru.ru/files/oferta-wifi-mono.pdf',
-  'payment': 'https://console.ertelecom.ru/files/upload/d/1/0/d108447fbf9c5d88c2801d14a6e76725.pdf'
+  'wifi': 'https://beta-lkb2b.domru.ru/files/oferta-wifi-mono.pdf'
 }
 
 export const MANAGER_LOGOUT = {
