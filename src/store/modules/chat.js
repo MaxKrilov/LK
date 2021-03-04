@@ -24,8 +24,8 @@ const getters = {
 
 const actions = {
   [GET_CHAT_TOKEN]: async ({ commit, rootGetters }, { api }) => {
-    const billingAccountId = rootGetters['user/getActiveBillingAccount']
-    const contractNumber = rootGetters['user/getActiveBillingAccountNumber']
+    const billingAccountId = rootGetters['payments/getActiveBillingAccount']
+    const contractNumber = rootGetters['payments/getActiveBillingAccountNumber']
     const customerAccountId = rootGetters['auth/getTOMS']
     try {
       const result = await api

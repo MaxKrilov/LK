@@ -7,7 +7,7 @@ const components = { VpnSlider }
 @Component({
   components,
   computed: {
-    ...mapGetters({ billingAccountId: 'user/getActiveBillingAccount' })
+    ...mapGetters({ billingAccountId: 'payments/getActiveBillingAccount' })
   } })
 export default class VPNMainPage extends Vue {
   addressList: any = []

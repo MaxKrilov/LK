@@ -14,7 +14,7 @@ const components = {
   components,
   mixins: [Validators],
   computed: {
-    ...mapGetters({ billingAccountId: 'user/getActiveBillingAccount' })
+    ...mapGetters({ billingAccountId: 'payments/getActiveBillingAccount' })
   } })
 export default class TelephonyBlacklistCard extends Vue {
   @Prop({ type: Object }) readonly data!: IBlacklistPhone

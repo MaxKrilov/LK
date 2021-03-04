@@ -5,7 +5,7 @@ import { mapGetters } from 'vuex'
 @Component({
   computed: {
     ...mapGetters({ managerId: 'user/getManagerId' }),
-    ...mapGetters({ getActiveBillingAccountNumber: 'user/getActiveBillingAccountNumber' }),
+    ...mapGetters({ getActiveBillingAccountNumber: 'payments/getActiveBillingAccountNumber' }),
     ...mapGetters({ clientInfo: 'user/getClientInfo' })
   } })
 export default class ErPlugMixin extends Vue {

@@ -12,6 +12,7 @@ import ErtIntersectableMixin from '@/mixins2/ErtIntersectableMixin'
 import ErtLoadableMixin from '@/mixins2/ErtLoadableMixin'
 
 import Ripple from '@/directives/ripple'
+import Resize from '@/directives/resize'
 
 import { convertToUnit } from '@/functions/helper2'
 import { keyCode as keyCodes } from '@/functions/keyCode'
@@ -22,16 +23,14 @@ const baseMixins = mixins(
   ErtInput,
   ErtIntersectableMixin({
     onVisible: [
-      'setLabelWidth',
-      'setPrefixWidth',
-      'setPrependWidth',
+      'onResize',
       'tryAutofocus'
     ]
   }),
   ErtLoadableMixin
 )
 
-const directives = { Ripple }
+const directives = { Ripple, Resize }
 
 const inheritAttrs = false
 
@@ -62,8 +61,6 @@ const props = {
   directives,
   props,
   watch: {
-    labelValue: 'setLabelWidth',
-    outlined: 'setLabelWidth',
     label () {
       this.$nextTick(this.setLabelWidth)
     },
@@ -327,7 +324,12 @@ class ErtTextField extends baseMixins {
         focus: this.onFocus,
         keydown: this.onKeyDown
       }),
-      ref: 'input'
+      ref: 'input',
+      directives: [{
+        name: 'resize',
+        modifiers: { quiet: true },
+        value: this.onResize
+      }]
     })
   }
   genMessages () {
@@ -440,11 +442,15 @@ class ErtTextField extends baseMixins {
     }
   }
 
-  mounted () {
-    this.autofocus && this.tryAutofocus()
+  onResize () {
     this.setLabelWidth()
     this.setPrefixWidth()
     this.setPrependWidth()
+  }
+
+  mounted () {
+    this.$watch(() => this.labelValue, this.setLabelWidth)
+    this.autofocus && this.tryAutofocus()
     requestAnimationFrame(() => (this.isBooted = true))
   }
 }
