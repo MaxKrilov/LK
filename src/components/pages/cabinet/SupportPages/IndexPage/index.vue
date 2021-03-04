@@ -59,6 +59,7 @@
         er-button(
           flat
           @click="onShowDirectorFeedback"
+          v-class-mod="['inline-button']"
         ) Написать директору
 
       director-feedback(v-model="isVisibleDirectorFeedback")

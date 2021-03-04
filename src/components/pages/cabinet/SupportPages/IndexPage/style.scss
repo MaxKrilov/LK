@@ -257,13 +257,12 @@
     margin-top: $padding-x10;
   }
 
-  .er-button {
-    @include min-breakpoint(sm) {
-      width: 50%;
-    }
+  .er-button--inline-button {
+    width: inherit;
+    display: inline-block;
 
-    @include min-breakpoint(md) {
-      width: 33%;
+    .er-button__slot-content {
+      padding: 0 $padding-x4;
     }
   }
 }

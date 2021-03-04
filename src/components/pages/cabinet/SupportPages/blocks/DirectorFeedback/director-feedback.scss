@@ -83,13 +83,6 @@
   &__body {
     padding-top: $padding-x8;
 
-    @include min-breakpoint(xl) {
-      padding: 0;
-    }
-
-    .first-section {
-
-    }
 
     .second-section {
       .section-first-input {
