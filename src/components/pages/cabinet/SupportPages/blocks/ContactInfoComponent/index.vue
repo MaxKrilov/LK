@@ -52,7 +52,7 @@
       cancel-button-text="Спасибо"
     )
       template(slot="description")
-        | Спасибо за обращение! С Вами свяжется Ваш персональный менджер.
+        | Спасибо за обращение! С Вами свяжется Ваш персональный менеджер.
     er-activation-modal(
       type="error"
       v-model="resultDialogError"

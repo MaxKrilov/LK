@@ -47,7 +47,7 @@
       cancel-button-text="Спасибо"
     )
       template(slot="description")
-        | Спасибо за обращение! С Вами свяжется Ваш персональный менджер.
+        | Спасибо за обращение! С Вами свяжется Ваш персональный менеджер.
     er-activation-modal(
       type="error"
       v-model="resultDialogError"
@@ -56,7 +56,7 @@
       cancel-button-text="Спасибо"
     )
       template(slot="description")
-        | Попробуйте повторить попытку позже или обратитесь к Вашему персональному менджеру
+        | Попробуйте повторить попытку позже или обратитесь к Вашему персональному менеджеру
 </template>
 
 <script lang="ts" src="./script.ts"></script>
