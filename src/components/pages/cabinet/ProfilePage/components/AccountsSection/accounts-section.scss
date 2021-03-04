@@ -102,7 +102,6 @@
     }
     .er-button {
       @extend %small-icon;
-      padding-left: 12px;
 
       .er-icon {
         @include color-black(.3)

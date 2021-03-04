@@ -31,6 +31,9 @@ const CADESPLUGIN_PATH = `${process.env.BASE_URL}static_js/cadesplugin.js`
 const ALL_DOCUMENTS = 'all'
 const NOT_SIGNED_DOCUMENTS = 'notSigned'
 
+const REPORT_DOCUMENTS = 'report-documents'
+const CONTRACT_DOCUMENTS = 'contract-documents'
+
 export default {
   name: 'document-page',
   components: {
@@ -54,6 +57,9 @@ export default {
     return {
       pre: 'document-page',
       DOCUMENT,
+      REPORT_DOCUMENTS,
+      CONTRACT_DOCUMENTS,
+      currentDocumentType: CONTRACT_DOCUMENTS,
       emails: [
         'test@example.com',
         'test2@example.com'
@@ -164,6 +170,12 @@ export default {
     }
   },
   methods: {
+    onSelectReportTab () {
+      this.currentDocumentType = REPORT_DOCUMENTS
+    },
+    onSelectContractTab () {
+      this.currentDocumentType = CONTRACT_DOCUMENTS
+    },
     onChangeMonth (idx) {
     },
     onReportUnselect (documentId) {

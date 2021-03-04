@@ -33,7 +33,7 @@
             | Контакты
           +contactsPhone
           .b-contact-info__chat
-            .caption.mb-24 On-line обращение
+            .caption.mb-24.mt-16 On-line обращение
             er-button(flat pre-icon="chat" @click="openChat()")
               | Начать чат
         .b-contact-info--desktop__column.pl-32
@@ -43,27 +43,7 @@
             | Адреса
           .b-contact-info__addresses
             +addresses
-    er-slide-up-down.mt-40(:active="toDirectorSlideUpDown")
-      .b-contact-info__slide-up-down.pa-32
-        .b-contact-info__slide-up-down__head.d--flex.justify-content-between.align-items-center.mb-40
-          .title Написать директору Дом.ru Бизнес
-          .required
-            | &nbsp;- Поле обязательно к заполнению
-        +toDirectorForm('director_form_desktop')
-    er-dialog(
-      v-model="toDirectorModal"
-      fullscreen
-      transition="dialog-bottom-transition"
-    )
-      .b-contact-info__director-modal
-        .b-contact-info__director-modal__head.d--flex.flex-wrap.align-items-center.pa-16
-          .title.mb-4 Написать директору Дом.ru Бизнес
-          button.mb-4(@click="closeToDirectorModal")
-            er-icon(name="close")
-          .required
-            | &nbsp;- Поле обязательно к заполнению
-        .b-contact-info__director-modal__body.py-32.px-16
-          +toDirectorForm('director_form_mobile')
+
     er-activation-modal(
       type="success"
       v-model="resultDialogSuccess"
@@ -81,7 +61,7 @@
       cancel-button-text="Спасибо"
     )
       template(slot="description")
-        | Попробуйте повторить попытку позже или обратитесь к Вашему персональному менджеру
+        | Попробуйте повторить попытку позже или обратитесь к Вашему персональному менеджеру
 </template>
 
 <script src="./script.js"></script>

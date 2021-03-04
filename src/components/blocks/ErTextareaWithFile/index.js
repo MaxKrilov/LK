@@ -53,7 +53,7 @@ export default {
         this.$createElement('label', {
           attrs: { for: id }
         }, [
-          this.$createElement('er-icon', { props: { name: 'husks' } }),
+          this.$createElement('er-icon', { props: { name: 'small_husks' } }),
           this.$createElement('span', {}, this.fileName || 'Прикрепить')
         ])
       ])

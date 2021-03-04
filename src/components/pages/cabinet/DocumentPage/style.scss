@@ -3,6 +3,71 @@ $document-padding: 16px;
 .document-page {
   max-width: 100vw;
 
+  &__head {
+    @extend %main-content-width;
+    @extend %margin-left--menu-width;
+    @extend %main-content-padding-top;
+    @extend %main-content-padding-h;
+  }
+
+  &__select-type {
+    @extend %main-content-width;
+    @extend %main-content-padding-h;
+
+    margin-top: $padding-x6;
+
+    @include min-breakpoint(md) {
+      margin-top: $padding-x8;
+    }
+
+    @include min-breakpoint(xl) {
+      margin-top: $padding-x10;
+    }
+  }
+
+  &__contract-documents,
+  &__report-documents {
+    margin-top: $padding-x4;
+
+    @include min-breakpoint(md) {
+      margin-top: $padding-x6;
+    }
+
+    @include min-breakpoint(xl) {
+      margin-top: $padding-x8;
+    }
+  }
+
+  .document-tabs {
+    display: flex;
+    flex-direction: row;
+    gap: $padding-x10;
+
+    @include min-breakpoint(sm) {
+      gap: $padding-x12;
+    }
+
+    @include min-breakpoint(xl) {
+      gap: $padding-x14;
+    }
+
+    &__title {
+      @extend %h4;
+      cursor: pointer;
+      padding-bottom: $padding-x1;
+
+      transition: all $primary-transition;
+
+      @include color-black(.5);
+      border-bottom: $padding-x1 solid map-get($shades, 'transparent');
+
+      &--active {
+        @include color-black(.8);
+        border-bottom: $padding-x1 solid map-get($yellow, 'base');
+      }
+    }
+  }
+
   .link--dashed {
     border: {
       color: initial;
@@ -14,18 +79,6 @@ $document-padding: 16px;
 
   .er-page-title {
     margin-bottom: 0;
-  }
-
-  &__title {
-    margin-top: $padding-x8;
-
-    @include min-breakpoint('md') {
-      margin-top: $padding-x12;
-    }
-
-    @include min-breakpoint('sm') {
-      margin-top: $padding-x6;
-    }
   }
 
   &__list {

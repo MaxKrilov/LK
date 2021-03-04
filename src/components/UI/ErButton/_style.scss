@@ -114,20 +114,31 @@
       }
     }
   }
+  &__slot-content {
+    display: inline-flex;
+    justify-content: center;
+    flex-grow: 1;
+  }
+
   &__content {
     display: flex;
     align-items: center;
     justify-content: center;
     position: relative;
     vertical-align: middle;
+
+    gap: $padding-x4;
   }
+
   &__icon {
     &--prev {
-      margin: { right: 16px };
+      margin: { left: $padding-x4 };
     }
     &--append {
-      margin: { left: 16px };
+      margin: { right: $padding-x4 };
     }
+
+    @include color-black(0.5);
   }
 }
 
