@@ -7,7 +7,7 @@ $action-cover-z-index: $action-buttons-z-index + 1;
   left: 0;
   right: 0;
   background-color: map_get($shades, 'white');
-  z-index: 10;
+  z-index: map_get($z-index, 'left-menu') - 1; // ниже главного меню
   overflow: auto;
 
   box-shadow:

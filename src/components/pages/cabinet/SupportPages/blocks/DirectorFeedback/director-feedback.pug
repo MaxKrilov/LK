@@ -1,0 +1,120 @@
+div
+  component(
+    :is="currentComponent"
+    :value="value"
+    :active="value"
+    fullscreen
+    transition="dialog-bottom-transition"
+  )
+    .director-feedback(
+      v-class-mod="{'mobile': isMobileForm, 'desktop': isDesktopForm}"
+    )
+      .director-feedback__head
+        .head-text
+          .title Написать директору Дом.ru Бизнес
+          .required
+            | &nbsp;— Поля обязательные к заполнению
+        .head-control
+          .close-button(@click="closeToDirector")
+            er-icon(name="close")
+
+      .director-feedback__body
+        er-form(ref='director_feedback_form')
+          er-row
+            er-flex(xs12 md6 lg4).first-section
+              er-row
+                er-flex.mb-32(xs12)
+                  er-select(
+                    v-model="modelDirectorTheme"
+                    :items="listComplaint"
+                    placeholder="Тема обращения"
+                    is-show-required-label
+                    :rules="requiredRule"
+                  )
+                er-flex.mb-32(xs12)
+                  er-select(
+                    v-model="modelDirectorAddress"
+                    :items="getAddressList"
+                    placeholder="Адрес"
+                    is-show-required-label
+                    :rules="requiredRule"
+                  )
+                er-flex.mb-32(xs12)
+                  er-phone-select(
+                    v-model="modelDirectorPhone"
+                    :items="getPhoneList"
+                    placeholder="Телефон"
+                    is-show-required-label
+                    :rules="requiredRule"
+                  )
+            er-flex(xs12 md6 lg4).second-section
+              er-row
+                er-flex.mb-32(xs12)
+                  ert-combobox(
+                    v-model="modelDirectorEmail"
+                    :items="getEmailList"
+                    label="E-mail"
+                    :rules="requiredRule"
+                    :search-input.sync="searchEmail"
+                  ).section-first-input
+                    template(v-slot:no-data)
+                      ert-list-item
+                        ert-list-item-content
+                          ert-list-item-title
+                            | Не найдена эл. почта {{ searchEmail }}. Нажмите <kbd>Enter</kbd> для добавления
+                er-flex.mb-32(xs12)
+                  er-text-field(
+                    v-model="modelDirectorName"
+                    label="Как к Вам обращаться"
+                    is-show-required-label
+                    :rules="requiredRule"
+                  )
+                er-flex.mb-32(xs12)
+                  er-text-field(
+                    v-model="modelDirectorPost"
+                    label="Ваша должность"
+                    is-show-required-label
+                    :rules="requiredRule"
+                  )
+            er-flex.mb-24(xs12 lg4).third-section
+              er-textarea-with-file.text-input(
+                v-model="modelDirectorComment"
+                label="Обращение"
+                is-show-label-required
+                auto-height
+                :rules="requiredRule"
+              )
+            er-flex.create-request-component__personal-data.mb-24(xs12)
+              | Нажимая на кнопку вы соглашаетесь &nbsp;
+              a(href="#") на обработку данных
+
+          .director-feedback__footer
+            er-button(
+              pre-icon="send"
+              @click="writeToDirector"
+              :loading="loadingCreating"
+            )
+              | Отправить заявку
+
+            er-button(flat @click="closeToDirector")
+              | Отменить
+
+  er-activation-modal(
+    type="success"
+    v-model="resultDialogSuccess"
+    :title="`Ваша заявка № ${ticketName} сформирована и отправлена`"
+    :is-show-action-button="false"
+    cancel-button-text="Спасибо"
+  )
+    template(slot="description")
+      | Спасибо за обращение! С Вами свяжется Ваш персональный менеджер.
+
+  er-activation-modal(
+    type="error"
+    v-model="resultDialogError"
+    title="При запросе возникла ошибка"
+    :is-show-action-button="false"
+    cancel-button-text="Спасибо"
+  )
+    template(slot="description")
+      | Попробуйте повторить попытку позже или обратитесь к Вашему персональному менеджеру

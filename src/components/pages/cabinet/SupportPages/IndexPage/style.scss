@@ -24,63 +24,87 @@
       background-color: map_get($gray, '9');
     }
     &__head {
-      padding: 24px 32px;
-      h2,
-      .filter--mobile {
-        margin-bottom: 16px;
-        @include min-breakpoint('sm') {
-          margin-bottom: 0;
-        }
+      padding: 24px 32px 0;
+      display: flex;
+      flex-wrap: wrap;
+      gap: $padding-x6 $padding-x4;
+      flex-direction: row;
+      justify-content: space-between;
+
+      @include min-breakpoint(lg) {
+        gap: $padding-x8;
       }
+
       .filter {
         &--mobile {
-          text-align: right;
-          font: 11px/16px $fedra-demi;
-          letter-spacing: 0.35px;
+          @extend %caption1;
+          text-align: left;
           @include color-black(0.5);
           text-decoration: underline;
           text-decoration-style: dashed;
           user-select: none;
           cursor: pointer;
+
+          @include min-breakpoint(sm) {
+            flex-grow: 1;
+          }
           @include min-breakpoint('lg') {
             display: none;
           }
         }
         &--desktop {
+          text-align: left;
           display: none;
-          text-align: right;
+          flex-direction: row;
+          gap: $padding-x8;
+
           @include min-breakpoint('lg') {
-            display: block;
+            display: flex;
           }
+
           a {
-            display: inline-block;
+            $badge-width: $padding-x6;
+            display: inline-flex;
+            align-items: center;
+            gap: $padding-x2;
             position: relative;
-            font: 13px/16px $fedra-demi;
-            @include color-black(0.5);
-            text-decoration: underline;
-            text-decoration-style: dashed;
-            transition: $primary-transition;
             cursor: pointer;
-            &::before {
-              content: attr(data-count);
-              display: block;
-              width: 24px;
-              height: 24px;
-              border-radius: 50%;
-              position: absolute;
-              left: -33px;
-              top: -4px;
-              background-color: map_get($gray, '4');
-              font: 12px/24px $fedra-demi;
-              text-align: center;
+            transition: $primary-transition;
+
+            span {
+              @extend %caption1;
+              @include color-black(0.5);
               transition: inherit;
+              text-decoration: underline;
+              text-decoration-style: dashed;
             }
+
+            &::before {
+              @extend %caption2;
+              content: attr(data-count);
+              display: inline-flex;
+              align-items: center;
+              justify-content: center;
+
+              width: $badge-width;
+              height: $badge-width;
+              border-radius: $badge-width;
+
+              background-color: map_get($gray, '4');
+              transition: inherit;
+              text-decoration: none;
+            }
+
             &:hover {
               @include color-black(0.8);
             }
+
             &.active {
-              @include color-black(1);
-              text-decoration-color: map_get($yellow, 'base');
+              span {
+                @include color-black(1);
+                text-decoration-color: map_get($yellow, 'base');
+              }
+
               &::before {
                 background-color: map_get($yellow, 'base');
               }
@@ -92,6 +116,16 @@
         .er-messages,
         .er-dialog__container {
           display: none !important; // Используется для фильтрации
+        }
+      }
+
+      .select-city {
+        width: 100%;
+
+        @include min-breakpoint(sm) {
+          width: 50%;
+          max-width: 50%;
+          justify-self: flex-end;
         }
       }
     }
@@ -208,6 +242,28 @@
     }
     &__pagination {
       padding: 0 32px 32px;
+    }
+  }
+}
+
+.director-feedback-block {
+  margin-top: $padding-x6;
+
+  @include min-breakpoint(md) {
+    margin-top: $padding-x8;
+  }
+
+  @include min-breakpoint(xl) {
+    margin-top: $padding-x10;
+  }
+
+  .er-button {
+    @include min-breakpoint(sm) {
+      width: 50%;
+    }
+
+    @include min-breakpoint(md) {
+      width: 33%;
     }
   }
 }

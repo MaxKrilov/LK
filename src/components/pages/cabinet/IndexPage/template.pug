@@ -42,7 +42,7 @@ div(:class="`${pre}`")
               router-link.index-page__fast-link(to="/lk/support")
                 .content(@click="dataLayerPush('support')")
                   .title
-                    | Оставить заявку
+                    | Сервисная заявка
                   .footer.d--flex.align-items-end.mt-auto
                     .new(v-if="getCountRequestInWork")
                       .caption.mb-4
@@ -50,7 +50,7 @@ div(:class="`${pre}`")
                       .value
                         | {{ getCountRequestInWork }}
                     .icon.ml-auto
-                      er-icon(name="lifebuoy")
+                      er-icon(name="service")
           er-flex.mb-16(xs6 xl3)
             er-preloader(:active="loadingPromisedPayment" icon)
               router-link.index-page__fast-link(to="/lk/promise-pay")

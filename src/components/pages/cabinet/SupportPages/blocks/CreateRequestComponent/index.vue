@@ -9,9 +9,8 @@
       )
         template(v-slot:activator="{ on }")
           .create-request-component__button
-            er-button(pre-icon="add" v-on="on")
-              span
-                | Создать заявку
+            er-button(pre-icon="add" v-on="on") Создать заявку
+
         .create-request-component__dialog
           .create-request-component__head
             .title

@@ -14,10 +14,12 @@
         padding: 40px 32px 32px;
         background: map_get($shades, 'white');
       }
+
       &__head {
         .title {
           @extend %h3;
         }
+
         .required {
           @extend %caption1;
 
@@ -35,19 +37,17 @@
     }
   }
   &__button {
-    padding: 32px 32px 24px;
+    padding: $padding-x6 $padding-x8;
+
     .er-button {
-      max-width: 243px;
       &__content {
         span {
           display: block;
-          flex: 1;
           margin-left: -32px;
         }
       }
       &__icon--prev {
         margin-left: 16px;
-        @include color-black(0.5);
         svg {
           width: 16px;
         }

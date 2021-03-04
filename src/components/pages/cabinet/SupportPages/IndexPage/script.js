@@ -4,6 +4,7 @@ import SlideUpDownWithTitleComponent from '../blocks/SlideUpDownWithTitleCompone
 import RequestItemComponent from '../blocks/RequestItemComponent/index'
 import CreateRequestComponent from '../blocks/CreateRequestComponent/index'
 import ContactInfoComponent from '../blocks/ContactInfoComponent/index'
+import DirectorFeedback from '../blocks/DirectorFeedback/index'
 import { mapState, mapGetters } from 'vuex'
 import { formatPhone } from '../../../../../functions/filters'
 
@@ -24,7 +25,8 @@ const CHANNEL_DMP = '9156762963913869573'
     SlideUpDownWithTitleComponent,
     RequestItemComponent,
     CreateRequestComponent,
-    ContactInfoComponent
+    ContactInfoComponent,
+    DirectorFeedback
   },
   filters: {
     filterTypeFilterRequest: val => val === 'all' ? 'Все заявки' : 'Активные заявки',
@@ -77,6 +79,7 @@ export default class SupportIndexPage extends Vue {
   listRequest = []
 
   currentPage = 1
+  isVisibleDirectorFeedback = false
 
   @Watch('vListRequest')
   onVListRequestChange (val) {
@@ -242,9 +245,15 @@ export default class SupportIndexPage extends Vue {
       this.listRequest[index].cancelledWhen = this.listRequest[index].modifiedWhen = Number(new Date())
     }
   }
+
   cancellRequest (requestItem) {
     requestItem.cancelledWhen = requestItem.modifiedWhen = Number(new Date())
   }
+
+  onShowDirectorFeedback () {
+    this.isVisibleDirectorFeedback = true
+  }
+
   async created () {
     this.setListRequest(this.vListRequest)
   }

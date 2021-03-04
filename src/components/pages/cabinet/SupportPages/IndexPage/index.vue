@@ -3,23 +3,29 @@
     er-page-header(title="Поддержка")
     .b-request
       .b-request__content
-        er-row.b-request__head(align-items-center)
-          er-flex(tag="h2" xs6 sm3) Заявки
-          er-flex.filter--mobile(tag="a" xs6 sm3 order-sm2, @click="toggleFilterRequest")
+        .b-request__head.align-items-center.no-gutters-child
+          h2 Заявки
+          .filter--mobile(tag="a" @click="toggleFilterRequest")
             | {{ typeFilterRequest | filterTypeFilterRequest }}
-          er-flex.filter--desktop(lg3 order-lg3)
-            a.mr-56(
+
+          .filter--desktop
+            a(
               :data-count="getCountActiveRequest"
               :class="{ 'active': isActiveFilterRequest(getTypeFilterRequestActive) }"
               @click="() => { setFilterRequest(getTypeFilterRequestActive) }"
-              ) Активные
+              )
+                span Активные
             a(
               :data-count="getCountRequest"
               :class="{ 'active': isActiveFilterRequest(getTypeFilterRequestAll) }"
               @click="() => { setFilterRequest(getTypeFilterRequestAll) }"
-              ) Все
-          er-flex(xs12 sm6 order-sm order-sm1)
-            er-select(:items="getListNameCity", placeholder="Город", v-model="city")
+              )
+                span Все
+          er-select.select-city(:items="getListNameCity", placeholder="Город", v-model="city")
+
+        .b-request__create
+          create-request-component
+
         .b-request__body
           .b-request__thead
             .b-request__thead-item(
@@ -47,8 +53,16 @@
                 :length="getLengthPagination"
                 :total-visible="getTotalVisiblePagination"
               )
-          .b-request__create
-            create-request-component
+
+    .director-feedback-block
+      er-slide-up-down(:active="!isVisibleDirectorFeedback")
+        er-button(
+          flat
+          @click="onShowDirectorFeedback"
+        ) Написать директору
+
+      director-feedback(v-model="isVisibleDirectorFeedback")
+
     contact-info-component
 </template>
 

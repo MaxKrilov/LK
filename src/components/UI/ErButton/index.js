@@ -99,7 +99,11 @@ export default {
         staticClass: `${this.pre}__content`
       }, [
         this.preIcon && this.genIcon(this.preIcon, 'prev'),
-        this.$slots.default,
+        h('span', {
+          staticClass: `${this.pre}__slot-content`
+        }, [
+          this.$slots.default
+        ]),
         this.appendIcon && this.genIcon(this.appendIcon, 'append')
       ]),
       this.loading && h('div', {

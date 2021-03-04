@@ -5,11 +5,17 @@
 .er-textarea-with-file__file-input {
   height: 20px;
   margin-top: auto;
+
   input {
     display: none;
   }
+
   label {
     pointer-events: all;
+    .er-icon {
+      transform: translateX(-5px);
+    }
+
     i {
       color: rgba(map_get($shades, 'black'), 0.2);
       svg {

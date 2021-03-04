@@ -11,12 +11,7 @@ mixin personalManager
       | Почта:
     .value.mb-16.mb-lg-32
       a(:href="`mailto:${getManagerInfo.email}`") {{ getManagerInfo.email }}
-  .to-director
-    .description.pl-24.mb-24.pl-lg-0.mb-lg-32
-      | Чтобы предложить идею, поблагодарить или оставить претензию вы можете:
-    .button
-      er-button(@click="openToDirector")
-        | Написать директору
+
 
 mixin contactsPhone
   .b-contact-info__contacts
