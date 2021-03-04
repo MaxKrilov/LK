@@ -41,31 +41,29 @@ export default {
 <style lang="scss">
 $padding-x15: 4 * 15px;
 
-.wip {
-  .header {
-    padding-top: $padding-x4;
-    padding-left: $padding-x4;
+.header {
+  padding-top: $padding-x4;
+  padding-left: $padding-x4;
+  position: absolute;
+
+  @include min-breakpoint(sm) {
+    position: relative;
+  }
+
+  @include min-breakpoint(md) {
     position: absolute;
+  }
 
-    @include min-breakpoint(sm) {
-      position: relative;
-    }
+  @include min-breakpoint(lg) {
+    padding-top: $padding-x8;
+    padding-left: $padding-x8;
+  }
 
-    @include min-breakpoint(md) {
-      position: absolute;
-    }
+  &__logo img {
+    height: $padding-x8;
 
-    @include min-breakpoint(lg) {
-      padding-top: $padding-x8;
-      padding-left: $padding-x8;
-    }
-
-    &__logo img {
-      height: $padding-x8;
-
-      @include min-breakpoint(xl) {
-        height: $padding-x12;
-      }
+    @include min-breakpoint(xl) {
+      height: $padding-x12;
     }
   }
 }

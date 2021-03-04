@@ -87,19 +87,5 @@ $ert: (
     'base': map-get($blue, 'base')
   ),
   'cards': map-get($shades, 'white'),
-  'dividers': rgba(map-get($shades, 'black'), 0.15),
-  'picker': (
-    'title': map-get($gray, '2'),
-    'body': map-get($shades, 'white')
-  ),
-  'date-picker': (
-    'years-item-active': map-get($green, 'base'),
-    'years-item-background-hover': map-get($yellow, 'base'),
-    'title-year-color': rgba(map-get($shades, 'black'), 0.5),
-    'title-date-color': rgba(map-get($shades, 'black'), 0.8),
-    'header-icon-color': map-get($gray, '21'),
-    'header-button-color': rgba(map-get($shades, 'black'), 0.8),
-    'active-date-background': map-get($yellow, 'base'),
-    'disabled-date-color': rgba(map-get($shades, 'black'), 0.2)
-  )
+  'dividers': rgba(map-get($shades, 'black'), 0.15)
 );

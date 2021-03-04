@@ -404,7 +404,7 @@ const actions = {
   },
   getAvailableFunds (
     context: ActionContext<IState, any>) {
-    const accountNumber = context.rootGetters['payments/getActiveBillingAccountNumber']
+    const accountNumber = context.rootGetters['user/getActiveBillingAccountNumber']
     return new Promise((resolve, reject) => {
       api()
         .setWithCredentials()

@@ -57,7 +57,7 @@ const components = {
 export default class OATSMainPage extends Vue {
   isPointsLoaded: boolean = false
 
-  @StoreGetter('payments/getActiveBillingAccount')
+  @StoreGetter('user/getActiveBillingAccount')
   billingAccountId!: any
 
   @StoreGetter('oats/domainList')

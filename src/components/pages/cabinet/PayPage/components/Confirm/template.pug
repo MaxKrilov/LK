@@ -1,0 +1,78 @@
+// Confirm
+
+er-dialog(
+  v-model="internalVisible"
+  :maxWidth="maxWidth"
+  :persistent="persistent"
+)
+  div(:class="`${pre}__content d--flex flex-column`")
+    div(:class="`${pre}__content__size`" v-if="!isLoading")
+      er-icon(name="question" :class="`${pre}__icon-height`")
+    div(:class="`${pre}__loading`" v-else)
+      img(:src="require('@/assets/images/preloaders/3.svg')")
+    div(:class="`${pre}__content__pos`" v-if="hint")
+      h4 {{ title }}
+        span.h3.ml-8(
+          :class="`${pre}__integer-row`"
+          v-if="err === ''"
+        ) {{ sumPayInteger }}
+        span.h3(
+          :class="`${pre}__decimal-row`"
+          v-if="err === ''"
+        ) ,{{ sumPayDecimal }}
+        span.rub(
+          :class="`${pre}__currency-row`"
+          v-if="err === ''"
+        )
+      h3(v-if="err !== ''") {{ subText }}
+      div(v-else)
+        span.h3(:class="`${pre}__integer`") {{ sumPayInteger }}
+        span.h3(:class="`${pre}__decimal`") ,{{ sumPayDecimal }}
+        span.rub(:class="`${pre}__currency`")
+        h4(v-if="numCard !== 0") сохраненной картой:
+        h3(v-if="numCard !== 0") {{ subText }}
+
+    div(:class="`${pre}__header`" v-else)
+      h3(:class="`${pre}__text__title${styleTitle}`") {{title}}
+      div(:class="`${pre}__text__header`") {{description}}
+      div(:class="`${pre}__text${styleTitle}`") {{subText}}
+
+    div.caption(
+      :class="`${pre}__err`"
+      v-if="hasErr && err !== ''"
+    ) {{err}}
+    div.caption(
+      :class="`${pre}__err`"
+      v-if="!isLoading && sumPay === 'promisePay' && !hasErr"
+    ) {{errText}}
+
+    div(:class="`${pre}__container-button`")
+      div(:class="`${pre}__butt__xl`")
+        er-flex.pr-28(xl7)
+          er-button(
+            flat=true
+            :disabled="disabled_l"
+            @click="buttLeft"
+          ) {{buttLeftText}}
+        er-flex.pr-24.pl-4(xl6)
+          er-button.align-items-center(
+            @click="buttRight"
+            :disabled="disabled_r"
+          )
+            er-button(id="preloaderButton"
+              :loading="true"
+              flat
+              v-if="isLoadingButt"
+            )
+            | {{buttRightText}}
+      div(:class="`${pre}__butt`")
+        a.mr-16(
+          @click="buttLeft"
+          :class="`${pre}__no-text${visButt}`"
+        ) {{buttLeftText}}
+        a.ml-16(
+          @click="buttRight"
+          :style="'pointer-events: ' + valDisable_r"
+          :class="`${pre}__yes-text`"
+        ) {{buttRightText}}
+

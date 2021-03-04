@@ -1,0 +1,47 @@
+.action-month {
+  &__service {
+    &__date {
+      position: absolute;
+      @extend %body-font;
+      color: map_get($shades, 'black');
+      @include media-query((
+        margin-top: (
+          xs: 20px,
+          sm: 23px,
+          md: 27px,
+          lg: 21px,
+          xl: 17px,
+        ),
+        margin-left: (
+          xs: 18px,
+          sm: 20px,
+          md: 25px,
+          lg: 0,
+        )
+      ));
+      &__dm {
+        opacity: 0.5;
+      }
+      &__yy {
+        opacity: 0.2;
+      }
+    }
+  }
+  &__height {
+    @include media-query((
+      height: (
+        xs: 49px,
+        md: 59px,
+      ),
+    ));
+    &__address {
+      @include media-query((
+        height: (
+          xs: 49px,
+          sm: 49px,
+          md: 59px,
+        ),
+      ));
+    }
+  }
+}

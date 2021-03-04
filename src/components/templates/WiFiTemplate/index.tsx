@@ -1,16 +1,14 @@
 import Vue, { CreateElement } from 'vue'
 import Component from 'vue-class-component'
-import { mapGetters, mapState } from 'vuex'
+import { mapState } from 'vuex'
 import { ILocationOfferInfo } from '@/tbapi'
 
 // eslint-disable-next-line no-use-before-define
 @Component<InstanceType<typeof WiFiTemplate>>({
   computed: {
     ...mapState({
-      loadingBillingAccount: (state: any) => state.loading.menuComponentBillingAccount
-    }),
-    ...mapGetters({
-      billingAccountId: 'payments/getActiveBillingAccount'
+      loadingBillingAccount: (state: any) => state.loading.menuComponentBillingAccount,
+      billingAccountId: (state: any) => state.user.activeBillingAccount
     })
   },
   watch: {

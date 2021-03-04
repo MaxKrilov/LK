@@ -4,7 +4,7 @@ import Component from 'vue-class-component'
 import { uniqBy, head } from 'lodash'
 import { ICustomerProduct, ILocationOfferInfo } from '@/tbapi'
 
-import { mapGetters, mapState } from 'vuex'
+import { mapState } from 'vuex'
 
 export interface iPageComponent {
   productType: string | null
@@ -36,10 +36,8 @@ const DISPATCH_GET_CUSTOMER_PRODUCT = 'productnservices/customerProduct'
 @Component<InstanceType<typeof PageComponent>>({
   computed: {
     ...mapState({
-      isLoadingBillingAccount: (state: any) => state.loading.menuComponentBillingAccount
-    }),
-    ...mapGetters({
-      billingAccountId: 'payments/getActiveBillingAccount'
+      isLoadingBillingAccount: (state: any) => state.loading.menuComponentBillingAccount,
+      billingAccountId: (state: any) => state.user.activeBillingAccount
     })
   },
   watch: {

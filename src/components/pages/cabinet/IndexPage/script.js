@@ -49,10 +49,10 @@ export default {
     ...mapState({
       clientName: state => state.user.clientInfo.name,
       balanceInfo: state => state.user.paymentInfo,
-      invPaymentsForViewer: state => state.payments.listInvoicePayment,
-      isPromisePay: state => state.payments.isHasPromisePayment,
-      promisePayStart: state => state.payments.promisePayStart,
-      promisePayEnd: state => state.payments.promisePayEnd
+      invPaymentsForViewer: state => state.payments.invPaymentsForViewer,
+      isPromisePay: state => state.user.isHasPromisePayment,
+      promisePayStart: state => state.user.promisePayStart,
+      promisePayEnd: state => state.user.promisePayEnd
     }),
     ...mapGetters({
       listProductByAddress: 'user/getListProductByAddress',
@@ -85,12 +85,10 @@ export default {
     },
 
     getWidthPromisePayLine () {
-      if (!this.isPromisePay || !this.promisePayEnd || !this.promisePayStart) return 0
-      const now = this.$moment()
-      const start = this.promisePayStart
-      const end = this.promisePayEnd
+      if (!this.isPromisePay) return 0
+      const current = this.$moment()
       return this.trackerIntervalPromisePay
-        ? (now.unix() - start.unix()) / (end.unix() - start.unix()) * 100
+        ? (1 - (current - this.promisePayStart) / (this.promisePayEnd - this.promisePayStart)) * 100
         : 0
     }
   },
@@ -112,7 +110,7 @@ export default {
       // ещё не реализовано
     },
     getEventsForInvPayments (on) {
-      if (Number(this.balanceInfo.balance) <= 0) {
+      if (Number(this.balanceInfo.balance) >= 0) {
         return {
           click: (e) => {
             e.preventDefault()
@@ -130,10 +128,10 @@ export default {
   },
   watch: {
     isOpenViewer (val) {
-      if (Number(this.balanceInfo.balance) <= 0) {
+      if (Number(this.balanceInfo.balance) >= 0) {
         this.isNotAccessInvPayment = true
       } else if (val && this.invPaymentsForViewer[0].filePath === '') {
-        this.$store.dispatch(`payments/getInvoicePayment`)
+        this.$store.dispatch(`payments/invPayment`, { api: this.$api })
       }
     },
     isPromisePay (val) {
@@ -147,7 +145,7 @@ export default {
           if (current >= end) {
             clearInterval(this.idIntervalPromisePay)
           }
-        }, 1000 * 60)
+        }, 1000)
       }
     }
   }

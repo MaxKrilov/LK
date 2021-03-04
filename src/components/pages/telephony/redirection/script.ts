@@ -17,7 +17,7 @@ const components = {
   name: 'telephony-redirection-page',
   components,
   computed: {
-    ...mapGetters({ billingAccountId: 'payments/getActiveBillingAccount' })
+    ...mapGetters({ billingAccountId: 'user/getActiveBillingAccount' })
   }
 })
 export default class TelephonyRedirectionPage extends Vue {

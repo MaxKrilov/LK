@@ -26,7 +26,7 @@ export default {
   },
   computed: {
     ...mapGetters({
-      billingAccountId: 'payments/getActiveBillingAccount'
+      billingAccountId: 'user/getActiveBillingAccount'
     }),
     amount () {
       return this.data.reduce((acc, el) => acc + +el.price, 0)

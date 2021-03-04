@@ -1,0 +1,27 @@
+// Promise Off
+
+div(:class="`${pre}`")
+  er-container(full :class="`${pre}__container`")
+    er-row.justify-content-start.no-gutters
+      er-flex(xs12 sm2 :class="`${pre}__container__width`")
+        div(:class="`${pre}__container`")
+          er-icon(name="cancel" :class="`${pre}__icon-height`")
+      er-flex(xs12 sm10)
+        div(:class="`${pre}__content`")
+          h3(:class="`${pre}__pos??`")
+            | Не может быть активирован
+          div(:class="`${pre}__value`")
+            | {{ reasonCanntActivatePromisePayment }}
+          div(:class="`${pre}__label__manager`")
+            | Ваш личный менеджер
+          h4(:class="`${pre}__fio`") {{ getManagerInfo.name }}
+          div(:class="`${pre}__label`") Телефон
+          div(:class="`${pre}__value`") {{ getManagerInfo.phone }}
+          div(:class="`${pre}__label`") Почта:
+          div(:class="`${pre}__value`") {{ getManagerInfo.email }}
+
+    er-container(:class="`${pre}__butt__container`")
+      er-button(
+        type="submit"
+        @click="paypage"
+      ) Перейти в платежи
