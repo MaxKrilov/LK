@@ -31,6 +31,7 @@ import './assets/scss/main.scss'
 
 // Подключение полифиллов
 import './functions/polyfill'
+import { logInfo } from '@/functions/logging'
 
 Vue.prototype.$api = new API()
 
@@ -106,6 +107,11 @@ if (!isLocalhost()) {
     dsn: 'https://77a765dcd28c40e196c504a62525e4bd@sentry.ertelecom.ru/69'
   })
 }
+
+/**
+ * Заглушка для накатов на бой (для отката)
+ */
+logInfo('roll-forward-04-03-21')
 
 // Vue.use(VueGtm, {
 //   id: 'G-BB74PC3KGX',
