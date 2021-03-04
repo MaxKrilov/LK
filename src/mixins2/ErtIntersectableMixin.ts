@@ -1,9 +1,12 @@
+// Directives
 import Intersect from '@/directives/intersect'
 
+// Types
 import Vue from 'vue'
 
 export default function intersectable (options: { onVisible: string[] }) {
   if (typeof window === 'undefined' || !('IntersectionObserver' in window)) {
+    // do nothing because intersection observer is not available
     return Vue.extend({ name: 'intersectable' })
   }
 
@@ -32,6 +35,8 @@ export default function intersectable (options: { onVisible: string[] }) {
             callback()
             continue
           }
+
+          console.warn(options.onVisible[i] + ' method is not available on the instance but referenced in intersectable mixin options')
         }
       }
     }

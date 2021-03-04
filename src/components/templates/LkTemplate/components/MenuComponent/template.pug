@@ -102,7 +102,7 @@ div(:class="`${pre}`")
         er-icon(name="wallet_auto")
       er-preloader(:active="menuComponentBalance")
         div.info
-          router-link(to="/lk/add-funds").link--solid--yellow {{ balanceInfo.balance | price }}
+          router-link(to="/lk/add-funds").link--solid--yellow {{ balance | price }}
           span.caption(:class="{ 'autopay': isAutopay }") Автоплатеж
 
     div(:class="`${pre}__top__manager ${pre}__top__link--desktop`")

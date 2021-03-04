@@ -35,8 +35,8 @@ import * as Sentry from '@sentry/vue'
 
 import {
   GET_CLIENT_INFO,
-  GET_LIST_BILLING_ACCOUNT, GET_LIST_PRODUCT_BY_ADDRESS, GET_LIST_PRODUCT_BY_SERVICE,
-  GET_MANAGER_INFO, GET_PAYMENT_INFO, GET_PROMISED_PAYMENT_INFO
+  GET_LIST_PRODUCT_BY_ADDRESS, GET_LIST_PRODUCT_BY_SERVICE,
+  GET_MANAGER_INFO, GET_PAYMENT_INFO
 } from '@/store/actions/user'
 import { GET_CHAT_TOKEN } from '@/store/actions/chat'
 
@@ -61,14 +61,14 @@ export default {
     }
   },
   data: () => ({
-    model: ''
+    model: []
   }),
   watch: {
-    // isAccessGranted (val) {
-    //   if (val) {
-    //     this.fetchUserData()
-    //   }
-    // },
+    isAccessGranted (val) {
+      if (val) {
+        this.fetchUserData()
+      }
+    },
     rebootBillingAccount (val) {
       if (!val) {
         const context = { api: this.$api }
@@ -139,12 +139,12 @@ export default {
             this.$store.dispatch(`user/${GET_MANAGER_INFO}`, context)
             this.$store.dispatch(`request/${GET_REQUEST}`, context)
             this.$store.dispatch(`fileinfo/downloadListDocument`, context)
-            this.$store.dispatch(`user/${GET_LIST_BILLING_ACCOUNT}`, { ...context, route: this.$route })
+            this.$store.dispatch(`payments/getListBillingAccount`, { route: this.$route })
               .then(isValid => {
                 if (isValid) {
-                  this.$store.dispatch(`user/${GET_PAYMENT_INFO}`, context)
+                  this.$store.dispatch(`payments/getBillingInfo`, context)
                   this.$store.dispatch(`chat/${GET_CHAT_TOKEN}`, context)
-                  this.$store.dispatch(`user/${GET_PROMISED_PAYMENT_INFO}`, context)
+                  this.$store.dispatch(`payments/getPromisedPaymentInfo`, context)
                   this.$store.dispatch(`user/${GET_LIST_PRODUCT_BY_ADDRESS}`, context)
                     .then(() => {
                       this.$store.dispatch(`user/${GET_LIST_PRODUCT_BY_SERVICE}`, context)

@@ -12,7 +12,7 @@ const components = { TvSlider }
     price
   },
   computed: {
-    ...mapGetters({ billingAccountId: 'user/getActiveBillingAccount' })
+    ...mapGetters({ billingAccountId: 'payments/getActiveBillingAccount' })
   } })
 export default class TVMainPage extends Vue {
   billingAccountId!: string | number

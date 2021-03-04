@@ -32,9 +32,13 @@ export default {
       this.getActiveBillingAccountNumber &&
       this.getChatToken && this.getTOMS && this.getChatTokenTimeStapm
     },
-    ...mapGetters('user', ['getClientInfo', 'getActiveBillingAccount', 'getActiveBillingAccountNumber']),
+    ...mapGetters('user', ['getClientInfo']),
     ...mapGetters('chat', ['getChatToken', 'getChatTokenTimeStapm', 'getChatTokenError']),
-    ...mapGetters('auth', ['getTOMS'])
+    ...mapGetters('auth', ['getTOMS']),
+    ...mapGetters({
+      getActiveBillingAccount: 'payments/getActiveBillingAccount',
+      getActiveBillingAccountNumber: 'payments/getActiveBillingAccountNumber'
+    })
   },
   mounted () {
   },

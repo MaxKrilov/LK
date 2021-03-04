@@ -13,7 +13,9 @@ const state = {
   loadingInvoiceForPayment: true,
   contacts: true,
 
-  rebootBillingAccount: false
+  rebootBillingAccount: false,
+
+  loadingPaymentHistoryBill: true
 }
 const getters = {
   indexPageProductByAddress: state => state.indexPageProductByAddress,
@@ -27,7 +29,8 @@ const getters = {
   loadingPromisedPayment: state => state.loadingPromisedPayment,
   loadingOrders: state => state.loadingOrders,
   sendingCancellingOrder: state => state.sendingCancellingOrder,
-  loadingInvoiceForPayment: state => state.loadingInvoiceForPayment
+  loadingInvoiceForPayment: state => state.loadingInvoiceForPayment,
+  loadingPaymentHistoryBill: state => state.loadingPaymentHistoryBill
 }
 const mutations = {
   indexPageProductByAddress (state, payload) {
@@ -68,6 +71,9 @@ const mutations = {
   },
   loadingInvoiceForPayment (state, payload) {
     state.loadingInvoiceForPayment = payload
+  },
+  loadingPaymentHistoryBill (state, payload) {
+    state.loadingPaymentHistoryBill = payload
   }
 }
 

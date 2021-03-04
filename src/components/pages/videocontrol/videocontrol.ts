@@ -8,7 +8,7 @@ import { mapGetters } from 'vuex'
     type: String
   },
   computed: {
-    ...mapGetters({ billingAccountId: 'user/getActiveBillingAccount' })
+    ...mapGetters({ billingAccountId: 'payments/getActiveBillingAccount' })
   }
 })
 export default class VCTemplate extends Vue {

@@ -3,8 +3,6 @@ import './style.scss'
 import Vue from 'vue'
 import Component from 'vue-class-component'
 
-import { getSlot } from '@/functions/helper2'
-
 @Component({
   props: {
     value: {
@@ -21,8 +19,11 @@ class ErtMessages extends Vue {
   genMessage (message: string, key: number) {
     return this.$createElement('div', {
       staticClass: 'ert-messages__message',
-      key
-    }, getSlot(this, 'default', { message, key }) || [message])
+      key,
+      domProps: {
+        innerHTML: message
+      }
+    })
   }
 
   genChildren () {

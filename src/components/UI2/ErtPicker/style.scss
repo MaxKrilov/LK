@@ -1,0 +1,63 @@
+@include theme(ert-picker) using ($theme) {
+  &__title {
+    background: map-deep-get($theme, 'picker', 'title');
+  }
+
+  &__body {
+    background: map-deep-get($theme, 'picker', 'body');
+  }
+}
+
+.ert-picker {
+  border-radius: 12px;
+  contain: layout style;
+  display: inline-flex;
+  flex-direction: column;
+  vertical-align: top;
+  position: relative;
+
+  &--full-width {
+    display: flex;
+    width: 100%;
+
+    > .ert-picker__body {
+      margin: initial;
+    }
+  }
+
+  &__title {
+    padding: 32px;
+  }
+
+  &__title__btn {
+    transition: $primary-transition;
+
+    &:not(.ert-picker__title__btn--active) {
+      cursor: pointer;
+    }
+
+    &--readonly {
+      pointer-events: none;
+    }
+  }
+
+  &__body {
+    height: auto;
+    overflow: hidden;
+    position: relative;
+    z-index: 0;
+    flex: 1 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 auto;
+
+    > div {
+      width: 100%;
+
+      &.fade-transition-leave-active {
+        position: absolute;
+      }
+    }
+  }
+}
