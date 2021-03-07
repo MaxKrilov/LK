@@ -161,6 +161,7 @@ export default class ErtTokens extends Vue {
   }
 
   beforeDestroy () {
+    if (this.isManager) return
     if (this.inactiveEventHandler != null) {
       document.removeEventListener('mousemove', this.inactiveEventHandler)
       document.removeEventListener('keydown', this.inactiveEventHandler)

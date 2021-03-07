@@ -115,8 +115,10 @@ export default {
     )
   },
   mounted () {
-    this.onHandleInaction()
-    // document.addEventListener('visibilitychange', this.handleVisibilityChange, false)
+    if (!this.isManager) {
+      this.onHandleInaction()
+      document.addEventListener('visibilitychange', this.handleVisibilityChange, false)
+    }
   },
   methods: {
     ...mapActions({
