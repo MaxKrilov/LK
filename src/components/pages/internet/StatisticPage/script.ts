@@ -104,7 +104,7 @@ export default class StatisticPage extends Vue {
 
   get getInternetTraffic () {
     const value = this.listStatistic.reduce((acc, item) => {
-      return acc + (item.type.toLowerCase() === 'Интернет трафик' ? item.bytes : 0)
+      return acc + (item.type === 'Интернет трафик' ? item.bytes : 0)
     }, 0)
     return getHtmlVolume(value)
   }
