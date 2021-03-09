@@ -36,7 +36,7 @@ import * as Sentry from '@sentry/vue'
 import {
   GET_CLIENT_INFO,
   GET_LIST_PRODUCT_BY_ADDRESS, GET_LIST_PRODUCT_BY_SERVICE,
-  GET_MANAGER_INFO, GET_PAYMENT_INFO
+  GET_MANAGER_INFO
 } from '@/store/actions/user'
 import { GET_CHAT_TOKEN } from '@/store/actions/chat'
 
@@ -77,7 +77,7 @@ export default {
         this.$store.commit(`loading/indexPageProductByService`, true)
         this.$store.commit(`loading/loadingDocuments`, true)
         this.$store.dispatch(`fileinfo/downloadListDocument`, context)
-        this.$store.dispatch(`user/${GET_PAYMENT_INFO}`, context)
+        this.$store.dispatch(`payments/getBillingInfo`, context)
         this.$store.dispatch(`user/${GET_LIST_PRODUCT_BY_ADDRESS}`, context)
           .then(() => {
             this.$store.dispatch(`user/${GET_LIST_PRODUCT_BY_SERVICE}`, context)
