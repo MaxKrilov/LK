@@ -3,7 +3,7 @@ import { CreateElement, VNode } from 'vue'
 import ListPointComponent from '@/components/templates/InternetTemplate/blocks/ListPointComponent/index.vue'
 import { getFirstElement, uniq } from '@/functions/helper'
 import { API } from '@/functions/api'
-import { mapState } from 'vuex'
+import { mapGetters, mapState } from 'vuex'
 import { ICustomerProduct, ILocationOfferInfo } from '@/tbapi'
 
 export interface iPointItem {
@@ -29,8 +29,10 @@ const transformListPoint = (listPoint: ILocationOfferInfo[]): iPointItem[] => un
   },
   computed: {
     ...mapState({
-      loadingBillingAccount: (state: any) => state.loading.menuComponentBillingAccount,
-      billingAccountId: (state: any) => state.user.activeBillingAccount
+      loadingBillingAccount: (state: any) => state.loading.menuComponentBillingAccount
+    }),
+    ...mapGetters({
+      billingAccountId: 'payments/getActiveBillingAccount'
     })
   },
   watch: {

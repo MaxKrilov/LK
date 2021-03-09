@@ -75,3 +75,11 @@ export interface IColor {
   hue: number
   rgba: RGBA
 }
+
+export type DatePickerFormatter = (date: string) => string
+
+export type DatePickerAllowedDatesFunction = (date: string) => boolean
+
+export type DatePickerMultipleFormatter = (date: string[]) => string
+
+export type DatePickerType = 'date' | 'month'

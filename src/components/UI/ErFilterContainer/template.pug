@@ -5,7 +5,7 @@
     .er-filter-container__label Фильтровать
 
   .er-filter-container__selected.main-content.main-content--h-padding
-    er-icon(name="filter_1").er-filter-container__filter-icon
+    er-icon(name="filter_1" @click="iconClick").er-filter-container__filter-icon
     slot(name="selected-filters")
 
   .er-filter-container__body

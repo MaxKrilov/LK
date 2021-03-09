@@ -1,0 +1,85 @@
+$prev-slide-class: 'swiper-slide-prev';
+$active-slide-class: 'swiper-slide-active';
+$next-slide-class: 'swiper-slide-next';
+
+$component-height: (
+  'xs': 220px,
+  'sm': 176px,
+  'md': 208px
+);
+
+$card-width: (
+  'xs': 256px,
+  'md': 336px
+);
+
+$card-height: (
+  'xs': 160px,
+  'md': 208px
+);
+
+$border-color: linear-gradient(22deg, map-get($gray, '54'), map-get($shades, 'white') 66%);
+
+$card-box-shadow: -4px 4px 6px rgba(map-get($shades, 'black'), 0.02),
+                  -8px 8px 16px rgba(map-get($shades, 'black'), 0.03);
+
+$card-box-shadow-back: 0 4px 6px rgba(map-get($shades, 'black'), 0.05),
+                       0 1px 2px rgba(map-get($shades, 'black'), 0.1);
+
+$new-card-front-background: linear-gradient(288deg,
+  map-get($shades, 'transparent') 49%,
+  map-get($shades, 'white') 54%,
+  map-get($shades, 'transparent') 71%
+),
+radial-gradient(circle farthest-corner at 0% 0%,
+    map-get($gray, '45') 2%,
+    map-get($gray, '55') 65%,
+    map-get($gray, '2')
+);
+
+$new-card-back-background: map-get($gray, '4');
+
+$new-card-back-line-background: map-get($gray, '34');
+
+$card-front-background: map-get($shades, 'white');
+
+$card-back-background: radial-gradient(50% 50% at 50% 50%, map-get($yellow, 'base') 55.5%, map-get($yellow, 'other-4') 100%);
+
+$card-back-line-background: map-get($yellow, 'other-12');
+
+$card-number-color: linear-gradient(
+    180deg,
+    map-get($gray, '48') 0%,
+    map-get($gray, '49') 55.25%,
+    map-get($shades, 'black') 59.12%,
+    map-get($gray, '50') 79.01%
+);
+
+$card-number-text-shadow: -1px 1px 2px rgba(map-get($shades, 'black'), 0.25);
+
+%card-number {
+  @extend %h2-font;
+  background-image: $card-number-color;
+  color: map-get($shades, 'transparent');
+  background-clip: text;
+  text-shadow: $card-number-text-shadow;
+}
+
+%card-number-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: linear-gradient(180deg, map-get($shades, 'white') 0%, map-get($gray, '51') 100%);
+  box-shadow: -1px 1px 2px rgba(map-get($shades, 'black'), 0.25);
+  margin-right: 6px;
+  padding: 1px;
+
+  > span {
+    display: block;
+    border-radius: inherit;
+    width: 100%;
+    height: 100%;
+    background: map-get($gray, '47');
+  }
+}
