@@ -1,0 +1,96 @@
+.payment-result-page {
+  &__row {
+    display: flex;
+    width: 100%;
+  }
+
+  &__icon {
+    > i > svg {
+      width: 64px !important;
+
+      @include min-breakpoint('md') {
+        width: 80px !important;
+      }
+
+      @include min-breakpoint('lg') {
+        width: 96px !important;
+      }
+
+      @include min-breakpoint('xl') {
+        width: 128px !important;
+      }
+    }
+
+    &.error {
+      color: map-get($red, 'base');
+    }
+
+    &.success {
+      color: map-get($green, 'base');
+    }
+
+    &.check {
+      color: map-get($yellow, 'base');
+    }
+  }
+
+  &__title {
+    @extend %h2;
+  }
+
+  &__description {
+    @extend %body-font;
+    @include color-black(1);
+  }
+
+  &__email {
+    .title {
+      @extend %h4;
+    }
+
+    .subtitle {
+      @extend %caption2-font;
+      @include color-black(0.2);
+    }
+
+    .value {
+      @extend %body-font;
+      @include color-black(0.8);
+    }
+  }
+
+  &__actions {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+
+    @include min-breakpoint('sm') {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+    }
+  }
+
+  &__action {
+    width: 100%;
+
+    @include min-breakpoint('sm') {
+      max-width: 206px;
+    }
+  }
+
+  &__action .chat {
+    display: flex;
+    align-items: center;
+
+    .ert-icon {
+      color: map-get($yellow, 'base');
+    }
+
+    span {
+      @extend %button-font;
+      @include color-black(0.8);
+      border-bottom: 1px dashed;
+    }
+  }
+}

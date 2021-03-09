@@ -7,7 +7,7 @@ export default class BillingAccountMixin extends Vue {
     Миксин вызывает метод fetchData() при каждом обновлении billingAccountId
   */
 
-  @StoreGetter('user/getActiveBillingAccount')
+  @StoreGetter('payments/getActiveBillingAccount')
   billingAccountId!: string
 
   @Watch('billingAccountId')

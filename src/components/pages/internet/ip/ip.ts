@@ -30,7 +30,7 @@ const SUBNRT_IP_COUNT: Record<string, number> = {
 @Component({
   components,
   computed: {
-    ...mapGetters({ billingAccountId: 'user/getActiveBillingAccount' })
+    ...mapGetters({ billingAccountId: 'payments/getActiveBillingAccount' })
   }
 })
 export default class Ip extends Vue {

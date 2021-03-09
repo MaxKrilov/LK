@@ -87,7 +87,7 @@ const actions = {
   ) {
     if (!locationId) throw new Error('Missing required parameter')
     const clientId = getClientId(context)
-    const marketingBrandId = context.rootGetters['user/getMarketingBrandId']
+    const marketingBrandId = context.rootGetters['payments/getMarketingBrandId']
 
     if (!marketingBrandId) {
       throw new Error(MESSAGES.MARKETING_BRAND_ID_NOT_FOUND)
@@ -404,7 +404,7 @@ const actions = {
   },
   getAvailableFunds (
     context: ActionContext<IState, any>) {
-    const accountNumber = context.rootGetters['user/getActiveBillingAccountNumber']
+    const accountNumber = context.rootGetters['payments/getActiveBillingAccountNumber']
     return new Promise((resolve, reject) => {
       api()
         .setWithCredentials()

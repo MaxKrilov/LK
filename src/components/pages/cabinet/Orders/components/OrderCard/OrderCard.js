@@ -38,9 +38,10 @@ export default {
     ...mapState({
       screenWidth: (state) => state.variables[SCREEN_WIDTH]
     }),
-    ...mapGetters('user', ['getClientInfo', 'getActiveBillingAccountNumber']),
+    ...mapGetters('user', ['getClientInfo']),
     ...mapGetters({
-      loadingOrders: 'loading/loadingOrders'
+      loadingOrders: 'loading/loadingOrders',
+      getActiveBillingAccountNumber: 'payments/getActiveBillingAccountNumber'
     }),
     status () {
       if (!this.card || !this.card?.status) {

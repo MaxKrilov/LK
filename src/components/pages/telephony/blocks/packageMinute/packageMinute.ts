@@ -8,7 +8,7 @@ const components = {
 @Component({
   components,
   computed: {
-    ...mapGetters({ billingAccountId: 'user/getActiveBillingAccount' })
+    ...mapGetters({ billingAccountId: 'payments/getActiveBillingAccount' })
   } })
 export default class PackageMinuteCard extends Vue {
   @Prop({ type: Object }) readonly slo!: any

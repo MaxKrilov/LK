@@ -15,7 +15,7 @@ const components = {
 @Component({
   components,
   computed: {
-    ...mapGetters({ billingAccountId: 'user/getActiveBillingAccount' })
+    ...mapGetters({ billingAccountId: 'payments/getActiveBillingAccount' })
   } })
 export default class DdosPage extends Vue {
   billingAccountId!: string | number
