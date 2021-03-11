@@ -359,6 +359,16 @@ export default class CardPaymentPage extends Vue {
     }, 5000)
   }
 
+  onCardClick (index: number) {
+    if (this.swiperSlider == null || index === this.activeCardIndex) return
+
+    if (index < this.activeCardIndex) {
+      this.swiperSlider.slidePrev()
+    } else {
+      this.swiperSlider?.slideNext()
+    }
+  }
+
   // Hooks
   mounted () {
     this.$nextTick(() => {

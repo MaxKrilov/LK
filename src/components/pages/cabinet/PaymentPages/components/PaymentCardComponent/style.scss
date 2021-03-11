@@ -151,7 +151,7 @@
   }
 
   &:not(.new).#{$next-slide-class} {
-    pointer-events: none;
+    //pointer-events: none;
     .next {
       display: flex;
       align-items: center;
@@ -373,7 +373,7 @@
   }
 
   &:not(.#{$active-slide-class}) {
-    pointer-events: none;
+    //pointer-events: none;
   }
 
   &.#{$prev-slide-class} {
@@ -445,7 +445,7 @@
         bottom: 0;
         left: 0;
         color: rgba(map-get($red, 'base'), 0.1);
-        pointer-events: none;
+        //pointer-events: none;
         display: flex;
         align-items: center;
         justify-content: center;

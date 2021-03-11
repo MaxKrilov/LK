@@ -1,5 +1,8 @@
 <template lang="pug">
-  .payment-card-component.swiper-slide(:class="[definePaymentSystem, { 'new': isNew, 'removed': isRemovedCard }]")
+  .payment-card-component.swiper-slide(
+    :class="[definePaymentSystem, { 'new': isNew, 'removed': isRemovedCard }]"
+    @click.prevent.stop="() => { $emit('click') }"
+  )
     .payment-card-component__component
       .payment-card-component__front
         .content
