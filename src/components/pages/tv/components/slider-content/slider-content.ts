@@ -36,7 +36,9 @@ export default class TvSlider extends Vue {
       parentIds: [this.bpi]
     })
       .then((response:ITVProduct) => {
+        // @ts-ignore
         this.tvCode = Object.values(response)?.[0]?.offer.code
+        // @ts-ignore
         this.date = Object.values(response)?.[0]?.actualStartDate
         // @ts-ignore
         const data = Object.values(Object.values(response)?.[0].tvLines || Object.values(response)?.[0].tvines || {})
@@ -55,7 +57,8 @@ export default class TvSlider extends Vue {
                 type: stbItem.chars['Способ передачи оборудования'],
                 price: Number(stbItem.purchasedPrices.recurrentTotal.value),
                 stbName: stbItem.name,
-                guarantee: Object.values(stbItem?.services)?.[0]?.chars?.['Гарантийный срок (до)'] || '',
+                // @ts-ignore
+                guarantee: Object.values(stbItem?.services || {})?.[0]?.chars?.['Гарантийный срок (до)'] || '',
                 model: stbItem.chars?.['Модель'],
                 name: stbItem.chars?.['Имя оборудования']
               }
