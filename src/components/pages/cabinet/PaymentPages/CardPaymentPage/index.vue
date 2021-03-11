@@ -12,6 +12,7 @@
             .swiper-wrapper
               PaymentCardComponent(
                 @change:remember-card="(val) => { isRememberCard = val }"
+                @click="onCardClick(0)"
               )
               PaymentCardComponent(
                 v-for="(card, index) in cardList"
@@ -20,6 +21,7 @@
                 :isNew="false"
                 @change:autopay="onChangeAutoPay"
                 @change:remove="onRemoveCard(index + 1)"
+                @click="onCardClick(index + 1)"
               )
         .card-payment-page__actions-block.mt-40.mb-32.mt-md-48
           ErtForm(ref="amount-form")
