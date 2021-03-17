@@ -604,8 +604,8 @@ export default class TariffComponent extends Vue {
       }
       if (!this.isInfinity) {
         const [from, to] = this.turboPeriod
-        char[CHAR_START_DATE_TURBO] = moment(from).format()
-        char[CHAR_STOP_DATE_TURBO] = moment(to).format()
+        char[CHAR_START_DATE_TURBO] = moment(from).utcOffset(180).format()
+        char[CHAR_STOP_DATE_TURBO] = moment(to).utcOffset(180).format()
       }
       _price = Number(price.amount)
     } else {

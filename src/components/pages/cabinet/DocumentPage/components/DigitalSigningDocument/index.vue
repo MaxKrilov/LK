@@ -25,7 +25,7 @@
               )
           .actions.mt-auto.d--flex.flex-column-reverse.flex-sm-row
             .action.pr-sm-8
-              er-button(flat @click="() => { !isSigningDocument && ( internalValue = false ) }") Отменить
+              er-button(flat @click="() => { if (!isSigningDocument) { internalValue = false; isShowListCertificateDialog = false } }") Отменить
             .action.mb-8.mb-sm-0.pl-sm-8
               er-button(@click="signDocument" :loading="isSigningDocument") Подписать
     er-activation-modal(

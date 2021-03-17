@@ -12,6 +12,7 @@ import moment from 'moment'
 import { mapState } from 'vuex'
 import { SCREEN_WIDTH } from '@/store/actions/variables'
 import { BREAKPOINT_MD } from '@/constants/breakpoint'
+import { IClientInfo } from '@/tbapi/user'
 const mime = require('mime-types')
 
 interface IDocument extends DocumentInterface {
@@ -42,7 +43,7 @@ export default class DigitalSigningDocument extends Vue {
   readonly value!: boolean
   readonly signingDocument!: IDocument
   readonly screenWidth!: number
-  readonly clientInfo!: any
+  readonly clientInfo!: IClientInfo
   /**
    * Список сертификатов
    */
@@ -120,13 +121,29 @@ export default class DigitalSigningDocument extends Vue {
             // Хотя бы один сертификат есть, так как при их отсутствии выбрасывается исключение
             this.selectedCertificate = getFirstElement(this.listCertificate)
           })
-          .catch(error => this.errorHandler(error.message as string))
+          .catch(error => {
+            this.errorHandler(error.message as string)
+            this.$store.dispatch('fileinfo/logEdo', {
+              api: this.$api,
+              type: 'ERROR',
+              data: {
+                errorText: 'Плагин недоступен или не установлен. Текст ошибки:' + error.message.toString()
+              }
+            })
+          })
       })
-      .catch(() => {
+      .catch((error) => {
         this.errorHandler(
-          `Плагин недоступен или не установлен! 
+          `Плагин недоступен или не установлен!
             Убедитесь в правильности работы плагина или <a href="https://www.cryptopro.ru/" target="_blank">установите</a> его`
         )
+        this.$store.dispatch('fileinfo/logEdo', {
+          api: this.$api,
+          type: 'ERROR',
+          data: {
+            errorText: 'Плагин недоступен или не установлен. Текст ошибки:' + error.message.toString()
+          }
+        })
       })
   }
 
@@ -136,10 +153,27 @@ export default class DigitalSigningDocument extends Vue {
   async signDocument () {
     if (!this.$refs.certificate_form.validate()) return
     this.isSigningDocument = true
-    const visibleSignature = DigitalSignature.createVisibleSignature(this.clientInfo.name || '', this.selectedCertificate as iCertificate)
+    const visibleSignature = DigitalSignature.createVisibleSignature(this.clientInfo.legalName || '', this.selectedCertificate as iCertificate)
     const header = ';base64,'
     const data = this.signingDocument.data.substr(this.signingDocument.data.indexOf(header) + header.length)
-    DigitalSignature.signDocument(cadesplugin, data, this.selectedCertificate as iCertificate, visibleSignature)
+    DigitalSignature
+      .signDocument(
+        cadesplugin,
+        data,
+        this.selectedCertificate as iCertificate,
+        visibleSignature,
+        (logData: any, type: string) =>
+          this.$store.dispatch('fileinfo/logEdo', {
+            api: this.$api,
+            type,
+            data: {
+              ...logData,
+              filePath: this.signingDocument.filePath,
+              bucket: this.signingDocument.bucket,
+              fileName: this.signingDocument.fileName
+            }
+          })
+      )
       .then(_signDocument => {
         const _binaryFile = dataURLtoFile(_signDocument, this.signingDocument.fileName)
         const _filePath = `${moment().format('MMYYYY')}/${this.signingDocument.id}`

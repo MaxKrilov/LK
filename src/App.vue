@@ -24,7 +24,7 @@
 <script>
 import { mapGetters, mapState, mapActions } from 'vuex'
 import { SCREEN_WIDTH } from './store/actions/variables'
-import { getScreenWidth, isLocalhost } from './functions/helper'
+import { getWindowWidth, isLocalhost } from './functions/helper'
 import NotAccessPage from './components/pages/errors/not-access'
 import WorkInProgress from '@/components/pages/errors/work-in-progress'
 import ErPreloader from './components/blocks/ErPreloader'
@@ -93,12 +93,12 @@ export default {
     if (USE_SSO_AUTH) {}
   },
   beforeCreate () {
-    this.$store.commit(SCREEN_WIDTH, getScreenWidth())
+    this.$store.commit(SCREEN_WIDTH, getWindowWidth())
     window.addEventListener('resize', () => {
-      this.$store.commit(SCREEN_WIDTH, getScreenWidth())
+      this.$store.commit(SCREEN_WIDTH, getWindowWidth())
     })
     window.addEventListener('orientationchange', () => {
-      this.$store.commit(SCREEN_WIDTH, getScreenWidth())
+      this.$store.commit(SCREEN_WIDTH, getWindowWidth())
     })
     console.log('%c ВНИМАНИЕ!', 'font-size: 28px; color: #E31E24')
     console.log(

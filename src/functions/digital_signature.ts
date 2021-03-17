@@ -343,9 +343,15 @@ export default class DigitalSignature {
    * @param {string} document
    * @param {string} rawCertificate
    * @param {string} visibleSignature
+   * @param {Function} logCallback
    * @return {Promise<{CacheObjectId: string, HashValue: string}>}
    */
-  public static async requestToPresign (document: string, rawCertificate: string, visibleSignature: string) {
+  public static async requestToPresign (
+    document: string,
+    rawCertificate: string,
+    visibleSignature: string,
+    logCallback: (data: any, type: string) => Promise<void>
+  ) {
     const requestData = {
       Document: document,
       RawCertificate: rawCertificate,
@@ -361,7 +367,36 @@ export default class DigitalSignature {
     let result
     try {
       result = await axios.post(this.presignUrl, requestData)
+      await logCallback({
+        request: this.presignUrl,
+        requestData: {
+          RawCertificate: rawCertificate,
+          SignatureType: 'PDF',
+          SignatureParams: {
+            PDFFormat: 'CMS',
+            PDFReason: '',
+            PDFLocation: '',
+            PdfSignatureAppearance: visibleSignature,
+            PdfSignatureTemplateId: 1
+          }
+        }
+      }, 'INFO')
     } catch (ex) {
+      logCallback({
+        request: this.presignUrl,
+        errorText: ex.toString(),
+        requestData: {
+          RawCertificate: rawCertificate,
+          SignatureType: 'PDF',
+          SignatureParams: {
+            PDFFormat: 'CMS',
+            PDFReason: '',
+            PDFLocation: '',
+            PdfSignatureAppearance: visibleSignature,
+            PdfSignatureTemplateId: 1
+          }
+        }
+      }, 'ERROR')
       throw new Error(errorText)
     }
     return {
@@ -376,13 +411,16 @@ export default class DigitalSignature {
    * @param {string} signatureValue
    * @param {string} cacheObjectId
    * @param {string} visibleSignature
+   * @param {Function} logCallback
    * @return {Promise<string>}
    */
   public static async requestToPostsign (
     signedHashValue: string,
     signatureValue: string,
     cacheObjectId: string,
-    visibleSignature: string) {
+    visibleSignature: string,
+    logCallback: (data: any, type: string) => Promise<void>
+  ) {
     const requestData = {
       SignedHashValue: signedHashValue,
       SignatureValue: signatureValue,
@@ -399,7 +437,13 @@ export default class DigitalSignature {
     let result
     try {
       result = await axios.post(this.postsignUrl, requestData)
+      await logCallback({ request: this.postsignUrl, requestData }, 'INFO')
     } catch (ex) {
+      logCallback({
+        request: this.postsignUrl,
+        errorText: ex.toString(),
+        requestData: requestData
+      }, 'ERROR')
       throw new Error(errorText)
     }
     return result.data
@@ -506,12 +550,14 @@ export default class DigitalSignature {
    * @param {string} document
    * @param {{ id: string, value: string, version: number, thumbprint: string, subjectName: string, serialNumber: string, issuerName: string, validFromDate: string, validToDate: string }} certificate
    * @param {string} visibleSignature
+   * @param {Function} logCallback
    */
   public static async signDocument (
     cadesplugin: CADESPlugin | CADESPluginAsync | CADESPluginSync,
     document: string,
     certificate: iCertificate,
-    visibleSignature: string
+    visibleSignature: string,
+    logCallback: (data: any, type: string) => Promise<void>
   ) {
     if (!DigitalSignature.canAsync(cadesplugin)) {
       throw new Error('Browser not supported Promises')
@@ -520,7 +566,7 @@ export default class DigitalSignature {
       const resultSignCreate = await DigitalSignature
         .signCreate(cadesplugin as CADESPluginAsync, certificate.thumbprint, document)
       const resultPresign = await DigitalSignature
-        .requestToPresign(document, resultSignCreate.message, visibleSignature)
+        .requestToPresign(document, resultSignCreate.message, visibleSignature, logCallback)
       if (!resultPresign.CacheObjectId || !resultPresign.HashValue) {
         throw new Error('Undefined CacheObjectId and HashValue')
       }
@@ -534,7 +580,7 @@ export default class DigitalSignature {
         .hashSignCreate(cadesplugin as CADESPluginAsync, certificate.thumbprint, hashValue)
       const base64ResultSignCreateSecond = hexToBase64(resultSignCreateSecond.message)
       const result = await DigitalSignature
-        .requestToPostsign(resultPresign.HashValue, base64ResultSignCreateSecond, resultPresign.CacheObjectId, visibleSignature)
+        .requestToPostsign(resultPresign.HashValue, base64ResultSignCreateSecond, resultPresign.CacheObjectId, visibleSignature, logCallback)
       return result
     } catch (ex) {
       throw new Error(ex.message)
