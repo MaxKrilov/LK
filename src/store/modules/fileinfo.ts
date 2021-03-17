@@ -181,6 +181,27 @@ const actions = {
         .then(response => { resolve(response) })
         .catch(err => { reject(err) })
     })
+  },
+  logEdo (
+    context: ActionContext<IState, any>,
+    { api, type, data }: { api: API, type: 'INFO' | 'WARN' | 'ERROR' | 'DEBUG', data: any }
+  ) {
+    const { toms: clientId } = context.rootGetters['auth/user']
+    const clientName = context.rootState['user/clientInfo'].legalName || ''
+    return new Promise((resolve, reject) => {
+      api
+        .setWithCredentials()
+        .setType(TYPE_JSON)
+        .setData({
+          clientId,
+          clientName,
+          type,
+          data
+        })
+        .query('/docs/edo2/log')
+        .then(response => resolve(response))
+        .catch(err => { reject(err) })
+    })
   }
 }
 

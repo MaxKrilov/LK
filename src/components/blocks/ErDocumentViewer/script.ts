@@ -134,6 +134,8 @@ export default class ErDocumentViewer extends Vue {
                   this.currentDocumentFile = base64File
                   resolve(base64File)
                 })
+            } else {
+              resolve(this.listFile.get(downloadDocument.id.toString()))
             }
           }
         })
