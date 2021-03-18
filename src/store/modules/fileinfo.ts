@@ -187,7 +187,7 @@ const actions = {
     { api, type, data }: { api: API, type: 'INFO' | 'WARN' | 'ERROR' | 'DEBUG', data: any }
   ) {
     const { toms: clientId } = context.rootGetters['auth/user']
-    const clientName = context.rootState['user/clientInfo'].legalName || ''
+    const clientName = context.rootState?.user?.clientInfo?.legalName || ''
     return new Promise((resolve, reject) => {
       api
         .setWithCredentials()
