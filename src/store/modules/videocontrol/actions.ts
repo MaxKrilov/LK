@@ -6,7 +6,6 @@ import PnS from '../productnservices'
 import { IState } from './state'
 
 import {
-  MARKET_ID,
   DISTRIBUTION_CHANNEL_ID,
   CUSTOMER_CATEGORY_ID,
   VC_TYPES
@@ -83,13 +82,14 @@ export const actions = {
   },
   fetchAllowedOffers (context: ActionContext<IState, any>, { api, ...payload }: { api: API}) {
     const { toms: clientId } = context.rootGetters['auth/user']
+    const _marketId = context.rootGetters['user/getMarketId']
 
     const newPayload = {
       clientId,
       brandId: VC_TYPES.BRAND_ID,
-      marketId: MARKET_ID,
-      customerCategoryId: '146',
-      distributionChannelId: '144',
+      marketId: _marketId,
+      customerCategoryId: CUSTOMER_CATEGORY_ID,
+      distributionChannelId: DISTRIBUTION_CHANNEL_ID,
       ...payload
     }
 
@@ -118,11 +118,12 @@ export const actions = {
    */
   fetchProductOffering (context: ActionContext<IState, any>, { api, ...payload }: { api: API}) {
     const { toms: clientId } = context.rootGetters['auth/user']
+    const _marketId = context.rootGetters['user/getMarketId']
 
     const newPayload = {
       clientId,
       distributionChannelId: DISTRIBUTION_CHANNEL_ID,
-      marketId: MARKET_ID,
+      marketId: _marketId,
       customerCategoryId: CUSTOMER_CATEGORY_ID,
       // brandId: VC_TYPES.BRAND_ID,
       ...payload

@@ -1,6 +1,8 @@
 import { ActionContext } from 'vuex'
 import { API } from '@/functions/api'
 import { ICustomerProduct, ILocationOfferInfo } from '@/tbapi'
+import { CUSTOMER_CATEGORY_ID, DISTRIBUTION_CHANNEL_ID } from '@/constants/catalog'
+
 import { AxiosError } from 'axios'
 import { TYPE_JSON, TYPE_ARRAY } from '@/constants/type_request'
 
@@ -143,8 +145,8 @@ const actions = {
         .setData({
           brandId,
           marketId: _marketId,
-          customerCategoryId: 146,
-          distributionChannelId: 144,
+          customerCategoryId: CUSTOMER_CATEGORY_ID,
+          distributionChannelId: DISTRIBUTION_CHANNEL_ID,
           clientId,
           id
         })
