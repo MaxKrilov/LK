@@ -22,7 +22,7 @@ const isVCPoint = (item: ILocationOfferInfo) =>
   item.offer.name === VIDEOCONTROL_OFFER_NAME
 
 const isActiveOffering = (item: IOffer) =>
-  ['Активный', 'Active'].includes(item.status)
+  ['Активный', 'Active', 'Выпущено'].includes(item.status)
 
 // const isBFAnalyticByCategoryId = (item: IOfferingRelationship) =>
 //   item.categoryId === ANALYTIC_CATEGORY_ID
