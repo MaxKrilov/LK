@@ -1,6 +1,6 @@
 import { ActionContext } from 'vuex'
 import { API } from '@/functions/api'
-import { BRAND_ID, CUSTOMER_CATEGORY_ID, DISTRIBUTION_CHANNEL_ID, MARKET_ID } from '@/constants/catalog'
+import { BRAND_ID, CUSTOMER_CATEGORY_ID, DISTRIBUTION_CHANNEL_ID } from '@/constants/catalog'
 import { TYPE_JSON } from '@/constants/type_request'
 import { ICatalogOffer } from '@/tbapi/catalog_offer'
 
@@ -12,6 +12,7 @@ const actions = {
     { id }: { id: string }
   ) {
     const { toms: clientId } = context.rootGetters['auth/user']
+    const _marketId = context.rootGetters['user/getMarketId']
 
     return new Promise<ICatalogOffer[]>((resolve, reject) => {
       api()
@@ -20,7 +21,7 @@ const actions = {
         .setData({
           clientId,
           brandId: BRAND_ID,
-          marketId: MARKET_ID,
+          marketId: _marketId,
           customerCategoryId: CUSTOMER_CATEGORY_ID,
           distributionChannelId: DISTRIBUTION_CHANNEL_ID,
           id

@@ -2,8 +2,8 @@
 const PLUG_URL = 'https://b2b.domru.ru/products/videonablyudenie'
 
 const MARKET_ID = '68'
-const CUSTOMER_CATEGORY_ID = '146'
-const DISTRIBUTION_CHANNEL_ID = '144'
+const CUSTOMER_CATEGORY_ID = '147637'
+const DISTRIBUTION_CHANNEL_ID = '147630'
 const VIDEOCONTROL_OFFER_NAME = 'Видеоконтроль'
 
 // для поиска в данных в /catalog/management/allowed-offers
