@@ -281,8 +281,8 @@ const actions = {
           id: orderId,
           orderItemIds: [orderItemId],
           disconnectDate,
-          primaryDisconnectReason: '9154707822713202000',
-          secondaryDisconnectReason: '9154707827913202000'
+          primaryDisconnectReason: '9154707822713201688',
+          secondaryDisconnectReason: '9154707827913201716'
         })
         .query(QUERY.DELETE_ELEMENT)
         .then((response: ISaleOrder) => {
