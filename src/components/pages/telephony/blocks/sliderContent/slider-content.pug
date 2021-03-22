@@ -15,32 +15,35 @@ div(:class="`${pre}`" )
             div(:class="`${pre}__slider__date`")
               div(:class="`${pre}__caption2`") Активен с:
               div {{ startDate }}
-          div(:class="`${pre}__slider__channels-wrapper`" v-if="serChannels || serChannelsE1")
-            template(v-if="serChannels")
-              div(:class="`${pre}__caption2`") Канал связи:
-              div(:class="`${pre}__slider__channels-select`")
-                div(:class="`${pre}__slider__channels`")
-                  ErNumberField(v-model="serChannelsValue")
-                div(:class="`${pre}__slider__channels-price`" v-if="serChannelsPrice").h4
-                  template(v-if="isChangedChannels")
-                    er-button(@click="changeChannels" :loading="isChangingChannels") Изменить
-                  template(v-else)
-                    | {{ serChannelsPrice }} <span class="caption2">₽/мес</span>
-            template(v-else-if="serChannelsE1")
-              div(:class="`${pre}__slider__channels-e1-wrapper`")
-                er-icon(name="integration")
-                div(class="caption2") Канал связи:
-                div(class="h4") {{ serChannelsE1 }}
+          div(:class="`${pre}__slider__channels-e1-wrapper`" v-if="serChannelsE1")
+            er-icon(name="integration")
+            div
+              div(class="caption2") Канал связи:
+              div(class="h4") {{ serChannelsE1 }}
 
           div(:class="`${pre}__infolist`" v-if="isVirtualNumber")
             .infolist-link(@click="onClickVirtualNumberInfolist")
               er-icon(name="settings")
-              .infolist-link__label Настройки
+              span(class="infolist-link__label") Настройки
             infolist-viewer(
               v-model="isShowInfolistViewer"
               :id="parentId"
               fileName="Информационный лист Виртуальный номер.pdf"
             )
+          div(:class="`${pre}__infolist`")
+            .infolist-link(@click="openService")
+              er-icon(name="service")
+              span(class="infolist-link__label") Сервисная заявка
+        div(:class="`${pre}__slider__channels-wrapper`" v-if="serChannels")
+          div(:class="`${pre}__caption2`") Канал связи:
+          div(:class="`${pre}__slider__channels-select`")
+            div(:class="`${pre}__slider__channels`")
+              ErNumberField(v-model="serChannelsValue")
+            div(:class="`${pre}__slider__channels-price`" v-if="serChannelsPrice").h4
+              template(v-if="isChangedChannels")
+                er-button(@click="changeChannels" :loading="isChangingChannels") Изменить
+              template(v-else)
+                | {{ serChannelsPrice }} <span class="caption2">₽/мес</span>
         template(v-if="phones.length")
           h3(:class="`${pre}__phone-title`") Подключенные телефоны
           connected-phone(v-for="(phone, index) in phones" :key="index" :phone="phone" @disconnect="disconnectNumber(phone.number)")
@@ -72,6 +75,48 @@ div(:class="`${pre}`" )
                   span(:class="`${pre}__h4`") от 500
                   span(:class="`${pre}__units`") &nbsp; ₽
                 er-icon(name="minute_pack")
+          
+        div(:class="`${pre}__devices`")
+          span(:class="`${pre}__devices__header`")
+            span(class="h3" @click="toggleDevices") Оборудование
+              er-corner-button(:value="isOpenDevices").ml-8
+          er-slide-up-down(:active="isOpenDevices" :duration="200")
+            template(v-if="isLoadingDevices")
+              er-preloader(:active="isLoadingDevices" icon icon-type="2")
+            template(v-else="isLoadingDevices")
+              template(v-if="devices.length === 0")
+                div Нет устройств
+              div(:class="`${pre}__devices__item`" v-for="(device, index) in devices" :key="index")
+                template(v-if="device.storageType === 'Рассрочка'")
+                  div(class="device-name h4") 
+                    .caption.mb-4 Устройство
+                    div {{ device.name }}
+                  div(class="slot1") 
+                    .caption.mb-4 Гарантия до
+                    div {{ device.garantee }}
+                  div(class="slot2") 
+                    .caption.mb-4 Рассрочка {{ device.installment }} мес
+                    div 
+                      span(class="h4") {{ device.price }} 
+                      span(class="caption") ₽/мес
+                template(v-else-if="device.storageType === 'Продажа'")
+                  div(class="device-name h4") 
+                    .caption.mb-4 Устройство
+                    div {{ device.name }}
+                  div(class="slot1") 
+                    .caption.mb-4 Гарантия до
+                    div {{ device.garantee }}
+                  div(class="slot2") 
+                    .caption.mb-4 Способ передачи
+                    div Продажа
+                template(v-else)
+                  div(class="device-name h4") 
+                    .caption.mb-4 Устройство
+                    div {{ device.name }}                
+                  div(class="slot3") 
+                    .caption.mb-4 Способ передачи
+                    div {{ device.storageType }}
+
         div(:class="`${pre}__slider-buttons`")
           template(v-if="isStopped")
             er-button(color="yellow"  @click="$router.push('/lk/support?form=restoring_a_contract_or_service')") Восстановить

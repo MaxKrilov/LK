@@ -17,8 +17,9 @@
   }
 
   &__infolist {
-    grid-area: infolist;
+    justify-self: baseline;
   }
+
   &__slider {
     .infolist-link {
       @extend %link-behaviour;
@@ -27,11 +28,11 @@
       display: inline-flex;
       flex-direction: row;
       align-items: center;
-      gap: $padding-x2;
       color: map-get($gray, '5');
 
       .infolist-link__label {
-        border-bottom: 1px dashed;
+        margin-left: 8px; 
+        text-decoration: underline 1px dashed;
       }
     }
 
@@ -39,17 +40,13 @@
     &__date-wrapper {
       display: flex;
 
-      @include max-breakpoint("lg") {
-        flex-basis: 50%;
-      }
 
-      &::v-deep  svg {
+      &::v-deep svg {
         @include color-black(0.2);
       }
     }
 
     &__tariff-wrapper {
-      grid-area: tariff;
       justify-self: baseline;
 
       @include max-breakpoint("sm") {
@@ -58,43 +55,45 @@
     }
 
     &__date-wrapper {
-      grid-area: date;
+
       @include max-breakpoint("sm") {
         padding-bottom: 24px;
       }
     }
+
     &__channels-wrapper {
-      grid-area: channels;
       display: flex;
       flex-direction: column;
+      margin-bottom: 32px;
+      @include min-breakpoint("md") {
+        margin-bottom: 40px;
+      }
+    }
 
-    }
     &__channels-e1-wrapper {
-      display: grid;
-      column-gap: 8px;
-      row-gap: 4px;
-      grid-template-areas:
-        "icon caption2"
-        "icon count";
-      .er-icon {
-        grid-area: icon;
+      display: flex;
+
+
+        &::v-deep .er-icon {
         @include color-black(0.2);
+        margin-right: 8px;
       }
-      .h4 {
-        grid-area: count;
-      }
+
       .caption2 {
-        grid-area: caption2;
+        margin-bottom: 4px;
       }
     }
+
     &__channels {
       max-width: 140px;
       margin-right: 20px;
+
       &-select {
         display: flex;
         margin-top: 8px;
         align-items: center;
       }
+
       &-price {
         width: 110px;
       }
@@ -103,6 +102,7 @@
     &__tariff,
     &__date {
       padding-left: 8px;
+
       @include min-breakpoint("md") {
         padding-left: 16px;
       }
@@ -112,34 +112,31 @@
       margin-bottom: 32px;
       display: grid;
       grid-template-columns: 1fr 1fr;
-      grid-template-areas:
-      "date tariff"
-      "channels channels";
+
       @include min-breakpoint("sm") {
         grid-gap: 24px;
       }
 
       @include min-breakpoint("md") {
         grid-template-columns: 1fr 1fr 1fr;
-        grid-template-areas:
-          "date tariff infolist"
-          "channels channels .";
         margin-bottom: 40px;
+        align-items: center;
+        justify-items: center;
       }
+
       @include min-breakpoint("lg") {
         grid-template-columns: 3fr 4fr 3fr;
         align-items: center;
         justify-items: center;
-        grid-template-areas:
-          "tariff channels date infolist";
       }
     }
 
     .add-button {
-      svg {
+      &::v-deep svg {
         @include color-black(.2)
       }
     }
+
     &-buttons {
       display: grid;
       grid-gap: 8px;
@@ -164,7 +161,7 @@
         grid-gap: 32px;
       }
 
-      .er-button {
+      &::v-deep .er-button {
         @include color-black(0.8);
       }
     }
@@ -191,7 +188,7 @@
     }
 
     @include min-breakpoint("sm") {
-      .er-card {
+      &::v-deep .er-card {
         height: 100%;
 
         &__content {
@@ -210,7 +207,8 @@
 
   &__plug-package {
     height: 100%;
-    .er-card__content {
+
+    &::v-deep .er-card__content {
       padding: 16px;
       display: flex;
       flex-direction: column;
@@ -241,7 +239,7 @@
       align-items: flex-end;
       position: relative;
 
-      .er-icon {
+      &::v-deep .er-icon {
         transition: $primary-transition;
         position: absolute;
         bottom: 0;
@@ -258,17 +256,76 @@
     &:hover {
       cursor: pointer;
 
-      .er-card__content {
+      &::v-deep .er-card__content {
         background: radial-gradient(50% 50% at 50% 50%, #ffdd00 55.5%, #fcd300 100%);
       }
 
-      .er-icon {
+      &::v-deep .er-icon {
         bottom: -80px;
         right: -80px;
 
         svg {
           color: rgba(map-get($shades, "white"), 0.8);
           width: 200px;
+        }
+      }
+    }
+  }
+
+  &__devices {
+    margin-top: 32px;
+    margin-bottom: 32px;
+
+    &__header {
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+
+    &__item {
+      border-bottom: 1px solid rgba(map-get($shades, "black"), 0.2);
+      padding: 16px 0;
+      display: grid;
+      @include min-breakpoint("sm") {
+        grid-template-columns: 1fr 1fr 1fr;
+      }
+      @include min-breakpoint("lg") {
+        grid-template-columns: 60% 1fr 1fr;
+      }
+
+      &:first-child {
+        border-top: 1px solid rgba(map-get($shades, "black"), 0.2);
+      }
+
+      .device-name {
+        @include max-breakpoint("sm") {
+          grid-column: 1 / 3;
+          grid-row: 1 / 2;
+        }
+      }
+
+      .slot1 {
+        @include max-breakpoint("sm") {
+          grid-column: 1 / 2;
+          grid-row: 2 / 3;
+        }
+      }
+
+      .slot2 {
+        @include max-breakpoint("sm") {
+          grid-column: 2 / 3;
+          grid-row: 2 / 3;
+        }
+      }
+      .slot3 {
+        @include max-breakpoint("sm") {
+          grid-column: 1 / 2;
+          grid-row: 2 / 3;
+        }
+        @include min-breakpoint("sm") {
+          grid-column: 2 / 4;
+          text-align: right;
         }
       }
     }

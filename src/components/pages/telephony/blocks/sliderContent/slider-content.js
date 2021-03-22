@@ -9,6 +9,11 @@ import PackageMinuteCard from '@/components/pages/telephony/blocks/packageMinute
 import InfolistViewer from '@/components/pages/internet/blocks/TariffComponent/components/InfolistViewer/index.vue'
 import { ARRAY_SHOWN_PHONES, CODE_PACGLOCMIN, CODE_PACGMIN, CODE_PHONE_SERSELCHTR } from '@/constants/product-code'
 import { ARRAY_STATUS_SHOWN } from '@/constants/status'
+import { API } from '@/functions/api'
+import { mapGetters } from 'vuex'
+import { TYPE_ARRAY } from '@/constants/type_request'
+
+const api = () => new API()
 
 const CODES = {
   VIRTUAL_NUMBER: 'VIRTNUMB'
@@ -45,6 +50,7 @@ export default {
       pre: 'slider-content',
       slo: [],
       tlo: {},
+      devices: [],
       local: undefined,
       global: undefined,
       localPlug: undefined,
@@ -55,6 +61,9 @@ export default {
       isDisconnection: false,
       isLoading: true,
       isShowInfolistViewer: false,
+      isOpenDevices: false,
+      isLoadingDevices: false,
+      isLoadedDevices: false,
 
       serChannels: 0,
       serChannelsValue: 0,
@@ -77,6 +86,8 @@ export default {
     }
   },
   computed: {
+    ...mapGetters('auth', ['getTOMS']),
+
     phones () {
       return this.slo
         .filter(el => ARRAY_SHOWN_PHONES.includes(el.code) && ARRAY_STATUS_SHOWN.includes(el.status))
@@ -141,11 +152,51 @@ export default {
         product: productId
       })
     },
+    getDevices () {
+      this.isLoadingDevices = true
+      api()
+        .setWithCredentials()
+        .setType(TYPE_ARRAY)
+        .setData({
+          clientId: this.getTOMS,
+          parentIds: [this.parentId]
+        })
+        .query('/customer/product/ip-telephones')
+        .then((response) => {
+          this.devices = Object.values(response?.[this.parentId]?.devices || {}).map(el => {
+            const _el = {}
+            _el.name = el.chars['Модель']
+            _el.storageType = el?.chars?.['Способ передачи оборудования'] || ''
+            _el.installment = el?.storage?.[0]?.chars?.['Длительность рассрочки'] || ''
+            _el.price = el?.purchasedPrices?.recurrentTotal?.value || ''
+            _el.garantee = moment(el?.storage?.[0]?.chars?.['Гарантийный срок (до)']).format('DD.MM.Y') || ''
+            return _el
+          })
+        })
+        .finally(() => {
+          this.isLoadingDevices = false
+          this.isLoadedDevices = true
+        })
+    },
     cancelOrder () {
       this.$store.dispatch('salesOrder/cancel')
     },
     onClickVirtualNumberInfolist () {
       this.isShowInfolistViewer = true
+    },
+    openService () {
+      this.$router.push({
+        name: 'support',
+        query: { form: 'technical_issues' },
+        params: {
+          bpi: this.parentId || '',
+          addressId: this.addressId || ''
+        }
+      })
+    },
+    toggleDevices () {
+      this.isOpenDevices = !this.isOpenDevices
+      if (!this.isLoadedDevices) this.getDevices()
     }
   },
   mounted () {
