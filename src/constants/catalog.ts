@@ -1,4 +1,4 @@
 export const BRAND_ID = '9154394142013178781'
 export const MARKET_ID = '68'
-export const CUSTOMER_CATEGORY_ID = '147637'
-export const DISTRIBUTION_CHANNEL_ID = '147630'
+export const CUSTOMER_CATEGORY_ID = '152'
+export const DISTRIBUTION_CHANNEL_ID = '144'
