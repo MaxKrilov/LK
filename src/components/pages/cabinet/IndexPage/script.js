@@ -6,6 +6,8 @@ import ErToastStack from '@/components/blocks/ErToastStack/index'
 import { dataLayerPush } from '@/functions/helper'
 import ErActivationModal from '../../../blocks/ErActivationModal/index'
 
+const IS_ENABLED_AUTOPAY = '9149184122213604836'
+
 export default {
   name: 'index-page',
   components: {
@@ -91,6 +93,16 @@ export default {
       const end = this.promisePayEnd
       return this.trackerIntervalPromisePay
         ? (now.unix() - start.unix()) / (end.unix() - start.unix()) * 100
+        : 0
+    },
+
+    isAutopay () {
+      return this.billingInfo?.paymentMethod?.id === IS_ENABLED_AUTOPAY
+    },
+
+    balance () {
+      return this.billingInfo.hasOwnProperty('balance')
+        ? 0 - Number(this.billingInfo.balance)
         : 0
     }
   },
