@@ -56,10 +56,15 @@ export interface IVideocontrolRegistry {
   [key: string]: IVideocontrol
 }
 
+export interface IMarket {
+  id: string
+}
+
 export interface IBaseFunctionality {
-  id: TBaseFunctionalityId,
+  id: TBaseFunctionalityId
   offer: IOffer
-  services?: IProductOffering[],
+  market: IMarket
+  services?: IProductOffering[]
   status: string
 }
 

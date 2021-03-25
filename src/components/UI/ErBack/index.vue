@@ -16,7 +16,10 @@ export default {
       type: String,
       default: 'Назад'
     },
-    to: String
+    to: {
+      type: [String, Location],
+      required: true
+    }
   },
   methods: {
     onClick () {

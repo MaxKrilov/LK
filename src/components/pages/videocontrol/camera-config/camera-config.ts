@@ -475,7 +475,8 @@ export default class VCCameraConfigPage extends Mixins(
   fetchAllowedOfferList (offerId: string) {
     const payload = {
       api: this.$api,
-      id: offerId
+      id: offerId,
+      marketId: this.bf?.market?.id
     }
 
     return this.$store.dispatch(
