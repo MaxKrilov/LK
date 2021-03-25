@@ -16,8 +16,8 @@ div(:class="`${pre}`")
       div.d--flex.align-items-center(:class="`${pre}__balance--mobile__wrapper`")
         div.icon
           er-icon(name="wallet_auto")
-        a.link--solid--yellow.fonts--demi.rub {{ balanceInfo.balance || '0.0' }}
-        span(v-if="balanceInfo.autoPay") Автоплатёж
+        a.link--solid--yellow.fonts--demi.rub {{ balance || '0.0' }}
+        span(v-if="isAutopay") Автоплатёж
 
   er-container.mb-48(full).container--no-padding
     er-row(no-gutters)
