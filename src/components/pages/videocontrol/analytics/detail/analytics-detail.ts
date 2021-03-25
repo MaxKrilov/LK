@@ -92,7 +92,8 @@ export default class VCAddonDetailPage extends Vue {
   fetchAllowedOfferList (offerId: string) {
     const payload = {
       api: this.$api,
-      id: offerId
+      id: offerId,
+      marketId: this.$store.getters['videocontrol/domainList']?.[0]?.market?.id
     }
 
     return this.$store.dispatch(

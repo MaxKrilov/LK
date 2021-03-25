@@ -5,7 +5,7 @@ export default {
       default: ' '
     },
     backlink: {
-      type: String,
+      type: [String, Location],
       default: '/'
     },
     linkText: {

@@ -1,12 +1,15 @@
 import { Component, Vue } from 'vue-property-decorator'
 import AddonCard from '../components/AddonCard/index.vue'
 import { promisedStoreValue } from '@/functions/store_utils'
-import { IVideocontrol } from '@/interfaces/videocontrol'
+import { IOffer, IVideocontrol } from '@/interfaces/videocontrol'
 import { ANALYTIC_NAME } from '@/constants/videocontrol'
 
 const components = {
   AddonCard
 }
+
+const isActiveOffering = (item: IOffer) =>
+  ['Активный', 'Active', 'Выпущено'].includes(item.status)
 
 @Component({ components, name: 'VCAddonListPage' })
 export default class VCAddonListPage extends Vue {
@@ -37,9 +40,12 @@ export default class VCAddonListPage extends Vue {
   }
 
   fetchAllowedOfferList (offerId: string) {
+    const marketId = this.$store.getters['videocontrol/domainList']?.[0]?.market?.id
+
     const payload = {
       api: this.$api,
-      id: offerId
+      id: offerId,
+      marketId
     }
 
     return this.$store.dispatch(
@@ -60,7 +66,7 @@ export default class VCAddonListPage extends Vue {
                 .find((el: any) => el.name === ANALYTIC_NAME)?.offerings
 
               const filteredList = availOfferingList
-                ?.filter((el:any) => ['Активный', 'Active'].includes(el.status))
+                ?.filter(isActiveOffering)
 
               this.availableAnalyticsList = filteredList || []
               this.isLoaded = true

@@ -16,6 +16,7 @@ import { TYPES } from './types'
 interface IPayload {
   api: API,
   id?: string
+  marketId?: string
 }
 
 const APIShortcut = (api: API, url: string, data: Object) => {
@@ -65,7 +66,7 @@ export const actions = {
     return PnS.actions.locationOfferInfo(context, payload)
   },
   fetchCCTV (context: ActionContext<IState, any>, payload: IPayload) {
-    const { toms: clientId } = context.rootGetters['auth/user']
+    const clientId = context.rootGetters['auth/getTOMS']
 
     const { api, ...params } = payload
 
@@ -80,9 +81,11 @@ export const actions = {
       newPayload
     )
   },
-  fetchAllowedOffers (context: ActionContext<IState, any>, { api, ...payload }: { api: API}) {
+  fetchAllowedOffers (context: ActionContext<IState, any>, payload: IPayload) {
+    const { api, ..._payload } = payload
+
     const { toms: clientId } = context.rootGetters['auth/user']
-    const _marketId = context.rootGetters['user/getMarketId']
+    const _marketId = payload?.marketId || context.rootGetters['user/getMarketId']
 
     const newPayload = {
       clientId,
@@ -90,7 +93,7 @@ export const actions = {
       marketId: _marketId,
       customerCategoryId: CUSTOMER_CATEGORY_ID,
       distributionChannelId: DISTRIBUTION_CHANNEL_ID,
-      ...payload
+      ..._payload
     }
 
     return APIShortcut(
