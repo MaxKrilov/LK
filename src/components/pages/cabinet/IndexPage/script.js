@@ -48,11 +48,11 @@ export default {
     },
     ...mapState({
       clientName: state => state.user.clientInfo.name,
-      balanceInfo: state => state.user.paymentInfo,
       invPaymentsForViewer: state => state.payments.listInvoicePayment,
       isPromisePay: state => state.payments.isHasPromisePayment,
       promisePayStart: state => state.payments.promisePayStart,
-      promisePayEnd: state => state.payments.promisePayEnd
+      promisePayEnd: state => state.payments.promisePayEnd,
+      billingInfo: state => state.payments.billingInfo
     }),
     ...mapGetters({
       listProductByAddress: 'user/getListProductByAddress',
@@ -112,7 +112,7 @@ export default {
       // ещё не реализовано
     },
     getEventsForInvPayments (on) {
-      if (Number(this.balanceInfo.balance) <= 0) {
+      if (Number(this.billingInfo.balance) <= 0) {
         return {
           click: (e) => {
             e.preventDefault()
@@ -130,7 +130,7 @@ export default {
   },
   watch: {
     isOpenViewer (val) {
-      if (Number(this.balanceInfo.balance) <= 0) {
+      if (Number(this.billingInfo.balance) <= 0) {
         this.isNotAccessInvPayment = true
       } else if (val && this.invPaymentsForViewer[0].filePath === '') {
         this.$store.dispatch(`payments/getInvoicePayment`)
