@@ -6,7 +6,7 @@
           er-icon(:name="getTopIcon()")
         .info.d--flex.flex-column.mt-20.flex-sm-row.mt-md-20.align-items-md-center.mt-xl-24
           .title.mb-8
-            | {{ title }}
+            | {{ title | vcName }}
             .toggle--desktop
               button(@click="toggleDetail")
                 er-icon(name="corner_down")
@@ -33,7 +33,7 @@
               .info.d--flex.flex-column.flex-sm-row
                 .d--flex.flex-column.flex-xl-row
                   .title.mb-16
-                    | {{ item.title }}
+                    | {{ item.title | vcName }}
                   .offer-name.ml-16.mb-16.ml-sm-0.mx-xl-auto
                     .caption
                       | Тариф
