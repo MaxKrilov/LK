@@ -173,6 +173,12 @@ const MenuItemList = (listProduct: IProductItem[]): MenuItem[] => {
             }
           ]
           : []
+        /* TODO: включить когда на проде откроют радар в каталоге
+        {
+          name: 'Wi-Fi Радар',
+          url: '/lk/wifi/go-to-radar'
+        }
+        */
       )
     },
     {
