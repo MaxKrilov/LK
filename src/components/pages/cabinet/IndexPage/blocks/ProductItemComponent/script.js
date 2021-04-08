@@ -16,7 +16,8 @@ import { getIconNameByCode } from './_functions'
     productType: String
   },
   filters: {
-    price
+    price,
+    vcName: (val) => val.match(/форпост/i) ? 'Видеонаблюдение' : val
   }
 })
 export default class ProductItemComponent extends Vue {
