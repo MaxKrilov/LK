@@ -7,7 +7,52 @@ const api = () => new API()
 
 const VOUCHER_REQUEST = '/internet/analytics/voucher'
 
+const URLS = {
+  GET_RADAR_LINK: '/internet/radar/link'
+}
+
 const actions = {
+  getRadarLink (context: ActionContext<any, any>) {
+    const clientInfo = context.rootState.user.clientInfo
+
+    const { id: clientId } = clientInfo
+
+    const {
+      market,
+      marketingBrandId: brand
+    } = context.rootState.payments.billingInfo
+
+    const billingAccountId = context.rootState.payments.activeBillingAccount?.billingAccountId
+    const INN = context.rootGetters['user/getINN']
+    const dmpCustomerId = context.rootGetters['user/getDMPCustomerId']
+
+    const newPayload = {
+      clientId,
+      clientName: clientInfo?.legalName || clientInfo?.name,
+      INN,
+      market: JSON.stringify(market),
+      brand,
+      billingAccountId,
+      dmpCustomerId,
+      role: context.rootState.auth.userInfo.postRole
+    }
+
+    if (context.rootState.auth.isManager) {
+      // @ts-ignore
+      newPayload.email = context.rootState.auth.userInfo.email
+    }
+
+    return api()
+      .setWithCredentials()
+      .setData(newPayload)
+      .query(URLS.GET_RADAR_LINK)
+      .then(data => {
+        return {
+          payload: newPayload,
+          data: data
+        }
+      })
+  },
   getResource (
     context: ActionContext<undefined, any>,
     { bpi }: { bpi: string }

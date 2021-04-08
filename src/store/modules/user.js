@@ -41,6 +41,14 @@ const INN_ID = '9148328342013670726'
 const KPP_ID = '9154340518713221693'
 const OGRN_ID = '9154340419713221073'
 
+const ATTRIBUTE_NAMES = { // для поиска в extendedMap
+  INN: 'INN',
+  KPP: 'KPP',
+  EMAIL: 'E-mail',
+  PHONE_NUMBER: 'Phone Number',
+  DMP_CUSTOMER_ID: 'DMP Customer Id'
+}
+
 const state = {
   clientInfo: {
     fullAddress: {},
@@ -219,6 +227,16 @@ const getters = {
   },
   getMarketId (state) {
     return state.paymentInfo.market?.id || ''
+  },
+  getINN (state) {
+    return Object.values(state.clientInfo.extendedMap).find(
+      el => el.attributeName === ATTRIBUTE_NAMES.INN
+    )?.singleValue?.attributeValue
+  },
+  getDMPCustomerId (state) {
+    return Object.values(state.clientInfo.extendedMap).find(
+      el => el.attributeName === ATTRIBUTE_NAMES.DMP_CUSTOMER_ID
+    )?.singleValue?.attributeValue
   }
 }
 

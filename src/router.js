@@ -120,6 +120,9 @@ import WifiAnalyticsVisitors from '@/components/pages/wifi/analytics/statistics/
 import WifiAnalyticsDevices from '@/components/pages/wifi/analytics/statistics/DevicesPage'
 import WifiUsersRegistry from '@/components/pages/wifi/analytics/statistics/RegistryPage'
 
+// TODO: включить когда на проде откроют радар в каталоге
+// import GoToWifiRadar from '@/components/pages/wifi/blocks/go-to-radar.vue'
+
 // WiFi PRO
 import ErtWifiPro from '@/components/pages/wifi/pro/index'
 
@@ -448,6 +451,12 @@ const router = new Router({
             }
           ]
         },
+        // TODO: включить когда на проде откроют радар в каталоге
+        // {
+        //   path: 'wifi/go-to-radar',
+        //   name: 'go-to-wifi-radar',
+        //   component: GoToWifiRadar
+        // },
         {
           path: 'wifi/services-auth',
           name: 'wifi-services-auth',
