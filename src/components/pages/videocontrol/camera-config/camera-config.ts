@@ -387,7 +387,7 @@ export default class VCCameraConfigPage extends Mixins(
 
   get videoArchiveValueList (): string[] {
     const originalOfferValues = this.videoArchiveOfferList?.map(
-      (el: ISLOPricesItem) => el.chars[VIDEOARCHIVE_DAY_COUNT]
+      (el: ISLOPricesItem) => el.chars?.[VIDEOARCHIVE_DAY_COUNT] || '-'
     )
 
     return this.videoArchiveValue !== '-'
