@@ -316,3 +316,14 @@ div(
       @confirm="handleDeleteContact"
       actionButtonText="Удалить"
     )
+    ErActivationModal.contact-form__error-dialog(
+      type="error"
+      v-model="isBillingContact"
+      title="Ошибка при удалении контакта"
+      :isShowActionButton="false"
+      cancelButtonText="Закрыть"
+    )
+      template(v-slot:description)
+        .contact-form__error-dialog__content
+          .contact-form__error-dialog__description
+            | Данный контакт используется для выставления счета. Для изменения свяжитесь с менеджером

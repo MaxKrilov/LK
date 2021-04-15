@@ -23,6 +23,7 @@ export default class ErActivationModal extends Vue {
   @Prop(Boolean) readonly persistent!: boolean
   @Prop(Boolean) readonly disabledActionButton!: boolean
   @Prop({ type: String, default: '' }) readonly isOffer!: string
+  @Prop(String) readonly contentClass!: string
 
   screenWidth!: number
 

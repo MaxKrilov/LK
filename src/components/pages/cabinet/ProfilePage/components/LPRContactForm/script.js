@@ -56,7 +56,9 @@ export default {
       fetchedContactRoles: [],
       contactRolesList: [],
       signDocumentsList: ['Доверенность', 'Устав', 'Другое'],
-      isShowDialogDeleteContact: false
+      isShowDialogDeleteContact: false,
+      isBillingContact: false,
+      listBillingAccountByContact: []
     }
   },
   mounted () {
@@ -219,6 +221,12 @@ export default {
     handleDeleteContact () {
       this.isShowDialogDeleteContact = false
       this.deleteContact({ api: this.$api })
+        .then(response => {
+          if (response && Array.isArray(response) && response.length > 0) {
+            this.listBillingAccountByContact = response
+            this.isBillingContact = true
+          }
+        })
     },
     addContactMethod (val, type) {
       const isValid = this.$refs[type] && this.$refs[type].validate()

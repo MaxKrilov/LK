@@ -21,7 +21,7 @@ import {
   ADD_CLIENT_CONTACTS_STORE,
   REPLACE_CLIENT_CONTACTS_STORE,
   DELETE_CLIENT_CONTACTS_STORE,
-  SET_PROMISED_PAYMENT_INFO
+  SET_PROMISED_PAYMENT_INFO, GET_BILLING_CONTACTS, SET_BILLING_CONTACTS
 } from '../actions/user'
 import { ERROR_MODAL } from '../actions/variables'
 import { logError } from '@/functions/logging.ts'
@@ -70,7 +70,8 @@ const state = {
   reasonCanntActivatePromisePayment: '',
   isHasPromisePayment: false,
   promisePayStart: null,
-  promisePayEnd: null
+  promisePayEnd: null,
+  listBillingContacts: []
 }
 
 const getters = {
@@ -461,6 +462,24 @@ const actions = {
   [ADD_CLIENT_CONTACTS_STORE]: ({ commit }, payload) => {
     commit(ADD_CLIENT_CONTACTS_STORE, payload)
   },
+  [GET_BILLING_CONTACTS]: ({ rootState, commit }, { api }) => {
+    return new Promise((resolve, reject) => {
+      const billingAccountIds = rootState.payments.listBillingAccount.map(item => item.billingAccountId)
+
+      api
+        .setWithCredentials()
+        .setData({ billingAccountIds })
+        .setType(TYPE_JSON)
+        .query('/payment/billing/get-billing-contacts')
+        .then((response) => {
+          commit(SET_BILLING_CONTACTS, response)
+          resolve()
+        })
+        .catch((error) => {
+          reject(error)
+        })
+    })
+  },
   /**
    * Обновление/удаление контакта в clientInfo.contacts
    * @param state
@@ -542,6 +561,9 @@ const mutations = {
     state.isHasPromisePayment = true
     state.promisePayStart = moment(pymtSchdCreateDt, 'YYYYMMDD')
     state.promisePayEnd = moment(schdPymtDueDt, 'YYYYMMDD')
+  },
+  [SET_BILLING_CONTACTS]: (state, payload) => {
+    state.listBillingContacts = payload
   }
 }
 
