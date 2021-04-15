@@ -2,9 +2,11 @@ import { mapActions, mapGetters, mapState } from 'vuex'
 import ResponsiveMixin from '@/mixins/ResponsiveMixin'
 import ItemState from './components/State'
 
+import ErActivationModal from '@/components/blocks/ErActivationModal/index'
+
 export default {
   name: 'contacts-list-item',
-  components: { 'item-state': ItemState },
+  components: { 'item-state': ItemState, ErActivationModal },
   mixins: [ResponsiveMixin],
   props: {
     item: {
@@ -25,7 +27,9 @@ export default {
     }
   },
   data: () => ({
-    pre: 'contacts-list-item'
+    pre: 'contacts-list-item',
+    listBillingAccountByContact: [],
+    isBillingContact: false
   }),
   computed: {
     ...mapGetters('auth', ['isLPR']),
@@ -69,6 +73,12 @@ export default {
     },
     handleDeleteContact () {
       this.deleteContact({ api: this.$api })
+        .then(response => {
+          if (response && Array.isArray(response) && response.length > 0) {
+            this.listBillingAccountByContact = response
+            this.isBillingContact = true
+          }
+        })
     }
   }
 }
