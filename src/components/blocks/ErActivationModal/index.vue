@@ -4,6 +4,7 @@
       :max-width="getMaxWidth"
       v-model="internalValue"
       :persistent="persistent"
+      :contentClass="contentClass"
     )
       template(v-slot:activator="{ on }")
         slot(name="activator" v-bind="{ on }")

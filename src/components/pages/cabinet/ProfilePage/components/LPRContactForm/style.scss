@@ -146,6 +146,25 @@
       }
     }
   }
+
+  &__error-dialog {
+    &__description {
+      @extend %caption1-font;
+      @include color-black(0.8);
+      margin-bottom: 16px;
+    }
+
+    &__list-personal-account {
+      padding-left: 24px;
+      @include color-black(0.6);
+
+      li {
+        @extend %caption1-font;
+
+        margin-bottom: 8px;
+      }
+    }
+  }
 }
 
 .contact-form-header-actions{

@@ -496,13 +496,22 @@ const actions = {
     }
   },
 
-  deleteContact: async ({ state, commit, dispatch, rootGetters }, { api }) => {
+  deleteContact: async ({ state, commit, dispatch, rootGetters, rootState }, { api }) => {
     commit(UPDATE_DELETE_CONTACT_STATE, {
       isFetching: true,
       isFetched: false,
       error: null
     })
     const { id } = state.currentClientContacts.content
+    const billingContacts = rootState.user.listBillingContacts
+
+    const billingAccountByContact = billingContacts.filter(billingContact => billingContact.id === id)
+
+    if (billingAccountByContact.length > 0) {
+      commit(UPDATE_DELETE_CONTACT_STATE, { isFetching: false })
+      return billingAccountByContact
+    }
+
     const toms = rootGetters['auth/getTOMS']
     const contact = rootGetters['user/getContactById'](id)
     const contactRoles = contact?.roles || []

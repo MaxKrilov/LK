@@ -34,6 +34,7 @@ import ErtTokens from '@/mixins2/ErtTokens'
 import * as Sentry from '@sentry/vue'
 
 import {
+  GET_BILLING_CONTACTS,
   GET_CLIENT_INFO,
   GET_LIST_PRODUCT_BY_ADDRESS, GET_LIST_PRODUCT_BY_SERVICE,
   GET_MANAGER_INFO
@@ -147,6 +148,7 @@ export default {
                   this.$store.dispatch(`payments/getBillingInfo`, context)
                   this.$store.dispatch(`chat/${GET_CHAT_TOKEN}`, context)
                   this.$store.dispatch(`payments/getPromisedPaymentInfo`, context)
+                  this.$store.dispatch(`user/${GET_BILLING_CONTACTS}`, context)
                   this.$store.dispatch(`user/${GET_LIST_PRODUCT_BY_ADDRESS}`, context)
                     .then(() => {
                       this.$store.dispatch(`user/${GET_LIST_PRODUCT_BY_SERVICE}`, context)
