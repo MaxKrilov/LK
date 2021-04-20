@@ -154,6 +154,8 @@ const getters = {
 const actions = {
   getListBillingAccount (context: ActionContext<IState, any>, { route }: { route: Route }) {
     const toms = context.rootGetters['auth/getTOMS']
+    const allowedListBillingAccount = context.rootState.auth.userInfo
+      .personalAccount?.accounts?.map((item: any) => item.value) || []
     if (!toms) {
       throw new Error('No toms ID')
     }
@@ -170,16 +172,21 @@ const actions = {
           if (!Array.isArray(response)) {
             throw new Error('Unknown type of request')
           }
-          if (response.length === 0) {
+          let result = cloneDeep(response)
+          // Фильтруем список л/с
+          if (allowedListBillingAccount.length > 0) {
+            result = result.filter(resultItem => allowedListBillingAccount.includes(resultItem.accountNumber))
+          }
+          if (result.length === 0) {
             resolve(false)
             return
           }
-          context.commit('setListBillingAccount', response)
+          context.commit('setListBillingAccount', result)
           // Устанавливаем активный биллинг-аккаунт
           const requestBillingNumber = route.query.billing_account || Cookie.get('ff_billing_account')
           if (requestBillingNumber && typeof requestBillingNumber === 'string') {
             Cookie.remove('ff_billing_account')
-            const findingBillingAccount = response.find(billingAccount => billingAccount.accountNumber === requestBillingNumber)
+            const findingBillingAccount = result.find(billingAccount => billingAccount.accountNumber === requestBillingNumber)
             if (typeof findingBillingAccount !== 'undefined') {
               context.commit('setActiveBillingAccount', findingBillingAccount)
               resolve(true)
@@ -189,7 +196,7 @@ const actions = {
 
           const cookieBillingAccountId = Cookie.get('billingAccountId')
           if (typeof cookieBillingAccountId !== 'undefined') {
-            const findingBillingAccount = response.find(billingAccount => billingAccount.billingAccountId === cookieBillingAccountId)
+            const findingBillingAccount = result.find(billingAccount => billingAccount.billingAccountId === cookieBillingAccountId)
             if (typeof findingBillingAccount !== 'undefined') {
               context.commit('setActiveBillingAccount', findingBillingAccount)
               resolve(true)
@@ -197,11 +204,11 @@ const actions = {
             }
           }
 
-          const findingBillingAccount = response.find(billingAccount => !/[A-Za-z]/.test(billingAccount.accountNumber))
+          const findingBillingAccount = result.find(billingAccount => !/[A-Za-z]/.test(billingAccount.accountNumber))
           if (typeof findingBillingAccount !== 'undefined') {
             context.commit('setActiveBillingAccount', findingBillingAccount)
           } else {
-            context.commit('setActiveBillingAccount', head(response)!)
+            context.commit('setActiveBillingAccount', head(result)!)
           }
           resolve(true)
         })
