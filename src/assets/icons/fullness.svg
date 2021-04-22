@@ -1,0 +1,8 @@
+<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect x="13" y="22" width="6" height="2" fill="currentColor"/>
+    <rect x="13" y="14" width="6" height="2" fill="currentColor"/>
+    <path d="M13 7H11C10.4477 7 10 7.44772 10 8V25C10 26.1046 10.8954 27 12 27H20C21.1046 27 22 26.1046 22 25V8C22 7.44772 21.5523 7 21 7H19"
+          stroke="currentColor" stroke-width="2"/>
+    <rect x="13" y="18" width="6" height="2" fill="currentColor"/>
+    <rect x="13" y="2" width="6" height="2" fill="currentColor"/>
+</svg>

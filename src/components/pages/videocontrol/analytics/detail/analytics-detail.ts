@@ -14,6 +14,7 @@ import VIDEO_ANALYTICS from '@/constants/videoanalytics'
 import { promisedStoreValue } from '@/functions/store_utils'
 
 import SERVICE_DESCRIPTION_DATA from './serviceDescriptionData'
+import { isMonthlyFeePrice } from '@/functions/offers'
 
 const components = {
   AddonConfig,
@@ -67,7 +68,7 @@ export default class VCAddonDetailPage extends Vue {
   }
 
   get price () {
-    return this.analyticItem?.prices?.[0].amount || '0'
+    return this.analyticItem?.prices?.find(isMonthlyFeePrice)?.amount || '0'
   }
 
   get totalPrice () {

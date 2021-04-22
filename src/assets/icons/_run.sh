@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 cd=$(ls *svg)
 rm README.md
 touch README.md
