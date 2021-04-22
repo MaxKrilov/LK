@@ -232,7 +232,7 @@ export default class Ip extends Vue {
 
         // формируем объект с ценами на подсети с ключами количества доп ип
         const subnetPrices = answer?.slo.find((el: any) => el.code === CODE_IP4SUBNET)?.prices
-          .filter((el: any) => el.chars['Тип IPv4 адреса'] === 'Публичный')
+          .filter((el: any) => el.chars?.['Тип IPv4 адреса'] === 'Публичный')
           .reduce((acc: any, el: any) => {
             if (SUBNRT_IP_COUNT?.[el.chars['Префикс подсети']]) {
               acc[SUBNRT_IP_COUNT[el.chars['Префикс подсети']]] = {
