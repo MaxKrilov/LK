@@ -8,27 +8,28 @@ import RenameField from './components/rename-field.vue'
 
 import VIDEO_ANALYTICS from '@/constants/videoanalytics'
 
-import { ICamera, IBaseFunctionality, IOffer } from '@/interfaces/videocontrol'
+import { IBaseFunctionality, ICamera, IOffer } from '@/interfaces/videocontrol'
 import { IProductOffering } from '@/interfaces/offering'
 // @ts-ignore
 import { promisedStoreValue } from '@/functions/store_utils'
 import { logInfo } from '@/functions/logging'
 import {
-  CODES,
-  VIDEOARCHIVE_DAY_COUNT,
-  CHARS,
   CAMERA_SALE_TYPES,
+  CHAR_VALUES,
+  CHARS,
+  CODES,
+  MESSAGES,
   SERVICE_ORDER_MAP,
   VC_DOMAIN_STATUSES,
-  MESSAGES,
-  CHAR_VALUES
+  VIDEOARCHIVE_DAY_COUNT
 } from '@/constants/videocontrol'
 
 import { ILocationOfferInfo, ISLOPricesItem } from '@/tbapi'
-import { mapState, mapGetters } from 'vuex'
+import { mapGetters, mapState } from 'vuex'
 import { VueTransitionFSM } from '@/mixins/FSMMixin'
 import { ErtPageWithDialogsMixin } from '@/mixins2/ErtPageWithDialogsMixin'
 import { ErtFetchAvailableFundsMixin } from '@/mixins2/ErtFetchAvailableFundsMixin'
+import { isMonthlyFeePrice } from '@/functions/offers'
 
 /* FUNCTIONS */
 const isFullHD = (el: IOffer) => el.code === CODES.FULLHD
@@ -403,7 +404,7 @@ export default class VCCameraConfigPage extends Mixins(
   get videoArchiveValue (): string {
     const currentCode = this.isFHDEnabled ? CODES.FULLHD_ARCHIVE : CODES.HD_ARCHIVE
     return this.enabledServiceList.find(
-      (el:IProductOffering) => el?.offer?.code === currentCode
+      (el: IProductOffering) => el?.offer?.code === currentCode
     )?.chars?.[CHARS.ARCHIVE_DAY_COUNT] || '-'
   }
 
@@ -464,7 +465,7 @@ export default class VCCameraConfigPage extends Mixins(
 
     if ([CODES.FULLHD_ARCHIVE, CODES.HD_ARCHIVE].includes(code)) {
       price = service?.prices?.find(
-        (el:any) => {
+        (el: any) => {
           return el.chars?.[VIDEOARCHIVE_DAY_COUNT] === this.currentValue
         }
       )?.amount || '0'
@@ -551,7 +552,7 @@ export default class VCCameraConfigPage extends Mixins(
     }
 
     const service = this.availableAnalyticsList.find((el: any) => el.code === code)
-    return service?.prices?.[0] ? service.prices[0].amount : '0.1'
+    return service?.prices?.length ? service.prices.find(isMonthlyFeePrice)?.amount : '0.1'
   }
 
   getServiceByCode (code: string): IOffer | undefined {
@@ -570,7 +571,7 @@ export default class VCCameraConfigPage extends Mixins(
     return this.getServiceByCode(code)?.name
   }
 
-  getProductId (code:string) {
+  getProductId (code: string) {
     const service = this.enabledServiceList.find(
       (el: any) => el.offer.code === code
     )

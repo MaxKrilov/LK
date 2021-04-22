@@ -37,7 +37,15 @@ const CODES = {
   FULLHD_ARCHIVE: 'VIDCARFHD',
   HEAT_MAP: 'VIDCMAP',
   CONST_RECORD: 'VIDCCONST',
-  DETECTOR_RECORD: 'VIDCDETС'
+  DETECTOR_RECORD: 'VIDCDETС',
+  TEMP_CONTROL: 'VIDCTEMP',
+  TEMP_CONTROL_FACE: 'VIDCTEMPFACE',
+  FACE_AND_AGE_DETECT: 'VIDCFGA',
+  MASK_DETECT_PRO: 'VIDCMASKP',
+  MASK_DETECT_LIGHT: 'VIDCMASKL',
+  QUEUE_DETECT: 'VIDCQUE', // детектор очереди
+  FULL_SHELF_DETECT: 'VIDCSHELF',
+  SMART_PARKING: 'VIDCPARK'
 }
 
 const VC_TYPES = {
@@ -98,12 +106,21 @@ const SERVICE_ORDER_MAP: Record<string, boolean> = {
   'VIDCCOUNT': true, // подсчёт посетителей
   'VIDCFHD': true, // разрешение FullHD
   'VIDCMAP': true, // тепловая карта
+  [CODES.MASK_DETECT_LIGHT]: true,
+  [CODES.MASK_DETECT_PRO]: true,
+  [CODES.QUEUE_DETECT]: true,
+  [CODES.FULL_SHELF_DETECT]: true,
+  [CODES.SMART_PARKING]: true,
 
   'VIDCSEGM': false, // сегментация клиента
   'VIDCCAR': false, // распознавание номеров
   'VIDCBARR': false, // умный шлагбаум
   [CODES.DETECTOR_RECORD]: false,
-  [CODES.CONST_RECORD]: false
+  [CODES.CONST_RECORD]: false,
+  [CODES.TEMP_CONTROL]: false,
+  [CODES.TEMP_CONTROL_FACE]: false,
+  [CODES.FACE_AND_AGE_DETECT]: false
+
 }
 
 export {

@@ -11,3 +11,8 @@ export const REQUEST_TYPES = {
   'disconnect': '9154749993013188896',
   'change-auth-type': '9154749993013188888'
 }
+
+export const RELEASED = 'Выпущено'
+export const ACTIVE_EN = 'Active'
+export const ACTIVE_RU = 'Активный'
+export const MONTHLY_FEE_TYPE = 'Monthly Fee'

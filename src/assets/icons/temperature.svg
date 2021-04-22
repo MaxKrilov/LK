@@ -1,0 +1,11 @@
+<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect x="6" y="4" width="5" height="2" fill="currentColor"/>
+    <rect x="6" y="10" width="5" height="2" fill="currentColor"/>
+    <rect x="6" y="16" width="5" height="2" fill="currentColor"/>
+    <rect x="6" y="22" width="5" height="2" fill="currentColor"/>
+    <path fill-rule="evenodd" clip-rule="evenodd"
+          d="M15 5C15 3.34315 16.3431 2 18 2H22C23.6569 2 25 3.34315 25 5V22C25 23.6569 23.6569 25 22 25H18C16.3431 25 15 23.6569 15 22V5ZM18 4C17.4477 4 17 4.44772 17 5V22C17 22.5523 17.4477 23 18 23H22C22.5523 23 23 22.5523 23 22V5C23 4.44772 22.5523 4 22 4H18Z"
+          fill="currentColor"/>
+    <rect x="19" y="6" width="2" height="15" rx="1" fill="currentColor"/>
+    <rect x="19" y="26" width="2" height="4" rx="1" fill="currentColor"/>
+</svg>

@@ -1,15 +1,7 @@
 import { IState } from './state'
 import { ILocationOfferInfo } from '@/tbapi'
+import { IBaseFunctionality, ICamera, IDomain, IEnfortaVideocontrol, IVideocontrol } from '@/interfaces/videocontrol'
 import {
-  IBaseFunctionality,
-  ICamera,
-  IDomain,
-  IEnfortaVideocontrol,
-  IOffer,
-  IVideocontrol
-} from '@/interfaces/videocontrol'
-import {
-  // ANALYTIC_CATEGORY_ID,
   ANALYTIC_NAME,
   BF_CATEGORY_ID,
   BF_CATEGORY_NAME,
@@ -17,12 +9,10 @@ import {
   VIDEOCONTROL_OFFER_NAME
 } from '@/constants/videocontrol'
 import { IOfferingRelationship } from '@/interfaces/offering'
+import { isActiveOffering } from '@/functions/offers'
 
 const isVCPoint = (item: ILocationOfferInfo) =>
   item.offer.name === VIDEOCONTROL_OFFER_NAME
-
-const isActiveOffering = (item: IOffer) =>
-  ['Активный', 'Active', 'Выпущено'].includes(item.status)
 
 // const isBFAnalyticByCategoryId = (item: IOfferingRelationship) =>
 //   item.categoryId === ANALYTIC_CATEGORY_ID
