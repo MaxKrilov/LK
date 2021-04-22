@@ -82,6 +82,9 @@ export default {
   },
   computed: {
     ...mapState('contacts', ['currentClientContacts', 'createContactState', 'deleteContactState']),
+    ...mapState({
+      listContactType: state => state.dictionary.listContactType
+    }),
     isNewContact () {
       return !this.currentClientContacts.content?.id
     },

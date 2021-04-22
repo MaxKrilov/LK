@@ -3,6 +3,9 @@ import { eachArray, formatPhoneNumber, generateUrl, toDefaultPhoneNumber } from 
 import { USER_EXISTS_WITH_SAME } from '@/constants/status_response'
 import { TYPE_JSON } from '@/constants/type_request'
 
+import isEmpty from 'lodash/isEmpty'
+import { LIST_CONTACT_TYPE } from '@/constants/profile'
+
 const CONTACTS_REQUEST = 'CONTACTS_REQUEST'
 const CONTACTS_SUCCESS = 'CONTACTS_SUCCESS'
 const CONTACTS_ERROR = 'CONTACTS_ERROR'
@@ -202,6 +205,10 @@ const getContactExtendedData = (contact) => {
       case 'Registration Document':
         extendedData.registrationDocument = extendedMap[key].singleValue.attributeValue
         break
+      case 'Contact Type':
+        extendedData.contactType = cloneDeep(LIST_CONTACT_TYPE
+          .find(contactType => contactType.attributeValue === extendedMap[key].singleValue.attributeValue))
+        break
     }
   }
   return extendedData
@@ -330,9 +337,9 @@ const actions = {
     }
 
     // перед отправкой удаляю пустые поля чтобы не было ошибок на беке
-    Object.keys(data).map((item) => {
-      if (!data[item].length) {
-        delete data[item]
+    Object.keys(data).map((key) => {
+      if ((typeof data[key] === 'object' && isEmpty(data[key])) || !data[key]) {
+        delete data[key]
       }
     })
 

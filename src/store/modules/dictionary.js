@@ -4,6 +4,7 @@ import {
   LIST_REQUEST_THEME,
   LIST_TECHNICAL_REQUEST_THEME
 } from '../actions/dictionary'
+import { LIST_CONTACT_TYPE } from '@/constants/profile'
 
 const state = {
   [LIST_REQUEST_THEME]: [
@@ -42,7 +43,8 @@ const state = {
     { id: '9154785692113204795', value: 'Претензия по продаже' },
     { id: '9154785692113204796', value: 'Претензия по Помощникам по офису' },
     { id: '9154785692113204797', value: 'Прочие претензии' }
-  ]
+  ],
+  listContactType: LIST_CONTACT_TYPE
 }
 
 const getters = {
