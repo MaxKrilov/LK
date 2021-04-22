@@ -117,6 +117,26 @@ div(
               v-model="formData.roles"
             )
 
+
+          div(:class="[`${preInput}`, {[`${preInput}_changed`]: changedFields.includes('roles')}]")
+            div(:class="`${preInput}__changed`")
+              er-icon(
+                :class="`${preInput}__changed-icon`"
+                :width="14"
+                :height="14"
+                name="ok"
+              )
+              span(:class="`${preInput}__changed-text`") Изменен
+
+            ErSelect(
+              placeholder="Тип контакта"
+              trackId="attributeValue"
+              label="value"
+              :isShowLabelRequired="isNewContact"
+              :items="listContactType"
+              v-model="formData.contactType"
+              :rules="[v => !!v || 'Выберите значение из списка']"
+            )
         er-flex(:class="`${preSection}`" xs12 sm6 lg4)
           h3(:class="`${preSection}__title`") Контактные данные
 
@@ -202,7 +222,7 @@ div(
 
           div(:class="`${pre}__sign-intro`" v-if="!canSign")
             h4(:class="`${pre}__sign-intro__title`") Вам будет предложено загрузить скан подтверждающего документа
-            p(:class="`${pre}__sign-intro__desc`") Это может быть Устав&nbsp;предприятия, Доверенность, Паспорт и&nbsp;прочее. Размер файла не&nbsp;должен
+            p(:class="`${pre}__sign-intro__desc`") Это может быть Устав&nbsp;предприятия, Доверенность, Паспорт и&nbsp;прочее. Размер файла не&nbsp;должен&nbsp;
               | превышать&nbsp;4Мб. Формат: jpg, png, pdf, doc, docx.
 
           template(v-if="canSign")
