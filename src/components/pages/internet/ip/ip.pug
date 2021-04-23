@@ -24,7 +24,7 @@
                   th.col-protocol
                     | Протокол
                   th.col-active-date
-                    | 
+                    |
                   th.col-price
                     | Стоимость
                   th.col-actions
@@ -66,12 +66,17 @@
         .er-ip-page__footer
           .er-ip-page__actions(v-show="!showAddIpForm")
             er-container.container--full.container--no-padding.full
-              er-row
+              er-row.mb-16
                 er-flex.d--flex.xs12.sm6.md4
                   er-button(
                     color="blue"
                     @click="onShowAddIpForm"
+                    :disabled="isPPPoE"
                   ) Добавить IP-адрес
+              er-row(v-if="isPPPoE")
+                er-flex.d--flex.align-items-center.caption1.error--text(xs12)
+                  ErIcon.mr-8(name="warning")
+                  span Подключение дополнительных IP адресов на типе авторизации PPPoE невозможна
 
           .er-ip-page__add-ip-form.add-ip-form(v-show="showAddIpForm")
             .add-ip-form__title Добавить IP-адрес
@@ -121,7 +126,7 @@
       cancel-button-text="Закрыть"
     )
       template(slot="description")
-        div  Уважаемый клиент, для завершения заказа на лицевом счете не достаточно денежных средств. Пополните лицевой счет и повторите покупку. 
+        div  Уважаемый клиент, для завершения заказа на лицевом счете не достаточно денежных средств. Пополните лицевой счет и повторите покупку.
         br
         div  Стоимость подключения: <b>{{ ipCost }} </b> руб.
-        div  Ваши доступные средства: <b>{{ availableFunds }}</b> руб. 
+        div  Ваши доступные средства: <b>{{ availableFunds }}</b> руб.

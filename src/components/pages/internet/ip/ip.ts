@@ -53,6 +53,7 @@ export default class Ip extends Vue {
   mainIp: string = ''
   addProtocol: string = ''
   addIpCount: string = ''
+  isPPPoE: boolean = false
 
   isShowMoneyModal:boolean = false
   creatingOrder:boolean = false
@@ -187,6 +188,7 @@ export default class Ip extends Vue {
           return
         }
         const point = answer[this.activePoint!.bpi]
+        this.isPPPoE = point.tlo.chars['Тип авторизации'] === 'PPPoE'
         this.mainIp = point?.tlo?.chars?.['IPv4 адрес в составе услуги']
         this.ipAddressList = point?.slo
           .filter((el:any) => (el.offer.code === CODE_IP4SECOND || el.offer.code === CODE_IP4SUBNET || el.offer.code === SERVICE_ADDITIONAL_IP) && el.status === 'Active')
