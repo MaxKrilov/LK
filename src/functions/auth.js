@@ -59,7 +59,7 @@ export const makeTokens = ({ success, message, redirect, output }) => {
 
     if (redirect) {
       window.location.href = redirect
-      reject(new Error('Редирект на сервер авторизации'))
+      return
     }
 
     const { access, id, refresh } = output
