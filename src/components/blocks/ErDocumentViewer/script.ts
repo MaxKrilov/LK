@@ -47,6 +47,9 @@ export default class ErDocumentViewer extends Vue {
   currentDocument: IDocumentForDownload = this.listDocument[0]
   currentDocumentFile: string = ''
   currentType: { id: string | number, name: string, documentId: string | number } = this.computedListType[0]
+
+  isLoading: boolean = false
+
   // Computed
   get computedListType () {
     return this.listDocument.map(item => ({
@@ -104,41 +107,50 @@ export default class ErDocumentViewer extends Vue {
   }
   // Methods
   downloadFile (downloadDocument: IDocumentForDownload) {
-    return new Promise<string>((resolve) => {
-      if (!downloadDocument.filePath) return
-      this.$store.dispatch('fileinfo/downloadFile', {
-        api: this.$api,
-        bucket: downloadDocument.bucket,
-        key: downloadDocument.filePath,
-        ext: downloadDocument.fileName
-          .substring(
-            downloadDocument.fileName.lastIndexOf('.') + 1,
-            downloadDocument.fileName.length) ||
-          downloadDocument.fileName
-      })
-        .then(response => {
-          if (
-            (typeof response === 'boolean' && !response) ||
-            (response instanceof Blob && response.size === 0)
-          ) {
-            this.currentDocumentFile = ''
-            resolve('')
-          } else if (response instanceof Blob) {
-            if (!this.listFile.has(downloadDocument.id.toString())) {
-              this.__toBase64(response)
-                .then((base64File: any) => {
-                  this.listFile.set(
-                    downloadDocument.id.toString(),
-                    base64File
-                  )
-                  this.currentDocumentFile = base64File
-                  resolve(base64File)
-                })
-            } else {
-              resolve(this.listFile.get(downloadDocument.id.toString()))
-            }
+    this.isLoading = true
+    return new Promise<string>(async (resolve, reject) => {
+      try {
+        const { filePath, bucket, fileName } = downloadDocument
+        let { id } = downloadDocument
+        id = String(id)
+
+        if (!filePath || !fileName || !bucket) {
+          reject('Missing Parameters')
+          return
+        }
+
+        const ext = fileName.substring(fileName.lastIndexOf('.') + 1, fileName.length) || fileName
+
+        const downloadFileResult = await this.$store.dispatch(
+          'fileinfo/downloadFile',
+          {
+            api: this.$api,
+            bucket: bucket,
+            key: filePath,
+            ext
+          })
+        if (
+          (typeof downloadFileResult === 'boolean' && !downloadFileResult) ||
+          (downloadFileResult instanceof Blob && downloadFileResult.size === 0)
+        ) {
+          this.currentDocumentFile = ''
+          resolve('')
+        } else if (downloadFileResult instanceof Blob) {
+          if (this.listFile.has(id)) {
+            resolve(this.listFile.get(id))
+            return
           }
-        })
+
+          const base64File = await this.__toBase64(downloadFileResult)
+          this.listFile.set(id, base64File)
+          this.currentDocumentFile = base64File
+          resolve(base64File)
+        }
+      } catch (e) {
+        reject(e)
+      } finally {
+        this.isLoading = false
+      }
     })
   }
   downloadFileOnDevice () {

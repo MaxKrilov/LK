@@ -45,7 +45,10 @@
                   er-icon(name="close")
             span Закрыть
       .er-document-viewer__body
-        div(v-if="isExistsFile" key="fileExists")
+        div(v-if="isLoading")
+          .er-document-viewer__loading
+            img(:src="require('@/assets/images/preloaders/3.svg')")
+        div(v-else-if="isExistsFile" key="fileExists")
           embed(:src="currentDocumentFile")
         div(v-else key="fileNotExists")
           div.no-download Документ не загружен или не найден
