@@ -59,7 +59,7 @@ export default class PaymentCardComponent extends Vue {
   }
 
   // Vuex actions
-  readonly activationDeactivationAutoPay!: ({ bindingId, activate }: { bindingId: string, activate: 0 | 1 }) => Promise<{ result: boolean }>
+  readonly activationDeactivationAutoPay!: ({ bindingId, activate }: { bindingId: string, activate: 0 | 1 }) => Promise<{ result: number }>
   readonly unbindCard!: ({ bindingId }: { bindingId: string }) => Promise<{ result: boolean }>
 
   // Props
@@ -158,7 +158,10 @@ export default class PaymentCardComponent extends Vue {
       activate: Number(!this.isAutoPay) as 0 | 1
     })
       .then(response => {
-        if (response.result) {
+        if (
+          (response.result === 0 && Number(!this.isAutoPay) === 0) ||
+          (response.result === 1 && Number(!this.isAutoPay) === 1)
+        ) {
           this.internalIsAutoPay = !this.isAutoPay
           this.isChangedAutoPay = true
           this.isShowDialogAutoPay = false
