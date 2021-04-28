@@ -102,7 +102,7 @@
               er-container.full.container--no-padding
                 er-row
                   er-flex.d--flex.xs12.sm4.md3
-                    er-button(@click="onAddIp" :loading="isConnection || creatingOrder" :disabled="isDisabledAddButton") Добавить
+                    er-button(@click="onAddIp" :loading="creatingOrder" :disabled="isDisabledAddButton") Добавить
                   er-flex.d--flex.xs12.sm4.md3
                     er-button(
                       color="gray"
