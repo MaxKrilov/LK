@@ -1,6 +1,7 @@
 import BaseCharacteristicsList from './BaseCharacteristicsList.vue'
+import IPromoFeatureItem from '@/interfaces/promo-feature-item'
 
-export default [
+const featureList: IPromoFeatureItem[] = [
   {
     icon: 'thumb_up',
     name: 'Комфорт пользования',
@@ -38,3 +39,5 @@ export default [
     component: BaseCharacteristicsList
   }
 ]
+
+export default featureList
