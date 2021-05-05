@@ -1,0 +1,19 @@
+.wifi-radar-promo-page
+  er-page-header(
+    title="Wi-Fi радар"
+    link-text="Назад в кабинет"
+    back-link="/lk"
+  )
+  er-promo(
+    class="wifi-radar-promo"
+    banner="wifi-radar-promo.png"
+    :featureList="featureList"
+    :link-to-connect="link"
+    plug-text="Подключить услугу"
+    title=""
+  )
+    template(v-slot:extraButtons)
+      er-button(
+        @click="onClickDemo"
+        flat
+      ) Демо

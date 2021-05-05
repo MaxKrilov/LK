@@ -3,12 +3,13 @@ import featureList from './featureList'
 import ErPromo from '@/components/blocks/ErPromo/index.vue'
 import { PLUG_URL } from '@/constants/videocontrol'
 import { VS_LOGIN } from '@/constants/url'
+import IPromoFeatureItem from '@/interfaces/promo-feature-item'
 
 const components = { ErPromo }
 
 @Component({ components })
 export default class VCPromoPage extends Vue {
-  featureList = featureList
+  featureList: IPromoFeatureItem[] = featureList
   link = PLUG_URL
 
   onClickDemo () {
