@@ -1,0 +1,86 @@
+div.support-page.main-content.main-content--padding.main-content--top-menu-fix
+  er-page-header(title="Поддержка")
+
+  .b-request
+    .b-request__content
+      .b-request__head.align-items-center.no-gutters-child
+        h2 Заявки
+        a.filter--mobile(@click="toggleFilterRequest")
+          | {{ typeFilterRequest | filterTypeFilterRequest }}
+
+        .filter--desktop
+          a(
+            :data-count="activeRequestList.length"
+            :class="{ 'active': isActiveFilterRequest(getTypeFilterRequestActive) }"
+            @click="() => { setFilterRequest(getTypeFilterRequestActive) }"
+          )
+            span Активные
+
+          a(
+            :data-count="allRequestListCount"
+            :class="{ 'active': isActiveFilterRequest(getTypeFilterRequestAll) }"
+            @click="() => { setFilterRequest(getTypeFilterRequestAll) }"
+          )
+            span Все
+
+        er-select.select-city(
+          :items="getListNameCity",
+          placeholder="Город",
+          v-model="city"
+        )
+
+      .b-request__create
+        create-request-component
+          template(v-slot:after_create_button)
+            er-button(
+              flat
+              @click="onShowDirectorFeedback"
+              v-class-mod="['inline-button']"
+            ) Написать директору
+
+      .director-feedback-block
+        director-feedback(v-model="isVisibleDirectorFeedback")
+
+      .b-request__body
+        .b-request__thead
+          .b-request__thead-item(
+            v-for="(headTitle, i) in listHeadTitle"
+            :key="i"
+            :class="[headTitle.id, { 'sort': isSortField(headTitle.id), 'desc': isSortField(headTitle.id) && isDesc }]"
+          )
+            a(@click="() => { setSortField(headTitle.id) }")
+              span.title {{ headTitle.name }}
+              span.icon
+                er-icon(name="funnel")
+
+        er-preloader(:active="loadingRequest" icon icon-type="2")
+          .b-request__tbody(v-if="typeFilterRequest === 'active'")
+            template(v-if="!!activeFilteredByCities.length")
+              request-item-component(
+                v-for="requestItem in activeFilteredByCities"
+                v-bind="requestItem"
+                @cancel="() => { cancellRequest(requestItem) }"
+              )
+            template(v-else)
+              .b-request__tbody.b-request__tbody--empty
+                | У вас нет активных заявок
+
+          .b-request__tbody(v-else)
+            template(v-if="!!allFilteredByCities.length")
+              request-item-component(
+                v-for="requestItem in allFilteredByCities"
+                v-bind="requestItem"
+                @cancel="() => { cancellRequest(requestItem) }"
+              )
+            template(v-else)
+              .b-request__tbody.b-request__tbody--empty
+                | У вас нет заявок
+
+        .b-request__pagination(v-if="typeFilterRequest === 'all' && totalPages > 1")
+          er-pagination(
+            v-model="currentPage"
+            :length="totalPages"
+            :total-visible="10"
+          )
+
+  contact-info-component

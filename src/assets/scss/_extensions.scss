@@ -161,6 +161,20 @@
   }
 }
 
+%support-label-font {
+  font: 11px/16px $fedra-book;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+
+  @include min-breakpoint(md) {
+    font-size: 13px;
+  }
+
+  @include min-breakpoint(lg) {
+    font-size: 14px;
+  }
+}
+
 %body {
   @extend %body-font;
   @extend %body-color;

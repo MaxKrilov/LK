@@ -148,8 +148,6 @@
           span {{ getLabelStatus.name }}
           div.updated
             +dateNTime()
-        .request-item-component__updated--desktop
-          +dateNTime()
         .request-item-component__toggle--desktop
           +cornerDown()
       .request-item-component__row.bottom

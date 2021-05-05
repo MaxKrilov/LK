@@ -30,6 +30,7 @@ interface iListContactMethodsItem extends standardSelectItem {}
 
 interface iListAddressItem extends standardSelectItem {
   locationId?: string | number
+  value?: string
 }
 
 interface iItemService extends standardSelectItem {
@@ -282,6 +283,13 @@ export default class CreateRequestComponent extends Vue {
             .map(sloItem => sloItem.chars['Номер телефона'])
         })
     }
+  }
+
+  get sortedAddressList (): iListAddressItem[] {
+    // @ts-ignore
+    return this.getAddressList.sort((a:iListAddressItem, b:iListAddressItem) => {
+      return a?.value?.trim()?.localeCompare(<string>b?.value?.trim())
+    })
   }
 
   closeForm () {

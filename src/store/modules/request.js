@@ -4,13 +4,16 @@ import {
   CREATE_REQUEST,
   CREATE_REQUEST_SUCCESS,
   GET_REQUEST,
+  FETCH_REQUEST_LIST,
+  FETCH_ACTIVE_REQUEST_LIST,
   GET_REQUEST_BY_ID,
   GET_REQUEST_SUCCESS,
   GET_SERVICES_BY_LOCATION
 } from '../actions/request'
 import { ERROR_MODAL } from '../actions/variables'
-import { TYPE_ARRAY } from '../../constants/type_request'
+import { TYPE_ARRAY } from '@/constants/type_request'
 import moment from 'moment'
+import { DEFAULT_REQUESTS_PER_PAGE, PROBLEM_REQUEST_TYPE } from '@/constants/request'
 
 const CANCELLATION_REASON = '9150410012013966885'
 const REQUEST_REASON = '9156211041213279417'
@@ -31,24 +34,75 @@ const getters = {
   }
 }
 
+const SORT_ORDER = {
+  ASC: 'ASC',
+  DESC: 'DESC'
+}
+
 const actions = {
-  [GET_REQUEST]: async ({ rootState, rootGetters, commit }, { api }) => {
-    const toms = rootGetters['auth/getTOMS']
+  [FETCH_REQUEST_LIST]: ({ rootGetters, commit }, payload) => {
+    const {
+      api,
+      pageNumber = 1,
+      count = DEFAULT_REQUESTS_PER_PAGE,
+      status,
+      sortBy,
+      sortOrder = SORT_ORDER.ASC
+    } = payload
+    const clientId = rootGetters['auth/getTOMS']
+
+    commit('loading/loadingRequest', true, { root: true })
+
+    const newPayload = {
+      requestName: PROBLEM_REQUEST_TYPE.ALL,
+      clientId,
+      page: pageNumber,
+      rowCount: count
+    }
+
+    if (sortBy) { newPayload.sortBy = sortBy }
+
+    if (sortOrder) { newPayload.sortOrder = sortOrder }
+
+    if (status) { newPayload.status = status }
+
+    return api
+      .setData({
+        ...newPayload
+      })
+      .query('/problem/management/list')
+      .catch(error => {
+        commit(ERROR_MODAL, true, { root: true })
+        throw new Error(error)
+      })
+      .finally(() => {
+        commit('loading/loadingRequest', false, { root: true })
+      })
+  },
+  [FETCH_ACTIVE_REQUEST_LIST] ({ rootGetters, commit }, { api }) {
+    const clientId = rootGetters['auth/getTOMS']
+
+    return api
+      .setData({
+        clientId,
+        requestName: PROBLEM_REQUEST_TYPE.ALL
+      })
+      .query('/problem/management/active')
+      .then(data => {
+        return data.reduce((acc, el) => {
+          return [...acc, ...el]
+        }, [])
+      })
+  },
+  [GET_REQUEST]: async ({ rootGetters, commit, dispatch }, payload) => {
     try {
-      const result = await api
-        .setData({
-          requestName: 'all',
-          clientId: toms
+      const result = await dispatch(FETCH_REQUEST_LIST, payload)
+        .then(data => {
+          commit(GET_REQUEST_SUCCESS, data)
         })
-        .query('/problem/management/list')
-      commit(GET_REQUEST_SUCCESS, result)
-      return true
-    } catch (error) {
-      commit(ERROR_MODAL, true, { root: true })
-      return false
+      return result
+    } catch (e) {
       // todo Логирование
-    } finally {
-      commit('loading/loadingRequest', false, { root: true })
     }
   },
   [CANCEL_REQUEST]: async ({ rootGetters, commit }, { api, requestId, description }) => {

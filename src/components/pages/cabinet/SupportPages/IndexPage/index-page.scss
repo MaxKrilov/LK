@@ -247,16 +247,6 @@
 }
 
 .director-feedback-block {
-  margin-top: $padding-x6;
-
-  @include min-breakpoint(md) {
-    margin-top: $padding-x8;
-  }
-
-  @include min-breakpoint(xl) {
-    margin-top: $padding-x10;
-  }
-
   .er-button--inline-button {
     width: inherit;
     display: inline-block;

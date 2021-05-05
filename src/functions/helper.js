@@ -695,3 +695,6 @@ export function dataLayerPush (object) {
   window.dataLayer = window.dataLayer || []
   window.dataLayer.push(object)
 }
+
+export const sortAsc = (a, b) => a - b
+export const sortDesc = (a, b) => b - a

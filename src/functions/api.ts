@@ -31,6 +31,7 @@ export class API {
     } else if (isStaging()) {
       return wrapHttps(`${BACKEND_STAGING}${query}`)
     }
+
     return wrapHttps(`${branch}${BACKEND_TESTING}${query}`)
   }
 

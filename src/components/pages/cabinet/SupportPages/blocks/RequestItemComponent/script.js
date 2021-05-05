@@ -1,6 +1,8 @@
-import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
+import { Component, Prop, Vue, Watch } from 'vue-property-decorator'
 import { CANCEL_REQUEST } from '../../../../../../store/actions/request'
 import ErActivationModal from '../../../../../blocks/ErActivationModal/index'
+import { REQUEST_STATUS } from '@/constants/request'
+import { sortDesc } from '@/functions/helper'
 
 const localisationTicketType = val => val.match(/Problem/ig)
   ? 'Инцидент'
@@ -9,6 +11,39 @@ const localisationTicketType = val => val.match(/Problem/ig)
     : val.match(/Request/ig)
       ? 'Запрос на обслуживание'
       : 'Другое'
+
+const STATUS_LABEL = {
+  IN_PROGRESS: {
+    id: 'progress',
+    name: 'В работе',
+    text: 'Специалисты занимаются решением Вашей заявки.'
+  },
+  HOLD: {
+    id: 'hold',
+    name: 'В работе',
+    text: 'Специалисты занимаются решением Вашей заявки.' // todo Переделать после того, как бизнес отойдёт после Новогодних праздников
+  },
+  NEW: {
+    id: 'created',
+    name: 'Новая',
+    text: 'Спасибо за Ваше обращение. Заявка создана, в ближайшее время будет принята в работу.'
+  },
+  CANCEL: {
+    id: 'cancel',
+    name: 'Отменена',
+    text: 'Заявка отменена по желанию Клиента.'
+  },
+  RESOLVED: {
+    id: 'resolved',
+    name: 'Закрыта',
+    text: 'Спасибо за Ваше обращение. Работы по заявке выполнены.'
+  },
+  SOLVED: {
+    id: 'solved',
+    name: 'Решена',
+    text: 'Работы по заявке выполнены. Ожидается подтверждение от Клиента решения заявки.'
+  }
+}
 
 @Component({
   components: {
@@ -23,7 +58,7 @@ export default class RequestItemComponent extends Vue {
   /**
    * Номер заявки
    */
-  @Prop([String, Number]) ticketId
+  @Prop([ String, Number ]) ticketId
   /**
    * Имя заявки
    */
@@ -47,35 +82,38 @@ export default class RequestItemComponent extends Vue {
   /**
    * Дата/время изменения
    */
-  @Prop([String, Number]) modifiedWhen
+  @Prop([ String, Number ]) modifiedWhen
   /**
    * Дата/время создания
    */
-  @Prop([String, Number]) createdWhen
+  @Prop([ String, Number ]) createdWhen
   /**
    * Дата/время взятия в работу
    */
-  @Prop([String, Number]) inProgressWhen
+  @Prop([ String, Number ]) inProgressWhen
   /**
    * Дата/время перевода в ожидание
    */
-  @Prop([String, Number]) onHoldWhen
+  @Prop([ String, Number ]) onHoldWhen
   /**
    * Дата/время закрытия
    */
-  @Prop([String, Number]) closedWhen
+  @Prop([ String, Number ]) closedWhen
   /**
    * Дата/время решения
    */
-  @Prop([String, Number]) resolvedWhen
+  @Prop([ String, Number ]) resolvedWhen
   /**
    * Дата/время отмены
    */
-  @Prop([String, Number]) cancelledWhen
+  @Prop([ String, Number ]) cancelledWhen
   /**
    * Список файлов
    */
   @Prop({ type: Array, default: () => ([]) }) listFile
+
+  @Prop(String) status
+
   /** @type {boolean} */
   isOpenDetail = false
   /** @type {boolean} */
@@ -94,23 +132,31 @@ export default class RequestItemComponent extends Vue {
    */
   get getLabelStatus () {
     if (this.cancelledWhen) {
-      return { id: 'cancel', name: 'Отменена' }
+      return STATUS_LABEL.CANCEL
     }
+
     if (this.closedWhen) {
-      return { id: 'resolved', name: 'Закрыта' }
+      return STATUS_LABEL.RESOLVED
     }
+
     if (this.resolvedWhen) {
-      return { id: 'solved', name: 'Решена' }
+      return STATUS_LABEL.SOLVED
     }
+
     if (this.onHoldWhen) {
-      return { id: 'hold', name: 'В работе' }
+      return STATUS_LABEL.HOLD
     }
+
     if (this.inProgressWhen) {
-      return { id: 'progress', name: 'В работе' }
+      return STATUS_LABEL.IN_PROGRESS
     }
-    if (this.createdWhen) {
-      return { id: 'created', name: 'Новая' }
+
+    if (this.createdWhen && this.status !== REQUEST_STATUS.IN_WORK) {
+      return STATUS_LABEL.NEW
+    } else if (this.createdWhen && this.status === REQUEST_STATUS.IN_WORK) {
+      return STATUS_LABEL.IN_PROGRESS
     }
+
     return { id: '', name: '' }
   }
 
@@ -124,26 +170,36 @@ export default class RequestItemComponent extends Vue {
 
   get getTextStatus () {
     return {
-      'created': 'Спасибо за Ваше обращение. Заявка создана, в ближайшее время будет принята в работу.',
-      'progress': 'Специалисты занимаются решением Вашей заявки.',
+      'created': STATUS_LABEL.NEW.text,
+      'progress': STATUS_LABEL.IN_PROGRESS.text,
       // 'hold': 'Для решения заявки требуются дополнительные работы.',
-      'hold': 'Специалисты занимаются решением Вашей заявки.', // todo Переделать после того, как бизнес отойдёт после Новогодних праздников
-      'solved': 'Работы по заявке выполнены. Ожидается подтверждение от Клиента решения заявки.',
-      'resolved': 'Спасибо за Ваше обращение. Работы по заявке выполнены.',
-      'cancel': 'Заявка отменена по желанию Клиента.'
+      // todo Переделать после того, как бизнес отойдёт после Новогодних праздников
+      'hold': STATUS_LABEL.HOLD.text,
+      'solved': STATUS_LABEL.SOLVED.text,
+      'resolved': STATUS_LABEL.RESOLVED.text,
+      'cancel': STATUS_LABEL.CANCEL.text
     }
   }
+
   get getHistoryArray () {
     return [
-      this.cancelledWhen && { id: 'cancel', name: 'Отменена', text: this.getTextStatus.cancel, time: this.cancelledWhen },
-      this.closedWhen && { id: 'resolved', name: 'Закрыта', text: this.getTextStatus.resolved, time: this.closedWhen },
-      this.resolvedWhen && { id: 'solved', name: 'Решена', text: this.getTextStatus.solved, time: this.resolvedWhen },
+      this.cancelledWhen && { ...STATUS_LABEL.CANCEL, time: this.cancelledWhen },
+      this.closedWhen && { ...STATUS_LABEL.RESOLVED, time: this.closedWhen },
+      this.resolvedWhen && { ...STATUS_LABEL.SOLVED, time: this.resolvedWhen },
       // this.onHoldWhen && { id: 'hold', name: 'В доработке', text: this.getTextStatus.hold, time: this.onHoldWhen },
-      this.onHoldWhen && { id: 'hold', name: 'В работе', text: this.getTextStatus.hold, time: this.onHoldWhen }, // todo Переделать после того, как бизнес отойдёт после Новогодних праздников
-      this.inProgressWhen && { id: 'progress', name: 'В работе', text: this.getTextStatus.progress, time: this.inProgressWhen },
-      this.createdWhen && { id: 'created', name: 'Новая', text: this.getTextStatus.created, time: this.createdWhen }
+      this.onHoldWhen && { // todo Переделать после того, как бизнес отойдёт после Новогодних праздников
+        ...STATUS_LABEL.HOLD,
+        time: this.onHoldWhen
+      },
+      this.inProgressWhen && { ...STATUS_LABEL.IN_PROGRESS, time: this.inProgressWhen },
+      this.createdWhen && this.status === REQUEST_STATUS.IN_WORK && {
+        ...STATUS_LABEL.IN_PROGRESS, time: this.modifiedWhen
+      },
+      this.createdWhen && { ...STATUS_LABEL.NEW, time: this.createdWhen }
     ].filter(item => item)
+      .sort((a, b) => sortDesc(a.time, b.time))
   }
+
   get getDetailInfoMobile () {
     return [
       { caption: 'Тип заявки', value: localisationTicketType(this.ticketType) },
@@ -152,6 +208,7 @@ export default class RequestItemComponent extends Vue {
       { caption: 'Статус', value: this.getTextStatus[this.getLabelStatus.id] }
     ]
   }
+
   get getDetailInfoDesktop () {
     return [
       { caption: 'Тип заявки', value: localisationTicketType(this.ticketType) },
@@ -167,18 +224,23 @@ export default class RequestItemComponent extends Vue {
   toggleDetail () {
     this.isOpenDetail = !this.isOpenDetail
   }
+
   toggleHistoryMobile () {
     this.isOpenHistory = !this.isOpenHistory
   }
+
   openCancelDialog () {
     this.isOpenCancel = true
   }
+
   closeCancelDialog () {
     this.isOpenCancel = false
   }
+
   closeSuccessCancel () {
     this.isSuccessCancel = false
   }
+
   async cancelRequest () {
     if (!this.$refs.cancel_form.validate()) {
       return false
@@ -200,6 +262,7 @@ export default class RequestItemComponent extends Vue {
         this.loadingCancel = false
       })
   }
+
   @Watch('isSuccessCancel')
   onIsSuccessCancelChanged (val) {
     !val && this.$emit('cancel')
