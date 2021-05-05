@@ -1,12 +1,17 @@
-import { Vue, Component, Watch } from 'vue-property-decorator'
+import { Component, Vue, Watch } from 'vue-property-decorator'
 import CardInstructionsComponent from '../blocks/CardInstructionsComponent'
 import SlideUpDownWithTitleComponent from '../blocks/SlideUpDownWithTitleComponent/index'
 import RequestItemComponent from '../blocks/RequestItemComponent/index'
 import CreateRequestComponent from '../blocks/CreateRequestComponent/index'
 import ContactInfoComponent from '../blocks/ContactInfoComponent/index'
 import DirectorFeedback from '../blocks/DirectorFeedback/index'
-import { mapState, mapGetters } from 'vuex'
-import { formatPhone } from '../../../../../functions/filters'
+import { FETCH_REQUEST_LIST } from '@/store/actions/request'
+
+import { mapGetters, mapState } from 'vuex'
+import { formatPhone } from '@/functions/filters'
+import { isObject } from '@/functions/helper2'
+import { DEFAULT_REQUESTS_PER_PAGE, SORT_FIELDS } from '@/constants/request'
+import { FETCH_ACTIVE_REQUEST_LIST } from '../../../../../store/actions/request'
 
 const TYPE_FILTER_REQUEST_ALL = 'all'
 const TYPE_FILTER_REQUEST_ACTIVE = 'active'
@@ -14,10 +19,33 @@ const TYPE_FILTER_REQUEST_ACTIVE = 'active'
 const SORT_ASC = 'asc'
 const SORT_DESC = 'desc'
 
-const VISIBLE_REQUEST = 6
-const TOTAL_VISIBLE_PAGINATION = 7
+const VISIBLE_REQUEST = DEFAULT_REQUESTS_PER_PAGE
 
 const CHANNEL_DMP = '9156762963913869573'
+
+const mapRequestItem = item => {
+  const result = {}
+  result.ticketId = item.ticket_id
+  result.ticketName = item.ticket_name
+  result.ticketType = item.ticket_type
+  // eslint-disable-next-line camelcase
+  result.affectedProduct = item?.affected_product?.[0]?.name
+  result.location = isObject(item.location)
+    ? item.location['formatted_Address']
+    : item.location
+  result.createdWhen = item.created_when ? Number(item.created_when) : undefined
+  result.inProgressWhen = item.in_progress_when ? Number(item.in_progress_when) : undefined
+  result.onHoldWhen = item.on_hold_when ? Number(item.on_hold_when) : undefined
+  result.resolvedWhen = item.resolved_when ? Number(item.resolved_when) : undefined
+  result.closedWhen = item.closed_when ? Number(item.closed_when) : undefined
+  result.modifiedWhen = item.modified_when ? Number(item.modified_when) : undefined
+  result.cancelledWhen = item.cancelled_when ? Number(item.cancelled_when) : undefined
+  result.type = isObject(item.type) ? item.type.name : item.type
+  result.status = item.status
+  result.listFile = item.attachmentIds
+  result.channel = item.channel
+  return result
+}
 
 @Component({
   components: {
@@ -48,7 +76,6 @@ export default class SupportIndexPage extends Vue {
    * Список городов по заявкам
    * @type {Array<String>}
    */
-  // listCity = {}
   city = []
   /**
    * Тип заявок (для фильтрации)
@@ -70,6 +97,7 @@ export default class SupportIndexPage extends Vue {
    * @type {string}
    */
   sortBy = ''
+
   /**
    * Сортировка по возрастанию/убыванию
    * @type {string}
@@ -78,25 +106,47 @@ export default class SupportIndexPage extends Vue {
 
   listRequest = []
 
-  currentPage = 1
-  isVisibleDirectorFeedback = false
+  allRequestList = []
+  activeRequestList = []
 
-  @Watch('vListRequest')
-  onVListRequestChange (val) {
-    this.setListRequest(val)
-  }
+  currentPage = 1
+  totalPages = 0
+  allRequestListCount = 0
+  itemsPerPage = DEFAULT_REQUESTS_PER_PAGE
+  isVisibleDirectorFeedback = false
 
   @Watch('currentPage')
   onCurrentPageChange () {
     this.$scrollTo('.support-page')
+    this.updateAllRequestList()
   }
 
-  get getLengthPagination () {
-    return Math.ceil(this.listRequestComputed.length / VISIBLE_REQUEST)
+  @Watch('sortBy')
+  onChangeSortBy (value) {
+    this.updateAllRequestList()
   }
 
-  get getTotalVisiblePagination () {
-    return TOTAL_VISIBLE_PAGINATION
+  @Watch('orderSort')
+  onChangeOrderSort (value) {
+    this.updateAllRequestList()
+  }
+
+  getFetchParams () {
+    const payload = {
+      pageNumber: this.currentPage
+    }
+
+    if (this.orderSort === SORT_DESC) {
+      payload.sortOrder = 'DESC'
+    }
+
+    if (this.sortBy === 'request') {
+      payload.sortBy = SORT_FIELDS.TICKET_NAME
+    } else if (this.sortBy === 'status') {
+      payload.sortBy = SORT_FIELDS.STATUS
+    }
+
+    return payload
   }
 
   get getListShowRequestByCity () {
@@ -130,26 +180,6 @@ export default class SupportIndexPage extends Vue {
       : filteredByActive.filter(item => this.getListShowRequestByCity.includes(item.ticketId))
   }
 
-  get listRequestComputedByPagination () {
-    return this.listRequestComputed.slice((this.currentPage - 1) * VISIBLE_REQUEST, this.currentPage * VISIBLE_REQUEST - 1)
-  }
-
-  /**
-   * Получает количество всех заявок
-   * @return {number}
-   */
-  get getCountRequest () {
-    return this.listRequest.length
-  }
-
-  /**
-   * Получает количество активных заявок
-   * @return {number}
-   */
-  get getCountActiveRequest () {
-    return this.listRequest.filter(item => !item.resolvedWhen && !item.cancelledWhen && !item.closedWhen).length
-  }
-
   /**
    * Получает фильтр для всех заявок
    * @return {string}
@@ -165,14 +195,47 @@ export default class SupportIndexPage extends Vue {
   get getTypeFilterRequestActive () {
     return TYPE_FILTER_REQUEST_ACTIVE
   }
+
   get isDesc () {
     return this.orderSort === SORT_DESC
   }
+
   get getListNameCity () {
     return Object.keys(this.listCity)
   }
+
   get getVisibleRequest () {
     return VISIBLE_REQUEST
+  }
+
+  get allFilteredByCities () {
+    return this.allRequestList.filter(this.filterByCities)
+  }
+
+  get activeFilteredByCities () {
+    return this.activeRequestList.filter(this.filterByCities)
+  }
+
+  fetchRequestList (payload) {
+    return this.$store.dispatch(`request/${FETCH_REQUEST_LIST}`,
+      { api: this.$api, ...payload }
+    )
+      .then(response => {
+        const toNumber = n => parseInt(n, 10)
+        if (response.range) {
+          // eslint-disable-next-line no-unused-vars
+          const [ startIndex, endIndex, totalItems ] = response.range
+            .split(/[-/]/)
+            .map(toNumber)
+
+          this.allRequestListCount = totalItems
+          const delta = totalItems % this.itemsPerPage > 0 ? 1 : 0
+          this.totalPages = toNumber(totalItems / this.itemsPerPage) + delta
+        }
+
+        this.listRequest = response.request
+        return response
+      })
   }
 
   /**
@@ -192,6 +255,12 @@ export default class SupportIndexPage extends Vue {
     this.typeFilterRequest = type
   }
 
+  filterByCities (requestListItem) {
+    return this.city.length === 0
+      ? requestListItem
+      : this.getListShowRequestByCity.includes(requestListItem.ticketId)
+  }
+
   /**
    * Проверяет, является ли текущий тип фильтра активным
    * @param {string} type Тип
@@ -200,9 +269,11 @@ export default class SupportIndexPage extends Vue {
   isActiveFilterRequest (type) {
     return type === this.typeFilterRequest
   }
+
   isSortField (id) {
     return this.sortBy === id
   }
+
   setSortField (id) {
     if (this.isSortField(id)) {
       this.orderSort = this.orderSort === SORT_ASC
@@ -213,31 +284,15 @@ export default class SupportIndexPage extends Vue {
       this.sortBy = id
     }
   }
+
   setListRequest (listRequest) {
-    this.listRequest = listRequest
-      .map(item => {
-        const result = {}
-        result.ticketId = item.ticket_id
-        result.ticketName = item.ticket_name
-        result.ticketType = item.ticket_type
-        // eslint-disable-next-line camelcase
-        result.affectedProduct = item?.affected_product?.[0]?.name
-        result.location = item.location
-        result.createdWhen = item.created_when ? Number(item.created_when) : undefined
-        result.inProgressWhen = item.in_progress_when ? Number(item.in_progress_when) : undefined
-        result.onHoldWhen = item.on_hold_when ? Number(item.on_hold_when) : undefined
-        result.resolvedWhen = item.resolved_when ? Number(item.resolved_when) : undefined
-        result.closedWhen = item.closed_when ? Number(item.closed_when) : undefined
-        result.modifiedWhen = item.modified_when ? Number(item.modified_when) : undefined
-        result.cancelledWhen = item.cancelled_when ? Number(item.cancelled_when) : undefined
-        result.type = item.type
-        result.status = item.status
-        result.listFile = item.attachmentIds
-        result.channel = item.channel
-        return result
-      })
-      .filter(item => item.channel.id !== CHANNEL_DMP)
+    this.$nextTick(() => {
+      this.allRequestList = listRequest
+        .map(mapRequestItem)
+        .filter(item => item.channel.id !== CHANNEL_DMP)
+    })
   }
+
   cancelRequest (e) {
     const { id } = e
     const index = this.listRequest.findIndex(item => item.ticketId === id)
@@ -254,7 +309,29 @@ export default class SupportIndexPage extends Vue {
     this.isVisibleDirectorFeedback = true
   }
 
-  async created () {
-    this.setListRequest(this.vListRequest)
+  getCurrentRequestList () {
+    return this.isActiveFilterRequest(this.getTypeFilterRequestActive) ? this.activeRequestList : this.allRequestList
+  }
+
+  updateAllRequestList () {
+    this.allRequestList = []
+
+    this.fetchRequestList(this.getFetchParams())
+      .then(({ request }) => {
+        this.setListRequest(request)
+      })
+  }
+
+  created () {
+    this.updateAllRequestList()
+
+    this.$store.dispatch(`request/${FETCH_ACTIVE_REQUEST_LIST}`,
+      { api: this.$api }
+    )
+      .then(data => {
+        this.activeRequestList = data
+          .map(mapRequestItem)
+          .filter(item => item.channel.id !== CHANNEL_DMP)
+      })
   }
 }

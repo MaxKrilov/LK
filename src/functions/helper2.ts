@@ -240,3 +240,7 @@ export function throttle<T extends (...args: any[]) => any> (fn: T, limit: numbe
     }
   }
 }
+
+export function isObject (value: any): boolean {
+  return typeof value === 'object'
+}

@@ -25,7 +25,11 @@
 
   &--desktop {
     @extend %rounded-block;
-    @extend %shadow-block;
+    //@extend %shadow-block;
+
+    .close-button {
+      display: none;
+    }
 
     padding: $padding-x8;
     background-color: map_get($gray, '1');
@@ -101,5 +105,12 @@
 
   &__footer {
     @extend %action-buttons-block;
+    @extend %action-buttons-block--3-cols;
+
+    .er-button.er-button--yellow {
+      .er-icon {
+        @include color-black(.3);
+      }
+    }
   }
 }

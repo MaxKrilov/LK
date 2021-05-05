@@ -37,7 +37,14 @@
     }
   }
   &__button {
+    display: flex;
+    flex-direction: column;
+    gap: $padding-x4;
     padding: $padding-x6 $padding-x8;
+
+    @include min-breakpoint(md) {
+      flex-direction: row;
+    }
 
     .er-button {
       &__content {
@@ -168,6 +175,19 @@
       @extend %caption1;
       position: absolute;
       top: -20px;
+    }
+  }
+
+  .zaya {
+    .er-icon {
+      @include color-black(.2);
+    }
+
+    a {
+      @extend %link-behaviour;
+      @include color-black(.5);
+      text-decoration: none;
+      border-bottom-style: dashed;
     }
   }
 }

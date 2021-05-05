@@ -10,6 +10,7 @@
         template(v-slot:activator="{ on }")
           .create-request-component__button
             er-button(pre-icon="add" v-on="on") Создать заявку
+            slot(name="after_create_button")
 
         .create-request-component__dialog
           .create-request-component__head
@@ -39,6 +40,8 @@
           er-button(pre-icon="add", @click="openDesktopForm")
             span
               | Создать заявку
+          slot(name="after_create_button")
+
     er-activation-modal(
       type="success"
       v-model="resultDialogSuccess"
