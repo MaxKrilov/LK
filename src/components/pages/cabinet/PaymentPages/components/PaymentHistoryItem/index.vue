@@ -27,7 +27,7 @@
             a.link--solid--black-yellow(:href="fiscal" target="_blank" rel="noopener") Получить чек
         template(v-if="!loading")
           .amount
-            | {{ type === 'replenishment' ? '+' : '-' }}{{ amount | priceFormatted }}
+            | {{ type === 'replenishment' ? '+' : amount < 0 ? '+' : '-' }}{{ abs(amount) | priceFormatted }}
             span &nbsp; ₽
         template(v-else)
           PuSkeleton.loading

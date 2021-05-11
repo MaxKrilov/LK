@@ -97,7 +97,7 @@
             .icon
               ErtIcon(name="doc_edit")
     .payment-index-page__history
-      h2.mb-16 Последние платежи
+      h2.mb-16 Последние платежи и начисления
       .payment-index-page__history__current-month-year.mb-16
         span.month {{ currentMonthYear.m }}&nbsp;
         span.year '{{ currentMonthYear.y }}
@@ -117,7 +117,7 @@
           )
 
     .payment-index-page__navigation.mt-32.mt-md-40
-      ErButton(flat to="/lk/payments/history") История платежей
+      ErButton(flat to="/lk/payments/history") История
 
     ErtDialog(
       v-model="isNotAccessInvoicePayment"

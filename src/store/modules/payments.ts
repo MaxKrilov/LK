@@ -84,7 +84,7 @@ const transformHistory = ([history, bill]: [IPaymentHistory[], IPaymentBill[]]) 
       return {
         title: detailItem.chargeName,
         description: detailItem.typeCharge,
-        value: Math.abs(Number(detailItem.chargeCost)),
+        value: Number(detailItem.chargeCost),
         timestamp: Number(billItem.actualBillDate),
         chargePeriod: detailItem.chargePeriod,
         type: 'write_off'

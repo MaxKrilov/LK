@@ -63,4 +63,8 @@ export default class PaymentHistoryItem extends Vue {
       ? this.data.chargePeriod
       : ''
   }
+
+  abs (val: number) {
+    return Math.abs(val)
+  }
 }
