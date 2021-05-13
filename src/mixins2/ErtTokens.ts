@@ -4,6 +4,7 @@ import Component from 'vue-class-component'
 import { parseJwt } from '@/functions/helper'
 import { mapState, mapActions } from 'vuex'
 import { API } from '@/functions/api'
+import { IForward } from '@/interfaces/forward'
 
 // const USE_SSO_AUTH = process.env.VUE_APP_USE_SSO_AUTH !== 'no'
 
@@ -19,7 +20,8 @@ import { API } from '@/functions/api'
     ...mapActions({
       signIn: 'auth/signIn',
       fetchRefreshToken: 'auth/fetchRefreshToken',
-      signOut: 'auth/signOut'
+      signOut: 'auth/signOut',
+      getForwardStatus: 'user/getForwardStatus'
     })
   }
 })
@@ -33,6 +35,7 @@ export default class ErtTokens extends Vue {
   signIn!: ({ api }: { api: API }) => Promise<any>
   fetchRefreshToken!: ({ api }: { api: API }) => Promise<boolean>
   signOut!: ({ api }: { api: API }) => Promise<void>
+  getForwardStatus!: ({ api }: { api: API }) => Promise<IForward>
 
   // Data
   isInactive: boolean = false
@@ -47,6 +50,8 @@ export default class ErtTokens extends Vue {
   timestampCreatingRefreshToken: number = 0
 
   isShowWarningMessage: boolean = false
+
+  forwardStatusResult: IForward | null = null
 
   get halfLifetimeRefreshToken () {
     return Math.floor(this.lifetimeRefreshToken / 2 / 60)
@@ -97,7 +102,7 @@ export default class ErtTokens extends Vue {
     this.timestampCreatingAccessToken = this.getNow()
     this.timestampCreatingRefreshToken = this.getNow()
     // Запускаем интервал (ежесекундный)
-    this.accessTokenInterval = setInterval(() => {
+    this.accessTokenInterval = setInterval(async () => {
       if (this.isInactive && this.getNow() - this.timestampCreatingAccessToken > this.lifetimeRefreshToken) {
         // Разлогиниваем
         this.signOut({ api: new API() })
@@ -105,10 +110,13 @@ export default class ErtTokens extends Vue {
         this.isShowWarningMessage = true
       } else if (!this.isInactive && this.getNow() - this.timestampCreatingAccessToken > this.lifetimeAccessToken / 2) {
         // Пользователь активен, но access-токен скоро протухнет - обновим
-        this.fetchRefreshToken({ api: new API() })
-          .then(response => {
-            response && this.onProccessingAccessToken()
-          })
+        this.forwardStatusResult = await this.getForwardStatus({ api: this.$api })
+        if (!this.forwardStatusResult.status) {
+          const fetchRefreshTokenResult = await this.fetchRefreshToken({ api: new API() })
+          fetchRefreshTokenResult && this.onProccessingAccessToken()
+        } else {
+          clearInterval(this.accessTokenInterval)
+        }
       }
     }, 1000)
   }
@@ -149,14 +157,13 @@ export default class ErtTokens extends Vue {
       })
   }
 
-  handleVisibilityChange () {
+  async handleVisibilityChange () {
     if (!document.hidden) {
-      this.fetchRefreshToken({ api: new API() })
-        .then(response => {
-          if (response) {
-            this.onProccessingAccessToken()
-          }
-        })
+      this.forwardStatusResult = await this.getForwardStatus({ api: this.$api })
+      if (!this.forwardStatusResult.status) {
+        const fetchRefreshTokenResult = await this.fetchRefreshToken({ api: new API() })
+        fetchRefreshTokenResult && this.onProccessingAccessToken()
+      }
     }
   }
 

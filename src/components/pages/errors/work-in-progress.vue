@@ -10,11 +10,9 @@
         .wip-block__bg
 
         .wip-block__content
-          .wip-block__title Уважаемый клиент, в данный момент в личном кабинете Дом.ru Бизнес ведутся технические работы
+          .wip-block__title(v-html="userMessage")
 
-          p Обратитесь пожалуйста в техническую поддержку по номеру <a class="phone-link" href="tel:88003339000">8&nbsp;800&nbsp;333&nbsp;9000</a>
-
-          .wip-block__action(v-if="$props.showLogoutButton")
+          .wip-block__action(v-if="$props.showLogoutButton && $props.isAfterAuth")
             er-button(@click="onLogout") Выйти
 </template>
 
@@ -25,7 +23,17 @@ export default {
     showLogoutButton: {
       type: Boolean,
       default: true
-    }
+    },
+    userMessage: {
+      type: String,
+      default: `
+        Уважаемый клиент, в данный момент в личном кабинете Дом.ru Бизнес ведутся технические работы!
+        <p>
+          Обратитесь пожалуйста в техническую поддержку по номеру <a class="phone-link" href="tel:88003339000">8&nbsp;800&nbsp;333&nbsp;9000</a>
+        </p>
+      `
+    },
+    isAfterAuth: Boolean
   },
   created () {
     console.log('props', this.$props)
