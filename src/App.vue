@@ -1,10 +1,13 @@
 <template lang="pug">
   div.app.erth(data-app="true")
     div.app__content
-      template(v-if="isShowPreloader")
+      template(v-if="isShowPreloader || isCheckingForwardStatus")
         ErPreloader(:status="textPreloader")
-      template(v-else-if="$props.isWorkInProgress")
-        work-in-progress
+      template(v-else-if="$props.isWorkInProgress || (forwardStatusResult && forwardStatusResult.status === true)")
+        work-in-progress(
+          :userMessage="forwardStatusResult && forwardStatusResult.userMessage"
+          :isAfterAuth="forwardStatusResult && forwardStatusResult.afterAuth === true"
+        )
       template(v-else-if="!isAccessGranted")
         not-access-page
       template(v-else)
@@ -62,11 +65,12 @@ export default {
     }
   },
   data: () => ({
-    model: []
+    model: [],
+    isCheckingForwardStatus: false
   }),
   watch: {
     isAccessGranted (val) {
-      if (val) {
+      if (val && !this.forwardStatusResult?.status) {
         this.fetchUserData()
       }
     },
@@ -87,11 +91,21 @@ export default {
     }
   },
   async created () {
-    this.createdHook()
-      .then(() => {
-        this.isAccessGranted && this.fetchUserData()
-      })
-    if (USE_SSO_AUTH) {}
+    this.isCheckingForwardStatus = true
+    const forwardResult = await this.getForwardStatus({ api: this.$api })
+    this.isCheckingForwardStatus = false
+
+    const isEnableForward = forwardResult.status === true
+    const isAfterAuth = forwardResult.afterAuth === true
+
+    if (!isEnableForward || (isEnableForward && isAfterAuth)) {
+      await this.createdHook()
+    }
+    if (!isEnableForward && this.isAccessGranted) {
+      this.fetchUserData()
+    }
+
+    this.forwardStatusResult = forwardResult
   },
   beforeCreate () {
     this.$store.commit(SCREEN_WIDTH, getWindowWidth())
@@ -116,7 +130,7 @@ export default {
     )
   },
   mounted () {
-    if (!this.isManager) {
+    if (!this.isManager && !this.forwardStatusResult?.status) {
       this.onHandleInaction()
       document.addEventListener('visibilitychange', this.handleVisibilityChange, false)
     }
@@ -125,7 +139,8 @@ export default {
     ...mapActions({
       fetchNotifications: 'campaign/fetchNotifications',
       fetchPPR: 'campaign/fetchPPR',
-      fetchClientInfo: `user/${GET_CLIENT_INFO}`
+      fetchClientInfo: `user/${GET_CLIENT_INFO}`,
+      getForwardStatus: 'user/getForwardStatus'
     }),
     fetchUserData () {
       const context = { api: this.$api }

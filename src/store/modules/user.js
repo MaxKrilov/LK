@@ -497,6 +497,11 @@ const actions = {
     const index = findIndex(contacts, function (o) { return o.id === payload })
     contacts.splice(index, 1)
     commit(REPLACE_CLIENT_CONTACTS_STORE, contacts)
+  },
+  getForwardStatus (_, { api }) {
+    return api
+      .setWithCredentials()
+      .query('/notification/lockdown/status')
   }
 }
 
