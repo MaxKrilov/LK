@@ -2,7 +2,7 @@
   .payment-history-page
     er-page-header.main-content.main-content--top-menu-fix.main-content--h-padding.main-content--top-padding(
       linkText="Назад"
-      title="История платежей"
+      title="История платежей и начислений"
       backlink="/lk/payments"
     )
 
