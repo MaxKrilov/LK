@@ -27,7 +27,7 @@ export default {
   computed: {
     isRadarEnabled () {
       return this.products.filter(el => {
-        return el.offer.name.match(/radar|радар/ig)
+        return el.offer.name.match(/radar|радар|wi-fi/ig)
       }).length > 0
     }
   },
@@ -43,7 +43,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-
-</style>

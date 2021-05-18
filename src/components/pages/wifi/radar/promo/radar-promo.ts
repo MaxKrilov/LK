@@ -33,7 +33,7 @@ export default class RadarPromo extends Vue {
     },
     {
       icon: 'pie_diagram',
-      name: '',
+      name: 'Работа с данными',
       description:
         'Собранные данные очищаются в нашей Big Data от серых MAC-адресов и хранятся неограниченное количество времени, чтобы вы всегда могли к ним обратиться.\n' +
         'Вы можете разделить собранную аудиторию на интересующие сегменты и отследить пересечения между ними, отправить готовый сегмент для анализа в Яндекс. Аудитории и получить анализ портрета собранной аудитории.\n' +
@@ -43,7 +43,6 @@ export default class RadarPromo extends Vue {
 
   onClickDemo () {
     const cityName = 'chel'
-    // @ts-ignore
-    window.location = `https://radar.wifi.ru/demo?domain=${cityName}`
+    window.location.href = `https://radar.wifi.ru/demo?domain=${cityName}`
   }
 }
