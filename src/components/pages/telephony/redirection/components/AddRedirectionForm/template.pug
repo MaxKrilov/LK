@@ -44,12 +44,7 @@
           .caption2 Период времени
           .time
             .field
-              er-text-field(v-model="timeFrom" :rules="timeRule" mask="99 : 00" :is-show-success="true" :isHideMask="false")
-            .line -
-            .field
-              er-text-field(v-model="timeTo" mask="99 : 00" :rules="timeRule" :isHideMask="false" :is-show-success="true")
-
-
+              er-text-field(v-model="time" :rules="timeRule" mask="9[9] : 00 - 9[9] : 00" :is-show-success="true" :isHideMask="false")
 
     .add-redirection-form__actions
       er-row
