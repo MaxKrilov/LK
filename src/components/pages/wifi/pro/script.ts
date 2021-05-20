@@ -96,6 +96,7 @@ export default class ErtWifiPro extends Vue {
           .find(activeLocation => activeLocation.id === service.locationId)
         service.fullAddress = activeLocation!.fulladdress
         service.addressId = activeLocation!.address.id as string
+        service.marketId = activeLocation!.marketId
       }
     }
     return listDomain

@@ -246,6 +246,10 @@ export default class VCCameraConfigPage extends Mixins(
     return this.camera?.parentId ? this.bfById(this.camera.parentId) : empty
   }
 
+  get marketId (): string {
+    return this.bf.market.id
+  }
+
   get hasRentPay () {
     return this?.camera?.chars[CHARS.CAMERA_SALE_TYPE] === CAMERA_SALE_TYPES.RENT
   }
@@ -477,7 +481,7 @@ export default class VCCameraConfigPage extends Mixins(
     const payload = {
       api: this.$api,
       id: offerId,
-      marketId: this.bf?.market?.id
+      marketId: this.marketId
     }
 
     return this.$store.dispatch(
@@ -603,6 +607,7 @@ export default class VCCameraConfigPage extends Mixins(
       this.orderData = {
         // @ts-ignore
         locationId: this.location.id,
+        marketId: this.marketId,
         bpi: this.bf.id,
         productCode: code,
         offer: 'cctv',

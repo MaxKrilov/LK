@@ -336,21 +336,37 @@ const actions = {
         })
     })
   },
-  createOrderPromisePayment (context: ActionContext<IState, any>) {
+  createOrderPromisePayment (context: ActionContext<IState, any>, { marketId }: { marketId: string }) {
     return new Promise((resolve, reject) => {
       const clientId = context.rootGetters['auth/getTOMS']
       const activeBillingAccountId = context.getters.getActiveBillingAccount
       const marketingBrandId = (context.state.billingInfo as IBillingInfo).marketingBrandId
       const locationId = (head(context.rootState.user.listProductByAddress) as any)?.id
+      const customerCategoryId = context.rootGetters['user/customerCategoryId']
+      const distributionChannelId = context.rootGetters['user/distributionChannelId']
 
-      if (!clientId || !activeBillingAccountId || !marketingBrandId || !locationId) {
-        reject('No TOMS ID, Active Billing Account ID, Marketing Brand ID or Location ID')
+      if (
+        !clientId ||
+        !activeBillingAccountId ||
+        !marketingBrandId ||
+        !locationId ||
+        !customerCategoryId ||
+        !distributionChannelId ||
+        !marketId
+      ) {
+        reject('Not all required parameters are filled in')
         return
       }
 
       api()
         .setWithCredentials()
-        .setData({ clientId, marketingBrandId })
+        .setData({
+          clientId,
+          marketingBrandId,
+          customerCategoryId,
+          distributionChannelId,
+          marketId
+        })
         .query('/order/management/create')
         .then((response: ISaleOrder) => {
           const id = response.id

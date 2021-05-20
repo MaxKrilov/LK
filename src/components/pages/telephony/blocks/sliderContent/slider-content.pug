@@ -58,6 +58,7 @@ div(:class="`${pre}`" )
             :slo="localConnected"
             :name="'Местные'"
             :phones="phones"
+            :marketId="marketId"
             :char="'Тип Пакета (Местные Минуты)'")
 
           PackageMinuteCard(
@@ -65,6 +66,7 @@ div(:class="`${pre}`" )
             :slo="globalConnected"
             :name="'За границу/По России'"
             :phones="phones"
+            :marketId="marketId"
             :char="'Тип Пакета (Пакет Минут)'")
 
           div(@click="plugPackages" v-if="(localPlug || globalPlug) && !isStopped")

@@ -6,6 +6,7 @@
       :location-id="locationId"
       :addressId="addressId"
       :fullAddress="fullAddress"
+      :marketId="marketId"
       @update="updateData"
       )
     services-component(:customer-product="customerProduct" :is-loading-customer-product="isLoadingCustomerProduct")

@@ -257,6 +257,7 @@ export default {
       this.$store.dispatch('productnservices/customerProduct', {
         api: this.$api,
         parentId: bpi,
+        marketId: this.activePoint.marketId,
         code: CODE_CONTENT_FILTER
       })
         .then(answer => {
@@ -302,6 +303,7 @@ export default {
         {
           locationId: this.activePoint.id,
           bpi: this.activePoint.bpi,
+          marketId: this.activePoint.marketId,
           productCode: CODE_CONTENT_FILTER,
           chars
         })

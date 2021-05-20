@@ -74,7 +74,7 @@ export interface IModuleInfo {
   addressId: string
   fulladdress: string
   locationId: string
-  marketId: string | number
+  marketId: string
   price: string
   tvType: string
   name: string

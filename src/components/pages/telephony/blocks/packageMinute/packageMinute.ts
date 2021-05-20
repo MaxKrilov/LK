@@ -13,6 +13,7 @@ const components = {
 export default class PackageMinuteCard extends Vue {
   @Prop({ type: Object }) readonly slo!: any
   @Prop({ type: Array }) readonly phones!: any[]
+  @Prop({ type: String, default: '' }) readonly marketId!: string
   @Prop({ type: String, default: 'Пакет минут' }) readonly name!: string
   @Prop({ type: String, default: '' }) readonly char!: string
 
@@ -58,7 +59,8 @@ export default class PackageMinuteCard extends Vue {
     this.isCreatingDeletePackage = true
     this.$store.dispatch('salesOrder/create',
       {
-        locationId: this.slo.locationId
+        locationId: this.slo.locationId,
+        marketId: this.marketId
       })
       .then(() => {
         this.$store.dispatch('salesOrder/deleteElement',
@@ -138,6 +140,7 @@ export default class PackageMinuteCard extends Vue {
       {
         locationId: this.slo.locationId,
         bpi: this.slo.productId,
+        marketId: this.marketId,
         chars: { 'Стоимость пакета': this.changed }
       }
     )

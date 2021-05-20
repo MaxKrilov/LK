@@ -112,10 +112,12 @@ export default class ErtWifiProItem extends Vue {
 
   // Methods
   getPacketOffer () {
+    const firstService = head(Object.values(this.content.services))
     this.loadingPacket = true
 
     this.$store.dispatch('catalog/fetchAllowedOffers', {
-      id: this.content.offer.id
+      id: this.content.offer.id,
+      marketId: firstService!.marketId
     })
       .then((response: ICatalogOffer[]) => {
         this.listSMSPacket = this.transformPacketOffer(response)
@@ -169,38 +171,27 @@ export default class ErtWifiProItem extends Vue {
   }
 
   _onChangeSMSPacket () {
-    return new Promise((resolve, reject) => {
-      this.$store.dispatch('salesOrder/create', {
-        locationId: this.content.locationId
-      })
-        .then(() => {
-          this.$store.dispatch('salesOrder/addElement', {
-            productCode: this.smsPacket.code,
-            productId: this.content.id
-          })
-            .then(() => {
-              this.$store.dispatch('salesOrder/deleteElement', {
-                productId: this.getCurrentPacket.id,
-                disconnectDate: this.$moment().format()
-              })
-                .then(() => {
-                  this.$store.dispatch('salesOrder/save')
-                    .then(() => {
-                      this.$store.dispatch('salesOrder/send', {
-                        offerAcceptedOn: this.$moment().format()
-                      })
-                        .then(() => {
-                          resolve()
-                        })
-                        .catch((err) => { reject(err) })
-                    })
-                    .catch((err) => { reject(err) })
-                })
-                .catch((err) => { reject(err) })
-            })
-            .catch((err) => { reject(err) })
+    return new Promise(async (resolve, reject) => {
+      try {
+        await this.$store.dispatch('salesOrder/create', {
+          locationId: this.content.locationId
         })
-        .catch((err) => { reject(err) })
+        await this.$store.dispatch('salesOrder/addElement', {
+          productCode: this.smsPacket.code,
+          productId: this.content.id
+        })
+        await this.$store.dispatch('salesOrder/deleteElement', {
+          productId: this.getCurrentPacket.id,
+          disconnectDate: this.$moment().format()
+        })
+        await this.$store.dispatch('salesOrder/save')
+        await this.$store.dispatch('salesOrder/send', {
+          offerAcceptedOn: this.$moment().format()
+        })
+        resolve()
+      } catch (e) {
+        reject(e)
+      }
     })
   }
 }

@@ -14,6 +14,7 @@ export interface IPointItem {
     id: string
     fulladdress: string
     bpi: string
+    marketId: string
     offerName: string
   }
 

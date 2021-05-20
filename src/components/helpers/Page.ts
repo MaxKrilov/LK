@@ -15,7 +15,8 @@ export interface iPointItem {
   fulladdress: string,
   bpi: string | number,
   offerName: string,
-  addressId: string
+  addressId: string,
+  marketId: string
 }
 
 export function transformList (listPoint: ILocationOfferInfo[]): iPointItem[] {
@@ -25,7 +26,8 @@ export function transformList (listPoint: ILocationOfferInfo[]): iPointItem[] {
       fulladdress: listPointItem.fulladdress,
       bpi: listPointItem.bpi,
       offerName: listPointItem.offer.name,
-      addressId: listPointItem.address.id.toString()
+      addressId: listPointItem.address.id.toString(),
+      marketId: listPointItem.marketId
     }
   }), 'bpi')
 }
@@ -99,7 +101,8 @@ export default class PageComponent extends Vue {
       if (!this.activePoint) resolve(null)
       this.$store.dispatch(DISPATCH_GET_CUSTOMER_PRODUCT, {
         api: this.$api,
-        parentId: this.activePoint!.bpi
+        parentId: this.activePoint!.bpi,
+        marketId: this.activePoint!.marketId
       })
         .then(response => {
           this.customerProduct = response

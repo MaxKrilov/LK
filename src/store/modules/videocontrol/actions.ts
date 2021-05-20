@@ -5,13 +5,10 @@ import { API } from '@/functions/api'
 import PnS from '../productnservices'
 import { IState } from './state'
 
-import {
-  DISTRIBUTION_CHANNEL_ID,
-  CUSTOMER_CATEGORY_ID,
-  VC_TYPES
-} from '@/constants/videocontrol'
+import { CUSTOMER_CATEGORY_ID, DISTRIBUTION_CHANNEL_ID, VC_TYPES } from '@/constants/videocontrol'
 
 import { TYPES } from './types'
+import { TYPE_JSON } from '@/constants/type_request'
 
 interface IPayload {
   api: API,
@@ -21,7 +18,7 @@ interface IPayload {
 
 const APIShortcut = (api: API, url: string, data: Object) => {
   return api
-    .setType('json')
+    .setType(TYPE_JSON)
     .setData(data)
     .query(url)
 }
@@ -62,7 +59,7 @@ export const actions = {
       payload
     )
   },
-  fetchPoints (context: ActionContext<IState, any>, payload: { api: API, productType: string}) {
+  fetchPoints (context: ActionContext<IState, any>, payload: { api: API, productType: string }) {
     return PnS.actions.locationOfferInfo(context, payload)
   },
   fetchCCTV (context: ActionContext<IState, any>, payload: IPayload) {
@@ -82,25 +79,16 @@ export const actions = {
     )
   },
   fetchAllowedOffers (context: ActionContext<IState, any>, payload: IPayload) {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { api, ..._payload } = payload
 
-    const { toms: clientId } = context.rootGetters['auth/user']
-    const _marketId = payload?.marketId || context.rootGetters['user/getMarketId']
-
+    const brandId = VC_TYPES.BRAND_ID
     const newPayload = {
-      clientId,
-      brandId: VC_TYPES.BRAND_ID,
-      marketId: _marketId,
-      customerCategoryId: CUSTOMER_CATEGORY_ID,
-      distributionChannelId: DISTRIBUTION_CHANNEL_ID,
+      brandId,
       ..._payload
     }
 
-    return APIShortcut(
-      api,
-      '/catalog/management/allowed-offers',
-      newPayload
-    )
+    return context.dispatch('catalog/fetchAllowedOffers', newPayload, { root: true })
   },
   /**
    * Получение списка заявок
@@ -119,7 +107,7 @@ export const actions = {
    * distributionChannelId(ID канала продаж)
    * distributionChannelName(Наименование канала продаж)
    */
-  fetchProductOffering (context: ActionContext<IState, any>, { api, ...payload }: { api: API}) {
+  fetchProductOffering (context: ActionContext<IState, any>, { api, ...payload }: { api: API }) {
     const { toms: clientId } = context.rootGetters['auth/user']
     const _marketId = context.rootGetters['user/getMarketId']
 
@@ -134,7 +122,7 @@ export const actions = {
 
     return APIShortcut(api, '/catalog/management/product-offering', newPayload)
   },
-  pullPoints (context: ActionContext<IState, any>, payload: { api: API, productType: string}) {
+  pullPoints (context: ActionContext<IState, any>, payload: { api: API, productType: string }) {
     return context.dispatch('fetchPoints', payload)
       .then(data => {
         context.commit(TYPES.SET_POINTS, data)

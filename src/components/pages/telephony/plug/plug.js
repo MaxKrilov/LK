@@ -63,6 +63,7 @@ export default {
         return {
           locationId: this.local?.locationId,
           bpi: this.local?.bpi,
+          marketId: this.local?.marketId,
           productCode: CODE_PACGLOCMIN,
           chars: this.localCost === 500 ? undefined : { 'Стоимость пакета': this.localCost },
           offer: 'telephonya',
@@ -74,6 +75,7 @@ export default {
           locationId: this.global?.locationId,
           bpi: this.global?.bpi,
           productCode: CODE_PACGMIN,
+          marketId: this.global?.marketId,
           chars: this.globalCost === 500 ? undefined : { 'Стоимость пакета': this.globalCost },
           offer: 'telephonya',
           title: 'Вы уверены, что хотите подключить пакет звонков за границу и по России?'

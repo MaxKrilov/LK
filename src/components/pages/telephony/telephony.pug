@@ -18,7 +18,7 @@ div(:class="`${pre} main-content main-content--top-menu-fix`")
         template(#date-title)
           | Тариф:
         template(#slider-content)
-          slider-content(:parent-id="item.bpi" :addressId="item.addressId" :fulladdress="item.fulladdress")
+          slider-content(:parent-id="item.bpi" :addressId="item.addressId" :fulladdress="item.fulladdress" :marketId="item.marketId")
 
       div(:class="`${pre}__total`")
         div(:class="`${pre}__h4`") Итого:

@@ -10,13 +10,16 @@ export interface IRequestData {
 export interface IOrderData {
   locationId: string,
   bpi: string,
+  marketId: string
   productCode: string
   chars?: any,
   offer?: boolean
 }
+
 export interface IDeleteOrderData {
   locationId: string,
   bpi: string,
   productId: string
   title: string
+  marketId: string
 }

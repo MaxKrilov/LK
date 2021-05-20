@@ -74,6 +74,7 @@ export default class Ip extends Vue {
     return {
       locationId: this.activePoint?.id,
       bpi: this.activePoint?.bpi,
+      marketId: this.activePoint?.marketId,
       productCode: this.addIpCount === '1' ? SERVICE_ADDITIONAL_IP : CODE_IP4SUBNET,
       chars: this.ipChars,
       offer: 'internet',
@@ -96,6 +97,7 @@ export default class Ip extends Vue {
   deleteIp (productId: string) {
     this.disconnectionOrderData = {
       productId,
+      marketId: this.activePoint?.marketId,
       locationId: this.activePoint?.id,
       bpi: this.activePoint?.bpi,
       title: 'Вы уверены, что хотите отключить услугу Дополнительный IPv4 адрес?'
@@ -153,6 +155,7 @@ export default class Ip extends Vue {
             addressId: el.address.id,
             fulladdress: el.fulladdress,
             bpi: el.bpi,
+            marketId: el?.marketId,
             offerName: el.offer.name
           }
         })
@@ -224,6 +227,7 @@ export default class Ip extends Vue {
     if (!this.activePoint?.id) return
     this.$store.dispatch('productnservices/customerProduct', {
       api: this.$api,
+      marketId: this.activePoint?.marketId,
       parentId: this.activePoint.bpi
     })
       .then((answer: any) => {

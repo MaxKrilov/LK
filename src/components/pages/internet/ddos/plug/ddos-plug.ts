@@ -53,6 +53,7 @@ export default class DddosPlug extends Vue {
       {
         locationId: this.activePoint?.id,
         bpi: this.activePoint?.bpi,
+        marketId: this.activePoint?.marketId,
         isReturnPrice: true,
         productCode: SERVICE_DDOS_PROTECT,
         chars: { 'Объект защиты IPv6': 'Защита выключена' }
@@ -89,6 +90,7 @@ export default class DddosPlug extends Vue {
     this.isLoadingConnection = true
     this.$store.dispatch('productnservices/customerProduct', {
       api: this.$api,
+      marketId: this.activePoint?.marketId,
       parentId: this.activePoint.bpi,
       code: 'ANTIDDOS'
     })

@@ -83,11 +83,14 @@ const getters = {
 const actions = {
   create (
     context: ActionContext<IState, any>,
-    { locationId }: { locationId: string }
+    { locationId, marketId }: { locationId: string, marketId: string }
   ) {
     if (!locationId) throw new Error('Missing required parameter')
-    const clientId = getClientId(context)
+    const clientId = context.rootGetters['auth/getTOMS']
     const marketingBrandId = context.rootGetters['payments/getMarketingBrandId']
+    const _marketId = marketId || context.rootGetters['user/getMarketId']
+    const customerCategoryId = context.rootGetters['user/customerCategoryId']
+    const distributionChannelId = context.rootGetters['user/distributionChannelId']
 
     if (!marketingBrandId) {
       throw new Error(MESSAGES.MARKETING_BRAND_ID_NOT_FOUND)
@@ -98,8 +101,11 @@ const actions = {
         .setWithCredentials()
         .setData({
           clientId,
+          marketId: _marketId,
           marketingBrandId,
-          locationId
+          locationId,
+          distributionChannelId,
+          customerCategoryId
         })
         .query(QUERY.CREATE)
         .then((response: ISaleOrder) => {
@@ -349,18 +355,20 @@ const actions = {
       locationId,
       bpi,
       productCode,
+      marketId,
       chars,
       isReturnPrice
     }: {
       locationId: string,
       bpi: string,
+      marketId: string,
       productCode: string,
       chars?: Record<string, string> | Record<string, string>[],
       isReturnPrice?: boolean
     }
   ) {
     return new Promise((resolve, reject) => {
-      context.dispatch('create', { locationId })
+      context.dispatch('create', { locationId, marketId })
         .then(() => {
           context.dispatch('addElement', { productId: bpi, productCode })
             .then(() => {
@@ -385,10 +393,10 @@ const actions = {
   },
   createModifyOrder (
     context: ActionContext<IState, any>,
-    { locationId, bpi, chars }: { locationId: string, bpi: string, chars?: Record<string, string> | Record<string, string>[] }
+    { locationId, bpi, chars, marketId }: { locationId: string, marketId: string, bpi: string, chars?: Record<string, string> | Record<string, string>[] }
   ) {
     return new Promise((resolve, reject) => {
-      context.dispatch('create', { locationId })
+      context.dispatch('create', { locationId, marketId })
         .then(() => {
           const updateElements = [{ chars, productId: bpi }]
           context.dispatch('updateElement', { updateElements })
@@ -422,10 +430,10 @@ const actions = {
   },
   createDisconnectOrder (
     context: ActionContext<IState, any>,
-    { locationId, productId, disconnectDate }: { locationId: string, bpi: string, productId?: string, disconnectDate: string }
+    { locationId, productId, disconnectDate, marketId }: { locationId: string, bpi: string, productId?: string, disconnectDate: string, marketId: string }
   ) {
     return new Promise((resolve, reject) => {
-      context.dispatch('create', { locationId })
+      context.dispatch('create', { locationId, marketId })
         .then(() => {
           context.dispatch('deleteElement', { productId, disconnectDate })
             .then(() => {

@@ -6,11 +6,13 @@ export interface IBlacklistPhone {
   blockedPhones: string[]
   tlo: {
     bpi: string | undefined
+    marketId: string | undefined
     locationId: string | undefined
   }
 }
 export interface IPointItem {
   id: string
+  marketId: string
   fulladdress: string
   bpi: string
   offerName: string
@@ -33,5 +35,6 @@ export interface IRedirectionList {
   tlo: {
     bpi: string | undefined
     locationId: string | undefined
+    marketId: string | undefined
   }
 }

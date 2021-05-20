@@ -11,7 +11,8 @@ export interface iPointItem {
   fulladdress: string,
   bpi: string | number,
   offerName: string,
-  addressId: string
+  addressId: string,
+  marketId: string
 }
 
 const transformListPoint = (listPoint: ILocationOfferInfo[]): iPointItem[] => uniq(listPoint.map(item => ({
@@ -19,7 +20,8 @@ const transformListPoint = (listPoint: ILocationOfferInfo[]): iPointItem[] => un
   fulladdress: item.fulladdress,
   bpi: item.bpi,
   offerName: item.offer.name,
-  addressId: item.address.id
+  addressId: item.address.id,
+  marketId: item.marketId
 })), 'bpi')
 
 // eslint-disable-next-line no-use-before-define
@@ -93,7 +95,8 @@ export default class InternetTemplate extends Vue {
 
     this.$store.dispatch('productnservices/customerProduct', {
       api: this.$api,
-      parentId: this.activePoint!.bpi
+      parentId: this.activePoint!.bpi,
+      marketId: this.activePoint!.marketId
     })
       .then(response => {
         this.customerProduct = response
@@ -162,7 +165,8 @@ export default class InternetTemplate extends Vue {
           customerProduct: this.customerProduct,
           isLoadingCustomerProduct: this.isLoadingCustomerProduct,
           addressId: this.activePoint?.addressId,
-          fullAddress: this.activePoint?.fulladdress
+          fullAddress: this.activePoint?.fulladdress,
+          marketId: this.activePoint?.marketId
         },
         on: {
           update: () => {

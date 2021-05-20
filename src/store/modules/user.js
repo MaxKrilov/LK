@@ -21,7 +21,9 @@ import {
   ADD_CLIENT_CONTACTS_STORE,
   REPLACE_CLIENT_CONTACTS_STORE,
   DELETE_CLIENT_CONTACTS_STORE,
-  SET_PROMISED_PAYMENT_INFO, GET_BILLING_CONTACTS, SET_BILLING_CONTACTS
+  SET_PROMISED_PAYMENT_INFO, GET_BILLING_CONTACTS, SET_BILLING_CONTACTS,
+  GET_CATEGORY_INFO,
+  SET_CATEGORY_INFO, GET_DISTRIBUTION_CHANNEL, SET_DISTRIBUTION_CHANNEL
 } from '../actions/user'
 import { ERROR_MODAL } from '../actions/variables'
 import { logError } from '@/functions/logging.ts'
@@ -50,6 +52,8 @@ const ATTRIBUTE_NAMES = { // для поиска в extendedMap
 }
 
 const state = {
+  categoryInfo: [],
+  distributionChannel: {},
   clientInfo: {
     fullAddress: {},
     primaryContact: {},
@@ -75,6 +79,12 @@ const state = {
 }
 
 const getters = {
+  distributionChannelId (state) {
+    return state.distributionChannel?.id || null
+  },
+  customerCategoryId (state) {
+    return state.categoryInfo?.id || null
+  },
   getClientInfo (state) {
     return {
       name: state.clientInfo?.legalName,
@@ -238,6 +248,9 @@ const getters = {
     return Object.values(state.clientInfo.extendedMap).find(
       el => el.attributeName === ATTRIBUTE_NAMES.DMP_CUSTOMER_ID
     )?.singleValue?.attributeValue
+  },
+  getCustomerCategoryId (state) {
+    return state.clientInfo.customerCategory.id
   }
 }
 
@@ -264,6 +277,30 @@ const actions = {
           commit('loading/clientInfo', false, { root: true })
         })
     })
+  },
+  [GET_CATEGORY_INFO]: ({ getters, commit }, { api }) => {
+    const tomsId = getters.getCustomerCategoryId
+    return api
+      .setData({
+        tomsId
+      })
+      .query('/customer/category/category-info')
+      .then(data => {
+        /* data – список из одной категории */
+        commit(SET_CATEGORY_INFO, data?.[0])
+        return data
+      })
+  },
+  [GET_DISTRIBUTION_CHANNEL]: ({ dispatch, commit }) => {
+    dispatch('catalog/fetchDistributionChannel', {}, { root: true })
+      .then(data => {
+        /* приходит массив каналов дистрибуции,
+          но в 'catalog/fetchDistributionChannel' фильтруются только определённый канал
+          Поэтому должен приходить список из одного канала.
+         */
+        const result = data?.[0]
+        commit(SET_DISTRIBUTION_CHANNEL, result)
+      })
   },
   [UPDATE_CLIENT_INFO]: async (
     { commit, dispatch, rootState, rootGetters },
@@ -487,14 +524,18 @@ const actions = {
    * @param payload { Object } - объект контакта
    */
   [REPLACE_CLIENT_CONTACTS_STORE]: ({ state, commit }, payload) => {
-    let contacts = [...state.clientInfo?.contacts]
-    const index = findIndex(contacts, function (o) { return o.id === payload.id })
+    let contacts = [ ...state.clientInfo?.contacts ]
+    const index = findIndex(contacts, function (o) {
+      return o.id === payload.id
+    })
     contacts.splice(index, 1, payload)
     commit(REPLACE_CLIENT_CONTACTS_STORE, contacts)
   },
   [DELETE_CLIENT_CONTACTS_STORE]: ({ state, commit }, payload) => {
-    let contacts = [...state.clientInfo?.contacts]
-    const index = findIndex(contacts, function (o) { return o.id === payload })
+    let contacts = [ ...state.clientInfo?.contacts ]
+    const index = findIndex(contacts, function (o) {
+      return o.id === payload
+    })
     contacts.splice(index, 1)
     commit(REPLACE_CLIENT_CONTACTS_STORE, contacts)
   },
@@ -547,12 +588,12 @@ const mutations = {
     state.companyInfo.isFetched = payload
   },
   [ADD_CLIENT_CONTACTS_STORE]: (state, payload) => {
-    state.clientInfo.contacts = [...state.clientInfo.contacts, payload]
+    state.clientInfo.contacts = [ ...state.clientInfo.contacts, payload ]
   },
   [REPLACE_CLIENT_CONTACTS_STORE]: (state, payload) => {
-    state.clientInfo.contacts = [...payload]
+    state.clientInfo.contacts = [ ...payload ]
   },
-  [SET_PROMISED_PAYMENT_INFO]: (state, [infoAboutPromisePaymentResult, canBeActivatedPromisePaymentResult]) => {
+  [SET_PROMISED_PAYMENT_INFO]: (state, [ infoAboutPromisePaymentResult, canBeActivatedPromisePaymentResult ]) => {
     if (canBeActivatedPromisePaymentResult.paymentCanBeCreated) {
       state.isCanActivatePromisePayment = true
       return
@@ -560,7 +601,10 @@ const mutations = {
       state.reasonCanntActivatePromisePayment = canBeActivatedPromisePaymentResult.reason
     }
     if (!infoAboutPromisePaymentResult.hasOwnProperty('promisePaymentActive')) return
-    const { pymtSchdCreateDt, schdPymtDueDt } = infoAboutPromisePaymentResult.promisePaymentActive.promisePaymentDetails[0] || {}
+    const {
+      pymtSchdCreateDt,
+      schdPymtDueDt
+    } = infoAboutPromisePaymentResult.promisePaymentActive.promisePaymentDetails[0] || {}
     if (!pymtSchdCreateDt || !schdPymtDueDt) return
     if (Number(new Date()) > (new Date(moment(schdPymtDueDt, 'YYYYMMDD')))) return
     state.isHasPromisePayment = true
@@ -569,6 +613,12 @@ const mutations = {
   },
   [SET_BILLING_CONTACTS]: (state, payload) => {
     state.listBillingContacts = payload
+  },
+  [SET_CATEGORY_INFO]: (state, payload) => {
+    state.categoryInfo = payload
+  },
+  [SET_DISTRIBUTION_CHANNEL]: (state, payload) => {
+    state.distributionChannel = payload
   }
 }
 

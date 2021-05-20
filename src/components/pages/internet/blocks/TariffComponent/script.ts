@@ -57,7 +57,8 @@ const arc = d3.arc()
     isLoadingCustomerProduct: Boolean,
     locationId: [String, Number],
     addressId: [String, Number],
-    fullAddress: String
+    fullAddress: String,
+    marketId: String
   },
   watch: {
     customerProduct (val) {
@@ -87,6 +88,7 @@ export default class TariffComponent extends Vue {
   readonly locationId!: number | string
   readonly addressId!: number | string
   readonly fullAddress!: string
+  readonly marketId!: string
 
   // Vuex Methods
   getAvailableFunds!: <R = Promise<IAvailableFunds>>() => R
@@ -629,7 +631,8 @@ export default class TariffComponent extends Vue {
         bpi,
         offerId,
         chars: char,
-        productCode: OFFER_CODE_TEMP_SPEED_INCREASE
+        productCode: OFFER_CODE_TEMP_SPEED_INCREASE,
+        marketId: this.marketId
       })
         .then(() => {
           this.isShowOfferDialog = true
@@ -655,7 +658,8 @@ export default class TariffComponent extends Vue {
                 bpi,
                 offerId,
                 chars: char,
-                productCode: OFFER_CODE_SPEED_INCREASE
+                productCode: OFFER_CODE_SPEED_INCREASE,
+                marketId: this.marketId
               })
               .then(() => {
                 this.isShowOfferDialog = true

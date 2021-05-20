@@ -245,12 +245,13 @@ export default class WifiIndexPage extends Vue {
   }
 
   // Methods
-  getCustomerProductById (id: string) {
+  getCustomerProductById (id: string, marketId: string) {
     const customerProduct = this.listCustomerProduct.get(id)
     if (customerProduct != null) return
     this.$store.dispatch('productnservices/customerProduct', {
       api: this.$api,
-      parentId: id
+      parentId: id,
+      marketId
     })
       .then(answer => {
         this.listCustomerProduct.set(id, answer)
@@ -269,14 +270,18 @@ export default class WifiIndexPage extends Vue {
     return latLng(latitude, longitude, altitude)
   }
 
+  getPointInfoByAddressUnit (addressUnitId: string) {
+    return this.listPoint.find(point => point.address.id === addressUnitId)
+  }
+
   getBPIByAddressUnit (addressUnitId: string) {
-    return this.listPoint.find(point => point.address.id === addressUnitId)!.bpi as string
+    return this.getPointInfoByAddressUnit(addressUnitId)!.bpi
   }
 
   openPopup (addressUnitId: string) {
-    const bpi = this.getBPIByAddressUnit(addressUnitId)
-    if (this.listCustomerProduct.has(bpi)) return
-    this.getCustomerProductById(bpi)
+    const pointInfo = this.getPointInfoByAddressUnit(addressUnitId)
+    if (!pointInfo || this.listCustomerProduct.has(pointInfo.bpi as string)) return
+    this.getCustomerProductById(pointInfo.bpi as string, pointInfo.marketId)
   }
 
   openNextPopup (index: number) {

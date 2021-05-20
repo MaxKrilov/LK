@@ -69,6 +69,7 @@ export default {
           const freePoints = answer.map(el => {
             return {
               id: el?.id,
+              marketId: el?.marketId,
               fulladdress: el?.fulladdress,
               bpi: el?.bpi,
               offerName: el?.offer?.name

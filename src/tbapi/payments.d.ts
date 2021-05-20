@@ -9,13 +9,24 @@ export interface IBillingAccount {
 export interface IBillingInfo {
   autoPay: boolean
   balance: string
+  billPeriodUnit: { id: string, name: string }
+  branchId: string
+  clientBankAccount: string
+  clientBankBic: string
+  clientBankCorrAccount: string
+  clientBankName: string
+  contractDate: string
+  contractEndDate: string
+  contractNumber: string
   id: string
+  legacyAccountNumber: string
   market: { id: string, name: string }
   marketingBrandId: string
   nextDate: string
   number: string
   paymentMethod: { id: string, name: string },
   sumToPay: number
+  totalChaseableDebt: number
 }
 
 export interface IBillingPromisePaymentInfo {
