@@ -10,7 +10,7 @@ import { cloneDeep } from 'lodash'
 
 import * as Sentry from '@sentry/vue'
 
-const BASE_BRANCH = 'web-24642'
+const BASE_BRANCH = 'master'
 
 export class API {
   private _branch = BASE_BRANCH
