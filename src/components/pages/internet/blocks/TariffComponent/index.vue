@@ -45,7 +45,7 @@
           PuSkeleton
         template(v-else)
           template(v-if="isOnTurbo")
-            er-button(
+            er-button.tariff-component__turbo-activation-button--active(
               pre-icon="speedup"
               color="green"
               @click="() => { isDisconnectionTurbo = true }"
