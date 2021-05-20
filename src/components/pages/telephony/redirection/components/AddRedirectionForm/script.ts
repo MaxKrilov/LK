@@ -17,6 +17,7 @@ const components = {
 export default class AddRedirectionForm extends Vue {
   @Prop({ type: Array, default: () => ([]) }) readonly phonesList!: IPhone[]
   @Prop() readonly locationId: string | undefined
+  @Prop() readonly marketId: string | undefined
   periodList: string[] = []
   creatingOrder: boolean = false
   isShowPlugModal: boolean = false
@@ -75,6 +76,7 @@ export default class AddRedirectionForm extends Vue {
       {
         locationId: this.locationId,
         bpi: this.selectedPhoneId,
+        marketId: this.marketId || '',
         productCode: CODE_CALLFORWRD,
         chars: this.chars
       })

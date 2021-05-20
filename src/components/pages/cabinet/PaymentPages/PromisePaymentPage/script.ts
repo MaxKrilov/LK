@@ -6,6 +6,7 @@ import { leadingZero } from '@/functions/filters'
 import { getNoun } from '@/functions/helper'
 
 import ErPromo from '@/components/blocks/ErPromo/index.vue'
+import { IBillingInfo } from '@/tbapi/payments'
 
 const promo = require('./promo.json')
 
@@ -22,7 +23,8 @@ const promo = require('./promo.json')
       reasonCanntActivatePromisePayment: (state: any) => state.payments.reasonCanntActivatePromisePayment,
       isHasPromisePayment: (state: any) => state.payments.isHasPromisePayment,
       promisePayStart: (state: any) => state.payments.promisePayStart,
-      promisePayEnd: (state: any) => state.payments.promisePayEnd
+      promisePayEnd: (state: any) => state.payments.promisePayEnd,
+      branchId: (state: any) => (state.payments.billingInfo as IBillingInfo).branchId
     }),
     ...mapGetters({
       loadingPromisedPayment: 'loading/loadingPromisedPayment',
@@ -51,13 +53,14 @@ export default class PromisePaymentPage extends Vue {
   readonly isHasPromisePayment!: boolean
   readonly promisePayStart!: null | moment.Moment
   readonly promisePayEnd!: null | moment.Moment
+  readonly branchId!: string
 
   // Vuex getters
   readonly loadingPromisedPayment!: boolean
   readonly getManagerInfo!: { name: string, phone: string, email: string }
 
   // Vuex actions
-  readonly createOrderPromisePayment!: () => Promise<void>
+  readonly createOrderPromisePayment!: ({ marketId }: { marketId: string }) => Promise<void>
   readonly cancelOrderPromisePayment!: () => Promise<void>
   readonly sendOrderPromisePayment!: () => Promise<void>
 
@@ -97,7 +100,7 @@ export default class PromisePaymentPage extends Vue {
   // Methods
   onActivatePromisePayment () {
     this.isActivatingPromisePayment = true
-    this.createOrderPromisePayment()
+    this.createOrderPromisePayment({ marketId: this.branchId })
       .then(() => {
         this.isShowConfirmDialog = true
       })

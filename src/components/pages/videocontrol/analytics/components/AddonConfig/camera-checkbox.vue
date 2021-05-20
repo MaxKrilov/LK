@@ -28,7 +28,8 @@ export default {
       this.$emit('input', {
         id: this.camera.id,
         parentId: this.camera.parentId,
-        value: !this.value
+        value: !this.value,
+        marketId: this.camera?.market?.id || ''
       })
     }
   }

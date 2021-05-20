@@ -5,7 +5,7 @@ import { mapGetters } from 'vuex'
 import { CODE_BLACKLIST, ARRAY_SHOWN_PHONES } from '@/constants/product-code'
 import ErActivationModal from '@/components/blocks/ErActivationModal/index.vue'
 import blackListCard from '@/components/pages/telephony/blocks/blackListCard/index.vue'
-import { ARRAY_STATUS_SHOWN } from '@/constants/status.ts'
+import { ARRAY_STATUS_SHOWN } from '@/constants/status'
 import { PATTERN_RUSSIAN_PHONE } from '@/constants/regexp'
 import { ErtTextField } from '@/components/UI2'
 import Inputmask from 'inputmask'
@@ -85,11 +85,12 @@ export default class TelephonyBlacklistPage extends Vue {
       productType: 'Телефония'
     }).then(answer => {
       if (answer.length) {
-        this.addressList = answer.map((el: { id: any; fulladdress: any; bpi: any; offer: { name: any } }) => {
+        this.addressList = answer.map((el: { id: any; fulladdress: any; bpi: any; marketId: string; offer: { name: any } }) => {
           return {
             id: el?.id,
             fulladdress: el?.fulladdress,
             bpi: el?.bpi,
+            marketId: el?.marketId,
             offerName: el?.offer?.name
           }
         })
@@ -107,6 +108,7 @@ export default class TelephonyBlacklistPage extends Vue {
     this.isLoadingPhones = true
     this.$store.dispatch('productnservices/customerProduct', {
       api: this.$api,
+      marketId: this.currentAddress?.marketId,
       parentId: bpi
     }).then(answer => {
       const phonesIdWithNumbers = answer?.slo.filter((el: any) => ARRAY_SHOWN_PHONES.includes(el?.code))
@@ -137,6 +139,7 @@ export default class TelephonyBlacklistPage extends Vue {
                 blockedPhones: [blackListSlo.chars?.['Заблокированные номера'] || []].flat(),
                 tlo: {
                   bpi: this.currentAddress?.bpi,
+                  marketId: this.currentAddress?.marketId,
                   locationId: this.currentAddress?.id
                 }
               }
@@ -174,6 +177,7 @@ export default class TelephonyBlacklistPage extends Vue {
     this.$store.dispatch('salesOrder/createSaleOrder',
       {
         locationId: this.currentAddress?.id,
+        marketId: this.currentAddress?.marketId,
         bpi: this.selectedNewPhones,
         productCode: CODE_BLACKLIST,
         chars: {

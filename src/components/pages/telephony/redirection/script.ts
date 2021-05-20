@@ -49,6 +49,9 @@ export default class TelephonyRedirectionPage extends Vue {
   get locationId () {
     return this.currentAddress?.id || ''
   }
+  get marketId () {
+    return this.currentAddress?.marketId || ''
+  }
   onShowAddForm () {
     this.addRedirectionMode = true
   }
@@ -65,11 +68,12 @@ export default class TelephonyRedirectionPage extends Vue {
       if (answer.length) {
         this.addressList = answer
           .filter((el: { status: string}) => el.status === STATUS_ACTIVE)
-          .map((el: { id: any; fulladdress: any; bpi: any; offer: { name: any } }) => {
+          .map((el: { id: any; fulladdress: any; bpi: any; marketId: string; offer: { name: any } }) => {
             return {
               id: el?.id,
               fulladdress: el?.fulladdress,
               bpi: el?.bpi,
+              marketId: el?.marketId,
               offerName: el?.offer?.name
             }
           })
@@ -85,6 +89,7 @@ export default class TelephonyRedirectionPage extends Vue {
     this.isLoadingRedirections = true
     this.$store.dispatch('productnservices/customerProduct', {
       api: this.$api,
+      marketId: this.currentAddress?.marketId,
       parentId: bpi
     }).then(answer => {
       const phonesIdWithNumbers = answer?.slo.filter((el: any) => ARRAY_SHOWN_PHONES.includes(el?.code))
@@ -125,7 +130,8 @@ export default class TelephonyRedirectionPage extends Vue {
                 period: period.filter(el => el.value === 'Да').map(el => el.name).join(', '),
                 tlo: {
                   bpi: this.currentAddress?.bpi,
-                  locationId: this.currentAddress?.id
+                  locationId: this.currentAddress?.id,
+                  marketId: this.currentAddress?.marketId
                 }
               }
             })

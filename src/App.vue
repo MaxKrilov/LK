@@ -37,8 +37,9 @@ import ErtTokens from '@/mixins2/ErtTokens'
 import * as Sentry from '@sentry/vue'
 
 import {
+  GET_CATEGORY_INFO,
+  GET_CLIENT_INFO, GET_DISTRIBUTION_CHANNEL,
   GET_BILLING_CONTACTS,
-  GET_CLIENT_INFO,
   GET_LIST_PRODUCT_BY_ADDRESS, GET_LIST_PRODUCT_BY_SERVICE,
   GET_MANAGER_INFO
 } from '@/store/actions/user'
@@ -153,8 +154,13 @@ export default {
               scope.setUser({ clientId: this.user.toms })
             })
           }
+
           if (Object.keys(clientInfo).length !== 0) {
             this.$store.dispatch(`user/${GET_MANAGER_INFO}`, context)
+            this.$store.dispatch(`user/${GET_CATEGORY_INFO}`, context)
+              .then(() => {
+                this.$store.dispatch(`user/${GET_DISTRIBUTION_CHANNEL}`)
+              })
             this.$store.dispatch(`request/${GET_REQUEST}`, context)
             this.$store.dispatch(`fileinfo/downloadListDocument`, context)
             this.$store.dispatch(`payments/getListBillingAccount`, { route: this.$route })

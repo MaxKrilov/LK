@@ -75,6 +75,7 @@ export default class TelephonyBlacklistCard extends Vue {
     this.$store.dispatch('salesOrder/createDisconnectOrder',
       {
         locationId: this.data.tlo.locationId,
+        marketId: this.data.tlo.marketId,
         bpi: this.data.tlo.bpi,
         productId: this.data.id,
         disconnectDate: this.$moment().format()
@@ -105,6 +106,7 @@ export default class TelephonyBlacklistCard extends Vue {
     this.$store.dispatch('salesOrder/createModifyOrder',
       {
         locationId: this.data.tlo.locationId,
+        marketId: this.data.tlo.marketId,
         bpi: this.data.id,
         chars: {
           'Заблокированные номера': numbers

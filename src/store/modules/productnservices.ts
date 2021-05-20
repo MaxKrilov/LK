@@ -1,7 +1,6 @@
 import { ActionContext } from 'vuex'
 import { API } from '@/functions/api'
 import { ICustomerProduct, ILocationOfferInfo } from '@/tbapi'
-import { CUSTOMER_CATEGORY_ID, DISTRIBUTION_CHANNEL_ID } from '@/constants/catalog'
 
 import { AxiosError } from 'axios'
 import { TYPE_JSON, TYPE_ARRAY } from '@/constants/type_request'
@@ -46,10 +45,24 @@ const actions = {
     parentId?: string | number,
     parentIds?: string[]
     locationId?: string | number,
+    marketId?: string | number,
     code?: string
   }) {
-    const { toms: clientId } = context.rootGetters['auth/user']
-    const data: any = { clientId }
+    const clientId = context.rootGetters['auth/getTOMS']
+
+    const distributionChannelId = context.rootGetters['user/distributionChannelId']
+    const marketingBrandId = context.rootGetters['payments/getMarketingBrandId']
+    const customerCategoryId = context.rootGetters['user/customerCategoryId']
+    const _marketId = payload?.marketId || context.rootGetters['user/getMarketId']
+
+    const data: any = {
+      clientId,
+      distributionChannelId,
+      customerCategoryId,
+      marketId: _marketId,
+      marketingBrandId
+    }
+
     if (payload.code) data.code = payload.code
     if (payload.parentId) {
       data.parentId = payload.parentId
@@ -139,14 +152,16 @@ const actions = {
     const { toms: clientId } = context.rootGetters['auth/user']
     const brandId = context.rootGetters['payments/getMarketingBrandId']
     const _marketId = marketId || context.rootGetters['user/getMarketId']
+    const customerCategoryId = context.rootGetters['user/customerCategoryId']
+    const distributionChannelId = context.rootGetters['user/distributionChannelId']
 
     return new Promise((resolve, reject) => {
       api
         .setData({
           brandId,
           marketId: _marketId,
-          customerCategoryId: CUSTOMER_CATEGORY_ID,
-          distributionChannelId: DISTRIBUTION_CHANNEL_ID,
+          customerCategoryId,
+          distributionChannelId,
           clientId,
           id
         })

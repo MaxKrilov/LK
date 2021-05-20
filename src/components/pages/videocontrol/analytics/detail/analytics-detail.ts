@@ -131,6 +131,7 @@ export default class VCAddonDetailPage extends Vue {
     id: string,
     parentId: TBaseFunctionalityId,
     addressId: string,
+    marketId: string,
     value: Boolean,
     locationId: string,
     locationName: string
@@ -151,6 +152,7 @@ export default class VCAddonDetailPage extends Vue {
       bpi: value.parentId,
       productCode: this.$props.code,
       offer: 'cctv',
+      marketId: value.marketId,
       title: `Вы уверены, что хотите подключить «${this.analyticItem.name}»?`
     }
 

@@ -44,6 +44,7 @@ export default class ErPlugMixin extends Vue {
       {
         locationId: this.orderData?.locationId,
         bpi: this.orderData?.bpi,
+        marketId: this.orderData.marketId,
         productCode: this.orderData?.productCode,
         chars: this.orderData?.chars
       })
@@ -58,11 +59,12 @@ export default class ErPlugMixin extends Vue {
         this.isCreatingOrder = false
       })
   }
-  createDeleteOrder () { // создание заказа на удаление услуги черный список
+  createDeleteOrder () { // создание заказа на удаление услуги
     this.$store.dispatch('salesOrder/createDisconnectOrder',
       {
         locationId: this.deleteOrderData.locationId,
         bpi: this.deleteOrderData.bpi,
+        marketId: this.deleteOrderData.marketId,
         productId: this.deleteOrderData.productId,
         disconnectDate: this.$moment().format()
       })

@@ -15,6 +15,7 @@ import ErPlugMixin from '@/mixins/ErPlugMixin'
 // orderData=
 //    locationId - location id
 //    bpi - id продукта,
+//    marketId — market id берётся из точки подключения
 //    productCode - код продукта,
 //    chars,
 //    offer: есть или нет оферты,

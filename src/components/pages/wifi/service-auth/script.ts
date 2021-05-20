@@ -117,7 +117,8 @@ export default class ErtWifiServiceAuth extends mixins(Page) implements iPageCom
         ? this.isActiveCurrentSLO
           ? `Вы уверены, что хотите изменить характеристику (-и) услуги «${this.getOrderTitleNPrice.name}»?`
           : `Вы уверены, что хотите подключить «${this.getOrderTitleNPrice.name}»?`
-        : ''
+        : '',
+      marketId: this.activePoint?.marketId
     }
   }
 
@@ -126,6 +127,7 @@ export default class ErtWifiServiceAuth extends mixins(Page) implements iPageCom
       bpi: this.activePoint?.bpi,
       locationId: this.activePoint?.id,
       productId: this.productId,
+      marketId: this.activePoint?.marketId,
       title: this.getOrderTitleNPrice
         ? `Вы уверены, что хотите отключить «${this.getOrderTitleNPrice.name}»?`
         : ''

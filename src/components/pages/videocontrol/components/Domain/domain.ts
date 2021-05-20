@@ -134,6 +134,10 @@ export default class VCDomain extends Mixins(VueTransitionFSM, ErtFetchAvailable
   searchInputEnd: boolean = true
   searchInputTimer: any
 
+  get marketId () {
+    return this.$props.domain?.market?.id || ''
+  }
+
   get isModificationInProgress () {
     return this.$props.domain.status === VC_DOMAIN_STATUSES.MODIFICATION
   }
@@ -406,6 +410,7 @@ export default class VCDomain extends Mixins(VueTransitionFSM, ErtFetchAvailable
         [CHARS.USER_COUNT]: this.domainUserCount,
         ...INVOICE_USERS
       },
+      marketId: this.marketId,
       offer: 'cctv',
       title: MESSAGES.USER_ADD_QUESTION
     }

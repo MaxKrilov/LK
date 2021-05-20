@@ -22,6 +22,7 @@ export default class RedirectionTable extends Vue {
       {
         locationId: item?.tlo?.locationId,
         bpi: item?.tlo?.bpi,
+        marketId: item?.tlo?.marketId,
         productId: item?.id,
         disconnectDate: this.$moment().format()
       })

@@ -95,7 +95,7 @@
         :key="point.bpi"
         :date="point.offer.name"
         :price="point.amount.value"
-        @open="() => getCustomerProductById(point.bpi)"
+        @open="() => getCustomerProductById(point.bpi, point.marketId)"
       )
         template
           | {{ point.fulladdress }}

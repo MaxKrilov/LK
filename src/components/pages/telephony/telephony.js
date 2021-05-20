@@ -53,6 +53,7 @@ export default {
             result.addressId = el?.address?.id
             result.tariff = el?.offer?.name
             result.bpi = el?.bpi
+            result.marketId = el?.marketId
             result.status = el?.status
             return result
           })

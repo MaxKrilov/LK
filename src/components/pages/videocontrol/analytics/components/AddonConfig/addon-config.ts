@@ -36,7 +36,7 @@ export default class AddonConfig extends Vue {
     return this.$props.cover ? `background-image: url(${this.$props.cover})` : ''
   }
 
-  onPlugAddon (value: { id: string, parentId: TBaseFunctionalityId, value: Boolean}) {
+  onPlugAddon (value: { id: string, parentId: TBaseFunctionalityId, marketId: string, value: Boolean}) {
     const payload = {
       ...value,
       addressId: this.$props.location.address.id,

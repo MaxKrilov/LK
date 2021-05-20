@@ -30,6 +30,7 @@ export default class DdosPage extends Vue {
     bpi: '',
     locationId: '',
     productId: '',
+    marketId: '',
     title: ''
   }
   get amountPrice () {
@@ -57,6 +58,7 @@ export default class DdosPage extends Vue {
           id: el.id,
           fulladdress: el.fulladdress,
           bpi: el.bpi,
+          marketId: el.marketId,
           offerName: el.offer.name
         }
       })
@@ -83,6 +85,7 @@ export default class DdosPage extends Vue {
                   deleteData: {
                     locationId: el.tlo.locationId,
                     bpi: el.tlo.id,
+                    marketId: el.tlo.market.id,
                     productId: ddosSlo.id,
                     title: 'Вы уверены, что хотите отключить защиту?'
                   }

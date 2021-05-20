@@ -364,7 +364,8 @@ export default class WifiPersonalizationPage extends mixins(Page) implements iPa
       bpi: this.activePoint?.bpi,
       productCode: SLO_CODE,
       offer: 'wifi',
-      title: 'Вы уверены, что хотите подключить услугу «Управление дизайном стартовой страницы»?'
+      title: 'Вы уверены, что хотите подключить услугу «Управление дизайном стартовой страницы»?',
+      marketId: this.activePoint?.marketId
     }
   }
 
@@ -376,7 +377,8 @@ export default class WifiPersonalizationPage extends mixins(Page) implements iPa
       bpi: this.activePoint?.bpi,
       locationId: this.activePoint?.id,
       productId,
-      title: 'Вы уверены, что хотите отключить услугу «Управление дизайном стартовой страницы»?'
+      title: 'Вы уверены, что хотите отключить услугу «Управление дизайном стартовой страницы»?',
+      marketId: this.activePoint?.marketId
     }
   }
 

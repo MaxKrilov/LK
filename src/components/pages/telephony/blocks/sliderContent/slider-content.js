@@ -40,6 +40,10 @@ export default {
       default: '',
       type: String
     },
+    marketId: {
+      default: '',
+      type: String
+    },
     fulladdress: {
       default: '',
       type: String
@@ -102,6 +106,9 @@ export default {
     isChangedChannels () {
       return this.serChannels - this.serChannelsValue
     },
+    // marketId () {
+    //   return this.tlo?.market?.id
+    // },
     changeChannelsRequestData () {
       return {
         descriptionModal: 'Для подключения телефонного номера нужно сформировать заявку на вашего персонального менеджера',
@@ -202,7 +209,8 @@ export default {
   mounted () {
     this.$store.dispatch('productnservices/customerProduct', {
       api: this.$api,
-      parentId: this.parentId
+      parentId: this.parentId,
+      marketId: this.marketId
     }).then(answer => {
       this.isLoading = false
       this.slo = answer?.slo
@@ -222,6 +230,7 @@ export default {
           this.localPlug = {
             locationId: this.tlo?.locationId,
             bpi: this.tlo?.id,
+            marketId: this.tlo?.market?.id,
             amount: this.local?.prices
               .find(el => el?.chars?.['Категория продукта'] === this.tlo?.chars?.['Категория продукта']).amount,
             chars: this.local?.prices
@@ -236,6 +245,7 @@ export default {
           this.globalPlug = {
             locationId: this.tlo?.locationId,
             bpi: this.tlo?.id,
+            marketId: this.tlo?.market?.id,
             amount: this.global?.prices
               .find(el => el?.chars?.['Категория продукта'] === this.tlo?.chars?.['Категория продукта'])?.amount,
             chars: this.global?.prices

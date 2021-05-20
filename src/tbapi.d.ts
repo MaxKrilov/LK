@@ -45,7 +45,8 @@ export interface ILocationOfferInfo {
   offer: {
     name: string
     id: string | number
-  }
+  },
+  marketId: string
 }
 
 export interface IDocumentObject {
@@ -590,7 +591,8 @@ export type IWifiPro = {
     offer: ICustomerOffer
     parentId: string
     purchasedPrices: IPurchasedPrices
-    status: string
+    status: string,
+    marketId: string
   }>
   status: string
 }

@@ -35,6 +35,7 @@ export default class TVPackagesPage extends Vue {
   isConnection: boolean = false
   deleteData: IDeleteOrderData = {
     bpi: '',
+    marketId: '',
     locationId: '',
     productId: '',
     title: ''
@@ -92,6 +93,7 @@ export default class TVPackagesPage extends Vue {
     return {
       locationId: this.line?.locationId,
       bpi: this.line?.stb?.id,
+      marketId: this.line?.marketId || '',
       chars: { 'Имя оборудования': this.stbName },
       title: `Вы уверены, что хотите изменить имя оборудования?`
     }
@@ -142,6 +144,7 @@ export default class TVPackagesPage extends Vue {
     this.orderData = {
       locationId: this.line?.locationId,
       bpi: this.line?.id,
+      marketId: this.line?.marketId,
       productCode: code.split(' ').join('').split(',').find((el: string) => this.allowedPackagesCodes.includes(el)),
       offer: 'tv',
       title: 'Вы уверены, что хотите подключить дополнительный пакет?'
@@ -166,6 +169,7 @@ export default class TVPackagesPage extends Vue {
     this.deleteData = {
       bpi: this.line?.id || '',
       locationId: this.line?.locationId || '',
+      marketId: this.line?.marketId || '',
       productId,
       title: `Вы уверены, что хотите отключить пакет ${name}?`
     }
