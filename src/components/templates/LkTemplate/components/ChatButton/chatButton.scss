@@ -1,21 +1,21 @@
 .chat-button {
   position: fixed;
   cursor: pointer;
-  left: 16px;
+  right: 16px;
   bottom: 16px;
 
   @include min-breakpoint('sm') {
-    left: 24px;
+    right: 24px;
     bottom: 24px;
   }
 
   @include min-breakpoint('lg') {
-    left: 32px;
+    right: 32px;
     bottom: 32px;
   }
 
   @include min-breakpoint('xl') {
-    left: 48px;
+    right: 48px;
     bottom: 48px;
   }
 
@@ -24,34 +24,59 @@
   .er-icon {
 
     svg {
-      color: map-get($shades, 'white');
+      @include color-black(.5);
+    }
+  }
+  &:hover {
+    .chat-button__slider {
+      width: 213px;
+      box-shadow: 0px 8px 24px rgba(map-get($shades, 'black'), 0.06), -8px 8px 16px rgba(map-get($shades, 'black'), 0.04);
+    }
+  }
+
+  &__slider {
+    right: 0;
+    overflow: hidden;
+    position: absolute;
+    width: 56px;
+    height: 56px;
+    background: map-get($shades, 'white');
+    z-index: 9;
+    transition: width $primary-transition, box-shadow $primary-transition;
+    box-shadow: 0px 0px 0px rgba(map-get($shades, 'black'), 0.06), 0px 0px 0px rgba(map-get($shades, 'black'), 0.04);
+    display: flex;
+    align-items: center;
+    padding-left: 24px;
+    border-radius: 28px;
+    .button {
+      white-space: nowrap;
+      @extend %button-font;
     }
   }
 
   &__content {
+    z-index: 11;
+
+    position: relative;
     // кнопка
-    width: 48px;
-    height: 48px;
+    width: 56px;
+    height: 56px;
     border-radius: 50%;
-    background-color: map-get($green, 'base');
+    background-color: map-get($yellow, 'chat');
     display: flex;
     justify-content: center;
     align-items: center;
     font-size: 2rem;
 
-    &:hover {
-      background-color: map-get($green, 'other-1');
-
-    }
 
     &::before {
       // прозначная волна
       position: absolute;
       display: block;
       content: "";
-      width: 48px;
-      height: 48px;
-      background-color: map-get($green, 'base');
+      width: 56px;
+      height: 56px;
+      background-color: map-get($yellow, 'base');;
       border-radius: 50%;
       z-index: -1;
     }
@@ -69,8 +94,24 @@
     animation: blinkAnimation $animation-duration ease-out;
     animation-iteration-count: 1;
   }
+  .slider-animation {
+    animation: sliderAnimation $animation-duration ease-out;
+    animation-iteration-count: 1;
+  }
 
+  @keyframes sliderAnimation {
+    0% {
+      transform: scale(1);
+    }
 
+    20% {
+      transform: scale(.9);
+    }
+
+    30% {
+      transform: scale(1);
+    }
+  }
   @keyframes decreaseAnimation {
     0% {
       transform: scale(1);
@@ -84,6 +125,7 @@
       transform: scale(1);
     }
   }
+
 
   @keyframes blinkAnimation {
     0% {

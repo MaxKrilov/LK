@@ -1,3 +1,5 @@
 div(class="chat-button" @click="openChat")
+  div(:class="['chat-button__slider', {'slider-animation': isAnimate}]") 
+    div(class="button") Нужна помощь?
   div(:class="['chat-button__content', {'decrease-animation blink-animation': isAnimate}]") 
     er-icon(name="chat")
