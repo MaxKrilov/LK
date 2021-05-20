@@ -397,6 +397,16 @@ export default class VCDomain extends Mixins(VueTransitionFSM, ErtFetchAvailable
     this.setState('accept')
   }
 
+  onSuccessOrder () {
+    this.isUserOrderMode = false
+    this.setState('ready')
+  }
+
+  onCloseSuccess () {
+    this.isUserOrderMode = false
+    this.setState('ready')
+  }
+
   onDeclineOffer () {
     this.setState('decline')
   }
