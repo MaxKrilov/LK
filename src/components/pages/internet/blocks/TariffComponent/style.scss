@@ -231,6 +231,16 @@
       }
     }
   }
+  &__turbo-activation-button--active {
+    .er-button__icon--prev {
+      position: static !important;
+      left: unset !important;
+    }
+
+    .er-button__slot-content {
+      justify-content: flex-start;
+    }
+  }
   &__price,
   &__turbo-price {
     margin-bottom: 24px;
