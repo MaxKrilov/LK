@@ -24,7 +24,21 @@ export default class AddRedirectionForm extends Vue {
   isShowSuccessModal: boolean = false
   sendingOrder: boolean = false
   timeRule = [
-    (v:any) => !!v || 'Ошибка'
+    (v:string) => {
+      const timeFrom = Number(v.split('-')[0].split(':')[0])
+      const timeTo = Number(v.split('-')[1].split(':')[0])
+      if (!(timeFrom <= 24)) {
+        return 'Неверное время'
+      }
+      if (!(timeTo <= 24)) {
+        return 'Неверное время'
+      }
+      if (timeFrom >= timeTo) {
+        return 'Неверное время'
+      }
+      return true
+    }
+
   ]
 
   dayOfWeek = [
@@ -37,17 +51,23 @@ export default class AddRedirectionForm extends Vue {
     { name: 'ВС', value: 'Воскресенье' }
   ]
   phoneTo = ''
-  timeFrom = ''
-  timeTo = ''
+  time = ''
   slectedPhone = ''
   redirectionTypes = ['Безусловная', 'По неответу', 'По занятости', 'По недоступности']
   selectedRedirectionType = ''
   get phoneToFormated () {
     return this.phoneTo.replace(/\D+/g, '')
   }
+  get hourFrom () {
+    return Number(this.time.split('-')[0].split(':')[0])
+  }
+  get hourTo () {
+    return Number(this.time.split('-')[1].split(':')[0])
+  }
   get disabledPlug () {
     return !(this.slectedPhone && this.phoneTo && this.selectedRedirectionType)
   }
+
   createOrder () {
     this.creatingOrder = true
     if (!this.locationId) return
@@ -104,7 +124,7 @@ export default class AddRedirectionForm extends Vue {
       .reduce((acc, el) => {
         return { ...acc, ...el }
       }, {})
-    if (this.timeFrom && this.timeTo) chars['Часы'] = `с ${this.timeFrom.slice(0, 2).replace(/\D+/g, '')} по ${this.timeTo.slice(0, 2).replace(/\D+/g, '')}`
+    if (this.hourFrom.toString() && this.hourTo.toString()) chars['Часы'] = `с ${this.hourFrom.toString().replace(/\D+/g, '')} по ${this.hourTo.toString().replace(/\D+/g, '')}`
     if (this.selectedRedirectionType) chars['Тип Переадресации'] = this.selectedRedirectionType
     if (this.phoneTo) chars['Переадресация на'] = this.phoneToFormated
     return chars
