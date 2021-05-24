@@ -653,6 +653,7 @@ export default class VCCameraConfigPage extends Mixins(
     this.disconnectTitle = `Вы уверены, что хотите отключить «${this.getServiceNameByCode(code)}»?`
 
     const payload = {
+      marketId: this.marketId,
       locationId: this.location.id,
       productId: this.getProductId(code),
       disconnectDate: this.$moment().format()
@@ -703,6 +704,7 @@ export default class VCCameraConfigPage extends Mixins(
     } else {
       const payload = {
         locationId: this.location.id,
+        marketId: this.marketId,
         bpi: this.camera.id,
         chars: {
           [CHARS.DEVICE_NAME]: value
