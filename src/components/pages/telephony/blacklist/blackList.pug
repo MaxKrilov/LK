@@ -6,15 +6,15 @@
       backlink="/lk/telephony"
     )
     ListPointComponent(:list="addressList" v-model="currentAddress" :isLoading="isLoading")
-  
-  
+
+
   template(v-if="isLoadingPhones")
     .telephony-blacklist-page__phones
       blackListCard(:isLoading="isLoadingPhones")
       blackListCard(:isLoading="isLoadingPhones")
       blackListCard(:isLoading="isLoadingPhones")
-  
-  
+
+
   template(v-if="!isLoading && blackList.length && !isLoadingPhones")
     .telephony-blacklist-page__phones
       blackListCard(v-for="item in blackList" :data="item" :key="item.id" @update="update")
@@ -32,16 +32,16 @@
           hideDetails
           v-model="selectedNewPhones"
         )
-      template(v-if="selectedNewPhones && newBlackList.length")  
+      template(v-if="selectedNewPhones && newBlackList.length")
         b.ml-md-24 Заблокировать номера
         div(class="telephony-blacklist-page__list")
           div(class="telephony-blacklist-page__list__item" v-for="phone in newBlackList" :key="phone")
             div {{ phone }}
             div(class="delete-icon" @click="deleteNumber(phone)")
               er-icon(name="trashbox")
-    
+
       div Звонящий вам услышит в телефонной трубке фразу: «<b>Абонент просил не беспокоить</b>»
-      div(class="telephony-blacklist-page__add-wrapper" v-show="selectedNewPhones")  
+      div(class="telephony-blacklist-page__add-wrapper" v-show="selectedNewPhones")
         div(class="telephony-blacklist-page__number-input")
           ert-text-field(
             v-model="newNumber"
@@ -56,7 +56,7 @@
       .telephony-blacklist-page__plug__button
         er-button(:disabled="!selectedNewPhones || !newBlackList.length" @click="plugBlackList" :loading="creatingOrder") Добавить черный список
         er-button(flat v-if="blackList.length" @click="isConnectNewBlackList=false") Отмена
-  
+
   er-activation-modal(
     type="question"
     v-model="isShowModal"
@@ -83,6 +83,7 @@
     cancel-button-text="Спасибо"
   )
     template(slot="description")
-      | Заказ создан успешно. Выполнение заказа может занять некоторое время. Актуальный статус можно узнать в разделе Заказы.
-  
-      
+      | Заказ создан успешно. Выполнение заказа может занять некоторое время.&nbsp;
+      | Актуальный статус можно узнать в&nbsp;
+      router-link(to="/lk/orders") разделе Заказы.
+

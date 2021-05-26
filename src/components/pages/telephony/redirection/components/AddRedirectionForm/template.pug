@@ -22,7 +22,7 @@
             autocomplete="disabled"
           )
           er-flex.xs10.sm4
-            
+
             er-text-field(v-model="phoneTo" mask="phone" :rules="phoneRule"  :is-show-success="true" autocomplete="disabled" )
 
   .add-redirection-form__period
@@ -31,8 +31,8 @@
       .wrapper
         div
           .caption2 День недели
-          .days  
-            div(v-for="(item, index) in dayOfWeek" :key="index" class="item")  
+          .days
+            div(v-for="(item, index) in dayOfWeek" :key="index" class="item")
               div {{ item.name }}
               er-toggle(
                 type="checkbox"
@@ -86,4 +86,6 @@
     cancel-button-text="Спасибо"
   )
     template(slot="description")
-      | Заказ создан успешно. Выполнение заказа может занять некоторое время. Актуальный статус можно узнать в разделе Заказы.
+      | Заказ создан успешно. Выполнение заказа может занять некоторое время.&nbsp;
+      | Актуальный статус можно узнать в&nbsp;
+      router-link(to="/lk/orders") разделе Заказы.

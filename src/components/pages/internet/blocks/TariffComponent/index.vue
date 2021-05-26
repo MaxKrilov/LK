@@ -141,7 +141,7 @@
       cancel-button-text="Закрыть"
     )
       template(slot="description")
-        | Уважаемый клиент, в данный момент операция недоступна, обратитесь к персональному менеджеру
+        div Уважаемый Клиент, в данный момент операция не доступна, обратитесь к персональному менеджеру
     er-activation-modal(
       v-model="isShowSuccessDialog"
       type="success"
@@ -150,7 +150,9 @@
       cancel-button-text="Закрыть"
     )
       template(slot="description")
-        div Благодарим Вас за заказ! Подробности выполнения можно отследить в разделе заказы
+        | Заказ создан успешно. Выполнение заказа может занять некоторое время.&nbsp;
+        | Актуальный статус можно узнать в&nbsp;
+        router-link(to="/lk/orders") разделе Заказы.
     er-disconnect-product(
       v-model="isDisconnectionTurbo"
       :delete-order-data="turboDetails"
