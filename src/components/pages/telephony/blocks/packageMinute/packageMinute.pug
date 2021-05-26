@@ -1,4 +1,4 @@
-div(class="package") 
+div(class="package")
   er-card()
     div(class="package__header")
       div(class="package__header_title") {{ name }}
@@ -63,4 +63,6 @@ div(class="package")
     cancel-button-text="Спасибо"
   )
     template(slot="description")
-      | Заказ создан успешно. Выполнение заказа может занять некоторое время. Актуальный статус можно узнать в разделе Заказы.
+      | Заказ создан успешно. Выполнение заказа может занять некоторое время.&nbsp;
+      | Актуальный статус можно узнать в&nbsp;
+      router-link(to="/lk/orders") разделе Заказы.
