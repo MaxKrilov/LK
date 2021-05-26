@@ -84,6 +84,9 @@ export default {
         this.$store.commit(`loading/loadingDocuments`, true)
         this.$store.dispatch(`fileinfo/downloadListDocument`, context)
         this.$store.dispatch(`payments/getBillingInfo`, context)
+          .then(({ branchId }) => {
+            this.getBranchLocation(branchId)
+          })
         this.$store.dispatch(`user/${GET_LIST_PRODUCT_BY_ADDRESS}`, context)
           .then(() => {
             this.$store.dispatch(`user/${GET_LIST_PRODUCT_BY_SERVICE}`, context)
@@ -141,7 +144,8 @@ export default {
       fetchNotifications: 'campaign/fetchNotifications',
       fetchPPR: 'campaign/fetchPPR',
       fetchClientInfo: `user/${GET_CLIENT_INFO}`,
-      getForwardStatus: 'user/getForwardStatus'
+      getForwardStatus: 'user/getForwardStatus',
+      getBranchLocation: `branch/pullBranchLocation`
     }),
     fetchUserData () {
       const context = { api: this.$api }
@@ -167,6 +171,9 @@ export default {
               .then(isValid => {
                 if (isValid) {
                   this.$store.dispatch(`payments/getBillingInfo`, context)
+                    .then(({ branchId }) => {
+                      this.getBranchLocation(branchId)
+                    })
                   this.$store.dispatch(`chat/${GET_CHAT_TOKEN}`, context)
                   this.$store.dispatch(`payments/getPromisedPaymentInfo`, context)
                   this.$store.dispatch(`user/${GET_BILLING_CONTACTS}`, context)
