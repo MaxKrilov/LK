@@ -32,16 +32,7 @@ mixin addresses
       .caption.mb-4
         | Центральный офис:
       .value.mb-8
-        a(
-          href="https://goo.gl/maps/LrX8KCUPvb1caiHUA"
-          target="_blank"
-          rel="noopener"
-        ) АО «ЭР-Телеком Холдинг» 614000, г. Пермь, Шоссе Космонавтов 111, к1
-    //-.b-contact-info__address
-      .caption.mb-4
-        | Офис г. Санкт-Петербург:
-      .value
-        a(href="#") БЦ «Петровский форт» пр-т Финляндский, 4А
+        span {{ $store.state.branch.address }}
 
 mixin toDirectorForm(name)
   er-form(ref=name)

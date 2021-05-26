@@ -232,7 +232,7 @@ const actions = {
         .query('/payment/billing/get-info')
         .then((response: IBillingInfo) => {
           context.commit('setBillingInfo', response)
-          resolve()
+          resolve(response)
         })
         .catch(error => {
           reject(error)
