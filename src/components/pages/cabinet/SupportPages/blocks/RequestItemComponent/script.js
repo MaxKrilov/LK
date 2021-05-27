@@ -202,7 +202,7 @@ export default class RequestItemComponent extends Vue {
 
   get getDetailInfoMobile () {
     return [
-      { caption: 'Тип заявки', value: localisationTicketType(this.ticketType) },
+      { caption: 'Тип заявки', value: this.ticketType },
       { caption: 'Тип проблемы', value: this.type },
       { caption: 'Продукт', value: this.affectedProduct },
       { caption: 'Статус', value: this.getTextStatus[this.getLabelStatus.id] }
@@ -211,7 +211,7 @@ export default class RequestItemComponent extends Vue {
 
   get getDetailInfoDesktop () {
     return [
-      { caption: 'Тип заявки', value: localisationTicketType(this.ticketType) },
+      { caption: 'Тип заявки', value: this.ticketType },
       { caption: 'Тип проблемы', value: this.type },
       { caption: 'Продукт', value: this.affectedProduct },
       { caption: 'Адрес подключения', value: this.location }

@@ -141,13 +141,15 @@
           span.number
             | {{ ticketName | ticketName }}
           span.ticket-type
-            | {{ ticketType | localisationTicketType }}
+            | {{ ticketType }}
         .request-item-component__address--desktop
           | {{ location }}
         .request-item-component__status(:class="getLabelStatus.id")
           span {{ getLabelStatus.name }}
           div.updated
             +dateNTime()
+        .request-item-component__updated--desktop
+          +dateNTime()
         .request-item-component__toggle--desktop
           +cornerDown()
       .request-item-component__row.bottom

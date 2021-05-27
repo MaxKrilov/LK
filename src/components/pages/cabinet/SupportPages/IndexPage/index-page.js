@@ -13,6 +13,8 @@ import { isObject } from '@/functions/helper2'
 import { DEFAULT_REQUESTS_PER_PAGE, SORT_FIELDS } from '@/constants/request'
 import { FETCH_ACTIVE_REQUEST_LIST } from '../../../../../store/actions/request'
 
+import uniq from 'lodash/uniq'
+
 const TYPE_FILTER_REQUEST_ALL = 'all'
 const TYPE_FILTER_REQUEST_ACTIVE = 'active'
 
@@ -65,7 +67,6 @@ const mapRequestItem = item => {
       getManagerInfo: 'user/getManagerInfo'
     }),
     ...mapState({
-      listCity: state => state.request.listRequest?.cities || [],
       vListRequest: state => state.request.listRequest?.request || [],
       loadingRequest: state => state.loading.loadingRequest
     })
@@ -114,6 +115,7 @@ export default class SupportIndexPage extends Vue {
   allRequestListCount = 0
   itemsPerPage = DEFAULT_REQUESTS_PER_PAGE
   isVisibleDirectorFeedback = false
+  listCity = {}
 
   @Watch('currentPage')
   onCurrentPageChange () {
@@ -153,6 +155,10 @@ export default class SupportIndexPage extends Vue {
     return this.city.reduce((result, item) => result.concat(this.listCity[item]), [])
   }
 
+  /**
+   * @deprecated
+   * @return {*[]|T[]}
+   */
   get listRequestComputed () {
     const mapped = this.listRequest
     mapped.sort((a, b) => {
@@ -172,7 +178,7 @@ export default class SupportIndexPage extends Vue {
     })
     const filteredByActive = mapped
       .filter(item => this.typeFilterRequest === TYPE_FILTER_REQUEST_ACTIVE
-        ? !item.resolvedWhen && !item.cancelledWhen && !item.closedWhen
+        ? !item.cancelledWhen && !item.closedWhen
         : true
       )
     return this.city.length === 0
@@ -313,12 +319,20 @@ export default class SupportIndexPage extends Vue {
     return this.isActiveFilterRequest(this.getTypeFilterRequestActive) ? this.activeRequestList : this.allRequestList
   }
 
+  setListCity (cities) {
+    this.listCity = {
+      ...this.listCity,
+      ...cities
+    }
+  }
+
   updateAllRequestList () {
     this.allRequestList = []
 
     this.fetchRequestList(this.getFetchParams())
-      .then(({ request }) => {
+      .then(({ request, cities }) => {
         this.setListRequest(request)
+        this.setListCity(cities)
       })
   }
 
@@ -332,6 +346,38 @@ export default class SupportIndexPage extends Vue {
         this.activeRequestList = data
           .map(mapRequestItem)
           .filter(item => item.channel.id !== CHANNEL_DMP)
+
+        // Следует установить города
+        const internalListCity = data.reduce((acc, item) => {
+          if (
+            item.channel.id === CHANNEL_DMP ||
+            !item.hasOwnProperty('city')
+          ) return acc
+          const cityName = item.city.name
+          const ticketId = item.ticket_id
+          if (this.listCity.hasOwnProperty(cityName) && !this.listCity[cityName].includes(ticketId)) {
+            this.listCity[item.city.name].push(ticketId)
+            return acc
+          }
+
+          if (!acc.hasOwnProperty(cityName)) {
+            acc[cityName] = []
+          }
+
+          acc[cityName].push(ticketId)
+
+          return acc
+        }, {})
+
+        for (const city in internalListCity) {
+          if (!internalListCity.hasOwnProperty(city)) continue
+          // Если города нет в "исходном" списке
+          if (!this.listCity.hasOwnProperty(city)) {
+            this.listCity[city] = internalListCity[city]
+          } else {
+            this.listCity[city] = uniq(this.listCity[city].concat(internalListCity[city]))
+          }
+        }
       })
   }
 }
