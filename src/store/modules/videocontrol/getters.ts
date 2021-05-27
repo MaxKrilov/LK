@@ -10,6 +10,7 @@ import {
 } from '@/constants/videocontrol'
 import { IOfferingRelationship } from '@/interfaces/offering'
 import { isActiveOffering } from '@/functions/offers'
+import { isVisibleAnalytic } from '@/functions/videocontrol'
 
 const isVCPoint = (item: ILocationOfferInfo) =>
   item.offer.name === VIDEOCONTROL_OFFER_NAME
@@ -133,6 +134,7 @@ export const getters = {
         ?.offeringRelationships
         ?.find(isBFAnalytic)
         ?.offerings
+        ?.filter(isVisibleAnalytic)
         ?.filter(isActiveOffering)
     }
   },
@@ -142,7 +144,7 @@ export const getters = {
         ?.offeringRelationships
         ?.filter(isBFAddon)
         ?.reduce((acc: [], el: any) => {
-          return [ ...acc, ...el.offerings ]
+          return [...acc, ...el.offerings]
         }, [])
         ?.filter(isActiveOffering)
     }
