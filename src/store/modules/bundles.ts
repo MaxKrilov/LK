@@ -44,7 +44,6 @@ const actions = {
     const api = new API()
     return api
       .setData(newPayload)
-      .setBranch('web-23421')
       .query('/customer/bundle/active?bundle-active')
       .then(function (data): IBundle[] {
         return data
@@ -66,7 +65,6 @@ const actions = {
         clientId,
         bundleId: payload.bundleId
       })
-      .setBranch('web-23421')
       .query('/customer/bundle/all?bundle-all')
       .then(data => {
         return data
