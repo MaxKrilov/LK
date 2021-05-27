@@ -48,6 +48,7 @@
             er-button.tariff-component__turbo-activation-button--active(
               pre-icon="speedup"
               color="green"
+              :loading="isDisconnectionTurbo"
               @click="() => { isDisconnectionTurbo = true }"
             )
               | Отключить турбо-режим
