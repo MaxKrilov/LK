@@ -3,6 +3,7 @@ import AddonCard from '../components/AddonCard/index.vue'
 import { promisedStoreValue } from '@/functions/store_utils'
 import { IOffer, IVideocontrol } from '@/interfaces/videocontrol'
 import { ANALYTIC_NAME } from '@/constants/videocontrol'
+import { isVisibleAnalytic } from '@/functions/videocontrol'
 
 const components = {
   AddonCard
@@ -66,6 +67,7 @@ export default class VCAddonListPage extends Vue {
                 .find((el: any) => el.name === ANALYTIC_NAME)?.offerings
 
               const filteredList = availOfferingList
+                ?.filter(isVisibleAnalytic)
                 ?.filter(isActiveOffering)
 
               this.availableAnalyticsList = filteredList || []
