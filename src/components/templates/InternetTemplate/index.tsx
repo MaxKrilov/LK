@@ -31,23 +31,21 @@ const transformListPoint = (listPoint: ILocationOfferInfo[]): iPointItem[] => un
   },
   computed: {
     ...mapState({
-      loadingBillingAccount: (state: any) => state.loading.menuComponentBillingAccount
+      loadingBillingAccount: (state: any) => state.loading.menuComponentBillingAccount,
+      loadingBalance: (state: any) => state.loading.menuComponentBalance
     }),
     ...mapGetters({
       billingAccountId: 'payments/getActiveBillingAccount'
     })
   },
   watch: {
-    loadingBillingAccount (val) {
-      if (!val) {
-        this.init()
-      }
+    loadingBalance (val) {
+      !val && this.init()
     },
     billingAccountId (val: string, oldVal: string) {
-      // Вызываем ининициализацию, если переключение л/с было вызывано пользователем
-      // В противном случае инициализация происходит в watch loadingBillingAccount
       if (oldVal !== '') {
-        this.init()
+        this.isLoadingListPoint = true
+        this.isLoadingCustomerProduct = true
       }
     },
     activePoint (val, oldVal) {
@@ -61,6 +59,7 @@ export default class InternetTemplate extends Vue {
 
   // Vuex
   loadingBillingAccount!: boolean
+  loadingBalance!: boolean
   billingAccountId!: string
 
   // Data
@@ -136,7 +135,7 @@ export default class InternetTemplate extends Vue {
   }
 
   created () {
-    if (!this.loadingBillingAccount) {
+    if (!this.loadingBalance) {
       this.init()
     }
   }

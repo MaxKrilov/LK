@@ -284,7 +284,8 @@ export default class TariffComponent extends Vue {
       locationId: this.locationId as string,
       bpi: this.parentId,
       productId: this.isAvailableTurbo.productId,
-      title: 'Вы уверены, что хотите отключить Турбо-режим?'
+      title: 'Вы уверены, что хотите отключить Турбо-режим?',
+      marketId: this.marketId
     }
   }
 
@@ -677,8 +678,6 @@ export default class TariffComponent extends Vue {
         })
         .catch(() => {
           this.isShowErrorDialog = true
-        })
-        .finally(() => {
           this.isLoadingConnect = false
         })
     }
