@@ -149,7 +149,7 @@ export default class InternetTemplate extends Vue {
         props: { title: this.computedPageName }
       }),
       h('list-point-component', {
-        staticClass: 'main-content main-content--padding mb-16 py-0',
+        staticClass: 'main-content main-content--padding py-0',
         props: {
           list: this.listPoint,
           value: this.activePoint

@@ -1,5 +1,5 @@
 <template lang="pug">
-  .list-point-component.mb-48.mb-md-56.mb-xl-48
+  .list-point-component.mb-24.mb-md-32.mb-xl-24
     .list-point-component--mobile
       template(v-if="getIsLoadingListPoint")
         .list-point-component__point

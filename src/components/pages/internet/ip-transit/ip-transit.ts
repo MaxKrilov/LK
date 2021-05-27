@@ -35,7 +35,7 @@ export default class IpTransitPage extends BillingAccountMixin {
   isPointsLoaded: boolean = false
   isRequestModalVisible: boolean = false
 
-  currentPoint: ISimplePoint | Record<string, any> = { }
+  currentPoint: ISimplePoint | Record<string, any> = {}
   requestData: Record<string, any> = {}
 
   @StoreGetter('ipTransit/mappedPointList')
@@ -71,7 +71,7 @@ export default class IpTransitPage extends BillingAccountMixin {
     return this.productTlo?.purchasedPrices?.recurrentTotal?.value
   }
 
-  fetchData () {
+  onChangeBillingAccountId () {
     this.$store.dispatch('ipTransit/pullPoints')
       .then(data => {
         this.isPointsLoaded = true

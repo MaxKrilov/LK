@@ -1,0 +1,26 @@
+.package
+  .package__head
+    .package__description {{ description }}
+
+  .package__content
+    .package__address-list
+      .package-address(v-for="addr in addressList")
+        er-icon(name="geolocation")
+        span.package-address__address {{ addr }}
+
+    .package__service-list
+      .package-service(
+        v-for="service in serviceList"
+        :key="service.bpi"
+      )
+        .package-service__head
+          .package-service__title {{ service.offer.name }}
+          router-link(
+            :to="getProductPageLink(service)"
+          ).package-service__tariff {{ service.bundle.name }}
+
+        .package-service__price
+          .caption2 Абонентская плата
+          .discount
+            .discount__value(v-if="getDiscount(service) > 0") {{ getOldPrice(service) | price }}
+            er-price(:sum="service.amount.value")

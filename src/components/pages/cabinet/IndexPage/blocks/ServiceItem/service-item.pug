@@ -1,0 +1,29 @@
+.service-item
+  .service-item__body
+      .service-address(v-for="(service, index) in list" :key="index")
+        .service-address__header
+          .service-address__title-wrap
+            .service-address__icon
+              er-icon(name="geolocation")
+            .service-address__title {{ service.fulladdress }}
+
+        .service-address__footer
+          .service-address__tariff-price-wrap
+            .service-address__tariff
+              .caption2.mb-4 Тариф
+              a.service-address__tariff-name(:href="getServiceLink(name)") {{ service.offer.name }}
+
+            .service-address__price
+              .caption2 Абонентская плата
+              .discount
+                er-price(:sum="service.amount.value")
+
+          .service-address__bundle
+            template(v-if="service.bundle")
+              er-bundle-info(
+                :name="service.bundle.name"
+                :id="service.bundle.id"
+                :show-icon="true"
+                :show-members="true"
+                :show-info="true"
+              )

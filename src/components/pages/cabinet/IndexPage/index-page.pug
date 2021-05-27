@@ -98,33 +98,57 @@ div(:class="`${pre}`")
           div.icon.mr-16
             er-icon(name="filter_1")
           div.by-sort
-            a(@click="openFilterForm") {{ modelSortService | sortBy }}
+            a(@click="openFilterForm") {{ currentFilterLabel }}
+
       er-slide-up-down(:active="isOpenFilter")
         div(:class="`${pre}__filters--mobile__form`")
           div.d--flex.justify-content-between.mb-24(:class="`${pre}__filters--mobile__form__row`")
             div(:class="`${pre}__filters--mobile__form__input`")
               er-text-field(
+                v-if="isPointFiltrationRalized"
                 label="Фильтрация по точкам",
                 v-model="modelFilterService",
                 appendInnerIcon="close",
                 @click:append-inner="clearModelFilterService"
-                )
+              )
             div(:class="`${pre}__filters--mobile__form__close`", @click="closeFilterForm")
               er-icon(name="corner_up")
           div.d--flex(:class="`${pre}__filters--mobile__form__row`")
-            div(:class="`${pre}__filters--mobile__form__switch`")
-              er-switch(:labels="dataFilterSwitch", v-model="modelSortService", name="sortService")
-    div.justify-content-between.mb-24(:class="`${pre}__filters--desktop`")
-      div.mr-8(:class="`${pre}__filters--desktop__input`")
-        //- er-text-field(
-        //-  label="Фильтрация по точкам",
-        //-  v-model="modelFilterService",
-        //-  appendInnerIcon="close",
-        //-  @click:append-inner="clearModelFilterService"
-        //- )
-      div.ml-8(:class="`${pre}__filters--desktop__toggle`")
-        er-switch(:labels="dataFilterSwitch", v-model="modelSortService", name="sortService")
-  template(v-if="indexPageProductByAddress")
+            .filter-list.flex-grow-1
+              .filter-list__label Сортировать по:
+              .filter-list__content.justify-content-between
+                .filter-list__item(v-for="item in dataFilterSwitch")
+                  er-toggle(
+                    type="radio"
+                    view="radio-check"
+                    v-model="modelSortService"
+                    :value="item.value"
+                    :label="item.label"
+                  )
+    div.justify-content-between.align-items-end.mb-24(:class="`${pre}__filters--desktop`")
+      div(:class="`${pre}__filters--desktop__input`")
+        er-text-field(
+          v-if="isPointFiltrationRalized"
+          label="Фильтрация по точкам",
+          v-model="modelFilterService",
+          appendInnerIcon="close",
+          @click:append-inner="clearModelFilterService"
+        )
+      .filter-list(:class="`${pre}__filters--desktop__toggle`")
+        .filter-list__label Сортировать по:
+        .filter-list__content
+          .filter-list__item(v-for="item in dataFilterSwitch")
+            er-toggle(
+              type="radio"
+              view="radio-check"
+              v-model="modelSortService"
+              :value="item.value"
+              :label="item.label"
+            )
+
+  template(v-if="!isLoadedPackList")
+    pu-skeleton(width="300px")
+  template(v-else-if="indexPageProductByAddress")
     div(:class="`${pre}__products__loading`")
       .content
         img(:src="require('@/assets/images/preloaders/3.svg')")
@@ -135,27 +159,30 @@ div(:class="`${pre}`")
         | Нет подключённых продуктов
   template(v-else)
     template(v-if="modelSortService === 'service'")
-      product-item-component.mb-4(
-        v-for="product in listProductByService"
-        :key="product.code"
-        :title="product.name"
-        :price="product.price"
-        :product-type="product.code"
-        sort-by="service"
+      serviceList(:list="listProductByService")
+
+    template(v-else-if="modelSortService === 'packs'")
+      service-folder.mb-4(
+        v-for="(packGroup, packName) in activeBundleGroupList"
+        :key="packName"
+        :price="packGroup.reduce(packGroupPrice, 0).toString()"
+        :title="packName"
+        :description="MESSAGES.PACKAGE_DISABLING_TIP"
+        icon-name="pack"
       )
+        package-item(
+          :title="packName"
+          :pack-list="packGroup"
+          :description="MESSAGES.PACKAGE_DISABLING_TIP"
+        )
+
     template(v-else)
-      product-item-component.mb-4(
-        v-for="product in listProductByAddress"
-        :key="product.addressId"
-        :title="product.address"
-        :price="product.price"
-        :address-id="product.addressId"
-        sort-by="office"
-      )
+      office-list(:list="listProductByAddress")
 
   er-toast-stack(
     @click="onClickToast"
   )
+
   er-activation-modal(
     type="success"
     v-model="isNotAccessInvPayment"
@@ -165,3 +192,4 @@ div(:class="`${pre}`")
   )
     template(slot="description")
       | У вас положительный баланс, поэтому запрос информационного счёта недоступен! Приятного пользования услугами Дом.ru
+

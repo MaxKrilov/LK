@@ -7,6 +7,7 @@ import PriceServicesComponent from '@/components/pages/internet/blocks/PriceServ
 import { API } from '@/functions/api'
 import { ICustomerProduct } from '@/tbapi'
 import { SERVICE_URLS } from '@/constants/url'
+import ErBundleInfo from '@/components/blocks/ErBundleInfo/index.vue'
 
 export interface iPointItem {
   id: string | number,
@@ -20,6 +21,7 @@ export interface iPointItem {
     TariffComponent,
     SpeedComponent,
     ServicesComponent,
+    ErBundleInfo,
     PriceServicesComponent
   },
   props: {
@@ -52,5 +54,9 @@ export default class IndexPage extends Vue {
 
   onClickPlug () {
     window.open(SERVICE_URLS.INTERNET)
+  }
+
+  get bundle () {
+    return this.customerProduct?.tlo?.bundle
   }
 }

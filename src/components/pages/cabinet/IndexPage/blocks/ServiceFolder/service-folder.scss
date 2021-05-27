@@ -1,0 +1,216 @@
+.service-folder {
+  $self: &;
+
+  $xsPagePadding: $padding-x4;
+
+  @include max-breakpoint(sm) {
+    margin-left: -$xsPagePadding;
+    margin-right: -$xsPagePadding;
+  }
+
+  &--is-open {
+    #{$self}__icon {
+      .er-icon {
+        color: map-get($yellow, 'base');
+      }
+    }
+
+    #{$self}__head {
+      border-right-color: map-get($yellow, 'base');
+    }
+
+    .er-corner-button {
+      .er-icon {
+        @include color-black(.5);
+      }
+    }
+  }
+
+  &__head {
+    @extend %rounded-block;
+    background-color: map-get($shades, 'white');
+    overflow: hidden;
+    border-right: 4px solid transparent;
+    transition: all $primary-transition;
+    display: flex;
+    align-items: center;
+    max-height: 129px;
+    padding: $padding-x4 $padding-x4 $padding-x4 0;
+    gap: $padding-x2;
+
+    @include max-breakpoint(sm) {
+      border-radius: 0;
+    }
+
+    @include min-breakpoint(sm) {
+      padding: $padding-x2 $padding-x4 $padding-x2 0;
+    }
+  }
+
+  &__icon {
+    align-self: flex-start;
+
+    $iconSize: (
+      xs: $padding-x16,
+      sm: $padding-x20,
+      md: 106px,
+      xl: 114px
+    );
+
+    .er-icon {
+      @include color-black(.2);
+      transition: color $primary-transition;
+
+      margin-left: -$padding-x6;
+
+      @include min-breakpoint(sm) {
+        margin-left: -$padding-x8;
+      }
+
+      @include min-breakpoint(md) {
+        margin-left: -$padding-x12;
+      }
+
+      svg {
+        width: map-get($iconSize, xs);
+        height: map-get($iconSize, xs);
+
+        @include min-breakpoint(sm) {
+          width: map-get($iconSize, sm);
+          height: map-get($iconSize, sm);
+        }
+
+        @include min-breakpoint(md) {
+          width: map-get($iconSize, md);
+          height: map-get($iconSize, md);
+        }
+
+        @include min-breakpoint(xl) {
+          width: map-get($iconSize, xl);
+          height: map-get($iconSize, xl);
+        }
+      }
+    }
+  }
+
+  .folder-head {
+    flex-grow: 1;
+    display: flex;
+    gap: $padding-x2;
+    flex-direction: column;
+    align-items: flex-start;
+
+    @include min-breakpoint(sm) {
+      align-items: center;
+      justify-content: space-between;
+      flex-direction: row;
+    }
+
+    @include min-breakpoint(md) {
+    }
+
+    &__title {
+      @extend %h4;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: $padding-x2;
+
+      .er-price {
+        @include min-breakpoint(sm) {
+          display: none;
+        }
+      }
+    }
+
+    &__price {
+      grid-area: price;
+
+      .er-price__sum {
+        @extend %h2;
+      }
+
+      @include min-breakpoint(sm) {
+        text-align: right;
+        min-width: 120px;
+
+        .er-price {
+          display: flex;
+          flex-direction: column;
+        }
+      }
+    }
+
+    &__toggler {
+      display: none;
+      justify-content: flex-end;
+      text-align: right;
+
+      @include min-breakpoint(sm) {
+        display: flex;
+        text-align: left;
+        justify-content: flex-start;
+        max-height: 20px;
+      }
+    }
+
+    &__description {
+      display: none;
+      max-width: 320px;
+      @extend %caption2;
+
+      @include min-breakpoint(md) {
+        display: flex;
+        align-items: center;
+      }
+    }
+  }
+
+  .er-corner-button__label {
+    display: none;
+    margin-left: $padding-x1;
+
+    @include min-breakpoint(sm) {
+      display: initial;
+    }
+  }
+
+
+  &__wide-toggler {
+    display: none;
+
+    @include min-breakpoint(sm) {
+      display: block;
+    }
+  }
+
+  &__price {
+    display: none;
+
+    @include min-breakpoint(sm) {
+      display: initial;
+    }
+  }
+
+  &__content {
+    padding: $padding-x4;
+  }
+
+  .border-gradient {
+    @extend %rounded-block;
+    background: linear-gradient(to top right, map_get($gray, '26') 28.65%, map_get($shades, 'white') 90.63%);
+    padding: 1px;
+    box-shadow: 0 2px 12px rgba(map_get($shades, 'black'), 0.1),
+    0 2px 2px rgba(map_get($shades, 'black'), 0.05);
+
+    @include max-breakpoint(sm) {
+      border-radius: 0;
+    }
+  }
+
+  .hidden-sm {
+    @include min-breakpoint(sm) {
+      display: none;
+    }
+  }
+}

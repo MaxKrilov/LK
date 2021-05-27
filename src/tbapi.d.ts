@@ -127,6 +127,7 @@ export interface ICustomerProduct {
     pointAmount: string | number
     purchasedPrices: IPurchasedPrices
     status: string
+    bundle?: Record<any, any>
   }
   slo: [{
     activated: boolean

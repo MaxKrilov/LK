@@ -1,7 +1,7 @@
 <template lang="pug">
   .er-price
     span.er-price__sum
-      slot {{ sum }}
+      slot {{ sum | price }}
     span.er-price__units
       template(v-if="isRouble")
         span.er-price__currency.rub
@@ -55,7 +55,7 @@
 
 export default {
   props: {
-    sum: Number,
+    sum: [Number, String],
     currency: {
       type: String, // символ валюты или короткое название
       default: ''

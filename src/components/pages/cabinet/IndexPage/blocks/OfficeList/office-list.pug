@@ -1,0 +1,17 @@
+.office-list
+  service-folder.mb-4(
+    v-for="product in list"
+    :key="product.addressId"
+    :title="product.address"
+    :price="product.price.toString()"
+    icon-name="geolocation"
+    @open="onLoadService(product.addressId)"
+  )
+    template(v-slot:default="slotScope")
+      template(v-if="slotScope.value")
+        template(v-if="isItemLoaded(product.addressId)")
+          office-item(
+            :list="dataRecord[product.addressId]"
+          )
+        template(v-else)
+          img(:src="require('@/assets/images/preloaders/2.svg')")

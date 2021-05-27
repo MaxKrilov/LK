@@ -10,4 +10,24 @@
       margin-top: $padding-x10;
     }
   }
+
+  .er-bundle-info__body {
+    display: flex;
+    flex-direction: column;
+
+    margin-bottom: $padding-x4;
+
+    @include min-breakpoint(md) {
+      margin-bottom: $padding-x6;
+    }
+
+    @include min-breakpoint(xl) {
+      margin-bottom: $padding-x10;
+    }
+
+    @include min-breakpoint(sm) {
+      gap: $padding-x2;
+      flex-direction: row;
+    }
+  }
 }

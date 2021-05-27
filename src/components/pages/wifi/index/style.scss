@@ -135,4 +135,20 @@
     @extend %action-buttons-block;
     @extend %action-buttons-block--3-cols;
   }
+
+  .er-bundle-info__body {
+    display: flex;
+    flex-direction: column;
+
+    @include min-breakpoint(sm) {
+      gap: $padding-x2;
+      flex-direction: row;
+    }
+
+    margin-bottom: $padding-x4;
+
+    @include min-breakpoint(md) {
+      margin-bottom: $padding-x6;
+    }
+  }
 }

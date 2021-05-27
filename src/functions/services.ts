@@ -1,3 +1,20 @@
+// import { IBundle } from '@/interfaces/bundle'
+
+export function getServicePageLink (productName: string) {
+  // TODO: дополнить список сервисов
+  const productLinks = {
+    'Интернет': '/lk/internet',
+    'Wi-Fi': '/lk/wifi',
+    'Телефони': '/lk/telephony',
+    'Форпост': '/lk/videocontrol/forpost/',
+    'ТВ': '/lk/tv',
+    'ОАТС': '/lk/oats'
+  }
+
+  return Object.entries(productLinks)
+    .find((el) => productName.match(el[0]))?.[1] || ''
+}
+
 export function getIconNameByCode (code: string): string {
   code = code.toLowerCase()
   if (~code.indexOf('интернет')) {

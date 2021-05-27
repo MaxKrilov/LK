@@ -244,3 +244,11 @@ export function throttle<T extends (...args: any[]) => any> (fn: T, limit: numbe
 export function isObject (value: any): boolean {
   return typeof value === 'object'
 }
+
+export function booleanToNumber (bool: boolean): number {
+  return bool ? 1 : 0
+}
+
+export function parseDecimal (value: string): number {
+  return parseInt(value, 10)
+}

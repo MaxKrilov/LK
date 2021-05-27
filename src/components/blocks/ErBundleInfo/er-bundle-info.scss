@@ -1,0 +1,71 @@
+.er-bundle-info {
+  display: flex;
+  align-items: flex-start;
+  gap: $padding-x2;
+
+  @include min-breakpoint(md) {
+    gap: $padding-x4;
+  }
+
+  &__icon {
+    .er-icon {
+      @include color-black(.2);
+
+      svg {
+        width: $padding-x6;
+        height: $padding-x6;
+
+        @include min-breakpoint(md) {
+          width: $padding-x8;
+          height: $padding-x8;
+        }
+      }
+    }
+  }
+
+  &__label {
+    @extend %caption2;
+  }
+
+  &__title {
+    @extend %h4;
+    margin-top: $padding-x1;
+  }
+
+  &__body {
+    display: flex;
+    flex-direction: column;
+    gap: $padding-x1;
+
+    @include min-breakpoint(sm) {
+      gap: $padding-x2;
+      flex-direction: row;
+    }
+
+    @include min-breakpoint(md) {
+      gap: $padding-x4;
+    }
+  }
+
+  &__members {
+  }
+
+  .bundle-member {
+    @extend %link-behaviour;
+    //@extend %body-font;
+    @extend %caption1;
+    display: inline;
+    text-decoration: none;
+    @include color-black(.5);
+
+    &:not(:last-child) {
+      margin-right: $padding-x1;
+      &::after {
+        content: ',';
+      }
+    }
+    &--active {
+      @include color-black(.8);
+    }
+  }
+}
