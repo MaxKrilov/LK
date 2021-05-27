@@ -26,18 +26,21 @@
     &--mobile {
       margin-bottom: 34px;
       @include media-query((
-              display: (xl: none),
-              margin-bottom: (sm: 26px, md: 37px, lg: 48px)
+        display: (xl: none),
+        margin-bottom: (sm: 26px, md: 37px, lg: 48px)
       ));
+
       .icon {
         color: map_get($green, 'base');
         margin-right: 7px;
       }
+
       a {
         font: 22px/22px $fedra-demi;
         letter-spacing: -1px;
         margin-right: 43px;
         position: relative;
+
         &::after {
           position: absolute;
           bottom: 0;
@@ -48,6 +51,7 @@
           color: rgba(map_get($shades, 'black'), 0.5);
         }
       }
+
       span {
         font: 10px/12px $fedra-demi;
         letter-spacing: 0.5px;
@@ -56,8 +60,10 @@
       }
     }
   }
+
   &__fast-links {
   }
+
   &__fast-link {
     display: block;
     width: 100%;
@@ -69,7 +75,7 @@
     text-decoration: none;
     padding: 1px;
     box-shadow: 0 2px 12px rgba(map_get($shades, 'black'), 0.1),
-                0 2px 2px rgba(map_get($shades, 'black'), 0.05);
+    0 2px 2px rgba(map_get($shades, 'black'), 0.05);
     @include min-breakpoint('md') {
       height: 144px;
     }
@@ -79,6 +85,7 @@
     @include min-breakpoint('xl') {
       height: 160px;
     }
+
     .content {
       width: 100%;
       height: 100%;
@@ -92,6 +99,7 @@
         padding: 24px;
       }
     }
+
     .title {
       @extend %h4;
       font-weight: 600;
@@ -104,6 +112,7 @@
         @extend %caption2;
         transition: color 0.15s ease-in-out;
       }
+
       .value {
         font: 13px/18px $fedra-demi;
         color: map_get($green, 'base');
@@ -116,13 +125,16 @@
           letter-spacing: -2px;
         }
       }
+
       .icon {
         color: map_get($yellow, 'base');
         transition: color 0.15s ease-in-out;
+
         svg {
           transition: all 0.15s ease-in-out;
         }
       }
+
       .promised-payment-left {
         font: 22px/32px $fedra-book;
         letter-spacing: -1px;
@@ -193,22 +205,28 @@
         background: map_get($gray, '27');
       }
     }
+
     &:hover {
       .content {
         background: radial-gradient(50% 50% at 50% 50%, map_get($yellow, 'base') 55.5%, map_get($yellow, 'other-4') 100%);
       }
+
       .title {
         @include color-black(1);
       }
+
       .caption {
         @include color-black(0.5);
       }
+
       .footer {
         .value {
           color: map_get($shades, 'white');
         }
+
         .icon {
           color: rgba(map_get($shades, 'white'), 0.5);
+
           svg {
             transform: scale(3);
             filter: drop-shadow(-4px 4px 4px rgba(map_get($shades, 'black'), 0.08));
@@ -217,6 +235,7 @@
       }
     }
   }
+
   &__carousel {
     &__item {
       position: relative;
@@ -231,6 +250,7 @@
           ))
         }
       }
+
       .er-button {
         position: absolute;
         width: 160px;
@@ -239,24 +259,63 @@
       }
     }
   }
+
   &__service {
     &__title {
-      margin-bottom: 18px;
-      @include media-query((
-        margin-bottom: (lg: 25px)
-      ))
+      margin-bottom: $padding-x2;
+
+      @include min-breakpoint(md) {
+        margin-bottom: $padding-x6;
+      }
     }
   }
+
   &__filters {
+    .filter-list {
+      &__label {
+        @extend %caption2;
+        text-align: left;
+        margin-bottom: $padding-x2;
+
+        @include min-breakpoint(sm) {
+          text-align: right;
+        }
+      }
+
+      &__content {
+        display: flex;
+        flex-direction: column;
+        gap: $padding-x4;
+        justify-content: flex-end;
+
+        @include min-breakpoint(sm) {
+          flex-direction: row;
+        }
+        @include min-breakpoint(lg) {
+          gap: $padding-x6;
+        }
+      }
+
+      &__item {
+        @include min-breakpoint(md) {
+          display: flex;
+          align-items: center;
+        }
+      }
+    }
+
     &--mobile {
       @include media-query((
         display: (md: none)
       ));
+
       &__result {
         cursor: pointer;
+
         i {
           color: map_get($gray, '7');
         }
+
         a {
           font: 15px/19px $fedra-demi;
           color: rgba(map_get($shades, 'black'), 0.5);
@@ -264,16 +323,19 @@
           border-bottom: 1px dashed rgba(map_get($shades, 'black'), 0.5);
         }
       }
+
       &__form {
         width: 100%;
         padding: 24px;
         background-color: map_get($shades, 'white');
         border-radius: 12px;
+
         &__input,
         &__switch {
           width: 100%;
           max-width: 70%;
         }
+
         &__input {
           .er-input__append-inner {
             svg {
@@ -281,34 +343,45 @@
             }
           }
         }
+
         &__switch {
           max-width: 100%;
           @include media-query((
-                  max-width: (sm: 70%)
+            max-width: (sm: 70%)
           ))
         }
+
         &__close {
           color: rgba(map_get($shades, 'black'), 0.5);
           cursor: pointer;
+
           svg {
             width: 16px !important;
           }
         }
       }
     }
+
     &--desktop {
       display: none;
-      @include media-query((
-        display: (md: flex)
-      ));
-      &__input,
-      &__toggle {
+      @include min-breakpoint(md) {
+        display: flex;
+        gap: $padding-x2;
+      }
+
+      &__input {
         width: 100%;
         max-width: 288px;
+
+        @include min-breakpoint(md) {
+          width: 25%;
+        }
       }
+
       &__input {
         .er-input__append-inner {
           cursor: pointer;
+
           svg {
             width: 16px;
           }
@@ -316,6 +389,7 @@
       }
     }
   }
+
   &__products {
     &__loading,
     &__empty {
@@ -327,7 +401,7 @@
       overflow: hidden;
       margin-top: 4px;
       box-shadow: 0 2px 12px rgba(map_get($shades, 'black'), 0.1),
-                  0 2px 2px rgba(map_get($shades, 'black'), 0.05);
+      0 2px 2px rgba(map_get($shades, 'black'), 0.05);
       position: relative;
       z-index: 1;
       @include min-breakpoint('sm') {
@@ -339,6 +413,7 @@
       @include min-breakpoint('xl') {
         height: 117px;
       }
+
       .content {
         width: 100%;
         height: 100%;
@@ -350,11 +425,13 @@
         padding-left: 44px;
       }
     }
+
     &__empty {
       .content {
         padding-left: 32px;
         @extend %caption2;
         @include color-black(0.5);
+
         i {
           @include color-black(0.2);
           margin-right: 8px;

@@ -1,0 +1,18 @@
+.er-bundle-info
+  .er-bundle-info__icon(v-if="showIcon")
+    er-icon(name="pack")
+
+  .er-bundle-info__head
+    .er-bundle-info__label Пакет услуг
+
+    .er-bundle-info__body
+      .er-bundle-info__title {{ name }}
+
+      .er-bundle-info__members(v-if="showMembers")
+        router-link.bundle-member(
+          v-for="product in members"
+          :to="getLinkToProductPage(product.serviceName)"
+        ) {{ product.serviceName }}
+
+    .er-bundle-info__info.mt-4(v-if="showInfo")
+      .caption2 Отключение или изменение услуг в пакете прекращают его действие

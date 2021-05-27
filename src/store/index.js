@@ -37,6 +37,7 @@ import catalog from './modules/catalog'
 import tokens from './modules/tokens'
 import oats from './modules/oats'
 import ipTransit from './modules/ip-transit'
+import bundles from './modules/bundles'
 import branch from './modules/branch'
 
 const debug = process.env.NODE_ENV !== 'production'
@@ -79,7 +80,8 @@ export default new Vuex.Store({
     tokens,
     oats,
     ipTransit,
-    branch
+    branch,
+    bundles
   },
   strict: debug,
   plugins: [createPersistedState({

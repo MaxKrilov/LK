@@ -1,0 +1,18 @@
+.service-list
+  service-folder.mb-4(
+    v-for="product in list"
+    :key="product.code"
+    :title="product.name"
+    :price="product.price.toString()"
+    :icon-name="getIcon(product.code)"
+    @open="onLoadService(product.code)"
+  )
+    template(v-slot:default="slotScope")
+      template(v-if="slotScope.value")
+        template(v-if="isItemLoaded(product.code)")
+          service-item(
+            :name="product.name"
+            :list="dataRecord[product.code]"
+          )
+        template(v-else)
+          img(:src="require('@/assets/images/preloaders/2.svg')")

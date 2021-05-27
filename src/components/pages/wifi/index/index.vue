@@ -100,6 +100,13 @@
         template
           | {{ point.fulladdress }}
         template(slot="slider-content")
+          template(v-if="point.bundle")
+            er-bundle-info(
+              :name="point.bundle.name"
+              :id="point.bundle.id"
+              :show-info="false"
+            )
+
           .wifi-index-page__points__head.d--flex.mb-40
             .item.d--flex.mr-40
               .icon.mr-16

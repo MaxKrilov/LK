@@ -1,3 +1,7 @@
+%debug-border {
+  outline: 1px dashed crimson;
+}
+
 %h1-font {
   font: 26px/32px $fedra-demi;
   letter-spacing: -1px;
@@ -194,6 +198,28 @@
 
   &:active {
     color: map_get($yellow, 'base');
+  }
+}
+
+%big-blue-link {
+  @extend %h4;
+  color: map-get($blue, 'base');
+  text-decoration: none;
+  transition: all $primary-transition;
+
+  &:hover {
+    border-bottom: 1px solid;
+
+    &::after {
+      margin-left: $padding-x3;
+    }
+  }
+
+  &::after {
+    content: '→';
+    display: inline-block;
+    margin-left: $padding-x2;
+    transition: all $primary-transition;
   }
 }
 

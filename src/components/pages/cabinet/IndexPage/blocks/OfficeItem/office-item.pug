@@ -1,0 +1,28 @@
+.office-item
+  .office-item__body
+      .office-service(v-for="(service, index) in list" :key="index")
+        .office-service__header
+          .office-service__title-wrap
+            .office-service__icon
+              er-icon(:name="getIconNameByCode(service.offeringCategory.code)")
+            .office-service__title {{ service.offeringCategory.name }}
+
+          .office-service__bundle
+            template(v-if="service.bundle")
+              er-bundle-info(
+                :name="service.bundle.name"
+                :id="service.bundle.id"
+                :show-icon="false"
+                :show-members="false"
+                :show-info="true"
+              )
+
+        .office-service__footer
+          .office-service__tariff
+            .caption2.mb-4 Тариф  {{ service.offeringCategory.name }}
+            a.office-service__tariff-name(:href="getServiceLink(service.offeringCategory.name)") {{ service.offer.name }}
+
+          .office-service__price
+            .caption2 Абонентская плата
+            .discount
+              er-price(:sum="service.amount.value")

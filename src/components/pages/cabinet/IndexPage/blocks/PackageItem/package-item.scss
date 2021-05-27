@@ -1,0 +1,118 @@
+
+.package {
+  @extend %rounded-block;
+
+  &__content {
+    @include min-breakpoint(lg) {
+      display: flex;
+
+      gap: $padding-x10;
+    }
+
+    @include min-breakpoint(xl) {
+      gap: $padding-x8;
+    }
+  }
+
+  &__description {
+    @extend %caption2;
+
+    @include min-breakpoint(md) {
+      display: none;
+    }
+  }
+
+  &__address-list {
+    display: flex;
+    flex-direction: column;
+    gap: $padding-x2;
+    padding: $padding-x4 0;
+
+    @include min-breakpoint(md) {
+      gap: $padding-x4;
+    }
+
+    @include min-breakpoint(lg) {
+      width: 33%;
+    }
+  }
+
+  &__service-list {
+    flex-grow: 1;
+  }
+
+  .package-address {
+    display: flex;
+    align-items: center;
+    gap: $padding-x2;
+
+    &__address {
+      @extend %h4;
+    }
+
+    .er-icon {
+      @include color-black(.2);
+
+      svg {
+        width: $padding-x6;
+        height: $padding-x6;
+
+        @include min-breakpoint(md) {
+          width: $padding-x8;
+          height: $padding-x8;
+        }
+      }
+    }
+  }
+
+  .package-service {
+    display: flex;
+    justify-content: space-between;
+    border-top: 1px solid transparentize(map-get($gray, '33'), 0.6);
+    padding: $padding-x4 0;
+
+    &:first-child {
+      @include min-breakpoint(lg) {
+        border-top-color: map-get($shades, 'transparent');
+      }
+    }
+
+    &__title {
+      @extend %caption2;
+    }
+
+    &__tariff {
+      @extend %big-blue-link;
+      margin-top: $padding-x2;
+      display: block;
+    }
+
+    &__price {
+      text-align: right;
+      .er-price {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+
+        &__sum {
+          @extend %h2;
+        }
+      }
+    }
+
+    .discount {
+      display: flex;
+      gap: $padding-x2;
+      align-items: flex-start;
+      justify-content: flex-end;
+
+      .discount__value {
+        white-space: nowrap;
+        margin-top: $padding-x2;
+        text-decoration: line-through;
+        @extend %body;
+        @include color-black(.5);
+      }
+    }
+  }
+}

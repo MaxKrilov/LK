@@ -1,0 +1,149 @@
+.service-item {
+
+}
+
+.service-address {
+  $icon-width-xs: $padding-x6;
+  $head-h-gap-xs: $padding-x1;
+
+  padding-bottom: $padding-x6;
+  display: flex;
+  flex-direction: column;
+  gap: $padding-x2;
+
+  @include min-breakpoint(md) {
+    padding-top: $padding-x4;
+    padding-bottom: $padding-x8;
+  }
+
+  @include min-breakpoint(lg) {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: $padding-x10;
+  }
+
+  & + & {
+    padding-top: $padding-x6;
+    @include color-black(.3);
+    border-top: 1px solid;
+
+    @include min-breakpoint(md) {
+      padding-top: $padding-x8;
+    }
+  }
+
+  &:last-child {
+    padding-bottom: $padding-x4;
+
+    @include min-breakpoint(lg) {
+      padding-bottom: $padding-x6;
+    }
+  }
+
+  &__header {
+    display: flex;
+    flex-direction: column;
+    gap: $padding-x4 $head-h-gap-xs;
+
+    @include min-breakpoint(sm) {
+      flex-direction: row;
+      gap: $padding-x6;
+      align-items: flex-start;
+
+      > * {
+        flex-grow: 1;
+        flex-basis: 50%;
+      }
+    }
+
+    @include min-breakpoint(lg) {
+      flex-direction: column;
+      flex-basis: 30%;
+    }
+
+    .er-bundle-info {
+      margin-bottom: 0;
+
+      &__body {
+        flex-direction: column;
+        gap: $padding-x1;
+      }
+    }
+  }
+
+  &__icon {
+    .er-icon {
+      @include color-black(.2);
+
+      svg {
+        width: $icon-width-xs;
+        height: $icon-width-xs;
+
+        @include min-breakpoint(md) {
+          width: $padding-x8;
+          height: $padding-x8;
+        }
+      }
+    }
+  }
+
+  &__tariff-price-wrap {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: $padding-x2;
+  }
+
+  &__title-wrap {
+    @extend %h4;
+
+    display: flex;
+    align-items: center;
+    gap: $padding-x2;
+  }
+
+  &__bundle {
+
+    .er-bundle-info__info {
+    }
+
+    .er-bundle-info__body {
+      flex-direction: column;
+      gap: $padding-x1;
+    }
+
+  }
+
+  &__footer {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    gap: $padding-x2;
+
+    @include min-breakpoint(sm) {
+      padding-left: 0;
+    }
+
+    @include min-breakpoint(lg) {
+      flex-grow: 1;
+    }
+  }
+
+  &__tariff-name {
+    @extend %big-blue-link;
+  }
+
+  &__price {
+    text-align: right;
+    .er-price {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+
+      &__sum {
+        @extend %h2;
+      }
+    }
+  }
+}

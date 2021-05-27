@@ -1,28 +1,44 @@
-import { mapState, mapGetters } from 'vuex'
-import { leadingZero, price } from '../../../../functions/filters'
-import ProductItemComponent from './blocks/ProductItemComponent/index.vue'
-import ErDocumentViewer from '../../../blocks/ErDocumentViewer/index.vue'
-import ErToastStack from '@/components/blocks/ErToastStack/index'
+import { mapActions, mapGetters, mapState } from 'vuex'
+import { leadingZero } from '@/functions/filters'
 import { dataLayerPush } from '@/functions/helper'
+import { parseDecimal } from '@/functions/helper2'
+import MESSAGES from '@/constants/messages.ts'
+import { TYPES as BUNDLE_TYPES } from '@/store/actions/bundles'
+import BillingAccountMixin from '@/mixins/BillingAccountMixin.ts'
+
+import ErToastStack from '@/components/blocks/ErToastStack/index'
+import ErDocumentViewer from '../../../blocks/ErDocumentViewer/index.vue'
 import ErActivationModal from '../../../blocks/ErActivationModal/index'
+import PackageItem from './blocks/PackageItem/index.vue'
+import ServiceFolder from './blocks/ServiceFolder/index.vue'
+import ServiceList from './blocks/ServiceList/index.vue'
+import OfficeList from './blocks/OfficeList/index.vue'
 
 const IS_ENABLED_AUTOPAY = '9149184122213604836'
 
 export default {
   name: 'index-page',
+  mixins: [ BillingAccountMixin ],
   components: {
-    ProductItemComponent,
+    PackageItem,
+    ServiceList,
+    OfficeList,
+    ServiceFolder,
     ErDocumentViewer,
     ErToastStack,
     ErActivationModal
   },
   data: () => ({
+    MESSAGES,
     pre: 'index-page',
     isOpenFilter: false,
+    isLoadedPackList: false,
+    isPointFiltrationRalized: false, // готова ли фильтрация по точкам?
     modelSortService: 'service',
     modelFilterService: '',
     dataFilterSwitch: [
       { label: 'По офисам', value: 'office' },
+      { label: 'По пакетам', value: 'packs' },
       { label: 'По услугам', value: 'service' }
     ],
     tmpActive: false,
@@ -32,20 +48,48 @@ export default {
     isNotAccessInvPayment: false
   }),
   computed: {
+    currentFilterLabel () {
+      return this.dataFilterSwitch?.find(el => el.value === this.modelSortService)?.label || 'без фильтрации'
+    },
     getCarouselItem () {
       // todo Переделать после реализации админ-панели
-      return ['slide_1', 'slide_2'].map(item => this.$createElement('div', {
+      return [ 'slide_1', 'slide_2' ].map(item => this.$createElement('div', {
         staticClass: `${this.pre}__carousel__item`
       }, [
         this.$createElement('picture', [
-          this.$createElement('source', { attrs: { srcset: require(`@/assets/images/carousel/${item}/1200.png`), media: '(min-width: 1200px)' } }),
-          this.$createElement('source', { attrs: { srcset: require(`@/assets/images/carousel/${item}/960.png`), media: '(min-width: 960px)' } }),
-          this.$createElement('source', { attrs: { srcset: require(`@/assets/images/carousel/${item}/640.png`), media: '(min-width: 640px)' } }),
-          this.$createElement('source', { attrs: { srcset: require(`@/assets/images/carousel/${item}/480.png`), media: '(min-width: 480px)' } }),
-          this.$createElement('source', { attrs: { srcset: require(`@/assets/images/carousel/${item}/320.png`), media: '(min-width: 0)' } }),
+          this.$createElement('source', {
+            attrs: {
+              srcset: require(`@/assets/images/carousel/${item}/1200.png`),
+              media: '(min-width: 1200px)'
+            }
+          }),
+          this.$createElement('source', {
+            attrs: {
+              srcset: require(`@/assets/images/carousel/${item}/960.png`),
+              media: '(min-width: 960px)'
+            }
+          }),
+          this.$createElement('source', {
+            attrs: {
+              srcset: require(`@/assets/images/carousel/${item}/640.png`),
+              media: '(min-width: 640px)'
+            }
+          }),
+          this.$createElement('source', {
+            attrs: {
+              srcset: require(`@/assets/images/carousel/${item}/480.png`),
+              media: '(min-width: 480px)'
+            }
+          }),
+          this.$createElement('source', {
+            attrs: {
+              srcset: require(`@/assets/images/carousel/${item}/320.png`),
+              media: '(min-width: 0)'
+            }
+          }),
           this.$createElement('img', { attrs: { src: require(`@/assets/images/carousel/${item}/1200.png`) } })
         ]),
-        this.$createElement('er-button', ['Начать чат'])
+        this.$createElement('er-button', [ 'Начать чат' ])
       ]))
     },
     ...mapState({
@@ -54,7 +98,8 @@ export default {
       isPromisePay: state => state.payments.isHasPromisePayment,
       promisePayStart: state => state.payments.promisePayStart,
       promisePayEnd: state => state.payments.promisePayEnd,
-      billingInfo: state => state.payments.billingInfo
+      billingInfo: state => state.payments.billingInfo,
+      activeBundleList: state => state.bundles.activeBundleList
     }),
     ...mapGetters({
       listProductByAddress: 'user/getListProductByAddress',
@@ -67,7 +112,8 @@ export default {
       loadingPromisedPayment: 'loading/loadingPromisedPayment',
       loadingInvoiceForPayment: 'loading/loadingInvoiceForPayment',
       getCountRequestInWork: 'request/getCountRequestInWork',
-      getCountUnsignedDocument: 'fileinfo/getCountUnsignedDocument'
+      getCountUnsignedDocument: 'fileinfo/getCountUnsignedDocument',
+      activeBundleGroupList: 'bundles/activeBundleGroupList'
     }),
 
     isEmptyListProduct () {
@@ -106,11 +152,29 @@ export default {
         : 0
     }
   },
-  filters: {
-    sortBy: val => val === 'service' ? 'По услугам' : 'По офисам',
-    price
-  },
   methods: {
+    ...mapActions({
+      pullActiveBundles: `bundles/${BUNDLE_TYPES.PULL_ACTIVE_BUNDLES}`
+    }),
+    packGroupPrice (acc, el) {
+      let price = parseDecimal(el.amount.value)
+
+      if (Object.keys(el).includes('bundleDiscount')) {
+        price -= parseDecimal(el.amount.bundleDiscount)
+      }
+
+      return acc + price
+    },
+    onChangeBillingAccountId () {
+      this.fetchPackList()
+    },
+    fetchPackList () {
+      this.isLoadedPackList = false
+      this.pullActiveBundles()
+        .then(() => {
+          this.isLoadedPackList = true
+        })
+    },
     openFilterForm () {
       this.isOpenFilter = true
     },
@@ -146,6 +210,11 @@ export default {
         this.isNotAccessInvPayment = true
       } else if (val && this.invPaymentsForViewer[0].filePath === '') {
         this.$store.dispatch(`payments/getInvoicePayment`)
+      }
+    },
+    activeBundleList (value) {
+      if (!value.length) {
+        this.dataFilterSwitch = this.dataFilterSwitch.filter(el => el.value !== 'packs')
       }
     },
     isPromisePay (val) {

@@ -1,5 +1,13 @@
 <template lang="pug">
-  div.internet-index-page.main-content.main-content--padding
+  div.internet-index-page.main-content.main-content--h-padding
+    template(v-if="bundle")
+      er-bundle-info(
+        :name="bundle.name"
+        :id="bundle.id"
+        :showInfo="false"
+        :showIcon="true"
+      )
+
     tariff-component.mb-48(
       :customer-product="customerProduct"
       :is-loading-customer-product="isLoadingCustomerProduct"
@@ -8,7 +16,8 @@
       :fullAddress="fullAddress"
       :marketId="marketId"
       @update="updateData"
-      )
+    )
+
     services-component(:customer-product="customerProduct" :is-loading-customer-product="isLoadingCustomerProduct")
     price-services-component(:customer-product="customerProduct" :is-loading-customer-product="isLoadingCustomerProduct")
     .internet-index-page__footer

@@ -7,6 +7,7 @@ import { IAddressUnit, ICustomerProduct, ILocationOfferInfo } from '@/tbapi'
 import moment from 'moment'
 import { SERVICE_URLS } from '@/constants/url'
 import { WIFIANALYTICS, WIFIKONTFIL, SERVICES_AUTH, WIFIDESIGNOPT } from '@/components/pages/wifi/index/constants'
+import ErBundleInfo from '@/components/blocks/ErBundleInfo/index.vue'
 
 const MAP_URL = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
 
@@ -34,6 +35,7 @@ const deg2rad = (deg: number) => deg * Math.PI / 180
     LTileLayer,
     LMarker,
     LPopup,
+    ErBundleInfo,
     ServicesComponent
   },
   watch: {

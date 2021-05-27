@@ -1,0 +1,28 @@
+.service-folder(v-class-mod="{'is-open': value}")
+  .border-gradient
+    .service-folder__head
+      .service-folder__icon
+        er-icon(:name="iconName")
+
+      .folder-head
+        .folder-head__title
+          | {{ title }}
+
+          .folder-head__toggler
+            er-corner-button(v-model="value")
+              template(v-if="value") Свернуть
+              template(v-else) Подробно
+
+        .folder-head__description {{ description }}
+
+        .folder-head__price
+          .caption2 Абонентская плата
+          er-price(:sum="price")
+
+      .service-folder__xs-toggler.hidden-sm
+        er-corner-button(v-model="value")
+
+  .service-folder__body
+    er-slide-up-down(:active="value")
+      .service-folder__content
+        slot(v-bind:value="value")
