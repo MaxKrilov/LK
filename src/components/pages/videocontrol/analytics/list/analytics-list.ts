@@ -3,7 +3,7 @@ import AddonCard from '../components/AddonCard/index.vue'
 import { promisedStoreValue } from '@/functions/store_utils'
 import { IOffer, IVideocontrol } from '@/interfaces/videocontrol'
 import { ANALYTIC_NAME } from '@/constants/videocontrol'
-import { isVisibleAnalytic } from '@/functions/videocontrol'
+import { isVisibleAnalytic } from '@/functions/videocontroll'
 
 const components = {
   AddonCard

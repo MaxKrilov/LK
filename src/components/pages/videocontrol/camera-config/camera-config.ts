@@ -30,6 +30,7 @@ import { VueTransitionFSM } from '@/mixins/FSMMixin'
 import { ErtPageWithDialogsMixin } from '@/mixins2/ErtPageWithDialogsMixin'
 import { ErtFetchAvailableFundsMixin } from '@/mixins2/ErtFetchAvailableFundsMixin'
 import { isMonthlyFeePrice } from '@/functions/offers'
+import { isVisibleAnalytic } from '@/functions/videocontroll'
 
 /* FUNCTIONS */
 const isFullHD = (el: IOffer) => el.code === CODES.FULLHD
@@ -301,7 +302,7 @@ export default class VCCameraConfigPage extends Mixins(
   }
 
   get availableAnalyticsList () {
-    return this.availableAnalyticListByBFOId(this.bf?.offer?.id) || []
+    return this.availableAnalyticListByBFOId(this.bf?.offer?.id)?.filter(isVisibleAnalytic) || []
   }
 
   // Поворотный модуль
