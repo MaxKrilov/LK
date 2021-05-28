@@ -9,8 +9,8 @@ export default {
     return {
       NEWS_LINK: 'https://b2b.domru.ru/news',
       MANAGER_PHONE_NUMBER: {
-        title: '8 800 333 7000',
-        number: '78003337000'
+        title: '8 800 222 94 13',
+        number: '78002229413'
       },
       SERVICE_PHONE_NUMBER: {
         title: '8 800 333 9000',
