@@ -30,14 +30,14 @@
             button(@click="() => { openBlur(false) }")
               | Изменить
       .tariff-component__limit
-        .chart-loading(v-show="isLoadingCustomerProduct")
-        .chart(v-show="!isLoadingCustomerProduct")
-        template(v-if="isLoadingCustomerProduct")
+        .chart-loading(v-show="isLoadingBillingPacket")
+        .chart(v-show="!isLoadingBillingPacket")
+        template(v-if="isLoadingBillingPacket")
           PuSkeleton
         template(v-else)
           .title
             | Порог доступного трафика
-        template(v-if="isLoadingCustomerProduct")
+        template(v-if="isLoadingBillingPacket")
           PuSkeleton
         template(v-else)
       .tariff-component__turbo-activation

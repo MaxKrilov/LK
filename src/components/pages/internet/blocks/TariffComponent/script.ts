@@ -70,6 +70,11 @@ const arc = d3.arc()
     },
     isShowOfferDialog (val) {
       !val && this.isOffering && this.cancelSailOrder()
+    },
+    isLoadingCustomerProduct (val) {
+      if (val) {
+        this.isLoadingBillingPacket = true
+      }
     }
   },
   methods: {
@@ -124,6 +129,7 @@ export default class TariffComponent extends Vue {
   lazyPriceIncrease: number = 0
 
   isShowModalForChangeAuthType: boolean = false
+  isLoadingBillingPacket: boolean = true
 
   // Computed
   /**
@@ -349,6 +355,12 @@ export default class TariffComponent extends Vue {
       .then(response => {
         this.packetInfo = response
         this.generateLimitChart()
+      })
+      .catch(() => {
+        this.generateLimitChart()
+      })
+      .finally(() => {
+        this.isLoadingBillingPacket = false
       })
   }
 
