@@ -13,7 +13,8 @@ export default {
     },
     text: String,
     type: String,
-    params: {}
+    params: {},
+    taskId: String
   },
   computed: {
     iconName () {
