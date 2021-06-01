@@ -115,6 +115,12 @@ export default {
       }
 
       return newPayload
+    },
+    getLabel () {
+      const { communication_type: communicationType, task_id: taskId, label } = this.notification
+      return communicationType === '15' && taskId === '16'
+        ? 'Уведомление об индексации'
+        : label
     }
   },
   methods: {

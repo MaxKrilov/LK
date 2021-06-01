@@ -7,7 +7,9 @@
   .toast__content
     .toast__title {{ title }}
     .toast__text
-      template(v-if="isCustomCampaignMessage")
+      template(v-if="type === '15' && taskId === '16'")
+        | Уведомление об индексации
+      template(v-else-if="this.$props.type === '15'")
         | Уведомление о смене платежных реквизитов для договора
         span &nbsp;{{ offerNumber }}!
 

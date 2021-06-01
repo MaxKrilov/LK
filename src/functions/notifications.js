@@ -5,11 +5,13 @@ import {
   T_SURVEY,
   T_SURVEY_RECEPTION,
   T_CAMPAIGN_CUSTOM_MESSAGE,
+  T_CAMPAIGN_CUSTOM_MESSAGE_1,
   T_SURVEY_TICKET,
   TYPES
 } from '@/constants/campaign.ts'
 import moment from 'moment'
 import { strToTimestampInMs } from '@/functions/date'
+import { T_CAMPAIGN_CUSTOM_MESSAGE_TYPE } from '../constants/campaign'
 
 function getNotificationType (communicationType) {
   return TYPES[communicationType]
@@ -45,7 +47,7 @@ function isCampaignMessage (communicationType) {
 
 function isCampaignCustomMessage (communicationType) {
   const type = getNotificationType(communicationType)
-  return type === T_CAMPAIGN_CUSTOM_MESSAGE
+  return [T_CAMPAIGN_CUSTOM_MESSAGE, T_CAMPAIGN_CUSTOM_MESSAGE_1].includes(type)
 }
 
 function isExpiredNotification (notification) {
@@ -73,7 +75,7 @@ function campaignShitToNotification (campaign) {
     description: data.description
   }
 
-  if (isCampaignCustomMessage(campaign.data.communication_type)) {
+  if (campaign.data.communication_type === T_CAMPAIGN_CUSTOM_MESSAGE_TYPE) {
     const offerNumber = campaign.data?.['param_2'] || '%param_2%'
     newEl.label = `${notificationType.label}${offerNumber}`
   }
