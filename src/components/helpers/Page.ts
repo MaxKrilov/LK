@@ -16,7 +16,8 @@ export interface iPointItem {
   bpi: string | number,
   offerName: string,
   addressId: string,
-  marketId: string
+  marketId: string,
+  status: string
 }
 
 export function transformList (listPoint: ILocationOfferInfo[]): iPointItem[] {
@@ -27,7 +28,8 @@ export function transformList (listPoint: ILocationOfferInfo[]): iPointItem[] {
       bpi: listPointItem.bpi,
       offerName: listPointItem.offer.name,
       addressId: listPointItem.address.id.toString(),
-      marketId: listPointItem.marketId
+      marketId: listPointItem.marketId,
+      status: listPointItem.status
     }
   }), 'bpi')
 }
@@ -38,24 +40,29 @@ const DISPATCH_GET_CUSTOMER_PRODUCT = 'productnservices/customerProduct'
 @Component<InstanceType<typeof PageComponent>>({
   computed: {
     ...mapState({
-      isLoadingBillingAccount: (state: any) => state.loading.menuComponentBillingAccount
+      isLoadingBillingAccount: (state: any) => state.loading.menuComponentBillingAccount,
+      loadingBalance: (state: any) => state.loading.menuComponentBalance
     }),
     ...mapGetters({
       billingAccountId: 'payments/getActiveBillingAccount'
     })
   },
   watch: {
-    billingAccountId () {
-      this.init()
-    },
+    // billingAccountId () {
+    //   this.init()
+    // },
     activePoint (newVal, oldVal) {
       newVal && oldVal && this.getCustomerProduct()
+    },
+    loadingBalance (val) {
+      !val && this.init()
     }
   }
 })
 export default class PageComponent extends Vue {
   // Vuex
   readonly isLoadingBillingAccount!: boolean
+  readonly loadingBalance!: boolean
   readonly billingAccountId!: string
 
   // Data

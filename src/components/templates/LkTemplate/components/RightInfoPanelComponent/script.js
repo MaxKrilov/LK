@@ -1,6 +1,5 @@
 import { mapState, mapGetters } from 'vuex'
 import { formatPhone, price as priceFormatted } from '../../../../../functions/filters'
-import { SET_ACTIVE_BILLING_ACCOUNT, SET_ACTIVE_BILLING_ACCOUNT_NUMBER } from '../../../../../store/actions/user'
 import { Cookie } from '../../../../../functions/storage'
 
 const IS_ENABLED_AUTOPAY = '9149184122213604836'
@@ -45,15 +44,14 @@ export default {
     openPersonalAccountDetail () {
       this.isOpenPersonalAccountDetail = true
     },
-    selectPersonalAccount (billingAccountId, accountNumber) {
+    selectPersonalAccount (billingAccount) {
       this.isOpenPersonalAccountDetail = false
       // Устанавливаем загрузку для отслеживания
       this.$store.commit('loading/rebootBillingAccount', true)
-      this.$store.commit(`user/${SET_ACTIVE_BILLING_ACCOUNT}`, billingAccountId)
-      this.$store.commit(`user/${SET_ACTIVE_BILLING_ACCOUNT_NUMBER}`, accountNumber)
+      this.$store.commit('payments/setActiveBillingAccount', billingAccount)
       this.$nextTick(() => {
         this.$store.commit('loading/rebootBillingAccount', false)
-        Cookie.set('billingAccountId', billingAccountId, {})
+        Cookie.set('billingAccountId', billingAccount.billingAccountId)
       })
     },
     onChangeOrg () {

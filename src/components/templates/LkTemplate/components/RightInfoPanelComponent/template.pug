@@ -36,7 +36,7 @@ div(:class="[`${pre}`, { open: value }]")
             v-for="account in accounts"
             :key="account.billingAccountId"
             :class="{ 'active': activeBillingAccountId === account.billingAccountId }"
-            @click="() => { selectPersonalAccount(account.billingAccountId, account.accountNumber) }"
+            @click="() => { selectPersonalAccount(account) }"
           )
             div.caption.mb-4.cursor-default
               | Лицевой счёт

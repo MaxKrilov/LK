@@ -55,6 +55,7 @@ div(:class="`${pre}`")
         span.caption
           | Лицевой счёт
         er-menu(
+          v-model="isOpenBillingAccountMenu"
           offset-y,
           min-width="319",
           :close-on-content-click="false",
