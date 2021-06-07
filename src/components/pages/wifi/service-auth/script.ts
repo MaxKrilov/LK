@@ -172,6 +172,10 @@ export default class ErtWifiServiceAuth extends mixins(Page) implements iPageCom
     return this.currentSLOByCode?.status === ServiceStatus.STATUS_ACTIVE
   }
 
+  get isStopped () {
+    return this.activePoint?.status === ServiceStatus.STATUS_SUSPENDED
+  }
+
   /// Vuex Methods
   getAvailableFunds!: <T = Promise<IAvailableFunds>>() => T
 

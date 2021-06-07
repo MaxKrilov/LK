@@ -8,6 +8,7 @@ import moment from 'moment'
 import { SERVICE_URLS } from '@/constants/url'
 import { WIFIANALYTICS, WIFIKONTFIL, SERVICES_AUTH, WIFIDESIGNOPT } from '@/components/pages/wifi/index/constants'
 import ErBundleInfo from '@/components/blocks/ErBundleInfo/index.vue'
+import { STATUS_SUSPENDED } from '@/constants/status'
 
 const MAP_URL = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
 
@@ -244,6 +245,16 @@ export default class WifiIndexPage extends Vue {
     return (id: string) => this.tracker
       ? (this.countOfActiveAuthService(id)! > 0)
       : false
+  }
+
+  get getStatusSuspended () {
+    return STATUS_SUSPENDED
+  }
+
+  get isStopped () {
+    return (id: string) => {
+      return this.tracker && this.listCustomerProduct.get(id)?.tlo.status === STATUS_SUSPENDED
+    }
   }
 
   // Methods

@@ -23,9 +23,9 @@
           v-for="(addressUnit, index) in listAddressUnit"
           :lat-lng="latLng(addressUnit.latitude, addressUnit.longitude)"
           :icon="mapIcon"
-          @popupopen="() => { openPopup(addressUnit.id) }"
           :ref="`popup__${index}`"
           :key="addressUnit.id"
+          @popupopen="() => { openPopup(addressUnit.id) }"
         )
           l-popup(
             :options="mapPopupOptions"
@@ -44,109 +44,116 @@
                 @click="() => { openNextPopup(index) }"
               )
                 er-icon(name="corner_down")
-            .wifi-index-page__map-popup__title
-              template(v-if="!issetCustomerProduct(getBPIByAddressUnit(addressUnit.id))")
-                PuSkeleton
-              template(v-else)
-                | {{ institutionName(getBPIByAddressUnit(addressUnit.id)) }}
-            .wifi-index-page__map-popup__address.mb-32
-              | {{ addressUnit.formattedAddress }}
-            .wifi-index-page__map-popup__services
-              template(v-if="!issetCustomerProduct(getBPIByAddressUnit(addressUnit.id))")
-                PuSkeleton.mr-24(height="32px" width="32px")
-              template(v-else)
-                button.mr-24(
-                  :class="{ 'on': isOnContent(getBPIByAddressUnit(addressUnit.id)) }"
-                )
-                  er-icon(name="filter")
+            template(v-if="isStopped(getBPIByAddressUnit(addressUnit.id))")
+              er-button.wifi-index-page__restore-button(color="yellow"  @click="$router.push('/lk/support?form=restoring_a_contract_or_service')") Восстановить
+            template(v-else)
+              .wifi-index-page__map-popup__title
+                template(v-if="!issetCustomerProduct(getBPIByAddressUnit(addressUnit.id))")
+                  PuSkeleton
+                template(v-else)
+                  | {{ institutionName(getBPIByAddressUnit(addressUnit.id)) }}
+              .wifi-index-page__map-popup__address.mb-32
+                | {{ addressUnit.formattedAddress }}
+              .wifi-index-page__map-popup__services
+                template(v-if="!issetCustomerProduct(getBPIByAddressUnit(addressUnit.id))")
+                  PuSkeleton.mr-24(height="32px" width="32px")
+                template(v-else)
+                  button.mr-24(
+                    :class="{ 'on': isOnContent(getBPIByAddressUnit(addressUnit.id)) }"
+                  )
+                    er-icon(name="filter")
 
-              template(v-if="!issetCustomerProduct(getBPIByAddressUnit(addressUnit.id))")
-                PuSkeleton.mr-24(height="32px" width="32px")
-              template(v-else)
-                button.mr-24(
-                  :class="{ 'on': isOnAnalytic(getBPIByAddressUnit(addressUnit.id)) }"
-                  @click="$router.push({ name: 'analytics-visitors', params: { bpi: getBPIByAddressUnit(addressUnit.id) } })"
-                )
-                  er-icon(name="stat")
+                template(v-if="!issetCustomerProduct(getBPIByAddressUnit(addressUnit.id))")
+                  PuSkeleton.mr-24(height="32px" width="32px")
+                template(v-else)
+                  button.mr-24(
+                    :class="{ 'on': isOnAnalytic(getBPIByAddressUnit(addressUnit.id)) }"
+                    @click="$router.push({ name: 'analytics-visitors', params: { bpi: getBPIByAddressUnit(addressUnit.id) } })"
+                  )
+                    er-icon(name="stat")
 
-              template(v-if="!issetCustomerProduct(getBPIByAddressUnit(addressUnit.id))")
-                PuSkeleton.mr-24(height="32px" width="32px")
-              template(v-else)
-                button.mr-8(
-                  :class="{ 'on': isOnServiceAuth(getBPIByAddressUnit(addressUnit.id)) }"
-                  @click="$router.push({ name: 'wifi-services-auth', params: { bpi: getBPIByAddressUnit(addressUnit.id) } })"
-                )
-                  er-icon(name="settings")
-                .count.mr-24
-                  | {{ countOfActiveAuthService(getBPIByAddressUnit(addressUnit.id)) }}
-                  span /{{ countOfAuthService(getBPIByAddressUnit(addressUnit.id)) }}
+                template(v-if="!issetCustomerProduct(getBPIByAddressUnit(addressUnit.id))")
+                  PuSkeleton.mr-24(height="32px" width="32px")
+                template(v-else)
+                  button.mr-8(
+                    :class="{ 'on': isOnServiceAuth(getBPIByAddressUnit(addressUnit.id)) }"
+                    @click="$router.push({ name: 'wifi-services-auth', params: { bpi: getBPIByAddressUnit(addressUnit.id) } })"
+                  )
+                    er-icon(name="settings")
+                  .count.mr-24
+                    | {{ countOfActiveAuthService(getBPIByAddressUnit(addressUnit.id)) }}
+                    span /{{ countOfAuthService(getBPIByAddressUnit(addressUnit.id)) }}
 
-              template(v-if="!issetCustomerProduct(getBPIByAddressUnit(addressUnit.id))")
-                PuSkeleton.mr-8(height="32px" width="32px")
-              template(v-else)
-                button.mr-8(
-                  :class="{ 'on': isOnPersonalisation(getBPIByAddressUnit(addressUnit.id)) }"
-                  @click="$router.push({ name: 'wifi-personalization', params: { bpi: getBPIByAddressUnit(addressUnit.id) } })"
-                )
-                  er-icon(name="page_constructor")
+                template(v-if="!issetCustomerProduct(getBPIByAddressUnit(addressUnit.id))")
+                  PuSkeleton.mr-8(height="32px" width="32px")
+                template(v-else)
+                  button.mr-8(
+                    :class="{ 'on': isOnPersonalisation(getBPIByAddressUnit(addressUnit.id)) }"
+                    @click="$router.push({ name: 'wifi-personalization', params: { bpi: getBPIByAddressUnit(addressUnit.id) } })"
+                  )
+                    er-icon(name="page_constructor")
     .wifi-index-page__points
       er-card-products(
         v-for="point in listPoint"
         :key="point.bpi"
         :date="point.offer.name"
         :price="point.amount.value"
+        :stopped="point.status === getStatusSuspended"
         @open="() => getCustomerProductById(point.bpi, point.marketId)"
       )
         template
           | {{ point.fulladdress }}
         template(slot="slider-content")
-          template(v-if="point.bundle")
-            er-bundle-info(
-              :name="point.bundle.name"
-              :id="point.bundle.id"
-              :show-info="false"
-            )
+          template(v-if="point.status === getStatusSuspended")
+            er-button.wifi-index-page__restore-button(color="yellow"  @click="$router.push('/lk/support?form=restoring_a_contract_or_service')") Восстановить
+          template(v-else)
+            template(v-if="point.bundle")
+              er-bundle-info(
+                :name="point.bundle.name"
+                :id="point.bundle.id"
+                :show-info="false"
+              )
 
-          .wifi-index-page__points__head.d--flex.mb-40
-            .item.d--flex.mr-40
-              .icon.mr-16
-                er-icon(name="wifi")
-              .info
-                .caption.mb-8
-                  | Тариф
-                .title
-                  | {{ point.offer.name }}
-            .item.d--flex.mr-40
-              .icon.mr-16
-                er-icon(name="speedup")
-              .info
-                .caption.mb-8
-                  | Скорость
-                .title
-                  template(v-if="issetCustomerProduct(point.bpi)")
-                    | {{ getSpeed(point.bpi) }}&nbsp;
-                    span Мбит/с
-                  template(v-else)
-                    PuSkeleton
-            .item.d--flex.mr-40
-              .icon.mr-16
-                er-icon(name="time")
-              .info
-                .caption.mb-8
-                  | Активен с
-                .title
-                  template(v-if="issetCustomerProduct(point.bpi)")
-                    | {{ actualStartDate(point.bpi) }}
-                  template(v-else)
-                    PuSkeleton
-          services-component(
-            :isOnAnalitic="isOnAnalytic(point.bpi)"
-            :isOnContentFilter="isOnContent(point.bpi)"
-            :isLoadingCustomerProduct="!issetCustomerProduct(point.bpi)"
-            :isOnServiceAuth="isOnServiceAuth(point.bpi)"
-            :isOnPersonalisation="isOnPersonalisation(point.bpi)"
-            :bpi="point.bpi"
-          )
+            .wifi-index-page__points__head.d--flex.mb-40
+              .item.d--flex.mr-40
+                .icon.mr-16
+                  er-icon(name="wifi")
+                .info
+                  .caption.mb-8
+                    | Тариф
+                  .title
+                    | {{ point.offer.name }}
+              .item.d--flex.mr-40
+                .icon.mr-16
+                  er-icon(name="speedup")
+                .info
+                  .caption.mb-8
+                    | Скорость
+                  .title
+                    template(v-if="issetCustomerProduct(point.bpi)")
+                      | {{ getSpeed(point.bpi) }}&nbsp;
+                      span Мбит/с
+                    template(v-else)
+                      PuSkeleton
+              .item.d--flex.mr-40
+                .icon.mr-16
+                  er-icon(name="time")
+                .info
+                  .caption.mb-8
+                    | Активен с
+                  .title
+                    template(v-if="issetCustomerProduct(point.bpi)")
+                      | {{ actualStartDate(point.bpi) }}
+                    template(v-else)
+                      PuSkeleton
+            services-component(
+              :isOnAnalitic="isOnAnalytic(point.bpi)"
+              :isOnContentFilter="isOnContent(point.bpi)"
+              :isLoadingCustomerProduct="!issetCustomerProduct(point.bpi)"
+              :isOnServiceAuth="isOnServiceAuth(point.bpi)"
+              :isOnPersonalisation="isOnPersonalisation(point.bpi)"
+              :bpi="point.bpi"
+            )
         template(slot="date-title")
           | Тариф
 

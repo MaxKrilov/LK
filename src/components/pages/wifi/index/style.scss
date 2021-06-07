@@ -136,6 +136,10 @@
     @extend %action-buttons-block--3-cols;
   }
 
+  &__restore-button {
+    max-width: 208px;
+  }
+
   .er-bundle-info__body {
     display: flex;
     flex-direction: column;

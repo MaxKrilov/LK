@@ -9,6 +9,7 @@ import ChangeOrganizationPopup from '../ChangeOrganizationPopup/index'
 import { formatPhone, price } from '../../../../../functions/filters'
 import { Cookie } from '../../../../../functions/storage'
 import MenuItemList from './menu'
+import head from 'lodash/head'
 
 const IS_ENABLED_AUTOPAY = '9149184122213604836'
 
@@ -22,11 +23,12 @@ export default {
     return {
       pre: 'menu-component',
       openLeftMenu: false,
-      openSubMenuBackground: false,
+      openSubMenuBackground: true,
       isOpenRightPanel: false,
       showChangeOrganizationPopup: false,
       notificationCount: 0,
-      menu: MenuItemList(this.listProductByService || [])
+      menu: MenuItemList(this.listProductByService || []),
+      isOpenBillingAccountMenu: false
     }
   },
   filters: {
@@ -41,6 +43,15 @@ export default {
     },
     listProductByService (val) {
       this.menu = MenuItemList(val || [])
+    },
+    isDesktop (val) {
+      if (val) {
+        this.openSubMenuBackground = true
+        const firstMenuItem = head(this.menu)
+        if (firstMenuItem && !firstMenuItem.isOpen) {
+          this.openSubMenu(firstMenuItem, null)
+        }
+      }
     }
   },
   computed: {
@@ -91,7 +102,7 @@ export default {
       if (!this.openSubMenuBackground) {
         this.openSubMenuBackground = true
       }
-      if (!event.target.closest('.menu-component__left__body-item__sub-items')) {
+      if (event && !event.target.closest('.menu-component__left__body-item__sub-items')) {
         this.$router.push(menuItem.url)
       }
       menuItem.isOpen = true
@@ -118,6 +129,8 @@ export default {
       this.$nextTick(() => {
         this.$store.commit('loading/rebootBillingAccount', false)
         Cookie.set('billingAccountId', billingAccount.billingAccountId)
+
+        this.isOpenBillingAccountMenu = false
       })
     },
     getBellClass () {

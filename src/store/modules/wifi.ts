@@ -26,7 +26,7 @@ const actions = {
     const INN = context.rootGetters['user/getINN']
     const dmpCustomerId = context.rootGetters['user/getDMPCustomerId']
 
-    const newPayload = {
+    const newPayload: Record<string, string> = {
       clientId,
       clientName: clientInfo?.legalName || clientInfo?.name,
       INN,
@@ -38,8 +38,7 @@ const actions = {
     }
 
     if (context.rootState.auth.isManager) {
-      // @ts-ignore
-      newPayload.email = context.rootState.auth.userInfo.email
+      newPayload.email = context.rootState.auth.userInfo.mail
     }
 
     return api()

@@ -16,6 +16,13 @@
       .ert-wifi-service-auth-page__loading(v-if="isLoadingCustomerProduct")
         ErtProgressCircular(indeterminate width="2")
         .title Загружаем сервисы авторизации
+      .ert-wifi-service-auth-page__restore(v-else-if="isStopped")
+        .ert-wifi-personalization-page__suspended.mb-24
+          | Услуга приостановлена! Восстановите услугу для дальнейшего использования
+        er-button.ert-wifi-personalization-page__restore-button(
+          color="yellow"
+          @click="$router.push('/lk/support?form=restoring_a_contract_or_service')"
+        ) Восстановить
       .ert-wifi-service-auth-page__list(v-else)
         ErtWifiServiceAuthItem.mb-4(
           v-for="serviceAuth in getListServiceAuth"

@@ -14,4 +14,8 @@
       @extend %h4-font;
     }
   }
+
+  &__restore-button {
+    max-width: 208px;
+  }
 }

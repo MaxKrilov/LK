@@ -25,7 +25,7 @@ import { IAvailableFunds, IWifiResourceInfo, WifiData } from '@/tbapi'
 import { HOST_WIFI_BACKEND, SLO_CODE, SLO_CODE_SOCIAL_NETWORK } from '@/components/pages/wifi/personalization/constants'
 import { IButtons } from './types'
 import { camelize } from '@/functions/helper2'
-import { ServiceStatus } from '@/constants/status'
+import { ServiceStatus, STATUS_SUSPENDED } from '@/constants/status'
 import { price as priceFormatted } from '@/functions/filters'
 
 const personalizationFutureList = require('./promo.json')
@@ -120,6 +120,7 @@ function defineSNParams (sn: string) {
             this.cityId = head(vlan)!.cityId
             this.vlan = head(vlan)!.number
           }
+          if (!this.cityId || !this.vlan) return
           this.getData({ vlan: this.vlan, cityId: this.cityId })
             .then(dataResponse => {
               this.wifiData = dataResponse
@@ -345,6 +346,13 @@ export default class WifiPersonalizationPage extends mixins(Page) implements iPa
       : false
   }
 
+  get isStoppedProduct () {
+    return this.customerProduct
+      ? this.customerProduct.slo
+        .find(sloItem => sloItem.code === SLO_CODE)!.status === ServiceStatus.STATUS_SUSPENDED
+      : false
+  }
+
   get isActiveSocialNetwork () {
     return this.customerProduct
       ? this.customerProduct.slo
@@ -380,6 +388,10 @@ export default class WifiPersonalizationPage extends mixins(Page) implements iPa
       title: 'Вы уверены, что хотите отключить услугу «Управление дизайном стартовой страницы»?',
       marketId: this.activePoint?.marketId
     }
+  }
+
+  get statusSuspended () {
+    return STATUS_SUSPENDED
   }
 
   // Methods

@@ -19,6 +19,13 @@
     template(v-else-if="isErrorLoad")
       .ert-wifi-personalization-page__error
         .title При загрузке возникла ошибка! Повторите запрос позднее
+    template(v-else-if="activePoint.status === statusSuspended || activePoint.status === isStoppedProduct")
+      .ert-wifi-personalization-page__suspended.mb-24
+        | Услуга приостановлена! Восстановите услугу для дальнейшего использования
+      er-button.ert-wifi-personalization-page__restore-button(
+        color="yellow"
+        @click="$router.push('/lk/support?form=restoring_a_contract_or_service')"
+      ) Восстановить
     template(v-else-if="!isActiveProduct")
       ErPromo(
         banner="personalization.png"
