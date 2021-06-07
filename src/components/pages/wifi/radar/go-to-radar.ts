@@ -40,7 +40,7 @@ export default class GoToRadar extends BillingInfoMixin {
     if (this.isDataNotEmpty) {
       this.$nextTick(() => {
         if (this.radarForm) {
-          // this.radarForm.submit()
+          this.radarForm.submit()
         }
       })
     }
