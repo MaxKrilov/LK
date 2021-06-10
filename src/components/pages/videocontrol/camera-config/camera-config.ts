@@ -775,10 +775,10 @@ export default class VCCameraConfigPage extends Mixins(
     const serviceName = this.getServiceNameByCode(this.currentVideoArchiveCode)
 
     const isDisabling = value === MESSAGES.DISABLE
-
     this.orderData = {
       locationId: this.location.id,
       bpi: this.bf.id,
+      marketId: this.camera.market.id,
       productCode: this.currentVideoArchiveCode,
       offer: isDisabling ? '' : 'cctv',
       title: isDisabling
