@@ -79,6 +79,9 @@ export interface ICamera {
   parentId: TBaseFunctionalityId
   locationId: string
   name: string
+  market: {
+    id: string
+  }
   chars: IOrderChar
   purchasedPrices: Record<string, any>
 
