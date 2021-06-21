@@ -2,9 +2,9 @@
   div.campaign-custom-message-14.notification-item__text
     template(v-if="getCommunicationType === '15' && getTaskId === '16'")
       p Уважаемый клиент!&nbsp;
-      | С {{ cleanParams['param_1'] }} изменится стоимость услуг(и) связи «{{ cleanParams['param_2'] }}».&nbsp;
-      | Стоимость увеличится на {{ cleanParams['param_3'] }}. Подробную информацию о действующих тарифах&nbsp;
-      | можно получить у Вашего персонального менеджера.
+      | С {{ cleanParams['param_1'] }} изменится стоимость услуги связи «{{ cleanParams['param_2'] }}». Стоимость&nbsp;
+      | (без учёта НДС) увеличится на {{ cleanParams['param_3'] }}.&nbsp; Подробную информацию о действующих тарифах&nbsp;
+      | можно получить у Вашего персонального менеджера
     template(v-else-if="getCommunicationType === '15'")
       p Уважаемый Клиент!
       |  Изменены банковские реквизиты для оплаты счетов за услуги связи АО&nbsp;«ЭР-Телеком Холдинг»
