@@ -117,9 +117,12 @@ Deploy on staging cc4:
     stage: staging_cc4
     variables:
         DOMAIN: newlkb2b.t4.ertelecom.ru
+        DOMAIN2: newlkb2b2.t4.ertelecom.ru
         NAMESPACE: staging
         tlsSecret: wildcard-t4
+        tlsSecret2: wildcard-t4
         COOKIE_DOMAIN: '.t4.ertelecom.ru'
+        COOKIE_DOMAIN2: '.t4.ertelecom.ru'
     <<: *k8s_deployment
     when: manual
     tags:
@@ -130,9 +133,12 @@ Deploy on cc1:
     stage: deploy_on_kuber_cc1
     variables:
         DOMAIN: newlkb2b.domru.ru
+        DOMAIN2: newlkb2b.dom.ru
         NAMESPACE: b2bweb-prod
         tlsSecret: wildcard-domru-ru
+        tlsSecret2: wildcard-dom-ru
         COOKIE_DOMAIN: '.domru.ru'
+        COOKIE_DOMAIN2: '.dom.ru'
     <<: *k8s_deployment
     when: manual
     tags:
@@ -142,9 +148,12 @@ Deploy on cc3:
     stage: deploy_on_kuber_cc3
     variables:
         DOMAIN: newlkb2b.domru.ru
+        DOMAIN2: newlkb2b.dom.ru
         NAMESPACE: b2bweb-prod
         tlsSecret: wildcard-domru-ru
+        tlsSecret2: wildcard-dom-ru
         COOKIE_DOMAIN: '.domru.ru'
+        COOKIE_DOMAIN2: '.dom.ru'
     <<: *k8s_deployment
     when: manual
     tags:
