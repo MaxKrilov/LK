@@ -8,6 +8,7 @@ import ErActivationModal from '@/components/blocks/ErActivationModal/index.vue'
 import { ICustomerProduct } from '@/tbapi'
 import { getFirstElement } from '@/functions/helper'
 import { SERVICE_ADDITIONAL_IP as SLO_CODE } from '@/constants/internet'
+import { logError } from '@/functions/logging'
 
 const TLO_CHAR = 'IPv4 адрес в составе услуги'
 const SLO_CHAR = 'IPv4 адрес'
@@ -82,6 +83,7 @@ export default class ReverceZonePage extends Vue {
   // Переменные-прелоадеры
   isLoadingIP = false
   isLoadingReverceZone = false
+  isLoadingAddReverceZone: boolean = false
 
   isErrorOfAddingReverceZone = false
   // Methods
@@ -102,21 +104,26 @@ export default class ReverceZonePage extends Vue {
     this.listReverceZone = this.listReverceZone.filter(_reverceZone => _reverceZone !== reverceZone)
   }
 
-  addReverceZone () {
+  async addReverceZone () {
     if (!(this.$refs.form as any).validate()) return
-    if (this.listReverceZone.length > 0) {
+
+    this.isLoadingAddReverceZone = true
+
+    try {
+      await this.$store.dispatch('internet/addReverceZone', this.model)
+
+      if (this.currentIP === this.model.ip) {
+        this.listReverceZone.push(this.model.domain)
+      }
+      this.isOpenAdding = false
+      this.model.ip = ''
+      this.model.domain = ''
+    } catch (e) {
+      logError(e)
       this.isErrorOfAddingReverceZone = true
-      return
+    } finally {
+      this.isLoadingAddReverceZone = false
     }
-    this.$store.dispatch('internet/addReverceZone', this.model)
-      .then(() => {
-        if (this.currentIP === this.model.ip) {
-          this.listReverceZone.push(this.model.domain)
-        }
-        this.isOpenAdding = false
-        this.model.ip = ''
-        this.model.domain = ''
-      })
   }
 
   getListIP () {

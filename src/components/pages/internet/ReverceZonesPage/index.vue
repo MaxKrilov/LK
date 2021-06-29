@@ -31,7 +31,7 @@
             @change="(newVal) => { listReverceZone[index] = newVal }"
             @delete="() => { deleteReverceZone(item) }"
           )
-    .reverce-zones-page__add.main-content.main-content--h-padding(v-if="listReverceZone.length === 0")
+    .reverce-zones-page__add.main-content.main-content--h-padding
       er-slide-up-down(:active="isOpenAdding")
         er-form(ref="form")
           er-row.mb-md-40
@@ -52,10 +52,10 @@
                 )
           .reverce-zones-page__actions.d--flex.flex-column.flex-sm-row
             .reverce-zones-page__action.mr-sm-16.mb-8.mb-sm-0
-              er-button(@click="addReverceZone")
+              er-button(@click="addReverceZone" :loading="isLoadingAddReverceZone")
                 | Добавить
             .reverce-zones-page__action
-              er-button(flat @click="() => { isOpenAdding = false }")
+              er-button(flat @click="() => { isOpenAdding = false }" :disabled="isLoadingAddReverceZone")
                 | Отмена
       er-slide-up-down(:active="!isOpenAdding")
         .reverce-zones-page__add-button
@@ -71,7 +71,8 @@
       @confirm="() => { isErrorOfAddingReverceZone = false }"
     )
       template(slot="description")
-        | Вы можете добавить только одну обратную зону на IP
+        | Произошла ошибка при добавлении обратной зоны.&nbsp;
+        | Повторите попытку позже или обратитесь к Вашему персональному менеджеру
 </template>
 
 <script lang="ts" src="./script.ts"></script>
