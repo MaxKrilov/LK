@@ -91,9 +91,9 @@ const transformHistory = ([history, bill]: [IPaymentHistory[], IPaymentBill[]]) 
       }
     })
 
-    if (index > -1) {
+    if (index > -1 && resultArray.length > 0) {
       result[index].push(...resultArray)
-    } else {
+    } else if (resultArray.length > 0) {
       result.push(resultArray)
     }
   })
