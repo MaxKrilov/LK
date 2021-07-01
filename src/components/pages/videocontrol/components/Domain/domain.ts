@@ -298,7 +298,8 @@ export default class VCDomain extends Mixins(VueTransitionFSM, ErtFetchAvailable
         const payload = {
           locationId: this.locationId,
           productId: this.userCountProductId,
-          disconnectDate: this.$moment().format()
+          disconnectDate: this.$moment().format(),
+          marketId: this.marketId
         }
 
         this.$store.dispatch('salesOrder/createDisconnectOrder', payload)
@@ -324,7 +325,8 @@ export default class VCDomain extends Mixins(VueTransitionFSM, ErtFetchAvailable
               chars: {
                 [CHARS.USER_COUNT]: this.domainUserCount,
                 ...INVOICE_USERS
-              }
+              },
+              marketId: this.marketId
             }
             this.$store.dispatch('salesOrder/createModifyOrder', payload)
               .catch(() => {
