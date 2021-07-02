@@ -416,7 +416,7 @@ export default class VCDomain extends Mixins(VueTransitionFSM, ErtFetchAvailable
 
   onAddUser () {
     this.orderData = {
-      locationId: this.locationId,
+      locationId: this.locationId || this.$props.domain.locationId,
       bpi: this.$props.domain.id,
       productCode: CODES.USERS,
       chars: {
