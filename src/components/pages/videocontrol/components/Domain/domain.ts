@@ -14,7 +14,7 @@ import {
   VC_TYPES
 } from '@/constants/videocontrol'
 import { IVideocontrol, IOffer, IDomainService, ICamera, ICameraRegistry } from '@/interfaces/videocontrol'
-import { logInfo } from '@/functions/logging'
+import { logError, logInfo } from '@/functions/logging'
 import { OFFER_LINKS } from '@/constants/url'
 import { VueTransitionFSM } from '@/mixins/FSMMixin'
 import { ILocationOfferInfo } from '@/tbapi'
@@ -168,7 +168,7 @@ export default class VCDomain extends Mixins(VueTransitionFSM, ErtFetchAvailable
   }
 
   get locationId (): string {
-    return this.videocontrolList[0].locationId
+    return this.videocontrolList[0]?.locationId
   }
 
   get isUserCountChanged (): boolean {
@@ -296,7 +296,7 @@ export default class VCDomain extends Mixins(VueTransitionFSM, ErtFetchAvailable
 
       if (this.domainUserCount === MIN_USER_COUNT) { // Отключение услуги
         const payload = {
-          locationId: this.locationId,
+          locationId: this.locationId || this.$props.domain.locationId,
           productId: this.userCountProductId,
           disconnectDate: this.$moment().format(),
           marketId: this.marketId
@@ -320,8 +320,8 @@ export default class VCDomain extends Mixins(VueTransitionFSM, ErtFetchAvailable
         this.checkFunds(parseInt(this.computedUserPrice))
           .then(() => {
             const payload = {
-              locationId: this.videocontrolList[0].locationId,
-              bpi: this.userCountProductOfferId,
+              locationId: this.videocontrolList[0]?.locationId || this.$props.domain.locationId,
+              bpi: this.userCountProductId,
               chars: {
                 [CHARS.USER_COUNT]: this.domainUserCount,
                 ...INVOICE_USERS
@@ -329,7 +329,8 @@ export default class VCDomain extends Mixins(VueTransitionFSM, ErtFetchAvailable
               marketId: this.marketId
             }
             this.$store.dispatch('salesOrder/createModifyOrder', payload)
-              .catch(() => {
+              .catch((e) => {
+                logError(e)
                 this.showError(MESSAGES.ORDER_ERROR)
                 this.isUserOrderMode = false
                 throw new Error('при заказе произошла ошибка')
