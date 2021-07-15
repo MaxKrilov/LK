@@ -76,8 +76,8 @@ export default class PaymentHistoryPage extends Vue {
 
   get datePickerModel () {
     return [
-      new Date(head(this.period)!.format('YYYY-MM-DD')),
-      new Date(last(this.period)!.format('YYYY-MM-DD'))
+      new Date(head(this.period)!.format('YYYY-MM-DD 00:00:00')),
+      new Date(last(this.period)!.format('YYYY-MM-DD 23:59:59'))
     ]
     // return this.period.length === 1
     //   ? [new Date(head(this.period)!.format('YYYY-MM-DD'))]
