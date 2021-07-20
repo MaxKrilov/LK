@@ -2,6 +2,7 @@ import { API } from '@/functions/api'
 import { ActionContext } from 'vuex'
 import { TYPE_ARRAY, TYPE_JSON } from '@/constants/type_request'
 import { IWifiPro, IWifiResourceInfo } from '@/tbapi'
+import { head } from 'lodash'
 
 const api = () => new API()
 
@@ -39,6 +40,7 @@ const actions = {
 
     if (context.rootState.auth.isManager) {
       newPayload.email = context.rootState.auth.userInfo.mail
+      newPayload.role = head(context.rootState.auth.userInfo.realm_access?.roles || []) || ''
     }
 
     return api()

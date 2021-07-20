@@ -4,6 +4,7 @@ import TBodyCollapser from '../TBodyCollapser/index.vue'
 import ErTableFilter from '@/components/blocks/ErTableFilter/index'
 import moment from 'moment'
 import { IBillingStatisticResponse } from '@/tbapi'
+import { head, last } from 'lodash'
 
 const components = {
   ConnectionRow,
@@ -63,6 +64,14 @@ export default class PhoneStatistic extends Vue {
   pagCurrentPage = 1
   pagLength = 1
   loadingStatistic = true
+
+  listPhoneType: string[] = ['Исходящий', 'Входящий', 'Все']
+  modelPhoneType: string = 'Все'
+  modelPeriod: Date[] = [
+    new Date(moment((new Date()).setDate((new Date()).getDate() - 29)).format()),
+    new Date()
+  ]
+
   // Computed
   get listStatisticGroupByDate () {
     return this.listStatistic.reduce((acc, item) => {
@@ -82,24 +91,48 @@ export default class PhoneStatistic extends Vue {
         : variable[getFieldByName(this.sortField)]
     }
 
-    if (this.sortField === '') return this.listStatisticGroupByDate
-    for (const key in this.listStatisticGroupByDate) {
-      this.listStatisticGroupByDate[key].sort((a, b) => {
-        const valueA = getValue(a)
-        const valueB = getValue(b)
-        if (typeof valueA === 'undefined' || typeof valueB === 'undefined') {
-          return 0
-        }
-        if (typeof valueA === 'number' && typeof valueB === 'number') {
-          return this.sortOrder === 'asc' ? valueA - valueB : valueB - valueA
-        }
-        return this.sortOrder === 'asc'
-          ? (valueA as string).localeCompare(valueB as string)
-          : (valueB as string).localeCompare(valueA as string)
+    // Фильтрация
+    const filterList: Record<string, IBillingStatisticResponse[]> = {}
+    for (const date in this.listStatisticGroupByDate) {
+      if (!this.listStatisticGroupByDate.hasOwnProperty(date)) continue
+
+      filterList[date] = this.listStatisticGroupByDate[date].filter(statisticItem => {
+        return statisticItem.createdDate >= +head(this.modelPeriod)! &&
+          statisticItem.createdDate <= +last(this.modelPeriod)! &&
+          this.modelPhoneType === 'Все'
+          ? true
+          : this.modelPhoneType === 'Исходящий'
+            ? [1, 3, 4].includes(statisticItem.priceEventSpecification.eventTypeId)
+            : statisticItem.priceEventSpecification.eventTypeId === 2
       })
     }
 
-    return this.listStatisticGroupByDate
+    // Сортировка
+    if (this.sortField === '') return filterList
+    for (const key in filterList) {
+      if (filterList.hasOwnProperty(key)) {
+        filterList[key].sort((a, b) => {
+          const valueA = getValue(a)
+          const valueB = getValue(b)
+          if (typeof valueA === 'undefined' || typeof valueB === 'undefined') {
+            return 0
+          }
+          if (typeof valueA === 'number' && typeof valueB === 'number') {
+            return this.sortOrder === 'asc' ? valueA - valueB : valueB - valueA
+          }
+          return this.sortOrder === 'asc'
+            ? (valueA as string).localeCompare(valueB as string)
+            : (valueB as string).localeCompare(valueA as string)
+        })
+      }
+    }
+
+    return filterList
+  }
+
+  disabledDateCallback (date: Date) {
+    const _date = moment(date)
+    return _date > moment() || _date < moment().subtract(29, 'days')
   }
 
   getStatistic () {

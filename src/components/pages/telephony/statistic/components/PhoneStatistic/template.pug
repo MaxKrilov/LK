@@ -1,13 +1,28 @@
 .phone-statistic
-  template(v-if="loadingStatistic")
+  //- template(v-if="loadingStatistic")
+  template(v-if="false")
     er-preloader(:active="loadingStatistic" icon icon-type="2")
   template(v-else)
 
-    template(v-if="pagCurrentPage === 1 && listStatistic.length === 0")
+    //- template(v-if="pagCurrentPage === 1 && listStatistic.length === 0")
+    template(v-if="false")
       .phone-statistic__notice
         .caption1 За последние 30 дней нет статистики. Для получения за другой период - закажите файл.
 
     template(v-else)
+      .phone-statistic__filters.mb-24
+        .phone-statistic__filter.mb-8.mb-sm-0.mr-sm-8
+          ErSelect(
+            placeholder="Тип звонка"
+            :items="listPhoneType"
+            v-model="modelPhoneType"
+          )
+        .phone-statistic__filter.ml-sm-8
+          ErDatePicker(
+            placeholder="Период"
+            v-model="modelPeriod"
+            :disabledDate="disabledDateCallback"
+          )
       table
         thead
           tr
@@ -79,7 +94,3 @@
           :length="pagLength"
           :total-visible="pagLength"
           )
-
-    //- .phone-statistic__collapser
-      span.link--dashed Свернуть
-      er-corner-button(:value="true")
