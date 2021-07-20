@@ -28,6 +28,7 @@ export default {
       showChangeOrganizationPopup: false,
       notificationCount: 0,
       menu: MenuItemList(this.listProductByService || []),
+      openingMenuItemIndex: 0,
       isOpenBillingAccountMenu: false
     }
   },
@@ -43,13 +44,16 @@ export default {
     },
     listProductByService (val) {
       this.menu = MenuItemList(val || [])
+      this.$nextTick(() => {
+        this.openSubMenu(this.menu[this.openingMenuItemIndex], this.openingMenuItemIndex, null)
+      })
     },
     isDesktop (val) {
       if (val) {
         this.openSubMenuBackground = true
         const firstMenuItem = head(this.menu)
         if (firstMenuItem && !firstMenuItem.isOpen) {
-          this.openSubMenu(firstMenuItem, null)
+          this.openSubMenu(firstMenuItem, 0, null)
         }
       }
     }
@@ -97,7 +101,7 @@ export default {
       this.closeSubMenu()
       this.openSubMenuBackground = false
     },
-    openSubMenu (menuItem, event) {
+    openSubMenu (menuItem, index, event) {
       this.closeSubMenu()
       if (!this.openSubMenuBackground) {
         this.openSubMenuBackground = true
@@ -106,6 +110,8 @@ export default {
         this.$router.push(menuItem.url)
       }
       menuItem.isOpen = true
+
+      this.openingMenuItemIndex = index
     },
     toggleRightPanel () {
       this.isOpenRightPanel = !this.isOpenRightPanel

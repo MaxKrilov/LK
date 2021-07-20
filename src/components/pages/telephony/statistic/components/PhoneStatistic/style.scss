@@ -137,6 +137,24 @@ $head-col-height: 80px;
     align-items: center;
     padding-bottom: 24px;
   }
+
+  &__filters {
+    display: flex;
+    flex-direction: column;
+    padding: 0 16px;
+
+    > * {
+      width: 100%;
+    }
+
+    @include min-breakpoint('sm') {
+      flex-direction: row;
+
+      > * {
+        max-width: 250px;
+      }
+    }
+  }
 }
 
 .link--dashed {

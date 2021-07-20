@@ -4,10 +4,9 @@ import ErActivationModal from '@/components/blocks/ErActivationModal/index.vue'
 import Validators from '@/mixins/ValidatorsMixin'
 import { CODE_CALLFORWRD } from '@/constants/product-code'
 
-const components = {
-  ErActivationModal
+const components = { ErActivationModal }
 
-}
+const isValidTimes = (from: number, to: number) => from <= 24 && to <= 24 && from < to
 
 @Component({
   name: 'add-redirection-form',
@@ -25,21 +24,12 @@ export default class AddRedirectionForm extends Vue {
   isShowSuccessModal: boolean = false
   sendingOrder: boolean = false
   timeRule = [
-    (v:string) => {
+    (v: string) => {
       const timeFrom = Number(v.split('-')[0].split(':')[0])
       const timeTo = Number(v.split('-')[1].split(':')[0])
-      if (!(timeFrom <= 24)) {
-        return 'Неверное время'
-      }
-      if (!(timeTo <= 24)) {
-        return 'Неверное время'
-      }
-      if (timeFrom >= timeTo) {
-        return 'Неверное время'
-      }
-      return true
-    }
 
+      return isValidTimes(timeFrom, timeTo) || 'Неверное время'
+    }
   ]
 
   dayOfWeek = [
@@ -56,17 +46,25 @@ export default class AddRedirectionForm extends Vue {
   slectedPhone = ''
   redirectionTypes = ['Безусловная', 'По неответу', 'По занятости', 'По недоступности']
   selectedRedirectionType = ''
+
   get phoneToFormated () {
     return this.phoneTo.replace(/\D+/g, '')
   }
+
   get hourFrom () {
-    return Number(this.time.split('-')[0].split(':')[0])
+    return this.time
+      ? Number(this.time.split('-')[0].split(':')[0])
+      : 0
   }
+
   get hourTo () {
-    return Number(this.time.split('-')[1].split(':')[0])
+    return this.time
+      ? Number(this.time.split('-')[1].split(':')[0])
+      : 0
   }
+
   get disabledPlug () {
-    return !(this.slectedPhone && this.phoneTo && this.selectedRedirectionType)
+    return !(this.slectedPhone && this.phoneTo && this.selectedRedirectionType && isValidTimes(this.hourFrom, this.hourTo))
   }
 
   createOrder () {
