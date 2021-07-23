@@ -3,7 +3,7 @@
     template(v-if="getCommunicationType === '15' && getTaskId === '16'")
       p Уважаемый клиент!&nbsp;
       | С {{ cleanParams['param_1'] }} изменится стоимость услуги связи «{{ cleanParams['param_2'] }}». Стоимость&nbsp;
-      | (без учёта НДС) увеличится на {{ cleanParams['param_3'] }}.&nbsp; Подробную информацию о действующих тарифах&nbsp;
+      | (без учёта НДС) увеличится на {{ cleanParams['param_3'] | params3 }}.&nbsp; Подробную информацию о действующих тарифах&nbsp;
       | можно получить у Вашего персонального менеджера
     template(v-else-if="getCommunicationType === '15'")
       p Уважаемый Клиент!
@@ -38,6 +38,13 @@
 export default {
   name: 'campaign-custom-message-14',
   props: ['params'],
+  filters: {
+    params3 (val) {
+      return val[0] === '.'
+        ? Number(val) * 100 + '%'
+        : val
+    }
+  },
   computed: {
     link () {
       return this.$props.params?.['file'] || '#'
