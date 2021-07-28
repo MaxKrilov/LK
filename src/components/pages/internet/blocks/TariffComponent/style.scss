@@ -31,13 +31,15 @@
 
     .info-block {
       .price .caption,
-      .current-price .caption {
+      .current-price .caption,
+      .speed-with-fb .caption {
         @extend %caption2;
         @include color-black(0.8);
       }
 
       .price .value,
-      .current-price .value {
+      .current-price .value,
+      .speed-with-fb .value {
         @extend %caption2;
         @include color-black(0.5);
 
@@ -158,6 +160,11 @@
     grid-column-start: 1;
     grid-column-end: 2;
     padding-right: 16px;
+    svg .fb-text text {
+      font-size: 8px;
+      font-family: $fedra-demi;
+      fill: map-get($yellow, 'other-13');
+    }
     svg text.top {
       @extend %h2;
       fill: rgba(map_get($shades, 'black'), 0.8);

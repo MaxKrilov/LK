@@ -13,6 +13,9 @@ import ErDisconnectProduct from '@/components/blocks/ErDisconnectProduct/index.v
 import ErPlugProduct from '@/components/blocks/ErPlugProduct/index.vue'
 import { OFFER_LINKS } from '@/constants/url'
 import { mapActions } from 'vuex'
+import { API } from '@/functions/api'
+
+import head from 'lodash/head'
 
 const SPEED_N_LIMIT_WIDTH = 104
 const STROKE_WIDTH = 2
@@ -31,6 +34,9 @@ const CHARS_AUTH_TYPE = 'Тип авторизации'
 
 const CHAR_START_DATE_TURBO = 'Дата активации'
 const CHAR_STOP_DATE_TURBO = 'Дата окончания'
+
+const FREE_BONUS_OFFER_CODE = 'SPEEDUPBON'
+const FREE_BONUS_CHAR = 'Увеличение скорости НА (Мбит/с)'
 
 const arc = d3.arc()
   .startAngle(0)
@@ -61,11 +67,16 @@ const arc = d3.arc()
     marketId: String
   },
   watch: {
-    customerProduct (val) {
-      if (val) {
+    async customerProduct (val) {
+      if (!val) return
+      try {
+        const customerProductsResult = await this.customerProducts({ api: this.$api, parentIds: [val.tlo.id] })
+        await this.assignFreeBonus(customerProductsResult)
         this.generateSpeedChart()
-        this.getBillingPacket()
         this.initSpeedComponent()
+        this.getBillingPacket()
+      } catch (e) {
+        console.error(e)
       }
     },
     isShowOfferDialog (val) {
@@ -79,7 +90,8 @@ const arc = d3.arc()
   },
   methods: {
     ...mapActions({
-      getAvailableFunds: 'salesOrder/getAvailableFunds'
+      getAvailableFunds: 'salesOrder/getAvailableFunds',
+      customerProducts: 'productnservices/customerProducts'
     })
   }
 })
@@ -97,6 +109,10 @@ export default class TariffComponent extends Vue {
 
   // Vuex Methods
   getAvailableFunds!: <R = Promise<IAvailableFunds>>() => R
+  customerProducts!: <
+    T = { api: API, parentIds?: Array<string | number>, code?: string },
+    R = Promise<Record<string, ICustomerProduct>>
+  >(payload: T) => R
 
   // Data
   isBlur = false
@@ -130,6 +146,8 @@ export default class TariffComponent extends Vue {
 
   isShowModalForChangeAuthType: boolean = false
   isLoadingBillingPacket: boolean = true
+
+  freeBonusValue: number = 0
 
   // Computed
   /**
@@ -419,7 +437,45 @@ export default class TariffComponent extends Vue {
         }
       })
 
-    if (this.isOnTurbo) {
+    // Подключен бесплатный бонус
+    if (this.freeBonusValue !== 0) {
+      let fbPercentage = (speed + this.freeBonusValue) * 0.875 /
+        (this.maxAvailableSpeedIncrease || (speed + this.freeBonusValue))
+      fbPercentage = fbPercentage > 0.875 ? 0.875 : fbPercentage
+      const fbArc = d3.arc()
+        .startAngle(speedPercentage * 2 * Math.PI)
+        .innerRadius(SPEED_N_LIMIT_WIDTH / 2 - 2 * STROKE_WIDTH)
+        .outerRadius(SPEED_N_LIMIT_WIDTH / 2 - STROKE_WIDTH)
+
+      const fbForeground = svg.append('path')
+        .datum({ endAngle: fbPercentage * 2 * Math.PI })
+        .attr('fill', 'none')
+        .attr('stroke-width', STROKE_WIDTH)
+        .attr('stroke', '#F29801')
+        // @ts-ignore
+        .attr('d', fbArc)
+
+      fbForeground
+        .transition()
+        .delay(speedDuration)
+        .duration(turboDuration)
+        .attrTween('d', function (d: any) {
+          const start = { startAngle: 0, endAngle: 0 }
+          const interpolate = d3.interpolate(start, d)
+          return function (t: number) {
+            return fbArc(interpolate(t))
+          }
+        })
+
+      // Добавляем текст (что подключён бесплатный бонус)
+      const fbText = svg.append('g')
+        .classed('fb-text', true)
+      fbText.append('text')
+        .attr('x', 0)
+        .attr('y', -20)
+        .attr('text-anchor', 'middle')
+        .text(`Бонус + ${this.freeBonusValue}`)
+    } else if (this.isOnTurbo) {
       if (!this.isAvailableTurbo) return
       let turboSpeedPercentage = turboSpeed * 0.875 / (this.maxAvailableSpeedIncrease || turboSpeed)
       turboSpeedPercentage = turboSpeedPercentage > 0.875 ? 0.875 : turboSpeedPercentage
@@ -455,7 +511,7 @@ export default class TariffComponent extends Vue {
 
     text.append('text')
       .attr('x', 0)
-      .attr('y', 0)
+      .attr('y', this.freeBonusValue === 0 ? 0 : 10)
       .attr('text-anchor', 'middle')
       .classed('top', true)
       .text('0')
@@ -467,12 +523,12 @@ export default class TariffComponent extends Vue {
       .tween('text', tweenText(
         this.isOnTurbo && this.isAvailableTurbo
           ? Number(this.isAvailableTurbo.chars[CHARS_TURBO_SPEED_INCREASE].replace(/[\D]+/, ''))
-          : speed
+          : speed + this.freeBonusValue
       ))
 
     text.append('text')
       .attr('x', 0)
-      .attr('y', 15)
+      .attr('y', this.freeBonusValue === 0 ? 15 : 25)
       .attr('text-anchor', 'middle')
       .classed('bottom', true)
       .text('Мбит/с')
@@ -751,6 +807,24 @@ export default class TariffComponent extends Vue {
           ? String(this.lazyPriceIncrease - this.availableFundsAmt)
           : '0'
       }
+    })
+  }
+
+  assignFreeBonus (customerProducts: Record<string, ICustomerProduct>) {
+    return new Promise((resolve) => {
+      const customerProduct = customerProducts[head(Object.keys(customerProducts))!]
+      const freeBonusSLO = customerProduct.slo
+        .find(sloItem => sloItem.offer && sloItem.offer.code === FREE_BONUS_OFFER_CODE)
+      if (
+        typeof freeBonusSLO === 'undefined' ||
+        !freeBonusSLO.chars.hasOwnProperty(FREE_BONUS_CHAR)
+      ) {
+        resolve()
+        return
+      }
+
+      this.freeBonusValue = Number(freeBonusSLO.chars[FREE_BONUS_CHAR].replace(/[\D]+/ig, ''))
+      resolve()
     })
   }
 

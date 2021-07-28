@@ -1,49 +1,55 @@
 speed-component.mb-lg-0(
-	:current-speed="currentSpeed"
-	:list-available-speed="listAvailableSpeedIncrease"
-	ref="speed-component"
-	v-model="internetSpeed"
-	:is-turbo-activation="isTurboActivation"
+  :current-speed="currentSpeed"
+  :list-available-speed="listAvailableSpeedIncrease"
+  ref="speed-component"
+  v-model="internetSpeed"
+  :is-turbo-activation="isTurboActivation"
 )
 div.ml-lg-64
-	.info-block.d--flex.justify-content-between.mb-16.flex-lg-column.flex-column
-		.period.mb-lg-16(v-if="isTurboActivation")
-			.caption
-				| Период
-			.d--flex.flex-column.flex-sm-row.align-items-sm-center
-				.calendar.mb-8.mr-sm-16
-					er-date-picker(
-						v-model="turboPeriod"
-						disabled-date="past"
-						is-hide-period-block
-						format="DD.MM.YY"
-						)
-				.infinity.mb-8
-					er-toggle(view="radio-check" v-model="isInfinity")
-						template(slot="append-outer")
-							span
-								| Бессрочно
-		.price.mb-lg-16
-			.caption.mb-4
-				| {{ isTurboActivation ? 'Плата за период' : 'Абонентская плата' }}
-			.value
-				span {{ ( isTurboActivation ? turboPriceAfterIncrease : priceAfterIncrease) | price }}
-				| &nbsp;{{ currencyCode }}/месяц
-		.current-price(v-if="!isTurboActivation")
-			.caption.mb-4
-				| Текущая абонентская плата
-			.value.mb-lg-32
-				span {{ recurrentTotal | price }}
-				| &nbsp;{{ currencyCode }}/месяц
-	.actions-block.d--flex.flex-row.flex-lg-column
-		.action.mb-8.mr-8.mb-lg-8
-			er-button(
-				:color="isTurboActivation ? 'green' : 'blue'"
-				@click="createSaleOrder"
-				:loading="isLoadingConnect"
-				:disabled="!internetSpeed || internetSpeed === currentSpeed"
-				)
-				| {{ isTurboActivation ? 'Подключить' : 'Изменить' }}
-		.action.ml-sm-0
-			er-button(flat @click="closeBlur")
-				| Отмена
+  .info-block.d--flex.justify-content-between.mb-16.flex-lg-column.flex-column
+    .period.mb-lg-16(v-if="isTurboActivation")
+      .caption
+        | Период
+      .d--flex.flex-column.flex-sm-row.align-items-sm-center
+        .calendar.mb-8.mr-sm-16
+          er-date-picker(
+            v-model="turboPeriod"
+            disabled-date="past"
+            is-hide-period-block
+            format="DD.MM.YY"
+          )
+        .infinity.mb-8
+          er-toggle(view="radio-check" v-model="isInfinity")
+            template(slot="append-outer")
+              span
+                | Бессрочно
+    .price.mb-lg-16
+      .caption.mb-4
+        | {{ isTurboActivation ? 'Плата за период' : 'Абонентская плата' }}
+      .value
+        span {{ ( isTurboActivation ? turboPriceAfterIncrease : priceAfterIncrease) | price }}
+        | &nbsp;{{ currencyCode }}/месяц
+    .current-price(v-if="!isTurboActivation")
+      .caption.mb-4
+        | Текущая абонентская плата
+      .value.mb-lg-32
+        span {{ recurrentTotal | price }}
+        | &nbsp;{{ currencyCode }}/месяц
+    .speed-with-fb(v-if="freeBonusValue !== 0")
+      .caption.mb-4
+        | Скорость с учётом Бесплатного бонуса
+      .value
+        span {{ (internetSpeed ? internetSpeed : currentSpeed) + freeBonusValue }}
+        | &nbsp;Мбит/с
+  .actions-block.d--flex.flex-row.flex-lg-column
+    .action.mb-8.mr-8.mb-lg-8
+      er-button(
+        :color="isTurboActivation ? 'green' : 'blue'"
+        @click="createSaleOrder"
+        :loading="isLoadingConnect"
+        :disabled="!internetSpeed || internetSpeed === currentSpeed"
+      )
+        | {{ isTurboActivation ? 'Подключить' : 'Изменить' }}
+    .action.ml-sm-0
+      er-button(flat @click="closeBlur")
+        | Отмена

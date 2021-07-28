@@ -65,8 +65,15 @@
                 span.mr-4 {{ turboPrice | price }}
                 | {{ currencyCode }}
           template(v-else-if="isAvailableTurbo")
-            er-button(pre-icon="speedup" @click="() => { openBlur(true) }")
+            er-button(
+              pre-icon="speedup"
+              :disabled="freeBonusValue !== 0"
+              @click="() => { openBlur(true) }"
+            )
               | Турбо-режим
+            //- .caption2.error--text(v-if="freeBonusValue !== 0")
+              | Вы не можете активировать &laquo;Скоростной бонус&raquo;, так как у вас уже активирована&nbsp;
+              | услуга &laquo;Бесплатного бонуса&raquo;
         template(v-if="isLoadingCustomerProduct")
           PuSkeleton
         template(v-else)
@@ -80,6 +87,8 @@
           .price
             span {{ recurrentTotal | price }}
             | &nbsp;{{ currencyCode }}/месяц
+          .fb-text.caption2.color--yellow-other-13(v-if="freeBonusValue !== 0")
+            | У вас активирован Бесплатный бонус скорости
       .tariff-component__turbo-price
         template(v-if="isLoadingCustomerProduct")
           PuSkeleton

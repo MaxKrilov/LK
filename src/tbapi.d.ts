@@ -181,6 +181,7 @@ export interface ICustomerProduct {
       tomsId: string
     }]
     name: string
+    offer?: ICustomerOffer
     offeringCategories: [{
       code: string
       id: string
