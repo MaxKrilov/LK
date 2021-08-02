@@ -9,6 +9,10 @@ export default {
     banner: {
       type: String
     },
+    buttonId: {
+      type: String,
+      default: 'activate'
+    },
     plugText: {
       type: String,
       default: 'Подключить'

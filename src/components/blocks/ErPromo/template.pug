@@ -36,5 +36,6 @@ div(:class="`${pre}`")
       @click="() => { !linkToConnect && $emit('click') }"
       :target="linkToConnect ? '_blank' : null"
       :loading="isLoadingConnectButton"
+      :id="buttonId"
     ) {{ plugText }}
     slot(name="extraButtons")
