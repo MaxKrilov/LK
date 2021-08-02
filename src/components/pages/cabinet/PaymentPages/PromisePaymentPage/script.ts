@@ -65,7 +65,7 @@ export default class PromisePaymentPage extends Vue {
   readonly sendOrderPromisePayment!: () => Promise<void>
 
   // Data
-  infoText = 'Вы можете активировать сервис <b>«обещанный платеж»</b>, который позволит вам <b>получить доступ к услугам на 3 дня</b>. Дополнительная плата за пользование не взымается.'
+  infoText = 'Вы можете активировать сервис <b>«обещанный платеж»</b>, который позволит вам <b>получить доступ к услугам на 3 дня</b>. Дополнительная плата за пользование не взимается.'
   promo = promo
 
   isActivatingPromisePayment: boolean = false
