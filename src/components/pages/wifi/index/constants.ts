@@ -11,13 +11,12 @@ export const WIFIKONTFIL = 'WIFIKONTFIL' // Контент фильтрация 
 export const WIFIANALYTICS = 'WIFIANALYTICS' // Аналитика по пользователям
 export const WIFIDESIGNOPT = 'WIFIDESIGNOPT' // Конструктор страницы авторизации
 
-// todo Закомментированные вернуть после включения продукта на стороне BSS
 export const SERVICES_AUTH = [
   WIFIAUTOECIA,
   WIFIAUTCNHS,
   WIFIADVCANCEL,
   WIFIHSCLONET,
-  // WIFIACCCHANGE
+  WIFIACCCHANGE,
   WIFIAVTVOUCH,
   WIFINAME,
   WIFIREDIR
