@@ -601,7 +601,7 @@ const mutations = {
     ) return
     state.isHasPromisePayment = true
     state.promisePayStart = moment(pymtSchdCreateDt, 'YYYYMMDD')
-    state.promisePayEnd = moment(schdPymtDueDt, 'YYYYMMDD')
+    state.promisePayEnd = moment(schdPymtDueDt, 'YYYYMMDD').add(12, 'hours')
   },
   setPromisePaymentOrderId (state: IState, id: string) {
     state.promisePaymentOrderId = id
