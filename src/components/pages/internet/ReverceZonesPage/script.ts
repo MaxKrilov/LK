@@ -7,11 +7,13 @@ import ErActivationModal from '@/components/blocks/ErActivationModal/index.vue'
 
 import { ICustomerProduct } from '@/tbapi'
 import { getFirstElement } from '@/functions/helper'
-import { SERVICE_ADDITIONAL_IP as SLO_CODE } from '@/constants/internet'
+import { SERVICE_ADDITIONAL_IP as SLO_CODE, CODE_IP4SUBNET } from '@/constants/internet'
 import { logError } from '@/functions/logging'
+import IPRange from '@/functions/IPRange'
 
 const TLO_CHAR = 'IPv4 адрес в составе услуги'
 const SLO_CHAR = 'IPv4 адрес'
+const SLO_SUBNET_CHAR = 'IPv4 подсеть'
 
 // eslint-disable-next-line no-use-before-define
 @Component<InstanceType<typeof ReverceZonePage>>({
@@ -145,11 +147,20 @@ export default class ReverceZonePage extends Vue {
     const filterSLO = this.customerProduct.slo.filter(sloItem =>
       sloItem.code === SLO_CODE && typeof sloItem.chars !== 'string' && sloItem.chars.hasOwnProperty(SLO_CHAR)
     )
-    if (filterSLO.length === 0) return true
 
     this.listIP.push(...filterSLO.map(filterSLOItem => getFirstElement(
       filterSLOItem.chars[SLO_CHAR].split('/')
     )))
+
+    // Получаем IP адреса из подсеток
+    this.listIP.push(...this.customerProduct.slo.filter(sloItem => {
+      return sloItem.code === CODE_IP4SUBNET &&
+        typeof sloItem.chars !== 'string' &&
+        sloItem.chars.hasOwnProperty(SLO_SUBNET_CHAR)
+    }).reduce((acc, item) => {
+      acc.push(...IPRange.getIPRange(item.chars[SLO_SUBNET_CHAR]))
+      return acc
+    }, [] as string[]))
 
     return true
   }
