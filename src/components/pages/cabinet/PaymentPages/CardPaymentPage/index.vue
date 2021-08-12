@@ -48,7 +48,7 @@
                       ErtListItemTitle
                         | Нажмите <kbd>Enter</kbd> для добавления &laquo;{{ searchEmail }}&raquo;
             .card-payment-page__submit.mb-24
-              ErButton(@click="onPayment" id="payment") Пополнить
+              ErButton(@click="onPayment" data-ga-tag-id="payment") Пополнить
             .card-payment-page__offer-terms
               | Нажимая на кнопку, Вы принимаете&nbsp;
               a(:href="offerLink" target="_blank" rel="noopener") условия оплаты и безопасности
