@@ -49,9 +49,10 @@ export const authParamsAfterRedirect = () => {
  * @param message
  * @param redirect
  * @param output
+ * @param isManager
  * @returns {Promise<unknown>}
  */
-export const makeTokens = ({ success, message, redirect, output }) => {
+export const makeTokens = ({ success, message, redirect, output, isManager }) => {
   return new Promise((resolve, reject) => {
     if (!success || message) {
       return reject(new Error('Ошибка авторизации'))
@@ -65,7 +66,12 @@ export const makeTokens = ({ success, message, redirect, output }) => {
     const { access, id, refresh } = output
     const tokens = {}
     if (id) tokens.userToken = id
-    if (id) tokens.user = makeUserInfo(id)
+    // if (id) tokens.user = makeUserInfo(id)
+    if (isManager && access) {
+      tokens.user = makeUserInfo(access)
+    } else if (id) {
+      tokens.user = makeUserInfo(id)
+    }
     if (access) tokens.accessToken = access
     if (refresh) tokens.refreshToken = refresh
 

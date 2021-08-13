@@ -28,7 +28,7 @@ const actions = {
         .setData(params)
         .query(url)
         .then(response => {
-          makeTokens(response)
+          makeTokens({ ...response, isManager: true })
             .then(tokens => {
               commit(SET_AUTH_TOKENS, tokens)
               commit(AUTH_SUCCESS, response)
