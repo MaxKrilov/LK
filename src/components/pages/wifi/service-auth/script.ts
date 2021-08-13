@@ -180,33 +180,67 @@ export default class ErtWifiServiceAuth extends mixins(Page) implements iPageCom
   getAvailableFunds!: <T = Promise<IAvailableFunds>>() => T
 
   // Methods
-  onConnect (code: string, e: any) {
+  async onConnect (code: string, e: any) {
     this.productCode = code
 
-    this.getAvailableFunds()
-      .then(response => {
-        const availableFunds = Number(response.availableFundsAmt)
+    const openPlugin = () => {
+      this.chars = typeof e !== 'undefined' ? e : null
+
+      if (code === 'WIFIHSCLONET') {
+        this.isShowPlugProductPluginManager = true
+      } else {
+        this.isShowPlugProductPlugin = true
+      }
+    }
+
+    // Услуга не подключена - следует проверить доступные денежные средства
+    if (!this.isActiveCurrentSLO) {
+      try {
+        const getAvailableFundsResponse = await this.getAvailableFunds()
+        const availableFunds = Number(getAvailableFundsResponse.availableFundsAmt)
         this.availableFundsAmt = availableFunds
+
         if (
           this.getOrderTitleNPrice !== null &&
           availableFunds - Number(this.getOrderTitleNPrice.price) > 0
         ) {
-          this.chars = typeof e !== 'undefined' ? e : null
-
-          if (code === 'WIFIHSCLONET') {
-            this.isShowPlugProductPluginManager = true
-          } else {
-            this.isShowPlugProductPlugin = true
-          }
+          openPlugin()
         } else {
           this.isShowMoneyModal = true
           this.resetOrderData()
         }
-      })
-      .catch(() => {
+      } catch (e) {
         this.isErrorMoney = true
         this.resetOrderData()
-      })
+      }
+    } else {
+      openPlugin()
+    }
+
+    // this.getAvailableFunds()
+    //   .then(response => {
+    //     const availableFunds = Number(response.availableFundsAmt)
+    //     this.availableFundsAmt = availableFunds
+    //     if (
+    //       this.getOrderTitleNPrice !== null &&
+    //       availableFunds - Number(this.getOrderTitleNPrice.price) > 0
+    //     ) {
+    //       this.chars = typeof e !== 'undefined' ? e : null
+    //
+    //       if (code === 'WIFIHSCLONET') {
+    //         this.isShowPlugProductPluginManager = true
+    //       } else {
+    //         this.isShowPlugProductPlugin = true
+    //       }
+    //     } else {
+    //       this.isShowMoneyModal = true
+    //       this.resetOrderData()
+    //     }
+    //   })
+    //   .catch(() => {
+    //     this.isErrorMoney = true
+    //     this.resetOrderData()
+    //   })
   }
 
   resetOrderData () {

@@ -442,14 +442,20 @@ export default class WifiPersonalizationPage extends mixins(Page) implements iPa
 
     if (this.internalLogoFile) {
       data.append(`field_logo`, this.internalLogoFile)
+    } else if (this.internalLogoFile === false) {
+      data.append('params[field_logo]', '')
     }
 
     if (this.internalBackgroundImageFile) {
       data.append('field_custom_background_image', this.internalBackgroundImageFile)
+    } else if (this.internalBackgroundImageFile === false) { // Происходит удаление заднего фона
+      data.append('params[field_custom_background_image]', '')
     }
 
     if (this.internalBannerFile) {
       data.append('field_index_banner', this.internalBannerFile)
+    } else if (this.internalBannerFile === false) { // Происходит удаление баннера
+      data.append('params[field_index_banner]', '')
     }
 
     if (this.internalFullscreen !== null) {
