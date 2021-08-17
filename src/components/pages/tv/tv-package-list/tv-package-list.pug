@@ -14,4 +14,8 @@ div.main-content.main-content--padding.main-content--top-menu-fix
             div
               div(class="tv-package-list__packages__title").mb-4 Пакет каналов
               div(class="tv-package-list__packages__name").mb-32 {{ item.title }}
-              div(class="tv-package-list__packages__count" @click="$router.push(`/lk/tv/channel-list/${item.id}`)") {{ item.count }}
+              div(
+                class="tv-package-list__packages__count"
+                data-ga-tag-id="tvpakety"
+                @click="$router.push(`/lk/tv/channel-list/${item.id}`)"
+              ) {{ item.count }}
