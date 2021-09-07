@@ -202,7 +202,7 @@ export default class ErtWifiServiceAuth extends mixins(Page) implements iPageCom
 
         if (
           this.getOrderTitleNPrice !== null &&
-          availableFunds - Number(this.getOrderTitleNPrice.price) > 0
+          availableFunds - Number(this.getOrderTitleNPrice.price) >= 0
         ) {
           openPlugin()
         } else {
