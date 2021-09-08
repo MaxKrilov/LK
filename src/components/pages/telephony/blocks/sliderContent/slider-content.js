@@ -82,7 +82,7 @@ export default {
         fulladdress: this.fulladdress
       },
       disconnectRequestData: {
-        descriptionModal: 'Для подключения телефонного номера нужно сформировать заявку на вашего персонального менеджера',
+        descriptionModal: 'Для отключения телефонного номера нужно сформировать заявку на вашего персонального менеджера',
         addressId: this.addressId,
         services: 'Отключение дополнительного номера',
         fulladdress: this.fulladdress

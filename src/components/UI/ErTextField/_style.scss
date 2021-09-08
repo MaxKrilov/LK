@@ -15,7 +15,7 @@
         transition: $primary-transition;
       }
       @include media-query((
-              height: (xl: 48px)
+              height: (md: 48px)
       ));
       &:hover {
         border-color: map_get($shades, 'black');

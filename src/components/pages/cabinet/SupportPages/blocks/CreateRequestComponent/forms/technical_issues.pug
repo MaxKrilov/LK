@@ -25,7 +25,7 @@ er-form(ref="technical_issues" key="technical_issues")
             :rules="requiredRule"
           )
         er-slide-up-down(:active="isShowListPhoneNumber" :style="{ width: '100%' }")
-          er-row.mb-32.px-16(align-items-center)
+          er-row.mb-24.px-16(align-items-center)
             er-flex(xs8)
               ert-select(
                 v-model="listSelectedPhoneNumberByTelephone"
@@ -36,7 +36,7 @@ er-form(ref="technical_issues" key="technical_issues")
                 :disabled="isAllPhoneNumberByTelephone"
               )
             er-flex(xs3)
-              ert-checkbox(src\store\modules\request.js
+              ert-checkbox.mt-0.pt-0(src\store\modules\request.js
                 v-model="isAllPhoneNumberByTelephone"
                 hideDetails
                 label="Все номера"
@@ -58,6 +58,6 @@ er-form(ref="technical_issues" key="technical_issues")
           +timePickerRange
         er-flex.mb-32(xs12)
           +name
-        er-flex.mb-32(xs12)
+        er-flex.mb-8(xs12)
           +appeal("Здесь Вы можете указать дополнительную информацию по заявке")
     +footer

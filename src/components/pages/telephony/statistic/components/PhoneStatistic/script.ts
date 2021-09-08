@@ -12,7 +12,7 @@ const components = {
   'tbody-collapser': TBodyCollapser
 }
 
-type typeSortOrder = '' | 'date' | 'phone' | 'duration' | 'price' | 'price2'
+type typeSortOrder = '' | 'date' | 'phone' | 'duration' | 'price' | 'price2' | 'type'
 
 const getFieldByName = (name: typeSortOrder) => {
   switch (name) {
@@ -26,6 +26,8 @@ const getFieldByName = (name: typeSortOrder) => {
       return 'prebillingCost'
     case 'price2':
       return 'billedCost'
+    case 'type':
+      return 'ratePlan'
     default:
       return ''
   }

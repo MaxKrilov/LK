@@ -10,6 +10,8 @@ $select-selections-line-height: 18px !default;
 $select-selections-margin: 7px 4px 7px 0 !default;
 
 .ert-select {
+  margin: 0 !important;
+  padding: 0 !important; 
   position: relative;
 
   & > .ert-input__control > .ert-input__slot {

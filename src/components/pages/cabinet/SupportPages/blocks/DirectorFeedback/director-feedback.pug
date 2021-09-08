@@ -49,13 +49,14 @@ div
                   )
             er-flex(xs12 md6 lg4).second-section
               er-row
-                er-flex.mb-32(xs12)
+                er-flex.mb-20(xs12)
                   ert-combobox(
                     v-model="modelDirectorEmail"
                     :items="getEmailList"
                     label="E-mail"
                     :rules="requiredRule"
                     :search-input.sync="searchEmail"
+                    is-show-required-label
                   ).section-first-input
                     template(v-slot:no-data)
                       ert-list-item
@@ -85,6 +86,8 @@ div
                 :rules="requiredRule"
               )
             er-flex.create-request-component__personal-data.mb-24(xs12)
+              .caption2.file-format-label Допустимый формат файлов: .doc, .docx, .pdf, .csv, .xls, .xslx, .jpeg, .jpg, .gif, .png, .tiff, .bmp&nbsp;
+                | Размер не должен превышать 2 МБ. Количество файлов - не более 10 штук
               | Нажимая на кнопку вы соглашаетесь &nbsp;
               a(href="#") на обработку данных
 

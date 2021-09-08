@@ -1,4 +1,6 @@
 .ert-textarea-with-file {
+  margin: 0 !important;
+  padding: 0 !important; 
   > .ert-input__control > .ert-input__slot {
     flex-direction: column;
   }

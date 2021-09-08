@@ -29,6 +29,9 @@
             td.col-type
               er-table-filter(
                 title="Тип"
+                :value="sortField === 'type'"
+                :order="sortOrder"
+                @change-filter="setSort('type')"
               )
 
             td.col-date

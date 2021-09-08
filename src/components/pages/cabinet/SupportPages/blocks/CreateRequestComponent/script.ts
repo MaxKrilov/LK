@@ -74,9 +74,10 @@ interface iErForm extends HTMLFormElement {
       listComplaintRequestTheme: (state: any) => state.dictionary[LIST_COMPLAINT_THEME],
       listClaimTheme: (state: any) => state.dictionary[LIST_CLAIM_THEME],
       screenWidth: (state: any) => state.variables[SCREEN_WIDTH],
-      listBillingAccount: (state: any) => state.user.listBillingAccount.map((item: any) => item.accountNumber)
+      listBillingAccount: (state: any) => state.payments.listBillingAccount.map((item: any) => item.accountNumber)
     }),
-    ...mapGetters('user', ['getAddressList', 'getListContact', 'agreementNumber'])
+    ...mapGetters('user', ['getAddressList', 'getListContact']),
+    ...mapGetters('payments', ['getActiveBillingAccountNumber', 'getListBillingAccount'])
   },
   components: {
     ErPhoneSelect,
@@ -89,7 +90,8 @@ interface iErForm extends HTMLFormElement {
 export default class CreateRequestComponent extends Vue {
   publicPath = process.env.BASE_URL
   $api!: API
-  agreementNumber!: string | number
+  getActiveBillingAccountNumber!: string | number
+  getListBillingAccount!: string[]
   isOpenForm = false
   isOpenFormDesktop = false
   screenWidth!: number
@@ -109,6 +111,8 @@ export default class CreateRequestComponent extends Vue {
   // Money transfer
   firstPersonalAccount = ''
   secondPersonalAccount = ''
+  searchFirstPersonalAccount: string | null = null
+  searchSecondPersonalAccount: string | null = null
   sumTransfer = ''
   // Transfer point or service
   street: any = ''
@@ -141,6 +145,9 @@ export default class CreateRequestComponent extends Vue {
   getAddressList!: iListAddressItem[]
   getListContact!: iContactListItem[]
   listBillingAccount!: string[]
+
+  firstLazyBillingAccount: string[] = []
+  secondLazyBillingAccount: string[] = []
 
   loadingService: boolean = false
 
@@ -205,6 +212,12 @@ export default class CreateRequestComponent extends Vue {
       (['VIRTNUMB', 'UNLIMCOMPL', 'TRUNK', 'UNLIMFLE1'].includes(this.service?.offerCode || ''))
   }
 
+  defineListBillingAccount (val: string[]) {
+    if (val.length === 0) return
+    this.firstLazyBillingAccount = val
+    this.secondLazyBillingAccount = val
+  }
+
   @Watch('requestTheme')
   onRequestThemeChange () {
     this.reset()
@@ -214,8 +227,26 @@ export default class CreateRequestComponent extends Vue {
   }
 
   @Watch('firstPersonalAccount')
-  onFirstPersonalAccountChange () {
+  onFirstPersonalAccountChange (val:string) {
+    if (val === null || val === '') return
+    this.firstLazyBillingAccount.push(val)
     this.secondPersonalAccount = ''
+  }
+
+  @Watch('secondPersonalAccount')
+  onSecondPersonalAccountChange (val:string) {
+    if (val === null || val === '') return
+    this.secondLazyBillingAccount.push(val)
+  }
+
+  @Watch('getActiveBillingAccountNumber')
+  onGetActiveBillingAccountNumber () {
+    this.firstPersonalAccount = this.getActiveBillingAccountNumber as string
+  }
+
+  @Watch('listBillingAccount')
+  onlistBillingAccount (val:string[]) {
+    this.defineListBillingAccount(val)
   }
 
   @Watch('screenWidth')
@@ -377,7 +408,7 @@ export default class CreateRequestComponent extends Vue {
     const phone = `Контактный номер телефона: ${this.phoneNumber}`
     const name = `Как обращаться к клиенту: ${this.name}`
     const agreementOrServices = this.isWholeContract
-      ? `Номер договора: ${this.agreementNumber}`
+      ? `Номер договора: ${this.getActiveBillingAccountNumber}`
       : `Услуги: ${this.services.map((item: standardSelectItem) => item.value)};
         Адрес: ${this.address.value}`
     const address = `Адрес: ${this.address.value}`
@@ -496,7 +527,6 @@ export default class CreateRequestComponent extends Vue {
     this.services = []
     this.recoverFrom = new Date()
     this.isWholeContract = false
-    this.firstPersonalAccount = ''
     this.secondPersonalAccount = ''
     this.sumTransfer = ''
     this.street = ''
@@ -512,6 +542,10 @@ export default class CreateRequestComponent extends Vue {
   }
 
   mounted () {
+    if (this.getActiveBillingAccountNumber) this.firstPersonalAccount = this.getActiveBillingAccountNumber as string
+
+    this.defineListBillingAccount(this.listBillingAccount)
+
     if (this.$route.query && this.$route.query.form) {
       (this as any)[this.screenWidth <= BREAKPOINT_XL ? 'isOpenForm' : 'isOpenFormDesktop'] = true
       this.requestTheme = this.listRequestTheme.find((item: iRequestTheme) => item.form === this.$route.query.form)!

@@ -6,7 +6,7 @@
     align-items: flex-start;
     padding-top: 10px !important;
     padding-bottom: 10px !important;
-    @include min-breakpoint('xl') {
+    @include min-breakpoint('md') {
       min-height: 46px;
       padding-top: 13px !important;
       padding-bottom: 13px !important;

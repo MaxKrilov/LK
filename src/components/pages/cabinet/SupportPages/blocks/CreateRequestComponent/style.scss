@@ -107,7 +107,8 @@
     }
   }
   &__personal-data {
-    @extend %caption1;
+    @extend %caption2-font;
+    @include color-black(0.6);
     a {
       color: inherit;
       text-decoration: underline;
