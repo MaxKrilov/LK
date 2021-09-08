@@ -1,0 +1,26 @@
+include ../../../../blocks/DeviceComponent/mixins/rent
+include ../../../../blocks/DeviceComponent/mixins/sale
+include ../../../../blocks/DeviceComponent/mixins/installment
+
+div.device-component__devices
+  span.device-component__devices__header
+    h2(@click="toggleDevices") Оборудование
+      er-corner-button(:value="isOpenDevices").ml-8
+  er-slide-up-down(:active="isOpenDevices" :duration="200")
+    template(v-if="isLoadingDevices")
+      .ert-wifi-service-auth-page__loading(v-if="isLoadingDevices")
+        ErtProgressCircular(indeterminate width="2")
+        .title Загружаем оборудование
+    template(v-else-if="isLoadedDevices")
+      template(v-if="devices.length === 0")
+        div Нет устройств
+      div.device-component__devices__item(v-for="(device, index) in devices" :key="index")
+        template(v-if="device['Способ передачи оборудования'] === 'Рассрочка'")
+          +installment
+        template(v-else-if=`device['Способ передачи оборудования'] === 'Продажа'`)
+          +sale
+        template(v-else-if=`device['Способ передачи оборудования'] === 'Ответственное хранение'`)
+          +sale("Ответ. хранение")
+        template(v-else-if="device['Способ передачи оборудования'] === 'Аренда'")
+          +rent
+

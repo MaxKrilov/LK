@@ -154,6 +154,7 @@
               :isOnPersonalisation="isOnPersonalisation(point.bpi)"
               :bpi="point.bpi"
             )
+            WifiDeviceComponent(:productId="point.bpi", :listOfDevices="DEVICES")
         template(slot="date-title")
           | Тариф
 
