@@ -52,6 +52,10 @@ export default class IndexPage extends Vue {
   readonly fullAddress!: string
   readonly marketId!: string
 
+  get getProductId () {
+    return this.customerProduct?.tlo.id || ''
+  }
+
   // Methods
   updateData () {
     this.$emit('update')
