@@ -83,6 +83,7 @@
     flex-wrap: wrap;
     min-width: 0;
     width: 100%;
+    position: relative;
   }
 
   &__icon {
@@ -128,6 +129,16 @@
     }
   }
 
+  &__required-label {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: map_get($yellow, 'base');
+    position: absolute;
+    left: 0;
+    top: -21px;
+  }
+
   @include min-breakpoint('md') {
     &__icon {
       height: 32px;
@@ -136,7 +147,7 @@
     }
 
     &__slot {
-      margin-bottom: 8px;
+      margin-bottom: 2px;
     }
   }
 }

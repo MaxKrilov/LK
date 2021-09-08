@@ -2,6 +2,10 @@
   $self: &;
   background-color: map_get($gray, '3');
 
+  .file-format-label {
+    padding-bottom: 24px;
+  }
+
   &--mobile {
     @include min-breakpoint('sm') {
       width: 100%;

@@ -10,7 +10,7 @@ er-form(ref="renewal_of_the_contract" key="renewal_of_the_contract")
           .caption
             | Текущий номер договора
           .agreement
-            | {{ agreementNumber }}
+            | {{ getActiveBillingAccountNumber }}
           .toggle.ml-auto
             er-toggle(view="radio-check", v-model="isWholeContract" label="Весь договор")
         er-flex(xs12)
@@ -43,7 +43,7 @@ er-form(ref="renewal_of_the_contract" key="renewal_of_the_contract")
         er-flex.mb-32(xs12)
           +name
 
-    er-flex.mb-32(xs12)
+    er-flex.mb-24(xs12)
       +appeal("Здесь Вы можете указать дополнительную информацию по заявке")
 
     +footerFile(10)

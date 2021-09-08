@@ -7,20 +7,33 @@ er-form(ref="money_transfer" key="money_transfer")
         er-flex.mb-32(xs12)
           +listRequestTheme
         er-flex.mb-32(xs12 sm6)
-          er-select(
-            :items="listBillingAccount"
+          ErtCombobox(
             v-model="firstPersonalAccount"
-            placeholder="С лицевого счета"
+            :items="firstLazyBillingAccount"
+            label="С лицевого счета"
             is-show-required-label
             :rules="requiredRule"
-          )
+            :search-input.sync="searchFirstPersonalAccount"
+              )
+                template(v-slot:no-data)
+                  ErtListItem
+                    ErtListItemContent
+                      ErtListItemTitle
+                        | Нажмите <kbd>Enter</kbd> для добавления &laquo;{{ searchFirstPersonalAccount }}&raquo;
         er-flex.mb-32(xs12 sm6)
-          er-text-field(
+          ErtCombobox(
             v-model="secondPersonalAccount"
-            placeholder="На лицевой счёт"
+            :items="secondLazyBillingAccount"
+            label="На лицевой счёт"
             is-show-required-label
             :rules="requiredRule"
-          )
+            :search-input.sync="searchSecondPersonalAccount"
+              )
+                template(v-slot:no-data)
+                  ErtListItem
+                    ErtListItemContent
+                      ErtListItemTitle
+                        | Нажмите <kbd>Enter</kbd> для добавления &laquo;{{ searchSecondPersonalAccount }}&raquo;
         er-flex.mb-32(xs12)
           er-text-field(
             v-model="sumTransfer"
@@ -37,6 +50,6 @@ er-form(ref="money_transfer" key="money_transfer")
           +timePickerRange
         er-flex.mb-32(xs12)
           +name
-    er-flex(xs12)
+    er-flex.mb-8(xs12)
       +appeal("Здесь Вы можете указать дополнительную информацию по заявке")
     +footer

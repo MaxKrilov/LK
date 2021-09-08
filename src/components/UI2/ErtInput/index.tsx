@@ -37,7 +37,8 @@ const props = {
   loading: Boolean,
   persistentHint: Boolean,
   prependIcon: String,
-  value: { required: false }
+  value: { required: false },
+  isShowRequiredLabel: Boolean
 }
 
 // eslint-disable-next-line no-use-before-define
@@ -67,6 +68,7 @@ class ErtInput extends baseMixins {
   readonly persistentHint!: boolean
   readonly prependIcon!: string
   readonly value!: any
+  readonly isShowRequiredLabel!: boolean
 
   // Data
   lazyValue: any = this.value
@@ -157,6 +159,7 @@ class ErtInput extends baseMixins {
       staticClass: 'ert-input__control'
     }, [
       this.genInputSlot(),
+      this.genRequiredLabel(),
       this.genMessages()
     ])
   }
@@ -165,6 +168,16 @@ class ErtInput extends baseMixins {
       this.genLabel(),
       this.$slots.default
     ]
+  }
+
+  genRequiredLabel () {
+    if (!this.isShowRequiredLabel) {
+      return null
+    }
+
+    return this.$createElement('div', {
+      staticClass: 'ert-input__required-label'
+    })
   }
   genIcon (type: string, cb?: (e: Event) => void, extraData: VNodeData = {}) {
     const icon = (this as any)[`${type}Icon`]

@@ -45,7 +45,7 @@ export default {
         return `Выбран пакет: За границу  — ${this.globalCost} ₽`
       }
       if (this.selectedPackage === 'local') {
-        return `Выбран пакет: Местные звноки — ${this.localCost} ₽`
+        return `Выбран пакет: Местные звонки — ${this.localCost} ₽`
       }
       return ''
     },

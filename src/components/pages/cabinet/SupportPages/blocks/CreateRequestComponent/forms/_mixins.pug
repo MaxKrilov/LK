@@ -55,9 +55,9 @@ mixin footer
       | Отменить
 
 mixin footerFile(hideFileSize)
-  er-flex.create-request-component__download-statement.mb-32(xs12)
+  er-flex.create-request-component__download-statement.mb-24(xs12)
     | Чтобы отправить эту заявку вам нужно заполнить и подписать заявление
-    .zaya
+    .zaya.mt-16
       er-icon(name="doc")
       a(:href="getLinkDeclaration")
         | Скачать заявление

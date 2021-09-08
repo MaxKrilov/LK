@@ -10,7 +10,7 @@ er-form(ref="termination_of_a_contract_or_service" key="termination_of_a_contrac
           .caption
             | Текущий номер договора
           .agreement
-            | {{ agreementNumber }}
+            | {{ getActiveBillingAccountNumber }}
           .toggle.ml-auto
             er-toggle(view="radio-check", v-model="isWholeContract" label="Весь договор")
         er-flex(xs12)
@@ -50,6 +50,6 @@ er-form(ref="termination_of_a_contract_or_service" key="termination_of_a_contrac
           +timePickerRange
         er-flex.mb-32(xs12)
           +name
-    er-flex.mb-32(xs12)
+    er-flex.mb-8(xs12)
       +appeal("Здесь Вы можете указать дополнительную информацию по заявке")
     +footer
