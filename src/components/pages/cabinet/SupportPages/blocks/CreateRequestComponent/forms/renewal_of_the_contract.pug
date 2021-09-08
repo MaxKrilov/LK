@@ -10,7 +10,7 @@ er-form(ref="renewal_of_the_contract" key="renewal_of_the_contract")
           .caption
             | Текущий номер договора
           .agreement
-            | {{ getActiveBillingAccountNumber }}
+            | {{ getActiveBillingAccountContractNumber }}
           .toggle.ml-auto
             er-toggle(view="radio-check", v-model="isWholeContract" label="Весь договор")
         er-flex(xs12)

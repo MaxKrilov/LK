@@ -77,7 +77,7 @@ interface iErForm extends HTMLFormElement {
       listBillingAccount: (state: any) => state.payments.listBillingAccount.map((item: any) => item.accountNumber)
     }),
     ...mapGetters('user', ['getAddressList', 'getListContact']),
-    ...mapGetters('payments', ['getActiveBillingAccountNumber', 'getListBillingAccount'])
+    ...mapGetters('payments', ['getActiveBillingAccountNumber', 'getActiveBillingAccountContractNumber', 'getListBillingAccount'])
   },
   components: {
     ErPhoneSelect,
@@ -91,6 +91,7 @@ export default class CreateRequestComponent extends Vue {
   publicPath = process.env.BASE_URL
   $api!: API
   getActiveBillingAccountNumber!: string | number
+  getActiveBillingAccountContractNumber!: string | number
   getListBillingAccount!: string[]
   isOpenForm = false
   isOpenFormDesktop = false
