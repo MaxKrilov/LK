@@ -162,7 +162,8 @@ export default {
         {
           locationId: this.tlo.locationId,
           disconnectDate: '1',
-          productId: this.tlo.id
+          productId: this.tlo.id,
+          marketId: this.marketId
         })
         .then((e) => {
           this.isShowResumeModal = true

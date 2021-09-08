@@ -514,10 +514,10 @@ const actions = {
   },
   createResumeOrder (
     context: ActionContext<IState, any>,
-    { locationId, productId }: { locationId: string, productId: string }
+    { locationId, productId, marketId }: { locationId: string, productId: string, marketId: string }
   ) {
     return new Promise((resolve, reject) => {
-      context.dispatch('create', { locationId })
+      context.dispatch('create', { locationId, marketId })
         .then(() => {
           context.dispatch('resume', productId)
             .then(() => {
