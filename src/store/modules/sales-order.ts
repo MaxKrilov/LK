@@ -124,7 +124,7 @@ const actions = {
   },
   addElement (
     context: ActionContext<IState, any>,
-    { productId, productCode }: { productId: string, productCode: string }
+    { productId, productCode, offerId }: { productId: string, productCode: string, offerId?: string }
   ) {
     if (!productId && !productCode) throw new Error('Missing required parameter')
     const currentResponse = context.getters.currentResponse as ISaleOrder
@@ -132,8 +132,8 @@ const actions = {
 
     const orderItem = finder(currentResponse.orderItems, productId)
 
-    const offerId = orderItem?.offer && productCode ? offerIdFinder(orderItem.offer, productCode) : null
-    if (!offerId) throw new Error('Offer ID not found')
+    const _offerId = offerId || (orderItem?.offer && productCode ? offerIdFinder(orderItem.offer, productCode) : null)
+    if (!_offerId) throw new Error('Offer ID not found')
 
     const orderItemId = orderItem?.id || null
     if (!orderItemId) throw new Error('Order Item ID not found')
@@ -143,7 +143,7 @@ const actions = {
         .setWithCredentials()
         .setData({
           clientId,
-          offerId,
+          offerId: _offerId,
           orderItemId
         })
         .query(QUERY.ADD_ELEMENT)
@@ -247,6 +247,59 @@ const actions = {
       id: elementId,
       chars
     }]
+
+    return new Promise((resolve, reject) => {
+      api()
+        .setWithCredentials()
+        .setType(TYPE_JSON)
+        .setData({
+          clientId,
+          id: orderId,
+          elements
+        })
+        .query(QUERY.UPDATE_ELEMENT)
+        .then((response: ISaleOrder) => {
+          context.commit('responseSuccess', response)
+          resolve(response)
+        })
+        .catch((error: AxiosError) => {
+          context.commit('responseError')
+          reject(error?.response?.data)
+        })
+    })
+  },
+  updateNewElements (
+    context: ActionContext<IState, any>,
+    { updateElements }: { updateElements: IUpdateElement[] }
+  ) {
+    if (!updateElements) throw new Error('Missing required parameter')
+    const clientId = getClientId(context)
+    const currentResponse = context.getters.currentResponse as ISaleOrder
+    const orderId = context.getters.orderId
+
+    const elements = updateElements.reduce((acc, item) => {
+      const orderItem = finder(currentResponse.orderItems, item.productId)
+
+      if (orderItem === null) {
+        throw new Error('Не найден элемент заказа')
+      }
+
+      const orderItemElement = orderItem!.orderItems
+        .find(item => {
+          return item.action &&
+            item.action.toLowerCase() === ACTION_ADD &&
+            !acc.find(subItem => item.id === subItem.id)
+        })
+
+      if (!orderItemElement) throw new Error('Unknown error')
+
+      acc.push({
+        chars: item.chars as Record<string, string>,
+        id: orderItemElement.id
+      })
+
+      return acc
+    }, [] as { chars: Record<string, string>, id: string }[])
 
     return new Promise((resolve, reject) => {
       api()
