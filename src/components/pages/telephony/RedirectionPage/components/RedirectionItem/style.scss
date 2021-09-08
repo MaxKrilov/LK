@@ -1,0 +1,285 @@
+.ert-redirection-item {
+  &__content {
+    display: grid;
+    grid-template-rows: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
+
+    padding: 8px 0;
+
+    align-items: center;
+
+    @include min-breakpoint('md') {
+      grid-template-rows: repeat(2, 1fr);
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    @include min-breakpoint('lg') {
+      grid-template-rows: 1fr;
+      grid-template-columns: repeat(5, 1fr);
+    }
+  }
+
+  &__from-phone {
+    grid-column: 1/2;
+    grid-row: 1/2;
+  }
+
+  &__to-phone {
+    grid-column: 1/2;
+    grid-row: 2/3;
+
+    @include min-breakpoint('md') {
+      grid-column: 2/3;
+      grid-row: 1/2;
+    }
+  }
+
+  &__type-redirection {
+    grid-column: 2/3;
+    grid-row: 1/2;
+
+    @include min-breakpoint('md') {
+      grid-column: 3/4;
+    }
+  }
+
+  &__period {
+    grid-column: 1/2;
+    grid-row: 3/4;
+
+    @include min-breakpoint('md') {
+      grid-row: 2/3;
+    }
+
+    @include min-breakpoint('lg') {
+      grid-column: 4/5;
+      grid-row: 1/2;
+    }
+  }
+
+  &__actions {
+    grid-column: 2/3;
+    grid-row: 3/4;
+
+    @include min-breakpoint('md') {
+      grid-column: 2/4;
+      grid-row: 2/3;
+    }
+
+    @include min-breakpoint('lg') {
+      grid-column: 5/6;
+      grid-row: 1/2;
+
+      text-align: right;
+    }
+  }
+
+  &__from-phone,
+  &__to-phone {
+    @extend %h4-font;
+  }
+
+  &__type-redirection,
+  &__period {
+    @extend %body-font;
+  }
+
+  &__period {
+    @include min-breakpoint('lg') { // For fix
+      min-width: 183px;
+    }
+
+    > span {
+      display: block;
+    }
+
+    .hours span {
+      @include color-black(0.5);
+    }
+  }
+
+  &__actions {
+    > button {
+      @include color-black(0.3);
+      transition: $primary-transition;
+
+      &:hover {
+        @include color-black(0.8);
+      }
+    }
+  }
+}
+
+.ert-redirection-item-settings {
+  &__content {
+    background-color: map-get($shades, 'white');
+
+    padding: 16px;
+
+    @include min-breakpoint('md') {
+      padding: 24px;
+    }
+
+    @include min-breakpoint('xl') {
+      padding: 32px;
+    }
+  }
+
+  &__head {
+    display: flex;
+    justify-content: space-between;
+
+    .title {
+      @extend %h3-font;
+      @include color-black(0.8);
+    }
+
+    .close {
+      @include color-black(0.3);
+      transition: $primary-transition;
+
+      &:hover {
+        @include color-black(0.8);
+      }
+    }
+  }
+
+  &__body .phones {
+    display: flex;
+    align-items: center;
+
+    .from,
+    .to {
+      @extend %caption1-font;
+      @include color-black(0.8);
+    }
+
+    .arrow {
+      color: map-get($green, 'base');
+      margin-top: -2px;
+    }
+  }
+
+  &__body .type {
+    .title {
+      @extend %h4-font;
+      @include color-black(0.8);
+    }
+
+    .value {
+      display: flex;
+      flex-wrap: wrap;
+
+      > * {
+        width: 100%;
+        max-width: 50%;
+        margin-top: 0;
+        padding-top: 0;
+        margin-bottom: 16px;
+
+        @include min-breakpoint('sm') {
+          max-width: (100% / 3);
+        }
+      }
+    }
+  }
+
+  &__body .period {
+    .title {
+      @extend %h4-font;
+      @include color-black(0.8);
+    }
+
+    .value {
+      display: flex;
+      flex-direction: column;
+
+      @include min-breakpoint('sm') {
+        flex-direction: row;
+      }
+
+      > * {
+        width: 100%;
+      }
+    }
+
+    .days-value,
+    .time-value {
+      .ert-input {
+        margin-top: 0;
+        padding-top: 0;
+      }
+    }
+
+    .days-value {
+      display: flex;
+      justify-content: space-between;
+
+      > .ert-input > .ert-input__control > .ert-input__slot {
+        flex-direction: column-reverse;
+        align-items: center;
+      }
+
+      > .ert-input > .ert-input__control > .ert-input__slot > .ert-input--selection-controls__input {
+        margin-right: 0;
+      }
+    }
+
+    .time-value {
+      display: flex;
+
+      > * {
+        max-width: 81px;
+
+        @include min-breakpoint('sm') {
+          max-width: 68px;
+        }
+
+        @include min-breakpoint('md') {
+          max-width: 78px;
+        }
+
+        @include min-breakpoint('xl') {
+          max-width: 81px;
+        }
+      }
+    }
+
+    @include min-breakpoint('sm') {
+      .days {
+        max-width: 256px;
+      }
+
+      .time {
+        max-width: 152px;
+      }
+    }
+
+    @include min-breakpoint('md') {
+      .days {
+        max-width: 326px;
+      }
+
+      .time {
+        max-width: 181px;
+      }
+    }
+  }
+
+  &__body .actions {
+    display: flex;
+    flex-direction: column;
+
+    @include min-breakpoint('sm') {
+      flex-direction: row;
+    }
+
+    > * {
+      width: 100%;
+
+      @include min-breakpoint('sm') {
+        max-width: 168px;
+      }
+    }
+  }
+}

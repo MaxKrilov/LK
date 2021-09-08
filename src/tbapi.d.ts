@@ -114,6 +114,205 @@ export interface ICustomerOffer {
   visibleInSSP: boolean
 }
 
+export interface ICustomerProductSLO {
+  activated: boolean
+  availableFrom: string
+  availableTo: string
+  canBeActivatedInSSP: boolean
+  categoryRelationships: [{
+    maxCount: number
+    minCount: number
+    offeringCategoryId: number
+    orderNumber: number
+  }]
+  chars: any
+  code: string
+  customerCategories: [{
+    code: string
+    href: string
+    id: string
+    name: string
+    originalName: string
+    tomsId: string
+  }]
+  description: string
+  distributionChannels: [{
+    code: string
+    href: string
+    id: string
+    name: string
+    originalName: string
+    tomsId: string
+  }]
+  feasibilityCheckRequired: boolean
+  href: string
+  id: string
+  isEquipment: boolean
+  isRoot: boolean
+  marketingBrands: [{
+    name: string
+    id: string
+  }]
+  markets: [{
+    code: string
+    href: string
+    id: string
+    marketingBrands: {
+      name: string
+      id: string
+    }
+    name: string
+    originalName: string
+    tomsId: string
+  }]
+  name: string
+  offer?: ICustomerOffer
+  offeringCategories: [{
+    code: string
+    id: string
+    isTop: boolean
+    name: string
+    orderNumber: string
+    originalName: string
+    reconciliationId: string
+    tomsId: string
+  }]
+  offeringRelationships: [{
+    childMax: string
+    childMin: string
+    childProductOffering: {
+      availableFrom: string
+      availableTo: string
+      canBeActivatedInSSP: boolean
+      code: string
+      customerCategories: [{
+        code: string
+        href: string
+        id: string
+        name: string
+        originalName: string
+        tomsId: string
+      }]
+      description: string
+      distributionChannels: [{
+        code: string
+        href: string
+        id: string
+        name: string
+        originalName: string
+        tomsId: string
+      }]
+      feasibilityCheckRequired: boolean
+      href: string
+      id: string
+      isEquipment: boolean
+      isRoot: boolean
+      marketingBrands: [{
+        name: string
+        id: string
+      }]
+      markets: [{
+        code: string
+        href: string
+        id: string
+        marketingBrands: {
+          name: string
+          id: string
+        }
+        name: string
+        originalName: string
+        tomsId: string
+      }]
+      name: string
+      originalDescription: string
+      originalName: string
+      prices: [{
+        amount: string
+        id: string
+        productOfferingIds: string[]
+        startDate: string
+        tax: string
+        type: string
+      }]
+      product: {
+        chars: [{
+          defaultListValue?: { id: string, name: string }
+          id: string
+          isMandatory?: boolean
+          isModifiable?: boolean
+          isMultiple?: boolean
+          isReference?: boolean
+          isVisible?: boolean
+          mappingType?: string
+          name: string
+          orderNumber?: string
+          productId?: string
+          tomsId?: string
+          tomsOfferId?: string
+          tomsProductId?: string
+          type?: string
+          values?: { id: string, name: string }[]
+          visibleInSsp?: boolean
+        }]
+        code: string
+        href: string
+        id: string
+        name: string
+        originalName: string
+      }
+      requiresContract: boolean
+      status: string
+      suspendable: boolean
+      visibleInSSP: boolean
+    }
+    defaultBehavior: string
+    id: string
+    name: string
+    orderNumber: string
+    originalId: string
+    reconciliationId: string
+  }]
+  orderNumber: number
+  originalDescription: string
+  originalName: string
+  parentId: string
+  prices: ISLOPricesItem[]
+  product: {
+    chars: [{
+      defaultListValue?: { id: string, name: string }
+      id: string
+      isMandatory?: boolean
+      isModifiable?: boolean
+      isMultiple?: boolean
+      isReference?: boolean
+      isVisible?: boolean
+      mappingType?: string
+      name: string
+      orderNumber?: string
+      productId?: string
+      tomsId?: string
+      tomsOfferId?: string
+      tomsProductId?: string
+      type?: string
+      values?: { id: string, name: string }[]
+      visibleInSsp?: boolean
+    }]
+    code: string
+    href: string
+    id: string
+    name: string
+    originalName: string
+  }
+  productId: string
+  purchasedPrices: IPurchasedPrices
+  requiresContract: boolean
+  status: string
+  suspendable: boolean
+  visibleInSSP: boolean
+  startDate: string
+  endDate: string
+}
+
 export interface ICustomerProduct {
   tlo: {
     actualStartDate: string
@@ -129,203 +328,7 @@ export interface ICustomerProduct {
     status: string
     bundle?: Record<any, any>
   }
-  slo: [{
-    activated: boolean
-    availableFrom: string
-    availableTo: string
-    canBeActivatedInSSP: boolean
-    categoryRelationships: [{
-      maxCount: number
-      minCount: number
-      offeringCategoryId: number
-      orderNumber: number
-    }]
-    chars: any
-    code: string
-    customerCategories: [{
-      code: string
-      href: string
-      id: string
-      name: string
-      originalName: string
-      tomsId: string
-    }]
-    description: string
-    distributionChannels: [{
-      code: string
-      href: string
-      id: string
-      name: string
-      originalName: string
-      tomsId: string
-    }]
-    feasibilityCheckRequired: boolean
-    href: string
-    id: string
-    isEquipment: boolean
-    isRoot: boolean
-    marketingBrands: [{
-      name: string
-      id: string
-    }]
-    markets: [{
-      code: string
-      href: string
-      id: string
-      marketingBrands: {
-        name: string
-        id: string
-      }
-      name: string
-      originalName: string
-      tomsId: string
-    }]
-    name: string
-    offer?: ICustomerOffer
-    offeringCategories: [{
-      code: string
-      id: string
-      isTop: boolean
-      name: string
-      orderNumber: string
-      originalName: string
-      reconciliationId: string
-      tomsId: string
-    }]
-    offeringRelationships: [{
-      childMax: string
-      childMin: string
-      childProductOffering: {
-        availableFrom: string
-        availableTo: string
-        canBeActivatedInSSP: boolean
-        code: string
-        customerCategories: [{
-          code: string
-          href: string
-          id: string
-          name: string
-          originalName: string
-          tomsId: string
-        }]
-        description: string
-        distributionChannels: [{
-          code: string
-          href: string
-          id: string
-          name: string
-          originalName: string
-          tomsId: string
-        }]
-        feasibilityCheckRequired: boolean
-        href: string
-        id: string
-        isEquipment: boolean
-        isRoot: boolean
-        marketingBrands: [{
-          name: string
-          id: string
-        }]
-        markets: [{
-          code: string
-          href: string
-          id: string
-          marketingBrands: {
-            name: string
-            id: string
-          }
-          name: string
-          originalName: string
-          tomsId: string
-        }]
-        name: string
-        originalDescription: string
-        originalName: string
-        prices: [{
-          amount: string
-          id: string
-          productOfferingIds: string[]
-          startDate: string
-          tax: string
-          type: string
-        }]
-        product: {
-          chars: [{
-            defaultListValue?: { id: string, name: string }
-            id: string
-            isMandatory?: boolean
-            isModifiable?: boolean
-            isMultiple?: boolean
-            isReference?: boolean
-            isVisible?: boolean
-            mappingType?: string
-            name: string
-            orderNumber?: string
-            productId?: string
-            tomsId?: string
-            tomsOfferId?: string
-            tomsProductId?: string
-            type?: string
-            values?: { id: string, name: string }[]
-            visibleInSsp?: boolean
-          }]
-          code: string
-          href: string
-          id: string
-          name: string
-          originalName: string
-        }
-        requiresContract: boolean
-        status: string
-        suspendable: boolean
-        visibleInSSP: boolean
-      }
-      defaultBehavior: string
-      id: string
-      name: string
-      orderNumber: string
-      originalId: string
-      reconciliationId: string
-    }]
-    orderNumber: number
-    originalDescription: string
-    originalName: string
-    prices: ISLOPricesItem[]
-    product: {
-      chars: [{
-        defaultListValue?: { id: string, name: string }
-        id: string
-        isMandatory?: boolean
-        isModifiable?: boolean
-        isMultiple?: boolean
-        isReference?: boolean
-        isVisible?: boolean
-        mappingType?: string
-        name: string
-        orderNumber?: string
-        productId?: string
-        tomsId?: string
-        tomsOfferId?: string
-        tomsProductId?: string
-        type?: string
-        values?: { id: string, name: string }[]
-        visibleInSsp?: boolean
-      }]
-      code: string
-      href: string
-      id: string
-      name: string
-      originalName: string
-    }
-    productId: string
-    purchasedPrices: IPurchasedPrices
-    requiresContract: boolean
-    status: string
-    suspendable: boolean
-    visibleInSSP: boolean
-    startDate: string
-    endDate: string
-  }]
+  slo: ICustomerProductSLO[]
 }
 
 export interface IAddress {

@@ -1,0 +1,83 @@
+.ert-telephony-redirection {
+  &__list-redirection__head {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: 1fr;
+
+    @extend %caption2-font;
+    @include color-black(0.3);
+
+    padding: 0 0 16px;
+
+    @include min-breakpoint('md') {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    @include min-breakpoint('lg') {
+      grid-template-columns: repeat(5, 1fr);
+    }
+
+    .from-to {
+      @include min-breakpoint('md') {
+        display: none;
+      }
+    }
+    .from {
+      display: none;
+
+      @include min-breakpoint('md') {
+        display: block;
+      }
+    }
+    .to {
+      display: none;
+
+      @include min-breakpoint('md') {
+        display: block;
+      }
+    }
+    .type {
+    }
+    .period {
+      display: none;
+
+      @include min-breakpoint('lg') {
+        display: block;
+      }
+    }
+    .actions {
+      display: none;
+
+      @include min-breakpoint('lg') {
+        display: block;
+        text-align: right;
+      }
+    }
+  }
+
+  &__list-redirection__body {
+    > *:nth-child(2n + 1) {
+      background-color: rgba(map-get($shades, 'black'), 0.05);
+    }
+  }
+
+  &__loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .ert-progress-circular {
+      @include color-black(0.3);
+      margin-right: $padding-x4;
+    }
+
+    .title {
+      @include color-black(0.8);
+      @extend %h4-font;
+    }
+  }
+
+  &__empty .description {
+    @extend %body-font;
+  }
+}

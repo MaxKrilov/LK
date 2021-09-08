@@ -104,7 +104,8 @@ import SurveyPage from './components/pages/survey/index'
 // Телефония
 import TelephonyTemplate from './components/templates/TelephonyTemplate/index'
 import TelephonyStatisticPage from './components/pages/telephony/statistic/index'
-import TelephonyRedirectionsPage from './components/pages/telephony/redirection/index'
+// import TelephonyRedirectionsPage from './components/pages/telephony/redirection/index'
+import TelephonyRedirectionsPage from './components/pages/telephony/RedirectionPage/index'
 import TelephonyBlacklistPage from '@/components/pages/telephony/blacklist/index'
 
 import WifiTemplate from './components/templates/WiFiTemplate/index'
@@ -309,15 +310,19 @@ const router = new Router({
               path: 'statistic',
               component: TelephonyStatisticPage
             },
-            {
-              path: 'redirections',
-              component: TelephonyRedirectionsPage
-            },
+            // {
+            //   path: 'redirections',
+            //   component: TelephonyRedirectionsPage
+            // },
             {
               path: 'blacklist',
               component: TelephonyBlacklistPage
             }
           ]
+        },
+        {
+          path: 'telephony/redirections',
+          component: TelephonyRedirectionsPage
         },
         {
           name: 'survey',
