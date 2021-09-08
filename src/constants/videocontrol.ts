@@ -56,6 +56,8 @@ const VC_TYPES = {
 
 const CAMERA_SALE_TYPES = {
   RENT: 'Аренда',
+  INSTALLMENT: 'Рассрочка',
+  OWN_DEVICE: 'Собственное оборудование клиента',
   SALE: 'Продажа'
 }
 
@@ -68,6 +70,8 @@ const CHARS = {
   SOUND_RECORD: 'Запись звука', // В характеристиках камеры (может быть "Да" или "Нет"),
   FULLHD: 'Поддержка FullHD',
   ARCHIVE_DAY_COUNT: 'Количество дней архива',
+  DURATION: 'Длительность рассрочки',
+  GARANTE_TO: 'Гарантийный срок (до)',
   MODEL: 'Модель'
 }
 

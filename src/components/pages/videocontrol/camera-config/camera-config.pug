@@ -48,13 +48,13 @@
 
         .col-price
           .warranty-wrap
-            .caption2 Гарантия
-            .mt-4 ----
+            .caption2(v-if="cameraSaleInfo.firstColumn.name") {{ cameraSaleInfo.firstColumn.name }}
+            .mt-4(v-if="cameraSaleInfo.firstColumn.content") {{ cameraSaleInfo.firstColumn.content }}
 
           .price-wrap
-            .caption2 {{ device.saleType }}
-            .mt-4
-              er-price(period="мес") {{ device.price|price }}
+            .caption2(v-if="cameraSaleInfo.secondColumn.name") {{ cameraSaleInfo.secondColumn.name }}
+            .mt-4(v-if="cameraSaleInfo.secondColumn.content") 
+              er-price(period="мес") {{ cameraSaleInfo.secondColumn.content|price }}
 
     .camera-edit-form__body
       .vc-camera-edit-form
