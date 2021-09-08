@@ -131,7 +131,7 @@
       @confirm="onConnectRedirectionHandler"
     )
       template(v-slot:description)
-        | {{ getListPhoneInProgressModification.length !== listModel.length ? '' : 'Подключение будет выполнено частично. ' }}Для номера (-ов) телефона <b>{{ formatListPhoneInProgressModification }}</b>&nbsp;
+        | {{ getListPhoneInProgressModification.length !== listModel.length ? 'Подключение будет выполнено частично. ' : '' }}Для номера (-ов) телефона <b>{{ formatListPhoneInProgressModification }}</b>&nbsp;
         | выполняется заказ. Пожалуйста, попробуйте позже.
 </template>
 
