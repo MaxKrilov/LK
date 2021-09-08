@@ -131,6 +131,7 @@ const state = {
 
 const getters = {
   getActiveBillingAccount: (state: IState) => state.activeBillingAccount?.billingAccountId,
+  getActiveBillingAccountContractNumber: (state: IState) => state.activeBillingAccount?.contractNumber,
   getListBillingAccount: (state: IState) => state.listBillingAccount.map(account => account.accountNumber),
   getActiveBillingAccountNumber: (state: IState) => state.activeBillingAccount?.accountNumber,
   getMarketingBrandId: (state: IState) => (state.billingInfo as IBillingInfo)?.marketingBrandId,
@@ -144,9 +145,9 @@ const getters = {
     if (!result.hasOwnProperty(contractNumber)) {
       result[contractNumber] = []
     }
-    result[contractNumber].push({ accountNumber, billingAccountId, accountStatus })
+    result[contractNumber].push({ accountNumber, contractNumber, billingAccountId, accountStatus })
     return result
-  }, {} as Record<string, { accountNumber: string, billingAccountId: string, accountStatus: { id: string, name: string } }[]>),
+  }, {} as Record<string, { accountNumber: string, contractNumber:string, billingAccountId: string, accountStatus: { id: string, name: string } }[]>),
   isEnabledAutoPay: (state: IState) => state.billingInfo.hasOwnProperty('paymentMethod')
     ? (state.billingInfo as IBillingInfo).paymentMethod.id === IS_ENABLED_AUTOPAY
     : false
