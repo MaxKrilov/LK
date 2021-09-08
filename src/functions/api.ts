@@ -11,6 +11,7 @@ import { cloneDeep } from 'lodash'
 import * as Sentry from '@sentry/vue'
 
 const BASE_BRANCH = 'master'
+//const BASE_BRANCH = 'psi2'
 
 export class API {
   private _branch = BASE_BRANCH
@@ -26,7 +27,8 @@ export class API {
   private static _getUrl (query: string, branch: string): string {
     query = query || '/'
     branch = branch || BASE_BRANCH
-    if (isCombat()) {
+    // if (isCombat()) {
+    if (true) {
       return wrapHttps(`${BACKEND_COMBAT}${query}`)
     } else if (isStaging()) {
       return wrapHttps(`${BACKEND_STAGING}${query}`)

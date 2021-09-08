@@ -10,7 +10,7 @@ er-form(ref="termination_of_a_contract_or_service" key="termination_of_a_contrac
           .caption
             | Текущий номер договора
           .agreement
-            | {{ getActiveBillingAccountNumber }}
+            | {{ getActiveBillingAccountContractNumber }}
           .toggle.ml-auto
             er-toggle(view="radio-check", v-model="isWholeContract" label="Весь договор")
         er-flex(xs12)
