@@ -4,7 +4,8 @@ er-dialog(
   @update:returnValue="onClose()"
 )
   .er-dialog-advanced__modal
-    button(type="button").er-dialog-advanced__close(
+    button.er-dialog-advanced__close(
+      type="button"
       @click="onClose()"
       @click-outside="onClose()"
       ref="content"
