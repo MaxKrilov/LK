@@ -49,7 +49,9 @@
 
     .er-select__slot label.er-text-field--active,
     .er-select__slot label.er-textarea--active {
-      transform: scale(0.85) translateY(-36px);
+      @include max-breakpoint(xl) {
+        transform: scale(0.85) translateY(-36px);
+      }
     }
   }
 
@@ -62,7 +64,7 @@
       //"name name name"
       "cameraName cameraName cameraName"
       "model model model"
-      "none sale-type price";
+      "price price price";
 
     padding: $padding-x4 $padding-x2;
     border-top: 1px solid $border-color;
@@ -101,7 +103,9 @@
     .col-price {
       grid-area: price;
       display: flex;
-      justify-content: flex-end;
+      @include min-breakpoint("md") {
+        justify-content: flex-end;
+      }
       gap: $padding-x8;
     }
   }
@@ -336,6 +340,11 @@
       display: inline-flex;
       flex-direction: row;
       align-items: center;
+      @include max-breakpoint("sm") {
+        flex-direction: column;
+        align-items: flex-start;
+
+      }
 
       .price,
       .er-price {

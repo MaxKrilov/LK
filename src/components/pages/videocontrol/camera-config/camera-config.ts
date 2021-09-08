@@ -549,6 +549,64 @@ export default class VCCameraConfigPage extends Mixins(
 
     return '0'
   }
+  get cameraSaleInfo () {
+    switch (this.device.saleType) {
+      case CAMERA_SALE_TYPES.SALE:
+        return {
+          firstColumn: {
+            name: 'Гарантийный срок до:',
+            content: this.$moment(this?.camera?.chars[CHARS.GARANTE_TO]).format('DD.MM.YYYY')
+          },
+          secondColumn: {
+            name: '',
+            content: ''
+          }
+        }
+      case CAMERA_SALE_TYPES.OWN_DEVICE:
+        return {
+          firstColumn: {
+            name: '',
+            content: ''
+          },
+          secondColumn: {
+            name: 'Собственное оборудование клиента',
+            content: ''
+          }
+        }
+      case CAMERA_SALE_TYPES.RENT:
+        return {
+          firstColumn: {
+            name: 'Гарантия',
+            content: '---'
+          },
+          secondColumn: {
+            name: 'Аренда',
+            content: this.device.price
+          }
+        }
+      case CAMERA_SALE_TYPES.INSTALLMENT:
+        return {
+          firstColumn: {
+            name: 'Гарантия',
+            content: this.$moment(this?.camera?.chars[CHARS.GARANTE_TO]).format('DD.MM.YYYY')
+          },
+          secondColumn: {
+            name: `Рассрочка ${this?.camera?.chars[CHARS.DURATION]} мес.`,
+            content: this.device.price
+          }
+        }
+    }
+    return {
+      firstColumn: {
+        name: '',
+        content: ''
+      },
+      secondColumn: {
+        name: '',
+        content: ''
+      }
+    }
+  }
 
   getAnalyticItemPrice (code: string) {
     if (this.checkIsServiceEnabled(code)) {
