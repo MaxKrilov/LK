@@ -1,0 +1,10 @@
+mixin sale(text="Собственность")
+    .device-name
+        .caption2 {{ device['Тип оборудования'] }}
+        .body {{ device['Модель'] }}
+    .slot1
+        .caption2 Гарантия до
+        .body {{ device['Гарантийный срок'] }}
+    .slot4
+        .body= text
+    

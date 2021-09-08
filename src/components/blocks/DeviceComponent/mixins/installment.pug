@@ -1,0 +1,12 @@
+mixin installment
+    .device-name
+        .caption2  {{ device['Тип оборудования'] }}
+        .body {{ device['Модель'] }}
+    .slot1 
+        .caption2 Гарантия до
+        .body {{ device['Гарантийный срок'] }}
+    .slot2
+        .caption2 {{device['Способ передачи оборудования']}} {{ device['Длительность рассрочки'] }} мес
+        div
+            span.h4 {{ device['Стоимость'] }} 
+            span.caption ₽/мес

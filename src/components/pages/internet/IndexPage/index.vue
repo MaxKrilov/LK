@@ -19,6 +19,7 @@
     )
 
     services-component(:customer-product="customerProduct" :is-loading-customer-product="isLoadingCustomerProduct")
+    InternetDeviceComponent(:productId="customerProduct.tlo.id", :listOfDevices="DEVICES")
     price-services-component(:customer-product="customerProduct" :is-loading-customer-product="isLoadingCustomerProduct")
     .internet-index-page__footer
       er-button(color="blue" @click="onClickPlug")

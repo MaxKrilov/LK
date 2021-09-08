@@ -1,0 +1,9 @@
+mixin rent
+    .device-name
+        .caption2 {{ device['Тип оборудования'] }}
+        .body {{ device['Модель'] }}
+    .slot3 
+        .caption2 {{device['Способ передачи оборудования']}}
+        div
+            span.h4 {{ device['Стоимость'] }} 
+            span.caption ₽/мес

@@ -9,6 +9,8 @@ import { SERVICE_URLS } from '@/constants/url'
 import { WIFIANALYTICS, WIFIKONTFIL, SERVICES_AUTH, WIFIDESIGNOPT } from '@/components/pages/wifi/index/constants'
 import ErBundleInfo from '@/components/blocks/ErBundleInfo/index.vue'
 import { STATUS_SUSPENDED } from '@/constants/status'
+import WifiDeviceComponent from '../blocks/WifiDeviceComponent/index.vue'
+import { DEVICES } from '@/constants/wifi'
 
 const MAP_URL = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
 
@@ -37,7 +39,8 @@ const deg2rad = (deg: number) => deg * Math.PI / 180
     LMarker,
     LPopup,
     ErBundleInfo,
-    ServicesComponent
+    ServicesComponent,
+    WifiDeviceComponent
   },
   watch: {
     listPoint (val: ILocationOfferInfo[]) {
@@ -48,6 +51,7 @@ const deg2rad = (deg: number) => deg * Math.PI / 180
   }
 })
 export default class WifiIndexPage extends Vue {
+  readonly DEVICES:string[] = DEVICES
   // Props
   readonly listPoint!: ILocationOfferInfo[]
 
