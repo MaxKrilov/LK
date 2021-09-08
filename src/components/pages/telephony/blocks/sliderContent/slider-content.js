@@ -69,6 +69,12 @@ export default {
       isLoadingDevices: false,
       isLoadedDevices: false,
 
+      isShowSuccessModal: false,
+      isRecovering: false,
+      isShowResumeModal: false,
+      isSendingOrderResume: false,
+      isShowErrorModal: false,
+
       serChannels: 0,
       serChannelsValue: 0,
       serChannelsPrice: 0,
@@ -148,6 +154,40 @@ export default {
           global: this.globalPlug
         }
       })
+    },
+    recover () {
+      this.isRecovering = true
+
+      this.$store.dispatch('salesOrder/createResumeOrder',
+        {
+          locationId: this.tlo.locationId,
+          disconnectDate: '1',
+          productId: this.tlo.id
+        })
+        .then((e) => {
+          this.isShowResumeModal = true
+        })
+        .catch(() => {
+          this.isShowErrorModal = true
+        })
+        .finally(() => {
+          this.isRecovering = false
+        })
+    },
+    sendResumeOrder () {
+      this.isSendingOrderResume = true
+
+      this.$store.dispatch('salesOrder/send')
+        .then((e) => {
+          this.isShowResumeModal = false
+          this.isShowSuccessModal = true
+        })
+        .catch(() => {
+          this.isShowErrorModal = true
+        })
+        .finally(() => {
+          this.isSendingOrderResume = false
+        })
     },
     disconnectNumber (number) {
       this.disconnectRequestData.services += number

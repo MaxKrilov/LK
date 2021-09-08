@@ -121,7 +121,8 @@ div(:class="`${pre}`" )
 
         div(:class="`${pre}__slider-buttons`")
           template(v-if="isStopped")
-            er-button(color="yellow"  @click="$router.push('/lk/support?form=restoring_a_contract_or_service')") Восстановить
+            er-button(color="yellow"  @click="recover" :loading="isRecovering") Восстановить
+            //- er-button(color="yellow"  @click="$router.push('/lk/support?form=restoring_a_contract_or_service')") Восстановить
           template(v-else)
             er-button(color="yellow"  @click="$router.push('/lk/support?form=suspension_of_a_contract_or_service')") Приостановить Телефонию
 
@@ -140,3 +141,32 @@ div(:class="`${pre}`" )
     :requestData="changeChannelsRequestData"
     isSendManagerRequest
     )
+  er-activation-modal(
+    type="question"
+    v-model="isShowResumeModal"
+    title="Вы уверены, что хотите восстнаовить услугу?"
+    @confirm="sendResumeOrder"
+    @close="cancelOrder"
+    :isLoadingConfirm="isSendingOrderResume"
+    actionButtonText="Восстановить"
+  )
+
+  er-activation-modal(
+    type="error"
+    v-model="isShowErrorModal"
+    title="Ошибка"
+    cancel-button-text="Закрыть"
+    :isShowActionButton="false"
+  )
+    template(slot="description")
+      div Уважаемый Клиент, в данный момент операция не доступна, обратитесь к персональному менеджеру
+
+  er-activation-modal(
+    type="success"
+    v-model="isShowSuccessModal"
+    title="Заказ создан успешно"
+    :isShowActionButton="false"
+    cancel-button-text="Спасибо"
+  )
+    template(slot="description")
+      | Заказ создан успешно. Выполнение заказа может занять некоторое время. Актуальный статус можно узнать в разделе Заказы.
