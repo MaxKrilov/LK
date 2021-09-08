@@ -14,6 +14,7 @@ const QUERY = {
   UPDATE_ELEMENT: '/order/management/update-element',
   DELETE_ELEMENT: '/order/management/delete-element',
   CANCEL: '/order/management/cancel',
+  RESUME: '/customer/product/resume',
   SEND_ORDER: '/order/management/send-order'
 }
 function finder (data:any, id:string) : IOrderItem | null {
@@ -99,6 +100,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       api()
         .setWithCredentials()
+        // .setBranch('web-sales-order')
         .setData({
           clientId,
           marketId: _marketId,
@@ -349,6 +351,35 @@ const actions = {
         })
     })
   },
+  resume (
+    context: ActionContext<IState, any>,
+    productId: string
+  ) {
+    console.log('resume start')
+    const clientId = getClientId(context)
+
+    const currentResponse = context.getters.currentResponse as ISaleOrder
+    const orderItem = finder(currentResponse.orderItems, productId)
+
+    const orderItemId = orderItem?.id || null
+    if (!orderItemId) throw new Error('Order Item ID not found')
+    const orderId = context.getters.orderId
+
+    const data: Record<string, string> = { clientId, orderItemId: orderItemId, salesOrderId: orderId }
+    return new Promise((resolve, reject) => {
+      api()
+        .setData(data)
+        .query(QUERY.RESUME)
+        .then((response: any) => {
+          console.log(response)
+          resolve(response)
+        })
+        .catch((error: AxiosError) => {
+          context.commit('responseError')
+          reject(error?.response?.data)
+        })
+    })
+  },
   createSaleOrder (
     context: ActionContext<IState, any>,
     {
@@ -426,6 +457,27 @@ const actions = {
         .catch((error: AxiosError) => {
           reject(error?.response?.data)
         })
+    })
+  },
+  createResumeOrder (
+    context: ActionContext<IState, any>,
+    { locationId, productId }: { locationId: string, productId: string }
+  ) {
+    return new Promise((resolve, reject) => {
+      context.dispatch('create', { locationId })
+        .then(() => {
+          context.dispatch('resume', productId)
+            .then(() => {
+              context.dispatch('save')
+                .then(response => resolve(response))
+                .catch(err => reject(err))
+            })
+            .catch((err) => {
+              // context.dispatch('createResumeOrder', { locationId, productId })
+              reject(err)
+            })
+        })
+        .catch(err => reject(err))
     })
   },
   createDisconnectOrder (
