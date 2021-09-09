@@ -14,7 +14,7 @@ const QUERY = {
   UPDATE_ELEMENT: '/order/management/update-element',
   DELETE_ELEMENT: '/order/management/delete-element',
   CANCEL: '/order/management/cancel',
-  RESUME: '/customer/product/resume',
+  RESUME: '/order/management/resume',
   SEND_ORDER: '/order/management/send-order'
 }
 function finder (data:any, id:string) : IOrderItem | null {
@@ -408,7 +408,6 @@ const actions = {
     context: ActionContext<IState, any>,
     productId: string
   ) {
-    console.log('resume start')
     const clientId = getClientId(context)
 
     const currentResponse = context.getters.currentResponse as ISaleOrder
