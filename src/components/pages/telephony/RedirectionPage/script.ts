@@ -24,7 +24,7 @@ import cloneDeep from 'lodash/cloneDeep'
 import { ARRAY_SHOWN_PHONES, CODE_CALLFORWRD } from '@/constants/product-code'
 import { ITelephonyRedirection } from '@/interfaces/telephony'
 import * as CONST from './constants'
-import { STATUS_DISCONNECTED } from '@/constants/status'
+import { STATUS_ACTIVATION_CANCELLED, STATUS_DISCONNECTED } from '@/constants/status'
 // import { STATUS_ACTIVATION_IN_PROGRESS, STATUS_ACTIVE, STATUS_MODIFICATION, STATUS_PLANNED } from '@/constants/status'
 
 // Internal helpers
@@ -213,7 +213,7 @@ export default class ErtTelephonyRedirection extends Vue {
             acc.push(...item.slo)
             return acc
           }, [] as ICustomerProductSLO[])
-          .filter(item => ![STATUS_DISCONNECTED].includes(item.status))
+          .filter(item => ![STATUS_DISCONNECTED, STATUS_ACTIVATION_CANCELLED].includes(item.status))
           .map(item => {
             const hoursMatch = item.chars?.[CONST.CHAR_HOURS].match(/\d+/g)
             return {
