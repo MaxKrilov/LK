@@ -27,7 +27,7 @@ export default {
       isOpenRightPanel: false,
       showChangeOrganizationPopup: false,
       notificationCount: 0,
-      menu: MenuItemList(this.listProductByService || []),
+      menu: MenuItemList(this.listProductByService || [], this.oatsPortalLink),
       openingMenuItemIndex: 0,
       isOpenBillingAccountMenu: false
     }
@@ -43,7 +43,7 @@ export default {
       })
     },
     listProductByService (val) {
-      this.menu = MenuItemList(val || [])
+      this.menu = MenuItemList(val || [], this.oatsPortalLink)
       this.$nextTick(() => {
         this.openSubMenu(this.menu[this.openingMenuItemIndex], this.openingMenuItemIndex, null)
       })
@@ -69,7 +69,8 @@ export default {
       notificationCountPromise: 'campaign/getCount',
       listProductByService: 'user/getListProductByService',
       activeBillingAccountId: 'payments/getActiveBillingAccount',
-      activeBillingAccountNumber: 'payments/getActiveBillingAccountNumber'
+      activeBillingAccountNumber: 'payments/getActiveBillingAccountNumber',
+      oatsPortalLink: 'profile/oatsPortalLink'
     }),
     ...mapState({
       legalName: state => state.user.clientInfo.legalName,

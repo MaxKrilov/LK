@@ -47,7 +47,7 @@
 
   .oats-point-content__actions
     er-button(
-      :to="{name: 'go-to-oats-portal'}"
+      :to="oatsLink"
       preIcon="cloud_telephone"
     ) Настроить ОАТС
     er-button(@click="onClickSuspend" flat) Приостановить услугу

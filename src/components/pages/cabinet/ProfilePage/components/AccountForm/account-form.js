@@ -32,6 +32,7 @@ export default {
     isLoading: false,
     snapshot: {},
     forpostUsersSnapshot: [],
+    OATSUsersSnapshot: [],
     createdSuccessText: 'Учетная запись сотрудника создана.',
     createdFailText: 'Не удалось создать учетную запись сотрудника',
     updatedSuccessText: 'Учетная запись сотрудника изменена',
@@ -89,6 +90,7 @@ export default {
         }
       })
     })
+
     this.sectionLprData.roles = copyObject(this.roles)
     this.sectionAccessRightsData = copyObject(this.filterAccess())
 
@@ -97,6 +99,13 @@ export default {
       this.sectionAccessRightsData[SYSTEM_NAMES.FORPOST].users = this.bindedForpostUserList
         .filter(el => el.ExternalID === this.userId)
         .reduce((acc, el) => ({ ...acc, [el.ID]: el }), {})
+    }
+
+    // OATS users
+    if (this.sectionAccessRightsData[SYSTEM_NAMES.OATS]) {
+      this.sectionAccessRightsData[SYSTEM_NAMES.OATS].users = this.linkedOATSUserList
+        .filter(el => el.sso_id === this.userId)
+        .reduce((acc, el) => ({ ...acc, [`${el.domain}-${el.login}`]: el }), {})
     }
 
     if (this.isUpdate) {
@@ -109,11 +118,18 @@ export default {
     }
 
     this.forpostUsersSnapshot = this.generateForpostUsersSnapshot()
+    this.OATSUsersSnapshot = this.generateOATSUsersSnapshot()
     this.snapshot = this.generateSnapshot()
   },
   watch: {
     systems (val) {
       this.sectionAccessRightsData = copyObject(val)
+
+      if (this.sectionAccessRightsData[SYSTEM_NAMES.OATS]) {
+        this.sectionAccessRightsData[SYSTEM_NAMES.OATS].users = this.linkedOATSUserList
+          .filter(el => el.sso_id === this.userId)
+          .reduce((acc, el) => ({ ...acc, [`${el.domain}-${el.login}`]: el }), {})
+      }
     },
     loadingClientInfo (val) {
       if (!val) {
@@ -150,6 +166,9 @@ export default {
     ...mapActions('modal', [
       'changeMessage'
     ]),
+    ...mapActions('profile', [
+      'pullOATSUsers'
+    ]),
     // Helpers
     getPhoneNumberWithoutCode (phone) {
       if (phone && phone.startsWith('+')) return toDefaultPhoneNumber(phone).substring(1)
@@ -170,6 +189,11 @@ export default {
       const forpostRights = this.sectionAccessRightsData?.[SYSTEM_NAMES.FORPOST]
 
       return forpostRights ? Object.keys(forpostRights.users || {}) : []
+    },
+    generateOATSUsersSnapshot () {
+      const OATSRights = this.sectionAccessRightsData?.[SYSTEM_NAMES.OATS]
+
+      return OATSRights ? Object.keys(OATSRights.users) : []
     },
     getFormData () {
       const formData = this.sectionLprData
@@ -364,6 +388,27 @@ export default {
           })
       })
     },
+    bindOatsUsers (userId, userList) {
+      userList.forEach(el => {
+        const [domain, login] = el.split('-')
+        const user = this.allOatsUserList.find(
+          item => item.login === login && item.domain === domain
+        )
+
+        if (user) {
+          const payload = {
+            domain: user.domain,
+            login: user.login,
+            ssoId: userId
+          }
+
+          this.$store.dispatch('profile/addOatsUser', payload)
+            .then(() => {
+              this.pullOATSUsers(user.domain)
+            })
+        }
+      })
+    },
     unbindForpostUsers (userId, forpostUserList) {
       forpostUserList.forEach(el => {
         const user = this.allForpostUserList.find(item => item.ID === parseInt(el, 10))
@@ -376,6 +421,24 @@ export default {
           .then(() => {
             this.$store.dispatch('profile/pullAllForpostUsers')
           })
+      })
+    },
+    unbindOatsUsers (userId, userList) {
+      userList.forEach(el => {
+        const [domain, login] = el.split('-')
+        const user = this.allOatsUserList
+          .find(item => item.login === login && item.domain === domain && item.sso_id === this.userId)
+        if (user) {
+          const payload = {
+            userDomain: user.domain,
+            login: user.login,
+            sso_id: user.sso_id
+          }
+          this.$store.dispatch('profile/deleteOatsUser', payload)
+            .then(() => {
+              this.pullOATSUsers(user.domain)
+            })
+        }
       })
     },
     syncForpostUsers (userId) {
@@ -391,6 +454,19 @@ export default {
         this.bindForpostUsers(userId, toAdd)
       }
     },
+    syncOatsUsers (userId) {
+      const OatsAccess = this.sectionAccessRightsData?.[SYSTEM_NAMES.OATS]
+      if (OatsAccess) {
+        const userList = Object.keys(OatsAccess.users)
+        // 1 to delete
+        const toDelete = this._.difference(this.OATSUsersSnapshot, userList)
+        this.unbindOatsUsers(userId, toDelete)
+
+        // 2 to add
+        const toAdd = this._.difference(userList, this.OATSUsersSnapshot)
+        this.bindOatsUsers(userId, toAdd)
+      }
+    },
     onFail (msg = '', id) { this.$emit('fail', { id: id, msg: msg }) },
     onCancel () { this.$emit('cancel') },
     // Handlers
@@ -400,6 +476,7 @@ export default {
       try {
         const { formData, formAccessRightsData } = this.getFormData()
         await this.updateAccount(formData, formAccessRightsData)
+        this.syncOatsUsers(this.userId)
 
         if (!this.isLPR) {
           const correctedPhoneNumber = this.getCorrectedPhoneNumber(formData.phoneNumber)
@@ -412,7 +489,6 @@ export default {
           this.onSuccess(this.updatedSuccessText, this.userPostId)
         }
       } catch (error) {
-        console.log(error)
         if (~error.indexOf(USER_EXISTS_WITH_EMAIL_UPDATE)) {
           this.isEmailExistsError = true
           if (!this.isLPR) {
@@ -461,6 +537,7 @@ export default {
               await this.updateAccount(formData, formAccessRightsData)
               this.updateUserInfo({ ...formData, phone: toDefaultPhoneNumber(correctedPhoneNumber) })
               this.changeMessage({ text: this.updatedYourselfSuccessText })
+              this.syncOatsUsers(this.userId)
               this.reset()
               this.onSuccess(this.updatedSuccessText, this.userPostId)
             }
@@ -474,6 +551,7 @@ export default {
             } else if (loginChanged) {
               this.setConfirmModalVisibility({ isOpen: true, message: 'Вы действительно хотите изменить логин для входа в личный кабинет?' })
             } else {
+              this.syncOatsUsers(this.userId)
               await this.updateAccount(formData, formAccessRightsData)
               this.updateUserInfo({ ...formData, phone: toDefaultPhoneNumber(formData.phoneNumber) })
               this.reset()
@@ -483,6 +561,7 @@ export default {
             const { userId, postId } = await this.createAccount(formData, formAccessRightsData)
 
             this.syncForpostUsers(userId)
+            this.syncOatsUsers(userId)
             this.reset()
             this.onSuccess(this.createdSuccessText, postId)
           } else {
@@ -490,11 +569,12 @@ export default {
             this.onFail(this.createdFailText, this.userPostId)
           }
         } catch (error) {
-          if (~this.createdUserLprInfo.error.indexOf(USER_EXISTS_WITH_EMAIL)) {
+          console.error(error)
+          if (~this.createdUserLprInfo?.error?.indexOf(USER_EXISTS_WITH_EMAIL)) {
             this.isEmailExistsError = true
             this.$refs.editLprSec.$refs.email.messages.push(this.emailAlreadyExistsText)
             this.isLoading = false
-          } else if (~this.createdUserLprInfo.error.indexOf(USER_FOUND_BY_PHONE)) {
+          } else if (~this.createdUserLprInfo?.error?.indexOf(USER_FOUND_BY_PHONE)) {
             this.isPhoneExistsError = true
             this.$refs.editLprSec.$refs.phone.messages.push(this.phoneAlreadyExistsText)
             this.isLoading = false
@@ -526,6 +606,12 @@ export default {
             this.unbindForpostUsers(this.userId, userList)
           }
 
+          const OATSAccess = this.sectionAccessRightsData?.[SYSTEM_NAMES.OATS]
+          if (OATSAccess) {
+            const userList = Object.keys(OATSAccess.users)
+            this.unbindOatsUsers(this.userId, userList)
+          }
+
           this.onSuccess(this.removeAccountSuccessText, this.userPostId, 'error')
         }
       } catch (error) {
@@ -546,7 +632,14 @@ export default {
     ...mapGetters('auth', [
       'user'
     ]),
-    ...mapGetters('profile', ['bindedForpostUserList', 'allForpostUserList']),
+    ...mapGetters('profile', [
+      'allForpostUserList',
+      'bindedForpostUserList',
+      'unbindedForpostUserList',
+      'linkedOATSUserList',
+      'notLinkedOATSUserList',
+      'allOatsUserList'
+    ]),
     ...mapState('accounts', [
       'createdUserLprInfo',
       'removedAccountInfo'
@@ -592,11 +685,16 @@ export default {
       }
       if (data.user.role && data.user.role.id) data.user.role.id = data.user.role.id.toString()
       const isDiffSnapshot = JSON.stringify(this.snapshot) !== JSON.stringify(data)
-      return isDiffSnapshot || this.isForpostUsersChanged
+      return isDiffSnapshot || this.isForpostUsersChanged || this.isOATSUsersChanged
     },
     isForpostUsersChanged () {
       const oldData = JSON.stringify(this.forpostUsersSnapshot)
       const newData = JSON.stringify(this.generateForpostUsersSnapshot())
+      return oldData !== newData
+    },
+    isOATSUsersChanged () {
+      const oldData = JSON.stringify(this.OATSUsersSnapshot)
+      const newData = JSON.stringify(this.generateOATSUsersSnapshot())
       return oldData !== newData
     },
     isLastNameChanged () {

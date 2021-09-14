@@ -10,7 +10,9 @@ const props = {
   name: String,
   actualStartDate: String,
   services: Array,
-  phones: {}
+  phones: {},
+  bpi: String,
+  cityId: String
 }
 
 const components = { PhoneRow }
@@ -31,6 +33,10 @@ export default class OATSPointContent extends Vue {
 
   get oatsPortalLink () {
     return '#oats-portal-link'
+  }
+
+  get oatsLink () {
+    return `/lk/oats/go-to-portal?bpi=${this.$props.bpi}&cityId=${this.$props.cityId}`
   }
 
   onClickConfig () {

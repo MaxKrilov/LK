@@ -45,8 +45,11 @@ export default {
       'pullAllForpostUsers',
       'pullAvailableProducts',
       'pullOATSDomains',
-      'pullOATSUsers'
+      'pullOATSUsers',
+      'cleanupOATSData',
+      'linkOATSDirector'
     ]),
+    ...mapActions('accountForm', [ 'createUserRoles' ]),
     setActiveTab (val) {
       const MARGIN_RIGHT = this.isXS ? 16 : 24
       const target = this.$refs.refCards
@@ -69,12 +72,42 @@ export default {
   },
   mounted () {
     this.pullAvailableProducts()
-      .then(() => {
+      .then(data => {
         if (this.hasForpost) {
           this.pullCurrentUserForpostAccounts()
             .then(() => {
               this.pullAllForpostUsers()
             })
+        }
+
+        if (this.isLPR) {
+          // Promise.allSettled(this.oatsProductList.map(({ id }) => {
+          //   return new Promise((resolve, reject) => {
+          //     this.pullOATSDomains(id)
+          //       .then(domain => {
+          //         this.pullOATSUsers(domain)
+          //           .then(() => resolve())
+          //           .catch((e) => reject(e))
+          //       })
+          //       .catch((e) => reject(e))
+          //   })
+          // }))
+          //   .then(() => {
+          //     if (!this.user.postAccess.includes('oats')) {
+          //       this.createUserRoles({ api: this.$api, userPostId: this.user.postId, systemRoleId: 8 })
+          //     }
+          //
+          //     this.notLinkedDomains(this.user.sub)
+          //       .forEach((domain) => {
+          //         this.linkOATSDirector(domain)
+          //           .then(() => {
+          //             this.pullOATSUsers(domain)
+          //           })
+          //       })
+          //   })
+          //   .catch(e => {
+          //     console.error(e)
+          //   })
         }
       })
   },
@@ -92,7 +125,9 @@ export default {
   computed: {
     ...mapGetters('profile', [
       'hasForpost',
-      'hasOATS'
+      'hasOATS',
+      'oatsProductList',
+      'notLinkedDomains'
     ]),
     ...mapGetters('user', ['getClientInfo']),
     ...mapGetters('auth', [

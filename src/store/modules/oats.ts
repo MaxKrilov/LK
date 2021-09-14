@@ -77,10 +77,12 @@ const actions = {
         commit(MUTATIONS.SET_DOMAINS_LOADED, true)
       })
   },
-  fetchPortalLink (context: ActionContext<IState, any>) {
+  fetchPortalLink (context: ActionContext<IState, any>, { cityId, account }: { cityId: string, account: string }) {
     const isManager = context.rootState.auth.isManager
     let payload: Record<string, any> = {
-      isManager
+      isManager,
+      cityId,
+      account
     }
 
     const toms = context.rootGetters['auth/getTOMS']

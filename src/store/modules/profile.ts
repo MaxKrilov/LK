@@ -2,7 +2,7 @@ import Vue from 'vue'
 import { ActionContext } from 'vuex'
 import { API } from '@/functions/api'
 import { removeObjectKey } from '@/functions/helper'
-import { IForpostAccount, IForpostUser } from '@/interfaces/profile'
+import { IForpostAccount, IForpostUser, IOatsUser } from '@/interfaces/profile'
 import {
   SYSTEM_NAMES,
   OATS_USERS_OWNER,
@@ -13,6 +13,8 @@ const URLS = {
   PRODUCTS: '/customer/product/client',
   OATS_DOMAINS: '/order/contract/get-oats-domain',
   OATS_USERS: '/sso/oats/users',
+  OATS_ADD_USER: '/sso/oats/link',
+  OATS_DELETE_USER: '/sso/oats/unlink',
   FORPOST_USERS: '/sso/forpost/list',
   FORPOST_ALL_USERS: '/sso/forpost/list-all',
   FORPOST_ADD: '/sso/forpost/add',
@@ -22,6 +24,8 @@ const URLS = {
 const FORPOST_DOMAIN = 'VIDCDOMAIN'
 
 const removeDebugData = (obj: any) => removeObjectKey('debugData', obj)
+
+const mapOATSUserDomain = (originalUser: any, domain: string): IOatsUser => ({ ...originalUser, domain })
 
 const APIShortcut = (url: string, data: Object, branch?: string) => {
   const api = new API()
@@ -44,38 +48,47 @@ function isForpostDomain (product: any) {
   return isForpost && isRootOffer
 }
 
+// const hasEmptySSOId = (el: IOatsUser): boolean => !el.sso_id.length cityId: "238"
+
 const TYPES = {
   SET_PRODUCTS: 'SET_PRODUCTS',
   SET_OATS_USERS: 'SET_OATS_USERS',
   SET_OATS_DOMAINS: 'SET_OATS_DOMAINS',
+  ADD_OATS_DOMAIN: 'ADD_OATS_DOMAINS',
+  ADD_OATS_DOMAIN_BY_BPI_N_CITY_ID: 'ADD_OATS_DOMAIN_BY_BPI',
   SET_FORPOST_ACCOUNTS: 'SET_FORPOST_ACCOUNTS',
   SET_FORPOST_USERS: 'SET_FORPOST_USERS',
   SET_FORPOST_ACCOUNTS_ERROR: 'SET_FORPOST_ACCOUNTS_ERROR',
   SET_FORPOST_USERS_ERROR: 'SET_FORPOST_USERS_ERROR',
   SET_OATS_DOMAINS_FETCH_ERROR: 'SET_OATS_DOMAINS_FETCH_ERROR',
-  SET_OATS_USERS_FETCH_ERROR: 'SET_OATS_USERS_FETCH_ERROR'
+  SET_OATS_USERS_FETCH_ERROR: 'SET_OATS_USERS_FETCH_ERROR',
+
+  CLEAR_OATS_USERS: 'CLEAR_OATS_USERS',
+  CLEAR_OATS_DOMAINS: 'CLEAR_OATS_DOMAINS'
 }
 
 interface IState {
   products: []
-  oatsDomains: []
-  oatsUsers: []
+  oatsDomains: string[]
+  oatsUsers: Record<string, IOatsUser[]>
   forpostAccounts: IForpostAccount[]
   forpostUsers: Record<string, IForpostUser[]>
   forpostUsersError: boolean
   oatsDomainFetchError: boolean
-  oatsUsersFetchError: boolean
+  oatsUsersFetchError: boolean,
+  oatsDomainsByBPINCityId: Record<string, { bpi: string, cityId: string }>
 }
 
 const state: IState = {
   products: [],
   oatsDomains: [],
-  oatsUsers: [],
+  oatsUsers: {},
   forpostAccounts: [],
   forpostUsers: {},
   forpostUsersError: false,
   oatsDomainFetchError: false,
-  oatsUsersFetchError: false
+  oatsUsersFetchError: false,
+  oatsDomainsByBPINCityId: {}
 }
 
 const getters = {
@@ -100,9 +113,7 @@ const getters = {
     return !!state.products.find(isForpostDomain)
   },
   oatsProductList (state: IState) {
-    return state.products.filter(
-      isOATSProduct
-    )
+    return state.products.filter(isOATSProduct)
   },
   forpostAccountsRegistry (state: IState): Record<string, IForpostAccount> {
     return state.forpostAccounts.reduce((acc: Record<string, any>, item: IForpostAccount) => {
@@ -117,8 +128,43 @@ const getters = {
   bindedForpostUserList (state: IState, getters: any): IForpostUser[] {
     return getters.allForpostUserList.filter((user: IForpostUser) => user.ExternalID)
   },
+  linkedOATSUserList (state: IState, getters: any): any[] {
+    return getters.allOatsUserList.filter((user: IOatsUser) => user.sso_id)
+  },
   unbindedForpostUserList (state: IState, getters: any): IForpostUser[] {
     return getters.allForpostUserList.filter((user: IForpostUser) => user.ExternalID === null)
+  },
+  notLinkedOATSUserList (state: IState, getters: any): any[] {
+    return getters.allOatsUserList.filter((user: IOatsUser) => user.sso_id === null)
+  },
+  allOatsUserList (state: IState) {
+    return Object.values(state.oatsUsers).reduce((acc, el: any) => {
+      return [...acc, ...el]
+    }, [])
+  },
+  bindedOatsUserList (state: IState, getters: any) {
+    return getters.allOatsUserList.filter((el: IOatsUser) => el.sso_id)
+  },
+  unbindedOatsUserList (state: IState, getters: any) {
+    return getters.allOatsUserList.filter((el: IOatsUser) => !el.sso_id)
+  },
+  notLinkedDomains (state: IState) {
+    return (userId: string) => {
+      return state.oatsDomains
+        .filter(domain => {
+          const userList = state.oatsUsers[domain]
+
+          if (!userList) return false
+
+          return !userList.length ||
+            !userList.some(user => user.sso_id === userId)
+        })
+    }
+  },
+  oatsPortalLink () {
+    // const first = head(getters.oatsProductList) as Record<string, any>
+    // if (first) return `/lk/oats/go-to-portal?bpi=${first.id}&cityId=${first.cityId}`
+    return '/lk/oats/go-to-portal'
   }
 }
 
@@ -133,10 +179,10 @@ const actions = {
         return data
       })
   },
-  pullOATSDomains (context: ActionContext<IState, any>, parentId: string) {
+  pullOATSDomains (context: ActionContext<IState, any>, { id, cityId }: { id: string, cityId: string }) {
     const payload = {
       clientId: context.rootGetters['auth/getTOMS'],
-      id: parentId
+      id: id
     }
 
     return APIShortcut(URLS.OATS_DOMAINS, payload)
@@ -147,14 +193,23 @@ const actions = {
       .then(data => {
         context.commit(TYPES.SET_OATS_DOMAINS_FETCH_ERROR, false)
 
-        context.commit(TYPES.SET_OATS_DOMAINS, [data])
+        if (!context.state.oatsDomains.find(el => el === data)) {
+          context.commit(TYPES.ADD_OATS_DOMAIN, data)
+          context.commit(TYPES.ADD_OATS_DOMAIN_BY_BPI_N_CITY_ID, {
+            domain: data,
+            bpi: id,
+            cityId
+          })
+        }
+
         return data
       })
   },
   pullOATSUsers (context: ActionContext<IState, any>, domain: string) {
     const newPayload = {
       owner: OATS_USERS_OWNER,
-      userDomain: domain
+      userDomain: domain,
+      cityId: context.state.oatsDomainsByBPINCityId[domain].cityId
     }
     return APIShortcut(URLS.OATS_USERS, newPayload)
       .catch(() => {
@@ -163,10 +218,68 @@ const actions = {
       })
       .then(data => {
         context.commit(TYPES.SET_OATS_USERS_FETCH_ERROR, false)
-        const users = data.accounts
-        context.commit(TYPES.SET_OATS_USERS, users)
+
+        const users: IOatsUser[] = data.accounts.map((el: any) => mapOATSUserDomain(el, domain))
+
+        context.commit(TYPES.SET_OATS_USERS, { domain, list: users })
         return data
       })
+  },
+  linkOATSDirector (context: ActionContext<IState, any>, domain: string) {
+    /* */
+
+    const { userId: ssoId } = context.rootState.auth.userInfo
+
+    const payload = {
+      domain,
+      login: 'director',
+      ssoId
+    }
+    return context.dispatch('addOatsUser', payload)
+  },
+  addOatsUser (
+    context: ActionContext<IState, any>,
+    payload: {domain: string, login: string, ssoId: string}
+  ) {
+    /*
+      Параметры привязки:
+      owner - Владелец, например: domru
+      userDomain - домен для учеток
+      login - логин из поля accounts.login в пред. ответе
+      sso_id - id учетки в SSO // поле sub или userId из токена
+    */
+
+    // eslint-disable-next-line camelcase
+    const { domain: userDomain, login, ssoId: sso_id } = payload
+    const newPayload = {
+      owner: OATS_USERS_OWNER,
+      userDomain,
+      login,
+      sso_id,
+      cityId: context.state.oatsDomainsByBPINCityId[userDomain].cityId
+    }
+
+    return APIShortcut(URLS.OATS_ADD_USER, newPayload)
+      .catch((error) => {
+        console.log(error)
+      })
+  },
+  deleteOatsUser (context: ActionContext<IState, any>, payload: {userDomain: string, login: string}) {
+    /*
+      Параметры отвязки пользователя:
+      owner - Владелец, например: domru
+      userDomain - домен для учеток
+      login - логин из поля accounts.login в пред. ответе
+    */
+
+    const newPayload = {
+      owner: OATS_USERS_OWNER,
+      cityId: context.state.oatsDomainsByBPINCityId[payload.userDomain].cityId,
+      ...payload
+    }
+
+    return APIShortcut(URLS.OATS_DELETE_USER, newPayload)
+      .catch(() => {})
   },
   fetchForpostAccounts (context: ActionContext<IState, any>, externalId: any) {
     const payload = {
@@ -174,7 +287,7 @@ const actions = {
       externalId // здесь externalId это TOMS
     }
 
-    return APIShortcut(URLS.FORPOST_ALL_USERS, payload, 'web-20443-fix')
+    return APIShortcut(URLS.FORPOST_ALL_USERS, payload)
       .catch(() => {
         context.commit(TYPES.SET_FORPOST_ACCOUNTS_ERROR, true)
         throw new Error(`Не получилось запросить учётные записи Forpost для externalId=${externalId}`)
@@ -261,6 +374,10 @@ const actions = {
     }
 
     return APIShortcut(URLS.FORPOST_DELETE, newPayload)
+  },
+  cleanupOATSData (context: ActionContext<IState, any>) {
+    context.commit(TYPES.CLEAR_OATS_USERS)
+    context.commit(TYPES.CLEAR_OATS_DOMAINS)
   }
 }
 
@@ -268,11 +385,15 @@ const mutations = {
   [TYPES.SET_PRODUCTS] (state: IState, data: []) {
     state.products = data
   },
+  [TYPES.ADD_OATS_DOMAIN] (state: IState, domain: string) {
+    // @ts-ignore
+    state.oatsDomains.push(domain)
+  },
   [TYPES.SET_OATS_DOMAINS] (state: IState, data: []) {
     state.oatsDomains = data
   },
-  [TYPES.SET_OATS_USERS] (state: IState, data: []) {
-    state.oatsUsers = data
+  [TYPES.SET_OATS_USERS] (state: IState, data: {domain: string, list: IOatsUser[]}) {
+    Vue.set(state.oatsUsers, data.domain, data.list)
   },
   [TYPES.SET_FORPOST_ACCOUNTS] (state: IState, data: []) {
     state.forpostAccounts = data
@@ -291,6 +412,18 @@ const mutations = {
   },
   [TYPES.SET_OATS_USERS_FETCH_ERROR] (state: IState, isError: boolean) {
     Vue.set(state, 'oatsUsersFetchError', isError)
+  },
+  [TYPES.CLEAR_OATS_USERS] (state: IState) {
+    Vue.set(state, 'oatsUsers', [])
+  },
+  [TYPES.CLEAR_OATS_DOMAINS] (state: IState) {
+    Vue.set(state, 'oatsDomains', {})
+  },
+  [TYPES.ADD_OATS_DOMAIN_BY_BPI_N_CITY_ID] (state: IState, payload: { domain: string, bpi: string, cityId: string }) {
+    state.oatsDomainsByBPINCityId[payload.domain] = {
+      bpi: payload.bpi,
+      cityId: payload.cityId
+    }
   }
 }
 
