@@ -3,7 +3,9 @@ import Responsive from '@/mixins/ResponsiveMixin'
 import { mapGetters } from 'vuex'
 import AccessItem from '../access-item'
 import ForpostAccessForm from '../forpost-access-form'
+import OatsAccessForm from '../oats-access-form'
 import ForpostAccessTable from '../forpost-access-table'
+import OatsAccessTable from '../oats-access-table'
 import { copyObject } from '@/functions/helper'
 import { SYSTEM_NAMES } from '@/constants/profile'
 
@@ -12,7 +14,9 @@ export default {
   components: {
     AccessItem,
     ForpostAccessForm,
-    ForpostAccessTable
+    ForpostAccessTable,
+    OatsAccessForm,
+    OatsAccessTable
   },
   mixins: [ Responsive ],
   data: () => ({
@@ -24,6 +28,8 @@ export default {
     isShowAddAccessRights: false,
     currSelectedMenuItem: {},
     forpostUsers: {}, // tmp storage for forpost users,
+    oatsUsers: {}, // tmp storage for oats users,
+    oatsUser: {},
     SYSTEM_NAMES
   }),
   mounted () {
@@ -66,10 +72,35 @@ export default {
       }
       currData[this.currentPortal.code].content = [newAccessRight]
 
+      if (currData[SYSTEM_NAMES.OATS] && Object.keys(this.oatsUser).length > 0) {
+        this.oatsUsers[Object.keys(this.oatsUser)[0]] = Object.values(this.oatsUser)[0]
+      }
+
+      if (currData[SYSTEM_NAMES.OATS] && Object.keys(this.oatsUsers).length) {
+        currData[SYSTEM_NAMES.OATS].content = [
+          currData[SYSTEM_NAMES.OATS].accessRights.find(el => el.access === true)
+        ]
+        currData[SYSTEM_NAMES.OATS].users = {
+          ...currData[SYSTEM_NAMES.OATS].users,
+          ...this.oatsUsers
+        }
+      } else if (currData[SYSTEM_NAMES.OATS]) {
+        currData[SYSTEM_NAMES.OATS].content = [
+          currData[SYSTEM_NAMES.OATS]
+            .accessRights
+            .find(el => el.access === false)
+        ]
+      }
+
       if (currData[SYSTEM_NAMES.FORPOST] && Object.keys(this.forpostUsers).length) {
-        currData[SYSTEM_NAMES.FORPOST].content = [currData[SYSTEM_NAMES.FORPOST].accessRights.find(el => el.access === true)]
-        currData[SYSTEM_NAMES.FORPOST].users = { ...currData[SYSTEM_NAMES.FORPOST].users, ...this.forpostUsers }
-      } else {
+        currData[SYSTEM_NAMES.FORPOST].content = [
+          currData[SYSTEM_NAMES.FORPOST].accessRights.find(el => el.access === true)
+        ]
+        currData[SYSTEM_NAMES.FORPOST].users = {
+          ...currData[SYSTEM_NAMES.FORPOST].users,
+          ...this.forpostUsers
+        }
+      } else if (currData[SYSTEM_NAMES.FORPOST]) {
         // нет пользователей - нет доступа
         currData[SYSTEM_NAMES.FORPOST].content = [currData[SYSTEM_NAMES.FORPOST].accessRights.find(el => el.access === false)]
       }
@@ -163,6 +194,12 @@ export default {
     onForpostUserSelected (data) {
       this.$set(this.forpostUsers, data.ID, data)
     },
+    onOatsUserSelected (data) {
+      if (Object.keys(this.oatsUser).length > 0) {
+        this.oatsUser = {}
+      }
+      this.$set(this.oatsUser, `${data.domain}-${data.login}`, data)
+    },
     onForpostUserDelete (data) {
       delete this.forpostUsers[data]
 
@@ -178,6 +215,23 @@ export default {
       }
       result[SYSTEM_NAMES.FORPOST].users = copyObject(this.forpostUsers)
       this.$emit('input', result)
+    },
+    onOatsUserDelete (data) {
+      delete this.oatsUsers[`${data.domain}-${data.login}`]
+
+      let result = copyObject(this.value)
+
+      if (!Object.keys(this.oatsUsers).length) {
+        const newAccessRight = {
+          id: 2,
+          access: false,
+          label: 'Без доступа'
+        }
+        result[this.currSelectedMenuItem.code].content = [newAccessRight]
+      }
+
+      result[SYSTEM_NAMES.OATS].users = copyObject(this.oatsUsers)
+      this.$emit('input', result)
     }
   },
   watch: {
@@ -185,6 +239,9 @@ export default {
       handler (val) {
         if (val?.[SYSTEM_NAMES.FORPOST]?.users) {
           this.forpostUsers = { ...val[SYSTEM_NAMES.FORPOST].users }
+        }
+        if (val?.[SYSTEM_NAMES.OATS]?.users) {
+          this.oatsUsers = { ...val[SYSTEM_NAMES.OATS].users }
         }
       },
       deep: true
@@ -208,8 +265,14 @@ export default {
     forpostUserList () {
       return this.value[SYSTEM_NAMES.FORPOST].users || {}
     },
+    oatsUserList () {
+      return this.value[SYSTEM_NAMES.OATS].users || {}
+    },
     isForpostSelected () {
       return this.currentPortal.code === SYSTEM_NAMES.FORPOST
+    },
+    isOatsSelected () {
+      return this.currentPortal.code === SYSTEM_NAMES.OATS
     },
     accessRightsLabels () {
       if (this.currentPortal) {

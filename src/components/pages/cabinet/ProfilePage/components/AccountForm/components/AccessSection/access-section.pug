@@ -41,6 +41,13 @@ div(:class="[{ active: isShowAddAccessRights }, `${pre}`]")
         @delete="onForpostUserDelete"
       )
 
+    template(v-else-if="value[SYSTEM_NAMES.OATS] && value[SYSTEM_NAMES.OATS].menu.selected")
+      OatsAccessTable(
+        :users="oatsUserList"
+        :show-delete-button="isLPR"
+        @delete="onOatsUserDelete"
+      )
+
     template(v-else)
       er-flex(xs12 sm12 md12, :class="`${pre}__content`")
         span(:class="`${pre}__header__title__small`")
@@ -70,6 +77,9 @@ div(:class="[{ active: isShowAddAccessRights }, `${pre}`]")
       er-flex(v-if="currentPortal" sm12 md6 lg8)
         template(v-if="isForpostSelected")
           forpost-access-form(@input="onForpostUserSelected")
+
+        template(v-else-if="isOatsSelected")
+          oats-access-form(@input="onOatsUserSelected")
 
         template(v-else-if="currentPortal.code === SYSTEM_NAMES.OATS")
           er-row

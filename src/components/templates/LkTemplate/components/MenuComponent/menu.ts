@@ -33,7 +33,7 @@ const isConnectWifiPro = (listProduct: IProductItem[]) => {
   return listProduct.some(productItem => ~productItem.offerName.toLowerCase().indexOf('pro'))
 }
 
-const MenuItemList = (listProduct: IProductItem[]): MenuItem[] => {
+const MenuItemList = (listProduct: IProductItem[], oatsPortalLink: string): MenuItem[] => {
   return [
     {
       name: 'Главная',
@@ -104,18 +104,18 @@ const MenuItemList = (listProduct: IProductItem[]): MenuItem[] => {
           url: '/lk/internet/ip-transit'
         }]
     },
-    // {
-    //   name: 'Облачная телефония',
-    //   icon: 'cloud_telephone',
-    //   isOpen: false,
-    //   url: '/lk/oats/',
-    //   subitem: [
-    //     {
-    //       name: 'Портал ОАТС',
-    //       url: '/lk/oats/go-to-portal'
-    //     }
-    //   ]
-    // },
+    {
+      name: 'Облачная телефония',
+      icon: 'cloud_telephone',
+      isOpen: false,
+      url: '/lk/oats/',
+      subitem: [
+        {
+          name: 'Портал ОАТС',
+          url: oatsPortalLink
+        }
+      ]
+    },
     {
       name: 'Видеонаблюдение',
       icon: 'watch',

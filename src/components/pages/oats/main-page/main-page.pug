@@ -15,12 +15,16 @@
           :name="getDomainPointFulladdress(item.locationId)"
           :price="getDomainPrice(item).toString()"
           :serviceCount="getServiceCount(item)"
+          :bpi="item.id"
+          :cityId="item.cityId"
           :key="item.bpi"
         )
           point-content(
             :value="item",
             :services="getServiceList(item)"
             :phones="getPhoneList(item)"
+            :bpi="item.id"
+            :cityId="item.cityId"
             @suspend="onSuspendProduct"
           )
 

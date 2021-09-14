@@ -10,7 +10,9 @@ const props = {
   actualStartDate: String,
   serviceCount: Number,
   value: Object,
-  loading: Boolean
+  loading: Boolean,
+  bpi: String,
+  cityId: String
 }
 
 @Component({ props })
@@ -20,7 +22,7 @@ export default class OATSPoint extends Vue {
   }
 
   get oatsPortalLink () {
-    return { name: 'go-to-oats-portal' }
+    return `/lk/oats/go-to-portal?bpi=${this.$props.bpi}&cityId=${this.$props.cityId}`
   }
 
   get restoreLink () {

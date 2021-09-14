@@ -34,3 +34,11 @@ export interface IForpostUser {
   IsActive: number // 1
   IsReadOnly: number // 1
 }
+
+export interface IOatsUser {
+  login: string
+  name: string
+  // eslint-disable-next-line camelcase
+  sso_id: string
+  domain: string // поле добавляется вручную
+}

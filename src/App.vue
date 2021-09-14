@@ -144,9 +144,51 @@ export default {
       fetchNotifications: 'campaign/fetchNotifications',
       fetchPPR: 'campaign/fetchPPR',
       fetchClientInfo: `user/${GET_CLIENT_INFO}`,
+      pullAvailableProducts: 'profile/pullAvailableProducts',
+      pullOATSDomains: 'profile/pullOATSDomains',
+      pullOATSUsers: 'profile/pullOATSUsers',
+      createUserRoles: 'accountForm/createUserRoles',
+      linkOATSDirector: 'profile/linkOATSDirector',
       getForwardStatus: 'user/getForwardStatus',
       getBranchLocation: `branch/pullBranchLocation`
     }),
+    fetchOatsLPRLink () {
+      this.pullAvailableProducts()
+        .then(() => {
+          if (!this.isLPR) return
+          Promise.allSettled(this.oatsProductList.map(({ id, cityId }) => {
+            return new Promise((resolve, reject) => {
+              this.pullOATSDomains({ id, cityId })
+                .then(domain => {
+                  this.pullOATSUsers(domain)
+                    .then(() => resolve())
+                    .catch(e => reject(e))
+                })
+                .catch(e => reject(e))
+            })
+          }))
+            .then(() => {
+              if (!this.user.postAccess.includes('oats')) {
+                this.createUserRoles({
+                  api: this.$api,
+                  userPostId: this.user.postId,
+                  systemRoleId: 8
+                })
+              }
+
+              this.notLinkedDomains(this.user.sub)
+                .forEach(domain => {
+                  this.linkOATSDirector(domain)
+                    .then(() => {
+                      this.pullOATSUsers(domain)
+                    })
+                })
+            })
+            .catch(e => {
+              console.error(e)
+            })
+        })
+    },
     fetchUserData () {
       const context = { api: this.$api }
       this.fetchNotifications(context)
@@ -170,6 +212,7 @@ export default {
             this.$store.dispatch(`payments/getListBillingAccount`, { route: this.$route })
               .then(isValid => {
                 if (isValid) {
+                  this.fetchOatsLPRLink()
                   this.$store.dispatch(`payments/getBillingInfo`, context)
                     .then(({ branchId }) => {
                       this.getBranchLocation(branchId)
@@ -192,7 +235,8 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('auth', ['user', 'hasAccess']),
+    ...mapGetters('auth', ['user', 'hasAccess', 'isLPR']),
+    ...mapGetters('profile', ['oatsProductList', 'notLinkedDomains']),
     ...mapState({
       error: state => state.auth.error,
       isFetching: state => state.auth.isFetching,
