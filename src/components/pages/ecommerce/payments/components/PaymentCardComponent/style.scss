@@ -1,0 +1,507 @@
+@import "./variables";
+
+.e-commerce-payment-card-component {
+  $self: &;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-left: 24px;
+
+  &__component {
+    @each $breakpoint, $height in $component-height {
+      @include min-breakpoint($breakpoint) {
+        height: $height !important;
+      }
+    }
+    position: relative;
+  }
+
+  &__front,
+  &__back {
+    @each $breakpoint, $width in $card-width {
+      @include min-breakpoint($breakpoint) {
+        width: $width;
+      }
+    }
+
+    @each $breakpoint, $height in $card-height {
+      @include min-breakpoint($breakpoint) {
+        height: $height;
+      }
+    }
+
+    border-radius: 12px;
+  }
+
+  &__front {
+    position: relative;
+    z-index: 1;
+    padding: 1px;
+    background: $border-color;
+    box-shadow: $card-box-shadow;
+
+    .content {
+      display: flex;
+      overflow: hidden;
+      flex-direction: column;
+      justify-content: space-between;
+      width: 100%;
+      height: 100%;
+      padding: $padding-x6;
+      border-radius: inherit;
+    }
+
+    .active {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      width: 100%;
+      height: 100%;
+    }
+
+    .prev {
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+
+      .prev-title {
+        @extend %h4-font;
+      }
+    }
+
+    .logo img {
+      max-height: 24px;
+    }
+
+    .title {
+      @extend %erth--h4;
+      @include color-black(0.8);
+    }
+
+    .remember-card__label,
+    .autopay__label__title {
+      @extend %erth--navigation;
+      color: #2B539B;
+      border: none;
+    }
+  }
+
+  &__back {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transition: transform $primary-transition;
+    box-shadow: $card-box-shadow-back;
+
+    .line {
+      width: 100%;
+      height: 32px;
+    }
+  }
+
+  &.new .e-commerce-payment-card-component {
+    &__front .content {
+      background: $new-card-front-background;
+
+      .prev {
+        display: none;
+        align-items: center;
+        justify-content: center;
+        @extend %h4-font;
+        @include color-black(0.5);
+      }
+    }
+
+    &__back {
+      background: $new-card-back-background;
+
+      .line {
+        background: $new-card-back-line-background;
+      }
+    }
+  }
+
+  &.new.#{$prev-slide-class} .e-commerce-payment-card-component {
+    &__front .content {
+      justify-content: flex-end;
+
+      .logo,
+      .title,
+      .remember-card {
+        display: none;
+      }
+
+      .prev {
+        display: flex;
+      }
+    }
+  }
+
+  &:not(.new) .e-commerce-payment-card-component {
+    &__front .content {
+      background: $card-front-background;
+    }
+
+    &__back {
+      background: $card-back-background;
+    }
+
+    &__back .line {
+      background: $card-back-line-background;
+    }
+  }
+
+  &:not(.new).#{$next-slide-class} {
+    pointer-events: none;
+    .next {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+
+      .card-number {
+        @extend %erth--h4;
+        display: flex;
+        align-items: center;
+
+        > span {
+          @extend %card-number-dot;
+
+          &:last-child {
+            margin-right: 16px;
+          }
+        }
+      }
+    }
+
+    .active,
+    .prev {
+      display: none;
+    }
+  }
+
+  &:not(.new).#{$prev-slide-class} .e-commerce-payment-card-component {
+    &__front .content {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+
+      .prev {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+
+        .card-number {
+          @extend %erth--h4;
+          display: flex;
+          align-items: center;
+
+          > span {
+            @extend %card-number-dot;
+
+            &:last-child {
+              margin-right: 16px;
+            }
+          }
+        }
+      }
+
+      .active,
+      .next {
+        display: none;
+      }
+    }
+  }
+
+  &:not(.new).#{$active-slide-class} {
+    .active {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      width: 100%;
+      height: 100%;
+
+      .header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+      }
+
+      .autopay .ert-input {
+        margin-top: 0;
+        padding-top: 0;
+      }
+
+      .card-number {
+        @extend %erth--h4;
+        display: flex;
+        align-items: center;
+
+        > span {
+          display: flex;
+          align-items: center;
+
+          > span {
+            @extend %card-number-dot;
+          }
+
+          &:nth-child(2) {
+            margin-right: 2px;
+
+            //@include min-breakpoint('md') {
+            //  margin-right: 10px;
+            //}
+
+            > span:first-child {
+              margin-left: 6px;
+            }
+          }
+
+          &:nth-child(3) {
+            margin-right: 2px;
+
+            @include min-breakpoint('md') {
+              margin-right: 4px;
+            }
+          }
+        }
+      }
+
+      .actions {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+      }
+
+      .actions .remove {
+        display: flex;
+        align-items: center;
+        color: #2B539B;
+
+        .ert-icon {
+          //@include color-black(0.2);
+        }
+
+        span {
+          @extend %erth--navigation;
+          //@extend %caption1-font;
+          //@include color-black(0.5);
+          //border-bottom: 1px dashed;
+        }
+      }
+
+      .background {
+        position: absolute;
+        right: -72px;
+        bottom: -26px;
+        width: 100%;
+        height: 50%;
+        pointer-events: none;
+        opacity: 0.1;
+        background-size: 100%;
+      }
+    }
+
+    .prev,
+    .next {
+      display: none;
+    }
+
+    .e-commerce-payment-card-component__back {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .e-commerce-payment-card-component__back .cvc {
+      display: flex;
+      align-items: center;
+      align-self: flex-end;
+      flex-direction: row;
+      margin: auto 16px 16px 24px;
+      justify-items: flex-end;
+
+      > * {
+        flex-basis: 50%;
+        max-width: 50%;
+      }
+
+      > .value > .ert-input > .ert-input__control > .ert-input__slot {
+        min-height: 32px;
+      }
+
+      @include min-breakpoint('sm') {
+        margin-right: 16px;
+        margin-bottom: 16px;
+
+        > * {
+          flex-basis: 100%;
+          max-width: 100%;
+        }
+      }
+    }
+
+    .e-commerce-payment-card-component__back .cvc .caption {
+      @extend %erth--signature;
+      @include color-black(0.8);
+    }
+
+    .e-commerce-payment-card-component__back .cvc .value {
+      margin-top: 0;
+
+      .ert-text-field {
+        margin-top: 0;
+        padding-top: 0;
+      }
+
+      .ert-input__control {
+        background: map-get($shades, 'white');
+      }
+    }
+
+    .e-commerce-payment-card-component__back.error {
+      background: map-get($red, 'base');
+
+      .line {
+        background: rgba(map-get($shades, 'black'), 0.2);
+      }
+
+      .cvc .caption {
+        color: map-get($shades, 'white');
+      }
+    }
+  }
+
+  &:not(.#{$active-slide-class}) {
+    pointer-events: none;
+  }
+
+  &.#{$prev-slide-class} {
+    .e-commerce-payment-card-component__front .content {
+      justify-content: flex-end;
+
+      .next,
+      .active {
+        display: none;
+      }
+    }
+  }
+
+  &.#{$active-slide-class} {
+    .e-commerce-payment-card-component__front .content {
+      .next,
+      .prev {
+        display: none;
+      }
+    }
+
+    .e-commerce-payment-card-component__back {
+      transform: translate(8px, 64px);
+    }
+  }
+
+  &.#{$next-slide-class} {
+    .e-commerce-payment-card-component__front .content {
+      .active,
+      .prev {
+        display: none;
+      }
+    }
+  }
+
+  &:not(.removed) .e-commerce-payment-card-component {
+    &__front .content .removed {
+      display: none;
+    }
+  }
+
+  &.removed .e-commerce-payment-card-component {
+    &__front {
+      background: map-get($red, 'base');
+    }
+
+    &__front .content {
+      background: map-get($red, 'other-2');
+
+      .next,
+      .active,
+      .prev {
+        display: none;
+      }
+
+      .removed {
+        position: relative;
+        display: flex;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+        padding-left: 32px;
+      }
+
+      .removed .background {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        pointer-events: none;
+        color: rgba(map-get($red, 'base'), 0.1);
+
+        > i > svg {
+          width: 128px !important;
+        }
+      }
+
+      .removed .title {
+        @extend %body-font;
+        color: map-get($red, 'base');
+      }
+    }
+
+    &__back {
+      display: none !important;
+    }
+  }
+
+  &.frame {
+    #{$self}__component {
+      height: 267px !important;
+    }
+
+    #{$self}__front,
+    #{$self}__back {
+      width: 280px !important;
+      height: 187px !important;
+    }
+
+    #{$self}__back {
+      transform: translate(8px, 64px) !important;
+    }
+  }
+
+  @include min-breakpoint('md') {
+    &.#{$active-slide-class} {
+      .e-commerce-payment-card-component__back {
+        transform: translate(124px, 8px);
+      }
+    }
+  }
+
+  &__hint-title {
+    @extend %h3-font;
+    @include color-black(0.8);
+    margin-bottom: $padding-x4;
+  }
+
+  &__hint-description {
+    @extend %body-font;
+    @include color-black(0.8);
+  }
+}

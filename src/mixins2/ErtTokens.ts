@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Component from 'vue-class-component'
 
-import { parseJwt } from '@/functions/helper'
+import { isFramed, isLocalhost, parseJwt } from '@/functions/helper'
 import { mapState, mapActions } from 'vuex'
 import { API } from '@/functions/api'
 import { IForward } from '@/interfaces/forward'
@@ -55,6 +55,10 @@ export default class ErtTokens extends Vue {
 
   get halfLifetimeRefreshToken () {
     return Math.floor(this.lifetimeRefreshToken / 2 / 60)
+  }
+
+  get isEcommerce () {
+    return isFramed() && location.href.match(/ecommerce/g)
   }
 
   getNow () {
@@ -123,7 +127,11 @@ export default class ErtTokens extends Vue {
 
   createdHook () {
     return new Promise((resolve, reject) => {
-      if (!this.accessToken || !this.isValidToken(this.accessToken)) {
+      if (
+        !this.accessToken ||
+        !this.isValidToken(this.accessToken) ||
+        this.isEcommerce
+      ) {
         this.signIn({ api: new API() })
           .then(response => {
             !this.isManager && this.onProccessingAccessToken()
@@ -158,7 +166,7 @@ export default class ErtTokens extends Vue {
   }
 
   async handleVisibilityChange () {
-    if (!document.hidden) {
+    if (!document.hidden && !isLocalhost()) {
       this.forwardStatusResult = await this.getForwardStatus({ api: this.$api })
       if (!this.forwardStatusResult.status) {
         const fetchRefreshTokenResult = await this.fetchRefreshToken({ api: new API() })

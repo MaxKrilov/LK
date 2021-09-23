@@ -1,0 +1,201 @@
+.e-commerce-payment {
+  &__title {
+    @extend %erth--h3;
+    @include color-black(1);
+    margin-bottom: $padding-x4;
+  }
+
+  &__score {
+    &__title {
+      @extend %erth--h4;
+      color: #222222;
+    }
+  }
+
+  &__billing-account {
+    padding: 24px;
+    border: 1px solid #D5DDEB;
+    border-radius: 12px;
+
+    &__head {
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 1px solid #D5DDEB;
+
+      .billing-account-number {
+        flex: 1;
+
+        .caption {
+          @extend %erth--service-text;
+          color: #989898;
+        }
+
+        .value {
+          @extend %erth--body;
+        }
+      }
+
+      .amount {
+        @media screen and (min-width: 768px) {
+          min-width: 320px;
+        }
+
+        > * {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-end;
+
+          @media screen and (min-width: 768px) {
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+          }
+
+          .caption {
+            @extend %erth--body;
+            color: #989898;
+          }
+
+          .value {
+            @extend %erth--body;
+            color: #222222;
+          }
+        }
+      }
+    }
+
+    &__body {
+      .description {
+        @extend %erth--service-text;
+        color: #7585A1;
+      }
+
+      .actions {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+
+        @include min-breakpoint('md', $erth-grid-breakpoints) {
+          flex-direction: row;
+        }
+
+        button {
+          @extend %erth--navigation;
+          color: #222222;
+        }
+      }
+
+      .action {
+        width: 100%;
+
+        &:first-child {
+          margin-bottom: 16px;
+        }
+
+        @include min-breakpoint('md', $erth-grid-breakpoints) {
+          max-width: 200px;
+
+          &:first-child {
+            margin-right: 16px;
+            margin-bottom: 0;
+          }
+        }
+      }
+    }
+
+    &__body-success {
+      display: flex;
+      align-items: center;
+      color: #3ABC31;
+
+      > i > svg {
+        width: 13px !important;
+      }
+
+      span {
+        display: block;
+        @extend %erth--signature;
+        margin-left: 13px;
+      }
+    }
+  }
+
+  &__payment-dialog {
+    background: #FFFFFF;
+
+    &-title {
+      @extend %erth--h3;
+      color: #222222;
+    }
+
+    &-description {
+      display: flex;
+      align-items: flex-start;
+
+      .icon {
+        color: #6688C8;
+      }
+
+      .icon > i > svg {
+        width: 24px;
+      }
+
+      .text {
+        @extend %erth--body;
+        color: #222222;
+      }
+    }
+
+    &-actions {
+      display: flex;
+      flex-direction: column;
+
+      @include min-breakpoint('md', $erth-grid-breakpoints) {
+        flex-direction: row;
+      }
+
+      .action,
+      .terms-of-use {
+        width: 100%;
+        max-width: 100%;
+
+        @include min-breakpoint('md', $erth-grid-breakpoints) {
+          flex-basis: (100% / 3);
+          max-width: (100% / 3);
+        }
+      }
+
+      .action button {
+        @extend %erth--navigation;
+        color: #222222;
+      }
+
+      .terms-of-use {
+        @extend %erth--service-text;
+        color: #7585A1;
+
+        a {
+          text-decoration: none;
+          color: #2B539B;
+        }
+      }
+    }
+
+    &-iframe iframe {
+      margin: 0 -24px;
+      width: calc(100% + 48px);
+      height: 504px;
+      border: none;
+
+      @media screen and (min-width: 768px) {
+        margin: 0;
+        width: 100%;
+        height: 404px;
+      }
+    }
+  }
+
+  &__payment-dialog-content {
+    align-self: flex-start;
+  }
+}

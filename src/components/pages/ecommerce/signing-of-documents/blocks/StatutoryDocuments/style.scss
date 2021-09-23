@@ -1,0 +1,20 @@
+.e-commerce-statutory-documents {
+  &__title {
+    @extend %erth--h3;
+    @include color-black(1);
+    margin-bottom: $padding-x4;
+  }
+
+  &__subtitle {
+    @extend %erth--body;
+    font-weight: 350;
+    margin-bottom: $padding-x4;
+  }
+
+  &__actions {
+    button {
+      width: 100%;
+      max-width: 208px;
+    }
+  }
+}

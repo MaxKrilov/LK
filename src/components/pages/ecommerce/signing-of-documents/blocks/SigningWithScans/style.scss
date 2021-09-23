@@ -1,0 +1,218 @@
+.e-commerce-signing-with-scans {
+  &__title {
+    @extend %erth--h3;
+    @include color-black(1);
+    margin-bottom: $padding-x4;
+  }
+
+  &__subtitle {
+    @extend %erth--body;
+    font-weight: 350;
+    margin-bottom: $padding-x4;
+  }
+
+  &__tabs {
+    position: relative;
+
+    &::before {
+      position: absolute;
+      bottom: 2px;
+      left: 0;
+      width: 100%;
+      height: 1px;
+      content: '';
+      background-color: #D5DDEB;
+    }
+
+    .tabs__container {
+      position: relative;
+      display: flex;
+      height: 48px;
+      padding: 0;
+    }
+
+    .tabs__items {
+      z-index: 1;
+      overflow: hidden;
+      height: 100%;
+      padding-bottom: 3px;
+    }
+
+    .tabs__list {
+      position: relative;
+      display: flex;
+      flex-wrap: nowrap;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      transition: transform 300ms ease;
+    }
+
+    .tabs__item {
+      position: relative;
+      z-index: 2;
+      display: inline-block;
+      margin-right: 22px;
+      padding-top: 12px;
+      padding-bottom: 8px;
+      vertical-align: top;
+      white-space: nowrap;
+      color: #2B539B;
+    }
+
+    .tabs__item a {
+      display: inline;
+      cursor: pointer;
+      transition: color 300ms, border-color 300ms, font-weight 300ms;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .tabs__item::after {
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      width: 100%;
+      height: 1px;
+      content: '';
+      opacity: 0;
+      border-radius: 3px;
+      background-color: #2B539B;
+    }
+
+    .tabs__item.active::after {
+      bottom: 0;
+      height: 3px;
+      opacity: 1;
+    }
+  }
+
+  &__document {
+    &__title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    &__title h4 {
+      @extend %erth--h4;
+      color: #222222;
+    }
+
+    &__title .download {
+      @extend %erth--navigation;
+      text-decoration: none;
+      color: #2B539B;
+      cursor: pointer;
+
+      &[disabled] {
+        opacity: 0.3;
+        cursor: not-allowed;
+      }
+    }
+
+    &__title > .download > i > svg {
+      width: 24px;
+    }
+
+    &__is-verifying {
+      display: flex;
+      align-items: center;
+    }
+
+    &__is-verifying .ert-progress-circular {
+      color: #FFDD00;
+      margin-right: 8px;
+    }
+
+    &__is-verifying span {
+      @extend %erth--body;
+      color: #222222;
+    }
+
+    &__success {
+      display: flex;
+      align-items: center;
+      color: #3ABC31;
+
+      > i > svg {
+        width: 13px !important;
+      }
+
+      span {
+        display: block;
+        @extend %erth--signature;
+        margin-left: 13px;
+      }
+    }
+  }
+
+  &__office {
+    iframe {
+      width: 100%;
+      height: 488px;
+      border: none;
+
+      @include min-breakpoint('md', $erth-grid-breakpoints) {
+        height: 480px;
+      }
+
+      @include min-breakpoint('lg', $erth-grid-breakpoints) {
+        height: 740px;
+      }
+    }
+  }
+
+  &__office-address {
+    width: 100%;
+    max-width: 401px;
+    padding: 36px 24px;
+    border-radius: 12px;
+
+    @include min-breakpoint('lg', $erth-grid-breakpoints) {
+      max-width: 424px;
+      height: 560px;
+    }
+
+    h4 {
+      @extend %erth--h4;
+    }
+
+    .address {
+      @extend %erth--body;
+      color: #222222;
+
+      span {
+        display: block;
+      }
+    }
+
+    .office-image {
+      @include max-breakpoint('lg', $erth-grid-breakpoints) {
+        display: none;
+      }
+    }
+
+    .phone-item {
+      @extend %erth--body;
+      color: #222222;
+
+      a {
+        text-decoration: none;
+        color: #2B539B;
+      }
+
+      span {
+        display: block;
+      }
+    }
+  }
+
+  &__actions {
+    button {
+      width: 100%;
+      max-width: 208px;
+    }
+  }
+}

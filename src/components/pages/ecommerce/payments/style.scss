@@ -1,0 +1,177 @@
+@import "./variables";
+
+.e-commerce-payment-page {
+  $self: &;
+
+  &__block {
+    background: #F0F7FA;
+  }
+
+  &__block__content {
+    flex-direction: column;
+
+    @media screen and (min-width: 735px) {
+      flex-direction: row;
+      align-items: center;
+    }
+  }
+
+  &__card-slider-block,
+  &__actions-block {
+    flex-basis: 100%;
+    width: 100%;
+  }
+
+  &__card-slider-block {
+    .swiper-container {
+      height: 272px;
+
+      @include min-breakpoint('sm') {
+        height: 252px;
+      }
+
+      @include min-breakpoint('md') {
+        height: 404px;
+      }
+    }
+
+    @include min-breakpoint('lg') {
+      flex-basis: 60%;
+
+      order: 2;
+      max-width: 60%;
+    }
+  }
+
+  &__actions-block {
+    @include min-breakpoint('lg') {
+      flex-basis: 40%;
+
+      order: 1;
+      max-width: 40%;
+    }
+  }
+
+  &__amount-input .ert-text-field {
+    > .ert-input__control > .ert-input__slot > .ert-text-field__slot {
+      > .ert-text-field__suffix {
+        @include color-black(0.2);
+      }
+    }
+
+    > .ert-input__control > .ert-text-field__details > .ert-messages a {
+      color: inherit;
+    }
+  }
+
+  &__offer-terms {
+    @extend %caption1-font;
+    @include color-black(0.5);
+
+    a {
+      color: inherit;
+    }
+  }
+
+  &__confirm-dialog,
+  &__success-dialog,
+  &__error-dialog {
+    padding: $padding-x6;
+    background-color: map-get($shades, 'white');
+
+    @include min-breakpoint('xl') {
+      padding: $padding-x8;
+    }
+
+    &__icon > i > svg {
+      width: 64px !important;
+    }
+
+    &__title {
+      @extend %h4-font;
+      @include color-black(0.8);
+
+      .amount .penny {
+        @include color-black(0.3);
+      }
+    }
+
+    &__actions {
+      display: flex;
+      margin-top: 220px;
+
+      @include min-breakpoint('sm') {
+        margin-top: 129px;
+      }
+
+      @include min-breakpoint('md') {
+        margin-top: 99px;
+      }
+
+      @include min-breakpoint('xl') {
+        margin-top: 114px;
+      }
+    }
+
+    &__action {
+      width: 100%;
+    }
+
+    &__warning,
+    &__description,
+    &__error-text {
+      @extend %caption1-font;
+    }
+
+    &__description {
+      @include color-black(0.5);
+    }
+  }
+
+  &__confirm-dialog {
+    &__icon {
+      color: map-get($yellow, 'base');
+    }
+
+    &__warning {
+      color: map-get($red, 'base');
+    }
+  }
+
+  &__success-dialog {
+    &__icon {
+      color: map-get($green, 'base');
+    }
+  }
+
+  &__error-dialog {
+    &__icon {
+      color: map-get($red, 'base');
+    }
+  }
+
+  &--is-frame {
+    #{$self}__card-slider-block,
+    #{$self}__actions-block {
+      flex-basis: 100%;
+      max-width: 100%;
+
+      @media screen and (min-width: 735px) {
+        flex-basis: 50%;
+        max-width: 50%;
+      }
+    }
+
+    #{$self}__card-slider-block {
+      order: 2;
+    }
+
+    #{$self}__actions-block {
+      order: 1;
+    }
+  }
+
+  &__submit {
+    @extend %erth--navigation;
+  }
+}

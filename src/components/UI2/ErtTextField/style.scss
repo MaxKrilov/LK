@@ -231,6 +231,16 @@ $text-field-legend-line-height: 11px !default;
     text-align: left;
   }
 
+  &__required-label {
+    position: absolute;
+    left: 0;
+    top: -16px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: map-get($yellow, 'base');
+  }
+
   @include min-breakpoint('md') {
     .ert-label {
       top: $text-field-label-top;

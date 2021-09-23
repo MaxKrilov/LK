@@ -257,6 +257,7 @@ class ErtTextField extends baseMixins {
   }
   genDefaultSlot () {
     return [
+      this.genRequiredLabel(),
       this.genFieldset(),
       this.genTextFieldSlot(),
       this.genClearIcon(),
@@ -360,6 +361,13 @@ class ErtTextField extends baseMixins {
       class: `ert-text-field__${type}`,
       ref: type
     }, this[type])
+  }
+  genRequiredLabel () {
+    if (!this.isShowRequiredLabel) return null
+
+    return this.$createElement('div', {
+      class: 'ert-text-field__required-label'
+    })
   }
   onBlur (e?: Event) {
     this.isFocused = false

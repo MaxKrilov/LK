@@ -41,6 +41,8 @@
 }
 
 .ert-input--checkbox {
+  $checkbox: &;
+
   &__thumb {
     width: 24px;
     height: 24px;
@@ -65,6 +67,66 @@
       > i > svg {
         width: 16px;
         transition: inherit;
+      }
+    }
+  }
+}
+
+// todo Костыльное решение - не был продуман скелет. В версии 4.0 уделить особое внимание
+.app[data-app].e-commerce {
+  .ert-input--checkbox {
+    .ert-input--selection-controls__input {
+      align-items: center;
+    }
+
+    &__thumb {
+      width: 14px;
+      height: 14px;
+      border-radius: 2px;
+      padding: 0;
+      background: map-get($shades, 'transparent');
+      border: 1px solid #D5DDEB;
+
+      &--inner {
+        background: map-get($shades, 'transparent');
+        box-shadow: none;
+      }
+    }
+
+    &.ert-input--is-dirty {
+      .ert-input--checkbox__thumb {
+        background: map-get($shades, 'transparent');
+        border-color: #2B539B;
+
+        &--inner {
+          background: map-get($shades, 'transparent');
+          color: #2B539B;
+
+          > i {
+            top: -3px;
+          }
+        }
+      }
+
+      .ert-input--selection-controls__input:hover {
+        .ert-input--checkbox__thumb {
+          background: map-get($shades, 'transparent');
+
+          &--inner {
+            box-shadow: none;
+          }
+        }
+      }
+    }
+  }
+
+  .ert-input--selection-controls__input:hover {
+    .ert-input--checkbox__thumb {
+      background: map-get($shades, 'transparent') !important;
+      border-color: #0357F1;
+
+      &--inner {
+        box-shadow: none !important;
       }
     }
   }

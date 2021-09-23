@@ -33,12 +33,12 @@ const props = {
   hideDetails: [Boolean, String],
   hint: String,
   id: String,
+  isShowRequiredLabel: Boolean,
   label: String,
   loading: Boolean,
   persistentHint: Boolean,
   prependIcon: String,
-  value: { required: false },
-  isShowRequiredLabel: Boolean
+  value: { required: false }
 }
 
 // eslint-disable-next-line no-use-before-define
@@ -73,6 +73,8 @@ class ErtInput extends baseMixins {
   // Data
   lazyValue: any = this.value
   hasMouseDown: boolean = false
+
+  theme: string = 'erth'
 
   // Computed
   get classes (): object {
@@ -131,6 +133,14 @@ class ErtInput extends baseMixins {
   get showDetails (): boolean {
     return this.hideDetails === false || (this.hideDetails === 'auto' && this.hasDetails)
   }
+
+  // get theme () {
+  //   const app = document.querySelector('.app')
+  //   if (!app) return ''
+  //   if (app.classList.contains('e-commerce')) return 'e-commerce'
+  //
+  //   return 'erth'
+  // }
 
   // Proxy
   get internalValue () {

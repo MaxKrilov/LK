@@ -696,5 +696,17 @@ export function dataLayerPush (object) {
   window.dataLayer.push(object)
 }
 
+export function isFramed () {
+  let isFramed = false
+
+  try {
+    isFramed = window !== window.top || document !== top.document || self.location !== top.location
+  } catch (e) {
+    isFramed = true
+  }
+
+  return isFramed
+}
+
 export const sortAsc = (a, b) => a - b
 export const sortDesc = (a, b) => b - a

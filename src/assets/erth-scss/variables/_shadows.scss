@@ -1,0 +1,25 @@
+$erth-shadows: (
+  'card--rest': (
+    0 4px 12px rgba(map-get($erth-colors, 'text--st-tropaz'), 0.12),
+    0 0 2px rgba(map-get($erth-colors, 'text--st-tropaz'), 0.12)
+  ),
+  'card--hover': (0 16px 64px rgba(map-get($erth-colors, 'text--st-tropaz'), 0.16)),
+
+  'yellow-button--rest': (
+    0 2px 2px rgba(map-get($erth-colors, 'other--1'), 0.1),
+    0 2px 12px rgba(map-get($erth-colors, 'other--1'), 0.15)
+  ),
+  'yellow-button--hover': (
+    0px 4px 8px rgba(map-get($erth-colors, 'text--st-tropaz'), 0.12),
+    0px 16px 40px rgba(map-get($erth-colors, 'text--st-tropaz'), 0.16)
+  ),
+
+  'white-button--rest': (
+    0 2px 8px rgba(map-get($erth-colors, 'text--st-tropaz'), 0.15),
+    0 0px 2px rgba(map-get($erth-colors, 'text--st-tropaz'), 0.12)
+  ),
+  'white-button--hover': (
+    0px 4px 8px rgba(map-get($erth-colors, 'text--st-tropaz'), 0.08),
+    0px 12px 36px rgba(map-get($erth-colors, 'text--st-tropaz'), 0.16)
+  )
+);

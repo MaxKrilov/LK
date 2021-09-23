@@ -2,4 +2,8 @@
   div[data-app].erth .#{$component} {
     @content($ert)
   }
+
+  div[data-app].e-commerce .#{$component} {
+    @content($ecommerce)
+  }
 }

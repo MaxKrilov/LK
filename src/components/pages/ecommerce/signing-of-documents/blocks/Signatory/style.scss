@@ -1,0 +1,51 @@
+.e-commerce-signatory {
+  &__title {
+    @extend %erth--h3;
+    @include color-black(1);
+    margin-bottom: $padding-x4;
+  }
+
+  &__subtitle {
+    @extend %erth--body;
+    font-weight: 350;
+    margin-bottom: $padding-x4;
+  }
+
+  .info-block {
+    display: flex;
+    align-items: center;
+    margin-bottom: $padding-x4;
+  }
+
+  .info-block .caption {
+    @extend %erth--service-text;
+    color: #7585A1;
+  }
+
+  .info-block .value {
+    @extend %erth--body;
+    margin-top: 0;
+    color: #222222;
+  }
+
+  &__signatory-name__caption {
+    margin-right: $padding-x12;
+  }
+
+  &__document__caption {
+    margin-right: ($padding-x4 + 1px);
+  }
+
+  &__actions {
+    button {
+      width: 100%;
+      max-width: 208px;
+      @extend %erth--navigation;
+    }
+
+    .caption2 {
+      @extend %erth--signature;
+      color: #7585A1;
+    }
+  }
+}

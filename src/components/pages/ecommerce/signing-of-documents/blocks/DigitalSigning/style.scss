@@ -1,0 +1,195 @@
+.e-commerce-digital-signing {
+  &__title {
+    @extend %erth--h3;
+    @include color-black(1);
+    margin-bottom: $padding-x4;
+  }
+
+  &__subtitle {
+    @extend %erth--body;
+    font-weight: 350;
+    margin-bottom: $padding-x4;
+
+    a {
+      display: block;
+      text-decoration: none;
+      color: #2B539B;
+    }
+  }
+
+  &__document {
+    &__title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    &__title h4 {
+      @extend %erth--h4;
+      color: #222222;
+    }
+
+    &__title .download {
+      @extend %erth--navigation;
+      text-decoration: none;
+      color: #2B539B;
+      cursor: pointer;
+
+      &[disabled] {
+        opacity: 0.3;
+        cursor: not-allowed;
+      }
+    }
+
+    &__title > .download > i > svg {
+      width: 24px;
+    }
+
+    &__action {
+      width: 131px;
+
+      button {
+        text-transform: uppercase;
+        @extend %erth--navigation;
+      }
+    }
+
+    &__success {
+      display: flex;
+      align-items: center;
+      color: #3ABC31;
+
+      > i > svg {
+        width: 13px !important;
+      }
+
+      span {
+        display: block;
+        @extend %erth--signature;
+        margin-left: 13px;
+      }
+    }
+  }
+
+  .info-block {
+    display: flex;
+    align-items: center;
+    margin-bottom: $padding-x4;
+  }
+
+  .info-block .caption {
+    @extend %erth--service-text;
+    color: #7585A1;
+  }
+
+  .info-block .value {
+    @extend %erth--body;
+    margin-top: 0;
+    color: #222222;
+  }
+
+  &__list-certificate-dialog {
+    border-radius: 12px;
+    box-shadow: 0 16px 64px rgba(43, 83, 155, 0.16) !important;
+
+    &-content {
+      border-radius: 12px;
+      background-color: #FFFFFF;
+    }
+
+    &-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+    }
+
+    &-head .title {
+      @extend %erth--h3;
+      color: #222222;
+    }
+
+    &-head > button {
+      outline: none;
+    }
+
+    &-head > button > i {
+      color: #2B539B;
+    }
+
+    &-head > button > i > svg {
+      width: 24px !important;
+    }
+
+    &-body .description {
+      @extend %erth--body;
+      color: #222222;
+    }
+
+    &-body ul.list {
+      list-style: none;
+    }
+
+    &-body ul.list li {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      @extend %erth--body;
+      cursor: pointer;
+      transition: background, color 200ms ease-in-out;
+      color: #222222;
+    }
+
+    &-body ul.list li:hover {
+      color: #0357F1;
+      background: #F0F7FA;
+    }
+
+    &-body > ul.list > li > span.selected {
+      display: none;
+      color: #3ABC31;
+    }
+
+    &-body > ul.list > li > span.selected > i > svg {
+      width: 13px;
+    }
+
+    &-body > ul.list > li.selected > span.selected {
+      display: block;
+    }
+
+    &-body .actions {
+      display: flex;
+      flex-direction: column;
+
+      @include min-breakpoint('md', $erth-grid-breakpoints) {
+        flex-direction: row;
+      }
+    }
+
+    &-body .actions .action,
+    &-body .actions .terms-of-use {
+      width: 100%;
+      max-width: 100%;
+
+      @include min-breakpoint('md', $erth-grid-breakpoints) {
+        flex-basis: (100% / 3);
+        max-width: (100% / 3);
+      }
+    }
+
+    &-body .actions .action button {
+      @extend %erth--navigation;
+      color: #222222;
+    }
+
+    &-body .actions .terms-of-use {
+      @extend %erth--service-text;
+      color: #7585A1;
+    }
+
+    &-body .actions .terms-of-use a {
+      text-decoration: none;
+      color: #2B539B;
+    }
+  }
+}

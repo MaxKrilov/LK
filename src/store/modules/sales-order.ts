@@ -493,9 +493,8 @@ const actions = {
         .catch(err => reject(err))
     })
   },
-  getAvailableFunds (
-    context: ActionContext<IState, any>) {
-    const accountNumber = context.rootGetters['payments/getActiveBillingAccountNumber']
+  getAvailableFunds (context: ActionContext<IState, any>, { billingAccountNumber }: { billingAccountNumber?: string } = {}) {
+    const accountNumber = billingAccountNumber || context.rootGetters['payments/getActiveBillingAccountNumber']
     return new Promise((resolve, reject) => {
       api()
         .setWithCredentials()

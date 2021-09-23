@@ -1,9 +1,19 @@
 /* eslint-disable camelcase */
 export interface IBillingAccount {
+  accountBrand?: { id: string, name: string }
   accountNumber: string
+  accountSign?: string
   accountStatus: { id: string, name: string }
   billingAccountId: string
+  billingForm?: { id: string, name: string }
+  contractBrand?: { id: string, name: string }
+  contractId?: string
   contractNumber: string
+  contractStatus?: string
+  deliveryMethod?: string
+  dmpOnly?: string
+  isPartnerAccount?: string
+  vdcAccount?: string
 }
 
 export interface IBillingInfo {

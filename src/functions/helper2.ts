@@ -230,6 +230,22 @@ export function createRange (length: number): number[] {
   return Array.from({ length }, (v, k) => k)
 }
 
+export function validateINN (inn: string) {
+  if (inn.length !== 10 && inn.length !== 12) {
+    return false
+  }
+  if (inn.length === 10) {
+    const sum = [2, 4, 10, 3, 5, 9, 4, 6, 8].reduce((sum, item, index) => sum + item * Number(inn.charAt(index)), 0)
+    const residue = sum % 11 % 10
+    return residue === +inn[9]
+  }
+  const firstSumm = [7, 2, 4, 10, 3, 5, 9, 4, 6, 8].reduce((sum, item, index) => sum + item * Number(inn.charAt(index)), 0)
+  const secondSumm = [3, 7, 2, 4, 10, 3, 5, 9, 4, 6, 8].reduce((sum, item, index) => sum + item * Number(inn.charAt(index)), 0)
+  const firstResidue = firstSumm % 11 % 10
+  const secondResidue = secondSumm % 11 % 10
+  return firstResidue === +inn[10] && secondResidue === +inn[11]
+}
+
 export function throttle<T extends (...args: any[]) => any> (fn: T, limit: number) {
   let throttling = false
   return (...args: Parameters<T>): void | ReturnType<T> => {
@@ -252,3 +268,18 @@ export function booleanToNumber (bool: boolean): number {
 export function parseDecimal (value: string): number {
   return parseInt(value, 10)
 }
+
+export function findGetParameter (parameterName: string) {
+  let result = null
+  let tmp = []
+  location.search
+    .substr(1)
+    .split('&')
+    .forEach(function (item) {
+      tmp = item.split('=')
+      if (tmp[0] === parameterName) result = decodeURIComponent(tmp[1])
+    })
+  return result
+}
+
+export const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
