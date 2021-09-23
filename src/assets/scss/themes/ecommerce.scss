@@ -1,0 +1,105 @@
+$ecommerce: (
+  'text': (
+    'active': map-get($shades, 'black'),
+    'rest-primary': rgba(map-get($shades, 'black'), 0.8),
+    'rest-secondary': rgba(map-get($shades, 'black'), 0.5),
+    'caption': rgba(map-get($shades, 'black'), 0.3),
+    'disabled': rgba(map-get($shades, 'black'), 0.2),
+    'error': map-get($red, 'base'),
+    'success': map-get($green, 'base')
+  ),
+  'states': (
+    'hover': 0.04,
+    'focus': 0.12,
+    'selected': 0.08,
+    'activated': 0.12,
+    'pressed': 0.16,
+    'dragged': 0.08
+  ),
+  'switch': (
+    'track-background': map-get($gray, '13'),
+    'track-box-shadow': inset -4px 4px 4px rgba(map-get($shades, 'black'), 0.1),
+    'thumb-box-shadow': (-2px 2px 4px rgba(map-get($shades, 'black'), 0.2), -1px 1px 1px rgba(map-get($shades, 'black'), 0.1)),
+    'thumb-background-inactive': map-get($gray, '16'),
+    'thumb-border-color-inactive': radial-gradient(map-get($gray, '12') 36.65%, map-get($gray, '13') 74.56%, map-get($gray, '14') 100%),
+    'thumb-icon-color-inactive': rgba(map-get($gray, '7'), 0.5),
+    'thumb-box-shadow-hover': -4px 4px 6px rgba(map-get($shades, 'black'), 0.1),
+    'thumb-background-active': map-get($green ,'base'),
+    'thumb-border-color-active': radial-gradient(map-get($green ,'lighten-2') 36.65%, map-get($green, 'base') 74.56%, map-get($green, 'darken-1') 100%),
+    'thumb-icon-color-active': map-get($shades, 'white')
+  ),
+  'checkbox': (
+    'box-shadow': inset -4px 4px 4px rgba(map-get($shades, 'black'), 0.15),
+    'box-shadow-hover': inset -6px 6px 4px rgba(map-get($shades, 'black'), 0.1),
+    'border-color-inactive': linear-gradient(to bottom left, map-get($gray, '17') 0%, map-get($shades, 'white') 100%),
+    'border-color-inactive-hover': linear-gradient(to bottom left, map-get($gray, '18') 0%, map-get($shades, 'white') 100%),
+    'background-inactive': map-get($gray, '13'),
+    'border-color-active': linear-gradient(to bottom left, map-get($green, 'darken-1') 0%, map-get($green, 'lighten-3') 100%),
+    'border-color-active-hover': linear-gradient(to bottom left, map-get($green, 'other-3') 0%, map-get($green, 'lighten-3') 100%),
+    'background-active': map-get($green, 'base'),
+    'box-shadow-active-hover': inset -4px 4px 6px rgba(map-get($shades, 'black'), 0.15),
+    'icon-color': map-get($shades, 'white')
+  ),
+  'overlay': (
+    'background-color': map-get($gray, '38')
+  ),
+  'dialog': (
+    'box-shadow': map-get($shadows, 'modal')
+  ),
+  'tooltip': (
+    'background-color': map-get($shades, 'white'),
+    'text-color': rgba(map-get($shades, 'black'), 0.8),
+    'box-shadow': map-get($shadows, 'modal')
+  ),
+  'modal': (
+    'box-shadow': map-get($shadows, 'modal'),
+    'border-radius': 12px
+  ),
+  'linear-progress': (
+    'color': map-get($yellow, 'base')
+  ),
+  'textfield': (
+    'rest': #D5DDEB,
+    'hover': #6688C8,
+    'focus': #0357F1,
+    'error': map-get($red, 'base'),
+    'success': #3ABC31,
+    'label': #7585A1,
+    'label-active-font': $fact-light,
+    'prepend-append-color': rgba(map-get($shades, 'black'), 0.2),
+    'prepend-append-color--hover': map-get($yellow, 'base'),
+    'prepend-append-color--focus': rgba(map-get($shades, 'black'), 0.5)
+  ),
+  'list': (
+    'background-color': map-get($shades, 'white'),
+    'active-color': map-get($green, 'base'),
+    'hover-border-color': transparent,
+    'hover-background': #F0F7FA
+  ),
+  'chip': (
+    'border-color': rgba(map-get($shades, 'black'), 0.12),
+    'background': map-get($gray, '10')
+  ),
+  'select': (
+    'active': map-get($green, 'base')
+  ),
+  'slider': (
+    'base': map-get($blue, 'base')
+  ),
+  'cards': map-get($shades, 'white'),
+  'dividers': rgba(map-get($shades, 'black'), 0.15),
+  'picker': (
+    'title': map-get($gray, '2'),
+    'body': map-get($shades, 'white')
+  ),
+  'date-picker': (
+    'years-item-active': map-get($green, 'base'),
+    'years-item-background-hover': map-get($yellow, 'base'),
+    'title-year-color': rgba(map-get($shades, 'black'), 0.5),
+    'title-date-color': rgba(map-get($shades, 'black'), 0.8),
+    'header-icon-color': map-get($gray, '21'),
+    'header-button-color': rgba(map-get($shades, 'black'), 0.8),
+    'active-date-background': map-get($yellow, 'base'),
+    'disabled-date-color': rgba(map-get($shades, 'black'), 0.2)
+  )
+);

@@ -1,0 +1,75 @@
+$prev-slide-class: 'swiper-slide-prev';
+$active-slide-class: 'swiper-slide-active';
+$next-slide-class: 'swiper-slide-next';
+
+$component-height: (
+  'xs': 220px,
+  'sm': 176px,
+  'md': 208px
+);
+
+$card-width: (
+  'xs': 256px,
+  'md': 336px
+);
+
+$card-height: (
+  'xs': 160px,
+  'md': 208px
+);
+
+$border-color: map-get($shades, 'white');
+
+$card-box-shadow: 0px 16px 64px rgba(43, 83, 155, 0.16);
+
+$card-box-shadow-back: 0 4px 6px rgba(map-get($shades, 'black'), 0.05),
+                       0 1px 2px rgba(map-get($shades, 'black'), 0.1);
+
+$new-card-front-background: map-get($shades, 'white');
+
+$new-card-back-background: map-get($shades, 'white');
+
+$new-card-back-line-background: rgba(#D5DDEB, 0.5);
+
+$card-front-background: map-get($shades, 'white');
+
+$card-back-background: map-get($shades, 'white');
+
+$card-back-line-background: rgba(#D5DDEB, 0.5);
+
+$card-number-color: linear-gradient(
+    180deg,
+    map-get($gray, '48') 0%,
+    map-get($gray, '49') 55.25%,
+    map-get($shades, 'black') 59.12%,
+    map-get($gray, '50') 79.01%
+);
+
+$card-number-text-shadow: -1px 1px 2px rgba(map-get($shades, 'black'), 0.25);
+
+%card-number {
+  @extend %h2-font;
+  background-image: $card-number-color;
+  color: map-get($shades, 'transparent');
+  background-clip: text;
+  text-shadow: $card-number-text-shadow;
+}
+
+%card-number-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #222222;
+  //box-shadow: -1px 1px 2px rgba(map-get($shades, 'black'), 0.25);
+  margin-right: 6px;
+  padding: 1px;
+
+  > span {
+    display: block;
+    border-radius: inherit;
+    width: 100%;
+    height: 100%;
+    background: #222222;
+  }
+}

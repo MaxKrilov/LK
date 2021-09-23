@@ -13,9 +13,10 @@ import {
   isOtherDocument, isActDocument
 } from '@/functions/document'
 import { TYPE_FILE, TYPE_JSON } from '@/constants/type_request'
+import { ICustomerContract, IOrderContract } from '@/tbapi/fileinfo'
 
 interface IState {
-  listDocument: (DocumentInterface[])[],
+  listDocument: DocumentInterface[],
   listReportDocument: (DocumentInterface | DocumentInterface[])[],
   listContractDocument: (DocumentInterface | DocumentInterface[])[],
   listOtherDocument: (DocumentInterface | DocumentInterface[])[]
@@ -25,6 +26,8 @@ interface IFile {
   bucket: string
   key: string
 }
+
+const $api = new API()
 
 const state: IState = {
   listDocument: [],
@@ -39,7 +42,7 @@ const getters = {
    * @param state
    */
   getCountUnsignedDocument: (state: IState) =>
-    state.listDocument.filter(document => getFirstElement(document)?.contractStatus?.match(new RegExp(CONTRACT.IS_READY, 'ig'))).length,
+    state.listDocument.filter(document => document.contractStatus?.match(new RegExp(CONTRACT.IS_READY, 'ig'))).length,
   /**
    * Получение отчётных документов и/или пакетов документов
    * @param state
@@ -182,6 +185,36 @@ const actions = {
         .catch(err => { reject(err) })
     })
   },
+  getContract (context: ActionContext<IState, any>, { api }: { api: API } = { api: $api }) {
+    const { toms: clientId } = context.rootGetters['auth/user']
+
+    return new Promise<ICustomerContract[]>((resolve, reject) => {
+      api
+        .setWithCredentials()
+        .setData({
+          clientId
+        })
+        .query('/order/contract/customer-contracts')
+        .then(response => resolve(response))
+        .catch(error => reject(error))
+    })
+  },
+
+  getOrderContract (context: ActionContext<IState, any>, { salesOrderId }: { salesOrderId: string }) {
+    const { toms: clientId } = context.rootGetters['auth/user']
+
+    return new Promise<IOrderContract[]>((resolve, reject) => {
+      $api
+        .setWithCredentials()
+        .setData({
+          clientId,
+          salesOrderId
+        })
+        .query('/order/contract/get-contract')
+        .then(response => resolve(response))
+        .catch(error => reject(error))
+    })
+  },
   logEdo (
     context: ActionContext<IState, any>,
     { api, type, data }: { api: API, type: 'INFO' | 'WARN' | 'ERROR' | 'DEBUG', data: any }
@@ -222,6 +255,7 @@ const mutations = {
     state.listOtherDocument = []
     state.listDocument = []
     payload.forEach(document => {
+      state.listDocument.push(document)
       if (isReportDocument(document)) {
         state.listReportDocument.push(document)
       }

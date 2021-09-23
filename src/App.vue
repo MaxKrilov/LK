@@ -2,7 +2,10 @@
   div.app.erth(data-app="true")
     div.app__content
       template(v-if="isShowPreloader || isCheckingForwardStatus")
-        ErPreloader(:status="textPreloader")
+        ErPreloader(
+          :status="textPreloader"
+          :isEcommerce="isEcommerce"
+        )
       template(v-else-if="$props.isWorkInProgress || (forwardStatusResult && forwardStatusResult.status === true)")
         work-in-progress(
           :userMessage="forwardStatusResult && forwardStatusResult.userMessage"
@@ -27,7 +30,7 @@
 <script>
 import { mapGetters, mapState, mapActions } from 'vuex'
 import { SCREEN_WIDTH } from './store/actions/variables'
-import { getWindowWidth, isLocalhost } from './functions/helper'
+import { getWindowWidth, isFramed, isLocalhost } from './functions/helper'
 import NotAccessPage from './components/pages/errors/not-access'
 import WorkInProgress from '@/components/pages/errors/work-in-progress'
 import ErPreloader from './components/blocks/ErPreloader'
@@ -191,8 +194,8 @@ export default {
     },
     fetchUserData () {
       const context = { api: this.$api }
-      this.fetchNotifications(context)
-      this.fetchPPR(context)
+      !this.isEcommerce && this.fetchNotifications(context)
+      !this.isEcommerce && this.fetchPPR(context)
       this.fetchClientInfo(context)
         .then(clientInfo => {
           if (!isLocalhost()) {
@@ -200,15 +203,15 @@ export default {
               scope.setUser({ clientId: this.user.toms })
             })
           }
-
           if (Object.keys(clientInfo).length !== 0) {
-            this.$store.dispatch(`user/${GET_MANAGER_INFO}`, context)
+            !this.isEcommerce && this.$store.dispatch(`user/${GET_MANAGER_INFO}`, context)
+            !this.isEcommerce && this.$store.dispatch(`request/${GET_REQUEST}`, context)
             this.$store.dispatch(`user/${GET_CATEGORY_INFO}`, context)
               .then(() => {
                 this.$store.dispatch(`user/${GET_DISTRIBUTION_CHANNEL}`)
               })
-            this.$store.dispatch(`request/${GET_REQUEST}`, context)
-            this.$store.dispatch(`fileinfo/downloadListDocument`, context)
+            !this.isEcommerce && this.$store.dispatch(`request/${GET_REQUEST}`, context)
+            !this.isEcommerce && this.$store.dispatch(`fileinfo/downloadListDocument`, context)
             this.$store.dispatch(`payments/getListBillingAccount`, { route: this.$route })
               .then(isValid => {
                 if (isValid) {
@@ -218,11 +221,11 @@ export default {
                       this.getBranchLocation(branchId)
                     })
                   this.$store.dispatch(`chat/${GET_CHAT_TOKEN}`, context)
-                  this.$store.dispatch(`payments/getPromisedPaymentInfo`, context)
-                  this.$store.dispatch(`user/${GET_BILLING_CONTACTS}`, context)
-                  this.$store.dispatch(`user/${GET_LIST_PRODUCT_BY_ADDRESS}`, context)
+                  !this.isEcommerce && this.$store.dispatch(`user/${GET_BILLING_CONTACTS}`, context)
+                  !this.isEcommerce && this.$store.dispatch(`payments/getPromisedPaymentInfo`, context)
+                  !this.isEcommerce && this.$store.dispatch(`user/${GET_LIST_PRODUCT_BY_ADDRESS}`, context)
                     .then(() => {
-                      this.$store.dispatch(`user/${GET_LIST_PRODUCT_BY_SERVICE}`, context)
+                      !this.isEcommerce && this.$store.dispatch(`user/${GET_LIST_PRODUCT_BY_SERVICE}`, context)
                     })
                 } else {
                   this.$store.commit(`loading/menuComponentBalance`, false)
@@ -261,6 +264,9 @@ export default {
         : this.isLogouting
           ? 'Выполняется выход из системы'
           : ''
+    },
+    isEcommerce () {
+      return isFramed() && location.href.match(/ecommerce/g)
     }
   }
 }

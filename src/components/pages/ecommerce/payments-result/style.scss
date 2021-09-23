@@ -1,0 +1,37 @@
+.e-commerce-payment-result-page {
+  &__info {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 100vh;
+
+    margin: 0 24px;
+    width: calc(100% - 48px);
+  }
+
+  &__title {
+    @extend %erth--h4;
+  }
+
+  &__description {
+    @extend %erth--body;
+    color: #222222;
+  }
+
+  &__preloader {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .icon {
+      color: #7585A1;
+    }
+
+    .title {
+      @extend %erth--h4;
+      color: #7585A1;
+      mix-blend-mode: normal;
+    }
+  }
+}

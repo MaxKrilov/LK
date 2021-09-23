@@ -1,0 +1,31 @@
+.e-commerce-document-name {
+  display: flex;
+  align-items: center;
+  @extend %erth--body;
+  color: #2B539B;
+  transition: $primary-transition;
+
+  .icon {
+    margin-right: $padding-x2;
+  }
+
+  .icon > i.ert-icon--doc > svg {
+    width: 24px;
+  }
+
+  .name {
+    @extend %erth--body;
+    margin-right: $padding-x2;
+    color: inherit;
+  }
+
+  .remove button {
+    display: flex;
+    align-items: center;
+    outline: none;
+  }
+
+  &:hover {
+    color: #0357F1;
+  }
+}

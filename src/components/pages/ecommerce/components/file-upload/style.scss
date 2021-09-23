@@ -1,0 +1,32 @@
+.ecommerce-file-upload {
+  input[type="file"] {
+    display: none;
+  }
+
+  &__wrapper {
+    font-weight: 350;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    cursor: pointer;
+    color: #7585A1;
+    @extend %erth--body;
+    border: 1px dashed #7585A1;
+    border-radius: 12px;
+
+    @include min-breakpoint('md', $erth-grid-breakpoints) {
+      padding: 32px;
+    }
+  }
+
+  &.is-dragover {
+    cursor: grabbing;
+    border-color: #0357F1;
+    background: #F0F7FA;
+
+    .label-text {
+      opacity: 0;
+    }
+  }
+}

@@ -40,7 +40,7 @@
   }
 }
 
-@mixin min-breakpoint($breakpoint) {
+@mixin min-breakpoint($breakpoint, $list-breakpoint: $grid-breakpoint) {
   /*
     $breakpoint is 'xs', 'sm', 'lg' or etc
 
@@ -51,13 +51,13 @@
       }
     }
   */
-  @include media-min-width(map_get($grid-breakpoint, $breakpoint)) {
+  @include media-min-width(map_get($list-breakpoint, $breakpoint)) {
     @content;
   }
 }
 
 
-@mixin max-breakpoint($breakpoint) {
+@mixin max-breakpoint($breakpoint, $list-breakpoint: $grid-breakpoint) {
   /*
     $breakpoint is 'xs', 'sm', 'lg' or etc
 
@@ -74,7 +74,7 @@
     поэтому отнимаем пиксель что-бы не было пересечений с
     аналогичным значением min-width
   */
-  $max-width: map_get($grid-breakpoint, $breakpoint) - .1px;
+  $max-width: map_get($list-breakpoint, $breakpoint) - .1px;
 
   @include media-max-width($max-width) {
     @content;

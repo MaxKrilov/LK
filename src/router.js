@@ -136,7 +136,21 @@ import VPNPromoPage from './components/pages/vpn/promo-page/index'
 
 // Страницы с ошибками
 import OldBrowserPage from './components/pages/errors/old-browsers'
-// import WifiAuthService from '@/components/pages/wifi/auth-services/index'
+
+import ErtEcommerceCreateClient from '@/components/pages/ecommerce/create-client/index'
+
+// ECommerce
+/// Шаблон (необходимо для установки шрифтов)
+import ECommerceTemplate from './components/templates/ECommerceTemplate/index'
+
+/// Подписание документов
+import ECommerceSigningOfDocuments from './components/pages/ecommerce/signing-of-documents/index'
+
+/// Оплата картой
+import ECommercePayment from './components/pages/ecommerce/payments/index'
+
+/// Результат платежа
+import ECommercePaymentResult from './components/pages/ecommerce/payments-result/index'
 
 Vue.use(Router)
 
@@ -558,6 +572,32 @@ const router = new Router({
       name: 'create-client',
       meta: { requiresAuth: true },
       component: DMPFormPage
+    },
+    {
+      path: '/ecommerce',
+      component: ECommerceTemplate,
+      children: [
+        {
+          path: 'create-client',
+          name: 'ecommerce-create-client',
+          component: ErtEcommerceCreateClient
+        },
+        {
+          path: 'signing-of-documents',
+          name: 'ecommerce-signing-of-documents',
+          component: ECommerceSigningOfDocuments
+        },
+        {
+          path: 'payment',
+          name: 'ecommerce-payments',
+          component: ECommercePayment
+        },
+        {
+          path: 'payment-result',
+          name: 'ecommerce-payment-result',
+          component: ECommercePaymentResult
+        }
+      ]
     },
     {
       path: '/old-browser',

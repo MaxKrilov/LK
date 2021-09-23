@@ -167,6 +167,22 @@ const actions = {
           Cookie.set('ff_billing_account', billingAccount, {})
           Cookie.set('ff_total_amount', totalAmount, {})
         }
+
+        // Проблемы с ecommerce (теряется orderId и MarketId)
+        const ecommerceOrderId = urlParams.orderId
+        const ecommerceMarketId = urlParams.marketId
+
+        if (ecommerceOrderId && ecommerceMarketId) {
+          Cookie.set('ecommerce__order_id', ecommerceOrderId, {})
+          Cookie.set('ecommerce__market_id', ecommerceMarketId, {})
+        }
+
+        // Проблемы с ecommerce (теряется transaction)
+        const ecommerceTransaction = urlParams.transaction
+
+        if (ecommerceTransaction) {
+          Cookie.set('ecommerce__transaction', ecommerceTransaction, {})
+        }
       }
 
       actions.signIn(context, payload)

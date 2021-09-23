@@ -220,9 +220,12 @@ const actions = {
         })
     })
   },
-  getBillingInfo (context: ActionContext<IState, any>) {
+  getBillingInfo (
+    context: ActionContext<IState, any>,
+    { billingAccount }: { billingAccount: string | null } = { billingAccount: null }
+  ) {
     return new Promise((resolve, reject) => {
-      const activeBillingAccount = context.getters.getActiveBillingAccount
+      const activeBillingAccount = billingAccount || context.getters.getActiveBillingAccount
       if (!activeBillingAccount) {
         reject('No have active billing account')
         return

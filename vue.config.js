@@ -4,7 +4,10 @@ module.exports = {
     sourceMap: true,
     loaderOptions: {
       sass: {
-        data: '@import "~@/assets/scss/_import.scss";'
+        data: `
+          @import "~@/assets/scss/_import.scss";
+          @import "~@/assets/erth-scss/_import.scss";
+          `
       }
     }
   },

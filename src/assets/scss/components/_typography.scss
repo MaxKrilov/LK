@@ -143,3 +143,8 @@ a.link {
   color: map-get($red, 'base') !important;
   caret-color: map-get($red, 'base') !important;
 }
+
+.success--text {
+  color: map-get($green, 'base') !important;
+  caret-color: map-get($green, 'base') !important;
+}

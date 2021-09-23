@@ -74,7 +74,7 @@ export default class ErDocumentViewer extends Vue {
   }
   @Watch('currentType')
   async onCurrentTypeChanged (val: any) {
-    if (!this.value) return
+    if (!this.value || this.listFile.size === 0) return
     const _document = this.listDocument.find(item => String(item.id) === String(val.documentId))!
     const changeEmbed = () => {
       const oldEmbed: HTMLEmbedElement | null = this.$refs.modal.querySelector('embed')

@@ -1,0 +1,71 @@
+.ert-ecommerce-create-client-page {
+  &__required-label {
+    display: flex;
+    align-items: center;
+    @extend %caption1-font;
+    @include color-black(0.5);
+
+    &::before {
+      display: block;
+      width: 8px;
+      height: 8px;
+      content: '';
+      border-radius: 50%;
+      background-color: map-get($yellow, 'base');
+    }
+  }
+
+  &__inn {
+    width: 100%;
+    max-width: 320px;
+
+    .inn-description {
+      @extend %erth--body;
+      @include color-black(0.5);
+      margin-bottom: $padding-x8;
+    }
+
+    .inn-submit button {
+      @extend %erth--navigation;
+      color: #222222;
+      box-shadow: 0 2px 2px rgba(10, 43, 103, 0.1), 0 2px 12px rgba(10, 43, 103, 0.15);
+
+      &:hover {
+        background: #FFEA01;
+        box-shadow: 0 4px 8px rgba(43, 83, 155, 0.12), 0 16px 40px rgba(43, 83, 155, 0.16);
+      }
+    }
+
+    .inn-submit .er-button__icon--append {
+      position: absolute;
+      top: 50%;
+      right: 16px;
+      transform: translateY(-50%);
+
+      i > svg {
+        width: 16px;
+      }
+    }
+  }
+
+  &__change-inn {
+    margin-top: -7px;
+
+    button {
+      @extend %erth--navigation;
+      color: #2B539B;
+
+      &:hover {
+        color: #0357F1;
+        box-shadow: 0 4px 8px rgba(43, 83, 155, 0.12), 0 16px 40px rgba(43, 83, 155, 0.16);
+      }
+    }
+  }
+}
+
+.component-fade-enter-active, .component-fade-leave-active {
+  transition: opacity .3s ease;
+}
+.component-fade-enter, .component-fade-leave-to {
+  opacity: 0;
+}

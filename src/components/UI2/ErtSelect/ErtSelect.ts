@@ -355,6 +355,7 @@ export default class ErtSelect extends baseMixins {
     }
 
     return [
+      this.genRequiredLabel(),
       this.genFieldset(),
       this.$createElement('div', {
         staticClass: 'ert-select__slot',

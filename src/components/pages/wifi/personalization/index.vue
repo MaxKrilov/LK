@@ -110,6 +110,7 @@
         :image="getLogo"
         @change="onSaveLogo"
       )
+
       ErtWifiPersonalizationDialogBackground(
         v-model="dialogBackground"
         :customBodyStyle="getFieldCustomBodyStyle"
@@ -118,6 +119,7 @@
         :isFullscreen="getIsFullscreen"
         @change="onSaveBackground"
       )
+
       ErtWifiPersonalizationDialogButton(
         v-model="dialogButton"
         :buttons="getButtons"

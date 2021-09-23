@@ -1,0 +1,184 @@
+/*
+* -x-font-size transforming to font-size/line-height
+* by PostCSS (https://www.npmjs.com/package/postcss-short-font-size)
+*/
+%erth--h1 {
+  font: 33px/38px $fact-bold;
+
+  @include min-breakpoint('md', $erth-grid-breakpoints) {
+    -x-font-size: 35px/40px;
+  }
+
+  @include min-breakpoint('lg', $erth-grid-breakpoints) {
+    -x-font-size: 46px/52px;
+  }
+}
+
+%erth--h2 {
+  font: 27px/31px $fact-medium;
+
+  @include min-breakpoint('md', $erth-grid-breakpoints) {
+    -x-font-size: 30px/36px;
+  }
+
+  @include min-breakpoint('lg', $erth-grid-breakpoints) {
+    -x-font-size: 36px/42px;
+  }
+}
+
+%erth--h3 {
+  font: 23px/27px $fact-medium;
+
+  @include min-breakpoint('md', $erth-grid-breakpoints) {
+    -x-font-size: 24px/30px;
+  }
+
+  @include min-breakpoint('lg', $erth-grid-breakpoints) {
+    -x-font-size: 27px/33px;
+  }
+}
+
+%erth--h4 {
+  font: 19px/24px $fact-medium;
+
+  @include min-breakpoint('md', $erth-grid-breakpoints) {
+    -x-font-size: 20px/26px;
+  }
+
+  @include min-breakpoint('lg', $erth-grid-breakpoints) {
+    -x-font-size: 22px/28px;
+  }
+}
+
+%erth--h5 {
+  font: 16px/21px $fact-medium;
+
+  @include min-breakpoint('md', $erth-grid-breakpoints) {
+    -x-font-size: 20px/26px;
+  }
+
+  @include min-breakpoint('lg', $erth-grid-breakpoints) {
+    -x-font-size: 22px/28px;
+  }
+}
+
+%erth--h6 {
+  font: 13px/17px $fact-medium;
+
+  @include min-breakpoint('md', $erth-grid-breakpoints) {
+    -x-font-size: 14px/18px;
+  }
+
+  @include min-breakpoint('lg', $erth-grid-breakpoints) {
+    -x-font-size: 15px/19px;
+  }
+}
+
+%erth--factoid {
+  font: 36px/40px $fact-medium;
+
+  @include min-breakpoint('md', $erth-grid-breakpoints) {
+    -x-font-size: 40px/45px;
+  }
+
+  @include min-breakpoint('lg', $erth-grid-breakpoints) {
+    -x-font-size: 53px/59px;
+  }
+}
+
+%erth--scream {
+  font: 21px/26px $fact-light-italic;
+
+  @include min-breakpoint('md', $erth-grid-breakpoints) {
+    -x-font-size: 22px/28px;
+  }
+
+  @include min-breakpoint('lg', $erth-grid-breakpoints) {
+    -x-font-size: 25px/32px;
+  }
+}
+
+%erth--lead {
+  font: 21px/26px $fact-regular;
+
+  @include min-breakpoint('md', $erth-grid-breakpoints) {
+    -x-font-size: 22px/28px;
+  }
+
+  @include min-breakpoint('lg', $erth-grid-breakpoints) {
+    -x-font-size: 25px/32px;
+  }
+}
+
+%erth--quote {
+  font: 21px/26px $fact-light;
+
+  @include min-breakpoint('md', $erth-grid-breakpoints) {
+    -x-font-size: 22px/28px;
+  }
+
+  @include min-breakpoint('lg', $erth-grid-breakpoints) {
+    -x-font-size: 25px/32px;
+  }
+}
+
+%erth--body {
+  font: 16px/21px $fact-light;
+
+  @include min-breakpoint('md', $erth-grid-breakpoints) {
+    -x-font-size: 17px/23px;
+  }
+
+  @include min-breakpoint('lg', $erth-grid-breakpoints) {
+    -x-font-size: 18px/24px;
+  }
+}
+
+%erth--link {
+  font: 16px/21px $fact-light;
+
+  @include min-breakpoint('md', $erth-grid-breakpoints) {
+    -x-font-size: 17px/23px;
+  }
+
+  @include min-breakpoint('lg', $erth-grid-breakpoints) {
+    -x-font-size: 18px/24px;
+  }
+}
+
+%erth--signature {
+  font: 13px/17px $fact-regular;
+
+  @include min-breakpoint('md', $erth-grid-breakpoints) {
+    -x-font-size: 14px/18px;
+  }
+
+  @include min-breakpoint('lg', $erth-grid-breakpoints) {
+    -x-font-size: 15px/19px;
+  }
+}
+
+%erth--service-text {
+  font: 11px/14px $fact-light;
+
+  @include min-breakpoint('md', $erth-grid-breakpoints) {
+    -x-font-size: 12px/15px;
+  }
+
+  @include min-breakpoint('lg', $erth-grid-breakpoints) {
+    -x-font-size: 13px/16px;
+  }
+}
+
+%erth--navigation {
+  font: 14px/17px $fact-regular;
+  text-transform: uppercase;
+
+  @include min-breakpoint('md', $erth-grid-breakpoints) {
+    -x-font-size: 15px/19px;
+  }
+
+  @include min-breakpoint('lg', $erth-grid-breakpoints) {
+    -x-font-size: 16px/21px;
+  }
+}

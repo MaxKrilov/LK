@@ -5,10 +5,12 @@ import { eachArray, eachObject, isCombat, isLocalhost, isStaging, wrapHttps } fr
 import { BACKEND_COMBAT, BACKEND_STAGING, BACKEND_TESTING } from '@/constants/url'
 import { API_DADATA } from '@/store/actions/api'
 import store from '../store'
+import { IDadataAddress, IFMSUnit } from '@/tbapi/address'
 
 import { cloneDeep } from 'lodash'
 
 import * as Sentry from '@sentry/vue'
+import { DaDataPartyBranchType, DaDataPartyType, DaDataSuggestion, DaDataParty } from '@/dadata_interfaces/dadata_interfaces'
 
 const BASE_BRANCH = 'master'
 
@@ -213,7 +215,7 @@ export function apiParallel (arrayAPI: Iterable<any | PromiseLike<any>>): Promis
 }
 
 export function apiDadata (options: any) {
-  return new Promise(resolve => {
+  return new Promise<IDadataAddress | { suggestions: IFMSUnit[] }>(resolve => {
     const type = options.type || 'address'
     const xhr = new XMLHttpRequest()
     xhr.open('POST', 'https://suggestions.dadata.ru/suggestions/api/4_1/rs/suggest/' + type)
@@ -226,6 +228,48 @@ export function apiDadata (options: any) {
       if (xhr.status === 200) {
         resolve(JSON.parse(xhr.response))
       }
+    }
+  })
+}
+
+
+/**
+ * Организация по ИНН или ОГРН
+ * @param payload.query ИНН или ОГРН
+ * @param payload.count Количество результатов (максимум — 300)
+ * @param payload.kpp КПП для поиска по филиалам
+ * @param payload.branch_type Головная организация (MAIN) или филиал (BRANCH)
+ * @param payload.type Юрлицо (LEGAL) или индивидуальный предприниматель (INDIVIDUAL)
+ */
+export const getCompanyInfoFromDadata = (payload: {
+  query: string,
+  count?: number,
+  kpp?: string,
+  branch_type?: DaDataPartyBranchType,
+  type?: DaDataPartyType
+}) => {
+  return new Promise<{ suggestions: DaDataSuggestion<DaDataParty>[] }>(async (resolve, reject) => {
+    const url = 'https://suggestions.dadata.ru/suggestions/api/4_1/rs/findById/party'
+    const token = store.state.api[API_DADATA]
+
+    const options: RequestInit = {
+      method: 'POST',
+      mode: 'cors',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': `Token ${token}`
+      },
+      body: JSON.stringify(payload)
+    }
+
+    try {
+      const response = await fetch(url, options)
+      const responseJson = await response.json()
+
+      resolve(responseJson)
+    } catch (e) {
+      reject(e)
     }
   })
 }
