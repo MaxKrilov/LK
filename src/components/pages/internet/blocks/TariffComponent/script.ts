@@ -16,6 +16,7 @@ import { mapActions } from 'vuex'
 import { API } from '@/functions/api'
 
 import head from 'lodash/head'
+import { STATUS_ACTIVE } from '@/constants/status'
 
 const SPEED_N_LIMIT_WIDTH = 104
 const STROKE_WIDTH = 2
@@ -817,7 +818,8 @@ export default class TariffComponent extends Vue {
         .find(sloItem => sloItem.offer && sloItem.offer.code === FREE_BONUS_OFFER_CODE)
       if (
         typeof freeBonusSLO === 'undefined' ||
-        !freeBonusSLO.chars.hasOwnProperty(FREE_BONUS_CHAR)
+        !freeBonusSLO.chars.hasOwnProperty(FREE_BONUS_CHAR) ||
+        freeBonusSLO.status !== STATUS_ACTIVE
       ) {
         resolve()
         return
