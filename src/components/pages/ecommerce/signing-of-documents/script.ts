@@ -7,7 +7,7 @@ import StatutoryDocuments from './blocks/StatutoryDocuments/index.vue'
 import SigningWithScans from './blocks/SigningWithScans/index.vue'
 import DigitalSigning from './blocks/DigitalSigning/index.vue'
 import Payment from './blocks/Payment/index.vue'
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import { ICustomerContract, IOrderContract, IOrderContractContractSignee, IOrderContractContractDocument, IOrderContractBill } from '@/tbapi/fileinfo'
 
 import head from 'lodash/head'
@@ -24,6 +24,11 @@ import { Cookie } from '@/functions/storage'
     DigitalSigning,
     Payment
   },
+  computed: {
+    ...mapGetters({
+      billingAccountId: 'payments/getActiveBillingAccount'
+    })
+  },
   methods: {
     ...mapActions({
       getContract: 'fileinfo/getContract',
@@ -33,6 +38,9 @@ import { Cookie } from '@/functions/storage'
   watch: {
     isComplete (val) {
       val && window.parent.postMessage({ eventType: 'ertClientContracts', state: 'success' }, '*')
+    },
+    billingAccountId (val) {
+      val && this.getData()
     }
   }
 })
@@ -74,6 +82,8 @@ export default class ECommerceSigningOfDocuments extends Vue {
 
   registrationDocument: string = ''
 
+  readonly billingAccountId!: string
+
   // Computed
   get authorityToSignFileName () {
     if (typeof this.authorityToSignFile === 'string') return this.authorityToSignFile
@@ -104,10 +114,9 @@ export default class ECommerceSigningOfDocuments extends Vue {
     this.listInvoiceTracker++
   }
 
-  async mounted () {
+  async getData () {
     const salesOrderId = (this.$route.query.orderId || Cookie.get('ecommerce__order_id') || '').toString()
     if (!salesOrderId) {
-      console.error('Not found', document.cookie)
       this.isError = true
 
       return
@@ -166,5 +175,9 @@ export default class ECommerceSigningOfDocuments extends Vue {
     } finally {
       this.isLoading = false
     }
+  }
+
+  async mounted () {
+    this.billingAccountId && this.getData()
   }
 }
