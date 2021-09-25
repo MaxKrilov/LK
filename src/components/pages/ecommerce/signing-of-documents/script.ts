@@ -107,6 +107,7 @@ export default class ECommerceSigningOfDocuments extends Vue {
   async mounted () {
     const salesOrderId = (this.$route.query.orderId || Cookie.get('ecommerce__order_id') || '').toString()
     if (!salesOrderId) {
+      console.error('Not found', document.cookie)
       this.isError = true
 
       return
@@ -156,14 +157,14 @@ export default class ECommerceSigningOfDocuments extends Vue {
       if (this.isComplete) {
         window.parent.postMessage({ eventType: 'ertClientContracts', state: 'success' }, '*')
       }
+
+      Cookie.remove('ecommerce__order_id')
+      Cookie.remove('ecommerce__market_id')
     } catch (e) {
       logError(e)
       this.isError = true
     } finally {
       this.isLoading = false
-
-      Cookie.remove('ecommerce__order_id')
-      Cookie.remove('ecommerce__market_id')
     }
   }
 }
