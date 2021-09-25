@@ -115,7 +115,7 @@ export default class ECommerceSigningOfDocuments extends Vue {
   }
 
   async getData () {
-    const salesOrderId = (this.$route.query.orderId || Cookie.get('ecommerce__order_id') || '').toString()
+    const salesOrderId = (this.$route.query.orderId || localStorage.getItem('ecommerce__order_id') || '').toString()
     if (!salesOrderId) {
       this.isError = true
 
