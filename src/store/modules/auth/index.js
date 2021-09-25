@@ -173,8 +173,6 @@ const actions = {
         const ecommerceMarketId = urlParams.marketId
 
         if (ecommerceOrderId && ecommerceMarketId) {
-          // Cookie.set('ecommerce__order_id', ecommerceOrderId, { expires: 60 * 60 * 24 })
-          // Cookie.set('ecommerce__market_id', ecommerceMarketId, { expires: 60 * 60 * 24 })
           localStorage.setItem('ecommerce__order_id', ecommerceOrderId)
           localStorage.setItem('ecommerce__market_id', ecommerceMarketId)
         }

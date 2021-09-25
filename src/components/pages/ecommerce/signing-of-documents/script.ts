@@ -13,7 +13,6 @@ import { ICustomerContract, IOrderContract, IOrderContractContractSignee, IOrder
 import head from 'lodash/head'
 import cloneDeep from 'lodash/cloneDeep'
 import { logError } from '@/functions/logging'
-import { Cookie } from '@/functions/storage'
 
 @Component<InstanceType<typeof ECommerceSigningOfDocuments>>({
   components: {
@@ -166,14 +165,14 @@ export default class ECommerceSigningOfDocuments extends Vue {
       if (this.isComplete) {
         window.parent.postMessage({ eventType: 'ertClientContracts', state: 'success' }, '*')
       }
-
-      Cookie.remove('ecommerce__order_id')
-      Cookie.remove('ecommerce__market_id')
     } catch (e) {
       logError(e)
       this.isError = true
     } finally {
       this.isLoading = false
+
+      localStorage.removeItem('ecommerce__order_id')
+      localStorage.removeItem('ecommerce__market_id')
     }
   }
 
