@@ -370,7 +370,7 @@ export default class DigitalSignature {
       result = await axios.post(this.presignUrl, requestData)
 
       try {
-        await logCallback({
+        logCallback({
           request: this.presignUrl,
           requestData: {
             RawCertificate: rawCertificate,
@@ -444,7 +444,7 @@ export default class DigitalSignature {
     try {
       result = await axios.post(this.postsignUrl, requestData)
       try {
-        await logCallback({ request: this.postsignUrl, requestData }, 'INFO')
+        logCallback({ request: this.postsignUrl, requestData }, 'INFO')
       } catch (ex) {
         logError(ex)
       }
