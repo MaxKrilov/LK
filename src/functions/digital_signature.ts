@@ -1,6 +1,6 @@
 import moment from 'moment'
 import axios from 'axios'
-import { logInfo } from '@/functions/logging'
+import { logError, logInfo } from '@/functions/logging'
 import { base64ToHex, hexToBase64 } from '@/functions/helper'
 
 export interface iCertificate {
@@ -365,22 +365,28 @@ export default class DigitalSignature {
       }
     }
     let result
+
     try {
       result = await axios.post(this.presignUrl, requestData)
-      await logCallback({
-        request: this.presignUrl,
-        requestData: {
-          RawCertificate: rawCertificate,
-          SignatureType: 'PDF',
-          SignatureParams: {
-            PDFFormat: 'CMS',
-            PDFReason: '',
-            PDFLocation: '',
-            PdfSignatureAppearance: visibleSignature,
-            PdfSignatureTemplateId: 1
+
+      try {
+        await logCallback({
+          request: this.presignUrl,
+          requestData: {
+            RawCertificate: rawCertificate,
+            SignatureType: 'PDF',
+            SignatureParams: {
+              PDFFormat: 'CMS',
+              PDFReason: '',
+              PDFLocation: '',
+              PdfSignatureAppearance: visibleSignature,
+              PdfSignatureTemplateId: 1
+            }
           }
-        }
-      }, 'INFO')
+        }, 'INFO')
+      } catch (ex) {
+        logError(ex)
+      }
     } catch (ex) {
       logCallback({
         request: this.presignUrl,
@@ -437,7 +443,11 @@ export default class DigitalSignature {
     let result
     try {
       result = await axios.post(this.postsignUrl, requestData)
-      await logCallback({ request: this.postsignUrl, requestData }, 'INFO')
+      try {
+        await logCallback({ request: this.postsignUrl, requestData }, 'INFO')
+      } catch (ex) {
+        logError(ex)
+      }
     } catch (ex) {
       logCallback({
         request: this.postsignUrl,
