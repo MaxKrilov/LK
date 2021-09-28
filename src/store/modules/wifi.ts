@@ -40,7 +40,11 @@ const actions = {
 
     if (context.rootState.auth.isManager) {
       newPayload.email = context.rootState.auth.userInfo.mail
-      newPayload.role = head(context.rootState.auth.userInfo.realm_access?.roles || []) || ''
+      newPayload.role = head(
+        context.rootState.auth.userInfo.realm_access?.roles ||
+        context.rootState.auth.userInfo.realmAccess?.roles ||
+        []
+      ) || ''
     }
 
     return api()
