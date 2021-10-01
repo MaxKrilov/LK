@@ -225,6 +225,10 @@ export default class SigningWithScans extends Vue {
     const isEveryVerifying = isEverythingSigned && Object.values(this.documents)
       .every(valItem => valItem.verifying === 'Да')
 
+    // Все документы подписаны, но, хотя бы один не прошёл ещё верификацию (уточнить - такое возможно)
+    const isNotVerifying = isEverythingSigned && Object.values(this.documents)
+      .some(valItem => valItem.verifying === 'Нет')
+
     if (hasSignedDocuments) {
       // Есть хотя бы один подписанный доккумент - блокируем кнопку "Назад"
       window.parent.postMessage({ eventType: 'ertClientContracts', state: 'inProgress' }, '*')
@@ -239,6 +243,10 @@ export default class SigningWithScans extends Vue {
 
     if (isEveryVerifying) {
       this.$emit('verifying', 1)
+    }
+
+    if (isNotVerifying) {
+      this.$emit('unverifying', 1)
     }
   }
 
