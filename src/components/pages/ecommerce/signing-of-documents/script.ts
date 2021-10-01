@@ -83,6 +83,23 @@ export default class ECommerceSigningOfDocuments extends Vue {
 
   readonly billingAccountId!: string
 
+  listHintWithScans = [
+    'Скачайте  каждый приложенный документ.',
+    'Распечатайте и подпишите.',
+    'Отсканируйте.',
+    'Загрузите сканы подписанных документов в соответствующие разделы.',
+    'Готово! Можно оплачивать.',
+    'Передайте оригинал подписанного документа нашему специалисту во время подключения.'
+  ]
+
+  listHintDigital = [
+    'Запустите приложение цифровой подписи',
+    'Нажмите «Подписать»',
+    'Обратите внимание на ФИО подписанта',
+    'Выберите свой сертификат для подписи',
+    'Готово! Можно подписать'
+  ]
+
   // Computed
   get authorityToSignFileName () {
     if (typeof this.authorityToSignFile === 'string') return this.authorityToSignFile
@@ -95,12 +112,16 @@ export default class ECommerceSigningOfDocuments extends Vue {
   get isComplete () {
     return this.isAllSignedDocument &&
       this.listInvoiceTracker &&
-      Object.keys(this.isSuccessListInvoice).length === this.listBills.length &&
-      Object.values(this.isSuccessListInvoice).every(item => item)
+      this.isEverythingPaid
   }
 
   get isCharter () {
     return this.registrationDocument === 'Устава'
+  }
+
+  get isEverythingPaid () {
+    return Object.keys(this.isSuccessListInvoice).length === this.listBills.length &&
+      Object.values(this.isSuccessListInvoice).every(item => item)
   }
 
   // Vuex actions
