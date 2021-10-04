@@ -202,6 +202,7 @@ export default {
             Sentry.configureScope(scope => {
               scope.setUser({ clientId: this.user.toms })
             })
+            this.setUserId(this.user.toms)
           }
           if (Object.keys(clientInfo).length !== 0) {
             !this.isEcommerce && this.$store.dispatch(`user/${GET_MANAGER_INFO}`, context)
@@ -235,6 +236,13 @@ export default {
               })
           }
         })
+    },
+    setUserId (userId) {
+      if (typeof window !== 'undefined' && window.hasOwnProperty('gtag')) {
+        window.gtag('config', 'GA_MEASUREMENT_ID', {
+          'user_id': userId
+        })
+      }
     }
   },
   computed: {
