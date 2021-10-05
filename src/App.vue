@@ -238,10 +238,9 @@ export default {
         })
     },
     setUserId (userId) {
-      if (typeof window !== 'undefined' && window.hasOwnProperty('gtag')) {
-        window.gtag('config', 'GA_MEASUREMENT_ID', {
-          'user_id': userId
-        })
+      if (typeof window !== 'undefined') {
+        window.hasOwnProperty('gtag') && window.gtag('set', { 'user_id': userId })
+        window.hasOwnProperty('ga') && window.ga('set', 'userId', userId)
       }
     }
   },
