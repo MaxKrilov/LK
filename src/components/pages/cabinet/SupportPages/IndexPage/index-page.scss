@@ -260,3 +260,8 @@
 .flip-list-move {
   transition: transform 500ms;
 }
+
+.instructions {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}

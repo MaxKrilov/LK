@@ -32,6 +32,8 @@ import DocumentDuplicatePage from './components/pages/cabinet/DocumentDuplicateP
 import SupportTemplate from './components/templates/SupportTemplate'
 // Главная поддержки
 import SupportIndexPage from './components/pages/cabinet/SupportPages/IndexPage/index'
+// Страница с информацией об инструкции
+import InstructionPage from './components/pages/cabinet/SupportPages/InstructionPage/InstructionPage.vue'
 
 // Платежи
 /// Главная
@@ -313,6 +315,11 @@ const router = new Router({
               path: '/',
               props: true,
               component: SupportIndexPage
+            },
+            {
+              path: 'instructions/:id',
+              component: InstructionPage,
+              props: true
             }
           ]
         },

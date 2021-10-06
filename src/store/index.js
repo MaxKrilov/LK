@@ -39,6 +39,7 @@ import oats from './modules/oats'
 import ipTransit from './modules/ip-transit'
 import bundles from './modules/bundles'
 import branch from './modules/branch'
+import instructions from './modules/instructions'
 
 const debug = process.env.NODE_ENV !== 'production'
 
@@ -71,6 +72,7 @@ export default new Vuex.Store({
     salesOrder,
     timer,
     telephony,
+    instructions,
     address,
     videocontrol,
     tv,

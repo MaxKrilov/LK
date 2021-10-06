@@ -83,4 +83,18 @@ div.support-page.main-content.main-content--padding.main-content--top-menu-fix
             :total-visible="10"
           )
 
+  h2.mt-64.mb-24 Инструкции
+    ErtInstructionSelect(
+    label="Напишите ваш вопрос"
+    v-model="chosenInstruction"
+    tabindex="2"
+    key="chosenInstruction.id"
+    prependInnerIcon="question"
+    )
+  .instructions
+    template(
+            v-for="instructionCategory in listOfInstructions"
+          )
+      CardInstructionsComponent(:title="instructionCategory.category_name", :icon="instructionCategory.icon_filename", :links="instructionCategory.links")
+
   contact-info-component
