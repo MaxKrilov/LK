@@ -5,6 +5,7 @@ import RequestItemComponent from '../blocks/RequestItemComponent/index'
 import CreateRequestComponent from '../blocks/CreateRequestComponent/index'
 import ContactInfoComponent from '../blocks/ContactInfoComponent/index'
 import DirectorFeedback from '../blocks/DirectorFeedback/index'
+import ErtInstructionSelect from '../../../../blocks2/ErtInstructionSelect/index'
 import { FETCH_REQUEST_LIST } from '@/store/actions/request'
 
 import { mapGetters, mapState } from 'vuex'
@@ -56,7 +57,8 @@ const mapRequestItem = item => {
     RequestItemComponent,
     CreateRequestComponent,
     ContactInfoComponent,
-    DirectorFeedback
+    DirectorFeedback,
+    ErtInstructionSelect
   },
   filters: {
     filterTypeFilterRequest: val => val === 'all' ? 'Все заявки' : 'Активные заявки',
@@ -116,6 +118,9 @@ export default class SupportIndexPage extends Vue {
   itemsPerPage = DEFAULT_REQUESTS_PER_PAGE
   isVisibleDirectorFeedback = false
   listCity = {}
+  listOfInstructions = []
+  chosenInstruction = {}
+  instructionInfo = ''
 
   @Watch('currentPage')
   onCurrentPageChange () {
@@ -131,6 +136,13 @@ export default class SupportIndexPage extends Vue {
   @Watch('orderSort')
   onChangeOrderSort (value) {
     this.updateAllRequestList()
+  }
+
+  @Watch('chosenInstruction')
+  onChosenInstructionValueChange (value) {
+    if (value) {
+      this.$router.push(`support/instructions/${value.id}`)
+    }
   }
 
   getFetchParams () {
@@ -379,5 +391,24 @@ export default class SupportIndexPage extends Vue {
           }
         }
       })
+  }
+
+  getInstructions () {
+    this.$store.dispatch('instructions/getInstructions')
+      .then((response) => {
+        this.listOfInstructions = response
+        this.getInstructionsLinks()
+      })
+  }
+
+  getInstructionsLinks () {
+    this.listOfInstructions.forEach((category, idx) => {
+      this.listOfInstructions[idx].links = []
+      this.listOfInstructions[idx].links.push(...category.list.map(instruction => ({ to: `support/instructions/${instruction.id}`, name: instruction.name })))
+    })
+  }
+
+  mounted () {
+    this.getInstructions()
   }
 }
