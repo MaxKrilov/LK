@@ -202,8 +202,8 @@ export default {
             Sentry.configureScope(scope => {
               scope.setUser({ clientId: this.user.toms })
             })
-            this.setUserId(this.user.toms)
           }
+          this.setUserId(this.user.toms)
           if (Object.keys(clientInfo).length !== 0) {
             !this.isEcommerce && this.$store.dispatch(`user/${GET_MANAGER_INFO}`, context)
             !this.isEcommerce && this.$store.dispatch(`request/${GET_REQUEST}`, context)
@@ -239,7 +239,7 @@ export default {
     },
     setUserId (userId) {
       if (typeof window !== 'undefined') {
-        window.hasOwnProperty('gtag') && window.gtag('set', { 'user_id': userId })
+        window.hasOwnProperty('gtag') && window.gtag('config', 'UA-42532108-4', { 'user_id': userId })
         window.hasOwnProperty('ga') && window.ga('set', 'userId', userId)
       }
     }
