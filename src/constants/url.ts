@@ -13,7 +13,7 @@ const CHANGE_CUSTOMER_IFRAME: Record<string, string> = {
   SSO: 'https://sso-balancer.testing.srv.loc',
   SSO2: 'https://sso-balancer2.testing.srv.loc',
   SSO4: 'https://sso-balancer4.testing.srv.loc',
-  PROD: 'https://auth.domru.ru'
+  PROD: 'https://auth.dom.ru'
 }
 
 const buildIframeUrl = (url:string) => url + CHANGE_CUSTOMER_IFRAME.PATH
@@ -37,7 +37,7 @@ export const OFFER_LINKS: Record<string, string> = {
 export const MANAGER_LOGOUT = {
   'psi1': 'https://public-gateway-dmp-uat1.nonprod.cloud-bss.loc/api/v1/identity-provider/auth/realms/f4000b9a-bc97-4783-899b-55b499b1cac0/protocol/openid-connect/logout',
   'psi2': 'https://public-gateway-dmp-uat2.nonprod.cloud-bss.loc/api/v1/identity-provider/auth/realms/cdf6f4e0-ef43-4a8e-9a12-0a18d63824b0/protocol/openid-connect/logout',
-  'combat': 'https://public-gateway.online.domru.ru/api/v1/identity-provider/auth/realms/7404b7f5-b4b3-48a9-8bbd-97a4ff8e1ef0/protocol/openid-connect/logout'
+  'combat': 'https://public-gateway.dom.ru/api/v1/identity-provider/auth/realms/7404b7f5-b4b3-48a9-8bbd-97a4ff8e1ef0/protocol/openid-connect/logout'
 }
 
 export const SERVICE_URLS = {
