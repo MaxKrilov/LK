@@ -68,7 +68,8 @@ $ert: (
     'label-active-font': $fedra-demi,
     'prepend-append-color': rgba(map-get($shades, 'black'), 0.2),
     'prepend-append-color--hover': map-get($yellow, 'base'),
-    'prepend-append-color--focus': rgba(map-get($shades, 'black'), 0.5)
+    'prepend-append-color--focus': rgba(map-get($shades, 'black'), 0.5),
+    'required-label-color': map-get($yellow, 'base')
   ),
   'list': (
     'background-color': map-get($shades, 'white'),

@@ -36,6 +36,15 @@
   &.ert-input--is-disabled {
     opacity: 0.5;
   }
+
+  &.ert-input--has-state {
+    &.ert-switch--is-error {
+      > .ert-input__control > .ert-messages {
+        color: map-get($red, 'base');
+        caret-color: map-get($red, 'base');
+      }
+    }
+  }
 }
 
 .ert-input--switch {

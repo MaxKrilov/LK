@@ -36,7 +36,8 @@ class ErtSwitch extends mixins(ErSelectable) {
     return {
       ...ErtInput.options.computed.classes.get.call(this),
       'ert-input--selection--controls': true,
-      'ert-input--switch': true
+      'ert-input--switch': true,
+      'ert-switch--is-error': this.hasError
     }
   }
   get attrs (): object {

@@ -136,6 +136,57 @@
     }
   }
 
+  &__required-fields {
+    @extend %caption2-font;
+    @include color-black(0.5);
+    display: flex;
+    align-items: center;
+
+    span {
+      display: block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: map-get($yellow, 'base');
+    }
+  }
+
+  &__guest-auth-item {
+    .ert-label {
+      display: flex;
+      align-items: center;
+
+      .title {
+        flex: 1;
+        @extend %caption1-font;
+      }
+
+      .icon i > svg {
+        width: 32px;
+      }
+    }
+
+    &.vk .icon {
+      color: map-get($blue, 'other-4');
+    }
+
+    &.ok .icon {
+      color: map-get($yellow, 'other-13');
+    }
+
+    &.fb .icon {
+      color: map-get($blue, 'darken-1');
+    }
+
+    &.instagram .icon {
+      color: map-get($purple, 'other-1');
+    }
+
+    &.twitter .icon {
+      color: map-get($blue, 'other-5');
+    }
+  }
+
   @include min-breakpoint('sm') {
     &__content {
       padding: 24px 40px;

@@ -8,7 +8,7 @@ import { price as priceFormatted } from '@/functions/filters'
 import ErtForm from '@/components/UI2/ErtForm'
 import { mapActions } from 'vuex'
 import { IVoucherManager, ManagerResult, Result as IVoucherManagerResult } from '@/tbapi/voucher_manager'
-import { IWifiResourceInfo } from '@/tbapi'
+import { IWifiResourceInfo, WifiData } from '@/tbapi'
 import ErActivationModal from '@/components/blocks/ErActivationModal/index.vue'
 
 import { head } from 'lodash'
@@ -20,6 +20,29 @@ const filters = {
 }
 
 const generatePassword = require('password-generator')
+
+const GUEST_AUTH = [
+  { title: 'Вконтакте', name: 'vk', iconType: 'icon', iconName: 'vk', field: 'field_social_auth_vk' },
+  { title: 'Одноклассники', name: 'ok', iconType: 'icon', iconName: 'odnoklassniki', field: 'field_social_auth_ok' },
+  { title: 'Facebook', name: 'fb', iconType: 'icon', iconName: 'facebook', field: 'field_social_auth_fb' },
+  { title: 'Instagram', name: 'instagram', iconType: 'icon', iconName: 'instagram', field: 'field_social_auth_in' },
+  { title: 'Twitter', name: 'twitter', iconType: 'icon', iconName: 'twitter', field: 'field_social_auth_tw' }
+]
+
+function defineSNParams (sn: string) {
+  switch (sn) {
+    case 'field_social_auth_vk':
+      return 514
+    case 'field_social_auth_ok':
+      return 515
+    case 'field_social_auth_fb':
+      return 516
+    case 'field_social_auth_in':
+      return 517
+    case 'field_social_auth_tw':
+      return 518
+  }
+}
 
 const props = {
   code: String,
@@ -45,15 +68,15 @@ class InternalServiceStatuses extends ServiceStatus {
 const requiredRule = (v: string) => !!v || 'Поле обязательно к заполению'
 const minLengthRule = (l: number) => (v: string) => v.length >= l || `Длина должна быть не меньше ${l} символов`
 const maxLengthRule = (l: number) => (v: string) => v.length <= l || `Длина должна быть не больше ${l} символов`
-const ssidNameRule = (v: string) => !!v.match(/[a-zA-Z\d\w@[\].\s?,\\/!#$&%^*()\-="':;_]/g) ||
+const ssidNameRule = (v: string) => !!v.match(/^[a-zA-Z\d\w@[\].\s?,\\/!#$&%^*()\-="':;_]+$/g) ||
   'Название может содержать только латинские буквы, цифры и орфографические знаки'
-const closedNetworkRule = (f: 'Пароль' | 'Название' | 'Пин-код') => (v: string) => !!v.match(/[A-Za-z0-9]/g) ||
+const closedNetworkRule = (f: 'Пароль' | 'Название' | 'Пин-код') => (v: string) => !!v.match(/^[A-Za-z0-9]+$/g) ||
   `${f} вводится только латинскими буквами и цифрами`
 const isNumberRule = (v: string) => !isNaN(parseInt(v)) || 'Поле должно быть числом'
 const intervalRule = (v: string) => (parseInt(v) >= 1 && parseInt(v) <= 720) ||
   'Значение должно быть от 1 до 720'
 
-const CHAR_WIFIREDIR_SITE = 'URL-адрес ресурса'
+const CHAR_WIFIREDIR_SITE = 'Адрес сайта для переадресации пользователей после авторизации в wi-fi сети'
 const CHAR_WIFINAME_NAME = 'Название Гостевой сети'
 const CHAR_WIFIACCCHANGE_PIN = 'Пин-код'
 const CHAR_WIFIACCCHANGE_INTERVAL = 'Длительность авторизации (час)'
@@ -79,7 +102,9 @@ const CHAR_WIFIAVTVOUCH_PREFIX = 'Префикс логина'
       managerCreate: 'wifi/managerCreate',
       managerDelete: 'wifi/managerDelete',
       managerUpdate: 'wifi/managerUpdate',
-      managerRestore: 'wifi/managerRestore'
+      managerRestore: 'wifi/managerRestore',
+      getData: 'wifi/getData',
+      hotspotUpdate: 'wifi/hotspotUpdate'
     })
   }
 })
@@ -144,13 +169,13 @@ export default class ErtWifiServiceAuthItem extends Vue {
   }
 
   vModelRuleList = {
-    wifiRedirSite: [requiredRule],
+    wifiRedirSite: [],
     wifiName: [requiredRule, maxLengthRule(17), ssidNameRule],
     wifiAccChangePIN: [closedNetworkRule('Пин-код')],
     wifiAccChangeInterval: [requiredRule, isNumberRule, intervalRule],
-    wifiHSClosNetName: [requiredRule, minLengthRule(8), closedNetworkRule('Название')],
+    wifiHSClosNetName: [requiredRule, closedNetworkRule('Название')],
     wifiHSCloseNetPassword: [requiredRule, minLengthRule(8), closedNetworkRule('Пароль')],
-    wifiVoucherPrefix: [requiredRule],
+    wifiVoucherPrefix: [requiredRule, (v: string) => /^[a-z0-9]+$/g.test(v) || 'Префикс может содержать только латинские буквы нижнего регистра и/или цифры'],
     wifiVoucherManagerName: [requiredRule],
     wifiVoucherManagerPassword: [requiredRule]
   }
@@ -171,6 +196,17 @@ export default class ErtWifiServiceAuthItem extends Vue {
   isErrorVoucherManager: boolean = false
 
   managerIdAction: number = 0
+
+  guestAuthList = GUEST_AUTH
+  wifiData: WifiData | null = null
+
+  socialNetworks: Record<string, { isConnect: number, isLoading: boolean, errorMessage: string }> = {
+    field_social_auth_vk: { isConnect: 0, isLoading: false, errorMessage: '' },
+    field_social_auth_ok: { isConnect: 0, isLoading: false, errorMessage: '' },
+    field_social_auth_fb: { isConnect: 0, isLoading: false, errorMessage: '' },
+    field_social_auth_in: { isConnect: 0, isLoading: false, errorMessage: '' },
+    field_social_auth_tw: { isConnect: 0, isLoading: false, errorMessage: '' }
+  }
 
   // Computed
   /**
@@ -304,13 +340,16 @@ export default class ErtWifiServiceAuthItem extends Vue {
     }
   }
 
-  onGeneratePassword (service: 'acc-change' | 'close-net') {
+  onGeneratePassword (service: 'acc-change' | 'close-net' | 'voucher') {
     if (service === 'acc-change') {
       this.vModelList.wifiAccChangePIN = generatePassword(8, false, /[A-Za-z0-9]/)
       this.vModelTypeList.wifiAccChangePIN = 'text'
-    } else {
+    } else if (service === 'close-net') {
       this.vModelList.wifiHSCloseNetPassword = generatePassword(8, false, /[A-Za-z0-9]/)
       this.vModelTypeList.wifiHSCloseNetPassword = 'text'
+    } else {
+      this.vModelList.wifiVoucherManagerPassword = generatePassword(8, false, /[A-Za-z0-9]/)
+      this.vModelTypeList.wifiVoucherManagerPassword = 'text'
     }
   }
 
@@ -463,6 +502,38 @@ export default class ErtWifiServiceAuthItem extends Vue {
     this.isUpdatingVoucherManagerRequest = false
   }
 
+  defineSocialNetwork (wifiData: WifiData) {
+    for (const key in this.socialNetworks) {
+      if (this.socialNetworks.hasOwnProperty(key)) {
+        this.socialNetworks[key].isConnect = wifiData.hasOwnProperty(key)
+          ? (this.wifiData as any)[key]
+          : 0
+      }
+    }
+  }
+
+  onChangeSocialNetwork (e: boolean, field: string, name: string) {
+    this.socialNetworks[field].isLoading = true
+    this.socialNetworks[field].errorMessage = ''
+
+    const snData = new FormData()
+    snData.append('vlan', this.vlan)
+    snData.append('city_id', this.cityId)
+    snData.append('params[param_id]', defineSNParams(field)!.toString())
+    snData.append('params[value]', Number(e).toString())
+
+    this.hotspotUpdate(snData)
+      .then(response => {
+        if (!response) {
+          this.socialNetworks[field].errorMessage = 'Произошла неизвестная ошибка!';
+          (this.$refs as any)[`social-network-${name}`][0].lazyValue = e ? 0 : 1
+        }
+      })
+      .finally(() => {
+        this.socialNetworks[field].isLoading = false
+      })
+  }
+
   /// Vuex actions
   getResource!: <
     P = { bpi: string },
@@ -494,6 +565,10 @@ export default class ErtWifiServiceAuthItem extends Vue {
     R = Promise<ManagerResult>
     >(args: P) => R
 
+  getData!: <T = { vlan: string }, R = Promise<WifiData>>(args: T) => R
+
+  hotspotUpdate!: (formData: FormData) => Promise<any>
+
   // Hooks
   mounted () {
     if (
@@ -518,8 +593,7 @@ export default class ErtWifiServiceAuthItem extends Vue {
           .then(response => {
             const vlan = head(response)!.vlan
             if (!vlan || typeof head(vlan) === 'undefined') return
-            // this.cityId = head(vlan)!.cityId
-            this.cityId = '1'
+            this.cityId = head(vlan)!.cityId
             this.vlan = head(vlan)!.number
 
             this.voucherView({ vlan: this.vlan, cityId: this.cityId })
@@ -528,6 +602,23 @@ export default class ErtWifiServiceAuthItem extends Vue {
               })
           })
       }
+    }
+
+    if (this.code === 'WIFIAUTCNHS' && this.lazyStatus === this.getStatuses.STATUS_ACTIVE) {
+      this.getResource({ bpi: this.bpi })
+        .then(response => {
+          const vlan = head(response)!.vlan
+          if (!vlan || typeof head(vlan) === 'undefined') return
+          this.cityId = head(vlan)!.cityId
+          this.vlan = head(vlan)!.number
+
+          this.getData({ vlan: this.vlan, cityId: this.cityId })
+            .then(_response => {
+              this.wifiData = _response
+
+              this.defineSocialNetwork(_response)
+            })
+        })
     }
   }
 }
