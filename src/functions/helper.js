@@ -710,3 +710,7 @@ export function isFramed () {
 
 export const sortAsc = (a, b) => a - b
 export const sortDesc = (a, b) => b - a
+
+export function isEmptyObject (obj) {
+  return !Object.keys(obj).length
+}

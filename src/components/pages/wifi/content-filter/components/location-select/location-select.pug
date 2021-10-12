@@ -1,0 +1,8 @@
+.location-select
+  template(v-for="item in list")
+    address-checkbox(
+      :value="item.value",
+      :label="item.label"
+      @input="onInput"
+      name="locationSelect"
+    )

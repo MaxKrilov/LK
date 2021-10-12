@@ -31,15 +31,7 @@
   #{$padding}: map_get($main-content-padding, 'xs');
 
   @include min-breakpoint('xxl') {
-    $p-size: $padding-x16;
-
-    @if #{$padding} == 'left' {
-      $p-size: $padding-x8;
-    } @else if #{$padding} == 'right' {
-      $p-size: $padding-x8;
-    }
-
-    #{$padding}: $p-size;
+    #{$padding}: map-get($main-content-padding, 'xxl')
   }
 
   @include min-breakpoint('sm') {

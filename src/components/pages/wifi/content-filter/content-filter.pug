@@ -1,0 +1,22 @@
+.wifi-content-filter(v-class-mod="[activeState]")
+  template(v-if="activeState === 'promo'")
+    WifiFilterPromo(@plug="onGoToPlug")
+
+  template(v-if="activeState === 'plug'")
+    WifiFilterPlug(
+      :list="locationList"
+      @cancel="onCancelPlug"
+    )
+
+  template(v-if="activeState === 'create'")
+    WifiEditFilter(
+      :create="true"
+      @add="onAddFilter"
+      @cancel="setState('ready')"
+    )
+
+  template(v-if="activeState === 'edit'")
+    WifiEditFilter(@cancel="setState('ready')")
+
+  template(v-if="activeState === 'ready'")
+    WifiFilterListPage(@create="setState('create')")

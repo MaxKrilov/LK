@@ -40,6 +40,7 @@ import ipTransit from './modules/ip-transit'
 import bundles from './modules/bundles'
 import branch from './modules/branch'
 import instructions from './modules/instructions'
+import wifiFilter from './modules/wifi-filter/index'
 
 const debug = process.env.NODE_ENV !== 'production'
 
@@ -83,7 +84,8 @@ export default new Vuex.Store({
     oats,
     ipTransit,
     branch,
-    bundles
+    bundles,
+    wifiFilter
   },
   strict: debug,
   plugins: [createPersistedState({

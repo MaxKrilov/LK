@@ -1,0 +1,14 @@
+.wifi-content-filter-promo
+  .wifi-content-filter-promo__content
+    er-page-header(
+      title="Контент-фильтрация"
+      backlink="/wifi/"
+      linkText="Назад в WiFi зону"
+    )
+    er-promo(
+      banner="content-filter-promo.png"
+      :featureList="featureList"
+      plugText="Подключить фильтрацию"
+      @plug="onPlug"
+      @click="onPlug"
+    )

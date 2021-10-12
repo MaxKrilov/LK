@@ -1,0 +1,32 @@
+.wifi-location-list
+  .wifi-location-list__content
+    er-page-header(
+      title="Контент-фильтрация"
+      backlink="/wifi/"
+      linkText="Назад в WiFi зону"
+    )
+
+    p Вы можете подключить контент-фильтрацию на следующие точки:
+
+  .wifi-location-list__address-list
+    location-select(:list="addressList" @input="onChangeCurrentLocation")
+
+  .wifi-location-list__action-buttons
+    er-button(
+      color="blue"
+      @click="onPlug",
+      :loading="isOrderMode"
+      :disabled="!currentLocationBPI"
+    ) Подключить фильтрацию
+    er-button(flat @click="onCancel") Отмена
+
+  er-plug-product(
+    v-model="isShowOrder"
+    :orderData="orderData"
+    :requestData="{}"
+    :isSendOrder="true"
+    :isSendManagerRequest="false"
+    @errorOrder="onOrderError"
+  )
+    template(slot="offerDescription")
+      .mb-24

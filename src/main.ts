@@ -19,6 +19,7 @@ import VueScrollTo from 'vue-scrollto'
 // @ts-ignore
 import iFrameResize from 'iframe-resizer/js/iframeResizer'
 import Skeleton from 'vue-loading-skeleton'
+import Portal from 'portal-vue'
 
 import * as ErtComponents from './components/UI2'
 import { install } from '@/install'
@@ -76,6 +77,7 @@ Vue.use(Vuebar)
 Vue.use(VueScrollTo)
 
 Vue.use(Skeleton)
+Vue.use(Portal)
 
 // отображать страницу "Ведутся технические работы" до запроса авторизации
 const WORK_IN_PROGRESS_BEFORE_AUTH = false

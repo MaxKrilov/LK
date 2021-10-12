@@ -1,0 +1,11 @@
+.wifi-content-filter-promo {
+  &__content {
+    @extend %main-content;
+  }
+
+  .promo-component__buttons {
+    .er-button:not(:first-child) {
+      display: none;
+    }
+  }
+}

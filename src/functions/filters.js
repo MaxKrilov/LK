@@ -75,3 +75,7 @@ export function fileName (str) {
 export function removeNumberFromTitle (title) {
   return title.split('#')[0]
 }
+
+export function jsonPretty (text) {
+  return JSON.stringify(text, null, 2)
+}

@@ -1,0 +1,122 @@
+.wifi-edit-filter
+  .wifi-edit-filter__head
+    er-page-header(
+      :title="pageTitle"
+      backlink="/lk/wifi/content-filter"
+      linkText="Назад в WiFi-зону"
+    )
+
+  template(v-if="activeState === 'not-found'")
+    .wifi-edit-filter__content
+      h3 Фильтр не найден
+
+  template(v-else-if="activeState === 'loading'")
+    .wifi-edit-filter__content
+      h3.wait-dots-animation Загрузка
+
+  template(v-else)
+    .wifi-edit-filter__content
+      p.description На точке подключения может работать только один фильтр. Применяя новый фильтр на точку подключения, Вы отмените текущие правила фильтрации контента
+
+      .form-wrap
+        .form-row
+          ert-text-field(
+            label="название фильтра"
+            v-model="title"
+            :errorMessages="titleErrorMessages"
+            ref="titleField"
+          ).text-field
+
+        .form-row
+          ert-text-field(
+            label="описание"
+            v-model="description"
+            :errorMessages="descriptionErrorMessages"
+            ref="descriptionField"
+          ).text-field
+
+        .form-row.filter-type-toggle
+          .filer-type-toggle__label Правило фильтра
+          .filter-type-toggle__body
+            er-toggle.er-toggle--type-switch(
+              view="switch"
+              v-model="isAllowList"
+              :disabled="activeState === 'edit'"
+              v-class-mod="{'block-list': !this.isAllowList, 'allow-list': this.isAllowList}"
+            )
+            span.filter-type-toggle__title(v-if="this.isAllowList") Разрешить доступ
+            span.filter-type-toggle__title.filter-type-toggle__title--danger(
+              v-else
+            ) Запретить доступ
+            er-hint()
+              .h3 Разрешить доступ
+              .mt-8.body-font Разрешается доступ к выбраному, остальное блокируется
+              .mt-24
+              .h3 Запретить доступ
+              .mt-8.body-font Запрещается доступ к выбранным категориям и сайтам
+
+    er-list-section(
+      v-if="!isAllowList"
+      title="Реестр запрещаемых ресурсов"
+      ref="registrySection"
+    )
+      .filter-list
+        template(v-if="isPublicSubsLoaded")
+          template(v-for="(filterCategory, idx) in filterList")
+            filter-folder(
+              :title="filterCategory.category_name"
+              @input="onChangeCategory($event, filterCategory.category_name)",
+              :value="getCategoryValue(filterCategory.category_name)",
+              :total-count="filterCategory.items.length",
+              :count="getEnabledFilterCount(filterCategory.items)"
+            )
+              template(v-for="subItem in filterCategory.items")
+                er-toggle(
+                  view="radio-check",
+                  :label="subItem.subscription_name"
+                  @input="onToggleSubFilter($event, subItem.subscription_id)"
+                  v-model="enabledFilters[subItem.subscription_id]"
+                )
+        template(v-else)
+          filter-folder(:is-loaded="false")
+          filter-folder(:is-loaded="false")
+          filter-folder(:is-loaded="false")
+
+    .wifi-edit-filter__urls(ref="urlSection")
+      .wifi-url
+        .wifi-url__list
+          .wifi-url__item(v-for="url in urlList")
+            template(v-if="!urlToDelete.includes(url.url_id)")
+              ert-text-field(
+                :value="url.value"
+                @input="onChangeUrl(url.url_id, $event)"
+                :errorMessages="urlErrorMessages"
+              )
+              er-delete-button(@click="onRemoveUrl(url.url_id)" label="")
+
+        .wifi-url__add-btn.wifi-url-add(@click="onAddUrl")
+          er-icon(name="circle_add")
+          .wifi-url-add__label Добавить в список адрес сайта
+
+    er-list-section(
+      v-if="activeState === 'create'"
+      title="Подключить фильтр на точки"
+    )
+      address-checkbox(
+        v-for="item in addressList"
+        v-bind="item"
+        :name="item.label"
+        :value="selectedLocations.includes(item.bpi)"
+        :hasFilter="hasPointFilter(item.bpi)"
+        @input="onLocationSelect($event, item.bpi)"
+      )
+
+    .wifi-edit-filter__actions
+      er-button(color="blue" @click="onSave") {{ pageActionLabel }}
+      er-button(flat @click="onCancel") Отмена
+
+  error-dialog(
+    :value="isErrorMode"
+    :title="errorTitle"
+    @close="isErrorMode = false"
+  ) {{ errorMessage }}

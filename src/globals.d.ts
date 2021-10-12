@@ -17,7 +17,7 @@ import * as moment from 'moment'
 
 declare global {
   interface Window {
-    Vue: VueConstructor
+    Vue?: VueConstructor<Vue>
   }
 
   interface HTMLCollection {

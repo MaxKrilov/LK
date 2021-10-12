@@ -1,0 +1,79 @@
+$pre: ".wifi-location-list";
+.wifi-location-list {
+  &__content {
+    @extend %main-content-padding-top;
+    @extend %main-content-width;
+    @extend %main-content-padding-h;
+
+    p {
+      margin-top: $padding-x8;
+
+      @include min-breakpoint("md") {
+        margin-top: $padding-x10;
+      }
+
+      @include min-breakpoint("xl") {
+        margin-top: $padding-x12;
+      }
+    }
+  }
+
+  &__address-list {
+    @extend %main-content-width;
+    margin-top: $padding-x6;
+
+    @include min-breakpoint("md") {
+      margin-top: $padding-x8;
+      padding: {
+        left: map_get($main-content-padding, "md");
+        right: map_get($main-content-padding, "md");
+      }
+    }
+
+    @include min-breakpoint("lg") {
+      padding: 0 map_get($main-content-padding, "lg");
+    }
+
+    @include min-breakpoint("xl") {
+      padding: 0 map_get($main-content-padding, "xl");
+    }
+
+    @include min-breakpoint("xxl") {
+      padding: 0 map_get($main-content-padding, "xxl");
+    }
+
+    .address-item {
+      & + .address-item {
+        margin-top: $padding-x1;
+      }
+    }
+  }
+
+  &__action-buttons {
+    @extend %main-content-width;
+    @extend %main-content-padding-h;
+
+    margin-top: $padding-x8;
+
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: $padding-x2 $padding-x4;
+
+    @include min-breakpoint("sm") {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    @include min-breakpoint("md") {
+      margin-top: $padding-x10;
+      gap: $padding-x2 $padding-x6;
+    }
+
+    @include min-breakpoint("lg") {
+      grid-template-columns: 1fr 1fr 1fr;
+    }
+
+    @include min-breakpoint("xl") {
+      gap: $padding-x2 $padding-x4;
+    }
+  }
+}
