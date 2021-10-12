@@ -1,0 +1,106 @@
+$pre: ".content-filter-folder";
+
+#{$pre} {
+  border-radius: 8px;
+
+  & + & {
+    margin-top: $padding-x1;
+  }
+
+  &__head {
+    position: relative;
+    @extend %rounded-block;
+    @extend %shadow-block;
+    background-color: map_get($shades, "white");
+
+    padding: $padding-x4;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-radius: 0;
+
+    @include min-breakpoint(md) {
+      border-radius: inherit;
+    }
+
+    .head-left {
+      display: inline-flex;
+      align-items: stretch;
+      flex-grow: 1;
+      gap: $padding-x2;
+
+      > :first-child {
+        flex-grow: 0;
+      }
+    }
+
+    .count {
+      margin-right: $padding-x2;
+      @extend %caption1;
+
+      &-total {
+        @include color-black(0.2);
+      }
+    }
+  }
+
+  &__title {
+    margin-left: $padding-x2;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    flex-grow: 1;
+  }
+
+  &__info {
+    display: inline-flex;
+    align-items: center;
+  }
+
+  &__body {
+    @extend %rounded-block;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+
+    margin-top: -$padding-x3;
+    background-color: map_get($gray, "1");
+    padding-top: $padding-x3;
+
+    .padding {
+      padding: $padding-x6 map_get($main-content-padding, "xs");
+
+      @include min-breakpoint("sm") {
+        padding: $padding-x6 map_get($main-content-padding, "sm");
+      }
+
+      @include min-breakpoint(md) {
+        padding: $padding-x6 map_get($main-content-padding, "md");
+        border-radius: map_get($ui, border-radius);
+      }
+
+      @include min-breakpoint(lg) {
+        padding: $padding-x8 map_get($main-content-padding, "lg");
+      }
+
+      .er-toggle__label-text {
+        border-bottom: none;
+        margin-left: $padding-x2;
+      }
+    }
+  }
+}
+
+.grid {
+  display: grid;
+  width: 100%;
+  grid-gap: 8px;
+  grid-template-columns: 1fr;
+
+  @include min-breakpoint(sm) {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  @include min-breakpoint(lg) {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+}

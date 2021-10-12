@@ -1,0 +1,54 @@
+.filter-item
+  .filter-item__content
+    .filter-item__toggle
+      ert-switch(
+        :input-value="active"
+        hideDetails
+        @change="onToggle($event)"
+      )
+
+    .filter-item__name {{ item.subscription_name }}
+
+    portal(
+      :to="portalNameOne"
+      :disabled="!$store.getters['isXS'] && !$store.getters['isSM'] && !$store.getters['isMD']"
+    )
+      .filter-item__description
+        template(v-if="isInfoLoaded")
+          | {{ info.description }}
+        template(v-else)
+          pu-skeleton(width="120px")
+
+    portal(
+      to="spoiler-portal-2"
+      :disabled="!$store.getters['isXS'] && !$store.getters['isSM']"
+    )
+      filter-item-rule(
+        :isLoading="!isInfoLoaded"
+        :typeId="info.subscription_type_id"
+        :label="info.typeLabel"
+      )
+
+    .filter-item__expander
+      er-corner-button(v-model="isOpened")
+
+    portal(
+      to="spoiler-portal-3"
+      :disabled="!$store.getters['isXS'] && !$store.getters['isSM'] && !$store.getters['isMD']"
+    )
+      filter-item-actions(
+        :id="item.subscription_id"
+        @delete="onDelete"
+      )
+
+  .filter-item__spoiler
+    er-slide-up-down(:active="isOpened")
+      .filter-item__alt-content
+        portal-target(
+          :name="portalNameOne"
+          v-if="$store.getters['isXS'] || $store.getters['isSM'] || $store.getters['isMD']"
+        )
+        portal-target(:name="portalNameTwo"
+          v-if="!$store.getters['isMD']"
+        )
+        portal-target(:name="portalNameThree")

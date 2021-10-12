@@ -1,0 +1,27 @@
+.content-filter-folder
+  .content-filter-folder__head
+    template(v-if="isLoaded")
+      .head-left
+        er-toggle(view="radio-check" v-on="$listeners", :modelValue="value")
+        .content-filter-folder__title(@click="isOpened = !isOpened") {{ title }}
+    template(v-else)
+      .head-left
+        pu-skeleton(width="100px")
+
+    .head-right
+      .content-filter-folder__info
+        span.count
+          template(v-if="count < totalCount")
+            span.count-current {{ count }}
+
+          template(v-if="count < totalCount")
+            span.count-total /
+
+          span.count-total {{ totalCount }}
+
+        er-corner-button(v-model="isOpened")
+
+  .content-filter-folder__body
+    er-slide-up-down(:active="isOpened")
+      .padding.grid
+        slot

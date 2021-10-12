@@ -1,0 +1,99 @@
+$pre: ".wifi-filter-list-page";
+
+#{$pre} {
+  &__head {
+    @extend %main-content-width;
+    @extend %main-content-padding-h;
+    @extend %main-content-padding-top;
+  }
+
+  &__head {
+    position: relative;
+
+    // initial для отображения тени на всю ширину у компонента er-list-points
+    overflow-x: initial;
+
+    > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    .head-background {
+      @include color-black(0.05);
+      position: absolute;
+      right: -$padding-x12;
+      top: 0;
+
+      svg {
+        width: 200px;
+      }
+
+      @include min-breakpoint(sm) {
+        right: 0;
+      }
+
+      @include min-breakpoint(md) {
+        svg {
+          width: 240px;
+        }
+      }
+
+      @include min-breakpoint(lg) {
+        display: none;
+      }
+    }
+  }
+
+  &__body {
+    @extend %main-content-width;
+  }
+
+  &__footer {
+    @extend %main-content-width;
+    @extend %main-content-padding-h;
+
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: $padding-x2 $padding-x4;
+    margin-top: $padding-x8;
+
+    @include min-breakpoint(sm) {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    @include min-breakpoint(md) {
+      margin-top: $padding-x10;
+      gap: $padding-x6;
+    }
+
+    @include min-breakpoint(lg) {
+      grid-template-columns: 1fr 1fr 1fr;
+    }
+
+    @include min-breakpoint(xl) {
+      gap: $padding-x4;
+    }
+  }
+
+  .filter-item + .filter-item {
+    margin-top: $padding-x1;
+  }
+
+  .empty-message {
+    display: inline-flex;
+    align-items: center;
+
+    &__text {
+      margin-left: $padding-x4;
+      @extend %body-font;
+      @include color-black(0.8);
+    }
+
+    .er-icon {
+      color: map_get($gray, "35");
+      svg {
+        width: $padding-x8;
+      }
+    }
+  }
+}

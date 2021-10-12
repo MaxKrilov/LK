@@ -29,6 +29,9 @@ export default {
     pre: 'promo-component'
   }),
   methods: {
+    onClickPlug () {
+      this.$emit('plug')
+    },
     getImg (img) {
       return require(`@/assets/images/${img}`)
     }

@@ -1,7 +1,8 @@
 <template lang="pug">
 .er-delete-button(@click="onClick")
   er-icon(name="trashbox")
-  .er-delete-button__label {{ label }}
+  template(v-if="label")
+    .er-delete-button__label {{ label }}
 </template>
 
 <script lang="js">

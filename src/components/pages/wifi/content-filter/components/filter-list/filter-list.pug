@@ -1,0 +1,61 @@
+.wifi-filter-list-page
+  .wifi-filter-list-page__head
+    er-page-header(
+      title="Контент-фильтрация"
+      backlink="/lk/wifi/content-filter"
+      linkText="Назад в WiFi-зону"
+    )
+
+    er-list-points(:list="pointList" v-model="currentPoint")
+
+  .wifi-filter-list-page__body
+    er-icon(name="reload" v-if="!isFilterListLoaded")
+
+    .filter-list(v-if="isFilterListLoaded")
+      template(v-if="filterList && filterList.length")
+        filter-item(
+          v-for="filterItem in filterList"
+          :key="filterItem.subscription_id"
+          :item="filterItem"
+          :info="getSubInfo(filterItem.subscription_id)"
+          :is-info-loaded="isSubInfoLoaded(filterItem.subscription_id)"
+          :active="enabledFilters[filterItem.subscription_id]"
+          @toggle="onToggleSubscription"
+          @delete="onDeleteSubscription"
+        )
+
+      template(v-else)
+        .main-content--h-padding
+          .empty-message
+            er-icon(name="cancel")
+            .empty-message__text У вас нет действующих фильтров
+
+    .filter-list(v-else)
+      .filter-checkbox
+        .filter-checkbox__content
+          pu-skeleton(width="280px")
+
+  er-activation-modal(
+    type="question"
+    v-model="isDialogVisible"
+    :title="dialogTitle"
+    action-button-text="Да"
+    @confirm="onConfirmDialog"
+    @close="onCancelDialog"
+  )
+    template(slot="description")
+      p.caption1(v-html="dialogMessage")
+
+  error-dialog(
+    :value="isErrorMode"
+    :title="errorTitle"
+    @close="onCloseError"
+  ) {{ errorMessage }}
+
+  .wifi-filter-list-page__footer
+    er-button(color="blue" to="/lk/wifi/content-filter/create") Создать новый фильтр
+    er-button(
+      v-if="currentPoint"
+      flat
+      @click="onClickDisableFiltration"
+    ) Отключить фильтрацию

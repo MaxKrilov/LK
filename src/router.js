@@ -154,6 +154,11 @@ import ECommercePayment from './components/pages/ecommerce/payments/index'
 /// Результат платежа
 import ECommercePaymentResult from './components/pages/ecommerce/payments-result/index'
 
+// Wifi контент фильтрация
+import WifiContentFilter from './components/pages/wifi/content-filter/index'
+import WifiContentFilterPromo from './components/pages/wifi/content-filter/components/promo/index'
+import WifiFilterEdit from '@/components/pages/wifi/content-filter/components/edit-filter/index'
+
 Vue.use(Router)
 
 const MANAGER_AUTH_PATH = '/manager'
@@ -237,28 +242,6 @@ const router = new Router({
           path: 'payments/result',
           component: PaymentResultPage
         },
-        // {
-        //   path: 'payments',
-        //   component: PayPage
-        // },
-        // {
-        //   name: 'add-funds',
-        //   path: 'add-funds',
-        //   component: AddFunds,
-        //   props: true
-        // },
-        // {
-        //   path: 'payment-result',
-        //   component: PaymentsOn
-        // },
-        // {
-        //   path: 'promise-pay',
-        //   component: PromisePay
-        // },
-        // {
-        //   path: 'history-pay',
-        //   component: HistoryPay
-        // },
         {
           name: 'documents',
           path: 'documents/',
@@ -484,6 +467,25 @@ const router = new Router({
           path: 'wifi/services-auth',
           name: 'wifi-services-auth',
           component: WifiServiceAuth
+        },
+        {
+          path: 'wifi/content-filter',
+          name: 'wifi-content-filter',
+          component: WifiContentFilter
+        },
+        {
+          path: 'wifi/content-filter/promo',
+          component: WifiContentFilterPromo
+        },
+        {
+          path: 'wifi/content-filter/edit/:id',
+          component: WifiFilterEdit,
+          props: true
+        },
+        {
+          path: 'wifi/content-filter/create',
+          component: WifiFilterEdit,
+          props: { create: true }
         },
         {
           name: 'wifi-analytics-promo',

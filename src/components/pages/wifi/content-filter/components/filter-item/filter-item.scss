@@ -1,0 +1,159 @@
+.filter-item {
+  background-color: map_get($gray, "9");
+
+  @include min-breakpoint(md) {
+    margin: 0 map_get($main-content-padding, md);
+    padding: 0 map_get($main-content-padding, md);
+
+    border-radius: $border-radius;
+  }
+
+  @include min-breakpoint(lg) {
+    margin: 0 map_get($main-content-padding, lg);
+    padding: 0 map_get($main-content-padding, lg);
+  }
+
+  @include min-breakpoint(xl) {
+    margin: 0 map_get($main-content-padding, xl);
+    padding: 0 map_get($main-content-padding, xl);
+  }
+
+  @include min-breakpoint(xxl) {
+    margin: 0 map_get($main-content-padding, xxl);
+    padding: 0 map_get($main-content-padding, md);
+  }
+
+  &__alt-content {
+    display: grid;
+    gap: $padding-x4;
+    padding: $padding-x4 map_get($main-content-padding, "xs");
+    grid-template-columns: 1fr 1fr;
+
+    @include min-breakpoint(sm) {
+      padding: $padding-x4 map_get($main-content-padding, "sm");
+    }
+
+    @include min-breakpoint(md) {
+      grid-template-columns: 1fr min-content;
+      padding: 0 0 $padding-x6;
+    }
+
+    @include min-breakpoint(lg) {
+      display: none;
+    }
+
+    > :first-child {
+      grid-column-start: 1;
+      grid-column-end: 3;
+
+      @include min-breakpoint(md) {
+        grid-column-start: initial;
+        grid-column-end: initial;
+      }
+    }
+
+    > :last-child {
+      text-align: right;
+    }
+  }
+
+  &__content {
+    display: grid;
+    align-items: center;
+    gap: $padding-x8;
+    grid-template-columns: min-content 1fr min-content;
+    padding: $padding-x4 map_get($main-content-padding, "xs");
+
+    @include min-breakpoint(sm) {
+      padding: $padding-x4 map_get($main-content-padding, "sm");
+    }
+
+    @include min-breakpoint(md) {
+      border-radius: $padding-x3;
+      padding: $padding-x6 0;
+      grid-template-columns: min-content 1fr 1fr min-content;
+    }
+
+    @include min-breakpoint(lg) {
+      grid-template-columns: min-content 1fr 1fr 1fr min-content;
+    }
+
+    @include min-breakpoint(xl) {
+      margin-left: 0;
+    }
+
+    @include min-breakpoint(xxl) {
+      width: 100%;
+    }
+  }
+
+  &__toggle {
+    .er-input__slot {
+      min-height: $padding-x6 !important;
+    }
+  }
+
+  &__name {
+    display: flex;
+    flex-grow: 1;
+    justify-content: flex-start;
+  }
+
+  &__description {
+    @extend %caption1;
+    @include color-black(0.5);
+  }
+
+  &__rule {
+    .filter-label {
+      @extend %caption2;
+      @include color-black(0.3);
+    }
+
+    .filter-value {
+      @extend %body-font;
+      margin-top: $padding-x1;
+
+      &--danger {
+        color: map_get($red, "base");
+      }
+
+      &--success {
+        color: map_get($green, "base");
+      }
+    }
+  }
+
+  &__actions {
+    display: inline-flex;
+    flex-direction: row;
+    align-items: center;
+
+    @include min-breakpoint(lg) {
+      margin-left: $padding-x4;
+    }
+
+    .er-delete-button {
+      margin-left: $padding-x4;
+      display: inline-flex;
+      border: none;
+    }
+
+    .er-icon {
+      @include color-black(0.2);
+
+      svg {
+        width: $padding-x6;
+      }
+    }
+
+    .filter-config-button {
+    }
+  }
+
+  &__expander {
+    @include min-breakpoint(lg) {
+      display: none;
+    }
+  }
+}

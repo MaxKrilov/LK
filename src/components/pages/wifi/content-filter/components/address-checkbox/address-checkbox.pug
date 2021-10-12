@@ -1,0 +1,12 @@
+.address-checkbox
+  er-toggle(
+    type="checkbox"
+    view="radio-check"
+    :label="label"
+    :modelValue="value"
+    @input="onInput"
+  )
+
+  template(v-if="hasFilter")
+    .address-checkbox__status
+      er-icon(name="filter")

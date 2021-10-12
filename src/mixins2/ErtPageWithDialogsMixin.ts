@@ -33,4 +33,8 @@ export class ErtPageWithDialogsMixin extends Vue {
     this.infoTitle = payload.title
     this.isInfoMode = true
   }
+
+  onCloseError () {
+    this.isErrorMode = false
+  }
 }

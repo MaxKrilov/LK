@@ -1,0 +1,169 @@
+$pre: ".wifi-edit-filter";
+
+$danger-red-color: #d50006;
+
+.wait-dots-animation {
+  @extend %wait-dots-animation;
+}
+
+#{$pre} {
+  &__head {
+    @extend %main-content-width;
+    @extend %main-content-padding-h;
+    @extend %main-content-padding-top;
+  }
+
+  &__content,
+  &__actions,
+  &__list,
+  &__urls {
+    @extend %main-content-width;
+    @extend %main-content-padding-h;
+  }
+
+  .er-list-section__list {
+    margin-top: $padding-x6;
+  }
+
+  &__actions {
+    @extend %action-buttons-block;
+    margin-top: $padding-x8;
+
+    @include min-breakpoint("lg") {
+      grid-template-columns: 1fr 1fr 1fr;
+    }
+  }
+
+  .description {
+    @extend %body-font;
+    margin-top: $padding-x6;
+  }
+
+  .form-wrap {
+    margin: $padding-x12 0;
+  }
+
+  .form-row {
+    $text-field-max-width: 512px;
+
+    margin-top: $padding-x8;
+
+    .text-field {
+      @include min-breakpoint(lg) {
+        max-width: $text-field-max-width;
+      }
+    }
+  }
+
+  &__location-list {
+    .title {
+      @extend %h2;
+      @extend %main-content-width;
+    }
+
+    .list {
+      margin-top: $padding-x6;
+    }
+  }
+
+  .filter-type-toggle {
+    &__label {
+      @extend %caption2;
+    }
+
+    &__body {
+      margin-top: $padding-x2;
+      display: inline-flex;
+      align-items: center;
+    }
+
+    &__title {
+      @extend %h4;
+      margin-left: $padding-x4;
+
+      &--danger {
+        color: map_get($red, "base");
+      }
+    }
+
+    .er-hint {
+      margin-left: $padding-x4;
+    }
+
+    .er-toggle--type-switch {
+      .er-input__slot {
+        margin-bottom: 0;
+      }
+    }
+
+    .er-toggle.er-input--allow-list {
+      label > .er-toggle__outer {
+        background-color: map-get($green, "base");
+      }
+    }
+
+    .er-toggle.er-input--block-list {
+      label > .er-toggle__outer {
+        background-color: $danger-red-color;
+
+        > .er-toggle__inner-wrap {
+          background: linear-gradient(
+              -135deg,
+              #f6f6f67a 36.65%,
+              #ebebeb00 74.56%,
+              #afafaf00 100%
+          );
+
+          .er-toggle__inner {
+            background-color: #e31e24;
+            color: white;
+
+            .er-icon svg {
+              color: white;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .wifi-url {
+    padding: $padding-x4 0;
+
+    &__list {
+      display: grid;
+      grid-gap: $padding-x4;
+    }
+
+    &__item {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+
+      .er-delete-button {
+        padding: 0 $padding-x4;
+      }
+    }
+  }
+
+  .wifi-url-add {
+    cursor: pointer;
+    display: inline-flex;
+    flex-direction: row;
+    align-items: center;
+    margin-top: $padding-x4;
+    margin-left: $padding-x4;
+
+    @include color-black(0.8);
+
+    .er-icon {
+      color: map_get($gray, "35");
+    }
+
+    &__label {
+      margin-left: $padding-x2;
+      @extend %button-font;
+      border-bottom: 1px dashed;
+    }
+  }
+}
