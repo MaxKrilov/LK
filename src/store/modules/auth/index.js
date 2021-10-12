@@ -2,7 +2,7 @@ import { makeTokens, validationToken } from '@/functions/auth'
 import { USER_ROLES } from '@/store/mock/profile'
 import { ERROR_MODAL } from '@/store/actions/variables'
 
-import { Cookie } from '@/functions/storage'
+// import { Cookie } from '@/functions/storage'
 import { generateUrl, getAllUrlParams, isCombat, isServer, copyObject } from '../../../functions/helper'
 
 import {
@@ -164,8 +164,10 @@ const actions = {
         const totalAmount = urlParams.total_amount
 
         if (billingAccount && totalAmount) {
-          Cookie.set('ff_billing_account', billingAccount, {})
-          Cookie.set('ff_total_amount', totalAmount, {})
+          localStorage.setItem('ff_billing_account', billingAccount)
+          localStorage.setItem('ff_total_amount', totalAmount)
+          // Cookie.set('ff_billing_account', billingAccount, {})
+          // Cookie.set('ff_total_amount', totalAmount, {})
         }
 
         // Проблемы с ecommerce (теряется orderId и MarketId)
@@ -181,7 +183,8 @@ const actions = {
         const ecommerceTransaction = urlParams.transaction
 
         if (ecommerceTransaction) {
-          Cookie.set('ecommerce__transaction', ecommerceTransaction, {})
+          localStorage.setItem('ecommerce__transaction', ecommerceTransaction)
+          // Cookie.set('ecommerce__transaction', ecommerceTransaction, {})
         }
       }
 

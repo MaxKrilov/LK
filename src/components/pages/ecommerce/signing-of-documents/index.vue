@@ -62,7 +62,7 @@
                 v-for="(bill, idx) in listBills"
                 :key="idx"
                 :bill="bill"
-                :isAllSignedDocument="isAllSignedDocument || isVerifying"
+                :isAllSignedDocument="isAllSignedDocument"
                 @payment="onPaymentHandler(bill.billingAccount)"
               )
 </template>

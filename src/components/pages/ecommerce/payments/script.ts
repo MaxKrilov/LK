@@ -15,7 +15,7 @@ import Swiper from 'swiper'
 import 'swiper/swiper-bundle.css'
 import { SCREEN_WIDTH } from '@/store/actions/variables'
 import { IPaymentCard, INewCardPayment, IBindCardPayment } from '@/tbapi/payments'
-import { Cookie } from '@/functions/storage'
+// import { Cookie } from '@/functions/storage'
 
 import { roundUp, isFramed } from '@/functions/helper'
 import { BREAKPOINT_MD } from '@/constants/breakpoint'
@@ -240,14 +240,15 @@ export default class CardPaymentPage extends Vue {
   }
 
   defineAmountPay () {
-    const amountPay = this.$route.query.total_amount || this.$route.params.total_amount ||
-      Cookie.get('ff_total_amount')
+    // const amountPay = this.$route.query.total_amount || this.$route.params.total_amount || Cookie.get('ff_total_amount')
+    const amountPay = this.$route.query.total_amount || this.$route.params.total_amount || localStorage.getItem('ff_total_amount')
 
     if (amountPay) {
       this.amountToPay = String(
         Number(roundUp(amountPay, 2)).toFixed(2).replace('.', ',')
       )
-      Cookie.remove('ff_total_amount')
+      // Cookie.remove('ff_total_amount')
+      localStorage.removeItem('ff_total_amount')
     }
   }
 
