@@ -186,6 +186,11 @@ const actions = {
           localStorage.setItem('ecommerce__transaction', ecommerceTransaction)
           // Cookie.set('ecommerce__transaction', ecommerceTransaction, {})
         }
+
+        const isHiddenButton = urlParams.is_hide_button
+        if (isHiddenButton) {
+          localStorage.setItem('ecommerce__is_hidden_button', isHiddenButton)
+        }
       }
 
       actions.signIn(context, payload)

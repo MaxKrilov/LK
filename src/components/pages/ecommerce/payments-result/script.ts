@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Component from 'vue-class-component'
 import { mapActions, mapGetters, mapMutations } from 'vuex'
 import { IPaymentStatus } from '@/tbapi/payments'
-import { Cookie } from '@/functions/storage'
+// import { Cookie } from '@/functions/storage'
 
 @Component<InstanceType<typeof PaymentResultPage>>({
   computed: {
@@ -71,7 +71,7 @@ export default class PaymentResultPage extends Vue {
   }
 
   checkStatus () {
-    const transaction = this.$route.query.transaction || Cookie.get('ecommerce__transaction')
+    const transaction = this.$route.query.transaction || localStorage.getItem('ecommerce__transaction')
     typeof transaction === 'string' && this.checkPaymentStatus({ transaction })
       .then(response => {
         if (Number(response.pay_status) === 2) {

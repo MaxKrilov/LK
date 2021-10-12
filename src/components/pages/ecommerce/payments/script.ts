@@ -407,7 +407,10 @@ export default class CardPaymentPage extends Vue {
         }
       })
 
-      this.isHideButton = !!this.$route.query.is_hide_button
+      this.isHideButton = !!this.$route.query.is_hide_button || !!localStorage.getItem('ecommerce__is_hidden_button')
+      this.$nextTick(() => {
+        localStorage.removeItem('ecommerce__is_hidden_button')
+      })
     })
     setTimeout(() => {
       // Костыль, для корректной установки <label> и ширины <legend>
