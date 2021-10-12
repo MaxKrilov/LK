@@ -273,7 +273,7 @@ export default {
           : ''
     },
     isEcommerce () {
-      return isFramed() && location.href.match(/ecommerce/g)
+      return isFramed() && !!location.href.match(/ecommerce/g)
     }
   }
 }

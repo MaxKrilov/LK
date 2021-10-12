@@ -202,6 +202,9 @@ export default class SigningWithScans extends Vue {
       )
       this.isLoadSuccess = true
       this.isLoaded = true
+
+      // Все документы подписаны, но находятся на проверке. При этом позволяем пользователю "Оплатить"
+      this.$emit('signed', 1)
     } catch (e) {
       console.error(e)
       this.isLoadError = true
