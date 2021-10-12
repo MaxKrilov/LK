@@ -1,12 +1,14 @@
+/* eslint-disable camelcase */
 import { API } from '@/functions/api'
 import { ActionContext } from 'vuex'
 import { TYPE_ARRAY, TYPE_JSON } from '@/constants/type_request'
 import { IWifiPro, IWifiResourceInfo } from '@/tbapi'
 import { head } from 'lodash'
+import { logError } from '@/functions/logging'
 
 const api = () => new API()
 
-const VOUCHER_REQUEST = '/internet/analytics/voucher'
+const VOUCHER_REQUEST = '/internet/analytics/request'
 
 const URLS = {
   GET_RADAR_LINK: '/internet/radar/link'
@@ -420,6 +422,100 @@ const actions = {
         .query(VOUCHER_REQUEST)
         .then(response => resolve(response))
         .catch(error => reject(error))
+    })
+  },
+  pointCreate (
+    context: ActionContext<undefined, any>,
+    {
+      vlan,
+      cityId,
+      loginPrefix
+    }: {
+      vlan: string,
+      cityId: string,
+      loginPrefix: string
+    }
+  ) {
+    const { toms: clientId } = context.rootGetters['auth/user']
+    return new Promise((resolve, reject) => {
+      api()
+        .setWithCredentials()
+        .setType(TYPE_JSON)
+        .setData({
+          category: 'voucher',
+          action: 'point/create',
+          data: {
+            client_id: clientId,
+            vlan,
+            city_id: cityId,
+            login_prefix: loginPrefix
+          }
+        })
+        .query(VOUCHER_REQUEST)
+        .then(response => resolve(response))
+        .catch(error => reject(error))
+    })
+  },
+  pointUpdate (
+    context: ActionContext<undefined, any>,
+    {
+      vlan,
+      cityId,
+      loginPrefix
+    }: {
+      vlan: string,
+      cityId: string,
+      loginPrefix: string
+    }
+  ) {
+    const { toms: clientId } = context.rootGetters['auth/user']
+    return new Promise((resolve, reject) => {
+      api()
+        .setWithCredentials()
+        .setType(TYPE_JSON)
+        .setData({
+          category: 'voucher',
+          action: 'point/update',
+          data: {
+            client_id: clientId,
+            vlan,
+            city_id: cityId,
+            login_prefix: loginPrefix
+          }
+        })
+        .query(VOUCHER_REQUEST)
+        .then(response => resolve(response))
+        .catch(error => reject(error))
+    })
+  },
+  createClient (
+    context: ActionContext<undefined, any>
+  ) {
+    return new Promise(async (resolve) => {
+      const { toms: client_id } = context.rootGetters['auth/user']
+      const {
+        inn: taxpayer_id,
+        name: legal_name,
+        address
+      } = context.rootGetters['user/getClientInfo']
+      const zip_code = ''
+
+      try {
+        await api()
+          .setWithCredentials()
+          .setType(TYPE_JSON)
+          .setData({
+            category: 'voucher',
+            action: 'client/create',
+            data: { client_id, taxpayer_id, legal_name, address, zip_code }
+          })
+          .query(VOUCHER_REQUEST)
+
+        resolve()
+      } catch (e) {
+        logError(e)
+        resolve()
+      }
     })
   }
 }

@@ -16,7 +16,7 @@ import { head } from 'lodash'
 import { ServiceStatus, STATUS_DISCONNECTED } from '@/constants/status'
 import { price as priceFormatted } from '@/functions/filters'
 import { mapActions } from 'vuex'
-import { IAvailableFunds } from '@/tbapi'
+import { IAvailableFunds, IWifiResourceInfo } from '@/tbapi'
 
 @Component<InstanceType<typeof ErtWifiServiceAuth>>({
   components: {
@@ -41,6 +41,12 @@ import { IAvailableFunds } from '@/tbapi'
         this.$store.dispatch('wifi/getResource', {
           bpi: this.activePoint!.bpi
         })
+          .then((response: IWifiResourceInfo[]) => {
+            const vlan = head(response)!.vlan
+            if (!vlan || typeof head(vlan) === 'undefined') return
+            this.cityId = head(vlan)!.cityId
+            this.vlan = head(vlan)!.number
+          })
       })
     },
     activePoint (newVal, oldVal) {
@@ -51,7 +57,10 @@ import { IAvailableFunds } from '@/tbapi'
   },
   methods: {
     ...mapActions({
-      getAvailableFunds: 'salesOrder/getAvailableFunds'
+      getAvailableFunds: 'salesOrder/getAvailableFunds',
+      pointCreate: 'wifi/pointCreate',
+      pointUpdate: 'wifi/pointUpdate',
+      createClient: 'wifi/createClient'
     })
   }
 })
@@ -79,6 +88,9 @@ export default class ErtWifiServiceAuth extends mixins(Page) implements iPageCom
   productId: string = ''
 
   availableFundsAmt: number = 0
+
+  vlan: string = ''
+  cityId: string = ''
 
   // Computed
   get getListServiceAuth () {
@@ -178,6 +190,9 @@ export default class ErtWifiServiceAuth extends mixins(Page) implements iPageCom
 
   /// Vuex Methods
   getAvailableFunds!: <T = Promise<IAvailableFunds>>() => T
+  pointCreate!: ({ vlan, cityId, loginPrefix }: { vlan: string, cityId: string, loginPrefix: string }) => Promise<any>
+  pointUpdate!: ({ vlan, cityId, loginPrefix }: { vlan: string, cityId: string, loginPrefix: string }) => Promise<any>
+  createClient!: () => Promise<void>
 
   // Methods
   async onConnect (code: string, e: any) {
@@ -216,31 +231,6 @@ export default class ErtWifiServiceAuth extends mixins(Page) implements iPageCom
     } else {
       openPlugin()
     }
-
-    // this.getAvailableFunds()
-    //   .then(response => {
-    //     const availableFunds = Number(response.availableFundsAmt)
-    //     this.availableFundsAmt = availableFunds
-    //     if (
-    //       this.getOrderTitleNPrice !== null &&
-    //       availableFunds - Number(this.getOrderTitleNPrice.price) > 0
-    //     ) {
-    //       this.chars = typeof e !== 'undefined' ? e : null
-    //
-    //       if (code === 'WIFIHSCLONET') {
-    //         this.isShowPlugProductPluginManager = true
-    //       } else {
-    //         this.isShowPlugProductPlugin = true
-    //       }
-    //     } else {
-    //       this.isShowMoneyModal = true
-    //       this.resetOrderData()
-    //     }
-    //   })
-    //   .catch(() => {
-    //     this.isErrorMoney = true
-    //     this.resetOrderData()
-    //   })
   }
 
   resetOrderData () {
@@ -264,15 +254,33 @@ export default class ErtWifiServiceAuth extends mixins(Page) implements iPageCom
     this.resetOrderData()
   }
 
-  onSuccessOrder () {
+  async onSuccessOrder () {
     this.isLoadingCustomerProduct = true
-    setTimeout(() => {
-      this.getCustomerProduct()
-        .then(() => {
-          this.isLoadingCustomerProduct = false
-          this.resetOrderData()
-        })
-    }, 1000)
+
+    const reset = () => {
+      setTimeout(() => {
+        this.getCustomerProduct()
+          .then(() => {
+            this.isLoadingCustomerProduct = false
+            this.resetOrderData()
+          })
+      }, 1000)
+    }
+
+    // Для продукта "Авторизация по ваучеру" необходимо создать или изменить точку на бэкенде wifi
+    if (this.productCode === 'WIFIAVTVOUCH') {
+      const data = { vlan: this.vlan, cityId: this.cityId, loginPrefix: this.chars!['Префикс логина']?.toString() }
+      if (this.isActiveCurrentSLO) {
+        await this.pointUpdate(data)
+        reset()
+      } else {
+        await this.createClient()
+        await this.pointCreate(data)
+        reset()
+      }
+    } else {
+      reset()
+    }
   }
 
   onDisconnect (code: string, productId: string) {
@@ -345,5 +353,17 @@ export default class ErtWifiServiceAuth extends mixins(Page) implements iPageCom
           : '0'
       }
     })
+  }
+
+  mounted () {
+    this.customerProduct && this.$store.dispatch('wifi/getResource', {
+      bpi: this.activePoint!.bpi
+    })
+      .then((response: IWifiResourceInfo[]) => {
+        const vlan = head(response)!.vlan
+        if (!vlan || typeof head(vlan) === 'undefined') return
+        this.cityId = head(vlan)!.cityId
+        this.vlan = head(vlan)!.number
+      })
   }
 }

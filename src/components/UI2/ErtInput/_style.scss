@@ -11,6 +11,10 @@
     color: map-deep-get($theme, 'text', 'rest-secondary');
   }
 
+  &__required-label {
+    background-color: map-deep-get($theme, 'textfield', 'required-label-color');
+  }
+
   &--is-disabled {
     color: map-deep-get($theme, 'text', 'disabled');
 
@@ -133,7 +137,6 @@
     width: 8px;
     height: 8px;
     border-radius: 50%;
-    background-color: map_get($yellow, 'base');
     position: absolute;
     left: 0;
     top: -21px;
