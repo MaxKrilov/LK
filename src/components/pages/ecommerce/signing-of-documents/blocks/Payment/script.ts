@@ -164,7 +164,8 @@ export default class Payment extends Vue {
       if (e.data.eventType !== 'ertPayments') return
 
       if (e.data.state === 'success') {
-        this.getInternalAvailableFunds()
+        // this.getInternalAvailableFunds()
+        this.getAvailableFundsNBalance()
         this.isPaymentSuccess = true
         this.isPaymentRequest = false
       }
