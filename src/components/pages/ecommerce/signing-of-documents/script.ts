@@ -120,7 +120,7 @@ export default class ECommerceSigningOfDocuments extends Vue {
   }
 
   get isEverythingPaid () {
-    return Object.keys(this.isSuccessListInvoice).length === this.listBills.length &&
+    return this.listInvoiceTracker && Object.keys(this.isSuccessListInvoice).length === this.listBills.length &&
       Object.values(this.isSuccessListInvoice).every(item => item)
   }
 
