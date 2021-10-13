@@ -33,7 +33,6 @@
                 :documents="listContractDocument"
                 @signed="(e) => isAllSignedDocument = e === 1"
                 @verifying="(e) => isVerifying = e === 1"
-                @unverifying="(e) => isVerifying = e !== 1"
               )
             ErFlex(xs12 md3)
               .e-commerce-signing-of-documents__hint
@@ -62,7 +61,7 @@
                 v-for="(bill, idx) in listBills"
                 :key="idx"
                 :bill="bill"
-                :isAllSignedDocument="isAllSignedDocument"
+                :isAllSignedDocument="isAllSignedDocument || isVerifying"
                 @payment="onPaymentHandler(bill.billingAccount)"
               )
 </template>

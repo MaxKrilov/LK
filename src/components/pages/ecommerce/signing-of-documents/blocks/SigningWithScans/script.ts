@@ -204,7 +204,7 @@ export default class SigningWithScans extends Vue {
       this.isLoaded = true
 
       // Все документы подписаны, но находятся на проверке. При этом позволяем пользователю "Оплатить"
-      this.$emit('signed', 1)
+      this.$emit('verifying', 1)
     } catch (e) {
       console.error(e)
       this.isLoadError = true
@@ -224,8 +224,8 @@ export default class SigningWithScans extends Vue {
     const isEverythingSigned = Object.values(this.documents)
       .every(valItem => valItem.contractStatus === 'Подписан')
 
-    // Все документы подписаны и прошли верификацию
-    const isEveryVerifying = isEverythingSigned && Object.values(this.documents)
+    // Документы проходят верификацию у менеджера
+    const isEveryVerifying = Object.values(this.documents)
       .every(valItem => valItem.verifying === 'Да')
 
     // Все документы подписаны, но, хотя бы один не прошёл ещё верификацию (уточнить - такое возможно)
