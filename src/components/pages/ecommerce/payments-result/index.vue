@@ -11,6 +11,8 @@
           | Оплата успешно прошла
         .e-commerce-payment-result-page__description.mb--s
           | Кассовый чек отправлен на указанную почту: {{ email }}
+        .e-commerce-payment-result-page__description.mb--s(v-if="!issetBroadcastChannel")
+          | Данное окно будет закрыто через
       template(v-if="status === 2")
         .e-commerce-payment-result-page__preloader
           .icon

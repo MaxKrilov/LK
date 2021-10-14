@@ -8,6 +8,7 @@ import ErDocumentViewer from '@/components/blocks/ErDocumentViewer/index.vue'
 import { IBillingAccount, IBillingInfo } from '@/tbapi/payments'
 import { API } from '@/functions/api'
 import { logInfo } from '@/functions/logging'
+import { BroadcastChannel as BroadcastChannelPolyfill } from 'broadcast-channel'
 
 @Component<InstanceType<typeof Payment>>({
   components: {
@@ -64,6 +65,8 @@ export default class Payment extends Vue {
   isPaymentRequest: boolean = false
   isPaymentSuccess: boolean = false
 
+  broadcastChannel: null | BroadcastChannel = null
+
   /// Vuex state
   listBillingAccount!: IBillingAccount[]
 
@@ -73,7 +76,7 @@ export default class Payment extends Vue {
   }
 
   get getIframeSrc () {
-    return `/ecommerce/payment?total_amount=${Math.abs(this.numberAmount)}&billing_account=${this.bill.billingAccount}&is_hide_button=1`
+    return `/ecommerce/payment?total_amount=${Math.abs(this.numberAmount)}&billing_account=${this.bill.billingAccount}`
   }
 
   get getAmountToPay () {
@@ -163,6 +166,30 @@ export default class Payment extends Vue {
     this.isOpenViewer = false
 
     setTimeout(() => URL.revokeObjectURL(link.href), 7000)
+  }
+
+  openNewWindow () {
+    const refreshData = () => {
+      this.getAvailableFundsNBalance()
+      this.isPaymentSuccess = true
+      this.isPaymentRequest = false
+    }
+    const win = window.open(this.getIframeSrc)
+
+    if (!win) return
+
+    win.focus()
+
+    this.broadcastChannel = window.BroadcastChannel
+      ? new BroadcastChannel('erth-payment')
+      : new BroadcastChannelPolyfill('erth-payment') as unknown as BroadcastChannel
+
+    this.broadcastChannel.addEventListener('message', (e) => {
+      if (e.data.eventType === 'ertPayments' && e.data.state === 'success') {
+        logInfo('Success')
+        refreshData()
+      }
+    })
   }
 
   mounted () {

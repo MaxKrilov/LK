@@ -146,6 +146,8 @@ export default class CardPaymentPage extends Vue {
 
   isHideButton: boolean = false
 
+  isPaymentRequest: boolean = false
+
   // Computed
   /**
    * Список адресов эл. почты (для отправки чека)
