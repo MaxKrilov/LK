@@ -1,0 +1,21 @@
+.pos {
+  &--absolute {
+    position: absolute !important;
+  }
+
+  &--relative {
+    position: relative !important;
+  }
+
+  &--fixed {
+    position: fixed !important;
+  }
+
+  &--sticky {
+    position: sticky !important;
+  }
+
+  &--static {
+    position: static !important;
+  }
+}

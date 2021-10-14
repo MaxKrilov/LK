@@ -34,6 +34,9 @@
     padding: 32px 24px 40px;
     background: #F0F7FA;
     border-radius: 12px;
+    position: absolute;
+    top: 0;
+    right: 0;
 
     @media screen and (max-width: 640px) {
       display: none;
