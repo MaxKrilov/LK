@@ -6,7 +6,7 @@
           ErtProgressCircular.mr-16(indeterminate width="4" size="48")
         .title
           | Загружаем данные
-    template(v-if="isError")
+    template(v-else-if="isError")
       .e-commerce-signing-of-documents__error
         .icon
           ErtIcon.mr-16(name="close")

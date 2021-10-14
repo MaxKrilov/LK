@@ -32,7 +32,7 @@
               | Оплатите онлайн и вы сможете завершить заказ сразу после оплаты. При оплате по счету для завершения заказа необходимо дождаться уведомления о зачислении средств.
             .actions
               .action
-                ErButton.px-20(@click="() => { this.isOpenPaymentDialog = true }" :disabled="!isAllSignedDocument") Оплатить онлайн
+                ErButton.px-20(@click="openNewWindow()" :disabled="!isAllSignedDocument") Оплатить онлайн
               .action
                 ErButton.px-20(
                   flat

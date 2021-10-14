@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Component from 'vue-class-component'
 import { mapActions, mapGetters, mapMutations } from 'vuex'
 import { IPaymentStatus } from '@/tbapi/payments'
-// import { Cookie } from '@/functions/storage'
+import { BroadcastChannel as BroadcastChannelPolyfill } from 'broadcast-channel'
 
 @Component<InstanceType<typeof PaymentResultPage>>({
   computed: {
@@ -70,6 +70,17 @@ export default class PaymentResultPage extends Vue {
     return localStorage.getItem('email')
   }
 
+  get issetBroadcastChannel () {
+    return !!window.BroadcastChannel
+  }
+
+  sendData () {
+    const bch = this.issetBroadcastChannel
+      ? new BroadcastChannel('erth-payment')
+      : new BroadcastChannelPolyfill('erth-payment')
+    bch.postMessage({ eventType: 'ertPayments', state: 'success' })
+  }
+
   checkStatus () {
     const transaction = this.$route.query.transaction || localStorage.getItem('ecommerce__transaction')
     typeof transaction === 'string' && this.checkPaymentStatus({ transaction })
@@ -81,12 +92,7 @@ export default class PaymentResultPage extends Vue {
         } else {
           this.status = Number(response.pay_status) as 0 | 1 | 2
           if (this.status === 1) {
-            setTimeout(() => {
-              window.parent.postMessage({ eventType: 'ertPayments', state: 'success', billingAccount: this.activeBillingAccountNumber }, '*')
-              this.getBillingInfo()
-            }, 5000)
-          } else if (this.status === 2) {
-            window.parent.postMessage({ eventType: 'ertPayments', state: 'error', billingAccount: this.activeBillingAccountNumber }, '*')
+            this.sendData()
           }
         }
       })
