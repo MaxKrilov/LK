@@ -134,7 +134,7 @@ export default class ErtTokens extends Vue {
       ) {
         this.signIn({ api: new API() })
           .then(response => {
-            !this.isManager && this.onProccessingAccessToken()
+            !this.isManager && !this.isEcommerce && this.onProccessingAccessToken()
             resolve(response)
           })
           .catch(error => reject(error))

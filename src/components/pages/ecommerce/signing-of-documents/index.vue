@@ -27,7 +27,7 @@
             ErFlex(xs12 md9)
               StatutoryDocuments.mb--4xl()
         template(v-if="signatureType === 'Ручная'")
-          ErRow
+          ErRow.pos--relative
             ErFlex(xs12 md9)
               SigningWithScans.mb--4xl(
                 :documents="listContractDocument"
@@ -41,7 +41,7 @@
                   li(v-for="(hint, idx) in listHintWithScans" :key="idx")
                     span.text {{ hint }}
         template(v-else)
-          ErRow
+          ErRow.pos--relative
             ErFlex(xs12 md9)
               DigitalSigning.mb--4xl(
                 :documents="listContractDocument"
@@ -53,8 +53,7 @@
                 ol
                   li(v-for="(hint, idx) in listHintDigital" :key="idx")
                     span.text {{ hint }}
-        //- template(v-if="!isEverythingPaid")
-        template(v-if="true")
+        template(v-if="!(isEverythingPaid && isVerifying)")
           h3.e-commerce-payment__title.mb--xl Оплата
           ErRow
             ErFlex(xs12 md9)

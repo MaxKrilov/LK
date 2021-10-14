@@ -7,6 +7,7 @@ import { IAvailableFunds } from '@/tbapi'
 import ErDocumentViewer from '@/components/blocks/ErDocumentViewer/index.vue'
 import { IBillingAccount, IBillingInfo } from '@/tbapi/payments'
 import { API } from '@/functions/api'
+import { logInfo } from '@/functions/logging'
 
 @Component<InstanceType<typeof Payment>>({
   components: {
@@ -32,6 +33,12 @@ import { API } from '@/functions/api'
   watch: {
     listBillingAccount (val) {
       val.length > 0 && this.getAvailableFundsNBalance()
+    },
+    isOpenPaymentDialog (val) {
+      if (val && this.$refs.payment_frame) { // Открываем IFrame оплаты картой
+        logInfo('Reset Payment IFrame Src')
+        this.$refs.payment_frame.src = this.$refs.payment_frame.src
+      }
     }
   },
   methods: mapActions({
