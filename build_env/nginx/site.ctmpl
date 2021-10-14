@@ -16,9 +16,9 @@ server {
     listen [::]:443 ssl http2;
     server_name {{ env "FQDN" }};
 
-    ssl_certificate /var/www/tls/frontend2.b2bweb.t2.ertelecom.ru/fullchain1.pem;
-    ssl_certificate_key /var/www/tls/frontend2.b2bweb.t2.ertelecom.ru/privkey1.pem;
-    ssl_trusted_certificate /var/www/tls/frontend2.b2bweb.t2.ertelecom.ru/chain1.pem;
+    ssl_certificate /var/www/tls/b2b/fullchain.pem;
+    ssl_certificate_key /var/www/tls/b2b/privkey.pem;
+    ssl_trusted_certificate /var/www/tls/b2b/chain.pem;
 
     location / {
         proxy_pass http://{{ env "FQDN" }};
