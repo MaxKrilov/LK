@@ -3,9 +3,19 @@
 .e-commerce-payment-page {
   $self: &;
 
-  &__block {
+  &__block,
+  &__forward {
     background: #F0F7FA;
     height: 100vh;
+  }
+
+  &__forward {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+
+    @extend %erth--h4;
   }
 
   &__block__content {
@@ -91,6 +101,10 @@
     &__title {
       @extend %h4-font;
       @include color-black(0.8);
+
+      .amount {
+        white-space: nowrap;
+      }
 
       .amount .penny {
         @include color-black(0.3);

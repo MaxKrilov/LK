@@ -15,10 +15,11 @@ import Swiper from 'swiper'
 import 'swiper/swiper-bundle.css'
 import { SCREEN_WIDTH } from '@/store/actions/variables'
 import { IPaymentCard, INewCardPayment, IBindCardPayment } from '@/tbapi/payments'
-// import { Cookie } from '@/functions/storage'
 
 import { roundUp, isFramed } from '@/functions/helper'
 import { BREAKPOINT_MD } from '@/constants/breakpoint'
+import { BroadcastChannel as BroadcastChannelPolyfill } from 'broadcast-channel'
+import { logInfo } from '@/functions/logging'
 
 @Component<InstanceType<typeof CardPaymentPage>>({
   components: {
@@ -31,7 +32,8 @@ import { BREAKPOINT_MD } from '@/constants/breakpoint'
       cvv: (state: any) => state.payments.cvv
     }),
     ...mapGetters({
-      activeBillingAccount: 'payments/getActiveBillingAccount'
+      activeBillingAccount: 'payments/getActiveBillingAccount',
+      activeBillingAccountNumber: 'payments/getActiveBillingAccountNumber'
     })
   },
   watch: {
@@ -91,6 +93,7 @@ export default class CardPaymentPage extends Vue {
 
   // Vuex getters
   readonly activeBillingAccount!: string
+  readonly activeBillingAccountNumber!: string
 
   // Vuex mutations
   readonly setCVV!: (cvv: string) => void
@@ -147,6 +150,9 @@ export default class CardPaymentPage extends Vue {
   isHideButton: boolean = false
 
   isPaymentRequest: boolean = false
+
+  // Страница была открыта во фрейме
+  isPopup: boolean = false
 
   // Computed
   /**
@@ -376,6 +382,31 @@ export default class CardPaymentPage extends Vue {
 
   // Hooks
   mounted () {
+    if (isFramed() && !!location.href.match(/ecommerce/g)) {
+      this.isPopup = true
+
+      // Страница была открыта в Popup'e - открываем новое окно
+      /// Получаем активный биллинг-аккаунт
+      const activeBillingAccountNumber = this.activeBillingAccountNumber
+      /// Получаем сумму к оплате
+      const paymentAmount = this.$route.query.total_amount ||
+        this.$route.params.total_amount ||
+        localStorage.getItem('ff_total_amount')
+      window.open(`${location.origin}/ecommerce/payment?total_amount=${paymentAmount}&billing_account=${activeBillingAccountNumber}`)
+
+      const broadcastChannel = window.BroadcastChannel
+        ? new BroadcastChannel('erth-payment')
+        : new BroadcastChannelPolyfill('erth-payment') as unknown as BroadcastChannel
+
+      broadcastChannel.addEventListener('message', (e) => {
+        if (e.data.eventType === 'ertPayments' && e.data.state === 'success') {
+          logInfo('Success')
+          window.parent.postMessage({ eventType: 'ertPayments', state: 'success', billingAccount: activeBillingAccountNumber }, '*')
+        }
+      })
+
+      return
+    }
     this.$nextTick(() => {
       this.defineAmountMask()
       this.defineCardSlider()

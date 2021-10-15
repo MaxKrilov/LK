@@ -31,7 +31,7 @@
           span Документ успешно подписан, можно оплачивать
         .e-commerce-signing-with-scans__document__is-verifying(v-else-if="document.verifying === 'Да' || isLoadSuccess")
           ErtProgressCircular(indeterminate width="4" size="24")
-          span Мы проверим документы в течение 4 рабочих часов, и менеджер свяжется с вами
+          span Мы проверим документы в течение 4 рабочих часов.
         template(v-else)
           .e-commerce-signing-with-scans__document__uploaded-document(v-if="listInternalFile[key] && tracker")
             DocumentName(
