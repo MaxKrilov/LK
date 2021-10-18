@@ -1,5 +1,6 @@
 import Vue, { VNode } from 'vue'
 import { SelectItemKey } from '@/types'
+import { isFramed } from '@/functions/helper'
 
 export const deepEqual = (a: any, b: any): boolean => {
   if (a === b) return true
@@ -283,3 +284,5 @@ export function findGetParameter (parameterName: string) {
 }
 
 export const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
+
+export const isEcommerce = () => isFramed() && !!location.href.match(/ecommerce/g)

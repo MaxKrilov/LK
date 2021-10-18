@@ -15,6 +15,7 @@ import {
 } from './manager'
 
 import { MANAGER_LOGOUT } from '../../../constants/url'
+import { isEcommerce } from '../../../functions/helper2'
 
 const AUTH_REQUEST = 'AUTH_REQUEST'
 const AUTH_SUCCESS = 'AUTH_SUCCESS'
@@ -152,7 +153,7 @@ const actions = {
 
   signIn (context, payload) {
     return new Promise((resolve, reject) => {
-      const actions = context.state.isManager
+      const actions = context.state.isManager && !isEcommerce()
         ? managerActions
         : userActions
 
