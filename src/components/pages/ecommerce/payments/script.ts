@@ -57,6 +57,8 @@ import { logInfo } from '@/functions/logging'
         .then(response => {
           this.cardList = response
         })
+      val && isFramed() && !!location.href.match(/ecommerce/g) &&
+        this.definePopupInfo()
     },
     cardList () {
       if (this.swiperSlider != null) {
@@ -380,36 +382,41 @@ export default class CardPaymentPage extends Vue {
     }, 5000)
   }
 
+  definePopupInfo () {
+    this.isPopup = true
+
+    // Страница была открыта в Popup'e - открываем новое окно
+    /// Получаем активный биллинг-аккаунт
+    const activeBillingAccountNumber = this.activeBillingAccountNumber
+    /// Получаем сумму к оплате
+    const paymentAmount = this.$route.query.total_amount ||
+      this.$route.params.total_amount ||
+      localStorage.getItem('ff_total_amount')
+    window
+      .open(`${location.origin}/ecommerce/payment?total_amount=${paymentAmount}&billing_account=${activeBillingAccountNumber}`)
+      ?.focus()
+
+    localStorage.setItem('ecommerce-popup__billing-account-number', activeBillingAccountNumber)
+    localStorage.setItem('ecommerce-popup__amount', String(paymentAmount))
+
+    localStorage.removeItem('ff_total_amount')
+
+    const broadcastChannel = window.BroadcastChannel
+      ? new BroadcastChannel('erth-payment')
+      : new BroadcastChannelPolyfill('erth-payment') as unknown as BroadcastChannel
+
+    broadcastChannel.addEventListener('message', (e) => {
+      if (e.data.eventType === 'ertPayments' && e.data.state === 'success') {
+        logInfo('Success')
+        window.parent.postMessage({ eventType: 'ertPayments', state: 'success', billingAccount: activeBillingAccountNumber }, '*')
+      }
+    })
+  }
+
   // Hooks
   mounted () {
     if (isFramed() && !!location.href.match(/ecommerce/g)) {
-      this.isPopup = true
-
-      // Страница была открыта в Popup'e - открываем новое окно
-      /// Получаем активный биллинг-аккаунт
-      const activeBillingAccountNumber = this.activeBillingAccountNumber
-      /// Получаем сумму к оплате
-      const paymentAmount = this.$route.query.total_amount ||
-        this.$route.params.total_amount ||
-        localStorage.getItem('ff_total_amount')
-      window.open(`${location.origin}/ecommerce/payment?total_amount=${paymentAmount}&billing_account=${activeBillingAccountNumber}`)
-
-      localStorage.setItem('ecommerce-popup__billing-account-number', activeBillingAccountNumber)
-      localStorage.setItem('ecommerce-popup__amount', String(paymentAmount))
-
-      localStorage.removeItem('ff_total_amount')
-
-      const broadcastChannel = window.BroadcastChannel
-        ? new BroadcastChannel('erth-payment')
-        : new BroadcastChannelPolyfill('erth-payment') as unknown as BroadcastChannel
-
-      broadcastChannel.addEventListener('message', (e) => {
-        if (e.data.eventType === 'ertPayments' && e.data.state === 'success') {
-          logInfo('Success')
-          window.parent.postMessage({ eventType: 'ertPayments', state: 'success', billingAccount: activeBillingAccountNumber }, '*')
-        }
-      })
-
+      this.activeBillingAccount && this.definePopupInfo()
       return
     }
     this.$nextTick(() => {
