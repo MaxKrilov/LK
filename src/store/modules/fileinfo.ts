@@ -66,23 +66,26 @@ const getters = {
 const actions = {
   /**
    * Получение списка документов
-   * @param {ActionContext<IState, {}>} context
-   * @param {{ api: API }} payload
    */
-  downloadListDocument (context: ActionContext<IState, any>, payload: { api: API }) {
+  downloadListDocument (context: ActionContext<IState, any>, payload: { api: API, relatedTo?: string }) {
     const { toms: clientId } = context.rootGetters['auth/user']
-    // const billingAccountId = context.rootGetters['user/getActiveBillingAccount']
-    return new Promise<void>((resolve, reject) => {
+    const data: Record<string, string> = { clientId }
+
+    if (payload.hasOwnProperty('relatedTo')) {
+      data.relatedTo = payload.relatedTo!
+    }
+    return new Promise<DocumentInterface[] | void>((resolve, reject) => {
       payload.api
         .setWithCredentials()
-        .setData({
-          clientId
-          // billingAccountId
-        })
+        .setData(data)
         .query('/customer/management/fileinfo')
-        .then((data: DocumentInterface[]) => {
-          context.commit('downloadListDocumentSuccess', data)
-          resolve()
+        .then((response: DocumentInterface[]) => {
+          if (payload.hasOwnProperty('relatedTo')) { // В этом случае экспортируем
+            resolve(response)
+          } else {
+            context.commit('downloadListDocumentSuccess', response)
+            resolve()
+          }
         })
         .catch((error: AxiosError) => {
           logError(error)

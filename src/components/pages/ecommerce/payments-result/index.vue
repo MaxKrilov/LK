@@ -6,13 +6,15 @@
           | Оплата не прошла
         .e-commerce-payment-result-page__description.mb--s
           | Произошла ошибка. попробуйте оплатить позднее
+        .e-commerce-payment-result-page__button
+          ErButton.px--s(@click="backToPayment") Попробовать ещё раз
       template(v-if="status === 1")
         .e-commerce-payment-result-page__title.mb--m.success--text
           | Оплата успешно прошла
         .e-commerce-payment-result-page__description.mb--s
           | Кассовый чек отправлен на указанную почту: {{ email }}
-        .e-commerce-payment-result-page__description.mb--s(v-if="!issetBroadcastChannel")
-          | Данное окно будет закрыто через
+        .e-commerce-payment-result-page__button
+          ErButton.px--s(@click="closeWindow") Вернуться
       template(v-if="status === 2")
         .e-commerce-payment-result-page__preloader
           .icon

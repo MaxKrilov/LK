@@ -48,4 +48,30 @@
       color: #7585A1;
     }
   }
+
+  h4 {
+    @extend %erth--h4;
+  }
+
+  &__downloaded-documents {
+    &--downloading {
+      display: flex;
+      align-items: center;
+
+      .ert-progress-circular {
+        color: #FFDD00;
+        margin-right: 8px;
+      }
+
+      span {
+        @extend %erth--body;
+        color: #222222;
+      }
+    }
+
+    &--empty {
+      @extend %erth--body;
+      color: #222222;
+    }
+  }
 }

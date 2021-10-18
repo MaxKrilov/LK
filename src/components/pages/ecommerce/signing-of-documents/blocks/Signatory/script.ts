@@ -6,12 +6,16 @@ import Component from 'vue-class-component'
 import DocumentName from '../FileName/'
 import FileUpload from '../../../components/file-upload/index.vue'
 
+import ErtDocumentItemComponent from './components/document-item-component.vue'
+
 import ErDocumentViewer from '@/components/blocks/ErDocumentViewer/index.vue'
 import { IOrderContractContractSignee } from '@/tbapi/fileinfo'
 import { mapActions, mapGetters } from 'vuex'
 import { ATTACH_SIGNED_DOCUMENT, UPLOAD_FILE } from '@/store/actions/documents'
 import { API } from '@/functions/api'
 import moment from 'moment'
+import { logError } from '@/functions/logging'
+import { DocumentInterface } from '@/tbapi'
 
 const FILE_DATA_TYPE = '9154452676313182650'
 const FILE_DATA_BUCKET = 'customer-docs'
@@ -20,7 +24,8 @@ const FILE_DATA_BUCKET = 'customer-docs'
   components: {
     DocumentName,
     FileUpload,
-    ErDocumentViewer
+    ErDocumentViewer,
+    ErtDocumentItemComponent
   },
   props: {
     contractSignee: Object
@@ -33,7 +38,8 @@ const FILE_DATA_BUCKET = 'customer-docs'
   methods: {
     ...mapActions({
       uploadFile: `documents/${UPLOAD_FILE}`,
-      attachDocument: `documents/${ATTACH_SIGNED_DOCUMENT}`
+      attachDocument: `documents/${ATTACH_SIGNED_DOCUMENT}`,
+      downloadListDocument: 'fileinfo/downloadListDocument'
     })
   }
 })
@@ -49,6 +55,10 @@ export default class Signatory extends Vue {
   isLoadSuccess: boolean = false
   isLoadError: boolean = false
   isLoaded: boolean = false
+
+  isDownloadingDocuments: boolean = true
+
+  listDocument: DocumentInterface[] = []
 
   /// Vuex getters
   readonly getTOMS!: string
@@ -111,12 +121,20 @@ export default class Signatory extends Vue {
     filePath: string
   }) => Promise<any>
 
+  readonly downloadListDocument!: ({
+    api,
+    relatedTo
+  }: {
+    api: API,
+    relatedTo?: string
+  }) => Promise<DocumentInterface[] | undefined>
+
   // Methods
   getFilePath (id: string) {
     return `${moment().format('MMYYYY')}/${id}`
   }
 
-  uploadDocument () {
+  async uploadDocument () {
     this.isLoading = true
 
     if (this.internalFile == null) {
@@ -125,38 +143,59 @@ export default class Signatory extends Vue {
 
     const filePath = this.getFilePath(this.getTOMS)
 
-    // Загрузка в хранилище
-    this.uploadFile({
+    const uploadFileRequestData = {
       api: this.$api,
       file: this.internalFile,
       bucket: FILE_DATA_BUCKET,
       filePath: filePath
-    })
-      .then(response => {
-        if (response) {
-          this.attachDocument({
-            api: this.$api,
-            fileName: this.internalFile!.name,
-            bucket: FILE_DATA_BUCKET,
-            relatedTo: this.getTOMS,
-            filePath: filePath,
-            type: FILE_DATA_TYPE
-          })
-            .then(() => {
-              this.isLoaded = true
-              this.isLoadSuccess = true
-            })
-        } else {
-          console.error('Unknow error')
-          this.isLoadError = true
-        }
-      })
-      .catch(error => {
-        console.error(error)
+    }
+
+    const addFileRequestData = {
+      api: this.$api,
+      fileName: this.internalFile!.name,
+      bucket: FILE_DATA_BUCKET,
+      relatedTo: this.contractSignee?.id || '',
+      filePath: filePath,
+      type: FILE_DATA_TYPE
+    }
+
+    try {
+      const uploadFileResponse = await this.uploadFile(uploadFileRequestData)
+      if (uploadFileResponse) {
+        await this.attachDocument(addFileRequestData)
+        this.isLoaded = true
+        this.isLoadSuccess = true
+      } else {
         this.isLoadError = true
-      })
-      .finally(() => {
-        this.isLoading = false
-      })
+      }
+    } catch (e) {
+      logError(e)
+      this.isLoadError = true
+    } finally {
+      this.isLoading = false
+    }
+  }
+
+  downloadFiles () {
+    this.isDownloadingDocuments = true
+    return new Promise(async (resolve) => {
+      try {
+        this.listDocument = await this.downloadListDocument({
+          api: this.$api,
+          relatedTo: this.contractSignee?.id
+        }) as DocumentInterface[]
+
+        resolve()
+      } catch (e) {
+        logError(e)
+        this.listDocument = []
+      } finally {
+        this.isDownloadingDocuments = false
+      }
+    })
+  }
+
+  async mounted () {
+    await this.downloadFiles()
   }
 }

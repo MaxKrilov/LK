@@ -41,6 +41,7 @@ export default class PaymentResultPage extends Vue {
   // Data
   status: 0 | 1 | 2 = 2
   interval: number = 5
+  broadcastChannel: null | BroadcastChannel | BroadcastChannelPolyfill<any> = null
 
   get defineIcon () {
     return this.status === 0
@@ -75,10 +76,23 @@ export default class PaymentResultPage extends Vue {
   }
 
   sendData () {
-    const bch = this.issetBroadcastChannel
-      ? new BroadcastChannel('erth-payment')
-      : new BroadcastChannelPolyfill('erth-payment')
-    bch.postMessage({ eventType: 'ertPayments', state: 'success' })
+    this.broadcastChannel!.postMessage({ eventType: 'ertPayments', state: 'success' })
+  }
+
+  closeWindow () {
+    this.broadcastChannel!.postMessage({ eventType: 'ertPayments', state: 'close' })
+  }
+
+  backToPayment () {
+    const paymentAmount = localStorage.getItem('ecommerce-popup__amount')
+    const activeBillingAccountNumber = localStorage.getItem('ecommerce-popup__billing-account-number')
+
+    location.href = `${location.origin}/ecommerce/payment?total_amount=${paymentAmount}&billing_account=${activeBillingAccountNumber}`
+  }
+
+  resetLocalStorage () {
+    localStorage.removeItem('ecommerce-popup__amount')
+    localStorage.removeItem('ecommerce-popup__billing-account-number')
   }
 
   checkStatus () {
@@ -93,6 +107,7 @@ export default class PaymentResultPage extends Vue {
           this.status = Number(response.pay_status) as 0 | 1 | 2
           if (this.status === 1) {
             this.sendData()
+            this.resetLocalStorage()
           }
         }
       })
@@ -101,5 +116,8 @@ export default class PaymentResultPage extends Vue {
 
   mounted () {
     this.activeBillingAccount && this.checkStatus()
+    this.broadcastChannel = this.issetBroadcastChannel
+      ? new BroadcastChannel('erth-payment')
+      : new BroadcastChannelPolyfill('erth-payment')
   }
 }

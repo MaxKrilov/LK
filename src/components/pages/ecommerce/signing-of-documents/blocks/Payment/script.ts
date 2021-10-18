@@ -189,6 +189,9 @@ export default class Payment extends Vue {
         logInfo('Success')
         refreshData()
       }
+      if (e.data.eventType === 'ertPayments' && e.data.state === 'close') {
+        win.close()
+      }
     })
   }
 

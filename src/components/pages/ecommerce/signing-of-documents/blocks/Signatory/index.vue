@@ -5,6 +5,21 @@
     .e-commerce-signatory__signatory-name.info-block
       .e-commerce-signatory__signatory-name__caption.caption ФИО
       .e-commerce-signatory__signatory-name__value.value {{ computedSigneeName }}
+    .e-commerce-signatory__downloaded-documents.mb--s
+      h4.mb--s Загруженные документы
+      template(v-if="isDownloadingDocuments")
+        .e-commerce-signatory__downloaded-documents--downloading
+          ErtProgressCircular(indeterminate width="4" size="24")
+          span Загружаем документы
+      template(v-else-if="listDocument.length === 0")
+        .e-commerce-signatory__downloaded-documents--empty
+          | Нет загруженных документов
+      template(v-else)
+        ErtDocumentItemComponent(
+          v-for="(document, idx) in listDocument"
+          :key="idx"
+          :document="document"
+        )
     template(v-if="computedHasFile")
       .e-commerce-signatory__document.info-block
         .e-commerce-signatory__document__caption.caption Документ
@@ -15,17 +30,6 @@
               :hasRemove="!isLoaded"
               @remove="() => { internalFile = null }"
               )
-          template(v-else)
-            ErDocumentViewer(
-              :listDocument="computedSignedDocument"
-              v-model="isOpenViewer"
-            )
-              template(v-slot:activator="{ on }")
-                DocumentName(
-                  :documentName="computedFileName"
-                  :hasRemove="false"
-                  v-on="on"
-                )
     template(v-else)
       FileUpload(
         labelText="Перетащите скан доверенности в эту область или выберите на компьютере"

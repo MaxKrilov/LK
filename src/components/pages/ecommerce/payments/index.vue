@@ -2,7 +2,7 @@
   .e-commerce-payment-page(:class="{ 'e-commerce-payment-page--is-frame': isFramed }")
     template(v-if="isPopup")
       .e-commerce-payment-page__forward
-        | Вы будете перенаправлены на страницу оплаты картой
+        ErtProgressCircular(indeterminate width="4" size="48" :style="{ color: '#7585A1' }")
     template(v-else)
       .e-commerce-payment-page__block
         .e-commerce-payment-page__block__content.main-content.main-content--h-padding.d--flex
