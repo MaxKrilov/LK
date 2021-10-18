@@ -186,10 +186,12 @@ const actions = {
           context.commit('setListBillingAccount', result)
           // Устанавливаем активный биллинг-аккаунт
           // const requestBillingNumber = route.query.billing_account || Cookie.get('ff_billing_account')
-          const requestBillingNumber = route.query.billing_account || localStorage.getItem('ff_billing_account')
+          const requestBillingNumber = route.query.billing_account || localStorage.getItem('ff_billing_account') ||
+            localStorage.getItem('ecommerce-popup__billing-account-number')
           if (requestBillingNumber && typeof requestBillingNumber === 'string') {
             // Cookie.remove('ff_billing_account')
             localStorage.removeItem('ff_billing_account')
+            localStorage.removeItem('ecommerce-popup__billing-account-number')
             const findingBillingAccount = result.find(billingAccount => billingAccount.accountNumber === requestBillingNumber)
             if (typeof findingBillingAccount !== 'undefined') {
               context.commit('setActiveBillingAccount', findingBillingAccount)

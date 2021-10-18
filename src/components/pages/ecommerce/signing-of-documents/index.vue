@@ -15,7 +15,7 @@
     template(v-else)
       ErContainer.full.container--no-padding
         //- Подписант (-ы)
-        template(v-if="!isCharter")
+        template(v-if="!isCharter && !(isEverythingPaid && isVerifying)")
           ErRow
             ErFlex(xs12 md9)
               template(v-for="contractSignee in listContractSignee")
