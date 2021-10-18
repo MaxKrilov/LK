@@ -3,11 +3,12 @@ import { VueTransitionFSM } from '@/mixins/FSMMixin'
 import { StoreGetter } from '@/functions/store'
 import { IPointItem } from '@/interfaces/point'
 import BillingAccountMixin from '@/mixins/BillingAccountMixin'
+import { ICustomerProduct, ICustomerProductSLO } from '@/tbapi'
 
 @Component({})
 export default class WifiContentFilterPageMixin extends Mixins(VueTransitionFSM, BillingAccountMixin) {
   /* config */
-  isPromoEnabled: boolean = false
+  isPromoEnabled: boolean = true
 
   contentFilter: any = '-'
 
@@ -31,10 +32,17 @@ export default class WifiContentFilterPageMixin extends Mixins(VueTransitionFSM,
     this.setState('loading')
     this.pullLocations()
       .then(this.fetchContentFilter)
-      .then(data => {
+      .then((data: Record<string, ICustomerProduct>) => {
         this.$set(this, 'contentFilter', data)
 
-        if (this.isPromoEnabled && !this.contentFilter.length) {
+        const issetContentFilter = Object.values(data)
+          .reduce((acc, item) => {
+            acc.push(...item.slo)
+
+            return acc
+          }, [] as ICustomerProductSLO[]).length
+
+        if (this.isPromoEnabled && !issetContentFilter) {
           this.setState('promo')
         } else {
           this.pullVlan()

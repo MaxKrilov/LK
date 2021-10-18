@@ -202,7 +202,7 @@ const getters = {
         address: item.fulladdress,
         addressId: item.id,
         price: Number(item.amount.value),
-        currency: item.amount.currency.name
+        currency: item.amount?.currency?.name || 'руб'
       })) : []
   },
   getListProductByService (state) {
