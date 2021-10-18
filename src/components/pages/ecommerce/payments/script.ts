@@ -416,6 +416,7 @@ export default class CardPaymentPage extends Vue {
   // Hooks
   mounted () {
     if (isFramed() && !!location.href.match(/ecommerce/g)) {
+      this.isPopup = true
       this.activeBillingAccount && this.definePopupInfo()
       return
     }
