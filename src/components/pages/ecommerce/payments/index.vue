@@ -2,7 +2,9 @@
   .e-commerce-payment-page(:class="{ 'e-commerce-payment-page--is-frame': isFramed }")
     template(v-if="isPopup")
       .e-commerce-payment-page__forward
-        ErtProgressCircular(indeterminate width="4" size="48" :style="{ color: '#7585A1' }")
+        ErtProgressCircular.mb--s(indeterminate width="4" size="48" :style="{ color: '#7585A1' }")
+        h4.title.mb--s Будет произведён переход на страницу оплаты
+        ErButton(@click="openWindow") Перейти
     template(v-else)
       .e-commerce-payment-page__block
         .e-commerce-payment-page__block__content.main-content.main-content--h-padding.d--flex

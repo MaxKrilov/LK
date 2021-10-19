@@ -413,6 +413,18 @@ export default class CardPaymentPage extends Vue {
     })
   }
 
+  openWindow () {
+    /// Получаем активный биллинг-аккаунт
+    const activeBillingAccountNumber = this.activeBillingAccountNumber
+    /// Получаем сумму к оплате
+    const paymentAmount = this.$route.query.total_amount ||
+      this.$route.params.total_amount ||
+      localStorage.getItem('ff_total_amount')
+    window
+      .open(`${location.origin}/ecommerce/payment?total_amount=${paymentAmount}&billing_account=${activeBillingAccountNumber}`)
+      ?.focus()
+  }
+
   // Hooks
   mounted () {
     if (isFramed() && !!location.href.match(/ecommerce/g)) {

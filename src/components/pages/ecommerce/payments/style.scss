@@ -16,6 +16,11 @@
     flex-direction: column;
 
     @extend %erth--h4;
+
+    .er-button {
+      width: 100%;
+      max-width: 250px;
+    }
   }
 
   &__block__content {
