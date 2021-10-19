@@ -20,6 +20,9 @@
     .er-button {
       width: 100%;
       max-width: 250px;
+
+      text-transform: uppercase;
+      @extend %erth--navigation;
     }
   }
 
@@ -192,6 +195,9 @@
   }
 
   &__submit {
-    @extend %erth--navigation;
+    button {
+      @extend %erth--navigation;
+      text-transform: uppercase;
+    }
   }
 }
