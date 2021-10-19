@@ -419,7 +419,8 @@ export default class CardPaymentPage extends Vue {
     /// Получаем сумму к оплате
     const paymentAmount = this.$route.query.total_amount ||
       this.$route.params.total_amount ||
-      localStorage.getItem('ff_total_amount')
+      localStorage.getItem('ff_total_amount') ||
+      localStorage.getItem('ecommerce-popup__amount')
     window
       .open(`${location.origin}/ecommerce/payment?total_amount=${paymentAmount}&billing_account=${activeBillingAccountNumber}`)
       ?.focus()
