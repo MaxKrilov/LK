@@ -130,7 +130,7 @@ export default class ErtTokens extends Vue {
       if (
         !this.accessToken ||
         !this.isValidToken(this.accessToken) ||
-        (this.isEcommerce && !location.href.match(/payment/g))
+        !(location.href.match(/ecommerce/) && location.href.match(/payment-result/))
       ) {
         this.signIn({ api: new API() })
           .then(response => {
