@@ -80,7 +80,8 @@ export default class PaymentResultPage extends Vue {
   }
 
   closeWindow () {
-    this.broadcastChannel!.postMessage({ eventType: 'ertPayments', state: 'close' })
+    window.close()
+    // this.broadcastChannel!.postMessage({ eventType: 'ertPayments', state: 'close' })
   }
 
   backToPayment () {
