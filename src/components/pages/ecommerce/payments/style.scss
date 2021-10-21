@@ -5,8 +5,15 @@
 
   &__block,
   &__forward {
-    background: #F0F7FA;
     height: 100vh;
+  }
+
+  &__forward {
+    padding: 0 16px;
+  }
+
+  &__block {
+    background: #F0F7FA;
   }
 
   &__forward {
