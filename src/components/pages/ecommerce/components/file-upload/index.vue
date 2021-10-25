@@ -10,6 +10,8 @@
     )
       span.label-text
         | {{ labelText }}
+    .caption2.error--text(v-if="isError")
+      | {{ errorText }}
 </template>
 
 <script lang="ts" src="./script.ts"></script>

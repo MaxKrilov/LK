@@ -49,6 +49,7 @@ export default class Signatory extends Vue {
 
   // Data
   internalFile: null | File = null
+  listInternalFile: File[] = []
   isOpenViewer: boolean = false
 
   isLoading: boolean = false
@@ -71,12 +72,12 @@ export default class Signatory extends Vue {
     return `${lastName || ''} ${firstName || ''} ${secondName || ''}`.trim()
   }
 
-  get computedHasFile () {
-    if (this.internalFile != null) return true
-    if (!this.contractSignee) return false
-
-    return this.contractSignee.hasOwnProperty('signedDocuments') && this.contractSignee.registrationDocument.match(/устав/i)
-  }
+  // get computedHasFile () {
+  //   if (this.internalFile != null) return true
+  //   if (!this.contractSignee) return false
+  //
+  //   return this.contractSignee.hasOwnProperty('signedDocuments') && this.contractSignee.registrationDocument.match(/устав/i)
+  // }
 
   get computedFileName () {
     if (this.internalFile != null) return this.internalFile.name
@@ -132,6 +133,10 @@ export default class Signatory extends Vue {
   // Methods
   getFilePath (id: string) {
     return `${moment().format('MMYYYY')}/${id}`
+  }
+
+  removeFile (idx: number) {
+    this.listInternalFile = this.listInternalFile.filter((_, _idx) => _idx !== idx)
   }
 
   async uploadDocument () {

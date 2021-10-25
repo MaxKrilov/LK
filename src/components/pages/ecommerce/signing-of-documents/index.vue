@@ -22,7 +22,7 @@
                 Signatory.mb--xl(:contractSignee="contractSignee")
         //- Показываем форму загрузку уставных документов только в том случае
         //- если нет договоров в статусах "Активный", "Истёк", "Расторгнут"
-        template(v-if="!isActiveClient && !isCharter")
+        template(v-if="!isActiveClient")
           ErRow
             ErFlex(xs12 md9)
               StatutoryDocuments.mb--4xl()

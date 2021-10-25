@@ -1,7 +1,8 @@
 <template lang="pug">
   .e-commerce-statutory-documents
     h3.e-commerce-statutory-documents__title Загрузите уставные документы
-    p.e-commerce-statutory-documents__subtitle Пожалуйста, загрузите уставные документы (Устав, ОГРН или Свидетельство о регистрации ИП).
+    p.e-commerce-statutory-documents__subtitle Пожалуйста, загрузите уставные документы (Устав, ОГРН или Свидетельство о регистрации ИП).&nbsp;
+      | Вы можете загрузить несколько файлов, но размер одного файла не более 2Мб
     .e-commerce-statutory-documents__list
       template(
         v-for="document in getListStatutoryDocument"
