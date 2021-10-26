@@ -1,6 +1,6 @@
 <template lang="pug">
   .e-commerce-digital-signing
-    h3.e-commerce-digital-signing__title Подписать документы ЭЦП
+    h3.e-commerce-digital-signing__title Подпишите документы с помощью ЭЦП
     p.e-commerce-digital-signing__subtitle.mb--xl
       | В вашем браузере должен быть установлен и запущен плагин «КриптоПро». Если плагин не установлен, попробуйте подписать другими способами.
       a(

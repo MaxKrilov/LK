@@ -36,7 +36,7 @@
               )
             ErFlex(xs12 md3)
               .e-commerce-signing-of-documents__hint
-                h4 Как осуществить подписание сканами?
+                h4 Как подписать и загрузить подписанный документ?
                 ol
                   li(v-for="(hint, idx) in listHintWithScans" :key="idx")
                     span.text {{ hint }}

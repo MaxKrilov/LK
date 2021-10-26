@@ -15,6 +15,12 @@
     button {
       width: 100%;
       max-width: 208px;
+      @extend %erth--navigation;
+    }
+
+    .caption2 {
+      @extend %erth--signature;
+      color: #7585A1;
     }
   }
 }
