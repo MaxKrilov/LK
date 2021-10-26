@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Component from 'vue-class-component'
 
-@Component({
+@Component<InstanceType<typeof ECommerceFileUpload>>({
   props: {
     id: String,
     labelText: {
@@ -14,7 +14,8 @@ import Component from 'vue-class-component'
 export default class ECommerceFileUpload extends Vue {
   // Options
   $refs!: Vue & {
-    'ecommerce-file-upload': HTMLFormElement
+    'ecommerce-file-upload': HTMLFormElement,
+    'file-input': HTMLInputElement
   }
   // Props
   readonly id!: string
@@ -58,6 +59,7 @@ export default class ECommerceFileUpload extends Vue {
       (e.target as HTMLInputElement).files!.length > 0 &&
       (this.onValidate((e.target as HTMLInputElement).files![0]))) {
       this.$emit('input', (e.target as HTMLInputElement).files![0])
+      this.$refs['file-input'].value = ''
     }
   }
 
