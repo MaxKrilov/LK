@@ -1,8 +1,6 @@
 <template lang="pug">
   .e-commerce-statutory-documents
-    h3.e-commerce-statutory-documents__title Загрузите уставные документы
-    p.e-commerce-statutory-documents__subtitle Пожалуйста, загрузите уставные документы (Устав, ОГРН или Свидетельство о регистрации ИП).&nbsp;
-      | Вы можете загрузить несколько файлов, но размер одного файла не более 2Мб
+    h3.e-commerce-statutory-documents__title Загрузите уставные документы (Устав, ОГРН или Свидетельство о регистрации ИП)
     .e-commerce-statutory-documents__list
       template(
         v-for="document in getListStatutoryDocument"
@@ -29,11 +27,11 @@
         labelText="Перетащите документ в эту область или выберите на компьютере"
         @input="(file) => { listInternalFile.push(file) }"
       )
-    .e-commerce-statutory-documents__actions(v-if="listInternalFile.length > 0")
-      ErButton.mb-16(:loading="isLoading" :disabled="isLoaded" @click="uploadDocuments") Сохранить
-      .caption2 После сохранения документов их удаление станет невозможным!
+    .e-commerce-statutory-documents__actions
+      ErButton.mb-16(:loading="isLoading" :disabled="isLoaded || !listInternalFile.length" @click="uploadDocuments") Сохранить
+      .caption2 Возможно загрузить несколько файлов. Размер каждого из загруженных файлов не должен превышать 2Мб. После сохранения документов их удаление станет невозможным!
     .e-commerce-statutory-documents__success.caption2.success--text(v-if="isLoadSuccess") Документы успешно сохранены
-    .e-commerce-statutory-documents__success.caption2.error--text(v-if="isLoadError") Произошла ошибка при сохранении документов
+    .e-commerce-statutory-documents__success.caption2.error--text(v-else-if="isLoadError") Произошла ошибка при сохранении документов
 </template>
 
 <script lang="ts" src="./script.ts"></script>

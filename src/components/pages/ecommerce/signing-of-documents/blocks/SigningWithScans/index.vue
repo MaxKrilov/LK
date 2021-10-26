@@ -1,19 +1,17 @@
 <template lang="pug">
   .e-commerce-signing-with-scans
-    h3.e-commerce-signing-with-scans__title Подписать документы сканами
+    h3.e-commerce-signing-with-scans__title Подписать и загрузить подписанные документы
     .e-commerce-signing-with-scans__tabs.mb--m
       .tabs__container
         .tabs-items
           ul.tabs__list
             li.tabs__item(:class="{ 'active': activeTab === 'scan' }")
               a(href="#" @click.prevent="() => { activeTab = 'scan' }")
-                span Подписать сканами
+                span Загрузить подписанные документы
             li.tabs__item(:class="{ 'active': activeTab === 'office' }")
               a(href="#" @click.prevent="() => { activeTab = 'office' }")
                 span Подписать в офисе
     template(v-if="activeTab === 'scan'")
-      p.e-commerce-signing-with-scans__subtitle.mb--xl
-        | Необходимо скачать каждый приложенный ниже документ, распечатать, подписать и приложить подписанный скан к соответствующему документу.
       .e-commerce-signing-with-scans__document.mb--m(
         v-for="(document, key) in (documents || {})"
         :key="key"
@@ -25,7 +23,7 @@
             @click.prevent="onDownloadDocumentHandler(document, key)"
           )
             ErtIcon(name="download_1")
-            span {{ listViewerFlag[key] ? 'Подождите' : 'Скачать' }}
+            span {{ listViewerFlag[key] ? 'Подождите' : 'Скачать документ' }}
         .e-commerce-signing-with-scans__document__success(v-if="document.contractStatus === 'Подписан'")
           ErtIcon(name="erth__check")
           span Документ успешно подписан, можно оплачивать
@@ -45,7 +43,7 @@
             )
       .e-commerce-signing-with-scans__actions(v-if="isUploadAllDocuments")
         ErButton.mb-16(:loading="isLoading" :disabled="isLoaded" @click="onUploadDocuments") Сохранить
-        .caption2 После сохранения документов их удаление станет невозможным!
+        .caption2 Обратите внимание! Договор требуется загрузить одним файлом размером не более 2Мб. После сохранения, документ будет отправлен на проверку, удаление документа станет невозможным!
       .e-commerce-signing-with-scans__success.caption2.success--text(v-if="isLoadSuccess") Документы успешно сохранены
       .e-commerce-signing-with-scans__success.caption2.error--text(v-if="isLoadError") Произошла ошибка при сохранении документов
     template(v-else-if="activeTab === 'office'")

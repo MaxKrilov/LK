@@ -139,42 +139,51 @@ export default class Signatory extends Vue {
     this.listInternalFile = this.listInternalFile.filter((_, _idx) => _idx !== idx)
   }
 
-  async uploadDocument () {
+  uploadDocument (file: File, filePath: string) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const uploadFileRequestData = {
+          api: this.$api,
+          bucket: FILE_DATA_BUCKET,
+          file,
+          filePath
+        }
+
+        const addFileRequestData = {
+          api: this.$api,
+          bucket: FILE_DATA_BUCKET,
+          fileName: file.name,
+          filePath,
+          relatedTo: this.contractSignee!.id,
+          type: FILE_DATA_TYPE
+        }
+
+        const uploadFileResponse = await this.uploadFile(uploadFileRequestData)
+
+        if (uploadFileResponse) {
+          await this.attachDocument(addFileRequestData)
+
+          resolve()
+        } else {
+          reject('Error of download file to storage')
+        }
+      } catch (ex) {
+        logError(ex)
+        reject(ex)
+      }
+    })
+  }
+
+  async uploadDocuments () {
     this.isLoading = true
 
-    if (this.internalFile == null) {
-      throw new Error('Inccorect')
-    }
-
-    const filePath = this.getFilePath(this.getTOMS)
-
-    const uploadFileRequestData = {
-      api: this.$api,
-      file: this.internalFile,
-      bucket: FILE_DATA_BUCKET,
-      filePath: filePath
-    }
-
-    const addFileRequestData = {
-      api: this.$api,
-      fileName: this.internalFile!.name,
-      bucket: FILE_DATA_BUCKET,
-      relatedTo: this.contractSignee?.id || '',
-      filePath: filePath,
-      type: FILE_DATA_TYPE
-    }
-
     try {
-      const uploadFileResponse = await this.uploadFile(uploadFileRequestData)
-      if (uploadFileResponse) {
-        await this.attachDocument(addFileRequestData)
-        this.isLoaded = true
-        this.isLoadSuccess = true
-      } else {
-        this.isLoadError = true
-      }
-    } catch (e) {
-      logError(e)
+      const filePath = this.getFilePath(this.getTOMS)
+      await Promise.all(this.listInternalFile.map(file => this.uploadDocument(file, filePath)))
+
+      this.isLoaded = true
+      this.isLoadSuccess = true
+    } catch (ex) {
       this.isLoadError = true
     } finally {
       this.isLoading = false
