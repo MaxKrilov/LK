@@ -1,8 +1,9 @@
 <template lang="pug">
   form.ecommerce-file-upload(ref="ecommerce-file-upload")
     input(
-      type="file"
       :id="computedID"
+      ref="file-input"
+      type="file"
       @change="onChange"
     )
     label.ecommerce-file-upload__wrapper(

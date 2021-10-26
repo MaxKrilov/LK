@@ -30,7 +30,7 @@
       labelText="Перетащите скан доверенности в эту область или выберите на компьютере"
       @input="(file) => { listInternalFile.push(file) }"
     )
-    .e-commerce-signatory__actions
+    .e-commerce-signatory__actions(v-if="listInternalFile.length > 0")
       ErButton.mb-16(:loading="isLoading" :disabled="isLoaded || listInternalFile.length === 0" @click="uploadDocuments") Сохранить
       .caption2 Возможно загрузить несколько файлов. Размер каждого из загруженных файлов не должен превышать 2Мб. После сохранения документов их удаление станет невозможным!
 

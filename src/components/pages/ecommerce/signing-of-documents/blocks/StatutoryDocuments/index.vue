@@ -27,7 +27,7 @@
         labelText="Перетащите документ в эту область или выберите на компьютере"
         @input="(file) => { listInternalFile.push(file) }"
       )
-    .e-commerce-statutory-documents__actions
+    .e-commerce-statutory-documents__actions(v-if="listInternalFile.length > 0")
       ErButton.mb-16(:loading="isLoading" :disabled="isLoaded || !listInternalFile.length" @click="uploadDocuments") Сохранить
       .caption2 Возможно загрузить несколько файлов. Размер каждого из загруженных файлов не должен превышать 2Мб. После сохранения документов их удаление станет невозможным!
     .e-commerce-statutory-documents__success.caption2.success--text(v-if="isLoadSuccess") Документы успешно сохранены
