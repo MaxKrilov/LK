@@ -27,12 +27,15 @@
           @remove="() => { removeFile(idx) }"
         )
     FileUpload.mb--m(
+      :isLoaded="isLoadSuccess"
       labelText="Перетащите скан доверенности в эту область или выберите на компьютере"
       @input="(file) => { listInternalFile.push(file) }"
     )
     .e-commerce-signatory__actions(v-if="listInternalFile.length > 0")
       ErButton.mb-16(:loading="isLoading" :disabled="isLoaded || listInternalFile.length === 0" @click="uploadDocuments") Сохранить
-      .caption2 Возможно загрузить несколько файлов. Размер каждого из загруженных файлов не должен превышать 2Мб. После сохранения документов их удаление станет невозможным!
+      .caption2 Возможно загрузить несколько файлов.
+      .caption2 Размер каждого из загруженных файлов не должен превышать 2Мб.
+      .caption2 После сохранения документов их удаление станет невозможным!
 
     .e-commerce-signatory__success.caption2.success--text(v-if="isLoadSuccess") Документ успешно сохранён
     .e-commerce-signatory__success.caption2.error--text(v-else-if="isLoadError") Произошла ошибка при сохранении документа

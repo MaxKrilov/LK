@@ -4,6 +4,7 @@ import Component from 'vue-class-component'
 @Component<InstanceType<typeof ECommerceFileUpload>>({
   props: {
     id: String,
+    isLoaded: Boolean,
     labelText: {
       type: String,
       default: 'Перетащите подписанный документ в эту область или выберите на компьютере'
@@ -19,6 +20,7 @@ export default class ECommerceFileUpload extends Vue {
   }
   // Props
   readonly id!: string
+  readonly isLoaded!: boolean
   readonly labelText!: string
   readonly value!: File
 
@@ -54,6 +56,7 @@ export default class ECommerceFileUpload extends Vue {
 
   onChange (e: InputEvent) {
     if (
+      !this.isLoaded &&
       e.target &&
       (e.target as HTMLInputElement).files != null &&
       (e.target as HTMLInputElement).files!.length > 0 &&
@@ -75,18 +78,23 @@ export default class ECommerceFileUpload extends Vue {
 
     ['dragenter', 'dragover'].forEach(evt => {
       this.$refs['ecommerce-file-upload'].addEventListener(evt, () => {
-        this.$refs['ecommerce-file-upload'].classList.add('is-dragover')
+        !this.isLoaded && this.$refs['ecommerce-file-upload'].classList.add('is-dragover')
       })
     });
 
     ['dragleave', 'dragend', 'drop'].forEach(evt => {
       this.$refs['ecommerce-file-upload'].addEventListener(evt, () => {
-        this.$refs['ecommerce-file-upload'].classList.remove('is-dragover')
+        !this.isLoaded && this.$refs['ecommerce-file-upload'].classList.remove('is-dragover')
       })
     })
 
     this.$refs['ecommerce-file-upload'].addEventListener('drop', (e: DragEvent) => {
-      if (e.dataTransfer && e.dataTransfer.files.length > 0 && this.onValidate(e.dataTransfer.files[0])) {
+      if (
+        !this.isLoaded &&
+        e.dataTransfer &&
+        e.dataTransfer.files.length > 0 &&
+        this.onValidate(e.dataTransfer.files[0])
+      ) {
         this.$emit('input', e.dataTransfer.files[0])
       }
     })

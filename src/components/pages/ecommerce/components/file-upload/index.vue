@@ -1,6 +1,7 @@
 <template lang="pug">
   form.ecommerce-file-upload(ref="ecommerce-file-upload")
     input(
+      :disabled="isLoaded"
       :id="computedID"
       ref="file-input"
       type="file"

@@ -20,6 +20,11 @@
     }
   }
 
+  input[disabled] + .ecommerce-file-upload__wrapper {
+    opacity: 0.3;
+    cursor: not-allowed;
+  }
+
   &.is-dragover {
     cursor: grabbing;
     border-color: #0357F1;

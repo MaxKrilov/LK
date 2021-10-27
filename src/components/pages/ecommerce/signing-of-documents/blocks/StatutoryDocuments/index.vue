@@ -24,12 +24,16 @@
       )
     .e-commerce-statutory-documents__file-upload.mb-16
       FileUpload(
+        :isLoaded="isLoadSuccess"
         labelText="Перетащите документ в эту область или выберите на компьютере"
         @input="(file) => { listInternalFile.push(file) }"
       )
     .e-commerce-statutory-documents__actions(v-if="listInternalFile.length > 0")
       ErButton.mb-16(:loading="isLoading" :disabled="isLoaded || !listInternalFile.length" @click="uploadDocuments") Сохранить
-      .caption2 Возможно загрузить несколько файлов. Размер каждого из загруженных файлов не должен превышать 2Мб. После сохранения документов их удаление станет невозможным!
+      .caption2 Возможно загрузить несколько файлов.
+      .caption2 Размер каждого из загруженных файлов не должен превышать 2Мб.
+      .caption2 После сохранения документов их удаление станет невозможным!
+
     .e-commerce-statutory-documents__success.caption2.success--text(v-if="isLoadSuccess") Документы успешно сохранены
     .e-commerce-statutory-documents__success.caption2.error--text(v-else-if="isLoadError") Произошла ошибка при сохранении документов
 </template>
