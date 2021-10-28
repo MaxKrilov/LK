@@ -191,3 +191,29 @@
     }
   }
 }
+
+.er-radio-check {
+
+  &__box-items {
+    display: flex;
+    align-items: center;
+    flex-grow: 1;
+    justify-content: flex-start;
+    padding: $padding-x7/2;
+    @include min-breakpoint('md') {
+    }
+  }
+
+  &__item {
+    display: flex;
+    align-items: center;
+
+    &:not(:first-child) {
+      margin-left: $padding-x6;
+
+      @include min-breakpoint('lg') {
+        margin-left: $padding-x12;
+      }
+    }
+  }
+}

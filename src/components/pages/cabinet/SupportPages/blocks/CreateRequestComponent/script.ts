@@ -64,6 +64,11 @@ interface iErForm extends HTMLFormElement {
   validate: () => boolean
 }
 
+interface iCheckboxSelectionHardwarePowerSupply {
+  yes: string,
+  no: string
+}
+
 // @ts-ignore
 @Component({
   computed: {
@@ -156,14 +161,15 @@ export default class CreateRequestComponent extends Vue {
 
   file: File[] = []
   fileMessage: string[] = []
-
-  isHardwareRestarted: boolean = false
-  isHasPowerSupply: boolean = false
-
   listPhoneNumberByTelephone: string[] = []
   listSelectedPhoneNumberByTelephone: string[] = []
   isAllPhoneNumberByTelephone: boolean = false
-
+  modelHardware: string = 'yes'
+  modelSupply: string = 'no'
+  radioBoxHardwarePowerSupply: iCheckboxSelectionHardwarePowerSupply = {
+    yes: 'Да',
+    no: 'Нет'
+  }
   get isReadonlyName () {
     return this.getPhoneList.includes(this.phoneNumber.replace(/[\D]+/g, ''))
   }
@@ -371,7 +377,11 @@ export default class CreateRequestComponent extends Vue {
         this.$scrollTo('.support-page')
       })
   }
-
+  sendParamRadioButton (model: string): string {
+    return `
+      ${model === 'yes' ? 'Да' : 'Нет/Неизвестно'}
+    `
+  }
   getDescriptionText () {
     const comment = `Заявка сформирована из ЛК B2B: ${this.comment}`
     const phone = `Контактный номер телефона: ${this.phoneNumber}`
@@ -459,6 +469,8 @@ export default class CreateRequestComponent extends Vue {
           ${phone};
           ${name}.`
       case `technical_issues`:
+        let hardware = this.modelHardware
+        let supply = this.modelSupply
         let text = `
           ${comment};
           ${address};
@@ -466,8 +478,8 @@ export default class CreateRequestComponent extends Vue {
           ${phone};
           ${name};
           Доп. информация:
-          * Оборудование было перезагружено: ${this.isHardwareRestarted ? 'Да' : 'Нет/Неизвестно'};
-          * На адресе имеется электропитание: ${this.isHasPowerSupply ? 'Да' : 'Нет/Неизвестно'};
+          * Оборудование было перезагружено: ${this.sendParamRadioButton(hardware)};
+          * На адресе имеется электропитание: ${this.sendParamRadioButton(supply)};
           `
         if (this.isShowListPhoneNumber) {
           text += `
