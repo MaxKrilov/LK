@@ -174,7 +174,8 @@ const MenuItemList = (listProduct: IProductItem[], oatsPortalLink: string): Menu
           ]
           : [],
         {
-          name: 'Wi-Fi Радар',
+          name: 'Wi-Fi маркетинг (Радар + Wi-Fi Hot Spot)',
+          subname: '\n',
           url: '/lk/wifi/radar'
         }
       )
