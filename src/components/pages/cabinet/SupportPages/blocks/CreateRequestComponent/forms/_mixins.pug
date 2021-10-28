@@ -1,3 +1,10 @@
+mixin radioCheck(text)
+  if(text)
+    .er-radio-check(class=attributes.class)= text
+      .er-radio-check__box-items
+          .er-radio-check__item(v-for="(label, val) in radioBoxHardwarePowerSupply")
+            block
+
 mixin listRequestTheme
   er-select(
     :items="listRequestTheme"
