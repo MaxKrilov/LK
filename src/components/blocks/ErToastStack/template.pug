@@ -5,18 +5,15 @@
       tag="div"
       class="toast-stack__list"
     )
-      template(
+      toast(
         v-for="toast in queue"
+        :text="getText(toast)"
+        :type="toast.communication_type"
+        :taskId="toast.task_id"
+        :id="toast.id"
+        :key="toast.id"
+        :params="getToastParams(toast)"
+        @click="onClickToast"
+        @hide="onHideToast"
+        @timeout="removeFromQueue"
       )
-        toast(
-          v-if="!hidden.includes(toast.id)"
-          :text="getText(toast)"
-          :type="toast.communication_type"
-          :taskId="toast.task_id"
-          :id="toast.id"
-          :key="toast.id"
-          :params="getToastParams(toast)"
-          @click="onClickToast"
-          @hide="onHideToast"
-          @timeout="removeFromQueue"
-        )

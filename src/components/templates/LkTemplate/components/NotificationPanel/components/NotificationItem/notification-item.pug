@@ -24,6 +24,10 @@
         :params="notification"
       )
 
+      WifiCampaignMessage(
+        v-if="notification.communication_type === 'wifi'"
+      )
+
       ppr-text(
         v-else-if="isPPR"
         :data="notification.data"

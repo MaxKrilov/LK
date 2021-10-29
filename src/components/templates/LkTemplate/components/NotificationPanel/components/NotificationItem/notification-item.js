@@ -3,6 +3,7 @@ import NotificationIcon from '../NotificationIcon/index'
 import TimerDisplay from '../TimerDisplay/index'
 import PPRText from '../PPRText/index'
 import CampaignCustomMessage14 from '../campaign-custom-message-14'
+import WifiCampaignMessage from '../campaign-custom-message-wifi'
 
 import {
   isCampaignCustomMessage,
@@ -25,7 +26,8 @@ export default {
     NotificationIcon,
     TimerDisplay,
     CampaignCustomMessage14,
-    'ppr-text': PPRText
+    'ppr-text': PPRText,
+    WifiCampaignMessage
   },
   data () {
     return {
@@ -231,10 +233,10 @@ export default {
       return this.notification.date
     },
     getDate () {
-      return this.getDateTime().format('DD.MM.YYYY')
+      return this.getDateTime()?.format('DD.MM.YYYY')
     },
     getTime () {
-      return this.getDateTime().format('HH:mm')
+      return this.getDateTime()?.format('HH:mm')
     }
   },
   created () {

@@ -51,6 +51,12 @@ const T_CAMPAIGN_CUSTOM_MESSAGE_1 = {
   iconName: 'warning'
 }
 
+const T_CAMPAIGN_CUSTOM_WIFI = {
+  description: 'Уведомление об изменении стандартного способа авторизации при подключении к сети DOM.RU Wi-Fi',
+  label: 'Уведомление об изменении стандартного способа авторизации при подключении к сети DOM.RU Wi-Fi',
+  iconName: 'warning'
+}
+
 const T_PPR_CODE = '8'
 const T_CAMPAIGN_CUSTOM_MESSAGE_TYPE = '15'
 const T_CAMPAIGN_CUSTOM_MESSAGE_TYPE_1 = '16'
@@ -66,7 +72,8 @@ const TYPES = {
   [T_PPR_CODE]: T_PPR,
   '11': T_SURVEY_RECEPTION,
   [T_CAMPAIGN_CUSTOM_MESSAGE_TYPE]: T_CAMPAIGN_CUSTOM_MESSAGE,
-  [T_CAMPAIGN_CUSTOM_MESSAGE_TYPE_1]: T_CAMPAIGN_CUSTOM_MESSAGE_1
+  [T_CAMPAIGN_CUSTOM_MESSAGE_TYPE_1]: T_CAMPAIGN_CUSTOM_MESSAGE_1,
+  'wifi': T_CAMPAIGN_CUSTOM_WIFI
 }
 
 const RESPONSE_ACCEPT = 'accept'
@@ -88,6 +95,7 @@ export {
   T_CAMPAIGN_CUSTOM_MESSAGE_TYPE,
   T_CAMPAIGN_CUSTOM_MESSAGE_1,
   T_CAMPAIGN_CUSTOM_MESSAGE_TYPE_1,
+  T_CAMPAIGN_CUSTOM_WIFI,
   T_BANNER,
   T_PPR_CODE,
   RESPONSE_ACCEPT,
