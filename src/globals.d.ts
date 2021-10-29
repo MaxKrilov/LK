@@ -18,6 +18,7 @@ import * as moment from 'moment'
 declare global {
   interface Window {
     Vue?: VueConstructor<Vue>
+    dataLayer?: any[]
   }
 
   interface HTMLCollection {
