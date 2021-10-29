@@ -100,6 +100,7 @@ export default {
                   _el['offerId'] = el?.offer?.id
                   _el['productId'] = el?.id
                   _el['locationId'] = el?.locationId
+                  _el['marketId'] = el?.market.id
                   _el['bpi'] = el?.parentId
                   _el['link'] = ''
                   this.getLink(_el['login']).then((e) => {
@@ -143,7 +144,7 @@ export default {
           this.offer = false
         })
     },
-    disconnect (offerId, locationId, bpi, productId, date) {
+    disconnect (offerId, locationId, bpi, productId, date, marketId) {
       if (date === moment().format('DD.MM.YY')) {
         this.isShowErrorDisconnectModal = true
         return
@@ -154,6 +155,7 @@ export default {
         bpi,
         offerId,
         productId,
+        marketId,
         disconnectDate: this.$moment().format()
       }).then(() => {
         this.isShowDisconnectModal = true
