@@ -17,6 +17,7 @@ import { API } from '@/functions/api'
 
 import head from 'lodash/head'
 import { STATUS_ACTIVE } from '@/constants/status'
+import { dataLayerPush } from '@/functions/analytics'
 
 const SPEED_N_LIMIT_WIDTH = 104
 const STROKE_WIDTH = 2
@@ -650,6 +651,12 @@ export default class TariffComponent extends Vue {
   createSaleOrder () {
     if (!this.locationId || !this.customerProduct) return
 
+    dataLayerPush({
+      category: 'orderbutton',
+      action: 'click',
+      label: this.isTurboActivation ? 'Интернет (смена скорости)' : 'Турбо-режим'
+    })
+
     const locationId = this.locationId
     const bpi = this.customerProduct.tlo.id
 
@@ -707,9 +714,20 @@ export default class TariffComponent extends Vue {
         .then(() => {
           this.isShowOfferDialog = true
           this.isOffering = true
+
+          dataLayerPush({
+            category: 'orderpopup',
+            action: 'open',
+            label: 'Турбо-режим'
+          })
         })
         .catch(() => {
           this.isShowErrorDialog = true
+          dataLayerPush({
+            category: 'orderpopup',
+            action: 'error',
+            label: this.isTurboActivation ? 'Интернет (смена скорости)' : 'Турбо-режим'
+          })
         })
         .finally(() => {
           this.isLoadingConnect = false
@@ -734,9 +752,20 @@ export default class TariffComponent extends Vue {
               .then(() => {
                 this.isShowOfferDialog = true
                 this.isOffering = true
+
+                dataLayerPush({
+                  category: 'orderpopup',
+                  action: 'open',
+                  label: 'Интернет (смена скорости)'
+                })
               })
               .catch(() => {
                 this.isShowErrorDialog = true
+                dataLayerPush({
+                  category: 'orderpopup',
+                  action: 'error',
+                  label: this.isTurboActivation ? 'Интернет (смена скорости)' : 'Турбо-режим'
+                })
               })
               .finally(() => {
                 this.isLoadingConnect = false
@@ -761,6 +790,11 @@ export default class TariffComponent extends Vue {
         const result = response.submit_statuses[0]
         if (result.submitStatus.toLowerCase() === 'success') {
           this.isShowSuccessDialog = true
+          dataLayerPush({
+            category: 'orderpopup',
+            action: 'success',
+            label: this.isTurboActivation ? 'Интернет (смена скорости)' : 'Турбо-режим'
+          })
           setTimeout(() => {
             this.$emit('update')
             this.isBlur = false
@@ -768,10 +802,20 @@ export default class TariffComponent extends Vue {
         } else if (result.submitStatus.toLowerCase() === 'failed') {
           this.errorText = result.submitError?.replace(/<\/?[^>]+>/g, '')
           this.isShowErrorDialog = true
+          dataLayerPush({
+            category: 'orderpopup',
+            action: 'error',
+            label: this.isTurboActivation ? 'Интернет (смена скорости)' : 'Турбо-режим'
+          })
         }
       })
       .catch(() => {
         this.isShowErrorDialog = true
+        dataLayerPush({
+          category: 'orderpopup',
+          action: 'error',
+          label: this.isTurboActivation ? 'Интернет (смена скорости)' : 'Турбо-режим'
+        })
       })
       .finally(() => {
         this.isOfferAccepting = false
