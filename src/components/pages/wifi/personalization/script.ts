@@ -550,7 +550,7 @@ export default class WifiPersonalizationPage extends mixins(Page) implements iPa
         const availableFunds = Number(response.availableFundsAmt)
         this.availableFundsAmt = availableFunds
 
-        if (availableFunds - this.getPriceForConnection > 0) {
+        if (availableFunds - this.getPriceForConnection >= 0) {
           this.isShowPlugProductPlugin = true
         } else {
           this.isShowMoneyModal = true
