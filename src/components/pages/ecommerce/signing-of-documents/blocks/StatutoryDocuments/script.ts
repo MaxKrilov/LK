@@ -10,6 +10,7 @@ import { ATTACH_SIGNED_DOCUMENT, UPLOAD_FILE } from '@/store/actions/documents'
 import { API } from '@/functions/api'
 import moment from 'moment'
 import { DocumentInterface } from '@/tbapi'
+import { ISigningDocument } from '@/tbapi/fileinfo'
 
 const FILE_DATA_TYPE = '9154452676313182654'
 const FILE_DATA_BUCKET = 'customer-docs'
@@ -32,7 +33,8 @@ const TYPE_STATUTORY_DOCUMENT = '9154452676313182654'
   methods: {
     ...mapActions({
       uploadFile: `documents/${UPLOAD_FILE}`,
-      attachDocument: `documents/${ATTACH_SIGNED_DOCUMENT}`
+      attachDocument: `documents/${ATTACH_SIGNED_DOCUMENT}`,
+      downloadFile: 'fileinfo/downloadFile'
     })
   }
 })
@@ -68,6 +70,21 @@ export default class StatutoryDocuments extends Vue {
     type: string
     filePath: string
   }) => Promise<any>
+
+  readonly downloadFile!: ({
+    api,
+    bucket,
+    key,
+    ext,
+    asPdf
+  }: {
+    api: API,
+    bucket: string,
+    key: string,
+    ext: string,
+    asPdf?: number
+  }) => Promise<Blob>
+
   // Data
   listInternalFile: File[] = []
 
@@ -141,5 +158,29 @@ export default class StatutoryDocuments extends Vue {
       .finally(() => {
         this.isLoading = false
       })
+  }
+
+  async onDownloadDocumentHandler (document: ISigningDocument, key: string) {
+    Vue.set(this.modelOpenViewer, key, true)
+
+    // @ts-ignore
+    const file = await this.downloadFile({
+      api: this.$api,
+      bucket: document.bucket,
+      key: document.filePath,
+      ext: document.fileName.split('.').pop()!
+    })
+
+    const link = window.document.createElement('a')
+    link.href = URL.createObjectURL(file)
+    link.download = document.fileName
+
+    window.document.body.append(link)
+    link.click()
+    link.remove()
+
+    Vue.set(this.modelOpenViewer, key, false)
+
+    setTimeout(() => URL.revokeObjectURL(link.href), 7000)
   }
 }

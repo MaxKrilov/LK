@@ -72,13 +72,6 @@ export default class Signatory extends Vue {
     return `${lastName || ''} ${firstName || ''} ${secondName || ''}`.trim()
   }
 
-  // get computedHasFile () {
-  //   if (this.internalFile != null) return true
-  //   if (!this.contractSignee) return false
-  //
-  //   return this.contractSignee.hasOwnProperty('signedDocuments') && this.contractSignee.registrationDocument.match(/устав/i)
-  // }
-
   get computedFileName () {
     if (this.internalFile != null) return this.internalFile.name
     if (!this.contractSignee) return ''

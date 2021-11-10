@@ -5,16 +5,11 @@
       template(
         v-for="document in getListStatutoryDocument"
       )
-        ErDocumentViewer(
-          v-model="modelOpenViewer[document.id]"
-          :listDocument="[document]"
+        DocumentName.mb--m(
+          :documentName="modelOpenViewer[document.id] ? 'Скачиваем' : document.fileName"
+          :hasRemove="false"
+          @click="onDownloadDocumentHandler(document, document.id)"
         )
-          template(v-slot:activator="{ on }")
-            DocumentName.mb--m(
-              :documentName="document.fileName"
-              :hasRemove="false"
-              v-on="on"
-            )
       DocumentName.mb--m(
         v-for="(file, idx) in listInternalFile"
         :key="idx"
