@@ -13,6 +13,10 @@ import moment from 'moment'
     type: {
       type: String,
       default: 'replenishment'
+    },
+    hasErrorAutoPayment: {
+      type: Boolean,
+      default: false
     }
   }
 })
@@ -42,7 +46,7 @@ export default class PaymentHistoryItem extends Vue {
 
   get description () {
     return this.data.hasOwnProperty('description')
-      ? this.data.description
+      ? (this.data.description === 'Автоплатеж' ? this.data.description + ' - ' + this.data.accountPaymentStatus : this.data.description)
       : ''
   }
 

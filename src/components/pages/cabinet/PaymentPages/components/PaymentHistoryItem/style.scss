@@ -97,6 +97,10 @@
       width: 100%;
     }
 
+    .red_description {
+      color: map-get($red, 'base');
+    }    
+
     .info .title {
       @extend %h4-font;
       @include color-black(0.8);

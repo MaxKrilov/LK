@@ -28,6 +28,7 @@ export interface IPaymentHistoryBill {
   chargePeriod: string
   type: string,
   fiscalCheck?: string
+  accountPaymentStatus?: string
 }
 
 type IState = typeof state
@@ -51,11 +52,12 @@ const transformHistory = ([history, bill]: [IPaymentHistory[], IPaymentBill[]]) 
     const resultObject: IPaymentHistoryBill = {
       title: 'Пополнение счёта',
       description: historyItem.paymentAttributes.find(paymentAttribute => paymentAttribute.name === ALTERNATE_SOURCE_NAME)?.value ||
-        historyItem.paymentMethod.name,
+      historyItem.paymentMethod.name,
       value: Math.abs(Number(historyItem.paymentAmount)),
       timestamp: Number(historyItem.paymentDate),
       chargePeriod: '',
-      type: 'replenishment'
+      type: 'replenishment',
+      accountPaymentStatus: historyItem.accountPaymentStatus.name
     }
 
     const fiscalCheckAttribute = historyItem.paymentAttributes
