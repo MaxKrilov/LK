@@ -24,11 +24,11 @@
           @click="() => { getIsActive ? (isDeleteConfirm = true) : (isNotAccessChange = true) }"
         )
           ErtIcon(name="trashbox")
-        button.ml-8(
-          title="Настройки"
-          @click="() => { getIsActive ? (isShowSettingsDialog = true) : (isNotAccessChange = true) }"
-        )
-          ErtIcon(name="settings")
+        //- button.ml-8(
+        //-   title="Настройки"
+        //-   @click="() => { getIsActive ? (isShowSettingsDialog = true) : (isNotAccessChange = true) }"
+        //- )
+        //-   ErtIcon(name="settings")
     //- Modals
     ErActivationModal(
       v-model="isNotAccessChange"
