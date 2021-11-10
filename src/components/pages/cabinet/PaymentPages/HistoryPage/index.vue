@@ -87,6 +87,7 @@
               :key="`${index}_${historyItem.timestamp}`"
               :data="historyItem"
               :type="historyItem.type"
+              :hasErrorAutoPayment="historyItem.type === 'replenishment' && historyItem.description === 'Автоплатеж' && historyItem.accountPaymentStatus === 'Завершенный с ошибкой' "
           )
 </template>
 
