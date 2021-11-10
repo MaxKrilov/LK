@@ -87,6 +87,8 @@ export default class ErtRedirectionAddForm extends Vue {
 
   // Data
   isOpenForm: boolean = false
+  timeFrom: number = 0
+  timeTo: number = 25
 
   /// Models
   listModel: IRedirection[] = []
@@ -113,6 +115,10 @@ export default class ErtRedirectionAddForm extends Vue {
       phone: formatPhone(item.phone),
       redirectionOfferId: item.redirectionOfferId
     }))
+  }
+
+  get getIsTheSameTime () {
+    return this.timeFrom === this.timeTo
   }
 
   get getListTypeRedirection () {
@@ -195,10 +201,12 @@ export default class ErtRedirectionAddForm extends Vue {
     }
 
     const nTimeFrom = Number(head(model.timeFrom.split(':')))
+    this.timeFrom = nTimeFrom
 
     if (
       isNaN(nTimeFrom) ||
-      (nTimeFrom < 0 || nTimeFrom > 24)
+      (nTimeFrom < 0 || nTimeFrom >= 24) ||
+      this.getIsTheSameTime
     ) {
       model.isErrorTime = true
       model.errorTimeText = 'Некорректное значение'
@@ -230,10 +238,12 @@ export default class ErtRedirectionAddForm extends Vue {
     }
 
     const nTimeTo = Number(head(model.timeTo.split(':')))
+    this.timeTo = nTimeTo
 
     if (
       isNaN(nTimeTo) ||
-      (nTimeTo < 0 || nTimeTo > 24)
+      (nTimeTo <= 0 || nTimeTo > 24) ||
+      this.getIsTheSameTime
     ) {
       model.isErrorTime = true
       model.errorTimeText = 'Некорректное значение'
