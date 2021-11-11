@@ -1,0 +1,237 @@
+.vc-add-camera-page {
+  @extend %main-content;
+
+  margin-top: 40px;
+
+  @include min-breakpoint(lg) {
+    margin-top: 48px;
+  }
+  @include min-breakpoint(xl) {
+    margin-top: 32px;
+  }
+
+  &__header {
+    margin-bottom: 40px;
+
+    @include min-breakpoint(lg) {
+      margin-bottom: 48px;
+    }
+    @include min-breakpoint(xl) {
+      margin-bottom: 56px;
+    }
+  }
+
+  &__description {
+    margin-bottom: 32px;
+
+    @include min-breakpoint(md) {
+      margin-bottom: 40px;
+    }
+  }
+
+  &__access-description {
+    margin-bottom: 16px;
+
+    @include min-breakpoint(xl) {
+      margin-bottom: 24px;
+    }
+  }
+
+  &__ok-label {
+    color:green
+  }
+
+  &__body {
+    margin-top: $padding-x6;
+  }
+
+  &__analytic,
+  &__location {
+    margin-top: $padding-x10;
+
+    @include min-breakpoint(lg) {
+      margin-top: $padding-x12;
+    }
+
+    @include min-breakpoint(xl) {
+      margin-top: $padding-x14;
+    }
+  }
+
+  .total-price {
+    display: flex;
+    gap: $padding-x4;
+    align-items: center;
+
+    &__label {
+      @extend %body;
+    }
+  }
+
+  .add-camera-form {
+    &__title {
+      display: flex;
+      gap: $padding-x4;
+    }
+  }
+
+  &__analytics {
+    &__head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+  
+      @include min-breakpoint("sm") {
+        justify-content: flex-start;
+      }
+    }
+  
+    &__subtitle {
+      @extend %caption2;
+      margin-bottom: $padding-x1 + 1px;
+  
+      @include min-breakpoint("sm") {
+        margin-left: $padding-x8;
+      }
+  
+      @include min-breakpoint("md") {
+        margin-left: $padding-x10;
+      }
+    }
+  
+    &__content {
+      margin-top: $padding-x4;
+  
+      @include min-breakpoint("md") {
+        margin-top: $padding-x6;
+      }
+    }
+  }
+
+  .analytic-block {
+    &__header {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: $padding-x2;
+
+      @include min-breakpoint(md) {
+        flex-direction: row;
+        align-items: center;
+      }
+    }
+
+    &__body {
+      margin-top: $padding-x1;
+      @include min-breakpoint(sm) {
+        margin-top: $padding-x4;
+      }
+
+      @include min-breakpoint(md) {
+        margin-top: $padding-x6;
+      }
+    }
+
+    .product-item + .product-item {
+      margin-top: $padding-x2;
+    }
+  }
+
+  &__footer {
+    @extend %action-buttons-block;
+    @extend %action-buttons-block--3-cols;
+
+    margin-top: $padding-x6;
+
+    @include min-breakpoint(xl) {
+      margin-top: $padding-x8;
+    }
+  }
+
+  &__addition-chars {
+    display: flex;
+    flex-direction: column;
+    gap: $padding-x8 $padding-x6;
+
+    margin-bottom: 18px;
+
+    @include min-breakpoint(lg) {
+      margin-bottom: 26px;
+    }
+    @include min-breakpoint(xl) {
+      margin-bottom: 34px;
+    }
+
+    .body-font {
+      @extend %body-font;
+
+      @include color-black(.8);
+
+      &--enabled {
+        @include color-black(.3);
+      }
+    }
+
+    .body-font,
+    .input {
+      margin-top: $padding-x2;
+
+      @include min-breakpoint(md) {
+        margin-top: $padding-x4;
+      }
+    }
+
+    @include min-breakpoint(md) {
+      flex-direction: row;
+    }
+  }
+
+  .input {
+    display: flex;
+    gap: $padding-x4;
+
+    .ert-input {
+      display: inline-flex;
+      flex-grow: 0;
+    }
+  }
+
+  .input-group {
+    display: flex;
+    flex-direction: column;
+    gap: $padding-x1;
+
+    .input-label {
+      @extend %caption2;
+    }
+  }
+
+  .ert-select.ert-select--inline {
+    display: inline-flex;
+  }
+
+  .camera-base-char {
+    & + .camera-base-char {
+      margin-top: $padding-x4;
+    }
+
+    display: grid;
+    grid-template-rows: 1fr;
+    grid-template-columns: 1fr 1fr;
+    align-items: baseline;
+    gap: $padding-x4;
+
+    @include min-breakpoint(md) {
+      gap: $padding-x6;
+    }
+
+    @include min-breakpoint(lg) {
+      grid-template-columns: 1fr 1fr 1fr;
+    }
+
+    &__hint {
+      @extend %caption2;
+      color: map-get($green, 'base');
+    }
+  }
+}

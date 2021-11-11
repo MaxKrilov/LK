@@ -4,8 +4,8 @@
         title="Видеонаблюдение"
         backlink="/lk/"
       )
-      template(v-if="!isPromoPage")
-        .header-info Стоимость указана с НДС
+        template(#info)
+          template(v-if="!isPromoPage") Стоимость указана с НДС
 
     .vc-product-page__wiki(v-if="!isPromoPage")
       .wiki

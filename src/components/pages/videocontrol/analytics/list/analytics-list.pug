@@ -5,7 +5,7 @@
       link-text="Назад в видеонаблюдение"
       :backlink="{name: 'vc-index', type: 'forpost'}"
     )
-    .header-info Стоимость указана с НДС
+      template(#info) Стоимость указана с НДС
 
   .vc-addon-list-page__content
     template(v-if="isLoaded")

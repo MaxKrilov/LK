@@ -10,27 +10,6 @@ $pre: ".vc-addon-detail-page";
       margin-bottom: 0;
     }
 
-    .head-title {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      justify-content: space-between;
-
-      @include min-breakpoint("sm") {
-        flex-direction: row;
-        align-items: flex-end;
-      }
-    }
-    .nds-info {
-      @extend %caption1;
-      margin-top: $padding-x2;
-
-      @include min-breakpoint("sm") {
-        margin-top: 0;
-        margin-bottom: $padding-x2;
-      }
-    }
-
     .head-subtitle {
       display: flex;
       flex-direction: column;

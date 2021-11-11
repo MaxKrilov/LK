@@ -3,8 +3,8 @@
     er-page-header(
       title="Видеонаблюдение"
     )
-
-    .header-info(v-if="isProductPlugged") Стоимость указана с НДС
+      template(#info)
+        template(v-if="isProductPlugged") Стоимость указана с НДС
 
     .enforta-camera__logo
       er-image(:src="'/videocontrol/logo_enforta.svg'")
