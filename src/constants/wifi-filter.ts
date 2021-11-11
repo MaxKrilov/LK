@@ -3,11 +3,13 @@ export const PRODUCT_CODE = 'WIFIKONTFIL'
 // export const PRODUCT_CODE = 'CONTENTFIL'
 export const PRODUCT_SUB_TYPE = 'Wi-Fi Hot Spot Mono'
 export const FILTER_ALLOW_TYPE = 4
-export const FILTER_BLOCK_TYPE = 3
+export const FILTER_BLOCK_TYPE = 1
+export const FILTER_BLOCK_TYPE_2 = 3
 
 export const FILTER_TYPES: Record<number, string> = {
   [FILTER_ALLOW_TYPE]: 'Разрешить доступ',
-  [FILTER_BLOCK_TYPE]: 'Запретить доступ'
+  [FILTER_BLOCK_TYPE]: 'Запретить доступ',
+  [FILTER_BLOCK_TYPE_2]: 'Запретить доступ'
 }
 
 // API контент-фильтрации

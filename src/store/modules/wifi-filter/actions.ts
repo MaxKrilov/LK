@@ -119,13 +119,18 @@ export default {
       })
   },
   fetchContentFilter: (context: ActionContext<IState, any>, bpiList: string[]) => {
-    const payload = {
-      api: apiWrap,
-      parentIds: bpiList,
-      code: PRODUCT_CODE
-    }
+    return new Promise(async (resolve) => {
+      const payload = {
+        api: apiWrap,
+        parentIds: bpiList,
+        code: PRODUCT_CODE
+      }
 
-    return PnS.actions.customerProducts(context, payload)
+      const promiseCustomerProducts = await PnS.actions.customerProducts(context, payload)
+      context.commit(TYPES.SET_CONTENT_FILTER, promiseCustomerProducts)
+
+      resolve(promiseCustomerProducts)
+    })
   },
   fetchVlan: (context: ActionContext<IState, any>, bpiList: string[]) => {
     /*

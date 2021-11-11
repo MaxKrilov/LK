@@ -1,7 +1,7 @@
 import { Vue, Component } from 'vue-property-decorator'
 
 const props = {
-  value: Boolean,
+  value: String,
   label: String,
   name: String,
   hasFilter: Boolean

@@ -7,6 +7,8 @@ import WifiContentFilterPageMixin from '@/components/pages/wifi/content-filter/W
 import { FILTER_ALLOW_TYPE, FILTER_BLOCK_TYPE } from '@/constants/wifi-filter'
 import { ErtPageWithDialogsMixin } from '@/mixins2/ErtPageWithDialogsMixin'
 import AddressCheckbox from '@/components/pages/wifi/content-filter/components/address-checkbox/index.vue'
+import head from 'lodash/head'
+import { STATUS_ACTIVE } from '@/constants/status'
 
 const components = {
   AddressCheckbox,
@@ -71,12 +73,16 @@ export default class WifiFilterEdit extends Mixins(WifiContentFilterPageMixin, E
   }
 
   get addressList () {
-    return this.pointList.map((el: IPointItem) => {
-      return {
-        label: el.fulladdress,
-        bpi: el.bpi
-      }
-    })
+    return this.pointList
+      .filter(el => {
+        return head(this.externalContentFilter?.[el.bpi]?.slo)?.status === STATUS_ACTIVE
+      })
+      .map((el: IPointItem) => {
+        return {
+          label: el.fulladdress,
+          bpi: el.bpi
+        }
+      })
   }
 
   get filterList () {
@@ -224,6 +230,7 @@ export default class WifiFilterEdit extends Mixins(WifiContentFilterPageMixin, E
       })
 
     this.pullLocations()
+      .then(this.fetchContentFilter)
       .then(() => {
         this.pullVlan()
           .then(() => {

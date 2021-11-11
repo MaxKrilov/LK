@@ -4,9 +4,14 @@ import LocationSelect from '../location-select/index.vue'
 import { ILocationOfferInfo } from '@/tbapi'
 import { PRODUCT_CODE } from '@/constants/wifi-filter'
 import ErPlugProduct from '@/components/blocks/ErPlugProduct/index.vue'
+import head from 'lodash/head'
 
 const props = {
-  list: Array
+  list: {
+    type: Array,
+    default: () => ([])
+  },
+  isHideHeader: Boolean
 }
 const components = {
   AddressCheckbox,
@@ -14,9 +19,19 @@ const components = {
   ErPlugProduct
 }
 
-@Component({ props, components })
+@Component<InstanceType<typeof WifiFilterPlug>>({
+  props,
+  components,
+  watch: {
+    currentLocationBPI (val) {
+      if (val.length > 1) {
+        this.currentLocationBPI = val.slice(1)
+      }
+    }
+  }
+})
 export default class WifiFilterPlug extends Vue {
-  currentLocationBPI: string = ''
+  currentLocationBPI: string[] = []
 
   isOrderMode: boolean = false
   isShowOrder: boolean = false
@@ -33,18 +48,18 @@ export default class WifiFilterPlug extends Vue {
   }
 
   withCurrentBPI ({ bpi }: ILocationOfferInfo) {
-    return bpi === this.currentLocationBPI
+    return bpi === head(this.currentLocationBPI)
   }
 
   onPlug () {
     const location = this.$props.list.find(this.withCurrentBPI)
 
     this.orderData = {
-      // @ts-ignore
+      bpi: head(this.currentLocationBPI),
       locationId: location.id,
-      bpi: this.currentLocationBPI,
-      productCode: PRODUCT_CODE,
+      marketId: location.marketId,
       offer: 'wifi',
+      productCode: PRODUCT_CODE,
       title: `Вы уверены, что хотите подключить контент фильтрацию?`
     }
 
@@ -55,6 +70,11 @@ export default class WifiFilterPlug extends Vue {
   onOrderError () {
     this.isOrderMode = false
     this.isShowOrder = false
+  }
+
+  onOrderSuccess () {
+    this.isOrderMode = true
+    this.isShowOrder = true
   }
 
   onCancel () {

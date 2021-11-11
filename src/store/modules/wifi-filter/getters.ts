@@ -9,7 +9,8 @@ const filterVlanByBPI = (bpiId: string) =>
 export default {
   pointList: (state: IState): IPointItem[] => {
     return state.locationList.map(
-      ({ id, bpi, fulladdress, offer }) => ({ id, bpi, fulladdress, offerName: offer.name })
+      ({ id, bpi, fulladdress, offer, marketId }) =>
+        ({ id, bpi, fulladdress, offerName: offer.name, marketId })
     )
   },
   pointBpiList: (state: IState): (string | number)[] => {
@@ -18,5 +19,6 @@ export default {
   vlanByBPI: (state: IState) =>
     (bpi:string): IPointVLAN[] =>
       state.vlan.filter(filterVlanByBPI(bpi)),
-  firstVlan: (state: IState) => state.vlan?.[0]?.vlan?.[0]?.cityId
+  firstVlan: (state: IState) => state.vlan?.[0]?.vlan?.[0]?.cityId,
+  contentFilter: (state: IState) => state.contentFilter
 }

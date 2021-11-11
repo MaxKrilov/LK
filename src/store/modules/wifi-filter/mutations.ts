@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import TYPES from './types'
 import { IState } from './state'
-import { ILocationOfferInfo } from '@/tbapi'
+import { ICustomerProduct, ILocationOfferInfo } from '@/tbapi'
 import { IAdditionSubscription, IPointVLAN, ISubscription } from '@/interfaces/wifi-filter'
 
 export default {
@@ -37,5 +37,8 @@ export default {
   },
   [TYPES.SET_ADD_FILTERS] (state: IState, payload: IAdditionSubscription[]) {
     state.addFilterList = payload
+  },
+  [TYPES.SET_CONTENT_FILTER] (state: IState, payload: Record<string, ICustomerProduct>) {
+    state.contentFilter = payload
   }
 }

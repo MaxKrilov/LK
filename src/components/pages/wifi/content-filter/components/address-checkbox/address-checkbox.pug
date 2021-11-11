@@ -1,10 +1,8 @@
 .address-checkbox
-  er-toggle(
-    type="checkbox"
-    view="radio-check"
+  ErtCheckbox(
     :label="label"
-    :modelValue="value"
-    @input="onInput"
+    :value="value"
+    @change="onInput"
   )
 
   template(v-if="hasFilter")

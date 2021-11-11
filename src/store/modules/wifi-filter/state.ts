@@ -1,4 +1,4 @@
-import { ILocationOfferInfo } from '@/tbapi'
+import { ICustomerProduct, ILocationOfferInfo } from '@/tbapi'
 import {
   ISubscription,
   IAdditionSubscription,
@@ -16,7 +16,8 @@ export interface IState {
   subscriptions: Record<TVlanNumber, ISubscription>
   subscriptionInfo: Record<string, ISubscriptionInfo>
   subscriptionInfoLoad: Record<string, Boolean>
-  addFilterList: IAdditionSubscription[]
+  addFilterList: IAdditionSubscription[],
+  contentFilter: Record<string, ICustomerProduct> | null
 }
 
 export const state: IState = {
@@ -28,5 +29,6 @@ export const state: IState = {
   subscriptionInfo: {},
   subscriptionInfoLoad: {},
   filterAvailableList: [],
-  addFilterList: []
+  addFilterList: [],
+  contentFilter: null
 }
