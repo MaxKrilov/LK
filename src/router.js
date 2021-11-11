@@ -99,6 +99,7 @@ import VCCameraPage from './components/pages/videocontrol/camera-page'
 import VCAddonListPage from './components/pages/videocontrol/analytics/list/index'
 import VCAddonDetailPage from './components/pages/videocontrol/analytics/detail/index'
 import VCGoToForpost from './components/pages/videocontrol/components/GoToForpostPortal'
+import AddCameraPage from './components/pages/videocontrol/AddCameraPage/index.vue'
 
 // Опрос
 import SurveyPage from './components/pages/survey/index'
@@ -421,6 +422,11 @@ const router = new Router({
               name: 'vc-product-detail',
               component: VCAddonDetailPage,
               props: true
+            },
+            {
+              path: 'camera/add',
+              component: AddCameraPage,
+              name: 'vc-add-camera'
             },
             {
               path: 'camera/:id',

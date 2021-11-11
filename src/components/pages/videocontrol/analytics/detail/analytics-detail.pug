@@ -1,13 +1,12 @@
 .vc-addon-detail-page
   .vc-addon-detail-page__header
     template(v-if="isLoaded")
-      .head-title
-        er-page-header(
-          :title="analyticItem.name"
-          link-text="Назад в видеонаблюдение"
-          :backlink="{name: 'vc-product-list'}"
-        )
-        .nds-info Стоимость указана с НДС
+      er-page-header(
+        :title="analyticItem.name"
+        link-text="Назад в видеонаблюдение"
+        :backlink="{name: 'vc-product-list'}"
+      )
+        template(#info) Стоимость указана с НДС
 
       .head-subtitle
         .col

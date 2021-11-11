@@ -1,32 +1,6 @@
 .vc-config-page {
   @extend %main-content;
 
-  &__header {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: space-between;
-
-    @include min-breakpoint("sm") {
-      flex-direction: row;
-      align-items: flex-end;
-    }
-
-    .header-info {
-      @extend %caption1;
-      margin-top: $padding-x2;
-
-      @include min-breakpoint("sm") {
-        margin-top: 0;
-        margin-bottom: $padding-x2;
-      }
-    }
-
-    .page-header {
-      margin-bottom: 0;
-    }
-  }
-
   &__edit-form {
     margin-top: $padding-x8;
 
@@ -200,10 +174,6 @@
 
   &__content {
     margin-top: $padding-x6;
-
-    @include min-breakpoint("md") {
-      margin-top: $padding-x8;
-    }
   }
 }
 

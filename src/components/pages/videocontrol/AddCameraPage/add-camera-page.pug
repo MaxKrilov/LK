@@ -1,0 +1,146 @@
+.vc-add-camera-page
+  .vc-add-camera-page__header
+    er-page-header(
+      title="Заявка на подключение камеры"
+      link-text="Заявка на подключение камеры"
+      :backlink="{name: 'vc-index', props: {type: 'forpost'}}"
+    )
+      template(#info) Стоимость указана с НДС
+
+  .vc-add-camera-page__description
+    | Вы можете подключить свои камеры. Если у вас нет камер, то менеджер предложит вам варианты моделей камер, которые вы можете взять в  аренду или приобрести в собственность 
+
+  .vc-add-camera-page__row.mb-4
+    ert-select(
+      label="Форма собственности"
+      :items="ownershipTypeList"
+      v-model="ownershipType"
+    ).ert-select--inline
+    template(v-if="ownershipType === 1")
+      er-price.ml-16 {{ rentPayment}}
+  
+  .h4.vc-add-camera-page__description Базовые характеристики
+
+  .camera-base-char.mb-40
+    ert-select(
+      label="Режим записи в архив"
+      hide-details
+      :items="recordTypeList"
+      v-model="recordType"
+    )
+    .camera-base-char__hint(v-if="recordType === 1") Включено <br> в стоимость
+    er-price(v-else) {{ baseCostComponents.archiveRecordingModeCost}}
+
+  .camera-base-char.vc-add-camera-page__description 
+    ert-select(
+      label="Разрешение видеопотока"
+      hide-details
+      :items="streamResolutionList"
+      v-model="streamResolution"
+    )
+    .camera-base-char__hint(v-if="archiveDepth === 1") Включено <br> в стоимость
+
+  .camera-base-char.mb-24
+    ert-select(
+      label="Глубина видеоархива"
+      hide-details
+      :items="archiveDepthList"
+      v-model="archiveDepth"
+    )
+    .camera-base-char__hint(v-if="archiveDepth === 1") Включено <br> в стоимость
+    er-price(v-else) {{ baseCostComponents.streamResolutionCost}}
+  
+  .d--flex
+    ErtIcon(name="ok" small).vc-add-camera-page__ok-label
+    .body-font.vc-add-camera-page__access-description.ml-4 Доступ к порталу с мобильных устройств из любой точки мира
+
+  .add-camera-form.vc-add-camera-page__header
+    .add-camera-form__title
+      .h4 Базовая стоимость
+      er-price {{ baseCost }}
+
+  .h2.mb-24 Дополнительные сервисы
+
+  .vc-add-camera-page__addition-chars
+    .column
+      .h4 Запись звука
+      .body-font(v-class-mod="{'enabled': soundRecord}") Активируйте на камере запись звука, чтобы не только видеть, но и слышать.
+      .input
+        ert-switch(v-model="soundRecord")
+        er-price {{ audioRecordingCost }}
+    .column
+      .h4 Поворотный модуль
+      .body-font(v-class-mod="{'enabled': isPTZEnabled}") Управление направлением видоискателя камеры 
+      .input
+        ert-switch(v-model="isPTZEnabled")
+        er-price {{ swivelModuleCost }}
+
+  .analytic-block.add-camera-form.vc-add-camera-page__header
+    .analytic-block__header
+      .h2 Аналитика
+      .caption2 Стоимость сервисов аналитики указана за одну камеру
+
+    .vc-add-camera-page__analytics__content
+      template(v-if="isAnalyticsLoaded")
+        template(v-for="item in availableAnalyticsList")
+          product-item(
+            :key="`${item.code}-${updateKeyPlease()}`",
+            :title="item.originalName",
+            :price="item.prices.find(item => item.type === 'Monthly Fee').amount",
+            :isLoading="false",
+            :icon-name="getAnalyticItemIcon(item.code)"
+            :info-link="`/lk/videocontrol/forpost/products/${item.code}`"
+            :value="analyticServiceStatuses[item.code]"
+            :status="item.status"
+            @input="onInputAnalyticItem(item.code, $event)",
+          )
+      template(v-else)
+        ErtProgressCircular(indeterminate width="2")
+        .title Загружаем сервисы аналитики
+
+
+  .vc-add-camera-page__location
+    .h2.vc-add-camera-page__description Подключение
+
+    .vc-add-camera-page__row.vc-add-camera-page__description
+      ert-select(
+        label="Адрес подключения"
+        hide-details
+        :items="addressList"
+        v-model="location"
+        is-show-required-label
+        :rules="requiredRule"
+      )
+
+    .vc-add-camera-page__row.mt-16.mt-md-24.vc-add-camera-page__header
+      ert-select(
+        :items="placementItems"
+        hide-details
+        v-model="placement"
+        label="Размещение"
+      ).ert-select--inline
+
+    .input-group.vc-add-camera-page__access-description
+      .input-label Количество камер
+      er-number-input(
+        :min="1"
+        v-model="countOfCameras"
+      )
+
+    .total-price
+      .total-price__label Итого:
+      .total-price__value
+        er-price {{ totalPrice }}
+
+  .vc-add-camera-page__footer
+    er-button(@click="onAddCamera") Подключить
+    er-button(
+      :to="{name: 'vc-index', props: {type: 'forpost'}}"
+      :flat="true"
+    ) Отмена
+
+  er-plug-product(
+    v-model="isRequestModalVisible"
+    :requestData="requestData"
+    isSendManagerRequest
+  )

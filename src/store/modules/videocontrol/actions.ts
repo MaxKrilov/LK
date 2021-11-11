@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { ActionContext } from 'vuex'
 
 import { API } from '@/functions/api'
@@ -8,6 +9,9 @@ import { IState } from './state'
 import { CUSTOMER_CATEGORY_ID, DISTRIBUTION_CHANNEL_ID, VC_TYPES } from '@/constants/videocontrol'
 
 import { TYPES } from './types'
+
+import { AxiosError } from 'axios'
+
 import { TYPE_JSON } from '@/constants/type_request'
 
 interface IPayload {
@@ -22,6 +26,8 @@ const APIShortcut = (api: API, url: string, data: Object) => {
     .setData(data)
     .query(url)
 }
+
+const api = () => new API()
 
 /*
   fetch*() -> скачивает и возвращает данные
@@ -40,6 +46,18 @@ export const actions = {
       api: API,
       parentIds,
       code: 'VIDNCAM'
+    })
+  },
+  getAllProductSlo (context: ActionContext<any, any>, tomsId:string) {
+    return new Promise((resolve, reject) => {
+      api()
+        .setWithCredentials()
+        .setData({
+          tomsId
+        })
+        .query('/catalog/management/product-slo')
+        .then((response) => resolve(response))
+        .catch((err: AxiosError) => reject(err))
     })
   },
   fetchForpostLink (context: ActionContext<IState, any>) {

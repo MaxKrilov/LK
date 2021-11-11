@@ -68,7 +68,7 @@
     er-button(
       color="yellow",
       :loading="isOrderCameraMode"
-      @click="onClickAddCamera"
+      :to="{name: 'vc-add-camera'}"
     ) Добавить камеру
     er-button(color="gray" @click="onClickPause") Приостановить услугу
 

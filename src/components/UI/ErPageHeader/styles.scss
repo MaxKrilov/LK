@@ -1,16 +1,35 @@
 .page-header {
   @extend %page-header-margin;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
 
-  @include min-breakpoint('xl') {
-    display: block;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-direction: column;
+  gap: $padding-x2;
+
+  @include min-breakpoint(sm) {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
   }
 
-  .title {
+  &__body {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+
+    @include min-breakpoint('xl') {
+      display: block;
+    }
+  }
+
+  &__title {
     @include min-breakpoint('xl') {
       pointer-events: none;
     }
+  }
+
+  &__info {
+    @extend %caption1;
   }
 }

@@ -5,9 +5,8 @@
       link-text="Назад к списку камер"
       backlink="/lk/videocontrol"
     )
-    .header-info(
-      :title="bf.status"
-    ) Стоимость указана с НДС
+      template(#info)
+        span(:title="bf.status") Стоимость указана с НДС
 
   .vc-config-page__edit-form.camera-edit-form
     .camera-edit-form__head
