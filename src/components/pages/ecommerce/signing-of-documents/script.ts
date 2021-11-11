@@ -151,7 +151,14 @@ export default class ECommerceSigningOfDocuments extends Vue {
       const getOrderContractResult = await this.getOrderContract({ salesOrderId })
 
       // Получаем всех подписантов
-      this.listContractSignee = getOrderContractResult.map(item => item.contractSignee)
+      this.listContractSignee = Object.values(
+        getOrderContractResult
+          .map(item => item.contractSignee)
+          .reduce((acc, item) => {
+            acc[item.id] = item
+            return acc
+          }, {} as Record<string, IOrderContractContractSignee>)
+      )
       // Получаем тип подписи (ручгая или ЭЦП). Берём по первому элементу
       this.signatureType = head(getOrderContractResult)!.signatureType
 
