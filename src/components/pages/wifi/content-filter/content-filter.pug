@@ -4,7 +4,7 @@
 
   template(v-if="activeState === 'plug'")
     WifiFilterPlug(
-      :list="locationList"
+      :list="pointList"
       @cancel="onCancelPlug"
     )
 
@@ -19,4 +19,15 @@
     WifiEditFilter(@cancel="setState('ready')")
 
   template(v-if="activeState === 'ready'")
-    WifiFilterListPage(@create="setState('create')")
+    WifiFilterListPage(
+      :productId="getProductId"
+      :productsStatus="getProductStatus"
+      @change="onChangeCurrentPoint"
+      @create="setState('create')"
+      @disconnect="fetchData"
+    )
+
+  template(v-if="activeState === 'loading'")
+    .wifi-content-filter__loading.main-content.main-content--top-menu-fix.main-content--h-padding.main-content--top-padding
+      ErtProgressCircular(indeterminate width="2")
+      .title Загружаем информацию по Контент-фильтрации

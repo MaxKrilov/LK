@@ -40,7 +40,7 @@ import ipTransit from './modules/ip-transit'
 import bundles from './modules/bundles'
 import branch from './modules/branch'
 import instructions from './modules/instructions'
-import wifiFilter from './modules/wifi-filter/index'
+import wifiFilter from './modules/wifi-filter'
 
 const debug = process.env.NODE_ENV !== 'production'
 

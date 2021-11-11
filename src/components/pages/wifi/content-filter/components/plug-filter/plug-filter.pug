@@ -1,5 +1,5 @@
 .wifi-location-list
-  .wifi-location-list__content
+  .wifi-location-list__content(v-if="!isHideHeader")
     er-page-header(
       title="Контент-фильтрация"
       backlink="/wifi/"
@@ -9,14 +9,27 @@
     p Вы можете подключить контент-фильтрацию на следующие точки:
 
   .wifi-location-list__address-list
-    location-select(:list="addressList" @input="onChangeCurrentLocation")
+    .location-select
+      .address-checkbox(
+        v-for="addressItem in addressList"
+        :key="addressItem.value"
+      )
+        ErtCheckbox(
+          :label="addressItem.label"
+          :value="addressItem.value"
+          v-model="currentLocationBPI"
+        )
+
+        //-template()
+          .address-checkbox__status
+            er-icon(name="filter")
 
   .wifi-location-list__action-buttons
     er-button(
       color="blue"
       @click="onPlug",
       :loading="isOrderMode"
-      :disabled="!currentLocationBPI"
+      :disabled="currentLocationBPI.length === 0"
     ) Подключить фильтрацию
     er-button(flat @click="onCancel") Отмена
 
@@ -27,6 +40,7 @@
     :isSendOrder="true"
     :isSendManagerRequest="false"
     @errorOrder="onOrderError"
+    @successOrder="onOrderSuccess"
   )
     template(slot="offerDescription")
       .mb-24

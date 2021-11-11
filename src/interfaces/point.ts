@@ -4,4 +4,5 @@ export interface IPointItem {
   bpi: string | number,
   offerName: string,
   status?: string
+  marketId?: string
 }

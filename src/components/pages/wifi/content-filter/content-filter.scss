@@ -1,3 +1,17 @@
 .wifi-content-filter {
+  &__loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
+    .ert-progress-circular {
+      @include color-black(0.3);
+      margin-right: $padding-x4;
+    }
+
+    .title {
+      @include color-black(0.8);
+      @extend %h4-font;
+    }
+  }
 }

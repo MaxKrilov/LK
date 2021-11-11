@@ -1,6 +1,7 @@
 .wifi-content-filter-promo
   .wifi-content-filter-promo__content
     er-page-header(
+      v-if="!isHideHeader"
       title="Контент-фильтрация"
       backlink="/wifi/"
       linkText="Назад в WiFi зону"

@@ -28,7 +28,12 @@ const featureList = [
 
 const components = { ErPromo }
 
-@Component({ components })
+@Component({
+  components,
+  props: {
+    isHideHeader: Boolean
+  }
+})
 export default class WifiFilterPromo extends Vue {
   get featureList () {
     return featureList

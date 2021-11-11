@@ -47,6 +47,80 @@ $pre: ".wifi-location-list";
         margin-top: $padding-x1;
       }
     }
+
+    .location-select {
+      .address-checkbox + .address-checkbox {
+        margin-top: $padding-x1;
+      }
+
+      $address-height: (
+        xs: 80px,
+        sm: 56px,
+        md: $padding-x10,
+        lg: $padding-x10,
+        xl: $padding-x12
+      );
+
+      .address-checkbox {
+        & + & {
+          margin-top: $padding-x1;
+        }
+
+        $gray: map_get($gray, "9");
+        $shadow: 0px 2px 12px rgba(map_get($shades, "black"), 0.1),
+        0px 2px 2px rgba(map_get($shades, "black"), 0.05);
+        box-shadow: $shadow;
+
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        background-color: $gray;
+
+        padding: 0 map_get($main-content-padding, "xs");
+        height: map-get($address-height, xs);
+
+        @include min-breakpoint("sm") {
+          padding: $padding-x2 map_get($main-content-padding, "sm");
+          height: map-get($address-height, sm);
+        }
+
+        @include min-breakpoint(md) {
+          padding: 0 $padding-x2;
+          border-radius: map_get($ui, border-radius);
+          height: map-get($address-height, md);
+        }
+
+        @include min-breakpoint(lg) {
+          height: map-get($address-height, lg);
+        }
+
+        @include min-breakpoint(xl) {
+          padding: 0 $padding-x3;
+          height: map-get($address-height, xl);
+        }
+
+        .er-toggle__label-text {
+          @extend %body;
+          border: none;
+          margin-left: $padding-x2;
+        }
+
+        .er-input__slot {
+          min-height: initial !important;
+          margin-bottom: 0;
+        }
+
+        &__status {
+          .er-icon {
+            color: map-get($green, "base");
+            svg {
+              width: $padding-x8;
+              height: $padding-x8;
+            }
+          }
+        }
+      }
+    }
   }
 
   &__action-buttons {

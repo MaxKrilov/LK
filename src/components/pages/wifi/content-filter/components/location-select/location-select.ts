@@ -2,6 +2,7 @@ import { Vue, Component } from 'vue-property-decorator'
 import AddressCheckbox from '../address-checkbox/index.vue'
 
 const props = {
+  currentBPI: String,
   list: Array,
   multiple: Boolean
 }
