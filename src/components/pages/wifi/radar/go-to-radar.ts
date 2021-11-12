@@ -49,7 +49,8 @@ export default class GoToRadar extends BillingInfoMixin {
   onBillingInfoChanged () {
     return this.$store.dispatch('wifi/getRadarLink')
       .then(response => {
-        this.radarLink = response.data
+        location.href = response.data
+        // this.radarLink = response.data
         this.isLoading = false
 
         Vue.set(this, 'data', response.payload)
