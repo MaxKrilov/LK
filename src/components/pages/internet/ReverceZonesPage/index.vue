@@ -46,13 +46,23 @@
             er-flex(xs12 md7)
               .reverce-zones-page__add-domain.mb-32.mb-md-0
                 er-text-field(
-                  v-model="model.domain",
+                  v-model="model['domain']"
                   label="Домен"
-                  :rules="[v => !!v || 'Поле обязательно к заполнению']"
+                  :rules="fieldDomainRule['fieldDomain']"
+                  :class="[showFieldDomainDisplay]"
+                  @input="isFieldDomainTouched = true"
                 )
+                .er-messages(v-if="isFieldDomainError")
+                  .er-messages__wrapper
+                    .er-messages__message(v-if="isFieldDomainError" :style="styleErMessage")
+                      | Недопустимый ввод
           .reverce-zones-page__actions.d--flex.flex-column.flex-sm-row
             .reverce-zones-page__action.mr-sm-16.mb-8.mb-sm-0
-              er-button(@click="addReverceZone" :loading="isLoadingAddReverceZone")
+              er-button(
+                @click="addReverceZone"
+                :loading="isLoadingAddReverceZone"
+                :disabled="!isFieldDomainValid"
+              )
                 | Добавить
             .reverce-zones-page__action
               er-button(flat @click="() => { isOpenAdding = false }" :disabled="isLoadingAddReverceZone")

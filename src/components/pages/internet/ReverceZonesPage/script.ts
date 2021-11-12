@@ -15,6 +15,22 @@ const TLO_CHAR = 'IPv4 адрес в составе услуги'
 const SLO_CHAR = 'IPv4 адрес'
 const SLO_SUBNET_CHAR = 'IPv4 подсеть'
 
+// Подключение punycode конвертера
+const punycode = require('punycode/')
+const requiredRuleDomain = (v: string) => !!v || 'Поле обязательно к заполению'
+
+type ErMessagesField = {
+  textAlign: string,
+  color: string
+}
+interface IDomainFromModel {
+  domain: string
+}
+
+interface IFieldCheckDomain {
+  isFieldCheckDomain: any
+}
+
 // eslint-disable-next-line no-use-before-define
 @Component<InstanceType<typeof ReverceZonePage>>({
   components: {
@@ -43,6 +59,7 @@ const SLO_SUBNET_CHAR = 'IPv4 подсеть'
           })
       }
     },
+    'model.domain': 'generateDomain',
     currentIP () {
       this.isLoadingReverceZone = true
       this.getListReverceZone()
@@ -78,6 +95,14 @@ export default class ReverceZonePage extends Vue {
   currentIP: string | null = null
   listReverceZone: string[] = []
   isOpenAdding = false
+  isFieldDomainTouched: boolean = false
+  styleErMessage: ErMessagesField = {
+    textAlign: 'right',
+    color: '#E31E24'
+  }
+  rules: IFieldCheckDomain = {
+    isFieldCheckDomain: (val: string) => !!val === this.generateDomain(val) || 'Недопустимый ввод'
+  }
   model = {
     ip: '',
     domain: ''
@@ -88,6 +113,10 @@ export default class ReverceZonePage extends Vue {
   isLoadingAddReverceZone: boolean = false
 
   isErrorOfAddingReverceZone = false
+  isFieldCheckDomain: boolean = false
+  fieldDomainRule = {
+    fieldDomain: [requiredRuleDomain, this.rules['isFieldCheckDomain']]
+  }
   // Methods
   getListReverceZone () {
     return new Promise((resolve) => {
@@ -105,17 +134,56 @@ export default class ReverceZonePage extends Vue {
   deleteReverceZone (reverceZone: string) {
     this.listReverceZone = this.listReverceZone.filter(_reverceZone => _reverceZone !== reverceZone)
   }
+  concatRegDomainStr (body: RegExp, end: RegExp): RegExp {
+    const init = /(?!.*([\s.-])\1)/g
+    const flags = (init.flags + body.flags + end.flags).split('').sort().join('').replace(/(.)(?=.*\1)/g, '')
+    return new RegExp(init.source + body.source + end.source, flags)
+  }
+  generateDomain (val: string): boolean {
+    this.isFieldCheckDomain = (val = this.defineModelDomainConverter(val)) && true
+    let xChar: number = val.charCodeAt(0)
+    let regDomainBody: RegExp, regDomainEnd: RegExp
+    if (xChar > 96 && xChar < 123) {
+      regDomainBody = /^(?:[a-z0-9][a-z0-9.\][(\-)]{0,61}[a-z0-9]\.)/
+      regDomainEnd = /(com|org|ru|net)+$/m
+      this.isFieldCheckDomain = this.concatRegDomainStr(regDomainBody, regDomainEnd).test(val)
+    } else {
+      regDomainBody = /^(?:[а-я0-9][а-я0-9.\][(\-)]{0,61}[а-я0-9]\.)/
+      regDomainEnd = /(рф)+$/m
+      this.isFieldCheckDomain = this.concatRegDomainStr(regDomainBody, regDomainEnd).test(val)
+    }
+    return this.isFieldCheckDomain
+  }
+  defineModelDomainConverter (val: string) {
+    return val && punycode.toUnicode(val)
+  }
+  get receiveDomainFromModel (): string {
+    const { model: { domain } } : { model: IDomainFromModel } = this
+    return domain
+  }
+
+  get isFieldDomainValid () : boolean {
+    return this.isFieldCheckDomain
+  }
+  get isFieldDomainError () : boolean {
+    return !this.isFieldDomainValid && this.isFieldDomainTouched
+  }
+  get showFieldDomainDisplay () : string {
+    let domain = this.receiveDomainFromModel
+    return (domain === '') ? '' : this.isFieldDomainValid ? 'er-text-field--success' : 'er-text-field--error'
+  }
 
   async addReverceZone () {
     if (!(this.$refs.form as any).validate()) return
+    // todo: кодировка в пуникод при отправке:
+    //   if (this.isFieldDomainValid && punycode.encode(this.receiveDomainFromModel))
+    //       (this.model['domain'] as string) = punycode.encode(this.receiveDomainFromModel)
 
     this.isLoadingAddReverceZone = true
-
     try {
       await this.$store.dispatch('internet/addReverceZone', this.model)
-
       if (this.currentIP === this.model.ip) {
-        this.listReverceZone.push(this.model.domain)
+        this.listReverceZone.push(this.model['domain'])
       }
       this.isOpenAdding = false
       this.model.ip = ''
