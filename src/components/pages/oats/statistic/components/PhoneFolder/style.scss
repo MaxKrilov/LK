@@ -1,0 +1,129 @@
+$head-shadow: 0px 2px 12px rgba(0, 0, 0, 0.1),
+  0px 2px 2px rgba(0, 0, 0, 0.05);
+
+$head-border-radius: 12px;
+
+$pre: '.phone-folder-oats';
+
+#{$pre} {
+  & + #{$pre} {
+    margin-top: $padding-x1;
+  }
+
+  &--active {
+    #{$pre}__head {
+      border-right-color: map_get($yellow, 'base');
+    }
+
+    #{$pre}__head_wrap {
+      background-color: map_get($shades, 'white');
+
+      .er-icon--telephone {
+        color: map_get($yellow, 'base');
+      }
+    }
+  }
+
+  &--disabled {
+    #{$pre}__head {
+      cursor: initial;
+      background-color: map_get($gray, '3');
+    }
+  }
+
+  &:not(#{$pre}--disabled) {
+    #{$pre}__head:hover {
+      .er-icon {
+        color: map_get($yellow, 'base');;
+      }
+    }
+  }
+
+  @include min-breakpoint('md') {
+    @include content-padding('right');
+    @include content-padding('left');
+  }
+
+  &__head_wrap {
+    display: flex;
+    box-shadow: $head-shadow;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    z-index: 1;
+    border-radius: 0;
+    overflow: hidden;
+
+    @include min-breakpoint('md') {
+      border-radius: $head-border-radius;
+    }
+  }
+
+  &__head {
+    cursor: pointer;
+    @extend %body-font;
+    background-color: map_get($shades, 'white');
+    height: $padding-x12;
+
+    display: flex;
+    flex-grow: 1;
+    align-items: center;
+    justify-content: space-between;
+
+    position: relative;
+    z-index: 1;
+    border-radius: 0;
+    border-right: $padding-x1 solid map_get($shades, 'transparent');
+    transition: all $primary-transition;
+
+    .er-icon--telephone {
+      transition: color $primary-transition;
+      @include color-black(.2);
+      padding-right: $padding-x4;
+    }
+
+    padding: {
+      left: $padding-x4;
+      right: $padding-x4;
+    }
+
+    @include min-breakpoint('sm') {
+      padding: {
+        left: $padding-x6;
+        right: $padding-x6;
+      }
+    }
+
+    @include min-breakpoint('xl') {
+      padding: {
+        left: $padding-x4;
+        right: $padding-x4;
+      }
+    }
+
+    @include min-breakpoint('md') {
+      height: $padding-x16;
+    }
+
+    &-begin {
+      display: flex;
+      align-items: center;
+    }
+
+    &-end {
+    }
+  }
+
+  &__body {
+    background-color: map_get($shades, 'white');
+    padding-top: 0;
+    z-index: -1;
+
+    @include min-breakpoint('md') {
+      border-bottom: {
+        left-radius: $head-border-radius;
+        right-radius: $head-border-radius;
+      }
+    }
+  }
+}

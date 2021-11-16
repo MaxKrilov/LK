@@ -1,0 +1,81 @@
+
+.connection-row {
+  td {
+    height: $padding-x10;
+  }
+
+  .col-type {
+    .er-icon--incoming_call {
+      color: map_get($green, 'base')
+    }
+
+    .er-icon--missed_call {
+      color: map_get($red, 'base')
+    }
+
+    .er-icon--outgoing_call {
+      color: map_get($blue, 'base')
+    }
+  }
+
+  .col-date {
+    @extend %caption2-font;
+    @include color-black(.5);
+  }
+
+  .col-time {
+    @extend %caption2-font;
+    @include color-black(.8);
+  }
+
+  .col-phone,
+  .col-duration,
+  .col-price,
+  .col-price2 {
+    @extend %body-font;
+    @include color-black(.8);
+  }
+
+  .col-region {
+    @extend %caption2-font;
+    @include color-black(.8);
+  }
+
+  .col-phone {
+    .datetime {
+      @extend %caption2;
+      margin: $padding-x1 0;
+      display: flex;
+      flex-direction: row;
+
+      @include min-breakpoint('md') {
+        display: none;
+      }
+
+      &__date {
+        @include color-black(.5);
+      }
+
+      &__time {
+        margin-left: $padding-x1;
+        @include color-black(.8);
+      }
+    }
+
+    .region {
+      @extend %caption2;
+      margin: $padding-x1 0;
+
+      @include min-breakpoint('md') {
+        display: none;
+      }
+    }
+  }
+
+  .col-price span,
+  .col-price2 span {
+    @extend %caption2-font;
+    @include color-black(0.2);
+    margin-left: 4px;
+  }
+}

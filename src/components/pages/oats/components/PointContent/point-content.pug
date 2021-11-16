@@ -23,27 +23,43 @@
           .caption2 Активна с:
           .active-date.body-font.mt-8 {{ activeFrom }}
 
+  .oats-point-content__phones(v-if="phones.length")
+  .section
+    .section__title Подключенные телефоны
+
+    .section__content
+      phone-row(
+        v-for="phone in phones"
+        v-bind="phone"
+        :key="phone.id"
+      )
+  
+  .oats-point-content__packages-minutes(v-if="packagesMinutes & packagesMinutes.length")
+    .section
+      .section__title Пакеты минут
+
+      .section__content
+        .oats-point-content__oats-packages
+          template(v-for="(_package, index) in packagesMinutes" )
+            PackageMinuteCard(
+              :key='index'
+              :slo="_package"
+              :name="_package.chars['Имя в счете']"
+              :phones="phones"
+              :marketId="marketId"
+              :char="'Тип Пакета (Пакет Минут)'")
+
   .oats-point-content__services(v-if="services && services.length")
     .section
-      .section__title Сервисы
+      .section__title Доп. сервисы
 
       .section__content
         .oats-service(v-for="service in services" :key="service.id")
           .oats-service__name {{ service.name | removeNumberFromTitle }}
           .oats-service__description {{ service.description }}
-          .oats-service__price
-            er-price(period="мес") {{ service.purchasedPrices.recurrentTotal.value }}
-
-  .oats-point-content__phones(v-if="phones.length")
-    .section
-      .section__title Подключенные телефоны
-
-      .section__content
-        phone-row(
-          v-for="phone in phones"
-          v-bind="phone"
-          :key="phone.id"
-        )
+          .oats-service__end 
+            span.h4 {{ service.purchasedPrices.recurrentTotal.value | priceFormatted }} 
+            span.caption2 ₽/мес
 
   .oats-point-content__actions
     er-button(

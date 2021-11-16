@@ -1,0 +1,27 @@
+tr.connection-row(
+  :class="getCSSClass"
+)
+  td.col-type
+    er-icon(:name="iconName")
+
+  td.col-date
+    .col-date__date {{ computedDate }}
+    .col-date__time {{ computedTime }}
+
+  td.col-phone
+    .datetime
+      .datetime__date {{ computedDate }}
+      .datetime__time {{ computedTime }}
+    .phone {{ statistic.calledNumber | formatPhone }}
+    .region {{ statistic.destination }}
+
+  td.col-region {{ statistic.destination }}
+
+  td.col-duration {{ computedDuration }}
+
+  td.col-price
+    | {{ statistic.prebillingCost || 0 | price }}
+    span ₽
+  td.col-price2
+    | {{ statistic.billedCost | price }}
+    span ₽

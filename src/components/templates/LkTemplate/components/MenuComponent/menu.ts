@@ -113,6 +113,10 @@ const MenuItemList = (listProduct: IProductItem[], oatsPortalLink: string): Menu
         {
           name: 'Портал ОАТС',
           url: oatsPortalLink
+        },
+        {
+          name: 'Статистика',
+          url: '/lk/oats/statistic'
         }
       ]
     },

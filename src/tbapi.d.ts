@@ -347,7 +347,8 @@ export interface IBillingStatisticResponse {
     id: string
     instanceId: number
   }
-  createdDate: number
+  createdDate: number,
+  createdTime: number,
   priceEventSpecification: {
     eventTypeId: number
     name: string
@@ -459,6 +460,7 @@ export interface ISaleOrder {
 }
 
 export interface IOffer {
+  tomsId: string
   code: string
   id: string
   offeringRelationships: IOfferingRelationship[]

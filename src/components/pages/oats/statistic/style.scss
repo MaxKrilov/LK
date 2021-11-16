@@ -1,0 +1,211 @@
+
+.telephony-page {
+  &--no-padding {
+    padding: 0;
+  }
+
+  &__content {
+    @extend %main-content-width;
+    @extend %main-content-padding-h;
+    @extend %main-content-padding-top;
+  }
+
+  &__address {
+    @extend %main-content-width;
+    @extend %main-content-padding-h;
+
+    margin-top: $padding-x8;
+
+    @include max-breakpoint('md') {
+      padding: {
+        left: 0;
+        right: 0;
+      }
+    }
+
+    @include min-breakpoint('md') {
+      margin-top: $padding-x10;
+    }
+
+    @include min-breakpoint('xl') {
+      margin-top: $padding-x12;
+    }
+  }
+
+  &__download-form {
+    @extend %main-content-width;
+    @extend %main-content-padding-h;
+
+    margin-top: $padding-x10;
+
+    @include min-breakpoint(md) {
+      margin-top: $padding-x14;
+    }
+
+    @include min-breakpoint('xl') {
+      margin-top: $padding-x8;
+    }
+
+    p {
+      @extend %body;
+    }
+
+    .download-form {
+      &__input {
+        margin-top: $padding-x8;
+
+        @include min-breakpoint('md') {
+          margin-top: $padding-x10;
+        }
+      }
+
+      &__download-button {
+        height: $padding-x10;
+        margin-bottom: $padding-x1;
+
+        @include min-breakpoint('xl') {
+          height: $padding-x12;
+        }
+      }
+
+      .container {
+        @include container-padding($padding-x4);
+
+        @include min-breakpoint('lg') {
+          @include container-padding($padding-x6);
+        }
+      }
+    }
+  }
+
+  &__statistic {
+    @extend %main-content-width;
+
+    margin-top: $padding-x12;
+
+    @include min-breakpoint(md) {
+      margin-top: $padding-x14;
+    }
+
+    @include min-breakpoint('xl') {
+      margin-top: $padding-x16;
+    }
+
+    .statistic {
+      &__title {
+        @extend %main-content-padding-h;
+        @extend %h2;
+      }
+
+      &__phones {
+        margin-top: $padding-x4;
+
+        @include min-breakpoint('md') {
+          margin-top: $padding-x8;
+        }
+      }
+    }
+  }
+
+  &__legend {
+    @extend %main-content-width;
+    @extend %main-content-padding-h;
+  }
+
+  .legend {
+    margin-top: $padding-x10;
+
+    @include min-breakpoint('md') {
+      margin-top: $padding-x14;
+    }
+
+    @include min-breakpoint('xl') {
+      margin-top: $padding-x16;
+    }
+
+    &__title {
+      @extend %body-font;
+      @extend %body-color;
+    }
+
+    &__list {
+      display: flex;
+      margin-top: $padding-x4;
+
+      @include min-breakpoint('md') {
+        margin-top: $padding-x6;
+      }
+
+      @include min-breakpoint('xl') {
+        margin-top: $padding-x8;
+      }
+    }
+
+    &__item-title {
+      margin-left: $padding-x4;
+      @extend %caption2;
+    }
+
+    &__item {
+      display: flex;
+      align-items: center;
+
+      &:not(:first-child) {
+        margin-left: $padding-x16;
+      }
+
+      &--in {
+        .er-icon {
+          color: map_get($green, 'base');
+        }
+      }
+      &--out {
+        .er-icon {
+          color: map_get($blue, 'base');
+        }
+      }
+      &--missed {
+        .er-icon {
+          color: map_get($red, 'base');
+        }
+      }
+    }
+  }
+}
+
+.download-files {
+  margin-top: $padding-x8;
+
+  .er-corner-button {
+    .er-icon {
+      margin-right: $padding-x2;
+    }
+
+    .corner-button__label {
+      border-bottom: 1px dashed;
+    }
+  }
+
+  &__head {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+  }
+
+  &__body {
+    padding-top: $padding-x4;
+    padding-left: $padding-x6;
+  }
+
+  &__notify {
+    @extend %caption2;
+    color: map_get($green, 'base');
+    margin-left: $padding-x6;
+
+    .er-icon {
+      svg {
+        width: $padding-x4;
+      }
+    }
+  }
+}

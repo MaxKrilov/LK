@@ -89,6 +89,7 @@ import ContentFilterMainPage from './components/pages/internet/content-filter/in
 // ОАТС
 import OATSMainPage from './components/pages/oats/main-page/index'
 import GoToOATSPortal from './components/pages/oats/components/GoToOATSPortal'
+import OATSStatisticPage from './components/pages/oats/statistic/index'
 
 // Видеоконтроль
 import VCTemplate from './components/pages/videocontrol/index'
@@ -275,6 +276,12 @@ const router = new Router({
           name: 'go-to-oats-portal',
           path: 'oats/go-to-portal',
           component: GoToOATSPortal
+        },
+        {
+          name: 'oats-statistic',
+          path: 'oats/statistic',
+          component: OATSStatisticPage,
+          props: true
         },
         {
           path: 'telephony/promo',

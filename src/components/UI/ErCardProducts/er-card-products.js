@@ -26,6 +26,10 @@ export default {
       type: [String, Number],
       default: '0'
     },
+    priceText: {
+      type: String,
+      default: '₽/месяц'
+    },
     icon: {
       type: String,
       default: 'geolocation'

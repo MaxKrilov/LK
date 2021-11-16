@@ -1,0 +1,109 @@
+.telephony-page(
+  v-class-mod="['no-padding']"
+)
+  .telephony-page__content.main-content--top-menu-fix
+    er-page-header(
+      linkText="Назад в Облачную телефонию"
+      title="Статистика"
+      backlink="/lk/oats"
+    )
+  
+  .telephony-page__address
+    er-list-points(
+      :list="listPoint"
+      v-model="currentPoint"
+      :is-loading="!isPointsLoaded"
+    )
+
+
+  .telephony-page__download-form
+    .download-form
+      er-form(ref="file-statistic-form")
+        er-container.full.container--no-padding
+          er-row
+            er-flex.xs12.lg8
+              p Вы можете заказать статистику звонков с 1-го числа до текущего. Скачать всю статистику можно за выбраный период в формате *.csv
+          er-row
+            er-flex.xs12.sm6.lg4.download-form__input
+              er-select(
+                :items="listPhone"
+                v-model="currentPhone"
+                :rules="[v => !!v || 'Выберите номер']"
+              )
+            er-flex.xs12.sm6.lg4.download-form__input
+              er-date-picker(v-model="periodDate")
+            er-flex.xs12.sm6.lg4.download-form__input
+              er-button.download-form__download-button(
+                @click="generateFileStatistic"
+                :loading="isGeneratingFile"
+                )
+                | Заказать *.csv
+
+    .download-files(
+      v-class-mod="{updated: hasNewFile}"
+    )
+      .download-files__head
+        er-corner-button(v-model="showFiles") Файлы статистики
+        template(v-if="hasNewFile")
+          .download-files__notify
+            | Новый файл
+            er-icon(name="ok")
+
+      .download-files__body
+        er-slide-up-down(:active="showFiles")
+          .download-files__list
+            file-component(
+              v-for="(file, index) in computedListFile"
+              :key="index"
+              :file="file"
+            )
+
+
+  .telephony-page__statistic.statistic
+    h2.statistic__title Подключенные телефоны
+
+    .statistic__phones
+      phone-folder(
+        v-for="phone in listPhone"
+        :key="phone.id"
+        :phone="phone.value"
+        :id="phone.product"
+        v-slot="{ opened }"
+      )
+        phone-statistic(
+          :is-opened="opened"
+          :product="phone.product"
+          :number="phone.value"
+          )
+
+  .telephony-page__legend.legend
+    .legend__title Условные обозначения:
+
+    .legend__list
+      .legend__item.legend__item--in
+        er-icon(name="incoming_call")
+        .legend__item-title Входящие
+      .legend__item.legend__item--out
+        er-icon(name="outgoing_call")
+        .legend__item-title Исходящие
+      .legend__item.legend__item--missed
+        er-icon(name="missed_call")
+        .legend__item-title Не принятые
+
+  er-activation-modal(
+    type="success"
+    v-model="isSuccessReport"
+    title="Уважаемый Клиент, файл статистики будет сформирован в ближайшее время и сохранен в данном разделе"
+    :isShowActionButton="false"
+    cancel-button-text="Спасибо"
+  )
+
+  er-activation-modal(
+    type="error",
+    title="При выполнении запроса произошла ошибка"
+    :is-show-action-button="false"
+    cancel-button-text="Закрыть",
+    v-model="isErrorReport"
+  )
+    template(slot="description")
+      | Повторите запрос позднее

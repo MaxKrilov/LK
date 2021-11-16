@@ -2,11 +2,12 @@ er-card-products(
   icon="cloud_telephone"
   date="false"
   :price="price"
+  :priceText="'₽/мес'"
   :loading="loading"
   :stopped="isStopped"
 ).oats-point
   .oats-point__title
-    span {{ name }}
+    span.body-font {{ name }}
     template(v-if="isStopped")
       .oats-point__subtitle Приостановлена с: {{ stopDate }}
 
@@ -25,7 +26,7 @@ er-card-products(
       .oats-point__portal-link
         er-icon(name="cloud_telephone")
         .link-wrap
-          router-link.link(:to="oatsPortalLink") Перейти на портал
+          router-link.link(:to="oatsPortalLink") Настроить ОАТС
 
   template(v-if="!isStopped" v-slot:slider-content)
     slot

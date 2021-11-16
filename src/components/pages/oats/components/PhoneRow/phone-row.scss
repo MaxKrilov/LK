@@ -14,6 +14,15 @@
   justify-content: space-between;
   align-items: center;
   padding: $padding-x2 0;
+  cursor: pointer;
+
+  &:hover {
+    background-color: map-get($shades, "white");
+  }
+
+  &:active {
+    background-color: map-get($yellow, "base");
+  }
 
   @include min-breakpoint(sm) {
     padding: $padding-x2;
@@ -41,12 +50,14 @@
   }
 
   &__price {
-    margin-left: $padding-x4;
+    margin-left: $padding-x8;
 
-    .er-price {
-      display: inline-flex;
-      flex-direction: column;
-      align-items: flex-end;
+    display: inline-flex;
+    flex-direction: column;
+    align-items: flex-end;
+    
+    @include min-breakpoint("md") {
+      display: initial;
     }
   }
 
@@ -82,4 +93,8 @@
       @extend %caption1;
     }
   }
+}
+
+.oats-price {
+  padding-right: 3px;
 }

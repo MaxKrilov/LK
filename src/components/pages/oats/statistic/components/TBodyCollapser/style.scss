@@ -1,0 +1,44 @@
+.tbody-collapser {
+  &--collapsed {
+    tr:not(.tbody-collapser__header) {
+      td {
+        display: none;
+      }
+    }
+
+    .er-icon.er-icon--arrow_l {
+      transform: rotate(-90deg)
+    }
+  }
+
+  &__title {
+    border-bottom: 1px dashed;
+  }
+
+  &__title-wrap {
+    height: $padding-x8;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    @extend %caption1-font;
+    @include color-black(.3);
+
+    padding-left: $padding-x4;
+
+    @include min-breakpoint('sm') {
+      justify-content: center;
+      padding-left: 0;
+    }
+
+    @include min-breakpoint('md') {
+      justify-content: flex-start;
+      padding-left: $padding-x2;
+    }
+
+    .er-icon {
+      transition: all $primary-transition;
+      @extend %small-icon;
+      transform: rotate(90deg);
+    }
+  }
+}

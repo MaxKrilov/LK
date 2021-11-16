@@ -71,6 +71,7 @@
     }
   }
 
+  &__packages-minutes,
   &__phones,
   &__services,
   &__actions {
@@ -88,13 +89,16 @@
       grid-template-columns: repeat(3, 1fr);
     }
 
+    gap: 8px 16px !important;
+
     .er-button {
       position: relative;
 
       .er-icon {
         position: absolute;
         left: $padding-x4;
-        top: -50%;
+        top: 50%;
+        transform: translateY(-50%);
 
         @include color-black(0.2);
       }
@@ -112,6 +116,33 @@
       @include min-breakpoint(md) {
         margin-top: $padding-x6;
       }
+    }
+  }
+
+  &__oats-packages {
+    @include min-breakpoint("sm") {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-gap: 16px;
+    }
+
+    @include min-breakpoint("xl") {
+      grid-gap: 32px;
+    }
+
+    @include min-breakpoint("sm") {
+      &::v-deep .er-card {
+        height: 100%;
+
+        &__content {
+          height: 100%;
+        }
+      }
+    }
+
+    &-title {
+      margin-top: 32px;
+      margin-bottom: 24px;
     }
   }
 
@@ -146,14 +177,16 @@
       }
     }
 
-    &__price {
+    &__end{
       margin-left: $padding-x8;
-
-      .er-price {
-        display: inline-flex;
-        flex-direction: column;
-        align-items: flex-end;
+      display: inline-flex;
+      flex-direction: column;
+      align-items: flex-end;
+      
+      @include min-breakpoint("md") {
+        display: initial;
       }
+      
     }
   }
 

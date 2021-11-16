@@ -37,7 +37,7 @@ div(:class="`${pre}`")
                 skeleton(:loading="loading")
                   div(:class="`${pre}__price-content`")
                     span(:class="`${pre}__h4`") {{ price | priceFormatted }}
-                    span(:class="`${pre}__units`") &nbsp;₽/месяц
+                    span(:class="`${pre}__units`") &nbsp;{{ priceText }}
           template(v-else)
             slot(name="stopped-block")
               div(:class="`${pre}__stopped-block`")
