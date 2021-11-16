@@ -1,0 +1,16 @@
+.ert-auth-voucher-component {
+  &__head {
+    display: flex;
+    margin-bottom: $padding-x2;
+
+    > * {
+      @extend %caption2-font;
+      @include color-black(0.3);
+    }
+
+    .login,
+    .updated-at {
+      flex: 1;
+    }
+  }
+}

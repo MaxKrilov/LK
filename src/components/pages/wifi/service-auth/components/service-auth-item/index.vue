@@ -21,6 +21,14 @@
         )
       .ert-wifi-service-auth-item__title
         | {{ saName }}
+        a.ert-wifi-service-auth-item__portal(
+          v-if="code === 'WIFIAVTVOUCH' && [getStatuses.STATUS_ACTIVE, getStatuses.STATUS_DISCONNECTION_IN_PROGRESS].includes(lazyStatus)"
+          href="https://wifi.domru.ru/gui/voucher/login"
+          target="_blank"
+          rel="noopener"
+        )
+          ErtIcon(name="doc")
+          .title Перейти на портал
       template(v-if="isServiceAuthWOParameters")
         .ert-wifi-service-auth-item__description
           | {{ description }}
@@ -115,7 +123,7 @@
                 )
 
               template(v-if="code === 'WIFIAVTVOUCH'")
-                er-row
+                er-row(align-items-center)
                   er-flex(xs12 md6)
                     ErtTextField(
                       label="Префикс логина"
@@ -123,144 +131,29 @@
                       :rules="vModelRuleList.wifiVoucherPrefix"
                       isShowRequiredLabel
                     )
-                .ert-wifi-service-auth-item__list-manager-voucher.mb-20(v-if="lazyStatus === getStatuses.STATUS_ACTIVE || lazyStatus === getStatuses.STATUS_DISCONNECTION_IN_PROGRESS")
-                  .head
-                    .login
-                      | Пользователь
-                    .updated
-                      | Создан/изменён
-                    .actions
-                  .body
-                    .body-row.mb-12.align-items-center(
-                      v-for="manager in voucherManagerInfo ? voucherManagerInfo.managers : []"
-                      :key="manager.manager_id"
+                      template(v-slot:prepend)
+                        ErHint
+                          | Логин ваучера состоит из префикса (одинаковый для всех гостей) и номера комнаты гостя (пример: hilton101). Префикс может содержать латинские буквы в нижнем регистре и/или цифры.
+                  ErFlex(
+                    v-if="code === 'WIFIAVTVOUCH' && [getStatuses.STATUS_ACTIVE, getStatuses.STATUS_DISCONNECTION_IN_PROGRESS].includes(lazyStatus)"
+                    xs12
+                    md6
+                  )
+                    ErButton(
+                      color="blue"
+                      :disabled="isInProgress"
+                      :loading="loadingServiceWithParams"
+                      @click="onClick"
                     )
-                      template(v-if="isUpdatingVoucherManager && manager.manager_id === managerIdAction")
-                        .login.mr-8
-                          ErtTextField(
-                            label="Полное имя"
-                            v-model="vModelList.wifiVoucherManagerName"
-                            :rules="vModelRuleList.wifiVoucherManagerName"
-                            isShowRequiredLabel
-                          )
-                        .password.ml-8
-                          ErtTextField(
-                            label="Пароль"
-                            v-model="vModelList.wifiVoucherManagerPassword"
-                            :type="vModelTypeList.wifiVoucherManagerPassword"
-                            :appendIcon="vModelTypeList.wifiVoucherManagerPassword === 'password' ? 'eye_close' : 'eye_open'"
-                            appendOuterIcon="reload"
-                            @click:append="() => { vModelTypeList.wifiVoucherManagerPassword = vModelTypeList.wifiVoucherManagerPassword === 'password' ? 'text' : 'password' }"
-                            @click:append-outer="() => { onGeneratePassword('close-net') }"
-                            :rules="vModelRuleList.wifiVoucherManagerPassword"
-                            isShowRequiredLabel
-                          )
-                        .actions.ml-8
-                          template(v-if="isUpdatingVoucherManagerRequest")
-                            ErtProgressCircular(size="16" indeterminate)
-                          template(v-else)
-                            er-tooltip(bottom)
-                              template(v-slot:activator="{ on }")
-                                button(@click="onManagerUpdate")
-                                  span(v-on="on")
-                                    ErtIcon(name="circle_ok" small)
-                              span Сохранить
-                          er-tooltip(bottom)
-                            template(v-slot:activator="{ on }")
-                              button(@click.prevent="onCloseUpdateForm")
-                                span(v-on="on")
-                                  ErtIcon(name="close" small)
-                            span Отмена
-                      template(v-else)
-                        .login {{ manager.full_name }}
-                        .updated {{ manager.updated_at | dateTimeFormatted }}
-                        .actions
-                          template(v-if="manager.removed_at == null")
-                            er-tooltip(bottom)
-                              template(v-slot:activator="{ on }")
-                                button(type="button" @click.prevent="onOpenUpdateForm(manager.manager_id)")
-                                  span(v-on="on")
-                                    ErtIcon(name="edit" small)
-                              span Изменить
-                            template(v-if="isRemovingVoucherManagerRequest && manager.manager_id === managerIdAction")
-                              ErtProgressCircular(size="16" indeterminate)
-                            template(v-else)
-                              er-tooltip(bottom)
-                                template(v-slot:activator="{ on }")
-                                  button(type="button" @click.prevent="() => { onRemoveManager(manager.manager_id) }")
-                                    span(v-on="on")
-                                      ErtIcon(name="lock" small)
-                                span Логическое удаление
-                          template(v-else)
-                            template(v-if="isRestoringVoucherManagerRequest && manager.manager_id === managerIdAction")
-                              ErtProgressCircular(size="16" indeterminate)
-                            template(v-else)
-                              er-tooltip(bottom)
-                                template(v-slot:activator="{ on }")
-                                  button(@click.prevent="onManagerRestore(manager.manager_id)")
-                                    span(v-on="on")
-                                      ErtIcon(name="unlock" small)
-                                span Восстановить
-
-                    //- Форма добавления нового менеджера
-                    er-slide-up-down(:active="isAddingVoucherManager && lazyStatus === getStatuses.STATUS_ACTIVE")
-                      ErtForm.body-row.align-items-center(ref="manager-add")
-                        .login.mr-8
-                          ErtTextField(
-                            label="Полное имя"
-                            v-model="vModelList.wifiVoucherManagerName"
-                            :rules="vModelRuleList.wifiVoucherManagerName"
-                          )
-                        .password.ml-8
-                          ErtTextField(
-                            label="Пароль"
-                            v-model="vModelList.wifiVoucherManagerPassword"
-                            :type="vModelTypeList.wifiVoucherManagerPassword"
-                            :appendIcon="vModelTypeList.wifiVoucherManagerPassword === 'password' ? 'eye_close' : 'eye_open'"
-                            @click:append="() => { vModelTypeList.wifiVoucherManagerPassword = vModelTypeList.wifiVoucherManagerPassword === 'password' ? 'text' : 'password' }"
-                            :rules="vModelRuleList.wifiVoucherManagerPassword"
-                          )
-                        .actions.ml-8
-                          template(v-if="!isAddingVoucherManagerRequest")
-                            er-tooltip(bottom)
-                              template(v-slot:activator="{ on }")
-                                button(type="button" @click.prevent="onCreateManager")
-                                  span(v-on="on")
-                                    ErtIcon(name="circle_add" small)
-                              span Сохранить
-                          template(v-else)
-                            ErtProgressCircular(size="16" indeterminate)
-                          er-tooltip(bottom)
-                            template(v-slot:activator="{ on }")
-                              button(type="button" @click.prevent="() => { isAddingVoucherManager = false }")
-                                span(v-on="on")
-                                  ErtIcon(name="close" small)
-                            span Отмена
-                    er-slide-up-down(:active="!isAddingVoucherManager")
-                      er-row
-                        er-flex(xs12 md6)
-                          ErButton(flat @click="() => { isAddingVoucherManager = true }") Добавить пользователя
-                ErActivationModal(
-                  type="error"
-                  v-model="isErrorVoucherManager"
-                  title="Возникла ошибка"
-                  :isShowActionButton="false"
-                  :persistent="true"
-                  cancelButtonText="Закрыть"
-                  @close="() => { isErrorVoucherManager = false }"
-                )
-
-                ErActivationModal(
-                  type="success"
-                  v-model="isSuccessVoucherManager"
-                  title="Запрос выполнился успешно"
-                  :isShowActionButton="false"
-                  :persistent="true"
-                  cancelButtonText="Закрыть"
-                  @close="() => { isSuccessVoucherManager = false }"
+                      | Изменить
+                ErtAuthVoucherComponent(
+                  v-if="[getStatuses.STATUS_ACTIVE, getStatuses.STATUS_DISCONNECTION_IN_PROGRESS].includes(lazyStatus)"
+                  :bpi="bpi"
                 )
           .wifi-auth-service__card__actions
-            .wifi-auth-service__card__action
+            .wifi-auth-service__card__action(
+              v-if="!(code === 'WIFIAVTVOUCH' && [getStatuses.STATUS_ACTIVE, getStatuses.STATUS_DISCONNECTION_IN_PROGRESS].includes(lazyStatus))"
+            )
               er-button(
                 color="blue"
                 :loading="loadingServiceWithParams"

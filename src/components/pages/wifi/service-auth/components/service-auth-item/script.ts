@@ -5,11 +5,15 @@ import { LIST_SERVICE_AUTH_WITH_PARAMETERS, LIST_SERVICE_AUTH_WO_PARAMETERS } fr
 import { STATUS_TEXT, ServiceStatus, STATUS_ACTIVE } from '@/constants/status'
 
 import { price as priceFormatted } from '@/functions/filters'
-import ErtForm from '@/components/UI2/ErtForm'
-import { mapActions } from 'vuex'
 import { IVoucherManager, ManagerResult, Result as IVoucherManagerResult } from '@/tbapi/voucher_manager'
 import { IWifiResourceInfo, WifiData } from '@/tbapi'
+
+import { mapActions } from 'vuex'
+
+import ErtForm from '@/components/UI2/ErtForm'
 import ErActivationModal from '@/components/blocks/ErActivationModal/index.vue'
+
+import ErtAuthVoucherComponent from './components/voucher-component/index.vue'
 
 import { head } from 'lodash'
 import moment from 'moment'
@@ -86,7 +90,8 @@ const CHAR_WIFIAVTVOUCH_PREFIX = 'Префикс логина'
 
 @Component<InstanceType<typeof ErtWifiServiceAuthItem>>({
   components: {
-    ErActivationModal
+    ErActivationModal,
+    ErtAuthVoucherComponent
   },
   filters,
   props,
@@ -589,18 +594,18 @@ export default class ErtWifiServiceAuthItem extends Vue {
       } else if (this.code === 'WIFIAVTVOUCH') {
         this.vModelList.wifiVoucherPrefix = this.chars[CHAR_WIFIAVTVOUCH_PREFIX] || ''
 
-        this.getResource({ bpi: this.bpi })
-          .then(response => {
-            const vlan = head(response)!.vlan
-            if (!vlan || typeof head(vlan) === 'undefined') return
-            this.cityId = head(vlan)!.cityId
-            this.vlan = head(vlan)!.number
-
-            this.voucherView({ vlan: this.vlan, cityId: this.cityId })
-              .then(response1 => {
-                this.voucherManagerInfo = response1.result
-              })
-          })
+        // this.getResource({ bpi: this.bpi })
+        //   .then(response => {
+        //     const vlan = head(response)!.vlan
+        //     if (!vlan || typeof head(vlan) === 'undefined') return
+        //     this.cityId = head(vlan)!.cityId
+        //     this.vlan = head(vlan)!.number
+        //
+        //     this.voucherView({ vlan: this.vlan, cityId: this.cityId })
+        //       .then(response1 => {
+        //         this.voucherManagerInfo = response1.result
+        //       })
+        //   })
       }
     }
 

@@ -31,6 +31,16 @@
     @extend %h4;
     margin-bottom: 16px;
     user-select: none;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &__portal {
+    display: flex;
+    align-items: center;
+    @extend %body-font;
+    @include color-black(0.6);
+    text-decoration-style: dotted;
   }
 
   &__description,

@@ -43,7 +43,7 @@ export interface Manager {
   authorized_at: Date;
   created_at: Date;
   removed_at: Date | null | string;
-  updated_at: Date;
+  updated_at: Date | null | string;
 }
 
 export interface ManagerResult {

@@ -1,0 +1,13 @@
+.ert-auth-voucher-add-form {
+  &__add-user {
+    width: 100%;
+
+    @include min-breakpoint('sm') {
+      max-width: 238px;
+    }
+
+    @include min-breakpoint('xl') {
+      max-width: 266px;
+    }
+  }
+}
