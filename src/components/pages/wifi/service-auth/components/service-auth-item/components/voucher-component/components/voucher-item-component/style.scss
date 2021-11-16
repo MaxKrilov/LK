@@ -1,0 +1,32 @@
+.ert-auth-voucher-item {
+  //display: flex;
+  //align-items: center;
+
+  &__login,
+  &__updated-at {
+    flex: 1;
+  }
+
+  &__actions > * {
+    @include color-black(0.2);
+    transition: $primary-transition;
+
+    &:hover {
+      @include color-black(0.5);
+    }
+  }
+
+  &__actions > * > button {
+    outline: none;
+  }
+
+  &__actions > *:first-child {
+    margin-right: $padding-x4;
+  }
+
+  &__reset-password-button {
+    display: flex;
+    align-items: center;
+    @include color-black(0.6)
+  }
+}
