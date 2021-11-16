@@ -1,0 +1,127 @@
+.oats-package {
+
+  @include max-breakpoint("sm") {
+    margin-bottom: 16px;
+  }
+  @include min-breakpoint("sm") {
+    .er-card {
+      height: 100%;
+
+      &__content {
+        height: 100%;
+      }
+    }
+  }
+
+  &__header {
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    height: 90px;
+
+    @include min-breakpoint("md") {
+      padding-left: 24px;
+      padding-right: 24px;
+    }
+
+    @include min-breakpoint("xl") {
+      padding-left: 32px;
+      padding-right: 32px;
+    }
+
+    position: relative;
+    overflow: hidden;
+    background-color: map-get($gray, "4");
+
+    &_title {
+      width: 60%;
+      @extend %h3;
+
+      @include min-breakpoint("xl") {
+        width: 80%;
+      }
+    }
+
+    &_icon {
+      &::v-deep  .er-icon {
+        svg {
+          color: white;
+          width: 80px;
+        }
+      }
+
+      right: 0;
+      bottom: -20px;
+      position: absolute;
+      opacity: 0.5;
+    }
+  }
+
+  &__change {
+    margin-bottom: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &__price {
+      @extend %h2;
+      margin: 0 8px;
+      @include color-black(0.8);
+    }
+
+    &::v-deep  .er-icon {
+      cursor: pointer;
+
+      &:hover {
+        svg {
+          @include color-black(0.4);
+        }
+      }
+
+      svg {
+        transition: $primary-transition;
+        @include color-black(0.2);
+      }
+    }
+  }
+
+  &__line {
+    background-color: rgba(map-get($shades, "black"), 0.2);
+    height: 8px;
+
+    &_used {
+      background-color: map-get($yellow, "base");
+      height: 100%;
+    }
+  }
+
+  &__content {
+    padding-top: 24px;
+    padding-bottom: 16px;
+    padding-left: 16px;
+    padding-right: 16px;
+
+    @include min-breakpoint("md") {
+      padding: 24px;
+    }
+  }
+
+  &__count-minutes {
+    @include color-black(0.2);
+  }
+
+  &__renewal {
+    color: map-get($green, "base");
+    @extend %caption2;
+    padding-top: 16px;
+    padding-bottom: 24px;
+  }
+
+  &__buttons {
+    margin-top: 24px;
+
+    .er-button:first-child {
+      margin-bottom: 8px;
+    }
+  }
+}

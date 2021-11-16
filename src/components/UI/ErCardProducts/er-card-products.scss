@@ -202,6 +202,16 @@
       @extend %caption2;
     }
   }
+  &__price-content {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: flex-end;
+    
+    @include min-breakpoint("md") {
+      display: initial;
+    }
+
+  }
   &__price {
     @include color-black(0.8);
     text-align: right;
@@ -343,10 +353,11 @@
       (
         padding-left: (
           sm: $padding-x6,
-          md: $padding-x8
+          xl: $padding-x8
         ),
         padding-right: (
-          sm: $padding-x6
+          sm: $padding-x6,
+          xl: $padding-x8, 
         ),
         padding-top: (
           md: $padding-x10

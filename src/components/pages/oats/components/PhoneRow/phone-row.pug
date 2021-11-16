@@ -1,4 +1,4 @@
-.oats-phone
+.oats-phone(@click="openStatistic")
   .oats-phone__name {{ number }}
   .oats-phone__type
     template(v-if="category")
@@ -9,4 +9,6 @@
         .phone-type__name {{ category }}
 
   .oats-phone__price
-    er-price(period="мес") {{ price }}
+    span.h4.oats-price {{ price | priceFormatted }}
+    span.caption2 ₽/мес
+

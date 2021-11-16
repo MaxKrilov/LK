@@ -104,7 +104,7 @@
 
   .er-card-products {
     $self: ".er-card-products";
-    $price-width: 110px;
+    $price-width: 140px;
 
     &__point-item {
       &.stopped {
@@ -117,6 +117,7 @@
     &__price {
       max-width: $price-width;
       flex-grow: 1;
+      margin-left: 32px;
 
       .title {
         text-align: right;
@@ -140,17 +141,6 @@
     }
 
     &__title-block {
-      $title-block-max-width: 154px;
-      $title-block-max-width-lg: 190px;
-
-      width: $title-block-max-width;
-      max-width: $title-block-max-width;
-
-      @include min-breakpoint(lg) {
-        width: $title-block-max-width-lg;
-        max-width: $title-block-max-width-lg;
-      }
-
       > #{$self}__switcher {
         position: inherit;
 
@@ -218,9 +208,12 @@
   }
 
   &__portal-link {
-    display: none;
+    @include max-breakpoint(lg) {
+      display: none;
+    }
     align-items: center;
     gap: $padding-x2;
+    width: 165px;
 
     @include min-breakpoint(sm) {
       display: inline-flex;

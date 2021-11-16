@@ -12,7 +12,14 @@ export interface IOATSDomain {
   status: string
   actualStartDate: Date
   cloudPhones: Record<string, ICloudPhone>
-  services: IOATSService[]
+  services: IOATSService[],
+  offer?: IOATSDomainOffer,
+  searchAddress?: string
+}
+
+export interface IOATSDomainOffer {
+  code:string,
+  tomsId: string
 }
 
 export interface ICloudPhone {

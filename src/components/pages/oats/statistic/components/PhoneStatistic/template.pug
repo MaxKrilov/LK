@@ -1,0 +1,103 @@
+.phone-statistic
+  //- template(v-if="loadingStatistic")
+  template(v-if="false")
+    er-preloader(:active="loadingStatistic" icon icon-type="2")
+  template(v-else)
+
+    //- template(v-if="pagCurrentPage === 1 && listStatistic.length === 0")
+    template(v-if="false")
+      .phone-statistic__notice
+        .caption1 За последние 30 дней нет статистики. Для получения за другой период - закажите файл.
+
+    template(v-else)
+      .phone-statistic__filters.mb-24
+        .phone-statistic__filter.mb-32.mb-sm-0.mr-sm-8.phone-statistic__report_filter
+          ErSelect(
+            placeholder="Тип звонка"
+            :items="listPhoneType"
+            v-model="modelPhoneType"
+          )
+        .phone-statistic__filter.mb-32.ml-sm-8.phone-statistic__report_filter
+          ErDatePicker(
+            placeholder="Период"
+            v-model="modelPeriod"
+            :disabledDate="disabledDateCallback"
+          )
+        .phone-statistic__filter.mb-32.ml-sm-20.phone-statistic__report_filter
+          er-button(
+              flat
+              @click="onFilterButtonClick"
+              v-class-mod="['inline-button']"
+          ) Показать
+
+      table
+        thead
+          tr
+            td.col-type
+              er-table-filter(
+                title="Тип"
+              )
+
+            td.col-date
+              er-table-filter(
+                title="Дата, время"
+                :value="sortField === 'date'"
+                :order="sortOrder"
+                @change-filter="setSort('date')"
+              )
+
+            td.col-phone
+              er-table-filter(
+                title="Номер"
+                :value="sortField === 'phone'"
+                :order="sortOrder"
+                @change-filter="setSort('phone')"
+              )
+
+            td.col-region Регион
+
+            td.col-duration
+              er-table-filter(
+                title="Длител."
+                :value="sortField === 'duration'"
+                :order="sortOrder"
+                @change-filter="setSort('duration')"
+              )
+
+            td.col-price
+              er-table-filter(
+                title="С пакетом"
+                :value="sortField === 'price'"
+                :order="sortOrder"
+                @change-filter="setSort('price')"
+              )
+            td.col-price2
+              er-table-filter(
+                title="Цена факт."
+                :value="sortField === 'price2'"
+                :order="sortOrder"
+                @change-filter="setSort('price2')"
+              )
+              span.rub
+
+        template(v-for="(statistics, date) in listSortingStaticGroupByDate")
+          tbody-collapser.statistic-table(
+            v-if="statistics.length !== 0"
+            :title="date"
+            :columns="7"
+            :startOpened="true"
+          )
+            template(
+              v-for="(statistic, index) in statistics"
+              )
+              connection-row(
+                :key="index"
+                :statistic="statistic"
+              )
+
+      .phone-statistic__footer
+        er-pagination(
+          v-model="pagCurrentPage"
+          :length="pagLength"
+          :total-visible="pagLength"
+          )

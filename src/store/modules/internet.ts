@@ -74,28 +74,34 @@ const actions = {
     toDate,
     productInstance,
     eventSource,
-    page
+    page,
+    eventType
   }: {
     fromDate: string,
     toDate: string,
     productInstance: string,
     page: string,
-    eventSource: string
+    eventSource: string,
+    eventType: string
   }) {
     const billingAccountId = context.rootGetters['payments/getActiveBillingAccount']
     const { toms: clientId } = context.rootGetters['auth/user']
+    const data: Record<string, string | number> = {
+      clientId,
+      id: billingAccountId,
+      dateFrom: fromDate,
+      dateTo: toDate,
+      productInstance,
+      page,
+      eventSource
+    }
+
+    if (eventType) data.eventType = eventType
+
     return new Promise((resolve, reject) => {
       api()
         .setWithCredentials()
-        .setData({
-          clientId,
-          id: billingAccountId,
-          dateFrom: fromDate,
-          dateTo: toDate,
-          productInstance,
-          page,
-          eventSource
-        })
+        .setData(data)
         .query('/billing/packets/events')
         .then(response => resolve(response))
         .catch((err) => {

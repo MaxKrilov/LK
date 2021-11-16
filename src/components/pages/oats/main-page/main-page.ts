@@ -6,30 +6,26 @@ import OATSPromo from '../components/promo.vue'
 
 import { StoreGetter } from '@/functions/store'
 import { ICloudPhone, ICloudPhoneService, IOATSDomain } from '@/interfaces/oats'
-import { CHAR_VALUES, CHARS as OATS_CHARS, CODES } from '@/constants/oats'
+import { CHAR_VALUES, CHARS as OATS_CHARS, TOMS_IDS, PACKAGE_MINUTES_TOMS_IDS } from '@/constants/oats'
 
 const isOatsPhoneNumber = (el: ICloudPhoneService) => {
-  // Запасной вариант нахождения номера телефона:
-  // el.chars[OATS_CHARS.NAME_IN_INVOICE] === CHAR_VALUES.PHONE_NUMBER
-
   const CLOUD_PHONE_NUMBERS = [
-    CODES.CLOUD_PHONE_NUMBER,
-    CODES.CLOUD_PHONE_NUMBER_LIGHT
+    TOMS_IDS.CLOUD_PHONE_NUMBER,
+    TOMS_IDS.CLOUD_PHONE_NUMBER_LIGHT,
+    TOMS_IDS.CLOUD_PHONE_NUMBER_2_0
   ]
-  return CLOUD_PHONE_NUMBERS.includes(el?.offer?.code || '')
+
+  return CLOUD_PHONE_NUMBERS.includes(el?.offer?.tomsId || '')
 }
 
 const isCloudPhone = (el: ICloudPhone) => {
-  // отделяем сервис от облачной телефонии в объекте IOATSDomain.cloudPhones
-
-  // запасной вариант
-  // el.chars[OATS_CHARS.NAME_IN_INVOICE].startsWith(CHAR_VALUES.CLOUD_TELEPHONY)
+  // отделяем сервис от облачной телефонии
   const CLOUD_TELEPHONY_CODES = [
-    CODES.CLOUD_TELEPHONY,
-    CODES.CLOUD_TELEPHONY_LIGHT
+    TOMS_IDS.CLOUD_TELEPHONY,
+    TOMS_IDS.CLOUD_TELEPHONY_LIGHT
   ]
 
-  return CLOUD_TELEPHONY_CODES.includes(el?.offer?.code || '')
+  return CLOUD_TELEPHONY_CODES.includes(el?.offer?.tomsId || '')
 }
 
 const expandServices = (acc: any[], el: ICloudPhone) => {
@@ -56,6 +52,7 @@ const components = {
 @Component({ components })
 export default class OATSMainPage extends Vue {
   isPointsLoaded: boolean = false
+  countOfPoints: number = 0
 
   @StoreGetter('payments/getActiveBillingAccount')
   billingAccountId!: any
@@ -91,6 +88,7 @@ export default class OATSMainPage extends Vue {
     this.pullPoints()
       .then(points => {
         this.isPointsLoaded = true
+        this.countOfPoints = points.length
         if (points.length) {
           this.$store.dispatch('oats/pullDomains', this.pointBpiList)
         }
@@ -113,7 +111,21 @@ export default class OATSMainPage extends Vue {
     return [
       ...Object.values(domain?.services || {}),
       ...this.getServicesFromCloudPhones(domain)
-    ].filter(this.isServiceWithNonZeroPrice)
+    ]
+  }
+
+  getPackagesMinutes (domain: IOATSDomain) {
+    const services = this.getCloudPhoneServices(domain)
+
+    return services.filter(service => PACKAGE_MINUTES_TOMS_IDS.includes(service?.offer?.tomsId || ''))
+  }
+
+  getCloudPhoneServices (domain: IOATSDomain) {
+    const cloudPhones = Object.values(domain?.cloudPhones || {})
+      .filter(el => isCloudPhone(el))
+
+    const cloudPhone = cloudPhones[0]
+    return cloudPhone.services
   }
 
   getServiceCount (domain: IOATSDomain) {
