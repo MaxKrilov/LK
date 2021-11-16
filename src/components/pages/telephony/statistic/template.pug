@@ -64,8 +64,10 @@
     .statistic__phones
       phone-folder(
         v-for="phone in listPhone"
+        v-if="phone.id !== 'tlo'"
         :key="phone.id"
         :phone="phone.value"
+        :id="phone.product"
         v-slot="{ opened }"
       )
         phone-statistic(

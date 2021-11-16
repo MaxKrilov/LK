@@ -8,6 +8,9 @@ export default {
     phone: {
       default: () => {},
       type: Object
+    },
+    id: {
+      type: String
     }
   },
   data () {
@@ -46,6 +49,9 @@ export default {
         }).catch(() => {
         })
       }
+    },
+    openStatistic () {
+      this.$router.push({ name: 'telephony-statistic', params: { id: this.$props.phone.productId } })
     }
   }
 }

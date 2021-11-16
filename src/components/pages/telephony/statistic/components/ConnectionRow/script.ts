@@ -42,11 +42,11 @@ export default class ConnectionRow extends Vue {
   region = 'Москва'
 
   get computedDate () {
-    return moment(this.statistic.createdDate).format('DD.MM.YY')
+    return moment(this.statistic.createdDate, 'DD.MM.YYYY').format('DD.MM.YY')
   }
 
   get computedTime () {
-    return moment(this.statistic.createdDate).format('HH:mm')
+    return moment(this.statistic.createdTime, 'HH:mm').format('HH:mm')
   }
 
   get computedDuration () {

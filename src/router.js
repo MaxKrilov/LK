@@ -319,8 +319,10 @@ const router = new Router({
           component: TelephonyTemplate,
           children: [
             {
+              name: 'telephony-statistic',
               path: 'statistic',
-              component: TelephonyStatisticPage
+              component: TelephonyStatisticPage,
+              props: true
             },
             // {
             //   path: 'redirections',

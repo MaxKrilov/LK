@@ -23,6 +23,12 @@
             v-model="modelPeriod"
             :disabledDate="disabledDateCallback"
           )
+        .phone-statistic__filter.ml-sm-20
+          er-button(
+              flat
+              @click="onFilterButtonClick"
+              v-class-mod="['inline-button']"
+          ) Показать
       table
         thead
           tr
@@ -75,21 +81,20 @@
                 @change-filter="setSort('price2')"
               )
               span.rub
-
-        tbody-collapser.statistic-table(
-          v-for="(statistics, date) in listSortingStaticGroupByDate"
-          :key="date"
-          :title="date"
-          :columns="7"
-          :startOpened="true"
-        )
-          template(
-            v-for="(statistic, index) in statistics"
-            )
-            connection-row(
-              :key="index"
-              :statistic="statistic"
-            )
+        template(v-for="(statistics, date) in listSortingStaticGroupByDate")
+          tbody-collapser.statistic-table(
+            v-if="statistics.length !== 0"
+            :title="date"
+            :columns="7"
+            :startOpened="true"
+          )
+            template(
+              v-for="(statistic, index) in statistics"
+              )
+              connection-row(
+                :key="index"
+                :statistic="statistic"
+              )
 
       .phone-statistic__footer
         er-pagination(

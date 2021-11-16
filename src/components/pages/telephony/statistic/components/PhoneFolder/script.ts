@@ -4,6 +4,7 @@ import { Vue, Component, Prop } from 'vue-property-decorator'
 export default class PhoneFolder extends Vue {
   @Prop({ type: Boolean, default: false }) readonly disabled!: boolean
   @Prop(String) readonly phone!: string
+  @Prop(String) readonly id!: string
 
   pre = 'phone-folder'
   isOpened = false
@@ -20,5 +21,9 @@ export default class PhoneFolder extends Vue {
     this.isOpened = this.disabled
       ? false
       : !this.isOpened
+  }
+
+  mounted () {
+    this.isOpened = this.$route.params.id === this.$props.id
   }
 }
