@@ -4,7 +4,6 @@ import TBodyCollapser from '../TBodyCollapser/index.vue'
 import ErTableFilter from '@/components/blocks/ErTableFilter/index'
 import moment from 'moment'
 import { IBillingStatisticResponse } from '@/tbapi'
-import { head, last } from 'lodash'
 
 const components = {
   ConnectionRow,
@@ -42,12 +41,12 @@ const getFieldByName = (name: typeSortOrder) => {
     number: String
   },
   watch: {
-    pagCurrentPage () {
-      this.getStatistic()
+    pagCurrentPage (val) {
+      this.listStatistic = this.allStatistic[val - 1]
     },
     isOpened (val) {
       if (val && this.listStatistic.length === 0) {
-        this.getStatistic()
+        this.getStatistic(this.beforeMonthDate, this.todayDate)
       }
     }
   }
@@ -58,6 +57,7 @@ export default class PhoneStatistic extends Vue {
   readonly number!: string
 
   // Data
+  allStatistic: IBillingStatisticResponse[][] = []
   listStatistic: IBillingStatisticResponse[] = []
   // Data for sort
   sortField: typeSortOrder = ''
@@ -67,7 +67,12 @@ export default class PhoneStatistic extends Vue {
   pagLength = 1
   loadingStatistic = true
 
-  listPhoneType: string[] = ['Исходящий', 'Входящий', 'Все']
+  currentEventType = 'Все'
+  statisticLength = 25
+
+  beforeMonthDate:string = moment((new Date()).setDate((new Date()).getDate() - 29)).format()
+  todayDate:string = moment(new Date()).add('days', 1).format()
+  listPhoneType: string[] = ['Входящие', 'Исходящие', 'Исходящие МГМН', 'Исходящие через сторонних операторов', 'Все']
   modelPhoneType: string = 'Все'
   modelPeriod: Date[] = [
     new Date(moment((new Date()).setDate((new Date()).getDate() - 29)).format()),
@@ -77,7 +82,7 @@ export default class PhoneStatistic extends Vue {
   // Computed
   get listStatisticGroupByDate () {
     return this.listStatistic.reduce((acc, item) => {
-      const date = moment(item.createdDate).format('DD MMM YYYY')
+      const date = moment(item.createdDate, 'DD.MM.YYYY').format('DD MMM YYYY')
       if (!acc.hasOwnProperty(date)) {
         acc[date] = []
       }
@@ -97,16 +102,7 @@ export default class PhoneStatistic extends Vue {
     const filterList: Record<string, IBillingStatisticResponse[]> = {}
     for (const date in this.listStatisticGroupByDate) {
       if (!this.listStatisticGroupByDate.hasOwnProperty(date)) continue
-
-      filterList[date] = this.listStatisticGroupByDate[date].filter(statisticItem => {
-        return statisticItem.createdDate >= +head(this.modelPeriod)! &&
-          statisticItem.createdDate <= +last(this.modelPeriod)! &&
-          this.modelPhoneType === 'Все'
-          ? true
-          : this.modelPhoneType === 'Исходящий'
-            ? [1, 3, 4].includes(statisticItem.priceEventSpecification.eventTypeId)
-            : statisticItem.priceEventSpecification.eventTypeId === 2
-      })
+      filterList[date] = this.listStatisticGroupByDate[date]
     }
 
     // Сортировка
@@ -134,25 +130,80 @@ export default class PhoneStatistic extends Vue {
 
   disabledDateCallback (date: Date) {
     const _date = moment(date)
-    return _date > moment() || _date < moment().subtract(29, 'days')
+    return _date > moment() || _date < moment().subtract(30, 'days')
   }
 
-  getStatistic () {
-    const today = new Date()
-    this.loadingStatistic = true
+  onFilterButtonClick () {
+    let phoneType: string = this.modelPhoneType
+    if (phoneType === 'Исходящие') {
+      phoneType = 'Исходящие местные телефонные звонки'
+    } else if (phoneType === 'Входящие') {
+      phoneType = 'Входящие телефонные звонки'
+    } else if (phoneType === 'Исходящие МГМН') {
+      phoneType = 'Исходящие телефонные звонки'
+    } else if (phoneType === 'Исходящие через сторонних операторов') {
+      phoneType = 'Исходящие телефонные звонки через сторонних операторов'
+    }
 
-    const beforeMonth = (new Date()).setDate((new Date()).getDate() - 29)
-    this.$store.dispatch('internet/getStatistic', {
-      fromDate: moment(beforeMonth).format(),
-      toDate: moment(today).format(),
-      page: this.pagCurrentPage,
+    this.getStatistic(moment(this.modelPeriod[0]).format(), moment(this.modelPeriod[1]).add('days', 1).format(), phoneType)
+  }
+
+  getStatistic (dateFrom:string, dateTo:string, eventType?:string) {
+    this.loadingStatistic = true
+    this.pagCurrentPage = 1
+
+    if (this.currentEventType !== eventType && eventType) {
+      this.currentEventType = eventType
+    }
+
+    const getStatisticData: Record<string, string | number> = {
+      fromDate: dateFrom,
+      toDate: dateTo,
       productInstance: this.product,
       eventSource: this.number.replace(/[\D]+/g, '')
-    })
-      .then((response: {requests: IBillingStatisticResponse[], range: string}) => {
-        this.listStatistic = response.requests
-        const m = response.range?.match(/^(?:items )?(\d+)-(\d+)\/(\d+|\*)$/)
-        this.pagLength = Math.trunc(+m![3] / 25) + 1
+    }
+
+    if (eventType === 'Исходящие') {
+      eventType = 'Исходящие местные телефонные звонки'
+    } else if (eventType === 'Входящие') {
+      eventType = 'Входящие телефонные звонки'
+    } else if (eventType === 'Исходящие МГМН') {
+      eventType = 'Исходящие телефонные звонки'
+    } else if (eventType === 'Исходящие через сторонних операторов') {
+      eventType = 'Исходящие телефонные звонки через сторонних операторов'
+    }
+
+    if (eventType && eventType !== 'Все') getStatisticData.eventType = eventType
+
+    this.$store.dispatch('internet/getStatistic', getStatisticData)
+      .then((response: Record<string, IBillingStatisticResponse[]>) => {
+        let result = Object.values(response)
+
+        let allStatistic = result.reduce((a, c) => a.concat(c), [])
+
+        allStatistic.sort((a, b) => Number(moment(a.createdDate, 'DD.MM.YYYY').format('x')) - Number(moment(b.createdDate, 'DD.MM.YYYY').format('x')))
+
+        this.pagLength = Math.ceil(allStatistic.length / this.statisticLength)
+
+        let currentIndex = 0
+        let allStatisticLength = allStatistic.length
+        this.allStatistic = []
+
+        for (let currentPage = 0; currentPage < this.pagLength; currentPage++) {
+          let statisticsLength = allStatisticLength > this.statisticLength ? this.statisticLength : allStatisticLength
+          let currentStatistic = []
+
+          for (let index = 0; index < statisticsLength; index++) {
+            currentStatistic.push(allStatistic[currentIndex])
+            currentIndex++
+          }
+
+          this.allStatistic.push(currentStatistic)
+          allStatisticLength -= this.statisticLength
+        }
+
+        this.listStatistic = this.allStatistic.length === 0 ? [] : this.allStatistic[0]
+
         this.loadingStatistic = false
       })
   }

@@ -4,7 +4,7 @@ div(:class="`${pre}`" )
       div(:class="`${pre}__icon-more`" @click="getMoreInfo")
         er-icon(name="corner_down" :class="{openned: isOpen}")
 
-      div(:class="`${pre}__number`")
+      div(:class="`${pre}__number`" @click="openStatistic")
         | {{ number }}
       div(:class="`${pre}__price`")
         div(:class="`${pre}__h4`") {{ price }} &nbsp;

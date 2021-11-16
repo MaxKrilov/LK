@@ -9,6 +9,7 @@ import ErActivationModal from '@/components/blocks/ErActivationModal/index.vue'
 import { mapState } from 'vuex'
 import FileComponent from './components/FileComponent/index.vue'
 import { Cookie } from '@/functions/storage'
+import moment from 'moment'
 
 const components = {
   PhoneFolder,
@@ -76,6 +77,12 @@ export default class TelephonyStatisticPage extends Vue {
       if (!this.listPhoneNumbers.hasOwnProperty(key)) continue
       const product = this.listPhoneNumbers[key]
 
+      result.push({
+        id: 'tlo',
+        product: product.tlo.id,
+        value: 'Выбрать все номера'
+      })
+
       product.slo.forEach(slo => {
         if (slo.chars && slo.chars.hasOwnProperty(PHONE_NUMBER_CHAR)) {
           result.push({
@@ -104,8 +111,8 @@ export default class TelephonyStatisticPage extends Vue {
     if (this.currentPhone === null) return
     this.isGeneratingFile = true
     this.$store.dispatch('internet/getFileStatistic', {
-      fromDate: this.periodDate[0].toISOString(),
-      toDate: this.periodDate[1].toISOString(),
+      fromDate: moment(this.periodDate[0].setHours(0, 0, 0, 0)).format(),
+      toDate: moment(this.periodDate[1].setHours(23, 59, 59, 59)).format(),
       productInstance: this.currentPhone.product
     })
       .then((response) => {
