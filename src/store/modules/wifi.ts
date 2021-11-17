@@ -37,7 +37,8 @@ const actions = {
       brand,
       billingAccountId,
       dmpCustomerId,
-      role: context.rootState.auth.userInfo.postRole || ''
+      role: context.rootState.auth.userInfo.postRole || '',
+      isManager: context.rootState.auth.isManager ? '1' : '0'
     }
 
     if (context.rootState.auth.isManager) {
