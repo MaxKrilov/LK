@@ -26,7 +26,7 @@ const isConnectProduct = (listProduct: IProductItem[], productCode: string) => {
 }
 
 const isConnectWifiMono = (listProduct: IProductItem[]) => {
-  return listProduct.some(productItem => ~productItem.offerName.toLowerCase().indexOf('mono'))
+  return listProduct.some(productItem => productItem.offerName.match(/hot spot/ig))
 }
 
 const isConnectWifiPro = (listProduct: IProductItem[]) => {
@@ -159,10 +159,10 @@ const MenuItemList = (listProduct: IProductItem[], oatsPortalLink: string): Menu
               name: 'Конструктор страницы авторизации',
               url: '/lk/wifi/personalization'
             },
-            {
-              name: 'Контент-фильтрация',
-              url: '/lk/wifi/content-filter'
-            },
+            // {
+            //   name: 'Контент-фильтрация',
+            //   url: '/lk/wifi/content-filter'
+            // },
             {
               name: 'Аналитика',
               url: '/lk/wifi/analytics/statistics'
