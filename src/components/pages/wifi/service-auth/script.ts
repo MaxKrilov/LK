@@ -304,7 +304,7 @@ export default class ErtWifiServiceAuth extends mixins(Page) implements iPageCom
     return new Promise((resolve, reject) => {
       Page.options.methods.getListPoint.call(this)
         .then(() => {
-          this.listPoint = this.listPoint.filter((point: any) => ~point.offerName.toLowerCase().indexOf('mono'))
+          this.listPoint = this.listPoint.filter((point: any) => ~point.offerName.match(/hot spot/ig))
           if (this.$route.params.hasOwnProperty('bpi')) {
             this.activePoint = this.listPoint.find(point => point.bpi === this.$route.params.bpi) || null
           } else {

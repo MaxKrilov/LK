@@ -858,6 +858,10 @@ export default class TariffComponent extends Vue {
   assignFreeBonus (customerProducts: Record<string, ICustomerProduct>) {
     return new Promise((resolve) => {
       const customerProduct = customerProducts[head(Object.keys(customerProducts))!]
+      if (!customerProduct) {
+        resolve()
+        return
+      }
       const freeBonusSLO = customerProduct.slo
         .find(sloItem => sloItem.offer && sloItem.offer.code === FREE_BONUS_OFFER_CODE)
       if (
