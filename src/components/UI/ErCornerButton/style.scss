@@ -43,4 +43,10 @@ $pre: '.er-corner-button';
       display: none;
     }
   }
+  &__border-yellow {
+    @extend .er-corner-button__label;
+
+    border-bottom: 0;
+
+  }
 }

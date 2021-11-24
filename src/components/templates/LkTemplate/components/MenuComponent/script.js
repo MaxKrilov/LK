@@ -29,7 +29,8 @@ export default {
       notificationCount: 0,
       menu: MenuItemList(this.listProductByService || [], this.oatsPortalLink),
       openingMenuItemIndex: 0,
-      isOpenBillingAccountMenu: false
+      isOpenBillingAccountMenu: false,
+      isOpenedCornerButton: false
     }
   },
   filters: {
@@ -92,6 +93,9 @@ export default {
     }
   },
   methods: {
+    openCornerButton (val) {
+      this.isOpenedCornerButton = val
+    },
     toggleLeftMenu () {
       this.openLeftMenu = !this.openLeftMenu
     },

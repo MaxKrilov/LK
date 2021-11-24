@@ -32,15 +32,15 @@ div(:class="[`${pre}`, { open: value }]")
             | Договор №
           div.agreement-number.pl-32
             | {{ contract }}
-          div.personal-account-item(
+          div.personal-account-item.mb-4(
             v-for="account in accounts"
             :key="account.billingAccountId"
             :class="{ 'active': activeBillingAccountId === account.billingAccountId }"
             @click="() => { selectPersonalAccount(account) }"
           )
-            div.caption.mb-4.cursor-default
+            div.caption.cursor-default
               | Лицевой счёт
-            div.value.cursor-pointer
+            div.value.cursor-pointer.mt-0
               er-icon.mr-8(name="ok")
               | {{ account.accountNumber }}
         div.profile.mt-8.mx-4.pl-28.d--flex.align-items-center

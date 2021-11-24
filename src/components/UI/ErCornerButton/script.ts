@@ -17,7 +17,8 @@ export default class ErCornerButton extends Vue {
   @Prop({ type: Boolean, default: false }) readonly value!: boolean
   @Prop({ type: Boolean, default: true }) readonly activeDown!: boolean
   @Prop({ type: Boolean, default: false }) readonly reversed!: boolean
-
+  @Prop({ type: Boolean, default: false }) readonly isLinkDashedYellow!: boolean
+  pre: string = 'er-corner-button'
   onClick () {
     this.$emit('input', !this.value)
   }

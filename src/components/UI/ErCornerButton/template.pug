@@ -3,5 +3,6 @@
   v-class-mod="{active: value, reversed}"
 )
   er-icon(name="corner_down")
-  span.er-corner-button__label
+  span(:class="isLinkDashedYellow ? `${pre}__border-yellow` : `${pre}__label`")
     slot
+

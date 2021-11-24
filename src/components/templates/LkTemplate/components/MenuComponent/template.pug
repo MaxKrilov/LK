@@ -50,67 +50,105 @@ div(:class="`${pre}`")
         img(src="@/assets/images/logo.png")
     div(:class="`${pre}__top__personal-account ${pre}__top__link--desktop`")
       div.icon.mr-8
-        er-icon(name="profile")
-      div.info
-        span.caption
+      div.info.d--flex.flex-column
+        span.caption.ml-4(
+          )
           | Лицевой счёт
-        er-menu(
-          v-model="isOpenBillingAccountMenu"
-          offset-y,
-          min-width="319",
-          :close-on-content-click="false",
-          transition="slide-y-transition",
-          nudge-left="26"
-        )
-          template(v-slot:activator="{ on }")
-            er-preloader(:active="menuComponentBillingAccount")
-              a.link--dashed--yellow(href="#", v-on="on", @click.prevent="")
-                | {{ activeBillingAccountNumber || 'Нет лицевых счетов' }}
-          div(:class="`${pre}__top__dropdown`")
-            div(:class="`${pre}__top__dropdown__content`")
-              div.caption.mb-4
-                | Организация
-              div.organization.mb-32
-                | {{ legalName }}
-                .change-org-button(@click="onChangeOrganization") Выбрать другую организацию
-
-              div.caption-choise.mb-16
-                | Выберите лицевой счёт
-              template(
-                v-for="(accounts, contract) in getBillingAccountsGroupByContract"
-              )
+        er-corner-button(
+          :value="isOpenedCornerButton"
+          :is-link-dashed-yellow="true"
+          @input="openCornerButton"
+          )
+          er-menu(
+            v-model="isOpenedCornerButton"
+            offset-y,
+            min-width="407",
+            z-index="8",
+            :close-on-content-click="false",
+            transition="slide-y-transition",
+            nudge-left="26"
+            @input="isOpenedCornerButton = !isOpenedCornerButton"
+          )
+            template(v-slot:activator="{ on }")
+              er-preloader(:active="menuComponentBillingAccount")
+                a.link--dashed--yellow(href="#", v-on="on", @click.prevent="").ml-4
+                  | {{ activeBillingAccountNumber || 'Нет лицевых счетов' }}
+            div(:class="`${pre}__top__dropdown`")
+              div(:class="`${pre}__top__dropdown__content`")
                 div.caption.mb-4
-                  | Договор №
-                div.agreement.mb-8
-                  | {{ contract }}
-                div.personal-account(
-                  v-for="account in accounts"
-                  :key="account.billingAccountId"
-                  :class="{ 'active': activeBillingAccountId === account.billingAccountId }"
-                  @click="onChangeBillingAccount(account)"
+                  | Организация:
+                div.organization.mb-32
+                  | {{ legalName }}
+                  .change-org-button(@click="onChangeOrganization") Выбрать другую организацию
+
+                div.caption-choise.mb-16
+                  | Выберите лицевой счёт
+                template(
+                  v-for="(accounts, contract) in getBillingAccountsGroupByContract"
                 )
-                  div.caption
-                    | Лицевой счет
-                  div.value
-                    er-icon(name="ok")
-                    | {{ account.accountNumber }}
-              div.profile
+                  div.caption.mb-4
+                    | Договор №
+                  div.agreement.mb-8
+                    | {{ contract }}
+                  div.wrapper-line.mb-8
+                    div.personal-account.ml-24(
+                      v-for="(account) in accounts"
+                      :key="account.billingAccountId"
+                      :class="{ 'active': activeBillingAccountId === account.billingAccountId }"
+                      @click="onChangeBillingAccount(account)"
+                    )
+                      div.caption.mt-4
+                        | Лицевой счет
+                      div.value.mt-0
+                        er-icon(name="ok")
+                        | {{ account.accountNumber }}
+                div.fill-foundation.foundation-pouring &nbsp
+              div.profile.mt-8
                 er-icon.mr-8(name="profile")
                 router-link(to="/lk/profile") Профиль
 
     div(:class="[`${pre}__top__balance`, `${pre}__top__link--desktop`, { 'autopay': isAutopay }]")
       div.icon.mr-8
         er-icon(name="wallet_auto")
-      er-preloader(:active="menuComponentBalance")
-        div.info
-          router-link(to="/lk/add-funds").link--solid--yellow {{ balance | price }}
-          span.caption(:class="{ 'autopay': isAutopay }") Автоплатеж
+      div.info
+        er-menu(
+          offset-y,
+          min-width="303",
+          max-width="338",
+          z-index="8",
+          transition="slide-y-transition",
+          nudge-left="21")
+          template(v-slot:activator="{ on }")
+            er-preloader(:active="menuComponentBalance")
+              a.link--solid--yellow(href="#", v-on="on", @click.prevent="")
+                | {{ balance | price }}
+              span.caption(:class="{ 'autopay': isAutopay }") Автоплатеж
+          div(:class="`${pre}__top__dropdown`")
+            div(:class="`${pre}__top__dropdown__content`")
+              div.caption.mb-4
+                | Ваш баланс
+                span.caption.caption-autopay(:class="{ 'autopay': isAutopay }") (Автоплатеж)
+              div.caption-balance.mb-24
+                .rub
+                  | {{ balance | price }}
+              div.caption.mb-8
+                router-link(to="/lk/payments/card-payment" :class="[`change-pay-button`]" ) Пополнить онлайн
+              div.caption.mb-24
+                router-link(to="/lk/payments/promise-payments" :class="[`change-pay-button`]" ) Активировать обещанный платеж
+              div.balance
+                .mt-24
+                  er-icon.mr-8(name="rouble")
+                  router-link(to="/lk/payments/history") Платежи и начисления
 
     div(:class="`${pre}__top__manager ${pre}__top__link--desktop`")
-      div.icon.mr-8
-        er-icon(name="manager")
       div.info
-        er-menu(offset-y, min-width="238", max-width="338", transition="slide-y-transition", nudge-left="21")
+        er-menu(
+          offset-y,
+          min-width="238",
+          z-index="8",
+          transition="slide-y-transition",
+          nudge-left="21"
+          )
           template(v-slot:activator="{ on }")
             er-preloader(:active="menuComponentManager")
               a.link--dashed--yellow.manager-link(href="#", v-on="on", @click.prevent="")
@@ -119,7 +157,7 @@ div(:class="`${pre}`")
             div(:class="`${pre}__top__dropdown__content`")
               div.caption.mb-4
                 | Ваш персональный менеджер
-              div.value.mb-12
+              div.value-manager.mb-12
                 | {{ getManagerInfo.name }}
               div.caption.mb-4
                 | Телефон
@@ -130,9 +168,9 @@ div(:class="`${pre}`")
               div.value.mb-12
                 a(:href="`mailto:${getManagerInfo.email}`") {{ getManagerInfo.email }}
               div.support
-                er-icon.mr-8(name="service")
-
-                router-link(to="/lk/support") Поддержка
+                .mt-24
+                  er-icon.mr-8(name="service")
+                  router-link(to="/lk/support") Поддержка
     div.ml-auto(
       :class="`${pre}__top__chat`"
       @click="onClickChat()"
