@@ -1,13 +1,27 @@
+:root {
+  --scrollbarBg: rgb(227 227 227);
+  --scrollbarThumb: rgba(255, 221, 0, 1);
+  --scrollbarWidth: 6px;
+  --scrollbarBorder: 1px solid var(--scrollbarBg);
+  --scrollbarBorderRadius: calc(var(--scrollbarWidth)/2);
+}
+
+.change-init-button {
+  margin-top: $padding-x2;
+  @extend %button-font;
+  @extend %link-color;
+  cursor: pointer;
+  display: block;
+}
 
 .change-org-button {
-    margin-top: $padding-x2;
-    @extend %button-font;
-    @extend %link-color;
-    cursor: pointer;
-    border-bottom: 1px solid;
-    display: block;
-  }
-
+  @extend .change-init-button;
+  border-bottom: 1px solid;
+}
+.change-pay-button {
+  @extend .change-init-button;
+  font: 16px/22px $fact-light;
+}
 .menu-component {
   position: fixed;
   z-index: map_get($z-index, 'left-menu');
@@ -352,18 +366,23 @@
     }
 
     &__dropdown {
+      margin-top: 9px;
       width: 100%;
       height: 100%;
       position: relative;
-      background: linear-gradient(to top right, map_get($gray, '19'), map_get($shades, 'white'));
+      background: linear-gradient(to top right, map_get($shades, 'white'));
       padding: 1px;
       border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(map_get($shades, 'black'), 0.1);
       &__content {
+        display: flex;
+        flex-direction: column;
         background: map_get($shades, 'white');
         border-radius: inherit;
         padding: 32px 0 16px;
         overflow: auto;
         max-height: 437px;
+        margin: 15px 5px;
         .caption,
         .organization,
         .caption-choise,
@@ -379,26 +398,77 @@
           letter-spacing: -0.5px;
           color: rgba(map_get($shades, 'black'), 0.8);
         }
+        .caption-init {
+          color: rgba(map_get($shades, 'black'), 0.8);
+        }
         .caption-choise {
-          font: 18px/22px $fedra-book;
-          color: rgba(map_get($shades, 'black'), 0.5);
+          @extend .caption-init;
+          font: 18px/23px $fact-bold;
+          margin-left: 24px;
+          width: calc(100% - 48px);
+          padding: 8px 0;
+          border: {
+            bottom: 1px solid map_get($gray, '20');
+          }
+        }
+        .caption-balance {
+          @extend .caption-init;
+          margin: {
+            left: 26px;
+          };
+          font: 24px $fact-bold;
+        }
+        .caption-autopay {
+          @extend %caption2;
+          margin: {
+            left: 8px;
+          };
+        }
+        .value-manager {
+          @extend .caption-init;
+          font: 18px/23px $fact-bold;
+          margin: 0 22px;
+        }
+        .fill-foundation {
+          position: absolute;
+          bottom: 95px;
+          left: 30px;
+          right: 0;
+          height: 45px;
+          width: 345px;
+        }
+        .foundation-pouring {
+          background-image: linear-gradient(#ffffff63, #ffffff, #ffffff);
         }
         .agreement {
           font: 18px/22px $fedra-book;
           letter-spacing: -1px;
           color: rgba(map_get($shades, 'black'), 0.5);
         }
+        .wrapper-line {
+          margin-left: 24px;
+          width: calc(100% - 48px);
+          border: {
+            top: 1px solid map_get($gray, '20');
+            bottom: 1px solid map_get($gray, '20');
+          }
+        }
         .personal-account {
-          padding: { left: 42px };
-          height: 54px;
           display: flex;
+          height: 54px;
+          padding-left: 20px;
           flex-direction: column;
           justify-content: center;
           border-left: 6px solid map_get($shades, 'transparent');
           transition: $primary-transition;
           cursor: pointer;
+          position: relative;
+          left: -24px;
           > * {
             margin: { left: 0 };
+          }
+          .caption {
+            margin: { left: -.1px };
           }
           .value {
             font: 20px/25px $fedra-book;
@@ -407,7 +477,7 @@
             i {
               display: none;
               position: absolute;
-              left: -24px;
+              left: -18px;
               margin: { top: 3px };
               color: map_get($green, 'base');
               svg {
@@ -418,6 +488,10 @@
           &:hover {
             background: map_get($gray, '2');
             border-left-color: map_get($yellow, 'base');
+            padding-left: 20px;
+            width: 100%;
+            position: relative;
+            left: -24px;
           }
           &.active {
             .value i {
@@ -425,13 +499,21 @@
             }
           }
         }
-        .profile,
+        .rub {
+          &::after {
+            content: '₽';
+            font: 13px/16px $fact-light;
+            margin-left: 4px;
+          }
+        }
+        .balance,
         .support {
           border-top: 1px solid map_get($gray, '20');
           display: flex;
           align-items: center;
+          position: relative;
+          top: 8px;
           padding: {
-            top: 12px;
             left: 18px;
           };
           i {
@@ -443,6 +525,36 @@
             text-decoration: none;
           }
         }
+      }
+      .profile {
+        border-top: 1px solid map_get($gray, '22');
+        display: flex;
+        align-items: center;
+        padding: 30px;
+        i {
+          color: rgba(map_get($shades, 'black'), 0.2);
+        }
+        a {
+          font: 16px/22px $fedra-demi;
+          color: rgba(map_get($shades, 'black'), 0.5);
+          text-decoration: none;
+        }
+      }
+      &__content {
+        scrollbar-width: var(--scrollbarWidth);
+        scrollbar-color: var(--scrollbarThumb) var(--scrollbarBg);
+      }
+      &__content::-webkit-scrollbar {
+        width: var(--scrollbarWidth);
+      }
+      &__content::-webkit-scrollbar-track {
+        background: var(--scrollbarBg);
+        border-radius: var(--scrollbarBorderRadius);
+      }
+      &__content::-webkit-scrollbar-thumb {
+        background-color: var(--scrollbarThumb);
+        border-radius: var(--scrollbarBorderRadius);
+        border: var(--scrollbarBorder);
       }
       &.manager {
         .caption,
@@ -575,3 +687,6 @@
     }
   }
 }
+
+
+
