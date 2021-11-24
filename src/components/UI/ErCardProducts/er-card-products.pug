@@ -1,7 +1,7 @@
 div(:class="`${pre}`")
   div(
     :class="[{ stopped: stopped, active: isOpen }, `${pre}__point-item`]",
-    @click="isOpen = !isOpen && !loading"
+    @click="!inTheProcessOfActivation && (isOpen = !isOpen && !loading)"
     )
     div(:class="`${pre}__point-content`")
       slot(name="content")
@@ -32,12 +32,20 @@ div(:class="`${pre}`")
                       | Дата активации:
                   skeleton(:loading="loading")
                     div(:class="`${pre}__h4`") {{ date }}
-              div(:class="`${pre}__price`")
+              div(:class="`${pre}__price`" v-if="!inTheProcessOfActivation")
                 div(class="title") Абонентская плата
                 skeleton(:loading="loading")
                   div(:class="`${pre}__price-content`")
                     span(:class="`${pre}__h4`") {{ price | priceFormatted }}
                     span(:class="`${pre}__units`") &nbsp;{{ priceText }}
+
+              div(:class="`${pre}__activation`" v-if="inTheProcessOfActivation")
+                div(:class="`${pre}__activation-content`")
+                  er-icon(name="circle_ok" :class="`${pre}__circle_ok ${pre}__green`" )
+                  div
+                    .caption(:class="`${pre}__green`" ) В процессе
+                    .caption(:class="`${pre}__green`" ) активации
+
           template(v-else)
             slot(name="stopped-block")
               div(:class="`${pre}__stopped-block`")

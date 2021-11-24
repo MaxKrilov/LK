@@ -13,26 +13,33 @@
         .col
           .caption2 Тариф:
           .tariff-name.h4.mt-sm-8.mt-xs-4 {{ tariffName }}
-          er-price.mt-8 {{ price }}
+          er-price.mt-8(v-if="!inTheProcessOfActivation") {{ price }}
 
-    .oats-point-content__active-date
+    .oats-point-content__active-date(v-if="!inTheProcessOfActivation")
       .columns
         .col
           er-icon(name="time")
         .col
           .caption2 Активна с:
           .active-date.body-font.mt-8 {{ activeFrom }}
+    
+    .oats-point-content__go-to-portal(v-if="inTheProcessOfActivation")
+      .columns
+        .oats-point__portal-link
+          er-icon(name="cloud_telephone")
+          .link-wrap
+            router-link.link(:to="oatsPortalLink") Настроить ОАТС
 
-  .oats-point-content__phones(v-if="phones.length")
-  .section
-    .section__title Подключенные телефоны
+  .oats-point-content__phones(v-if="phones && phones.length")
+    .section
+      .section__title Подключенные телефоны
 
-    .section__content
-      phone-row(
-        v-for="phone in phones"
-        v-bind="phone"
-        :key="phone.id"
-      )
+      .section__content
+        phone-row(
+          v-for="phone in phones"
+          v-bind="phone"
+          :key="phone.id"
+        )
   
   .oats-point-content__packages-minutes(v-if="packagesMinutes && packagesMinutes.length")
     .section

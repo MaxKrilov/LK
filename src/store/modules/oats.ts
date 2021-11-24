@@ -66,10 +66,11 @@ const actions = {
         return points
       })
   },
-  pullDomains ({ rootGetters, commit }: ActionContext<IState, any>, parentIds: string[]) {
+  pullDomains ({ rootGetters, commit }: ActionContext<IState, any>) {
     const payload = {
       clientId: rootGetters['auth/getTOMS'],
-      parentIds
+      status: ['Active', 'Activation in progress', 'Activation passed PONR', 'Suspended'],
+      productType: 'ОАТС'
     }
     return APIShortcut(URLS.DOMAINS, payload)
       .then(data => {

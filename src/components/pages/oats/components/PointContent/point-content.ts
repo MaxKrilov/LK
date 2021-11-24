@@ -15,6 +15,7 @@ const props = {
   phones: {},
   bpi: String,
   cityId: String,
+  inTheProcessOfActivation: Boolean,
   packagesMinutes: []
 }
 
@@ -38,7 +39,7 @@ export default class OATSPointContent extends Vue {
      }
 
      get tariffName () {
-       return this.$props.value?.chars[CHARS.NAME_IN_INVOICE]
+       return this.$props.value?.chars?.[CHARS.NAME_IN_INVOICE]
      }
 
      get price () {

@@ -5,9 +5,19 @@ er-card-products(
   :priceText="'₽/мес'"
   :loading="loading"
   :stopped="isStopped"
+  :inTheProcessOfActivation="inTheProcessOfActivation"
+  @open="isOpen = !isOpen"
 ).oats-point
-  .oats-point__title
+
+  .oats-point__title(v-if="!inTheProcessOfActivation")
     span.body-font {{ name }}
+    
+    template(v-if="isStopped")
+      .oats-point__subtitle Приостановлена с: {{ stopDate }}
+
+  template(v-if="inTheProcessOfActivation")
+    .oats-point__title {{ tariff }}
+    div {{ name }}
     template(v-if="isStopped")
       .oats-point__subtitle Приостановлена с: {{ stopDate }}
 
@@ -22,7 +32,7 @@ er-card-products(
         a.stopped-message__link(:href="restoreLink") восстановить
 
   template(v-slot:middle-block)
-    .middle-block
+    .middle-block(v-show="!inTheProcessOfActivation || inTheProcessOfActivation && !isOpen")
       .oats-point__portal-link
         er-icon(name="cloud_telephone")
         .link-wrap
