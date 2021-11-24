@@ -18,6 +18,10 @@ export default {
       type: Boolean,
       default: false
     },
+    inTheProcessOfActivation: {
+      type: Boolean,
+      default: false
+    },
     date: {
       type: String,
       default: ''

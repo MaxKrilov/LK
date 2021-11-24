@@ -13,7 +13,7 @@
               .caption2.mb-4 Тариф
               a.service-address__tariff-name(:href="getServiceLink(name)") {{ service.offer.name }}
 
-            .service-address__price
+            .service-address__price(v-if="service.status === 'Active'")
               .caption2 Абонентская плата
               .discount
                 er-price(:sum="service.amount.value")

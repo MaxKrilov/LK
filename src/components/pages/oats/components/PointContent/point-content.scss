@@ -39,6 +39,11 @@
     }
   }
 
+  &__go-to-portal {
+    display: flex;
+    align-items: center;
+  }
+
   &__portal-link {
     display: inline-flex;
     align-items: center;

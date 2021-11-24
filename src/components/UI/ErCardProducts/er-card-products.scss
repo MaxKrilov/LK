@@ -202,16 +202,35 @@
       @extend %caption2;
     }
   }
-  &__price-content {
-    display: inline-flex;
-    flex-direction: column;
-    align-items: flex-end;
-    
+
+  &__circle_ok {
+    padding-right: 8px
+  }
+
+  &__green {
+    color: map_get($green, 'base'),
+  }
+
+  &__activation {
+    @include color-black(0.8);
+    text-align: left;
+    white-space: nowrap;
+    margin-left: 24px;
+
     @include min-breakpoint("md") {
-      display: initial;
+      margin-left: 32px;
     }
 
+    @include max-breakpoint("sm") {
+      text-align: left;
+    }
+    &-content {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+    }
   }
+
   &__price {
     @include color-black(0.8);
     text-align: right;

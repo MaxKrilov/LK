@@ -6,45 +6,47 @@
       backlink="/lk/"
     )
 
-  template(v-if="isPointsLoaded")
-    template(v-if="domainList.length")
-      .oats-main-page__content-wide
-        point(
-          v-for="item in domainList"
-          :address="item.address"
-          :name="getDomainPointFulladdress(item.locationId)"
-          :price="getDomainPrice(item).toString()"
-          :serviceCount="getServiceCount(item)"
+  template(v-if="isDomainsLoaded && domainList.length")
+    .oats-main-page__content-wide
+      point(
+        v-for="item in domainList"
+        :address="item.address"
+        :name="item.searchAddress"
+        :price="getDomainPrice(item).toString()"
+        :serviceCount="getServiceCount(item)"
+        :bpi="item.id"
+        :cityId="item.cityId"
+        :key="item.bpi"
+        :inTheProcessOfActivation="item.status === 'Activation in progress' || item.status === 'Activation passed PONR'"
+        :tariff="getTariffName(item)"
+      )
+        point-content(
+          :value="item",
+          :services="getServiceList(item)"
+          :packagesMinutes='getPackagesMinutes(item)'
+          :phones="getPhoneList(item)"
           :bpi="item.id"
           :cityId="item.cityId"
-          :key="item.bpi"
+          :inTheProcessOfActivation="item.status === 'Activation in progress' || item.status === 'Activation passed PONR'"
+          @suspend="onSuspendProduct"
         )
-          point-content(
-            :value="item",
-            :services="getServiceList(item)"
-            :packagesMinutes='getPackagesMinutes(item)'
-            :phones="getPhoneList(item)"
-            :bpi="item.id"
-            :cityId="item.cityId"
-            @suspend="onSuspendProduct"
-          )
 
-        total-block(:loading="!isDomainsLoaded") {{ totalValue|price }}
+      total-block(:loading="!isDomainsLoaded") {{ totalValue|price }}
 
-      .oats-main-page__footer
-        er-button(
-          color="blue"
-          :to="{name: 'go-to-oats-portal'}"
-        ) Подключить ОАТС
+    .oats-main-page__footer
+      er-button(
+        color="blue"
+        :to="{name: 'go-to-oats-portal'}"
+      ) Подключить ОАТС
 
-    template(v-else-if="countOfPoints === 0 ")
-      .oats-main-page__content-wide
-        OATSPromo
-    
-    template(v-else)
-      .oats-main-page__content-wide
-        ErtProgressCircular(indeterminate width="2")
-        .title Загружаем облачную телефонию
+  template(v-else-if="isDomainsLoaded && domainList.length === 0")
+    .oats-main-page__content-wide
+      OATSPromo
+  
+  template(v-else)
+    .oats-main-page__content-wide
+      ErtProgressCircular(indeterminate width="2")
+      .title Загружаем облачную телефонию
 
 
   template(v-else)

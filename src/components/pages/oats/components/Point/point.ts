@@ -11,12 +11,17 @@ const props = {
   serviceCount: Number,
   value: Object,
   loading: Boolean,
+  inTheProcessOfActivation: Boolean,
+  tariff: String,
   bpi: String,
   cityId: String
 }
 
 @Component({ props })
 export default class OATSPoint extends Vue {
+  // data
+  isOpen: boolean = false;
+
   get isStopped () {
     return this.$props.status === POINT_STOPPED
   }

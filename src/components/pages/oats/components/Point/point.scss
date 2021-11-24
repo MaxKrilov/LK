@@ -141,6 +141,29 @@
     }
 
     &__title-block {
+      $title-block-max-width: 134px;
+      $title-block-max-width-lg: 190px;
+
+      width: $title-block-max-width;
+      max-width: $title-block-max-width;
+
+      @include min-breakpoint(md) {
+        width: 224px;
+        max-width: 290px;
+      }
+
+
+      @include min-breakpoint(lg) {
+        width: 414px;
+        max-width: 460px;
+      }
+
+      @include min-breakpoint(xl) {
+        width: 320px;
+        max-width: 390px;
+      }
+
+
       > #{$self}__switcher {
         position: inherit;
 
