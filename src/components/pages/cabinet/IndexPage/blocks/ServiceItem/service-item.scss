@@ -1,5 +1,36 @@
 .service-item {
+  &__green {
+    color: map_get($green, 'base') !important;
+  }
 
+  &__circle_ok {
+    padding-right: 8px
+  }
+
+  &__activation {
+    text-align: left;
+    white-space: nowrap;
+    margin-left: 24px;
+
+    @include min-breakpoint("md") {
+      margin-left: 32px;
+    }
+
+    &-content {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+    }
+  }
+
+  &__in_activation {
+    text-align: left;
+    .er-price {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }
 }
 
 .service-address {

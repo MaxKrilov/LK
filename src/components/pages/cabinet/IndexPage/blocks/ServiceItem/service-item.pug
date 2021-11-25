@@ -1,6 +1,7 @@
 .service-item
   .service-item__body
-      .service-address(v-for="(service, index) in list" :key="index")
+      .service-address(
+        v-for="(service, index) in list" :key="index")
         .service-address__header
           .service-address__title-wrap
             .service-address__icon
@@ -13,7 +14,14 @@
               .caption2.mb-4 Тариф
               a.service-address__tariff-name(:href="getServiceLink(name)") {{ service.offer.name }}
 
-            .service-address__price(v-if="service.status === 'Active'")
+            .service-item__in_activation(v-if="service.status === 'Activation in progress' && name === 'ОАТС'")
+              div(:class="`service-item__activation-content`")
+                er-icon(name="circle_ok" :class="`service-item__circle_ok service-item__green`" )
+                div
+                  .caption.service-item__green В процессе
+                  .caption.service-item__green активации
+
+            .service-address__price(v-if="!(service.status === 'Activation in progress' && name === 'ОАТС')")
               .caption2 Абонентская плата
               .discount
                 er-price(:sum="service.amount.value")
