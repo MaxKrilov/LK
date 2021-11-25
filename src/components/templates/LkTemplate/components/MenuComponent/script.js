@@ -10,6 +10,7 @@ import { formatPhone, price } from '../../../../../functions/filters'
 import { Cookie } from '../../../../../functions/storage'
 import MenuItemList from './menu'
 import head from 'lodash/head'
+import { dataLayerPush } from '../../../../../functions/analytics'
 
 const IS_ENABLED_AUTOPAY = '9149184122213604836'
 
@@ -123,12 +124,15 @@ export default {
     },
     onClickChat () {
       this.$emit('click-chat')
+      this.dataLayerPush({ category: 'header', action: 'click', label: 'supportchat' })
     },
     onClickNotifications () {
       this.$emit('click-notifications')
+      this.dataLayerPush({ category: 'header', action: 'click', label: 'notifications' })
     },
     signOut () {
       this.$store.dispatch('auth/signOut', { api: this.$api })
+      this.dataLayerPush({ category: 'header', action: 'click', label: 'exit' })
     },
     onChangeOrganization () {
       this.showChangeOrganizationPopup = true
@@ -154,6 +158,9 @@ export default {
         [notificationClass]: true,
         [badgeClass]: true
       }
+    },
+    dataLayerPush (payload) {
+      dataLayerPush(payload)
     }
   },
   mounted () {

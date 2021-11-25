@@ -20,7 +20,10 @@
         .office-service__footer
           .office-service__tariff
             .caption2.mb-4 Тариф  {{ service.offeringCategory.name }}
-            a.office-service__tariff-name(:href="getServiceLink(service.offeringCategory.name)") {{ service.offer.name }}
+            a.office-service__tariff-name(
+              :href="getServiceLink(service.offeringCategory.name)"
+              @click="dataLayerPush({ category: 'mainpage', label: getAnalyticsLabel(service.offeringCategory.code) })"
+            ) {{ service.offer.name }}
 
           .office-service__price
             .caption2 Абонентская плата

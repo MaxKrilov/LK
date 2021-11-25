@@ -50,14 +50,5 @@ export default {
       'auth': state => state.auth
     })
   },
-  mounted () {
-    // console.log(this.user)
-    // 'customer/account/client-info'
-    // this.$api
-    //   .setData({
-    //     _token: this.auth.accessToken,
-    //     id: this.user.tomsId
-    //   })
-    //   .query('/customer/manager/index')
-  }
+  mounted () {}
 }
