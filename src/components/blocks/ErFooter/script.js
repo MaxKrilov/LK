@@ -1,5 +1,6 @@
 import ErFooterMenu from '@/components/blocks/ErFooterMenu'
 import { LEGAL_ADDRESS, LEGAL_ADDRESS_MAP_LINK } from '@/constants/address'
+import { dataLayerPush } from '../../../functions/analytics'
 
 export default {
   components: {
@@ -77,5 +78,8 @@ export default {
     branchAddress () {
       return this.$store.state.branch.address
     }
+  },
+  methods: {
+    dataLayerPush
   }
 }

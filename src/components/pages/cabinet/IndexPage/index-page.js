@@ -1,6 +1,6 @@
 import { mapActions, mapGetters, mapState } from 'vuex'
 import { leadingZero } from '@/functions/filters'
-import { dataLayerPush } from '@/functions/helper'
+import { dataLayerPush } from '../../../../functions/analytics'
 import { parseDecimal } from '@/functions/helper2'
 import MESSAGES from '@/constants/messages.ts'
 import { TYPES as BUNDLE_TYPES } from '@/store/actions/bundles'
@@ -198,10 +198,8 @@ export default {
       }
       return on
     },
-    dataLayerPush (action) {
-      dataLayerPush(
-        { 'event': 'UAevent', 'category': 'quick links', 'action': action }
-      )
+    dataLayerPush (label) {
+      dataLayerPush({ 'category': 'mainpage', 'action': 'click', label })
     }
   },
   watch: {
@@ -230,6 +228,16 @@ export default {
           }
         }, 1000 * 60)
       }
+    },
+    modelSortService (val) {
+      dataLayerPush({
+        category: 'mainpage',
+        label: val === 'service'
+          ? 'sortbyservice'
+          : val === 'office'
+            ? 'sortbyoffice'
+            : 'sortbybundle'
+      })
     }
   }
 }

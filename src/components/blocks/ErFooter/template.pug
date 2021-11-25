@@ -11,7 +11,11 @@ footer.er-footer.columns
           er-footer-menu(title="Сервис", :items="serviceMenuSecond")
 
         er-flex.er-footer-column.er-footer-column--content-3(lg3, md4, sm6, xs12)
-          a(:href='NEWS_LINK' target="_blank").er-footer__title.er-footer__title--link
+          a.er-footer__title.er-footer__title--link(
+            :href='NEWS_LINK'
+            target="_blank"
+            @click="dataLayerPush({ category: 'footer', label: 'news' })"
+          )
             | Новости компании
           include soc.pug
 
@@ -31,6 +35,7 @@ footer.er-footer.columns
                     a(
                       :href="'tel:' + MANAGER_PHONE_NUMBER.number"
                       data-ga-tag-id="manager-phone-number"
+                      @click="dataLayerPush({ category: 'footer', label: 'phonesales' })"
                     ).er-contacts-phone__number
                       | {{ MANAGER_PHONE_NUMBER.title }}
 
@@ -45,7 +50,10 @@ footer.er-footer.columns
                   .er-contacts-phone__title
                     | Обслуживание
                   .d--flex.align-items-center.h32
-                    a(:href="'tel:' + SERVICE_PHONE_NUMBER.number").er-contacts-phone__number
+                    a(
+                      :href="'tel:' + SERVICE_PHONE_NUMBER.number"
+                      @click="dataLayerPush({ category: 'footer', label: 'phoneservice' })"
+                    ).er-contacts-phone__number
                       | {{ SERVICE_PHONE_NUMBER.title }}
             .er-contacts-address
               .er-contacts-address__title

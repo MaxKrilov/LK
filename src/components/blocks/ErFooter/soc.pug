@@ -6,17 +6,20 @@ div.er-social
       target="_blank"
       :href="SOCIAL_LINK_VK"
       data-ga-tag-id="social-network-vk"
+      @click="dataLayerPush({ category: 'footer', label: 'socialvk' })"
     ).er-social__item.er-social__item--vk
       er-icon(name='vk')
     a(
       target="_blank"
       :href="SOCIAL_LINK_FB"
       data-ga-tag-id="social-network-fb"
+      @click="dataLayerPush({ category: 'footer', label: 'socialfb' })"
     ).er-social__item.er-social__item--fb
       er-icon(name='facebook')
     a(
       target="_blank"
       :href="SOCIAL_LINK_INSTAGRAM"
       data-ga-tag-id="social-network-instagram"
+      @click="dataLayerPush({ category: 'footer', label: 'socialinst' })"
     ).er-social__item.er-social__item--instagram
       er-icon(name='instagram')

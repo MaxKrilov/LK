@@ -19,5 +19,6 @@
         :is="isExternal ? 'a' : 'router-link'"
         :key="item.title"
         v-bind="isExternal ? { href: item.url, target: '_blank' } : { to: item.url }"
+        @click="dataLayerPush(item.title)"
       )
         | {{ item.title }}

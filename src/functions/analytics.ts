@@ -5,11 +5,13 @@ export function dataLayerPush (payload: {
   label?: string
 }) {
   const event = payload.event || 'GA'
+  const action = payload.action || 'click'
   if (typeof window !== 'undefined') {
     window.dataLayer = window.dataLayer || []
     window.dataLayer.push({
       ...payload,
-      event
+      event,
+      action
     })
   }
 }

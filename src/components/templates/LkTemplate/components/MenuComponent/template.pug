@@ -71,7 +71,11 @@ div(:class="`${pre}`")
           )
             template(v-slot:activator="{ on }")
               er-preloader(:active="menuComponentBillingAccount")
-                a.link--dashed--yellow(href="#", v-on="on", @click.prevent="").ml-4
+                a.link--dashed--yellow.ml-4(
+                  href="#"
+                  v-on="on"
+                  @click.prevent="dataLayerPush({ category: 'header', action: 'click', label: 'billnumber' })"
+                )
                   | {{ activeBillingAccountNumber || 'Нет лицевых счетов' }}
             div(:class="`${pre}__top__dropdown`")
               div(:class="`${pre}__top__dropdown__content`")
@@ -120,7 +124,11 @@ div(:class="`${pre}`")
           nudge-left="21")
           template(v-slot:activator="{ on }")
             er-preloader(:active="menuComponentBalance")
-              a.link--solid--yellow(href="#", v-on="on", @click.prevent="")
+              a.link--solid--yellow(
+                href="#"
+                v-on="on"
+                @click.prevent="dataLayerPush({ category: 'header', action: 'click', label: 'funds' })"
+              )
                 | {{ balance | price }}
               span.caption(:class="{ 'autopay': isAutopay }") Автоплатеж
           div(:class="`${pre}__top__dropdown`")
@@ -151,7 +159,11 @@ div(:class="`${pre}`")
           )
           template(v-slot:activator="{ on }")
             er-preloader(:active="menuComponentManager")
-              a.link--dashed--yellow.manager-link(href="#", v-on="on", @click.prevent="")
+              a.link--dashed--yellow.manager-link(
+                href="#"
+                v-on="on"
+                @click.prevent="dataLayerPush({ category: 'header', action: 'click', label: 'supportmanager' })"
+              )
                 | Персональный менеджер
           div.manager(:class="`${pre}__top__dropdown`")
             div(:class="`${pre}__top__dropdown__content`")

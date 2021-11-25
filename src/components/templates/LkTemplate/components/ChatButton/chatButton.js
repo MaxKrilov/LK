@@ -1,4 +1,5 @@
 import { mapMutations } from 'vuex'
+import { dataLayerPush } from '../../../../../functions/analytics'
 
 export default {
   name: 'chat-button',
@@ -18,6 +19,7 @@ export default {
   methods: {
     ...mapMutations('chat', [
       'openChat'
-    ])
+    ]),
+    dataLayerPush
   }
 }
