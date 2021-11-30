@@ -47,8 +47,10 @@ function parseStyles (field: string | null) {
 
   const result: Record<string, string> = {}
   field.split(';').forEach(style => {
-    const [property, value] = style.split(':')
-    result[camelize(property).trim()] = value.trim()
+    if (style) {
+      const [property, value] = style.split(':')
+      result[camelize(property).trim()] = value.trim()
+    }
   })
 
   return Object.assign({}, defaultStyles, result)
