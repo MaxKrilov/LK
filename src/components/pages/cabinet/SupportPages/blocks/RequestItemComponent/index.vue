@@ -3,7 +3,11 @@
     span.date {{ getModifiedWhen.format('DD.MM.YY') }}&nbsp;
     span.time {{ getModifiedWhen.format('HH:mm') }}
   mixin cornerDown ()
-    a(@click.prevent="toggleDetail")
+    a(
+      @click.prevent="toggleDetail"
+      data-ga-category="support"
+      :data-ga-label="isOpenDetail ? 'applicationclose' : 'open'"
+    )
       er-icon(name="corner_down")
   .b-request__item
     .request-item-detail
@@ -54,7 +58,11 @@
               er-icon(name="warning")
               span Заявку можно отменить только до  момента принятия её в работу
             .request-item-detail__action
-              er-button(@click="openCancelDialog")
+              er-button(
+                @click="openCancelDialog"
+                data-ga-category="support"
+                data-ga-label="applicationcancelapp"
+              )
                 | Отменить заявку
           template(v-else)
             er-dialog(fullscreen, v-model="isOpenHistory" transition="dialog-bottom-transition")
@@ -130,7 +138,11 @@
               er-icon(name="warning")
               span Заявку можно отменить только до  момента принятия её в работу
             .request-item-detail__action
-              er-button(@click="openCancelDialog")
+              er-button(
+                @click="openCancelDialog"
+                data-ga-category="support"
+                data-ga-label="applicationcancelapp"
+              )
                 | Отменить заявку
     .request-item-component(v-if="!isOpenDetail" @dblclick="toggleDetail")
       .request-item-component__row.top.d--flex

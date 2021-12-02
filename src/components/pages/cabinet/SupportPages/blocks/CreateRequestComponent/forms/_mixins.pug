@@ -11,6 +11,7 @@ mixin listRequestTheme
     v-model="requestTheme"
     placeholder="Тема обращения"
     is-show-required-label
+    @input="dataLayerPush({ category: 'support', label: `apptheme_${requestTheme.value}` })"
   )
 
 mixin phoneNumber
@@ -53,12 +54,28 @@ mixin appeal(label)
 mixin footer
   er-flex.create-request-component__personal-data.mb-24.mt-16(xs12)
     | Нажимая на кнопку вы соглашаетесь &nbsp;
-    a(href="https://domru.ru/policy.pdf" target="_blank") на обработку данных
+    a(
+      href="https://domru.ru/policy.pdf"
+      target="_blank"
+      data-ga-category="support"
+      data-ga-label="appconditions"
+    ) на обработку данных
   er-flex.mb-8.mb-sm-0(xs12 md4)
-    er-button(pre-icon="send", @click="createRequest" :loading="loadingCreating")
+    er-button(
+      pre-icon="send",
+      @click="createRequest"
+      :loading="loadingCreating"
+      data-ga-category="support"
+      data-ga-label="appsend"
+    )
       | Отправить заявку
   er-flex(xs12 md4)
-    er-button(flat @click="() => { isOpenFormDesktop = false }")
+    er-button(
+      flat
+      @click="() => { isOpenFormDesktop = false }"
+      data-ga-category="support"
+      data-ga-label="appdecline"
+    )
       | Отменить
 
 mixin footerFile(hideFileSize)
@@ -74,13 +91,29 @@ mixin footerFile(hideFileSize)
 
   er-flex.create-request-component__personal-data.mb-24(xs12)
     | Нажимая на кнопку вы соглашаетесь &nbsp;
-    a(href="https://domru.ru/policy.pdf" target="_blank") на обработку данных
+    a(
+      href="https://domru.ru/policy.pdf"
+      target="_blank"
+      data-ga-category="support"
+      data-ga-label="appconditions"
+    ) на обработку данных
 
   er-flex.mb-8.mb-sm-0(xs12 md4)
-    er-button(pre-icon="send", @click="createRequest" :loading="loadingCreating")
+    er-button(
+      pre-icon="send",
+      @click="createRequest"
+      :loading="loadingCreating"
+      data-ga-category="support"
+      data-ga-label="appsend"
+    )
       | Отправить заявку
   er-flex(xs12 md4)
-    er-button(flat @click="() => { isOpenFormDesktop = false }")
+    er-button(
+      flat
+      @click="() => { isOpenFormDesktop = false }"
+      data-ga-category="support"
+      data-ga-label="appdecline"
+    )
       | Отменить
 
 mixin address

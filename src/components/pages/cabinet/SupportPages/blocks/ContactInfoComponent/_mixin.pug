@@ -10,7 +10,11 @@ mixin personalManager
     .caption.mb-4
       | Почта:
     .value.mb-16.mb-lg-32
-      a(:href="`mailto:${getManagerInfo.email}`") {{ getManagerInfo.email }}
+      a(
+        :href="`mailto:${getManagerInfo.email}`"
+        data-ga-category="support"
+        data-ga-label="contactsmanageremail"
+      ) {{ getManagerInfo.email }}
 
 
 mixin contactsPhone
@@ -19,7 +23,11 @@ mixin contactsPhone
       .caption.mb-4
         | Федеральный телефон поддержки:
       .value.mb-8
-        a(href="tel:78003339000") +7 800 333 9000
+        a(
+          href="tel:78003339000"
+          data-ga-category="support"
+          data-ga-label="contactsphone"
+        ) +7 800 333 9000
     //-.b-contact-info__contact
       .caption.mb-4
         | Телефон поддержки г. Санкт-Петербург:

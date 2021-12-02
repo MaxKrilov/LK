@@ -15,7 +15,7 @@ div(:class="`${pre}`")
       div(
         v-for="(menuItem, index) in menu",
         :class="`${pre}__left__body-item`",
-        @click="openSubMenu(menuItem, index, $event)",
+        @click="openSubMenu(menuItem, index, $event); dataLayerPush({ category: 'menu', label: menuItem.analyticLabel })",
         :key="index"
       )
         er-tooltip(right)
@@ -38,6 +38,7 @@ div(:class="`${pre}`")
             :class="[`${pre}__left__body-item__sub-item`, { open: subItem.isOpen }]",
             :key="subIndex"
             :to="subItem.url ? subItem.url : '/'"
+            @click="subItem.analyticLabel ? () => { dataLayerPush({ category: subItem.analyticCategory ? subItem.analyticCategory : 'menu', label: subItem.analyticLabel }) } : () => {}"
           )
             .subitem__name(:class="{main: subItem.subname}") {{ subItem.name }}
             span.subitem__subname(v-if="subItem.subname") {{ subItem.subname }}
@@ -83,7 +84,9 @@ div(:class="`${pre}`")
                   | Организация:
                 div.organization.mb-32
                   | {{ legalName }}
-                  .change-org-button(@click="onChangeOrganization") Выбрать другую организацию
+                  .change-org-button(
+                    @click="onChangeOrganization(); dataLayerPush({ category: 'paymentaccount', label: 'otherorganization' })"
+                  ) Выбрать другую организацию
 
                 div.caption-choise.mb-16
                   | Выберите лицевой счёт
@@ -99,7 +102,7 @@ div(:class="`${pre}`")
                       v-for="(account) in accounts"
                       :key="account.billingAccountId"
                       :class="{ 'active': activeBillingAccountId === account.billingAccountId }"
-                      @click="onChangeBillingAccount(account)"
+                      @click="onChangeBillingAccount(account); dataLayerPush({ category: 'paymentaccount', label: 'accountnumber' })"
                     )
                       div.caption.mt-4
                         | Лицевой счет
@@ -107,7 +110,7 @@ div(:class="`${pre}`")
                         er-icon(name="ok")
                         | {{ account.accountNumber }}
                 div.fill-foundation.foundation-pouring &nbsp
-              div.profile.mt-8
+              div.profile.mt-8(@click="dataLayerPush({ category: 'paymentaccount', label: 'profile' })")
                 er-icon.mr-8(name="profile")
                 router-link(to="/lk/profile") Профиль
 
@@ -178,8 +181,13 @@ div(:class="`${pre}`")
               div.caption.mb-4
                 | Эл. почта
               div.value.mb-12
-                a(:href="`mailto:${getManagerInfo.email}`") {{ getManagerInfo.email }}
-              div.support
+                a(
+                  :href="`mailto:${getManagerInfo.email}`"
+                  @click="dataLayerPush({ category: 'personalmanager', label: 'email' })"
+                ) {{ getManagerInfo.email }}
+              div.support(
+                @click="dataLayerPush({ category: 'personalmanager', label: 'support' })"
+              )
                 .mt-24
                   er-icon.mr-8(name="service")
                   router-link(to="/lk/support") Поддержка

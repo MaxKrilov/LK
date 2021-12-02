@@ -1,5 +1,10 @@
 div(:class="`${pre}`")
-  er-page-header(title="Профиль" link-text="Назад в кабинет" backlink="/lk")
+  er-page-header(
+    title="Профиль"
+    link-text="Назад в кабинет"
+    backlink="/lk"
+    @onBack="dataLayerPush({ category: 'profile', label: 'return' })"
+  )
 
   er-row(v-if="serverErrorMessage")
     er-flex {{ serverErrorMessage }}

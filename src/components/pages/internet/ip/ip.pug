@@ -4,10 +4,17 @@
       er-page-header(
         linkText="Назад в Интернет"
         title="Дополнительные IP-адреса"
+        @onBack="dataLayerPush({ category: 'internet', label: 'ipbacktomain' })"
       )
 
   .main-content.main-content--h-paddings.main-content--padding
-    ListPointComponent(v-model="activePoint" :list="points" :isLoading="isLoadingPoints")
+    ListPointComponent(
+      v-model="activePoint"
+      :list="points"
+      :isLoading="isLoadingPoints"
+      data-ga-category="internet"
+      data-ga-label="ipaddress"
+    )
   template(v-if="!isLoadingPoints")
     template(v-if="isLoadingIps")
       .main-content.main-content--h-padding.er-ip-page__loader
@@ -50,7 +57,12 @@
                       template(v-if="isDisconnection && disconnectionProductId === addr.productId")
                         | Удаляем
                       template(v-else)
-                        er-delete-button(@click="deleteIp(addr.productId)" v-show="addr.price")
+                        er-delete-button(
+                          @click="deleteIp(addr.productId)"
+                          v-show="addr.price"
+                          data-ga-category="internet"
+                          data-ga-label="ipdeleteip"
+                        )
                   //- TODO
                   //- tr.t-row2(v-if="addr.subnet")
                   //-   td(colspan="5")
@@ -72,6 +84,8 @@
                     color="blue"
                     @click="onShowAddIpForm"
                     :disabled="isPPPoE"
+                    data-ga-category="internet"
+                    data-ga-label="ipaddip"
                   ) Добавить IP-адрес
               er-row(v-if="isPPPoE")
                 er-flex.d--flex.align-items-center.caption1.error--text(xs12)
@@ -92,6 +106,8 @@
                       value="ipCountList"
                       :items="ipCountList"
                       v-model="addIpCount"
+                      data-ga-category="internet"
+                      data-ga-label="ipaddselectnumber"
                     )
                   er-flex.column.xs12.sm4
                     .column__label
@@ -102,10 +118,18 @@
               er-container.full.container--no-padding
                 er-row
                   er-flex.d--flex.xs12.sm4.md3
-                    er-button(@click="onAddIp" :loading="creatingOrder" :disabled="isDisabledAddButton") Добавить
+                    er-button(
+                      @click="onAddIp"
+                      :loading="creatingOrder"
+                      :disabled="isDisabledAddButton"
+                      data-ga-category="internet"
+                      data-ga-label="ipaddyes"
+                    ) Добавить
                   er-flex.d--flex.xs12.sm4.md3
                     er-button(
                       color="gray"
+                      data-ga-category="internet"
+                      data-ga-label="ipaddcancel"
                       @click="onCancelAddIp"
                     ) Отмена
       ErPlugProduct(
@@ -117,6 +141,12 @@
         v-model="isDisconnection"
         :deleteOrderData="disconnectionOrderData"
         isSendOrder
+        analyticConfirmCategory="internet"
+        analyticCancelCategory="internet"
+        analyticCloseCategory="internet"
+        analyticConfirmLabel="ipdeldisconnect"
+        analyticCancelLabel="ipdelcancel"
+        analyticCloseLabel="ipdelclose"
         )
     er-activation-modal(
       type="question"
@@ -124,6 +154,12 @@
       actionButtonText="Пополнить счет"
       @confirm="$router.push({ name: 'add-funds', params: {sum: - +availableFunds + +ipCost}})"
       cancel-button-text="Закрыть"
+      analyticConfirmCategory="internet"
+      analyticCancelCategory="internet"
+      analyticCloseCategory="internet"
+      analyticConfirmLabel="ipnomoneytopup"
+      analyticCancelLabel="ipnomoneyclose2"
+      analyticCloseLabel="ipnomoneyclose"
     )
       template(slot="description")
         div  Уважаемый клиент, для завершения заказа на лицевом счете не достаточно денежных средств. Пополните лицевой счет и повторите покупку.

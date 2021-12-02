@@ -15,10 +15,11 @@ import Swiper from 'swiper'
 import 'swiper/swiper-bundle.css'
 import { SCREEN_WIDTH } from '@/store/actions/variables'
 import { IPaymentCard, INewCardPayment, IBindCardPayment } from '@/tbapi/payments'
-// import { Cookie } from '@/functions/storage'
 
 import { roundUp } from '@/functions/helper'
 import { BREAKPOINT_MD } from '@/constants/breakpoint'
+
+import { dataLayerPush } from '@/functions/analytics'
 
 @Component<InstanceType<typeof CardPaymentPage>>({
   components: {
@@ -369,6 +370,8 @@ export default class CardPaymentPage extends Vue {
       this.swiperSlider?.slideNext()
     }
   }
+
+  dataLayerPush = dataLayerPush
 
   // Hooks
   mounted () {

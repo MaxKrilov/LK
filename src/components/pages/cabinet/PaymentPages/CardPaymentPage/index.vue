@@ -4,6 +4,7 @@
       linkText="Назад"
       title="Пополнить счёт"
       backlink="/lk/payments"
+      @onBack="dataLayerPush({ category: 'payments', label: 'paybycardreturn' })"
     )
     .card-payment-page__block
       .card-payment-page__block__content.main-content.main-content--h-padding.d--flex.flex-column.flex-lg-row
@@ -48,10 +49,21 @@
                       ErtListItemTitle
                         | Нажмите <kbd>Enter</kbd> для добавления &laquo;{{ searchEmail }}&raquo;
             .card-payment-page__submit.mb-24
-              ErButton(@click="onPayment" data-ga-tag-id="payment") Пополнить
+              ErButton(
+                @click="onPayment"
+                data-ga-tag-id="payment"
+                data-ga-category="payments"
+                data-ga-label="paybycardtopup"
+              ) Пополнить
             .card-payment-page__offer-terms
               | Нажимая на кнопку, Вы принимаете&nbsp;
-              a(:href="offerLink" target="_blank" rel="noopener") условия оплаты и безопасности
+              a(
+                :href="offerLink"
+                target="_blank"
+                rel="noopener"
+                data-ga-category="payments"
+                data-ga-label="paybycardpolicy"
+              ) условия оплаты и безопасности
     //- Диалоговое окно - оплата новой картой
     ErtDialog(
       v-model="isShowConfirmDialogNewCard"
@@ -69,9 +81,20 @@
           | {{ errorText }}
         .card-payment-page__confirm-dialog__actions
           .card-payment-page__confirm-dialog__action.mr-8
-            ErButton(flat @click="() => { isShowConfirmDialogNewCard = false }" :disabled="isPayment") Отмена
+            ErButton(
+              data-ga-category="payments"
+              data-ga-label="paybycardconfirmno"
+              :disabled="isPayment"
+              flat
+              @click="() => { isShowConfirmDialogNewCard = false }"
+            ) Отмена
           .card-payment-page__confirm-dialog__action.ml-8
-            ErButton(:loading="isPayment" @click="onPaymentNewCard") Оплатить
+            ErButton(
+              data-ga-category="payments"
+              data-ga-label="paybycardconfirmyes"
+              :loading="isPayment"
+              @click="onPaymentNewCard"
+            ) Оплатить
 
     ErtDialog(
       v-model="isShowConfirmDialogBindCard"
@@ -89,9 +112,20 @@
           | {{ errorText }}
         .card-payment-page__confirm-dialog__actions
           .card-payment-page__confirm-dialog__action.mr-8
-            ErButton(flat @click="() => { isShowConfirmDialogBindCard = false }" :disabled="isPayment") Отмена
+            ErButton(
+              flat
+              @click="() => { isShowConfirmDialogBindCard = false }"
+              :disabled="isPayment"
+              data-ga-category="payments"
+              data-ga-label="paybycardconfirmno"
+            ) Отмена
           .card-payment-page__confirm-dialog__action.ml-8
-            ErButton(:loading="isPayment" @click="onPaymentBindCard") Оплатить
+            ErButton(
+              :loading="isPayment"
+              @click="onPaymentBindCard"
+              data-ga-category="payments"
+              data-ga-label="paybycardconfirmyes"
+            ) Оплатить
 
 </template>
 

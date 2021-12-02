@@ -13,6 +13,8 @@ import ProfileTable from '../ProfileTable'
 import SearchField from '../SearchField'
 import Alert from '../Alert'
 
+import { dataLayerPush } from '../../../../../../functions/analytics'
+
 export default {
   name: 'accounts-section',
   components: {
@@ -158,7 +160,8 @@ export default {
         message: '',
         id: null
       }
-    }
+    },
+    dataLayerPush
   },
   computed: {
     ...mapState('accounts', [

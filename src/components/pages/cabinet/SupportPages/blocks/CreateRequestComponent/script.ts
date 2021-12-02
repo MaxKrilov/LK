@@ -21,6 +21,8 @@ import { API } from '@/functions/api'
 import moment from 'moment'
 import { ICustomerProduct } from '@/tbapi'
 
+import { dataLayerPush } from '@/functions/analytics'
+
 interface standardSelectItem {
   id?: string | number,
   value?: string
@@ -553,6 +555,8 @@ export default class CreateRequestComponent extends Vue {
     this.terminateFrom = new Date()
     this.technicalRequestTheme = ''
   }
+
+  dataLayerPush = dataLayerPush
 
   mounted () {
     if (this.getActiveBillingAccountNumber) this.firstPersonalAccount = this.getActiveBillingAccountNumber as string

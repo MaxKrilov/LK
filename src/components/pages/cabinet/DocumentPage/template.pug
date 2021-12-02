@@ -4,6 +4,8 @@ div(:class="`${pre}`")
       linkText="Назад на главную"
       title="Документы"
       backlink="/lk"
+      data-ga-category="documents"
+      data-ga-label="return"
     )
 
   div.mt-24.mb-24.mt-md-32.mb-md-32.mt-xl-48.mb-xl-48.main-content.main-content--h-padding
@@ -15,12 +17,16 @@ div(:class="`${pre}`")
     .document-tabs__title(
       @click="onSelectContractTab()"
       v-class-mod="{active: currentDocumentType === CONTRACT_DOCUMENTS}"
+      data-ga-category="documents"
+      data-ga-label="contracts"
     )
       | Контрактные
 
     .document-tabs__title(
       @click="onSelectReportTab()"
       v-class-mod="{active: currentDocumentType === REPORT_DOCUMENTS}"
+      data-ga-category="documents"
+      data-ga-label="reports"
     )
       | Отчётные
 
@@ -108,6 +114,8 @@ div(:class="`${pre}`")
           er-flex.lg4.md6.sm6.d--flex
             button-document(
               caption="Заказать другой документ"
+              data-ga-category="documents"
+              data-ga-label="reportsorderanother"
               @click="onOrderDocumentClick()"
             )
 
@@ -115,6 +123,8 @@ div(:class="`${pre}`")
           er-flex.lg4.md6.sm6.d--flex
             button-document(
               caption="Заказать другой документ"
+              data-ga-category="documents"
+              data-ga-label="reportsorderanother"
               @click="onOrderDocumentClick()"
             )
 

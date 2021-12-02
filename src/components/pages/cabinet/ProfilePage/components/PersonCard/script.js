@@ -1,5 +1,7 @@
 import { mapMutations, mapState } from 'vuex'
 
+import { dataLayerPush } from '../../../../../../functions/analytics'
+
 export default {
   name: 'person-card',
   props: {
@@ -17,7 +19,8 @@ export default {
     handleOpenPasswordChange () {
       this.setModalVisibility(true)
       this.resetChangePassword()
-    }
+    },
+    dataLayerPush
   },
   computed: {
     ...mapState({

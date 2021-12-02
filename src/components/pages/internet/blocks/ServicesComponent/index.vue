@@ -6,7 +6,13 @@
       .count
         | Подключено {{ lengthIsOn }}
     .services-component__list.d--flex.flex-wrap
-      router-link.services-component__service(v-for="service in listService", :key="list.name", :to="service.link")
+      router-link.services-component__service(
+        v-for="service in listService",
+        :key="list.name",
+        :to="service.link"
+        data-ga-category="internet"
+        :data-ga-label="service.label"
+      )
         template(v-if="isLoadingCustomerProduct")
           PuSkeleton
         template(v-else)

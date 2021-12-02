@@ -37,13 +37,11 @@ export default {
     icon: {
       type: String,
       default: 'geolocation'
-    // },
-    // productData: {
-    //   type: Object,
-    //   default: function () {
-    //     return {}
-    //   }
-    }
+    },
+    detailCloseAnalyticCategory: String,
+    detailCloseAnalyticLabel: String,
+    detailOpenAnalyticCategory: String,
+    detailOpenAnalyticLabel: String
   },
 
   data () {

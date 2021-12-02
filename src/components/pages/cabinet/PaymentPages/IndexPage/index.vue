@@ -50,7 +50,7 @@
     ErRow.payment-index-page__buttons.mb-48.mb-md-56
       ErFlex(xs6 lg3)
         .payment-index-page__button(
-          @click="() => { $router.push('/lk/payments/card-payment') }"
+          @click="() => { $router.push('/lk/payments/card-payment'); dataLayerPush({ category: 'payments', label: 'paybycard' }) }"
         )
           .wrapper
             .title Оплата картой
@@ -66,14 +66,14 @@
         )
           template(v-slot:activator="{ on }")
             .payment-index-page__button(v-on="getInvoicePaymentsEvents(on)")
-              .wrapper
+              .wrapper(@click="dataLayerPush({ category: 'payments', label: 'bill' })")
                 .title Счёт на оплату
                 .icon
                   ErtIcon(name="score")
       ErFlex(xs6 lg3)
         .payment-index-page__button(
           :class="{ 'promised-payment': isHasPromisePayment }"
-          @click="() => { $router.push('/lk/payments/promise-payments') }"
+          @click="() => { $router.push('/lk/payments/promise-payments'); dataLayerPush({ category: 'payments', label: 'futurepayment' }) }"
         )
           .wrapper
             .title Обещанный платёж
@@ -91,7 +91,9 @@
               .promised-payment__line
                 .promised-payment__before-line(:style="{ width: `${beforePromisedPayEndLine}%` }")
       ErFlex(xs6 lg3)
-        .payment-index-page__button(@click="() => {$router.push('/lk/support?form=erroneous_payment')  }")
+        .payment-index-page__button(
+          @click="() => {$router.push('/lk/support?form=erroneous_payment'); dataLayerPush({ category: 'payments', label: 'falsepayment' }) }"
+        )
           .wrapper
             .title Заявление об ошибочном платеже
             .icon
@@ -117,7 +119,11 @@
           )
 
     .payment-index-page__navigation.mt-32.mt-md-40
-      ErButton(flat to="/lk/payments/history") История
+      ErButton(
+        flat
+        to="/lk/payments/history"
+        @click="dataLayerPush({ category: 'payments', label: 'history' })"
+      ) История
 
     ErtDialog(
       v-model="isNotAccessInvoicePayment"

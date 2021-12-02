@@ -17,9 +17,16 @@ div.ml-lg-64
             disabled-date="past"
             is-hide-period-block
             format="DD.MM.YY"
+            data-ga-category="internet"
+            data-ga-label="turboperiod"
           )
         .infinity.mb-8
-          er-toggle(view="radio-check" v-model="isInfinity")
+          er-toggle(
+            view="radio-check"
+            v-model="isInfinity"
+            data-ga-category="internet"
+            data-ga-label="turbononstop"
+          )
             template(slot="append-outer")
               span
                 | Бессрочно
@@ -48,8 +55,15 @@ div.ml-lg-64
         @click="createSaleOrder"
         :loading="isLoadingConnect"
         :disabled="!internetSpeed || internetSpeed === currentSpeed"
+        data-ga-category="internet"
+        :data-ga-label="isTurboActivation? 'turboconnect' : 'changespeedchange'"
       )
         | {{ isTurboActivation ? 'Подключить' : 'Изменить' }}
     .action.ml-sm-0
-      er-button(flat @click="closeBlur")
+      er-button(
+        flat
+        @click="closeBlur"
+        data-ga-category="internet"
+        :data-ga-label="isTurboActivation? 'turbocancel' : 'changespeedcancel'"
+      )
         | Отмена

@@ -4,6 +4,8 @@ import { mapGetters, mapMutations } from 'vuex'
 import { GET_ORDERS } from '@/store/actions/orders'
 import { ALL_CITIES, IN_PROGRESS, ALL_STATUSES, CANCELLED, ACCEPTED, WAIT, COMPLITED } from '@/constants/orders'
 
+import { dataLayerPush } from '@/functions/analytics'
+
 export default {
   name: 'orders',
   components: {
@@ -155,7 +157,8 @@ export default {
     },
     ...mapMutations({
       changeLoadingStatus: 'loading/loadingOrders'
-    })
+    }),
+    dataLayerPush
   },
   async created () {
     if (!this.loadingClientInfo) {

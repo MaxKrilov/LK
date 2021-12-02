@@ -7,6 +7,8 @@ import ErDisconnectProduct from '@/components/blocks/ErDisconnectProduct/index.v
 import { SERVICE_DDOS_PROTECT } from '@/constants/internet'
 import { IDeleteOrderData } from '@/constants/er-plug'
 
+import { dataLayerPush } from '@/functions/analytics'
+
 const components = {
   ErActivationModal,
   ErDisconnectProduct,
@@ -125,6 +127,8 @@ export default class DdosPage extends Vue {
       this.$router.push('/lk/internet')
     }
   }
+
+  dataLayerPush = dataLayerPush
 
   mounted () {
     if (this.billingAccountId) {

@@ -1,5 +1,8 @@
 div(:class="`${pre} main-content main-content--top-menu-fix`")
-  er-page-header(title="Защита от DDoS атак")
+  er-page-header(
+    title="Защита от DDoS атак"
+    @onBack="dataLayerPush({ category: 'internet', label: 'ddosgotomain' })"
+  )
   template(v-if="isLoading")
     er-card-products(loading)
     er-card-products(loading)
@@ -12,12 +15,16 @@ div(:class="`${pre} main-content main-content--top-menu-fix`")
           :key="index"
           :price="item.price"
           :date="item.date"
-          )
+          detailCloseAnalyticCategory="internet"
+          detailCloseAnalyticLabel="ddosopenaddress"
+          detailOpenAnalyticCategory="internet"
+          detailOpenAnalyticLabel="ddoscloseaddress"
+        )
           | {{ item.fulladdress}}
 
           template(#slider-content)
             div(:class="`${pre}__slider`")
-              //- заглушка пока оставим 
+              //- заглушка пока оставим
               //- div(:class="`${pre}__slider__date-wrapper`")
               //-   er-icon(name="time")
               //-   div(class="date")
@@ -31,15 +38,33 @@ div(:class="`${pre} main-content main-content--top-menu-fix`")
 
             div(:class="`${pre}__slider-buttons`")
               template(v-if="!item.link")
-                er-button(color="yellow" disabled)
+                er-button(
+                  color="yellow"
+                  disabled
+                  data-ga-category="internet"
+                  data-ga-label="ddossactivating"
+                )
                   div(class="content-text")
                     | Защита в процессе активации
               template(v-else)
-                er-button(color="yellow" :href="item.link" tag="a" target="_blank")
+                er-button(
+                  color="yellow"
+                  :href="item.link"
+                  tag="a"
+                  target="_blank"
+                  data-ga-category="internet"
+                  data-ga-label="ddossactivating"
+                )
                   div(class="content-text")
                     | Настроить защиту
 
-              er-button(flat  @click="deleteDdos(item.deleteData)" :loading="isDisconnection && item.deleteData.productId === deleteData.productId")
+              er-button(
+                flat
+                @click="deleteDdos(item.deleteData)"
+                :loading="isDisconnection && item.deleteData.productId === deleteData.productId"
+                data-ga-category="internet"
+                data-ga-label="ddossstopprotection"
+              )
                 div(class="content-text") Отключить защиту
 
         div(:class="`${pre}__total`")
@@ -48,7 +73,12 @@ div(:class="`${pre} main-content main-content--top-menu-fix`")
             div(:class="`${pre}__h4`") {{ amountPrice }}
             span(class="units") &nbsp₽/месяц
     .button(v-if="!isShowConnection && freePoints.length")
-      er-button(color="blue" @click="isShowConnection=true") Подключить Защиту от DDoS атак
+      er-button(
+        color="blue"
+        @click="isShowConnection = true"
+        data-ga-category="internet"
+        data-ga-label="ddosstart"
+      ) Подключить Защиту от DDoS атак
 
   PlugDdos(v-if="isShowConnection" :points="freePoints" @cancel="cancelConnection")
   ErDisconnectProduct(

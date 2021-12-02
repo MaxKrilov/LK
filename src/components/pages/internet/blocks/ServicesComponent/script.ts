@@ -18,9 +18,9 @@ export default class ServicesComponent extends Vue {
   readonly isLoadingCustomerProduct!: boolean
   // Computed
   get listService () {
-    const result = [
-      { icon: 'stat', name: 'Статистика', isOn: true, link: '/lk/internet/statistic', code: 'STATISTIC' },
-      { icon: 'reload', name: 'Обратные зоны', isOn: true, link: '/lk/internet/reverce-zones', code: 'REVERCEZONE' }
+    const result: Record<string, any>[] = [
+      { icon: 'stat', name: 'Статистика', isOn: true, link: '/lk/internet/statistic', code: 'STATISTIC', label: 'servicestat' },
+      { icon: 'reload', name: 'Обратные зоны', isOn: true, link: '/lk/internet/reverce-zones', code: 'REVERCEZONE', label: 'servicebackzones' }
     ]
     const additionalServices = [
       SERVICE_CONTENT_FILTER,
@@ -29,9 +29,9 @@ export default class ServicesComponent extends Vue {
     ]
     if (this.customerProduct === null) {
       result.push(
-        { icon: 'filter', name: 'Контент-фильтрация', isOn: false, link: '/lk/internet/content-filter', code: SERVICE_CONTENT_FILTER },
-        { icon: 'deffence_ddos', name: 'Защита от DDoS-атак', isOn: false, link: '/lk/internet/', code: SERVICE_DDOS_PROTECT },
-        { icon: 'add_ip', name: 'Дополнитель. IP адреса', isOn: false, link: '/lk/internet/ip', code: SERVICE_ADDITIONAL_IP }
+        { icon: 'filter', name: 'Контент-фильтрация', isOn: false, link: '/lk/internet/content-filter', code: SERVICE_CONTENT_FILTER, label: 'servicecontentfilter' },
+        { icon: 'deffence_ddos', name: 'Защита от DDoS-атак', isOn: false, link: '/lk/internet/', code: SERVICE_DDOS_PROTECT, label: 'serviceadip' },
+        { icon: 'add_ip', name: 'Дополнитель. IP адреса', isOn: false, link: '/lk/internet/ip', code: SERVICE_ADDITIONAL_IP, label: 'serviceddosprotect' }
       )
       return result
     }
@@ -55,11 +55,11 @@ export default class ServicesComponent extends Vue {
   getIconNNameByService (service: string) {
     switch (service) {
       case SERVICE_DDOS_PROTECT:
-        return { icon: 'deffence_ddos', name: 'Защита от DDoS-атак', link: '/lk/internet/ddos' }
+        return { icon: 'deffence_ddos', name: 'Защита от DDoS-атак', link: '/lk/internet/ddos', label: 'serviceddosprotect' }
       case SERVICE_CONTENT_FILTER:
-        return { icon: 'filter', name: 'Контент-фильтрация', link: '/lk/internet/content-filter' }
+        return { icon: 'filter', name: 'Контент-фильтрация', link: '/lk/internet/content-filter', label: 'servicecontentfilter' }
       case SERVICE_ADDITIONAL_IP:
-        return { icon: 'add_ip', name: 'Дополнитель. IP адреса', link: '/lk/internet/ip' }
+        return { icon: 'add_ip', name: 'Дополнитель. IP адреса', link: '/lk/internet/ip', label: 'serviceadip' }
       default:
         return undefined
     }

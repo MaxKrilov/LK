@@ -9,6 +9,8 @@ import ModalAccountsInfo from '../../components/AccountsInfo/index'
 import { scrollXTo, scrollXToStart } from '@/functions/helper'
 import ResponsiveMixin from '@/mixins/ResponsiveMixin'
 
+import { dataLayerPush } from '../../../../../../functions/analytics'
+
 const TAB_NAME_PERSON = 'person'
 const TAB_NAME_ORG = 'org'
 const SCROLL_SPEED = 10
@@ -68,7 +70,8 @@ export default {
             scrollXToStart(target, target.scrollLeft, SCROLL_SPEED, SCROLL_STEP)
         }
       }
-    }
+    },
+    dataLayerPush
   },
   mounted () {
     this.pullAvailableProducts()

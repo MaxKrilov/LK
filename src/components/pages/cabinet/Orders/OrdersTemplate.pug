@@ -1,10 +1,21 @@
 div(:class="`${pre}`")
-  er-page-header(title="Заказы").main-content.main-content--top-menu-fix.main-content--h-padding.main-content--top-padding
+  er-page-header.main-content.main-content--top-menu-fix.main-content--h-padding.main-content--top-padding(
+    title="Заказы"
+    @onBack="dataLayerPush({ category: 'orders', label: 'return' })"
+  )
   div.wide-content
     div(:class="[{'orders__filter-wrapper': !isFiltersVisible}, {'main-content': !isFiltersVisible}]")
       er-filter(v-model="isFiltersVisible")
-        template(v-slot:selected-filters v-if="selectedFilters") {{ selectedFilters }}
-        template(v-slot:title) Фильтровать заказы
+        template(v-slot:selected-filters v-if="selectedFilters")
+          span(
+            data-ga-category="orders"
+            data-ga-label="active"
+          ) {{ selectedFilters }}
+        template(v-slot:title)
+          span(
+            data-ga-category="orders"
+            data-ga-label="active"
+          ) Фильтровать заказы
         template(v-slot:filters )
           div(class="orders__filters")
             .orders__select
@@ -13,20 +24,28 @@ div(:class="`${pre}`")
                 :items="statuses"
                 placeholder="Статус заказа"
                 v-model="selectedStatus"
+                data-ga-category="orders"
+                data-ga-label="sortbystatus"
               )
             .orders__select
               er-select(
                 :items="cities"
                 placeholder="Город"
                 v-model="selectedCity"
+                data-ga-category="orders"
+                data-ga-label="sortbycity"
               )
 
   div(v-for="(card, index) in orders" :key="index").main-content.main-content--h-padding
     order-card(:card='card')
   div(v-if="!loadingOrders && !getListOrders[0] && !isEndOfList").main-content.main-content--h-padding
-    .orders__button-wrapper  
-      .orders__button  
-        er-button(@click="loadMore") Загрузить еще
+    .orders__button-wrapper
+      .orders__button
+        er-button(
+          @click="loadMore"
+          data-ga-category="orders"
+          data-ga-label="openmore"
+        ) Загрузить еще
   transition(name="no-orders")
     .main-content.main-content--h-padding
       order-card(v-if="loadingOrders && !getListOrders[0]")
@@ -34,9 +53,9 @@ div(:class="`${pre}`")
     div(v-if="!loadingOrders && isNoOrders" class="orders__no" ).main-content.main-content--h-padding
       er-icon(name="no")
       div У вас нет активных заказов
-//- TO DO 
+//- TO DO
 //- добавить лоадер при отмене заказа
 //-  при фильтрации по статусам, если не дождаться запроса, и послать новый, теряется имитация загрузки
 //- при развертке заказа, если он содержит несколько точе, развертываются все. надо исправить
 //-
- 
+

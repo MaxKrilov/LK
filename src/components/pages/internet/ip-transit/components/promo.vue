@@ -10,6 +10,8 @@
       banner='ip-transit-promo.png'
       :featureList="featureList"
       linkToConnect="https://b2b.domru.ru/products/internet"
+      analyticConnectCategory="internet"
+      analyticConnectLabel="transitconnect"
     )
 </template>
 

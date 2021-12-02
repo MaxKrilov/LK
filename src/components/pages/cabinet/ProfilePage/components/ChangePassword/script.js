@@ -3,6 +3,8 @@ import { mapActions, mapState, mapGetters, mapMutations } from 'vuex'
 import { PATTERN_LETTERS, PATTERN_HAS_CYRILLIC_LETTERS, PATTERN_NUMBERS, PATTERN_SYMBOLS, PATTERN_BAD_SYMBOLS, PATTERN_PASSWORD } from '@/constants/regexp'
 import Responsive from '@/mixins/ResponsiveMixin'
 
+import { dataLayerPush } from '../../../../../../functions/analytics'
+
 export default {
   name: 'change-password',
   mixins: [ Responsive ],
@@ -53,7 +55,8 @@ export default {
         return 'Подтвердите пароль'
       }
       return this.isConfirmCorrect || 'Подтверждение не совпадает с паролем'
-    }
+    },
+    dataLayerPush
   },
   computed: {
     ...mapState('modal',

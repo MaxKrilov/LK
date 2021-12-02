@@ -21,21 +21,35 @@ div(class="er-document-width-mobile")
     template(v-slot:body)
       .just-wrap(v-if="userListLoadingDate")
         .er-document__text.d-sm--none
-          div.caption1 Вы обязаны обновлять каждый квартал список пользователей во исполнение требований 
-            a(href="http://base.garant.ru/12155536/" target="_blank").link Правил оказания услуг связи по передаче данных
+          div.caption1 Вы обязаны обновлять каждый квартал список пользователей во исполнение требований
+            a.link(
+              href="http://base.garant.ru/12155536/"
+              target="_blank"
+              data-ga-category="documents"
+              data-ga-label="contractsrules"
+            ) Правил оказания услуг связи по передаче данных
             div(v-if="dateOfUpdate").mt-8 Обновить после {{ dateOfUpdate }}
 
       .er-document__text(v-else)
         div.caption1 Вы обязаны предоставить список пользователей во исполнение требований
-          a(href="http://base.garant.ru/12155536/" target="_blank").link Правил оказания услуг связи по передаче данных 
+          a(href="http://base.garant.ru/12155536/" target="_blank").link Правил оказания услуг связи по передаче данных
 
     template(v-slot:footer)
       .signed(v-if="userListLoadingDate")
         er-button(:color="'blue'" @click="onClickQuestion") Обновить
       .not-signed(v-else)
         .er-document__download-template
-          a(href="https://beta-lkb2b.domru.ru/files/template-user-list.csv" ).link.link--dashed--black
+          a.link.link--dashed--black(
+            data-ga-category="documents"
+            data-ga-label="contractssample"
+            href="https://beta-lkb2b.domru.ru/files/template-user-list.csv"
+          )
             | Скачать шаблон
-        er-button(:color="'blue'" @click="onClickQuestion") Загрузить
-  
+        er-button(
+          :color="'blue'"
+          data-ga-category="documents"
+          data-ga-label="contractsdownload"
+          @click="onClickQuestion"
+        ) Загрузить
+
   UploadUserlistDialog(:active="openDialog" @close="openDialog = false")

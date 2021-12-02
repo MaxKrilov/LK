@@ -13,14 +13,23 @@
           //- Загрузить документ на устройство
           er-tooltip(left)
             template(v-slot:activator="{ on }")
-              button.mr-16(@click="() => { downloadFileOnDevice() }" v-if="isExistsFile")
+              button.mr-16(
+                @click="() => { downloadFileOnDevice() }"
+                v-if="isExistsFile"
+                data-ga-category="internet"
+                data-ga-label="connectionsetup"
+              )
                 span(v-on="on")
                   er-icon(name="download")
             span Загрузить
           //- Закрыть просмотрщик
           er-tooltip(left)
             template(v-slot:activator="{ on }")
-              button.close(@click="() => { internalValue = false }")
+              button.close(
+                @click="() => { internalValue = false }"
+                data-ga-category="internet"
+                data-ga-label="connectionsetup"
+              )
                 span(v-on="on")
                   er-icon(name="close")
             span Закрыть

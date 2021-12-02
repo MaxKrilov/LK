@@ -18,6 +18,60 @@ export default class ErPlugMixin extends Vue {
   @Prop({ type: Boolean, default: false }) readonly isUpdate!: boolean
   @Prop({ type: String, default: 'Подключить' }) readonly plugButtonName!: string
 
+  @Prop({ type: String })
+  readonly analyticConfirmCategory!: string
+
+  @Prop({ type: String })
+  readonly analyticConfirmLabel!: string
+
+  @Prop({ type: String })
+  readonly analyticCancelCategory!: string
+
+  @Prop({ type: String })
+  readonly analyticCancelLabel!: string
+
+  @Prop({ type: String })
+  readonly analyticCloseCategory!: string
+
+  @Prop({ type: String })
+  readonly analyticCloseLabel!: string
+
+  @Prop({ type: String })
+  readonly analyticSuccessConfirmCategory!: string
+
+  @Prop({ type: String })
+  readonly analyticSuccessConfirmLabel!: string
+
+  @Prop({ type: String })
+  readonly analyticSuccessCancelCategory!: string
+
+  @Prop({ type: String })
+  readonly analyticSuccessCancelLabel!: string
+
+  @Prop({ type: String })
+  readonly analyticSuccessCloseCategory!: string
+
+  @Prop({ type: String })
+  readonly analyticSuccessCloseLabel!: string
+
+  @Prop({ type: String })
+  readonly analyticErrorConfirmCategory!: string
+
+  @Prop({ type: String })
+  readonly analyticErrorConfirmLabel!: string
+
+  @Prop({ type: String })
+  readonly analyticErrorCancelCategory!: string
+
+  @Prop({ type: String })
+  readonly analyticErrorCancelLabel!: string
+
+  @Prop({ type: String })
+  readonly analyticErrorCloseCategory!: string
+
+  @Prop({ type: String })
+  readonly analyticErrorCloseLabel!: string
+
   isShowRequestModal: boolean = false
   isShowSuccessRequestModal: boolean = false
   isShowErrorRequestModal: boolean = false

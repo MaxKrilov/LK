@@ -13,6 +13,8 @@ import ErDocumentViewer from '@/components/blocks/ErDocumentViewer/index.vue'
 
 import { head } from 'lodash'
 
+import { dataLayerPush } from '@/functions/analytics'
+
 interface IInvoicePayment {
   id: string,
   bucket: string,
@@ -49,7 +51,7 @@ interface IInvoicePayment {
   },
   watch: {
     isHasPromisePayment (val) {
-      val && (this.trackerInterval = setInterval(() => {
+      val && (this.trackerInterval = window.setInterval(() => {
         this.trackerValue = this.trackerValue === 1 ? 2 : 1
       }, 1000 * 60))
     },
@@ -158,8 +160,10 @@ export default class PaymentIndexPage extends Vue {
     return on
   }
 
+  dataLayerPush = dataLayerPush
+
   mounted () {
-    this.isHasPromisePayment && (this.trackerInterval = setInterval(() => {
+    this.isHasPromisePayment && (this.trackerInterval = window.setInterval(() => {
       this.trackerValue = this.trackerValue === 1 ? 2 : 1
     }, 1000 * 60))
 

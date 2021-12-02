@@ -32,11 +32,15 @@ common-document(
       er-button.er-button--accept(
         color="blue"
         pre-icon="doc_edit"
+        data-ga-category="documents"
+        data-ga-label="actppaccept"
         @click="() => { actSigningConfirm(1) }"
       )
         | Акцептовать
       er-button(
         :color="'gray'"
+        data-ga-category="documents"
+        data-ga-label="actppdecline"
         @click="() => { actSigningConfirm(0) }"
       ).er-button--decline
         | Отказаться
@@ -145,6 +149,12 @@ common-document(
         :action-button-text="actConfirmButton"
         @confirm="actSigning"
         :is-loading-confirm="isActSigning"
+        analyticConfirmCategory="documents"
+        analyticCancelCategory="documents"
+        analyticCloseCategory="documents"
+        :analyticConfirmLabel="actStatus === 0 ? 'actppacceptnodecline' : 'actppacceptyesaccept'"
+        :analyticCancelLabel="actStatus === 0 ? 'actppacceptnocancel' : 'actppacceptyescancel'"
+        :analyticCloseLabel="actStatus === 0 ? 'actppacceptnoclose' : 'actppacceptyesaccept'"
       )
         template(v-slot:description)
           ErtForm(ref="act-form" v-if="actStatus === 0")

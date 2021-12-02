@@ -6,9 +6,15 @@ er-filter-container(
     slot="selected-filters"
     @click="onShowFilters"
   ).er-contract-filter__current
-    span.er-filter-container__active-filter.mr-16
+    span.er-filter-container__active-filter.mr-16(
+      data-ga-category="documents"
+      data-ga-label="all"
+    )
       | {{ filterTypes[internalFilterType] }}
-    span.er-filter-container__active-filter
+    span.er-filter-container__active-filter(
+      data-ga-category="documents"
+      data-ga-label="dates"
+    )
       | {{ getFormatPeriod }}
 
   div(slot="title")
@@ -30,13 +36,21 @@ er-filter-container(
                     :id="'id-filter-type-' + idx"
                     :modelValue="internalFilterType"
                     v-model="internalFilterType"
+                    data-ga-category="documents"
+                    data-ga-label="datesfilter"
                   )
                   label(:for="'id-filter-type-' + idx").er-toggle__custom-label
                     | {{ title }}
 
           er-flex.r-offset-sm6.r-offset-md0.md5.lg4
             er-filter-group(title="Период")
-              er-date-picker(v-model="internalPeriod" disabled-date="future")
+              er-date-picker(
+                v-model="internalPeriod"
+                disabled-date="future"
+                data-ga-category="documents"
+                data-ga-label="docsfilter"
+                hasAnalytics
+              )
 
           er-flex.md1.lg3.d--flex.align-items-center
             er-filter-close(@click="isFiltersVisible=false")

@@ -1,6 +1,7 @@
 import { mapGetters } from 'vuex'
 import { logError } from '@/functions/logging.ts'
 import NotificationItem from './components/NotificationItem/index'
+import { dataLayerPush } from '../../../../../functions/analytics'
 
 export default {
   name: 'notification-panel',
@@ -30,6 +31,7 @@ export default {
         name: 'survey',
         params: { id }
       }).catch(err => { logError(err) })
-    }
+    },
+    dataLayerPush
   }
 }

@@ -4,6 +4,8 @@
       linkText="Назад"
       title="Статус платежа"
       backlink="/lk/payments"
+      data-ga-category="payments"
+      data-ga-label="paybycardstatusgotopayments"
     )
 
     .payment-result-page__row.mb-32.mb-md-40
@@ -30,7 +32,11 @@
             span Спросить в чате
       template(v-if="status === 1")
         .payment-result-page__action
-          ErButton(to="/lk/payments") В платежи
+          ErButton(
+            to="/lk/payments"
+            data-ga-category="payments"
+            data-ga-label="paybycardstatusreturn"
+          ) В платежи
       template(v-if="status === 2")
 </template>
 

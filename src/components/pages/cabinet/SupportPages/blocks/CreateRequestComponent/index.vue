@@ -9,7 +9,12 @@
       )
         template(v-slot:activator="{ on }")
           .create-request-component__button
-            er-button(pre-icon="add" v-on="on") Создать заявку
+            er-button(
+              pre-icon="add"
+              v-on="on"
+              data-ga-category="support"
+              data-ga-label="makeapplication"
+            ) Создать заявку
             slot(name="after_create_button")
 
         .create-request-component__dialog

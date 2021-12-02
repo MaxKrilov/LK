@@ -5,6 +5,7 @@ import { getFirstElement, uniq } from '@/functions/helper'
 import { API } from '@/functions/api'
 import { mapGetters, mapState } from 'vuex'
 import { ICustomerProduct, ILocationOfferInfo } from '@/tbapi'
+import { dataLayerPush } from '@/functions/analytics'
 
 export interface iPointItem {
   id: string | number,
@@ -146,7 +147,10 @@ export default class InternetTemplate extends Vue {
     }, [
       h('er-page-header', {
         staticClass: 'main-content main-content--padding pb-0',
-        props: { title: this.computedPageName }
+        props: { title: this.computedPageName },
+        on: {
+          onBack: () => { dataLayerPush({ category: 'internet', label: 'return' }) }
+        }
       }),
       h('list-point-component', {
         staticClass: 'main-content main-content--padding py-0',
