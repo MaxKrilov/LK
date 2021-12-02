@@ -295,6 +295,9 @@ export default class ErtEcommerceCreateClient extends Vue {
           } catch (e) {
             logError(e)
             this.isErrorAddress = true
+
+            reject()
+            return
           }
         }
 
