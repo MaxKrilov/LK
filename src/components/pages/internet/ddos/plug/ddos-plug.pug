@@ -1,7 +1,12 @@
 div(:class="`${pre}`").main-content--padding
   div.mb-md-48.mb-40 Защита от DDoS атак подключается на месяц. Если вам нужно будет отключить сервис, вы можете его отключить и вам будет произведён перерасчет в соответствии со сроком использования.
   h2.mb-md-32.mb-24 Выберите адрес подключения
-  ListPointComponent(v-model="activePoint" :list="points")
+  ListPointComponent(
+    v-model="activePoint"
+    :list="points"
+    data-ga-category="internet"
+    data-ga-label="ddosselectaddress"
+  )
   er-preloader(:active="isLoadingConnection" icon icon-type="2")
 
 
@@ -17,16 +22,24 @@ div(:class="`${pre}`").main-content--padding
         color="blue"
         :class="`${pre}__connect-button`"
         :loading="creatingOrder"
+        data-ga-category="internet"
+        data-ga-label="ddosmakeorder"
         @click="plugDdos"
         ) Сформировать заявку
-      er-button(flat :class="`${pre}__cancel-button`" @click="$emit('cancel')") Отменить
-    template(v-if="prices.length")  
+      er-button(
+        flat
+        :class="`${pre}__cancel-button`"
+        data-ga-category="internet"
+        data-ga-label="ddoscancel"
+        @click="$emit('cancel')"
+      ) Отменить
+    template(v-if="prices.length")
       h3(:class="`${pre}__price-title`") Примерная стоимость защиты
       div(:class="`${pre}__prices-table`")
         .head.position
           div Скорость интернета:
           div Примерная стоимость:
-        
+
         div(v-for="price in prices").row.position
           div.price-cel
             h4 до {{ price.speed }}
@@ -45,6 +58,16 @@ div(:class="`${pre}`").main-content--padding
     :isLoadingConfirm="sendingOrder"
     actionButtonText="Активировать"
     isOffer="internet"
+    analyticConfirmCategory="internet"
+    analyticCancelCategory="internet"
+    analyticCloseCategory="internet"
+    analyticAcceptCategory="internet"
+    analyticOfferCategory="internet"
+    analyticConfirmLabel="ddosyesactivate "
+    analyticCancelLabel="ddosyescancel"
+    analyticCloseLabel="ddosyesclose"
+    analyticAcceptLabel="ddossyescheck"
+    analyticOfferLabel="ddosyesoffer"
   )
     template(slot="description")
       .caption(v-if="fullAddress") По адресу:{{ fullAddress }}
@@ -75,14 +98,14 @@ div(:class="`${pre}`").main-content--padding
 
 
   er-activation-modal(
-  type="question"
-  v-model="isShowMoneyModal"
-  actionButtonText="Пополнить счет"
-  @confirm="$router.push({ name: 'add-funds', params: {sum: - availableFunds +  ddosPrice}})"
-  cancel-button-text="Закрыть"
+    type="question"
+    v-model="isShowMoneyModal"
+    actionButtonText="Пополнить счет"
+    @confirm="$router.push({ name: 'add-funds', params: {sum: - availableFunds +  ddosPrice}})"
+    cancel-button-text="Закрыть"
   )
     template(slot="description")
-      div  Уважаемый клиент, для завершения заказа на лицевом счете не достаточно денежных средств. Пополните лицевой счет и повторите покупку. 
+      div  Уважаемый клиент, для завершения заказа на лицевом счете не достаточно денежных средств. Пополните лицевой счет и повторите покупку.
       br
       div  Стоимость подключения DDoS: <b>{{ ddosPrice }} </b> руб.
-      div  Ваши доступные средства: <b>{{ availableFunds }}</b> руб. 
+      div  Ваши доступные средства: <b>{{ availableFunds }}</b> руб.

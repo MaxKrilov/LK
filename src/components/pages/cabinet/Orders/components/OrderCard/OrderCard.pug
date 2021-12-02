@@ -32,8 +32,12 @@ div(:class="['order-card', status.style]")
       skeleton(:loading="loadingOrders" :width="'100px'")
         h4(class="order-card__address__content") {{ item.fullAddress }}
       div(class="order-card__services-wrapper")
-        div(:class="['order-card__services-button', { 'order-card__services-button_active': canShowMoreServices(item) }, { 'order-card__services-button_closed': !isShowOrder }]"
-            @click='isShowOrder = canShowMoreServices(item) && !isShowOrder' )
+        div(
+          :class="['order-card__services-button', { 'order-card__services-button_active': canShowMoreServices(item) }, { 'order-card__services-button_closed': !isShowOrder }]"
+          @click='isShowOrder = canShowMoreServices(item) && !isShowOrder'
+          data-ga-category="orders"
+          :data-ga-label="isShowOrder ? 'lessdetailes' : 'moredetailes'"
+        )
           er-icon(name="corner_up" width="8px")
           span(class="text") Заказ:
         skeleton(:loading="loadingOrders" :width="'100px'")

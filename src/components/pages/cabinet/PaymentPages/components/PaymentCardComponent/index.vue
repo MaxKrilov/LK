@@ -19,9 +19,15 @@
                   hideDetails
                 )
                   template(v-slot:label)
-                    .remember-card__label
+                    .remember-card__label(
+                      data-ga-category="payments"
+                      data-ga-label="paybycardsave"
+                    )
                       | Запомнить карту
-                    .remember-card__hint.ml-8
+                    .remember-card__hint.ml-8(
+                      data-ga-category="payments"
+                      data-ga-label="paybycardquestion"
+                    )
                       ErHint
                         div(v-html="rememberCardHTML")
             .prev
@@ -41,7 +47,10 @@
               .header
                 .logo
                   img(:src="require(`@/assets/images/payment_card/${definePaymentSystem}.png`)")
-                .autopay
+                .autopay(
+                  data-ga-category="payments"
+                  data-ga-label="paybycardautopayment"
+                )
                   ErtCheckbox(
                     hideDetails
                     :value="isAutoPay"
@@ -52,7 +61,10 @@
                       .autopay__label.d--flex.justify-content-between.align-items-center
                         .autopay__label__title
                           | Автоплатёж
-                        .autopay__label__hint.ml-16
+                        .autopay__label__hint.ml-16(
+                          data-ga-category="payments"
+                          data-ga-label="paybycardquestion2"
+                        )
                           ErHint
                             div(v-html="autoPayHTML")
               .card-number
@@ -68,7 +80,11 @@
                       span
                 span {{ getLastDigitsCardNumber }}
               .actions
-                button.remove(@click="() => { isShowDialogRemoveCard = true }")
+                button.remove(
+                  @click="() => { isShowDialogRemoveCard = true }"
+                  data-ga-category="payments"
+                  data-ga-label="paybycarddelete"
+                )
                   ErtIcon(name="trashbox")
                   span Удалить
               .background(:style="{ backgroundImage: `url(${require(`@/assets/images/payment_card/${definePaymentSystem}.png`)})` }")

@@ -9,6 +9,8 @@ import { StoreGetter } from '@/functions/store'
 import { CHARS, PRODUCT_CODE } from '@/constants/ip-transit'
 import ErPlugProduct from '@/components/blocks/ErPlugProduct/index.vue'
 
+import { dataLayerPush } from '@/functions/analytics'
+
 interface ISimplePoint {
   id: string
   bpi: string
@@ -109,7 +111,7 @@ export default class IpTransitPage extends BillingAccountMixin {
     })
   }
 
-  onCloseSuccess () {
+  onCloseSuccess () {}
 
-  }
+  dataLayerPush = dataLayerPush
 }

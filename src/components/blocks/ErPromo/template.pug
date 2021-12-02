@@ -37,5 +37,7 @@ div(:class="`${pre}`")
       :target="linkToConnect ? '_blank' : null"
       :loading="isLoadingConnectButton"
       :data-ga-tag-id="buttonId"
+      :data-ga-category="analyticConnectCategory"
+      :data-ga-label="analyticConnectLabel"
     ) {{ plugText }}
     slot(name="extraButtons")

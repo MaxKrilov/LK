@@ -16,6 +16,8 @@ import { FETCH_ACTIVE_REQUEST_LIST } from '../../../../../store/actions/request'
 
 import uniq from 'lodash/uniq'
 
+import { dataLayerPush } from '../../../../../functions/analytics'
+
 const TYPE_FILTER_REQUEST_ALL = 'all'
 const TYPE_FILTER_REQUEST_ACTIVE = 'active'
 
@@ -90,10 +92,10 @@ export default class SupportIndexPage extends Vue {
    * @type {Array<{id: <string>, name: <string>}>}
    */
   listHeadTitle = [
-    { id: 'request', name: 'Заявка' },
-    { id: 'address', name: 'Адрес' },
-    { id: 'status', name: 'Статус' },
-    { id: 'date', name: 'Дата обновления' }
+    { id: 'request', name: 'Заявка', label: 'sortbynumber' },
+    { id: 'address', name: 'Адрес', label: 'sortbyaddress' },
+    { id: 'status', name: 'Статус', label: 'sortbystatus' },
+    { id: 'date', name: 'Дата обновления', label: 'sortbydate' }
   ]
   /**
    * Поле, по которому следует сортировать
@@ -411,4 +413,6 @@ export default class SupportIndexPage extends Vue {
   mounted () {
     this.getInstructions()
   }
+
+  dataLayerPush = dataLayerPush
 }

@@ -1,6 +1,8 @@
 .notification-panel
     .notification-panel__head
-      .notification-panel__title(@click="$emit('close')")
+      .notification-panel__title(
+        @click="$emit('close'); dataLayerPush({ category: 'notification', label: 'arrow' })"
+      )
         template
           er-icon(name="arrow_r").er-icon--arrow_r
           er-icon(name="corner_up").er-icon--corner_up

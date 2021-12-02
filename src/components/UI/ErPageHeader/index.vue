@@ -2,7 +2,10 @@
 .page-header
   .page-header__body
     er-back(:title="linkText", :to="backlink")
-    er-page-title(class="page-header__title" @click="$router.push(backlink)") {{ title }}
+    er-page-title(
+      class="page-header__title"
+      @click="$router.push(backlink); $emit('onBack')"
+    ) {{ title }}
 
   .page-header__info
     slot(name="info")

@@ -49,6 +49,7 @@ import {
 import { GET_CHAT_TOKEN } from '@/store/actions/chat'
 
 import { GET_REQUEST } from '@/store/actions/request'
+import { dataLayerPush } from '@/functions/analytics'
 
 const USE_SSO_AUTH = process.env.VUE_APP_USE_SSO_AUTH !== 'no'
 
@@ -140,7 +141,11 @@ export default {
     if (!this.isManager && !this.forwardStatusResult?.status) {
       this.onHandleInaction()
       document.addEventListener('visibilitychange', this.handleVisibilityChange, false)
+      document.addEventListener('click', this.onDataLayerClickHandler)
     }
+  },
+  beforeDestroy () {
+    document.removeEventListener('click', this.onDataLayerClickHandler)
   },
   methods: {
     ...mapActions({
@@ -242,6 +247,12 @@ export default {
         window.hasOwnProperty('gtag') && window.gtag('config', 'UA-42532108-4', { 'user_id': userId })
         window.hasOwnProperty('ga') && window.ga('set', 'userId', userId)
       }
+    },
+    onDataLayerClickHandler (e) {
+      const element = e.target
+      const rootElement = element.closest('[data-ga-label]')
+      if (rootElement == null) return
+      dataLayerPush({ category: rootElement.dataset.gaCategory, label: rootElement.dataset.gaLabel })
     }
   },
   computed: {

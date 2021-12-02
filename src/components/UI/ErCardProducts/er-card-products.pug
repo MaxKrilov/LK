@@ -2,7 +2,7 @@ div(:class="`${pre}`")
   div(
     :class="[{ stopped: stopped, active: isOpen }, `${pre}__point-item`]",
     @click="!inTheProcessOfActivation && (isOpen = !isOpen && !loading)"
-    )
+  )
     div(:class="`${pre}__point-content`")
       slot(name="content")
         div(:class="`${pre}__point-icon`")
@@ -15,7 +15,11 @@ div(:class="`${pre}`")
               div(:class="`${pre}__switcher`")
                 er-icon(name="corner_down" :class="['icon', {'arrow-up': isOpen}]")
                 div(:class="[`${pre}__service-count`, {[`${pre}__service-count_active`]: isOpen }]")
-                  span(class="wide")
+                  span(
+                    class="wide"
+                    :data-ga-category="isOpen ? detailOpenAnalyticCategory : detailCloseAnalyticCategory"
+                    :data-ga-label="isOpen ? detailOpenAnalyticLabel : detailCloseAnalyticLabel"
+                  )
                     template(v-if="isOpen")
                       | Свернуть
                     template(v-else-if="stopped")

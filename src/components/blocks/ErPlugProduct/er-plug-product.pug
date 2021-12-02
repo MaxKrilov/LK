@@ -11,7 +11,11 @@ div
           .title
             h3 Представьтесь, пожалуйста
             .close
-              button(@click="closeCreatingRequest")
+              button(
+                @click="closeCreatingRequest"
+                :data-ga-category="analyticCloseCategory"
+                :data-ga-label="analyticCloseLabel"
+              )
                 er-icon(name="close")
           .wrapper.mt-8
             .round
@@ -37,8 +41,19 @@ div
           .caption2.mt-32 Нажимая на кнопку, Вы соглашаетесь на обработку данных
         .footer
           .buttons
-            er-button(@click="sendRequest" :disabled="isValidateRequestForm" :loading="isCreatingRequest") Отправить
-            er-button(flat @click="closeCreatingRequest") Отменить
+            er-button(
+              @click="sendRequest"
+              :disabled="isValidateRequestForm"
+              :loading="isCreatingRequest"
+              :data-ga-category="analyticConfirmCategory"
+              :data-ga-label="analyticConfirmLabel"
+            ) Отправить
+            er-button(
+              flat
+              @click="closeCreatingRequest"
+              :data-ga-category="analyticCancelCategory"
+              :data-ga-label="analyticCancelLabel"
+            ) Отменить
 
   er-activation-modal(
     type="success"

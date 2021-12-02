@@ -23,7 +23,9 @@ export default {
     },
     linkToConnect: String,
     isLoadingConnectButton: Boolean,
-    onlyFeature: Boolean
+    onlyFeature: Boolean,
+    analyticConnectCategory: String,
+    analyticConnectLabel: String
   },
   data: () => ({
     pre: 'promo-component'

@@ -36,7 +36,8 @@ export default {
       default: 'DD.MM.YYYY'
     },
     isShowRequiredLabel: Boolean,
-    isHidePeriodBlock: Boolean
+    isHidePeriodBlock: Boolean,
+    hasAnalytics: Boolean
   },
   computed: {
     valueForTextInput () {
@@ -93,7 +94,9 @@ export default {
           [
             this.$createElement('a', {
               attrs: {
-                'data-type': 'calendar'
+                'data-type': 'calendar',
+                'data-ga-category': this.hasAnalytics ? 'documents' : null,
+                'data-ga-label': this.hasAnalytics ? 'calendarrandom' : null
               },
               on: {
                 click: this.onChangeTypeCalendar
@@ -106,7 +109,9 @@ export default {
           [
             this.$createElement('a', {
               attrs: {
-                'data-type': 'report'
+                'data-type': 'report',
+                'data-ga-category': this.hasAnalytics ? 'documents' : null,
+                'data-ga-label': this.hasAnalytics ? 'calendarreporting' : null
               },
               on: {
                 click: this.onChangeTypeCalendar

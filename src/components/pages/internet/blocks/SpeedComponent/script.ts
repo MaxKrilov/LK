@@ -95,6 +95,8 @@ export default class SpeedComponent extends Vue {
       .attr('width', 32)
       .attr('height', 32)
       .attr('fill', 'transparent')
+      .attr('data-ga-category', 'internet')
+      .attr('data-ga-label', this.isTurboActivation ? 'turboup' : 'changespeedup')
     mainText.select('.speed-toggle--up')
       .append('path')
       .attr('d', 'M11.9999 3.4144L22.2928 13.7073L23.707 12.293L11.9999 0.585938L0.292803 12.293L1.707 13.7073L11.9999 3.4144Z')
@@ -111,6 +113,8 @@ export default class SpeedComponent extends Vue {
       .attr('width', 32)
       .attr('height', 32)
       .attr('fill', 'transparent')
+      .attr('data-ga-category', 'internet')
+      .attr('data-ga-label', this.isTurboActivation ? 'turbodown' : 'changespeeddown')
 
     mainText.select('.speed-toggle--down')
       .append('path')

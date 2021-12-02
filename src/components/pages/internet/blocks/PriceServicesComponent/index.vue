@@ -1,6 +1,10 @@
 <template lang="pug">
   .price-services-component
-    .price-services-component__total.d--flex.align-items-center(@click="toggleList")
+    .price-services-component__total.d--flex.align-items-center(
+      @click="toggleList"
+      data-ga-category="internet"
+      data-ga-label="servicedetalization"
+    )
       .title
         | Итого по услуге
       .price.ml-auto

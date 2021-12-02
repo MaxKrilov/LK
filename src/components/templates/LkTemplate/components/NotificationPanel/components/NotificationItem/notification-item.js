@@ -15,6 +15,8 @@ import {
 } from '@/functions/notifications'
 import { isMaxPostponedTimes } from '@/functions/survey'
 
+import { dataLayerPush } from '../../../../../../../functions/analytics'
+
 const MAX_DESCRIPTION_LENGTH = 101
 
 export default {
@@ -237,7 +239,8 @@ export default {
     },
     getTime () {
       return this.getDateTime()?.format('HH:mm')
-    }
+    },
+    dataLayerPush
   },
   created () {
     this.bindedSurvey = this.notification.bindedSurvey || undefined

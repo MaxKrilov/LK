@@ -34,7 +34,13 @@
           +contactsPhone
           .b-contact-info__chat
             .caption.mb-24.mt-16 On-line обращение
-            er-button(flat pre-icon="chat" @click="openChat()")
+            er-button(
+              flat
+              pre-icon="chat"
+              @click="openChat()"
+              data-ga-category="support"
+              data-ga-label="contactschat"
+            )
               | Начать чат
         .b-contact-info--desktop__column.pl-32
           .icon.mb-24

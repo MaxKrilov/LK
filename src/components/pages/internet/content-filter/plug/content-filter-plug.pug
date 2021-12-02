@@ -1,16 +1,30 @@
 div
   div
-    ListPointComponent(v-model="activePoint" :list="points")
-  
+    ListPointComponent(
+      v-model="activePoint"
+      :list="points"
+      data-ga-category="internet"
+      data-ga-label="cfdetailedaddress"
+    )
+
   er-preloader(:active="isLoadingProduct" icon)
     div(:class="`${pre}__title-wrapper`")
       h3.title Выберите тариф
       div(:class="`${pre}__filters-wrapper`")
-        div(:class="`${pre}__filter`")
+        div(
+          :class="`${pre}__filter`"
+          data-ga-category="internet"
+          data-ga-label="cftarifdetaliisation"
+        )
           div
             er-toggle(view="radio-check" v-model="detail" value="sdsdsds")
           span.text Подробно
-        div(:class="`${pre}__filter`" v-if="detail")
+        div(
+          :class="`${pre}__filter`"
+          v-if="detail"
+          data-ga-category="internet"
+          data-ga-label="cfsameparam"
+        )
           div
             er-toggle(view="radio-check" v-model="isShowDifferent")
           span.text Схожие параметры
@@ -40,6 +54,8 @@ div
               @click="plugContentFilter(cell.chars, cell.price)"
               :disabled="creatingOrder"
               :loading="creatingOrder && selectedTariff.chars === cell.chars"
+              data-ga-category="internet"
+              :data-ga-label="cell.analyticLabel"
               ) Выбрать
         div(:class="[`${pre}__row`]" ref="sbuttons")
           div(v-for="(cell, index) in tariffs"
@@ -51,10 +67,9 @@ div
               @click="plugContentFilter(cell.chars, cell.price)"
               :disabled="creatingOrder"
               :loading="creatingOrder && selectedTariff.chars === cell.chars"
+              data-ga-category="internet"
+              :data-ga-label="cell.analyticLabel"
               ) Выбрать
-              
-
-
 
     template(v-if="!detail")
       div(:class="`${pre}__tariffs`")
@@ -76,6 +91,8 @@ div
                   @click="plugContentFilter(item.chars, item.price)"
                   :disabled="creatingOrder || isLoadingProduct"
                   :loading="creatingOrder && selectedTariff.chars === item.chars"
+                  data-ga-category="internet"
+                  :data-ga-label="item.analyticLabel"
                   ) Выбрать
 
   er-activation-modal(
@@ -103,7 +120,7 @@ div
   )
     template(slot="description")
       div Уважаемый Клиент, в данный момент операция не доступна, обратитесь к персональному менеджеру
- 
+
   er-activation-modal(
     type="question"
     v-model="isShowMoneyModal"
@@ -112,10 +129,10 @@ div
     cancel-button-text="Закрыть"
   )
     template(slot="description")
-      div  Уважаемый клиент, для завершения заказа на лицевом счете не достаточно денежных средств. Пополните лицевой счет и повторите покупку. 
+      div  Уважаемый клиент, для завершения заказа на лицевом счете не достаточно денежных средств. Пополните лицевой счет и повторите покупку.
       br
       div  Стоимость подключения: <b>{{ selectedPrice }} </b> руб.
-      div  Ваши доступные средства: <b>{{ availableFunds }}</b> руб. 
+      div  Ваши доступные средства: <b>{{ availableFunds }}</b> руб.
 
   er-activation-modal(
     title="Заказ успешно сформирован"

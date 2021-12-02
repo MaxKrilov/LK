@@ -25,6 +25,36 @@ export default class ErActivationModal extends Vue {
   @Prop({ type: String, default: '' }) readonly isOffer!: string
   @Prop(String) readonly contentClass!: string
 
+  @Prop({ type: String })
+  readonly analyticConfirmCategory!: string
+
+  @Prop({ type: String })
+  readonly analyticConfirmLabel!: string
+
+  @Prop({ type: String })
+  readonly analyticCancelCategory!: string
+
+  @Prop({ type: String })
+  readonly analyticCancelLabel!: string
+
+  @Prop({ type: String })
+  readonly analyticCloseCategory!: string
+
+  @Prop({ type: String })
+  readonly analyticCloseLabel!: string
+
+  @Prop({ type: String })
+  readonly analyticAcceptCategory!: string
+
+  @Prop({ type: String })
+  readonly analyticAcceptLabel!: string
+
+  @Prop({ type: String })
+  readonly analyticOfferCategory!: string
+
+  @Prop({ type: String })
+  readonly analyticOfferLabel!: string
+
   screenWidth!: number
 
   isAcceptOffer: boolean = false

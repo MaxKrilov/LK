@@ -11,6 +11,7 @@
                 span(
                   :class="[`${pre}__welcome-title__question__icon`, { active: isQuestionOpen }]"
                   v-on="on"
+                  @click="dataLayerPush({ category: 'profile', label: 'accountquestion' })"
                 )
                   er-icon(name="question")
               div(:class="`${pre}__welcome-title__question__wrapper`")

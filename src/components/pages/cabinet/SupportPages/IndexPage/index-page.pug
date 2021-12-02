@@ -1,5 +1,8 @@
 div.support-page.main-content.main-content--padding.main-content--top-menu-fix
-  er-page-header(title="Поддержка")
+  er-page-header(
+    title="Поддержка"
+    @onBack="dataLayerPush({ category: 'support', label: 'return' })"
+  )
 
   .b-request
     .b-request__content
@@ -12,6 +15,8 @@ div.support-page.main-content.main-content--padding.main-content--top-menu-fix
           a(
             :data-count="activeRequestList.length"
             :class="{ 'active': isActiveFilterRequest(getTypeFilterRequestActive) }"
+            data-ga-category="support"
+            data-ga-label="active"
             @click="() => { setFilterRequest(getTypeFilterRequestActive) }"
           )
             span Активные
@@ -19,6 +24,8 @@ div.support-page.main-content.main-content--padding.main-content--top-menu-fix
           a(
             :data-count="allRequestListCount"
             :class="{ 'active': isActiveFilterRequest(getTypeFilterRequestAll) }"
+            data-ga-category="support"
+            data-ga-label="all"
             @click="() => { setFilterRequest(getTypeFilterRequestAll) }"
           )
             span Все
@@ -27,6 +34,8 @@ div.support-page.main-content.main-content--padding.main-content--top-menu-fix
           :items="getListNameCity",
           placeholder="Город",
           v-model="city"
+          data-ga-category="support"
+          data-ga-label="city"
         )
 
       .b-request__create
@@ -36,6 +45,8 @@ div.support-page.main-content.main-content--padding.main-content--top-menu-fix
               flat
               @click="onShowDirectorFeedback"
               v-class-mod="['inline-button']"
+              data-ga-category="support"
+              data-ga-label="sendtoboss"
             ) Написать директору
 
       .director-feedback-block
@@ -47,6 +58,8 @@ div.support-page.main-content.main-content--padding.main-content--top-menu-fix
             v-for="(headTitle, i) in listHeadTitle"
             :key="i"
             :class="[headTitle.id, { 'sort': isSortField(headTitle.id), 'desc': isSortField(headTitle.id) && isDesc }]"
+            data-ga-category="support"
+            :data-ga-label="headTitle.label"
           )
             a(@click="() => { setSortField(headTitle.id) }")
               span.title {{ headTitle.name }}

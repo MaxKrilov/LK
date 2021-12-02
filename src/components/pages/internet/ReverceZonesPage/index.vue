@@ -9,6 +9,8 @@
           er-select(
             :items="listIP"
             v-model="currentIP"
+            data-ga-category="internet"
+            data-ga-label="rzselectip"
           )
     .reverce-zones-page__list
       .reverce-zones-page__list__head.main-content.main-content--h-padding
@@ -62,14 +64,27 @@
                 @click="addReverceZone"
                 :loading="isLoadingAddReverceZone"
                 :disabled="!isFieldDomainValid"
+                data-ga-category="internet"
+                data-ga-label="addrzsave"
               )
                 | Добавить
             .reverce-zones-page__action
-              er-button(flat @click="() => { isOpenAdding = false }" :disabled="isLoadingAddReverceZone")
+              er-button(
+                flat
+                @click="() => { isOpenAdding = false }"
+                :disabled="isLoadingAddReverceZone"
+                data-ga-category="internet"
+                data-ga-label="addrzcancel"
+              )
                 | Отмена
       er-slide-up-down(:active="!isOpenAdding")
         .reverce-zones-page__add-button
-          er-button(color="blue" @click="() => { isOpenAdding = true }")
+          er-button(
+            color="blue"
+            data-ga-category="internet"
+            data-ga-label="rzaddzone"
+            @click="() => { isOpenAdding = true }"
+          )
             | Добавить обратную зону
     ErActivationModal(
       type="error"

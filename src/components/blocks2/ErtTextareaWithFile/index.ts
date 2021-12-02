@@ -86,7 +86,9 @@ export default class ErtTextareaWithFile extends ErtTextarea {
           type: 'file',
           id: this.fileInputID,
           accept: this.allowsFileFormat,
-          multiple: true
+          multiple: true,
+          'data-ga-category': 'support',
+          'data-ga-label': 'appaddfile'
         },
         on: {
           change: this.onChangeFileInput

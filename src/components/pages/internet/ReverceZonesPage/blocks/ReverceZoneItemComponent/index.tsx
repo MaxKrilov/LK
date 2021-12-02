@@ -127,6 +127,8 @@ export default Vue.extend({
                   <div class={'save ml-16'}>
                     <button
                       disabled={this.isEditRequest}
+                      data-ga-category="internet"
+                      data-ga-label="changeipsave"
                       onclick={() => {
                         if ((this.$refs as { form: InstanceType<typeof ErtForm> }).form.validate()) {
                           this.isOpenQuestion = true
@@ -145,6 +147,8 @@ export default Vue.extend({
                     <button onclick={() => {
                       this.isEditing = false
                     }}
+                    data-ga-category="internet"
+                    data-ga-label="changeipcancel"
                     disabled={this.isEditRequest}>
                       <ert-icon name={'close'} small={true} />
                       <span class={'text'}>Отменить</span>
@@ -162,6 +166,8 @@ export default Vue.extend({
                           this.isEditing = true
                         }}
                         disabled={this.isDeleteRequest}
+                        data-ga-category="internet"
+                        data-ga-label="rzchangeip"
                       >
                         <ert-icon name={'edit'} small={true}/>
                         <span class={'text'}>Изменить</span>
@@ -172,6 +178,8 @@ export default Vue.extend({
                         <div class={'remove ml-16'}>
                           <button
                             disabled={this.isDeleteRequest}
+                            data-ga-category="internet"
+                            data-ga-label="rzremoveip"
                             onclick={() => {
                               this.isOpenDeleteQuestion = true
                             }}

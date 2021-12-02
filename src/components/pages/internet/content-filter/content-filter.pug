@@ -1,5 +1,8 @@
 div(:class="`${pre} main-content main-content--top-menu-fix`")
-  er-page-header(title="Контент-фильтрация")
+  er-page-header(
+    title="Контент-фильтрация"
+    @onBack="dataLayerPush({ category: 'internet', label: 'cfbacktomain' })"
+  )
   template(v-if="isLoading")
     er-card-products(loading)
     er-card-products(loading)
@@ -12,6 +15,8 @@ div(:class="`${pre} main-content main-content--top-menu-fix`")
           :key="index"
           :price="item.price"
           :date="item.date"
+          detailCloseAnalyticCategory="internet"
+          detailCloseAnalyticLabel="cfdetailedaddress2"
           )
           | {{ item.fulladdress}}
           template(#slider-content)
@@ -40,7 +45,12 @@ div(:class="`${pre} main-content main-content--top-menu-fix`")
             span(class="units") &nbsp₽/месяц
 
     .button(v-if="!(!data.length || isShowConnecting) && freePoints.length")
-      er-button(color="blue" @click="isShowConnecting = true") Подключить Контент-фильтрацию
+      er-button(
+        color="blue"
+        data-ga-category="internet"
+        data-ga-label="cforder"
+        @click="isShowConnecting = true"
+      ) Подключить Контент-фильтрацию
 
     plug(v-if="!data.length || isShowConnecting" :points="freePoints")
 

@@ -61,12 +61,12 @@
   .notification-item__footer
     a.notification-item__action(
       v-if="isCampaignMessage || isCampaignCustomMessage"
-      @click="onClickAccept"
+      @click="onClickAccept(); dataLayerPush({ category: 'notifications', label: 'familiarized' })"
     ) Ознакомлен
 
     .slide-up-down-activator(
       v-if="isLongDescription || isPPR"
-      @click="onShowDescription"
+      @click="onShowDescription(); dataLayerPush({ category: 'notifications', label: showDescription ? 'hide' : 'detalization' })"
     )
       span.slide-up-down-activator__label
         template(v-if="showDescription")

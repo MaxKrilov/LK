@@ -27,7 +27,11 @@
           PuSkeleton
         template(v-else)
           .button(v-if="listAvailableSpeedIncrease.length > 0")
-            button(@click="() => { openBlur(false) }")
+            button(
+              @click="() => { openBlur(false) }"
+              data-ga-category="internet"
+              data-ga-label="tarifchange"
+            )
               | Изменить
       .tariff-component__limit
         .chart-loading(v-show="isLoadingBillingPacket")
@@ -68,6 +72,8 @@
             er-button(
               pre-icon="speedup"
               :disabled="freeBonusValue !== 0"
+              data-ga-category="internet"
+              data-ga-label="tarifturbo"
               @click="() => { openBlur(true) }"
             )
               | Турбо-режим
@@ -104,7 +110,11 @@
           PuSkeleton
         template(v-else)
           er-icon(name="settings")
-          button(@click="getInfoList")
+          button(
+            @click="getInfoList"
+            data-ga-category="internet"
+            data-ga-label="tarifsettings"
+          )
             | Настройки соединения
       .tariff-component__auth-type
         template(v-if="isLoadingCustomerProduct")
@@ -114,7 +124,11 @@
             | Тип авторизации
           .value
             | {{ getAuthType }}&nbsp;
-            button.ml-16(@click="() => { isShowModalForChangeAuthType = true }")
+            button.ml-16(
+              @click="() => { isShowModalForChangeAuthType = true }"
+              data-ga-category="internet"
+              data-ga-label="tarifipoe"
+            )
               | Сменить на {{ getAuthTypeForChange }}
     infolist-viewer(
       v-model="isShowInfolistViewer"
@@ -128,6 +142,12 @@
       :action-button-text="connectActionButtonText"
       :disabled-action-button="!isOffer"
       :is-loading-confirm="isOfferAccepting"
+      analyticConfirmCategory="internet"
+      analyticCancelCategory="internet"
+      analyticCloseCategory="internet"
+      :analyticConfirmLabel="isTurboActivation ? 'turboconnectyes' : 'changespeedyeschange '"
+      :analyticCancelLabel="isTurboActivation ? 'turboconnectdecline' : 'changespeedyescancel'"
+      :analyticCloseLabel="isTurboActivation ? 'turboconnectclose' : 'changespeedyesclose'"
       @confirm="sendSailOrder"
     )
       template(slot="description")
@@ -135,12 +155,19 @@
           er-toggle(
             view="radio-check"
             v-model="isOffer"
+            data-ga-category="internet"
+            :data-ga-label="isTurboActivation ? 'turboconnectagreeoffer' : 'changespeedyesagree'"
           )
           .text
             span
               | Вы должны принять
             | &nbsp;
-            a(:href="offerLink" target="_blank") условия оферты
+            a(
+              :href="offerLink"
+              target="_blank"
+              data-ga-category="internet"
+              :data-ga-label="isTurboActivation ? 'turboconnectreadoffer' : 'changespeedyesoffer'"
+            ) условия оферты
         .tariff-component__connect-price
           | Стоимость услуги составит <span>{{ (isTurboActivation ? turboPriceAfterIncrease : priceAfterIncrease) | price }}</span>&nbsp;{{ currencyCode }}/месяц
     er-activation-modal(
@@ -149,6 +176,10 @@
       title="Произошла ошибка"
       :is-show-action-button="false"
       cancel-button-text="Закрыть"
+      analyticCancelCategory="internet"
+      analyticCloseCategory="internet"
+      :analyticCancelLabel="isTurboActivation ? 'turboconnectnoclosebutton' : ''"
+      :analyticCloseLabel="isTurboActivation ? 'turboconnectnoclose' : ''"
     )
       template(slot="description")
         div Уважаемый Клиент, в данный момент операция не доступна, обратитесь к персональному менеджеру
@@ -158,6 +189,10 @@
       title="Заказ успешно сформирован"
       :is-show-action-button="false"
       cancel-button-text="Закрыть"
+      analyticConfirmCategory="internet"
+      analyticCloseCategory="internet"
+      :analyticConfirmLabel="isTurboActivation ? 'turboconnectyesthankyou' : ''"
+      :analyticCloseLabel="isTurboActivation ? 'turboconnectyesclose' : ''"
     )
       template(slot="description")
         | Заказ создан успешно. Выполнение заказа может занять некоторое время.&nbsp;
@@ -184,6 +219,12 @@
       v-model="isShowModalForChangeAuthType"
       isSendManagerRequest,
       :requestData="getRequestDataForChangeAuthType"
+      analyticConfirmCategory="internet"
+      analyticCancelCategory="internet"
+      analyticCloseCategory="internet"
+      analyticConfirmLabel="changeautsend"
+      analyticCancelLabel="changeautcancel"
+      analyticCloseLabel="changeautclose"
     )
 </template>
 
