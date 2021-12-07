@@ -4,7 +4,8 @@
       linkText="Назад"
       title="Пополнить счёт"
       backlink="/lk/payments"
-      @onBack="dataLayerPush({ category: 'payments', label: 'paybycardreturn' })"
+      data-ga-category="payments"
+      data-ga-label="paybycardreturn"
     )
     .card-payment-page__block
       .card-payment-page__block__content.main-content.main-content--h-padding.d--flex.flex-column.flex-lg-row

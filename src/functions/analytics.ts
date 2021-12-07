@@ -6,12 +6,10 @@ export function dataLayerPush (payload: {
 }) {
   // const event = payload.event || 'GA'
   const action = payload.action || 'click'
-  if (typeof window !== 'undefined') {
-    window.dataLayer = window.dataLayer || []
-    window.dataLayer.push('event', action, {
-      event_category: payload.category,
-      event_label: payload.label,
-      value: '1'
-    })
-  }
+  window.dataLayer = window.dataLayer || [];
+  (window as any).gtag('event', action, {
+    event_category: payload.category,
+    event_label: payload.label,
+    value: '1'
+  })
 }
