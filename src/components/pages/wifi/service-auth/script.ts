@@ -65,7 +65,7 @@ import { IAvailableFunds, IWifiResourceInfo } from '@/tbapi'
   }
 })
 export default class ErtWifiServiceAuth extends mixins(Page) implements iPageComponent {
-  productType = 'Wi-Fi'
+  productType = 'Wi-Fi Hot Spot (Дом.ru)'
 
   // Data
   /// Loading Data

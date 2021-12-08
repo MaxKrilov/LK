@@ -1,4 +1,4 @@
-export const PRODUCT_TYPE = 'Wi-Fi'
+export const PRODUCT_TYPE = 'Wi-Fi Hot Spot (Дом.ru)'
 export const PRODUCT_CODE = 'WIFIKONTFIL'
 // export const PRODUCT_CODE = 'CONTENTFIL'
 export const PRODUCT_SUB_TYPE = 'Wi-Fi Hot Spot Mono'

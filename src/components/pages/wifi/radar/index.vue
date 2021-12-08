@@ -34,7 +34,7 @@ export default {
   async mounted () {
     this.products = await this.$store.dispatch(`user/${GET_LIST_ADDRESS_BY_SERVICES}`, {
       api: this.$api,
-      productType: 'Wi-Fi'
+      productType: 'Wi-Fi Радар'
     })
       .then(data => {
         this.isLoaded = true

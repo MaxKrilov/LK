@@ -149,7 +149,7 @@ function defineSNParams (sn: string) {
 })
 export default class WifiPersonalizationPage extends mixins(Page) implements iPageComponent {
   // Options
-  productType = 'Wi-Fi'
+  productType = 'Wi-Fi Hot Spot (Дом.ru)'
 
   // Vuex
   readonly screenWidth!: number

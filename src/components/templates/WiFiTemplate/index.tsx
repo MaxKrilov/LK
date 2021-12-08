@@ -38,7 +38,7 @@ export default class WiFiTemplate extends Vue {
   init () {
     this.$store.dispatch('productnservices/locationOfferInfo', {
       api: this.$api,
-      productType: 'Wi-Fi'
+      productType: 'Wi-Fi Hot Spot (Дом.ru)'
     })
       .then(response => {
         const listPoint = response.filter((point: any) => ~point.offer.name.match(/hot spot/ig))

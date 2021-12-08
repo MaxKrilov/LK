@@ -35,7 +35,7 @@ export default {
     activePoint: null,
     vlan: '',
     cityId: '',
-    productType: 'Wi-Fi',
+    productType: 'Wi-Fi Hot Spot (Дом.ru)',
     customerProduct: null,
     isLoadingListPoint: true,
     isLoadingCustomerProduct: true,

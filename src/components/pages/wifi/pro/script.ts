@@ -9,7 +9,7 @@ import ErActivationModal from '@/components/blocks/ErActivationModal/index.vue'
 const DISPATCH_GET_LOCATIONS = 'productnservices/locationOfferInfo'
 const DISPATCH_GET_WIFI_PRO = 'wifi/getWifiPro'
 
-const productType = 'Wi-Fi'
+const productType = 'Wi-Fi Pro (Cloud4Wi)'
 
 // Функция, возвращающая активные локации только WiFi Pro
 function getBPIWiFiPro (list: ILocationOfferInfo[]): ILocationOfferInfo[] {
