@@ -52,7 +52,7 @@ const transformHistory = ([history, bill]: [IPaymentHistory[], IPaymentBill[]]) 
     const resultObject: IPaymentHistoryBill = {
       title: 'Пополнение счёта',
       description: historyItem.paymentAttributes.find(paymentAttribute => paymentAttribute.name === ALTERNATE_SOURCE_NAME)?.value ||
-      historyItem.paymentMethod.name,
+      historyItem.paymentMethod?.name || '',
       value: Math.abs(Number(historyItem.paymentAmount)),
       timestamp: Number(historyItem.paymentDate),
       chargePeriod: '',
