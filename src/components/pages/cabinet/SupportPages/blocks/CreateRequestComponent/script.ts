@@ -554,6 +554,7 @@ export default class CreateRequestComponent extends Vue {
     this.internetProtocol = ''
     this.terminateFrom = new Date()
     this.technicalRequestTheme = ''
+    this.file = []
   }
 
   dataLayerPush = dataLayerPush
