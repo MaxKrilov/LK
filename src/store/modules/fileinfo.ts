@@ -147,8 +147,8 @@ const actions = {
         .setData({
           bucket,
           file,
-          key: filePath,
-          asPdf: 1
+          key: filePath
+          // asPdf: 1
         })
         .query('/docs/s3/set')
         .then(() => resolve(true))
