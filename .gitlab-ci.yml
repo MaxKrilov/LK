@@ -39,7 +39,7 @@ Build Dev Image:
         - mkdir -p config
         - consul-template -once -template "build_env/nginx_container/default.ctmpl:build_env/nginx_container/default.conf"
         - export WEBSERVER_IMAGE="nginx:1.14.0"
-        - docker run --rm -v $PWD:/app -w /app node:carbon bash -c "$ADD_GROUP && $ADD_USER && $INSTALL_DEPS && $BUILD"
+        - docker run --rm -v $PWD:/app -w /app node:erbium bash -c "$ADD_GROUP && $ADD_USER && $INSTALL_DEPS && $BUILD"
         - envsubst < build_env/docker-compose/Dockerfile.tmpl > Dockerfile
         - docker build --tag ${IMAGE_ADDRESS} .
     tags:
@@ -53,7 +53,7 @@ Deploy dev:
         - mkdir -p config
         - mkdir -p ${CONTENT_FILES_DIR}
         - chmod 777 ${CONTENT_FILES_DIR}
-        
+
         - export STAGE=development
         - envsubst < build_env/docker-compose/docker-compose.tmpl > config/docker-compose.yml
 
