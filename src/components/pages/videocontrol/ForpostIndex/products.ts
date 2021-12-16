@@ -21,7 +21,7 @@ const components = {
 }
 
 const MIN_USER_COUNT = 0
-const USER_COST = '60'
+const USER_COST = '0'
 
 const computed = {
   ...mapState({
