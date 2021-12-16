@@ -107,9 +107,12 @@ export default {
       if (!this.openSubMenuBackground) {
         this.openSubMenuBackground = true
       }
+      const currentMenu = currentMenu => 'url' in currentMenu &&
+        currentMenu['url'] === this.$route.path &&
+        (menuItem = currentMenu)
       if (event && !event.target.closest('.menu-component__left__body-item__sub-items')) {
         this.$router.push(menuItem.url)
-      }
+      } else this.menu.map(currentMenu)
       menuItem.isOpen = true
 
       this.openingMenuItemIndex = index
