@@ -62,7 +62,7 @@
 
       .section__content
         .oats-service(v-for="service in services" :key="service.id")
-          .oats-service__name {{ service.name | removeNumberFromTitle }}
+          .oats-service__name {{ service.chars['Имя в счете'] }}
           .oats-service__description {{ service.description }}
           .oats-service__end 
             span.h4 {{ service.purchasedPrices.recurrentTotal.value | priceFormatted }} 
