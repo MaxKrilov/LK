@@ -1,6 +1,6 @@
 <template lang="pug">
   .e-commerce-signing-with-scans
-    h3.e-commerce-signing-with-scans__title Подписать и загрузить подписанные документы
+    h3.e-commerce-signing-with-scans__title Подпишите и загрузите подписанные документы
     .e-commerce-signing-with-scans__tabs.mb--m
       .tabs__container
         .tabs-items
@@ -26,10 +26,10 @@
             span {{ listViewerFlag[key] ? 'Подождите' : 'Скачать документ' }}
         .e-commerce-signing-with-scans__document__success(v-if="document.contractStatus === 'Подписан'")
           ErtIcon(name="erth__check")
-          span Документ успешно подписан, можно оплачивать
+          span Документ успешно проверен!
         .e-commerce-signing-with-scans__document__is-verifying(v-else-if="document.verifying === 'Да' || isLoadSuccess")
           ErtProgressCircular(indeterminate width="4" size="24")
-          span Мы проверим документы в течение 4 рабочих часов.
+          span Мы проверим документы в течение 4 рабочих часов. Можете производить оплату счета.
         template(v-else)
           .e-commerce-signing-with-scans__document__uploaded-document(v-if="listInternalFile[key] && tracker")
             DocumentName(
@@ -43,7 +43,7 @@
             )
       .e-commerce-signing-with-scans__actions(v-if="isUploadAllDocuments")
         ErButton.mb-16(:loading="isLoading" :disabled="isLoaded" @click="onUploadDocuments") Сохранить
-        .caption2 Обратите внимание! Договор требуется загрузить одним файлом размером не более 2Мб.
+        .caption2 Обратите внимание! Договор требуется загрузить одним файлом размером не более 10Мб.
         .caption2 После сохранения, документ будет отправлен на проверку, удаление документа станет невозможным!
       .e-commerce-signing-with-scans__success.caption2.success--text(v-if="isLoadSuccess") Документы успешно сохранены
       .e-commerce-signing-with-scans__success.caption2.error--text(v-else-if="isLoadError") Произошла ошибка при сохранении документов

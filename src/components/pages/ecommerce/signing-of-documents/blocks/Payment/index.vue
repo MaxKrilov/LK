@@ -28,7 +28,7 @@
               ErtIcon(name="erth__check")
               span Оплачено
           template(v-else)
-            .description.mb--s
+            .description.mb--s.caption2
               | Оплатите онлайн и вы сможете завершить заказ сразу после оплаты. При оплате по счету для завершения заказа необходимо дождаться уведомления о зачислении средств.
             .actions
               .action

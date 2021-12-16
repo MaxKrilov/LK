@@ -65,6 +65,133 @@ export default class DigitalSignature {
    * @return {Promise<boolean | Array<{ id: string, value: string, version: number, thumbprint: string, subjectName: string, serialNumber: string, issuerName: string, validFromDate: string, validToDate: string }>>}
    */
   public static async getCertificatesList (cadesplugin: CADESPluginAsync): Promise<iCertificate[]> {
+    // todo - вернуть после теста
+    // if (!cadesplugin || !cadesplugin.CreateObjectAsync) {
+    //   throw new Error('Для подписания ЭЦП установите плагин Крипто ПРО')
+    // }
+    //
+    // let oStore
+    // try {
+    //   oStore = await cadesplugin.CreateObjectAsync('CAPICOM.Store')
+    //
+    //   if (!oStore) return [] as iCertificate[]
+    //
+    //   await oStore.Open(cadesplugin.CAPICOM_CURRENT_USER_STORE,
+    //     cadesplugin.CAPICOM_MY_STORE,
+    //     cadesplugin.CAPICOM_STORE_OPEN_MAXIMUM_ALLOWED
+    //   )
+    // } catch (ex) {
+    //   return [] as iCertificate[]
+    // }
+    //
+    // let certificates
+    // let certCount
+    //
+    // try {
+    //   certificates = await oStore.Certificates
+    //   certCount = await certificates.Count
+    // } catch (ex) {
+    //   return [] as iCertificate[]
+    // }
+    //
+    // const result: iCertificate[] = []
+    // const today = new Date()
+    //
+    // for (let idx = 1; idx <= certCount; idx++) {
+    //   try {
+    //     const certificateItem = await certificates.Item(idx)
+    //     const publicKey = await certificateItem.PublicKey()
+    //     const algorithm = await publicKey.Algorithm
+    //     const algoOid = await algorithm.Value
+    //     const validFromDate = new Date(await certificateItem.ValidFromDate)
+    //     const subjectName = DigitalSignature.getCertName(await certificateItem.SubjectName)
+    //
+    //     const otherData = {
+    //       issuerName: await certificateItem.IssuerName,
+    //       serialNumber: await certificateItem.SerialNumber,
+    //       subjectName,
+    //       thumbprint: await certificateItem.Thumbprint,
+    //       validFromDate: (await certificateItem.ValidFromDate).toString(),
+    //       validToDate: (await certificateItem.ValidToDate).toString(),
+    //       version: await certificateItem.Version,
+    //       algoOid
+    //     }
+    //
+    //     /* Не показываем сертификаты, которые уже просрочены или которые мы уже добавили (избавляемся от дубликатов) */
+    //     if (
+    //       today < new Date(otherData.validToDate) &&
+    //       !result.find(_certificate => _certificate.thumbprint === otherData.thumbprint)
+    //     ) {
+    //       result.push({
+    //         id: subjectName.replace('CN=', ''),
+    //         value: `${subjectName}; Выдан: ${moment(validFromDate).format('LL')}`,
+    //         ...otherData
+    //       })
+    //     }
+    //   } catch (ex) {
+    //     return result
+    //   }
+    // }
+    //
+    // oStore.Close()
+    //
+    // // В версии плагина 2.0.13292+ есть возможность получить сертификаты из
+    // // закрытых ключей и не установленных в хранилище
+    // // @copyright https://www.cryptopro.ru/sites/default/files/products/cades/demopage/cades_bes_sample.html
+    //
+    // try {
+    //   // @ts-ignore
+    //   await oStore.Open(cadesplugin.CADESCOM_CONTAINER_STORE)
+    // } catch (ex) {
+    //   return result
+    // }
+    //
+    // try {
+    //   certificates = await oStore.Certificates
+    //   certCount = await certificates.Count
+    // } catch (ex) {
+    //   return result
+    // }
+    //
+    // for (let idx = 1; idx <= certCount; idx++) {
+    //   try {
+    //     const certificateItem = await certificates.Item(idx)
+    //     const publicKey = await certificateItem.PublicKey()
+    //     const algorithm = await publicKey.Algorithm
+    //     const algoOid = await algorithm.Value
+    //     const validFromDate = new Date(await certificateItem.ValidFromDate)
+    //     const subjectName = DigitalSignature.getCertName(await certificateItem.SubjectName)
+    //
+    //     const otherData = {
+    //       issuerName: await certificateItem.IssuerName,
+    //       serialNumber: await certificateItem.SerialNumber,
+    //       subjectName,
+    //       thumbprint: await certificateItem.Thumbprint,
+    //       validFromDate: (await certificateItem.ValidFromDate).toString(),
+    //       validToDate: (await certificateItem.ValidToDate).toString(),
+    //       version: await certificateItem.Version,
+    //       algoOid
+    //     }
+    //
+    //     /* Не показываем сертификаты, которые уже просрочены или которые мы уже добавили (избавляемся от дубликатов) */
+    //     if (
+    //       today < new Date(otherData.validToDate) &&
+    //       !result.find(_certificate => _certificate.thumbprint === otherData.thumbprint)
+    //     ) {
+    //       result.push({
+    //         id: subjectName.replace('CN=', ''),
+    //         value: `${subjectName}; Выдан: ${moment(validFromDate).format('LL')}`,
+    //         ...otherData
+    //       })
+    //     }
+    //   } catch (ex) {
+    //     return result
+    //   }
+    // }
+    //
+    // oStore.Close()
+    //
+    // return result
     if (!cadesplugin || !cadesplugin.CreateObjectAsync) {
       throw new Error('Для подписания ЭЦП установите плагин Крипто ПРО')
     }

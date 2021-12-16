@@ -1,6 +1,6 @@
 <template lang="pug">
   .e-commerce-signatory
-    h3.e-commerce-signatory__title Загрузите доверенность подписанта
+    h3.e-commerce-signatory__title Загрузите приказ/доверенность подписанта
     .e-commerce-signatory__signatory-name.info-block
       .e-commerce-signatory__signatory-name__caption.caption ФИО подписанта
       .e-commerce-signatory__signatory-name__value.value {{ computedSigneeName }}
@@ -35,7 +35,7 @@
     .e-commerce-signatory__actions(v-if="listInternalFile.length > 0")
       ErButton.mb-16(:loading="isLoading" :disabled="isLoaded || listInternalFile.length === 0" @click="uploadDocuments") Сохранить
       .caption2 Возможно загрузить несколько файлов.
-      .caption2 Размер каждого из загруженных файлов не должен превышать 2Мб.
+      .caption2 Размер каждого из загруженных файлов не должен превышать 10Мб.
       .caption2 После сохранения документов их удаление станет невозможным!
 
     .e-commerce-signatory__success.caption2.success--text(v-if="isLoadSuccess") Документ успешно сохранён

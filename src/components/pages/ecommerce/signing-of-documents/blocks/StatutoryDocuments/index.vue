@@ -1,6 +1,16 @@
 <template lang="pug">
   .e-commerce-statutory-documents
-    h3.e-commerce-statutory-documents__title Загрузите уставные документы (Устав, ОГРН или Свидетельство о регистрации ИП)
+    h3.e-commerce-statutory-documents__title Загрузите документы
+    .e-commerce-statutory-documents__subtitle.mb--xl
+      div Набор документов для индивидуального предпринимателя:
+      ul.mb--s
+        li Скан-копия «Свидетельства о государственной регистрации ФЛ в качестве ИП (ОГРНИП)»
+        li Скан-копия ИНН физ. лица
+        li Скан-копия Паспорта (страница с фото и регистрацией).
+      div Набор документов для юридического лица:
+      ul
+        li Скан-копия «Свидетельства о постановке на учет в налоговом органе по месту нахождения на территории РФ (ОГРНЮЛ)»
+        li Устав (1, 2, 3 и последняя страница)
     .e-commerce-statutory-documents__list
       template(
         v-for="document in getListStatutoryDocument"
@@ -27,7 +37,7 @@
     .e-commerce-statutory-documents__actions(v-if="listInternalFile.length > 0")
       ErButton.mb-16(:loading="isLoading" :disabled="isLoaded || !listInternalFile.length" @click="uploadDocuments") Сохранить
       .caption2 Возможно загрузить несколько файлов.
-      .caption2 Размер каждого из загруженных файлов не должен превышать 2Мб.
+      .caption2 Размер каждого из загруженных файлов не должен превышать 10Мб.
       .caption2 После сохранения документов их удаление станет невозможным!
 
     .e-commerce-statutory-documents__success.caption2.success--text(v-if="isLoadSuccess") Документы успешно сохранены

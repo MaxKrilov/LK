@@ -53,17 +53,16 @@
                 ol
                   li(v-for="(hint, idx) in listHintDigital" :key="idx")
                     span.text {{ hint }}
-        template(v-if="!isLoading && !(isEverythingPaid && isVerifying)")
-          h3.e-commerce-payment__title.mb--xl Оплата
-          ErRow
-            ErFlex(xs12 md9)
-              Payment(
-                v-for="(bill, idx) in listBills"
-                :key="idx"
-                :bill="bill"
-                :isAllSignedDocument="isAllSignedDocument || isVerifying"
-                @payment="onPaymentHandler(bill.billingAccount)"
-              )
+        h3.e-commerce-payment__title.mb--xl Оплата
+        ErRow
+          ErFlex(xs12 md9)
+            Payment(
+              v-for="(bill, idx) in listBills"
+              :key="idx"
+              :bill="bill"
+              :isAllSignedDocument="isAllSignedDocument || isVerifying"
+              @payment="onPaymentHandler(bill.billingAccount)"
+            )
 </template>
 
 <script lang="ts" src="./script.ts"></script>

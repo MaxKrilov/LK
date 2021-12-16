@@ -142,7 +142,7 @@ export default class SigningWithScans extends Vue {
   }
 
   getFilePath (id: string) {
-    return `${moment().format('MMYYYY')}/${id}`
+    return `${moment().format('MMYYYY')}/${id}_3`
   }
 
   onDeleteInternalFile (customerNumber: string) {
@@ -157,14 +157,14 @@ export default class SigningWithScans extends Vue {
       await Promise.all(
         Object.keys(this.listInternalFile)
           .filter(contractNumber => this.listInternalFile.hasOwnProperty(contractNumber))
-          .map(contractNumber => {
+          .map((contractNumber, idx) => {
             const filePath = this.getFilePath(this.documents![contractNumber].id)
             return new Promise(async (resolve, reject) => {
               try {
                 const uploadFileData = {
                   api: this.$api,
                   bucket: FILE_DATA_BUCKET,
-                  filePath: filePath,
+                  filePath: `${filePath}_${idx + 1}`,
                   file: this.listInternalFile[contractNumber]
                 }
 
@@ -174,7 +174,7 @@ export default class SigningWithScans extends Vue {
                   bucket: FILE_DATA_BUCKET,
                   type: this.documents![contractNumber].type.id,
                   relatedTo: this.documents![contractNumber].contractId,
-                  filePath: filePath
+                  filePath: `${filePath}_${idx + 1}`
                 }
 
                 const changeContractStatusData = {
