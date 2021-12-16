@@ -46,7 +46,7 @@
         .caption2 Обратите внимание! Договор требуется загрузить одним файлом размером не более 2Мб.
         .caption2 После сохранения, документ будет отправлен на проверку, удаление документа станет невозможным!
       .e-commerce-signing-with-scans__success.caption2.success--text(v-if="isLoadSuccess") Документы успешно сохранены
-      .e-commerce-signing-with-scans__success.caption2.error--text(v-if="isLoadError") Произошла ошибка при сохранении документов
+      .e-commerce-signing-with-scans__success.caption2.error--text(v-else-if="isLoadError") Произошла ошибка при сохранении документов
     template(v-else-if="activeTab === 'office'")
       .e-commerce-signing-with-scans__office
         .e-commerce-signing-with-scans__office-address

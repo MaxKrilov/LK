@@ -53,7 +53,7 @@
                 ol
                   li(v-for="(hint, idx) in listHintDigital" :key="idx")
                     span.text {{ hint }}
-        template(v-if="!(isEverythingPaid && isVerifying)")
+        template(v-if="!isLoading && !(isEverythingPaid && isVerifying)")
           h3.e-commerce-payment__title.mb--xl Оплата
           ErRow
             ErFlex(xs12 md9)
