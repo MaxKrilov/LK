@@ -49,7 +49,7 @@ div(:class="[`${pre}`, { open: value }]")
   div.caption.mt-20.mb-4.pl-32
     | Ваш баланс
   div.balance.pl-32.d--flex.align-items-center.pr-16.mb-16
-    a.link--solid--yellow.rub(href="#") {{ balance | price }}
+    router-link.link--solid--yellow.rub(to="/lk/payments") {{ balance | price }}
     div.autopay(v-if="isAutopay")
       er-icon(name="ok")
       span Автоплатёж
