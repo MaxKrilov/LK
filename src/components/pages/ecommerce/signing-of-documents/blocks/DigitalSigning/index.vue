@@ -62,7 +62,7 @@
               span.selected
                 ErtIcon(name="erth__check")
           .error--text.mb--s.caption1(v-if="isDialogError")
-            | Произошла ошибка при подписании документа
+            | Произошла ошибка при подписании документа. Вы можете подписать документ «Вручную», для этого вернитесь на шаг «Документы» и выберите способ подписания «Вручную»
           .actions
             .action.mb-8.mb-md-0.mr-md-24
               ErButton(@click="signDocument" :loading="isSigning") Подписать
