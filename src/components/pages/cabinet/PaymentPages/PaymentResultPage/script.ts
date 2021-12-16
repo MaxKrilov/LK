@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Component from 'vue-class-component'
 import { mapActions, mapGetters, mapMutations } from 'vuex'
 import { IPaymentStatus } from '@/tbapi/payments'
+import { dataLayerPush } from '@/functions/analytics'
 
 @Component<InstanceType<typeof PaymentResultPage>>({
   computed: {
@@ -71,6 +72,11 @@ export default class PaymentResultPage extends Vue {
     const transaction = this.$route.query.transaction
     typeof transaction === 'string' && this.checkPaymentStatus({ transaction })
       .then(response => {
+        if (response.pay_status === 0) {
+          dataLayerPush({ action: 'failed', category: 'payment', label: '' })
+        } else if (response.pay_status === 1) {
+          dataLayerPush({ action: 'success', category: 'payment', label: '' })
+        }
         if (Number(response.pay_status) === 2) {
           setTimeout(() => {
             this.checkStatus()
