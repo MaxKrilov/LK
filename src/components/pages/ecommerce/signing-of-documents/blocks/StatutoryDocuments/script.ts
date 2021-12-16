@@ -183,4 +183,18 @@ export default class StatutoryDocuments extends Vue {
 
     setTimeout(() => URL.revokeObjectURL(link.href), 7000)
   }
+
+  downloadFileOnDevice (file: File) {
+    const link = window.document.createElement('a')
+    link.href = URL.createObjectURL(file)
+    link.download = file.name
+
+    window.document.body.append(link)
+    link.click()
+    link.remove()
+
+    this.$data.isLoadingDocument = false
+
+    setTimeout(() => URL.revokeObjectURL(link.href), 7000)
+  }
 }

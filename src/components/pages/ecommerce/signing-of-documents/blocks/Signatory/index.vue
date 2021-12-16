@@ -25,6 +25,7 @@
           :documentName="file.name"
           :hasRemove="!isLoaded"
           @remove="() => { removeFile(idx) }"
+          @click="() => { !isLoaded && downloadFileOnDevice(file) }"
         )
     FileUpload.mb--m(
       :isLoaded="isLoadSuccess"

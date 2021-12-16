@@ -16,6 +16,7 @@
         :documentName="file.name"
         :hasRemove="!isLoaded"
         @remove="() => { removeFile(idx) }"
+        @click="() => { !isLoaded && downloadFileOnDevice(file) }"
       )
     .e-commerce-statutory-documents__file-upload.mb-16
       FileUpload(
