@@ -106,17 +106,17 @@ export default class StatutoryDocuments extends Vue {
   }
 
   getFilePath (id: string) {
-    return `${moment().format('MMYYYY')}/${id}`
+    return `${moment().format('MMYYYY')}/${id}_2`
   }
 
-  uploadDocumentItem (file: File) {
+  uploadDocumentItem (file: File, idx: number) {
     const filePath = this.getFilePath(this.getTOMS)
 
     const uploadFileData = {
       api: this.$api,
       file: file,
       bucket: FILE_DATA_BUCKET,
-      filePath: filePath
+      filePath: `${filePath}_${idx + 1}`
     }
 
     const attachFileData = {
@@ -124,7 +124,7 @@ export default class StatutoryDocuments extends Vue {
       fileName: file.name,
       bucket: FILE_DATA_BUCKET,
       relatedTo: this.getTOMS,
-      filePath: filePath,
+      filePath: `${filePath}_${idx + 1}`,
       type: FILE_DATA_TYPE
     }
     return new Promise((resolve, reject) => {

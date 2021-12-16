@@ -1,13 +1,17 @@
 <template lang="pug">
   .e-commerce-digital-signing
     h3.e-commerce-digital-signing__title Подпишите документы с помощью ЭЦП
-    p.e-commerce-digital-signing__subtitle.mb--xl
-      | В вашем браузере должен быть установлен и запущен плагин «КриптоПро». Если плагин не установлен, попробуйте подписать другими способами.
+    p.e-commerce-digital-signing__subtitle
+      | Для подписания документов ЭЦП установите необходимые компоненты в соответствии с&nbsp;
       a(
         href="https://www.cryptopro.ru/products/cades/plugin"
         target="_blank"
         rel="noopener"
-      ) Инструкция «КриптоПро»
+      ) инструкцией.
+    p.e-commerce-digital-signing__subtitle.mb--xl
+      | Перед подписанием проверьте, что плагин «КриптоПро ЭЦП Browser plug-in» включен. Для этого в настройках браузера выберите раздел&nbsp;
+      | «Расширения», включите плагин: «КриптоПро ЭЦП Browser plug-in».
+      | В вашем браузере должен быть установлен и запущен плагин «КриптоПро». Если плагин не установлен, попробуйте подписать другими способами.
     .e-commerce-digital-signing__document.mb--m(
       v-for="(document, key) in (documents || {})"
       :key="key"

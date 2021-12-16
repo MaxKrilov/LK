@@ -125,28 +125,28 @@ export default class Signatory extends Vue {
 
   // Methods
   getFilePath (id: string) {
-    return `${moment().format('MMYYYY')}/${id}`
+    return `${moment().format('MMYYYY')}/${id}_1`
   }
 
   removeFile (idx: number) {
     this.listInternalFile = this.listInternalFile.filter((_, _idx) => _idx !== idx)
   }
 
-  uploadDocument (file: File, filePath: string) {
+  uploadDocument (file: File, filePath: string, idx: number) {
     return new Promise(async (resolve, reject) => {
       try {
         const uploadFileRequestData = {
           api: this.$api,
           bucket: FILE_DATA_BUCKET,
           file,
-          filePath
+          filePath: `${filePath}_${idx + 1}`
         }
 
         const addFileRequestData = {
           api: this.$api,
           bucket: FILE_DATA_BUCKET,
           fileName: file.name,
-          filePath,
+          filePath: `${filePath}_${idx + 1}`,
           relatedTo: this.contractSignee!.id,
           type: FILE_DATA_TYPE
         }
@@ -172,7 +172,7 @@ export default class Signatory extends Vue {
 
     try {
       const filePath = this.getFilePath(this.getTOMS)
-      await Promise.all(this.listInternalFile.map(file => this.uploadDocument(file, filePath)))
+      await Promise.all(this.listInternalFile.map((file, idx) => this.uploadDocument(file, filePath, idx)))
 
       this.isLoaded = true
       this.isLoadSuccess = true

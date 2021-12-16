@@ -43,9 +43,9 @@ export default class ECommerceFileUpload extends Vue {
   }
 
   onValidate (file: File) {
-    if (file.size >= 2 * 1024 * 1024) {
+    if (file.size >= 10 * 1024 * 1024) {
       this.isError = true
-      this.errorText = 'Размер файла не должен превышать 2 Мб'
+      this.errorText = 'Размер файла не должен превышать 10 Мб'
 
       return false
     }

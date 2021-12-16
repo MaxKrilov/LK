@@ -243,7 +243,7 @@ export default class DigitalSigning extends Vue {
       const signDocumentResult =
         await DigitalSignature.signDocument(cadesplugin, documentBase64, this.selectedCertificate!, visibleSignature, logCallback)
       const binaryFile = dataURLtoFile(signDocumentResult, fileName)
-      const newFilePath = `${moment().format('MMYYYY')}/${this.signingDocument?.contractId}`
+      const newFilePath = `${moment().format('MMYYYY')}/${this.signingDocument?.contractId}_3`
 
       const uploadFileData = {
         api: this.$api,
