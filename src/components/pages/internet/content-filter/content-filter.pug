@@ -36,7 +36,7 @@ div(:class="`${pre} main-content main-content--top-menu-fix`")
                 :disabled="isCreatingOrder"
                 :loading="isCreatingOrder"
                 flat
-                @click="disconnect(item.offerId, item.locationId, item.bpi, item.productId, item.date)"
+                @click="disconnect(item.offerId, item.locationId, item.bpi, item.productId, item.date, item.marketId)"
                 ) Отключить фильтрацию
         div(:class="`${pre}__total`")
           div(:class="`${pre}__h4`") Итого:
