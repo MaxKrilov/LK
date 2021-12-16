@@ -13,7 +13,6 @@ import {
 } from '@/tbapi/payments'
 import { ActionContext } from 'vuex'
 import { Route } from 'vue-router'
-import { Cookie } from '@/functions/storage'
 
 import { head, cloneDeep } from 'lodash'
 import moment from 'moment'
@@ -185,6 +184,8 @@ const actions = {
             resolve(false)
             return
           }
+          // eslint-disable-next-line no-undef
+          result.sort((a, b) => BigInt(a.accountStatus.id) > BigInt(b.accountStatus.id) ? 1 : -1)
           context.commit('setListBillingAccount', result)
           // Устанавливаем активный биллинг-аккаунт
           // const requestBillingNumber = route.query.billing_account || Cookie.get('ff_billing_account')
@@ -202,7 +203,7 @@ const actions = {
             }
           }
 
-          const cookieBillingAccountId = Cookie.get('billingAccountId')
+          const cookieBillingAccountId = localStorage.getItem('billingAccountId')
           if (typeof cookieBillingAccountId !== 'undefined') {
             const findingBillingAccount = result.find(billingAccount => billingAccount.billingAccountId === cookieBillingAccountId)
             if (typeof findingBillingAccount !== 'undefined') {
@@ -212,7 +213,7 @@ const actions = {
             }
           }
 
-          const findingBillingAccount = result.find(billingAccount => !/[A-Za-z]/.test(billingAccount.accountNumber))
+          const findingBillingAccount = result.find(billingAccount => !/[A-Za-z]/.test(billingAccount.accountNumber) && billingAccount.accountStatus.id === '9135405314613494989')
           if (typeof findingBillingAccount !== 'undefined') {
             context.commit('setActiveBillingAccount', findingBillingAccount)
           } else {
