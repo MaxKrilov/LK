@@ -7,7 +7,6 @@ import RightInfoPanelComponent from '../RightInfoPanelComponent/index.vue'
 import ChangeOrganizationPopup from '../ChangeOrganizationPopup/index'
 
 import { formatPhone, price } from '../../../../../functions/filters'
-import { Cookie } from '../../../../../functions/storage'
 import MenuItemList from './menu'
 import head from 'lodash/head'
 import { dataLayerPush } from '../../../../../functions/analytics'
@@ -146,7 +145,7 @@ export default {
       this.$store.commit('payments/setActiveBillingAccount', billingAccount)
       this.$nextTick(() => {
         this.$store.commit('loading/rebootBillingAccount', false)
-        Cookie.set('billingAccountId', billingAccount.billingAccountId)
+        localStorage.setItem('billingAccountId', billingAccount.billingAccountId)
 
         this.isOpenBillingAccountMenu = false
       })

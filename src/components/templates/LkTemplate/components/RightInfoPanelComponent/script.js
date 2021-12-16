@@ -1,6 +1,5 @@
 import { mapState, mapGetters } from 'vuex'
 import { formatPhone, price as priceFormatted } from '../../../../../functions/filters'
-import { Cookie } from '../../../../../functions/storage'
 
 const IS_ENABLED_AUTOPAY = '9149184122213604836'
 
@@ -51,7 +50,7 @@ export default {
       this.$store.commit('payments/setActiveBillingAccount', billingAccount)
       this.$nextTick(() => {
         this.$store.commit('loading/rebootBillingAccount', false)
-        Cookie.set('billingAccountId', billingAccount.billingAccountId)
+        localStorage.setItem('billingAccountId', billingAccount.billingAccountId)
       })
     },
     onChangeOrg () {
