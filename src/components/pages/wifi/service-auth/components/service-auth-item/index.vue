@@ -149,6 +149,7 @@
                 ErtAuthVoucherComponent(
                   v-if="[getStatuses.STATUS_ACTIVE, getStatuses.STATUS_DISCONNECTION_IN_PROGRESS].includes(lazyStatus)"
                   :bpi="bpi"
+                  :loginPrefix="vModelList.wifiVoucherPrefix"
                 )
           .wifi-auth-service__card__actions
             .wifi-auth-service__card__action(
