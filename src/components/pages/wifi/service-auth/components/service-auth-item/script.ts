@@ -593,19 +593,6 @@ export default class ErtWifiServiceAuthItem extends Vue {
         this.vModelList.wifiHSCloseNetPassword = this.chars[CHAR_WIFIHSCLONET_PASSWORD] || ''
       } else if (this.code === 'WIFIAVTVOUCH') {
         this.vModelList.wifiVoucherPrefix = this.chars[CHAR_WIFIAVTVOUCH_PREFIX] || ''
-
-        // this.getResource({ bpi: this.bpi })
-        //   .then(response => {
-        //     const vlan = head(response)!.vlan
-        //     if (!vlan || typeof head(vlan) === 'undefined') return
-        //     this.cityId = head(vlan)!.cityId
-        //     this.vlan = head(vlan)!.number
-        //
-        //     this.voucherView({ vlan: this.vlan, cityId: this.cityId })
-        //       .then(response1 => {
-        //         this.voucherManagerInfo = response1.result
-        //       })
-        //   })
       }
     }
 

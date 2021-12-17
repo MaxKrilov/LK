@@ -112,7 +112,11 @@
       )
 
     .wifi-edit-filter__actions
-      er-button(color="blue" @click="onSave") {{ pageActionLabel }}
+      er-button(
+        :disabled="(activeState === 'create' && !selectedLocations.length) || !(publicSubscriptions.length || urlList.length) || !title || !description"
+        color="blue"
+        @click="onSave"
+      ) {{ pageActionLabel }}
       er-button(flat @click="onCancel") Отмена
 
   error-dialog(

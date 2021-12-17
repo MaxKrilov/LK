@@ -23,7 +23,9 @@ import moment from 'moment'
   methods: {
     ...mapActions({
       getResource: 'wifi/getResource',
-      voucherView: 'wifi/voucherView'
+      voucherView: 'wifi/voucherView',
+      pointCreate: 'wifi/pointCreate',
+      createClient: 'wifi/createClient'
     })
   }
 })
@@ -31,6 +33,9 @@ export default class ErtAuthVoucherComponent extends Vue {
   // Props
   @Prop({ type: String })
   readonly bpi!: string
+
+  @Prop({ type: String, default: '' })
+  readonly loginPrefix!: string
 
   // Data
   cityId: string = ''
@@ -56,6 +61,9 @@ export default class ErtAuthVoucherComponent extends Vue {
     R = Promise<IVoucherManager>
     >(args: P) => R
 
+  pointCreate!: ({ vlan, cityId, loginPrefix }: { vlan: string, cityId: string, loginPrefix: string }) => Promise<any>
+  createClient!: () => Promise<void>
+
   async initComponent () {
     const getResourceResponse = await this.getResource({ bpi: this.bpi })
     const vlanElement = head(getResourceResponse)
@@ -69,7 +77,25 @@ export default class ErtAuthVoucherComponent extends Vue {
     this.cityId = head(vlanInfo)!.cityId
     this.vlan = head(vlanInfo)!.number
 
-    this.voucherManagerInfo = await this.voucherView({ vlan: this.vlan, cityId: this.cityId })
+    try {
+      this.voucherManagerInfo = await this.voucherView({ vlan: this.vlan, cityId: this.cityId })
+    } catch (ex) {
+      const status = ex?.response?.status
+      if (status !== 500) return
+
+      // Компонент инициализируется тогда и только тогда, когда услуга "Авторизация по ваучерам" активна.
+      // Но активация может быть выполнена на стороне BSS - в этом случае клиент и точка не создаются.
+      // Следует создать их для корректной работы
+      const data = {
+        vlan: this.vlan,
+        cityId: this.cityId,
+        loginPrefix: this.loginPrefix
+      }
+
+      await this.createClient()
+      await this.pointCreate(data)
+      this.voucherManagerInfo = await this.voucherView({ vlan: this.vlan, cityId: this.cityId })
+    }
   }
 
   onAddManagerHandler (e: Manager) {

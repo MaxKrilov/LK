@@ -26,11 +26,13 @@ export interface ISubscriptionInfo extends ISimpleSubscription {
   description: string
   subscription_type_id: string // FILTER_ALLOW_TYPE || FILTER_BLOCK_TYPE
   subscriptions: {
-    subscription: {
-
-    }
+    subscription: [{
+      is_active: string
+      subscription_id: string
+      subscription_name: string
+    }]
   }
-  url_list: {
+  url_list?: {
     url: IURL[]
   }
 }
@@ -53,7 +55,7 @@ export interface IAddendum {
 export interface ITerminalResource {
   terminal_resource_id: string
   login_name: string
-  row?: ISimpleSubscription[]
+  row?: (ISimpleSubscription & { is_addit_cf: string, onoff: string })[]
 }
 
 export interface IAdditionSubscription {

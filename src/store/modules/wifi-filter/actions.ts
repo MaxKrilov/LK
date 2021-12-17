@@ -313,10 +313,13 @@ export default {
     // eslint-disable-next-line camelcase
     { city_id, vlan }: { city_id: string, vlan: TVlanNumber }
   ) {
+    const clientId = context.rootGetters['auth/getTOMS']
     const action = WIFI_ACTIONS.GET_CLIENT_SUBSCRS_BY_VLAN
     const data = {
       city_id,
-      vlan
+      vlan,
+      client_id: clientId,
+      is_client_bss: '1'
     }
 
     const prepareResponseData = (data: any) => {
