@@ -74,7 +74,6 @@ const actions = {
     toDate,
     productInstance,
     eventSource,
-    page,
     eventType
   }: {
     fromDate: string,
@@ -92,7 +91,6 @@ const actions = {
       dateFrom: fromDate,
       dateTo: toDate,
       productInstance,
-      page,
       eventSource
     }
 

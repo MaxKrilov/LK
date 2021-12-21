@@ -82,7 +82,7 @@
 
         template(v-for="(statistics, date) in listSortingStaticGroupByDate")
           tbody-collapser.statistic-table(
-            v-if="statistics.length !== 0"
+            v-if="statistics.length !== 0 && date !== 'Invalid date'"
             :title="date"
             :columns="7"
             :startOpened="true"
