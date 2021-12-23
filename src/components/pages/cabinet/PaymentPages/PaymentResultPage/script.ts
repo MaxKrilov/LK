@@ -72,9 +72,9 @@ export default class PaymentResultPage extends Vue {
     const transaction = this.$route.query.transaction
     typeof transaction === 'string' && this.checkPaymentStatus({ transaction })
       .then(response => {
-        if (response.pay_status === 0) {
+        if (Number(response.pay_status) === 0) {
           dataLayerPush({ action: 'failed', category: 'payment', label: '' })
-        } else if (response.pay_status === 1) {
+        } else if (Number(response.pay_status) === 1) {
           dataLayerPush({ action: 'success', category: 'payment', label: '' })
         }
         if (Number(response.pay_status) === 2) {
