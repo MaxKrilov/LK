@@ -69,14 +69,9 @@ export default class PaymentResultPage extends Vue {
   }
 
   checkStatus () {
-    const transaction = this.$route.query.transaction
+    const transaction = this.$route.query.transaction || localStorage.getItem('ecommerce__transaction')
     typeof transaction === 'string' && this.checkPaymentStatus({ transaction })
       .then(response => {
-        if (Number(response.pay_status) === 0) {
-          dataLayerPush({ action: 'failed', category: 'payment', label: '' })
-        } else if (Number(response.pay_status) === 1) {
-          dataLayerPush({ action: 'success', category: 'payment', label: '' })
-        }
         if (Number(response.pay_status) === 2) {
           setTimeout(() => {
             this.checkStatus()
@@ -88,6 +83,13 @@ export default class PaymentResultPage extends Vue {
               this.getBillingInfo()
             }, 1000)
           }
+          if (this.status === 0) {
+            dataLayerPush({ action: 'failed', category: 'payment', label: '' })
+          } else {
+            dataLayerPush({ action: 'success', category: 'payment', label: '' })
+          }
+
+          localStorage.removeItem('ecommerce__transaction')
         }
       })
       .catch(() => { this.status = 0 })

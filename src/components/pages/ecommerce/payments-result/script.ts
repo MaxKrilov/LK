@@ -110,6 +110,8 @@ export default class PaymentResultPage extends Vue {
             this.sendData()
             this.resetLocalStorage()
           }
+
+          localStorage.removeItem('ecommerce__transaction')
         }
       })
       .catch(() => { this.status = 0 })
