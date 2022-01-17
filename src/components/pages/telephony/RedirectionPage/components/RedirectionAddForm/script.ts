@@ -333,7 +333,13 @@ export default class ErtRedirectionAddForm extends Vue {
       })
 
       await this.saveSaleOrder({})
-      await this.acceptSaleOrder({})
+      try {
+        await this.acceptSaleOrder({})
+      } catch (e) {
+        this.isAddError = true
+        this.$store.dispatch('salesOrder/cancel')
+        return
+      }
 
       // this.isAddSuccess = true
       this.isOpenForm = false
