@@ -225,7 +225,13 @@ export default class ErtRedirectionItemComponent extends Vue {
     this.isDeleteRequest = true
     try {
       await this.createDisconnectOrder(this.disconnectData)
-      await this.acceptSaleOrder({})
+      try {
+        await this.acceptSaleOrder({})
+      } catch (e) {
+        this.isRequestError = true
+        this.$store.dispatch('salesOrder/cancel')
+        return
+      }
 
       // this.isRequestSuccess = true
       this.$emit('success')
@@ -257,7 +263,13 @@ export default class ErtRedirectionItemComponent extends Vue {
           }, {} as Record<string, string>)
         }
       })
-      await this.acceptSaleOrder({})
+      try {
+        await this.acceptSaleOrder({})
+      } catch (e) {
+        this.isRequestError = true
+        this.$store.dispatch('salesOrder/cancel')
+        return
+      }
 
       // this.isRequestSuccess = true
 
