@@ -8,7 +8,7 @@ import RenameField from './components/rename-field.vue'
 
 import VIDEO_ANALYTICS from '@/constants/videoanalytics'
 
-import { IBaseFunctionality, ICamera, IOffer } from '@/interfaces/videocontrol'
+import { IBaseFunctionality, ICamera, IOffer, IVideocontrol } from '@/interfaces/videocontrol'
 import { IProductOffering } from '@/interfaces/offering'
 // @ts-ignore
 import { promisedStoreValue } from '@/functions/store_utils'
@@ -18,6 +18,7 @@ import {
   CHAR_VALUES,
   CHARS,
   CODES,
+  TOMS_IDS,
   MESSAGES,
   SERVICE_ORDER_MAP,
   VC_DOMAIN_STATUSES,
@@ -31,6 +32,7 @@ import { ErtPageWithDialogsMixin } from '@/mixins2/ErtPageWithDialogsMixin'
 import { ErtFetchAvailableFundsMixin } from '@/mixins2/ErtFetchAvailableFundsMixin'
 import { isMonthlyFeePrice } from '@/functions/offers'
 import { isVisibleAnalytic } from '@/functions/videocontroll'
+import PriceServicesComponent from '@/components/pages/internet/blocks/PriceServicesComponent/index.vue'
 
 /* FUNCTIONS */
 const isFullHD = (el: IOffer) => el.code === CODES.FULLHD
@@ -43,7 +45,8 @@ const components = {
   ErActivationModal,
   ErPlugProduct,
   RenameField,
-  ErAvailableFundsModal
+  ErAvailableFundsModal,
+  PriceServicesComponent
 }
 
 const props = {
@@ -58,6 +61,7 @@ interface iVideoQualityValueItem {
 interface iArchiveRecordValue {
   value: string
   code: string
+  tomsId: string
 }
 
 const HD_VALUE = 'HD'
@@ -73,7 +77,8 @@ const computed = {
     availableAnalyticListByBFOId: 'videocontrol/availableAnalyticListByBFOId',
     locationById: 'videocontrol/pointById',
     cameraById: 'videocontrol/cameraById',
-    bfById: 'videocontrol/bfById'
+    bfById: 'videocontrol/bfById',
+    videocontrolById: 'videocontrol/videocontrolById'
   }),
   ...mapState({
     // isAnalyticsLoaded: (state: any) => state.videocontrol.isAllowedOffersLoaded,
@@ -168,6 +173,7 @@ export default class VCCameraConfigPage extends Mixins(
   cameraById!: (id: string) => ICamera
   locationById!: (id: string) => ILocationOfferInfo
   bfById!: (id: string) => IBaseFunctionality
+  videocontrolById!: (id: string) => IVideocontrol
 
   /* === Заполняются в mounted() === */
   allowedOffer!: IProductOffering
@@ -188,11 +194,13 @@ export default class VCCameraConfigPage extends Mixins(
   archiveRecordValueList: iArchiveRecordValue[] = [
     {
       value: 'Детектор движения',
-      code: CODES.DETECTOR_RECORD
+      code: CODES.DETECTOR_RECORD,
+      tomsId: TOMS_IDS.DETECTOR_RECORD
     },
     {
       value: 'Непрерывная запись',
-      code: CODES.CONST_RECORD
+      code: CODES.CONST_RECORD,
+      tomsId: TOMS_IDS.CONST_RECORD
     }
   ]
 
@@ -245,6 +253,16 @@ export default class VCCameraConfigPage extends Mixins(
     // @ts-ignore
     const empty: IBaseFunctionality = {}
     return this.camera?.parentId ? this.bfById(this.camera.parentId) : empty
+  }
+
+  get videocontrol (): IVideocontrol {
+    // @ts-ignore
+    const empty: IVideocontrol = {}
+    return this.camera?.parentId ? this.videocontrolById(this.camera.parentId) : empty
+  }
+
+  get allServicesTotalPrice ():any {
+    return Object.values(this.bf.services || {}).reduce((totalPrice, currentService) => totalPrice + +(currentService?.purchasedPrices?.recurrentTotal?.value || 0), 0)
   }
 
   get marketId (): string {
@@ -491,6 +509,14 @@ export default class VCCameraConfigPage extends Mixins(
     )
   }
 
+  get baseCost () {
+    if (this.videocontrol?.purchasedPrices?.recurrentTotal?.value) {
+      return +(this.videocontrol?.purchasedPrices?.recurrentTotal?.value) - this.allServicesTotalPrice - this.rentPay
+    }
+
+    return 0
+  }
+
   mounted () {
     this.setState('loading')
     promisedStoreValue(this.$store, 'videocontrol', 'isDomainRegistryLoaded')
@@ -641,7 +667,7 @@ export default class VCCameraConfigPage extends Mixins(
     return service?.id || this.bf.id
   }
 
-  switchFunctionality (code: string, value: any) {
+  switchFunctionality (code: string, value: any, tomsId: string) {
     if (code === CODES.FULLHD && !this.isFullHDExists) {
       this.onInfo({ message: MESSAGES.FUNC_NOT_EXISTS })
     } else if (code === CODES.SOUND_RECORD && !this.isSoundRecordExists) {
@@ -672,6 +698,8 @@ export default class VCCameraConfigPage extends Mixins(
         offer: 'cctv',
         title: `Вы уверены, что хотите подключить «${this.getServiceNameByCode(code)}»?`
       }
+
+      if (tomsId) this.orderData.tomsId = tomsId
 
       if (SERVICE_ORDER_MAP[code]) {
         logInfo('Order', code, value, this.orderData, this.requestData)
@@ -803,7 +831,8 @@ export default class VCCameraConfigPage extends Mixins(
       if (!this.isModificationInProgress) {
         this.switchFunctionality(
           CODES.FULLHD,
-          isFullHDEnabled
+          isFullHDEnabled,
+          TOMS_IDS.FULLHD
         )
       } else {
         this.onInfo({ message: MESSAGES.MIP_MESSAGE })
@@ -813,11 +842,11 @@ export default class VCCameraConfigPage extends Mixins(
   }
 
   onPTZInput (value: boolean) {
-    this.switchFunctionality(CODES.PTZ, value)
+    this.switchFunctionality(CODES.PTZ, value, TOMS_IDS.PTZ)
   }
 
   onSoundRecordInput (value: boolean) {
-    this.switchFunctionality(CODES.SOUND_RECORD, value)
+    this.switchFunctionality(CODES.SOUND_RECORD, value, TOMS_IDS.SOUND_RECORD)
   }
 
   onVideoArchiveInput (value: any) {
@@ -859,7 +888,7 @@ export default class VCCameraConfigPage extends Mixins(
   }
 
   onArchiveRecordInput (archiveRecord: iArchiveRecordValue) {
-    this.switchFunctionality(archiveRecord.code, true)
+    this.switchFunctionality(archiveRecord.code, true, archiveRecord.tomsId)
   }
 
   onPlay () {
@@ -868,7 +897,7 @@ export default class VCCameraConfigPage extends Mixins(
   }
 
   onInputAnalyticItem (...data: any) {
-    this.switchFunctionality(data[0], data[1])
+    this.switchFunctionality(data[0], data[1], data[2])
   }
 
   onCancelOrder () {
@@ -964,4 +993,48 @@ export default class VCCameraConfigPage extends Mixins(
     this.serviceStatuses[this.currentServiceCode] = !this.serviceStatuses[this.currentServiceCode]
     this.currentServiceCode = ''
   }
+
+  get customerProduct () {
+    return {
+      tlo: {
+        offer: {
+          originalName: 'Базовая стоимость'
+        },
+        purchasedPrices: {
+          recurrentTotal: {
+            value: this.baseCost,
+            currency: {
+              currencyCode: this.camera?.purchasedPrices?.recurrentTotal?.currency?.currencyCode
+            }
+          }
+        }
+      },
+      slo: [{
+        activated: true,
+        originalName: 'Стоимость камеры',
+        purchasedPrices: {
+          recurrentTotal: {
+            value: this.rentPay,
+            currency: {
+              currencyCode: this.camera?.purchasedPrices?.recurrentTotal?.currency?.currencyCode
+            }
+          }
+        }
+      },
+      {
+        activated: true,
+        originalName: 'Дополнительные сервисы',
+        purchasedPrices: {
+          recurrentTotal: {
+            value: this.allServicesTotalPrice,
+            currency: {
+              currencyCode: this.camera?.purchasedPrices?.recurrentTotal?.currency?.currencyCode
+            }
+          }
+        }
+      }]
+    }
+  }
+
+  isLoadingCustomerProduct = true
 }

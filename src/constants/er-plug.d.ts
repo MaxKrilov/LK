@@ -14,6 +14,7 @@ export interface IOrderData {
   productCode: string
   chars?: any,
   offer?: boolean
+  tomsId?: string
 }
 
 export interface IDeleteOrderData {

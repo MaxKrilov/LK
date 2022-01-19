@@ -106,7 +106,7 @@ export default class VideocontrolProductPage extends ErtPageWithDialogsMixin {
     const price = Object.values(videocontrol)
       // @ts-ignore
       .map(el => el?.purchasedPrices?.recurrentTotal?.value || 0)
-      .reduce((total, el): number => total + parseFloat(el), 0)
+      .reduce((total: number, el): number => total + parseFloat(el), 0)
 
     return parseFloat(price) + parseFloat(this.getDomainUserPrice(domainKey))
   }

@@ -17,6 +17,10 @@
           .value {{ locationName }}
         template(v-else)
           pu-skeleton(width="200px")
+      
+      .col-model.mt-32
+          .caption2 Модель устройства
+          .model-name.mt-4 {{ device.model }}
 
       .col.col--watch(v-if="isForpostPortalWorking")
         .watch(@click="onPlay" title="Настроить")
@@ -41,10 +45,6 @@
           template(v-else)
             pu-skeleton(width="300px")
 
-        .col-model
-          .caption2 Модель устройства
-          .model-name.mt-4 {{ device.model }}
-
         .col-price
           .warranty-wrap
             .caption2(v-if="cameraSaleInfo.firstColumn.name") {{ cameraSaleInfo.firstColumn.name }}
@@ -54,6 +54,8 @@
             .caption2(v-if="cameraSaleInfo.secondColumn.name") {{ cameraSaleInfo.secondColumn.name }}
             .mt-4(v-if="cameraSaleInfo.secondColumn.content") 
               er-price(period="мес") {{ cameraSaleInfo.secondColumn.content|price }}
+
+    .h2.vc-config-page__header.vc-config-page__header_mb  Базовые характеристики
 
     .camera-edit-form__body
       .vc-camera-edit-form
@@ -103,6 +105,8 @@
               template(v-else)
                 er-price
                   | {{ archiveRecordPrice | price }}
+        
+        .h2.vc-config-page__header.mb-24 Дополнительные сервисы
 
         .addon__list
           .addon
@@ -141,7 +145,7 @@
 
   .vc-config-page__analitycs.analytics
     .analytics__head
-      h2.analytics__title Аналитика
+      h3.analytics__title.mb-24 Аналитика
       .analytics__subtitle(v-if="isAnalyticCountVisible")
         template(v-if="isAnalyticsLoaded")
           | подключено {{ enabledAnalyticCount }} сервиса
@@ -162,7 +166,7 @@
             :disabled="isOrderMode"
             :value="serviceStatuses[item.code]"
             :status="item.status"
-            @input="onInputAnalyticItem(item.code, $event)",
+            @input="onInputAnalyticItem(item.code, $event, item.tomsId)",
           )
       template(v-else)
         product-item(:isLoading="true")
@@ -246,9 +250,7 @@
 
   .vc-config-page__actions
     .total-info
-      .total-info__label Абонентская плата:
-      .total-info__price
-        er-price {{ totalPrice | price }}
+      price-services-component(:customer-product="customerProduct" :is-loading-customer-product="isLoadingCustomerProduct")
 
       .total-info__status(v-if="isChanged")
         | Изменена

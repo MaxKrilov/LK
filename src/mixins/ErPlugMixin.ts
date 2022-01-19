@@ -100,7 +100,8 @@ export default class ErPlugMixin extends Vue {
         bpi: this.orderData?.bpi,
         marketId: this.orderData.marketId,
         productCode: this.orderData?.productCode,
-        chars: this.orderData?.chars
+        chars: this.orderData?.chars,
+        tomsId: this.orderData?.tomsId
       })
       .then(() => {
         this.isShowOrderModal = true
