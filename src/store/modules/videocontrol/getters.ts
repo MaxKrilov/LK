@@ -89,6 +89,20 @@ export const getters = {
       return bf
     }
   },
+  videocontrolById (state: IState, getters: any) {
+    return (id: string) => {
+      let videocontrol = null
+      getters.domainList.forEach((domain: IDomain) => {
+        Object.values(domain.videocontrols).forEach(vc => {
+          if (vc.bf[id]?.id === id) {
+            videocontrol = vc
+          }
+        })
+      })
+
+      return videocontrol
+    }
+  },
   allVideocontrolList (state: IState, getters: any): IVideocontrol[] {
     return getters.domainList
       .reduce(

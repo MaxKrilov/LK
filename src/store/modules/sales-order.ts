@@ -32,11 +32,12 @@ function finder (data:any, id:string) : IOrderItem | null {
   rec(data, id, rec)
   return result
 }
+
 function offerIdFinder (offer: IOffer, productCode: string) : string | null {
   if (!offer?.offeringRelationships) return null
   const offeringRelationships = offer.offeringRelationships
   let offerId = null
-  offeringRelationships.map((el: IOfferingRelationship) => {
+  offeringRelationships.forEach((el: IOfferingRelationship) => {
     if (el?.childProductOffering?.code === productCode) {
       offerId = el.childProductOffering.id
     } else {
@@ -49,7 +50,7 @@ function offerIdFinder (offer: IOffer, productCode: string) : string | null {
           offerId = el.childProductOffering.id
         }
         if (el.childProductOffering?.offeringRelationships) {
-          el.childProductOffering?.offeringRelationships.map((el: IOfferingRelationship) => {
+          el.childProductOffering?.offeringRelationships.forEach((el: IOfferingRelationship) => {
             if (el?.offerings) {
               const _offerId = el.offerings.find(el => el.code === productCode)?.id
               if (_offerId) offerId = _offerId
@@ -59,6 +60,40 @@ function offerIdFinder (offer: IOffer, productCode: string) : string | null {
       }
     }
   })
+
+  return offerId
+}
+
+function offerIdFinderByTomsId (offer: IOffer, tomsId: string) : string | null {
+  if (!offer?.offeringRelationships) return null
+
+  const offeringRelationships = offer.offeringRelationships
+  let offerId = null
+
+  offeringRelationships.forEach((el: IOfferingRelationship) => {
+    if (el?.childProductOffering?.tomsId === tomsId) {
+      offerId = el.childProductOffering.id
+    } else {
+      if (el?.offerings) {
+        const _offerId = el.offerings.find(el => el.tomsId === tomsId)?.id
+        if (_offerId) offerId = _offerId
+      }
+      if (el?.childProductOffering) {
+        if (el.childProductOffering.tomsId === tomsId && el.childProductOffering?.id) {
+          offerId = el.childProductOffering.id
+        }
+        if (el.childProductOffering?.offeringRelationships) {
+          el.childProductOffering?.offeringRelationships.forEach((el: IOfferingRelationship) => {
+            if (el?.offerings) {
+              const _offerId = el.offerings.find(el => el.tomsId === tomsId)?.id
+              if (_offerId) offerId = _offerId
+            }
+          })
+        }
+      }
+    }
+  })
+
   return offerId
 }
 
@@ -126,15 +161,23 @@ const actions = {
   },
   addElement (
     context: ActionContext<IState, any>,
-    { productId, productCode, offerId }: { productId: string, productCode: string, offerId?: string }
+    { productId, productCode, offerId, tomsId }: { productId: string, productCode?: string, offerId?: string, tomsId?: string }
   ) {
-    if (!productId && !productCode) throw new Error('Missing required parameter')
+    if (!productId && (!tomsId || !productCode)) throw new Error('Missing required parameter')
     const currentResponse = context.getters.currentResponse as ISaleOrder
     const clientId = getClientId(context)
 
     const orderItem = finder(currentResponse.orderItems, productId)
 
-    const _offerId = offerId || (orderItem?.offer && productCode ? offerIdFinder(orderItem.offer, productCode) : null)
+    let _offerId: string | null
+
+    // данный костыль необходимо удалить, когда будет реализован поиск  offerId по tomsId для всех продуктов,
+    if (tomsId) {
+      _offerId = offerId || (orderItem?.offer && tomsId ? offerIdFinderByTomsId(orderItem.offer, tomsId) : null)
+    } else {
+      _offerId = offerId || (orderItem?.offer && productCode ? offerIdFinder(orderItem.offer, productCode) : null)
+    }
+
     if (!_offerId) throw new Error('Offer ID not found')
 
     const orderItemId = orderItem?.id || null
@@ -440,20 +483,22 @@ const actions = {
       productCode,
       marketId,
       chars,
-      isReturnPrice
+      isReturnPrice,
+      tomsId
     }: {
       locationId: string,
       bpi: string,
       marketId: string,
       productCode: string,
       chars?: Record<string, string> | Record<string, string>[],
-      isReturnPrice?: boolean
+      isReturnPrice?: boolean,
+      tomsId?: string
     }
   ) {
     return new Promise((resolve, reject) => {
       context.dispatch('create', { locationId, marketId })
         .then(() => {
-          context.dispatch('addElement', { productId: bpi, productCode })
+          context.dispatch('addElement', { productId: bpi, productCode, tomsId })
             .then(() => {
               if (!chars) {
                 context.dispatch('save', { isReturnPrice, productId: bpi })

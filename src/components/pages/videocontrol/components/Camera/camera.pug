@@ -2,7 +2,6 @@
   .camera__title-wrap
     router-link.camera__device-name(:to="linkToEdit") {{ deviceName }}
 
-  .camera__model-name {{ modelName }}
   .camera__count {{ count }} сервиса
   .camera__price(v-if="showPrice" :title="services.status")
     er-price {{ price | price }}

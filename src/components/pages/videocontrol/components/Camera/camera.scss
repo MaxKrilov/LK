@@ -4,15 +4,15 @@ $pre: ".camera";
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: space-between;
-  height: $padding-x12;
+  min-height: $padding-x12;
+
+  @include max-breakpoint(sm) {
+    padding: 8px 0;
+  }
 
   border-top: 1px solid rgba(map_get($shades, "black"), 0.2);
   padding: 0 $padding-x2;
 
-  @include min-breakpoint(lg) {
-    gap: $padding-x6;
-  }
 
   &--search-result {
     #{$pre}__device-name {
@@ -25,10 +25,9 @@ $pre: ".camera";
   }
 
   &__device-name {
-    @extend %h4;
-    white-space: nowrap;
+    @extend %body;
+    white-space: pre-wrap;
     text-decoration: none;
-    border-bottom: 1px solid;
   }
 
   &__model-name {
@@ -39,7 +38,6 @@ $pre: ".camera";
 
   &__title-wrap {
     min-width: 35%;
-    max-width: 35%;
     flex-grow: 1;
     display: flex;
   }
@@ -67,13 +65,8 @@ $pre: ".camera";
   }
 
   &__count,
-  &__price,
   &__config {
     margin-left: $padding-x4;
-
-    @include min-breakpoint("md") {
-      margin-left: $padding-x6;
-    }
   }
 
   &__count {
@@ -93,6 +86,7 @@ $pre: ".camera";
         margin-left: 0;
       }
     }
+    margin-left: $padding-x6;
   }
 
   &__watch,

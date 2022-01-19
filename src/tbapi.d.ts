@@ -470,12 +470,14 @@ export interface IOfferingRelationship {
   childProductOffering?: {
     code: string
     id: string
-    offeringRelationships?: IOfferingRelationship[]
+    offeringRelationships?: IOfferingRelationship[],
+    tomsId: string
   }
   offerings?: [
     {
       code: string
-      id: string
+      id: string,
+      tomsId: string
     }
   ]
 

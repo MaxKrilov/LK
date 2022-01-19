@@ -19,7 +19,8 @@ import ErPlugMixin from '@/mixins/ErPlugMixin'
 //    productCode - код продукта,
 //    chars,
 //    offer: есть или нет оферты,
-//    title: заголвок модалки
+//    title: заголовок модалки,
+//    tomsId: - tomsId продукта
 //
 // requestData=
 //   descriptionModal: описание модалки,

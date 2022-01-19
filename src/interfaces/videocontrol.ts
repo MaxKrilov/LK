@@ -1,5 +1,5 @@
 import { IProductOffering } from './offering'
-import { IPrice as IPurchasedPrice, ISLOPricesItem } from '@/tbapi'
+import { IPrice as IPurchasedPrice, IPurchasedPrices, ISLOPricesItem } from '@/tbapi'
 
 export type TBaseFunctionalityId = string
 export type TDomainServiceId = string
@@ -49,7 +49,7 @@ export interface IVideocontrol {
   offer: IOffer
   locationId: string
 
-  purchasedPrices?: Record<string, IPurchasedPrice>
+  purchasedPrices?: IPurchasedPrices
 }
 
 export interface IVideocontrolRegistry {

@@ -1,6 +1,26 @@
 .vc-config-page {
   @extend %main-content;
 
+  &__header {
+    margin-top: 40px;
+
+    @include min-breakpoint(md) {
+      margin-top: 48px;
+    }
+    @include min-breakpoint(xl) {
+      margin-top: 56px;
+    }
+  }
+
+  &__header_mb {
+    margin-bottom: 40px;
+
+    @include max-breakpoint(sm) {
+      margin-bottom: 32px;
+    }
+  }
+
+
   &__edit-form {
     margin-top: $padding-x8;
 
@@ -31,21 +51,21 @@
 
   .camera-device {
     $border-color: rgba(map-get($shades, 'black'), 0.2);
-    margin-top: $padding-x6;
     display: grid;
-    gap: $padding-x4;
+    column-gap: $padding-x4;
     grid-template-areas:
       //"name name name"
       "cameraName cameraName cameraName"
       "model model model"
       "price price price";
 
-    padding: $padding-x4 $padding-x2;
-    border-top: 1px solid $border-color;
-    border-bottom: 1px solid $border-color;
+    padding: $padding-x3 $padding-x2 0 0;
+
+    @include min-breakpoint(xl) {
+      padding-top: 20px;
+    }
 
     @include min-breakpoint(md) {
-      padding-bottom: $padding-x4;
       grid-template-areas:
         //"name name"
         "cameraName price"
@@ -180,10 +200,9 @@
 .camera-edit-form {
   &__head {
     display: flex;
-    flex-direction: column-reverse;
+    flex-direction: column;
 
     @include min-breakpoint("sm") {
-      flex-direction: row;
       justify-content: space-between;
     }
 
