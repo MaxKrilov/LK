@@ -2,8 +2,8 @@ import { Vue, Component } from 'vue-property-decorator'
 
 import PhoneRow from '../PhoneRow/index.vue'
 import { CHARS } from '@/constants/videocontrol'
-import PackageMinuteCard from '../packageMinute/index.vue'
 import { price as priceFormatted } from '@/functions/filters'
+import PackageMinuteCard from '@/components/pages/telephony/blocks/packageMinute/index.vue'
 
 const DATE_FORMAT = 'DD.MM.YYYY'
 const props = {
@@ -16,7 +16,7 @@ const props = {
   bpi: String,
   cityId: String,
   inTheProcessOfActivation: Boolean,
-  packagesMinutes: []
+  packagesMinutes: Array
 }
 
 const components = {
@@ -33,6 +33,7 @@ const components = {
 export default class OATSPointContent extends Vue {
      limitOfPackageMinutes:number = 0
      minutesLeft:number = 0
+     pre:string = 'oats-point-content'
 
      get activeFrom () {
        return this.$moment(this.$props.actualStartDate).format(DATE_FORMAT)
@@ -52,6 +53,17 @@ export default class OATSPointContent extends Vue {
 
      get oatsLink () {
        return `/lk/oats/go-to-portal?bpi=${this.$props.bpi}&cityId=${this.$props.cityId}`
+     }
+
+     get listOfServices () {
+       let services = this.$props.services
+
+       // в задаче WEB-28591 попросили приходящую с бекенда строку 'Подключение офиса' переименовывать в 'Плата за IP-телефон'
+       services.forEach((service: { chars: { [x: string]: string } }) => {
+         if (service.chars['Имя в счете'] === 'Подключение офиса') service.chars['Имя в счете'] = 'Плата за IP-телефон'
+       })
+
+       return services
      }
 
      onClickConfig () {

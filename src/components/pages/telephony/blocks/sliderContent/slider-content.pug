@@ -56,6 +56,7 @@ div(:class="`${pre}`" )
           PackageMinuteCard(
             v-if="localConnected"
             :slo="localConnected"
+            :packageMinuteId="localConnected.productId"
             :name="'Местные'"
             :phones="phones"
             :marketId="marketId"
@@ -64,6 +65,7 @@ div(:class="`${pre}`" )
           PackageMinuteCard(
             v-if="globalConnected"
             :slo="globalConnected"
+            :packageMinuteId="globalConnected.productId"
             :name="'За границу/По России'"
             :phones="phones"
             :marketId="marketId"

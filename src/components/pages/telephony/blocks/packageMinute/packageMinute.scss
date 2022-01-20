@@ -1,5 +1,7 @@
 .package {
 
+  min-width: 160px;
+
   @include max-breakpoint("sm") {
     margin-bottom: 16px;
   }
@@ -17,18 +19,16 @@
     padding: 16px;
     display: flex;
     align-items: center;
-    min-height: 50px;
+    height: 90px;
 
     @include min-breakpoint("md") {
       padding-left: 24px;
       padding-right: 24px;
-      min-height: 70px;
     }
 
     @include min-breakpoint("xl") {
       padding-left: 32px;
       padding-right: 32px;
-      min-height: 90px;
     }
 
     position: relative;

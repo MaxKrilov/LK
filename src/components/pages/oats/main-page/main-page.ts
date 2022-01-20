@@ -30,7 +30,11 @@ const isCloudPhone = (el: ICloudPhone) => {
 }
 
 const expandServices = (acc: any[], el: ICloudPhone) => {
-  return [...acc, ...el?.services || []]
+  let services: ICloudPhoneService[] = []
+  if (el.services) {
+    services = Object.values(el.services)
+  }
+  return [...acc, ...services]
 }
 
 const oatsPhoneMap = (el: ICloudPhone) => {
@@ -66,7 +70,6 @@ export default class OATSMainPage extends Vue {
       return acc + this.getDomainPrice(item)
     }, 0)
   }
-
   get isDomainsLoaded () {
     return this.$store.state.oats.isDomainsLoaded
   }
@@ -110,8 +113,10 @@ export default class OATSMainPage extends Vue {
     const cloudPhones = Object.values(domain?.cloudPhones || {})
       .filter(el => isCloudPhone(el))
 
-    const cloudPhone = cloudPhones[0]
-    return cloudPhone?.services
+    const services:ICloudPhoneService[] = []
+    cloudPhones.forEach(cloudPhone => { if (cloudPhone.services) services.push(...Object.values(cloudPhone.services)) })
+
+    return services
   }
 
   getServiceCount (domain: IOATSDomain) {
