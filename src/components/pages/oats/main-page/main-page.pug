@@ -42,12 +42,6 @@
   template(v-else-if="isDomainsLoaded && domainList.length === 0")
     .oats-main-page__content-wide
       OATSPromo
-  
-  template(v-else)
-    .oats-main-page__content-wide
-      ErtProgressCircular(indeterminate width="2")
-      .title Загружаем облачную телефонию
-
 
   template(v-else)
     .oats-main-page__content-wide
