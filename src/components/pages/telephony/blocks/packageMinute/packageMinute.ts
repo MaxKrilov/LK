@@ -17,6 +17,7 @@ export default class PackageMinuteCard extends Vue {
   @Prop({ type: String, default: '' }) readonly marketId!: string
   @Prop({ type: String, default: 'Пакет минут' }) readonly name!: string
   @Prop({ type: String, default: '' }) readonly char!: string
+  @Prop({ type: Boolean, default: false }) readonly isOatsPackage!: boolean
 
   limit: number = 0
   changed: number = 0

@@ -21,7 +21,7 @@ div(class="package")
         h2() {{ limit - spent }}
           span(class="package__count-minutes") /{{ limit }}
         div(class="package__caption") рублей осталось
-        div(class="package__buttons")
+        div(class="package__buttons" v-if="!isOatsPackage")
           er-button(color="yellow" @click="changePackage") Изменить
           er-button(flat :loading="isCreatingDeletePackage" @click="disconnect") Отключить
 

@@ -26,7 +26,7 @@
       padding-right: 24px;
     }
 
-    @include min-breakpoint("xl") {
+    @include min-breakpoint("lg") {
       padding-left: 32px;
       padding-right: 32px;
     }
@@ -37,7 +37,7 @@
 
     &_title {
       width: 60%;
-      @extend %h3;
+      @extend %h4;
 
       @include min-breakpoint("xl") {
         width: 70%;
@@ -105,6 +105,10 @@
 
     @include min-breakpoint("md") {
       padding: 24px;
+    }
+
+    @include min-breakpoint("lg") {
+      padding: 32px;
     }
   }
 
