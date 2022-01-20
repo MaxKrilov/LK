@@ -39,6 +39,83 @@
     }
   }
 
+  &__h4 {
+    @extend %h4;
+  }
+
+  &__units {
+    @extend %caption2;
+    @include color-black(0.5);
+  }
+
+  &__plug-package {
+    height: 100%;
+
+    .er-card__content {
+      padding: 16px;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+
+      @include min-breakpoint("md") {
+        padding: 24px;
+      }
+
+      @include min-breakpoint("xl") {
+        padding: 32px;
+      }
+    }
+
+    &__title {
+      width: 50%;
+      @extend %h3;
+
+      @include min-breakpoint("sm") {
+        width: 70%;
+      }
+    }
+
+    &__footer {
+      margin-top: 73px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      position: relative;
+
+      .er-icon {
+        transition: $primary-transition;
+        position: absolute;
+        bottom: 0;
+        right: 0;
+
+        svg {
+          transition: $primary-transition;
+          width: 48px;
+          color: map-get($yellow, "base");
+        }
+      }
+    }
+
+    &:hover {
+      cursor: pointer;
+
+      .er-card__content {
+        background: radial-gradient(50% 50% at 50% 50%, #ffdd00 55.5%, #fcd300 100%);
+      }
+
+      .er-icon {
+        bottom: -80px;
+        right: -80px;
+
+        svg {
+          color: rgba(map-get($shades, "white"), 0.8);
+          width: 200px;
+        }
+      }
+    }
+  }
+  
   &__go-to-portal {
     display: flex;
     align-items: center;

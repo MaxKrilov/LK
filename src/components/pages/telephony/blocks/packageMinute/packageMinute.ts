@@ -12,6 +12,7 @@ const components = {
   } })
 export default class PackageMinuteCard extends Vue {
   @Prop({ type: Object }) readonly slo!: any
+  @Prop({ type: String }) readonly packageMinuteId!: string
   @Prop({ type: Array }) readonly phones!: any[]
   @Prop({ type: String, default: '' }) readonly marketId!: string
   @Prop({ type: String, default: 'Пакет минут' }) readonly name!: string
@@ -161,7 +162,7 @@ export default class PackageMinuteCard extends Vue {
   mounted () {
     this.$store.dispatch('productnservices/billingPacket', {
       api: this.$api,
-      product: this.slo.productId
+      product: this.packageMinuteId
     })
       .then(answer => {
         if (answer?.limit && answer?.spent) {

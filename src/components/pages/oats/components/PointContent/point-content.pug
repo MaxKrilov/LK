@@ -47,21 +47,21 @@
 
       .section__content
         .oats-point-content__oats-packages
-          template(v-for="(_package, index) in packagesMinutes" )
+          template(v-for="(_package, index) in packagesMinutes")
             PackageMinuteCard(
               :key='index'
               :slo="_package"
+              :packageMinuteId="_package.id"
               :name="_package.chars['Имя в счете']"
               :phones="phones"
-              :marketId="marketId"
               :char="'Тип Пакета (Пакет Минут)'")
 
-  .oats-point-content__services(v-if="services && services.length")
+  .oats-point-content__services(v-if="listOfServices && listOfServices.length")
     .section
       .section__title Доп. сервисы
 
       .section__content
-        .oats-service(v-for="service in services" :key="service.id")
+        .oats-service(v-for="service in listOfServices" :key="service.id")
           .oats-service__name {{ service.chars['Имя в счете'] }}
           .oats-service__description {{ service.description }}
           .oats-service__end 
