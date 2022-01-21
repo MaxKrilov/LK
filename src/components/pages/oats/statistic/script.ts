@@ -121,7 +121,7 @@ export default class OATSStatisticPage extends Vue {
 
     cloudPhones.forEach(cloudPhonesList => {
       for (let key in cloudPhonesList) {
-        let oatsPhoneNumbers = Object.values(cloudPhonesList[key]?.services)?.filter(isOatsPhoneNumber)
+        let oatsPhoneNumbers = cloudPhonesList[key]?.services ? Object.values(cloudPhonesList[key]?.services)?.filter(isOatsPhoneNumber) : []
         if (oatsPhoneNumbers?.length > 0) {
           oatsPhoneNumbersList.push(...oatsPhoneNumbers)
         }
