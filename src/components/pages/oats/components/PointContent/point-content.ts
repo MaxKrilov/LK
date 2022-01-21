@@ -4,6 +4,7 @@ import PhoneRow from '../PhoneRow/index.vue'
 import { CHARS } from '@/constants/videocontrol'
 import { price as priceFormatted } from '@/functions/filters'
 import PackageMinuteCard from '@/components/pages/telephony/blocks/packageMinute/index.vue'
+import { cloneDeep } from 'lodash'
 
 const DATE_FORMAT = 'DD.MM.YYYY'
 const props = {
@@ -56,7 +57,7 @@ export default class OATSPointContent extends Vue {
      }
 
      get listOfServices () {
-       let services = this.$props.services
+       let services = cloneDeep(this.$props.services)
 
        // в задаче WEB-28591 попросили приходящую с бекенда строку 'Подключение офиса' переименовывать в 'Плата за IP-телефон'
        services.forEach((service: { chars: { [x: string]: string } }) => {
