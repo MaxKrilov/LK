@@ -81,7 +81,7 @@ export default class ErtAuthVoucherComponent extends Vue {
       this.voucherManagerInfo = await this.voucherView({ vlan: this.vlan, cityId: this.cityId })
     } catch (ex) {
       const status = ex?.response?.status
-      if (status !== 500) return
+      if (status !== 400) return
 
       // Компонент инициализируется тогда и только тогда, когда услуга "Авторизация по ваучерам" активна.
       // Но активация может быть выполнена на стороне BSS - в этом случае клиент и точка не создаются.
