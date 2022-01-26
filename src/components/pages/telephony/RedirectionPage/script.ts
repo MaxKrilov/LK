@@ -255,7 +255,7 @@ export default class ErtTelephonyRedirection extends Vue {
     this.isLoadingProducts = true
     setTimeout(() => {
       this.fetchPhones()
-    }, 5000)
+    }, 10000)
   }
 
   mounted () {

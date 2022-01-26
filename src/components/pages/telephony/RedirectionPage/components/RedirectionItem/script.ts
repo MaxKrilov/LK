@@ -185,9 +185,11 @@ export default class ErtRedirectionItemComponent extends Vue {
   }
 
   get getIsActive () {
-    return this.status === STATUS_ACTIVE && this.listRedirection
-      .filter(redirection => redirection.phoneId === this.phoneId)
-      .every(redirection => redirection.redirectionStatus === STATUS_ACTIVE)
+    return !!this.listPhone.find(phone => phone.id === this.phoneId && phone.status === STATUS_ACTIVE) &&
+      this.status === STATUS_ACTIVE &&
+      this.listRedirection
+        .filter(redirection => redirection.phoneId === this.phoneId)
+        .every(redirection => redirection.redirectionStatus === STATUS_ACTIVE)
   }
 
   get isActiveRedirection () {
