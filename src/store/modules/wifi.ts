@@ -208,7 +208,6 @@ const actions = {
     context: ActionContext<undefined, any>,
     data: FormData
   ) {
-    data.append('_token', context.rootGetters)
     return new Promise((resolve, reject) => {
       api()
         .setWithCredentials()
