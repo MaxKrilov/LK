@@ -88,27 +88,33 @@ div(:class="`${pre}`")
                     @click="onChangeOrganization(); dataLayerPush({ category: 'paymentaccount', label: 'otherorganization' })"
                   ) Выбрать другую организацию
 
-                div.caption-choise.mb-16
+                div.caption-choise.mb-8
                   | Выберите лицевой счёт
                 template(
                   v-for="(accounts, contract) in getBillingAccountsGroupByContract"
                 )
+                  div.border
                   div.caption.mb-4
                     | Договор №
-                  div.agreement.mb-8
+                  div.agreement
                     | {{ contract }}
-                  div.wrapper-line.mb-8
-                    div.personal-account.ml-24(
+                    div.personal-account__flex.mb-16.mt-8(
                       v-for="(account) in accounts"
                       :key="account.billingAccountId"
                       :class="{ 'active': activeBillingAccountId === account.billingAccountId }"
                       @click="onChangeBillingAccount(account); dataLayerPush({ category: 'paymentaccount', label: 'accountnumber' })"
                     )
-                      div.caption.mt-4
-                        | Лицевой счет
-                      div.value.mt-0
-                        er-icon(name="ok")
-                        | {{ account.accountNumber }}
+                      er-toggle.personal-account__radio(
+                          type="radio"
+                          view="radio"
+                          v-model="activeStatus"
+                          :value="activeBillingAccountId === account.billingAccountId"
+                          )
+                      div.personal-account
+                        div.caption.mt-8.ml-24(:class="{green_description : account.accountStatus.name === 'Активный'}")
+                          | {{ account.accountStatus.name === 'Активный' ? 'Счёт активен' : 'Счёт закрыт'}}
+                        div.value.ml-24.mt-4.accountNumberOpacity(:class="{activeAccountOpacity : account.accountStatus.name === 'Активный', closeAccountOpacity : account.accountStatus.name === 'Закрытый'}")
+                          | {{ account.accountNumber }}
                 div.fill-foundation.foundation-pouring &nbsp
               div.profile.mt-8(@click="dataLayerPush({ category: 'paymentaccount', label: 'profile' })")
                 er-icon.mr-8(name="profile")
