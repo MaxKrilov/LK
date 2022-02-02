@@ -48,6 +48,10 @@ export default class OATSPointContent extends Vue {
        return this.$props.value?.purchasedPrices?.recurrentTotal?.value
      }
 
+     get packagesMinutesList () {
+       return this.$props.packagesMinutes.filter((item: { status: string }) => item.status !== 'Disconnected')
+     }
+
      get oatsPortalLink () {
        return '#oats-portal-link'
      }

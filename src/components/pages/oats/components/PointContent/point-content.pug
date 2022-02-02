@@ -41,13 +41,13 @@
           :key="phone.id"
         )
   
-  .oats-point-content__packages-minutes(v-if="packagesMinutes && packagesMinutes.length")
+  .oats-point-content__packages-minutes(v-if="packagesMinutesList && packagesMinutesList.length")
     .section
       .section__title Пакеты минут
 
       .section__content
         .oats-point-content__oats-packages
-          template(v-for="(_package, index) in packagesMinutes")
+          template(v-for="(_package, index) in packagesMinutesList")
             PackageMinuteCard(
               :key='index'
               :slo="_package"
