@@ -30,7 +30,8 @@ export default {
       menu: MenuItemList(this.listProductByService || [], this.oatsPortalLink),
       openingMenuItemIndex: 0,
       isOpenBillingAccountMenu: false,
-      isOpenedCornerButton: false
+      isOpenedCornerButton: false,
+      activeStatus: true
     }
   },
   filters: {
