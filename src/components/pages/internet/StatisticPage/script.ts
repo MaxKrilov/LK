@@ -99,7 +99,7 @@ export default class StatisticPage extends Vue {
   readonly allOtherDocuments!: (DocumentInterface | DocumentInterface[])[]
 
   get getTloName () {
-    return this.customerProduct?.tlo.name || ''
+    return this.customerProduct?.tlo.chars['Имя в счете'] || ''
   }
 
   get getInternetTraffic () {
