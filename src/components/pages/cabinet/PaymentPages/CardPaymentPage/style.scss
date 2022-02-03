@@ -5,6 +5,10 @@
     @extend %block-background;
   }
 
+  &__red {
+    color:  map_get($red, 'base') !important;
+  }
+
   &__card-slider-block,
   &__actions-block {
     width: 100%;

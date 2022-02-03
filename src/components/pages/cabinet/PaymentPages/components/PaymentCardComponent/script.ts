@@ -1,9 +1,9 @@
 import Vue from 'vue'
 import Component from 'vue-class-component'
 
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import { ErtTextField, ErtCheckbox } from '@/components/UI2'
-import { IPaymentCard } from '@/tbapi/payments'
+import { IBillingAccount, IPaymentCard } from '@/tbapi/payments'
 
 import Inputmask from 'inputmask'
 
@@ -44,6 +44,11 @@ const autoPayHTML = `
       this.$emit('change:remember-card', val)
     }
   },
+  computed: {
+    ...mapGetters({
+      activeBillingAccountStatus: 'payments/getActiveBillingAccountStatus'
+    })
+  },
   methods: {
     ...mapActions({
       activationDeactivationAutoPay: 'payments/activationDeactivationAutoPay',
@@ -61,6 +66,9 @@ export default class PaymentCardComponent extends Vue {
   // Vuex actions
   readonly activationDeactivationAutoPay!: ({ bindingId, activate }: { bindingId: string, activate: 0 | 1 }) => Promise<{ result: number }>
   readonly unbindCard!: ({ bindingId }: { bindingId: string }) => Promise<{ result: boolean }>
+
+  // Vuex getters
+  readonly activeBillingAccountStatus!: { id: string, name: string }
 
   // Props
   isNew!: boolean
@@ -80,6 +88,8 @@ export default class PaymentCardComponent extends Vue {
   isShowDialogRemoveCard: boolean = false
   isRemovingCard: boolean = false
   isRemovedCard: boolean = false
+
+  isShowErrorDialogOnAutoPay: boolean = false
 
   errorText: string = ''
 
@@ -142,7 +152,12 @@ export default class PaymentCardComponent extends Vue {
 
   // Methods
   onChangeAutoPay () {
-    this.isShowDialogAutoPay = true
+    if (this.activeBillingAccountStatus.name === 'Закрытый') {
+      this.$refs['autopay-checkbox'].lazyValue = this.isAutoPay
+      this.isShowErrorDialogOnAutoPay = true
+    } else {
+      this.isShowDialogAutoPay = true
+    }
   }
 
   onCancelAutoPay () {

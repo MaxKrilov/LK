@@ -132,6 +132,7 @@ const state = {
 
 const getters = {
   getActiveBillingAccount: (state: IState) => state.activeBillingAccount?.billingAccountId,
+  getActiveBillingAccountStatus: (state: IState) => state.activeBillingAccount?.accountStatus,
   getActiveBillingAccountContractNumber: (state: IState) => state.activeBillingAccount?.contractNumber,
   getListBillingAccount: (state: IState) => state.listBillingAccount.map(account => account.accountNumber),
   getActiveBillingAccountNumber: (state: IState) => state.activeBillingAccount?.accountNumber,

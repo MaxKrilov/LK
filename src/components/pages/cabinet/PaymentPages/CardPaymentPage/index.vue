@@ -127,7 +127,6 @@
               data-ga-category="payments"
               data-ga-label="paybycardconfirmyes"
             ) Оплатить
-
 </template>
 
 <script lang="ts" src="./script.ts"></script>
