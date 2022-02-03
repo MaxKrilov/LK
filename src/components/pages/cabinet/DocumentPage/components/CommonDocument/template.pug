@@ -1,5 +1,6 @@
 .er-document(
   :class="getColorClass"
+  v-on="$listeners"
 )
   .er-document__ripple(v-if="ripple")
     er-ripple(:active="rippleActive")

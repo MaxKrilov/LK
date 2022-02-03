@@ -1,185 +1,187 @@
-common-document(
-  :class="{ 'er-document--signed': (contractIsSigned && !documentIsAct) || documentIsActSigned }"
-).er-document--contract.er-document--big-doc
-  template(v-slot:header)
-    .er-document__title {{ computedTypeName }}
-    er-document-viewer(
-      :list-document="computedListDocumentForViewer"
-      :is-digital-signing="!documentIsVerifying && contractIsReady && documentIsSigned"
-      :is-manual-signing="!documentIsVerifying && contractIsReady && documentIsNotSigned"
-      v-model="isOpenViewer"
-      @signing:manual="manualSigning"
-      @signing:digital="digitalSigning"
-      ref="viewer"
-      )
-      template(v-slot:activator="{ on }")
+er-document-viewer(
+  :list-document="computedListDocumentForViewer"
+  :is-digital-signing="!documentIsVerifying && contractIsReady && documentIsSigned"
+  :is-manual-signing="!documentIsVerifying && contractIsReady && documentIsNotSigned"
+  v-model="isOpenViewer"
+  @signing:manual="manualSigning"
+  @signing:digital="digitalSigning"
+  ref="viewer"
+  )
+  template(v-slot:activator="{ on }")
+
+    common-document.contract-document-pointer(
+      v-on="on"
+      :class="{ 'er-document--signed': (contractIsSigned && !documentIsAct) || documentIsActSigned }"
+    ).er-document--contract.er-document--big-doc
+      template(v-slot:header)
+        .er-document__title {{ computedTypeName }}
         a(:href="document.file" v-on="on").er-document__link.er-document__subtitle
           | Текст {{ isSingleDocument ? 'документа' : 'документов' }}
 
 
-    er-icon(name="doc")
+        er-icon(name="doc")
 
-  template(v-slot:body)
-    .document-number
-      .document-number__sign {{ getFirstElement.type.id === TRILATERAL_DOCUMENTS ? 'Договор №' : 'По договору №' }}
-      .document-number__number {{ computedRelatedToName }}
+      template(v-slot:body)
+        .document-number
+          .document-number__sign {{ getFirstElement.type.id === TRILATERAL_DOCUMENTS ? 'Договор №' : 'По договору №' }}
+          .document-number__number {{ computedRelatedToName }}
 
-    .document-date.caption2
-      | от {{ computedModifiedWhen | formatDate("DD.MM.YY") }}
+        .document-date.caption2
+          | от {{ computedModifiedWhen | formatDate("DD.MM.YY") }}
 
-  template(v-slot:footer)
-    .buttons(v-if="documentIsActNotSigned")
-      er-button.er-button--accept(
-        color="blue"
-        pre-icon="doc_edit"
-        data-ga-category="documents"
-        data-ga-label="actppaccept"
-        @click="() => { actSigningConfirm(1) }"
-      )
-        | Акцептовать
-      er-button(
-        :color="'gray'"
-        data-ga-category="documents"
-        data-ga-label="actppdecline"
-        @click="() => { actSigningConfirm(0) }"
-      ).er-button--decline
-        | Отказаться
-    // Акт акцептован
-    div(v-else-if="documentIsActSigned")
-      .er-document__signed-text
-        er-icon(name="circle_ok").circle-ok-icon
-        er-icon(name="ok").ok-icon
-        | Акцептован
-    // Акт не акцептован
-    div(v-else-if="documentIsActCancel")
-      .er-document__cancelled-text
-        er-icon(name="cancel").cancelled--desktop
-        er-icon(name="cancel").cancelled--mobile
-        | Не акцептован
-      er-button.er-button--accept(
-        color="blue"
-        pre-icon="doc_edit"
-        @click="() => { actSigningConfirm(1) }"
-      )
-        | Акцептовать
-      er-button(
-        :color="'gray'"
-        @click="() => { actSigningConfirm(0) }"
-      ).er-button--decline
-        | Отказаться
-    //- Документ подписан
-    div(v-else-if="contractIsSigned")
-      .er-document__signed-text
-        er-icon(name="circle_ok").circle-ok-icon
-        er-icon(name="ok").ok-icon
-        | Подписан
-    //- Документ Активен
-    div(v-else-if="documentIsActive")
-      .er-document__signed-text
-        er-icon(name="circle_ok").circle-ok-icon
-        er-icon(name="ok").ok-icon
-        | Активный
-    //- Документ на проверке у менеджера
-    div(v-else-if="documentIsVerifying")
-      .er-document__verifying-text
-        er-icon(name="question").question--desktop
-        er-icon(name="question").question--mobile
-        | На проверке
-    div(v-else-if="documentIsCancel")
-      .er-document__cancelled-text
-        er-icon(name="cancel").cancelled--desktop
-        er-icon(name="cancel").cancelled--mobile
-        | Отменён
-    //- Документ может быть подписан ЭЦП (signedWithDigitalSignature === 'Yes' && status === 'Готов для клиента')
-    .buttons(v-else-if="contractIsReady && documentIsSigned")
-      er-button(
-        :color="'blue'"
-        pre-icon="key"
-        @click="() => { digitalSigning() }"
-      ).er-button--accept
-        | Подписать ЭЦП
-      er-button(
-        :color="'gray'"
-        @click="() => { cancelSigningConfirm() }"
-      ).er-button--decline
-        | Отказаться
-    //- документ может быть подписан только вручную (signedWithDigitalSignature === 'No' && status === 'Готов для клиента')
-    .buttons(v-else-if="contractIsReady && documentIsNotSigned")
-      er-button.er-button--accept(
-        color="blue"
-        pre-icon="doc_edit"
-        @click="() => { manualSigning() }"
-      )
-        | Подписать
-      er-button(
-        :color="'gray'"
-        @click="() => { cancelSigningConfirm() }"
-      ).er-button--decline
-        | Отказаться
-    template(v-if="contractIsReady")
-      er-activation-modal(
-        v-model="isOpenConfirm"
-        type="question"
-        title="Вы уверены, что хотите отказаться от подписания документа (-ов)?"
-        action-button-text="Отказаться"
-        @confirm="cancelSigning"
-      )
-      er-activation-modal(
-        v-model="isCancelSuccess"
-        type="success"
-        title="Отказ от подписания документов выполнен успешно!"
-        :is-show-action-button="false"
-        cancel-button-text="Понятно"
-      )
-      er-activation-modal(
-        v-model="isCancelError"
-        type="error"
-        title="Произошла ошибка! Повторите попытку позже"
-        :is-show-action-button="false"
-        cancel-button-text="Понятно"
-      )
-        template(slot="description")
-          | {{ cancelErrorText }}
+      template(v-slot:footer)
+        .buttons(v-if="documentIsActNotSigned")
+          er-button.er-button--accept(
+            color="blue"
+            pre-icon="doc_edit"
+            data-ga-category="documents"
+            data-ga-label="actppaccept"
+            @click.prevent.stop="() => { actSigningConfirm(1) }"
+          )
+            | Акцептовать
+          er-button(
+            :color="'gray'"
+            data-ga-category="documents"
+            data-ga-label="actppdecline"
+            @click.prevent.stop="() => { actSigningConfirm(0) }"
+          ).er-button--decline
+            | Отказаться
+        // Акт акцептован
+        div(v-else-if="documentIsActSigned")
+          .er-document__signed-text
+            er-icon(name="circle_ok").circle-ok-icon
+            er-icon(name="ok").ok-icon
+            | Акцептован
+        // Акт не акцептован
+        div(v-else-if="documentIsActCancel")
+          .er-document__cancelled-text
+            er-icon(name="cancel").cancelled--desktop
+            er-icon(name="cancel").cancelled--mobile
+            | Не акцептован
+          er-button.er-button--accept(
+            color="blue"
+            pre-icon="doc_edit"
+            @click.prevent.stop="() => { actSigningConfirm(1) }"
+          )
+            | Акцептовать
+          er-button(
+            :color="'gray'"
+            @click.prevent.stop="() => { actSigningConfirm(0) }"
+          ).er-button--decline
+            | Отказаться
+        //- Документ подписан
+        div(v-else-if="contractIsSigned")
+          .er-document__signed-text
+            er-icon(name="circle_ok").circle-ok-icon
+            er-icon(name="ok").ok-icon
+            | Подписан
+        //- Документ Активен
+        div(v-else-if="documentIsActive")
+          .er-document__signed-text
+            er-icon(name="circle_ok").circle-ok-icon
+            er-icon(name="ok").ok-icon
+            | Активный
+        //- Документ на проверке у менеджера
+        div(v-else-if="documentIsVerifying")
+          .er-document__verifying-text
+            er-icon(name="question").question--desktop
+            er-icon(name="question").question--mobile
+            | На проверке
+        div(v-else-if="documentIsCancel")
+          .er-document__cancelled-text
+            er-icon(name="cancel").cancelled--desktop
+            er-icon(name="cancel").cancelled--mobile
+            | Отменён
+        //- Документ может быть подписан ЭЦП (signedWithDigitalSignature === 'Yes' && status === 'Готов для клиента')
+        .buttons(v-else-if="contractIsReady && documentIsSigned")
+          er-button(
+            :color="'blue'"
+            pre-icon="key"
+            @click.prevent.stop="() => { digitalSigning() }"
+          ).er-button--accept
+            | Подписать ЭЦП
+          er-button(
+            :color="'gray'"
+            @click.prevent.stop="() => { cancelSigningConfirm() }"
+          ).er-button--decline
+            | Отказаться
+        //- документ может быть подписан только вручную (signedWithDigitalSignature === 'No' && status === 'Готов для клиента')
+        .buttons(v-else-if="contractIsReady && documentIsNotSigned")
+          er-button.er-button--accept(
+            color="blue"
+            pre-icon="doc_edit"
+            @click.prevent.stop="() => { manualSigning() }"
+          )
+            | Подписать
+          er-button(
+            :color="'gray'"
+            @click.prevent.stop="() => { cancelSigningConfirm() }"
+          ).er-button--decline
+            | Отказаться
+        template(v-if="contractIsReady")
+          er-activation-modal(
+            v-model="isOpenConfirm"
+            type="question"
+            title="Вы уверены, что хотите отказаться от подписания документа (-ов)?"
+            action-button-text="Отказаться"
+            @confirm="cancelSigning"
+          )
+          er-activation-modal(
+            v-model="isCancelSuccess"
+            type="success"
+            title="Отказ от подписания документов выполнен успешно!"
+            :is-show-action-button="false"
+            cancel-button-text="Понятно"
+          )
+          er-activation-modal(
+            v-model="isCancelError"
+            type="error"
+            title="Произошла ошибка! Повторите попытку позже"
+            :is-show-action-button="false"
+            cancel-button-text="Понятно"
+          )
+            template(slot="description")
+              | {{ cancelErrorText }}
 
-    template(v-if="documentIsActNotSigned || documentIsActCancel")
-      er-activation-modal(
-        v-model="isActConfirm"
-        type="question"
-        :title="actConfirmTitle"
-        :action-button-text="actConfirmButton"
-        @confirm="actSigning"
-        :is-loading-confirm="isActSigning"
-        analyticConfirmCategory="documents"
-        analyticCancelCategory="documents"
-        analyticCloseCategory="documents"
-        :analyticConfirmLabel="actStatus === 0 ? 'actppacceptnodecline' : 'actppacceptyesaccept'"
-        :analyticCancelLabel="actStatus === 0 ? 'actppacceptnocancel' : 'actppacceptyescancel'"
-        :analyticCloseLabel="actStatus === 0 ? 'actppacceptnoclose' : 'actppacceptyesaccept'"
-      )
-        template(v-slot:description)
-          ErtForm(ref="act-form" v-if="actStatus === 0")
-            ErtTextarea(
-              placeholder="Укажите причину отказа от акцептования акта (обязательное поле)"
-              noResize
-              rows="3"
-              counter="900"
-              v-model="actRejectReason"
-              :rules="[v => !!v || 'Поле обязательно к заполнению', v => v.length <= 900 || 'Максимальное количество символов: 900']"
-            )
-      er-activation-modal(
-        v-model="isActSuccess"
-        type="success"
-        :title="`${actStatus ? 'Акцептование' : 'Отказ от акцептования'} акта оказания услуг/передачи оборудования выполнился успешно!`"
-        :is-show-action-button="false"
-        cancel-button-text="Спасибо"
-      )
-        template(slot="description")
-          div.caption.mb-8(v-if="!actStatus") Было создано открытое обращение на менеджера
-          div.caption Данное окно закроется через 5 секунд
-      er-activation-modal(
-        v-model="isActError"
-        type="error"
-        title="Произошла ошибка! Повторите попытку позже"
-        :is-show-action-button="false"
-        cancel-button-text="Понятно"
-      )
+        template(v-if="documentIsActNotSigned || documentIsActCancel")
+          er-activation-modal(
+            v-model="isActConfirm"
+            type="question"
+            :title="actConfirmTitle"
+            :action-button-text="actConfirmButton"
+            @confirm="actSigning"
+            :is-loading-confirm="isActSigning"
+            analyticConfirmCategory="documents"
+            analyticCancelCategory="documents"
+            analyticCloseCategory="documents"
+            :analyticConfirmLabel="actStatus === 0 ? 'actppacceptnodecline' : 'actppacceptyesaccept'"
+            :analyticCancelLabel="actStatus === 0 ? 'actppacceptnocancel' : 'actppacceptyescancel'"
+            :analyticCloseLabel="actStatus === 0 ? 'actppacceptnoclose' : 'actppacceptyesaccept'"
+          )
+            template(v-slot:description)
+              ErtForm(ref="act-form" v-if="actStatus === 0")
+                ErtTextarea(
+                  placeholder="Укажите причину отказа от акцептования акта (обязательное поле)"
+                  noResize
+                  rows="3"
+                  counter="900"
+                  v-model="actRejectReason"
+                  :rules="[v => !!v || 'Поле обязательно к заполнению', v => v.length <= 900 || 'Максимальное количество символов: 900']"
+                )
+          er-activation-modal(
+            v-model="isActSuccess"
+            type="success"
+            :title="`${actStatus ? 'Акцептование' : 'Отказ от акцептования'} акта оказания услуг/передачи оборудования выполнился успешно!`"
+            :is-show-action-button="false"
+            cancel-button-text="Спасибо"
+          )
+            template(slot="description")
+              div.caption.mb-8(v-if="!actStatus") Было создано открытое обращение на менеджера
+              div.caption Данное окно закроется через 5 секунд
+          er-activation-modal(
+            v-model="isActError"
+            type="error"
+            title="Произошла ошибка! Повторите попытку позже"
+            :is-show-action-button="false"
+            cancel-button-text="Понятно"
+          )
