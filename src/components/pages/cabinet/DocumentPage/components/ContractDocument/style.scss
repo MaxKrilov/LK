@@ -1,5 +1,9 @@
 $pre: '.er-document';
 
+.contract-document-pointer {
+  cursor: pointer;
+}
+
 #{$pre}--contract {
   &:hover {
     #{$pre}__header {

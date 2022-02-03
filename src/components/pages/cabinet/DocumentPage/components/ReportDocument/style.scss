@@ -5,6 +5,10 @@ $gray-doc-header-color: map_get($document-colors, 'gray-header');
 
 $footer-button-height: 56px;
 
+.report-document-pointer {
+  cursor: pointer;
+}
+
 @mixin after-ripple-color-transition($er-ripple-time: .2s) {
   transition: color .08s ease-in-out ($er-ripple-time - .1s);
 }

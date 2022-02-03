@@ -1,35 +1,35 @@
-common-document(
-  :ripple-active="selected"
-  :ripple="true"
-  :class="{'er-document--selected': selected}"
-).er-document--report.er-document--small-doc
-  div(slot="header").d--flex.flex-row.align-items-center
-    .er-document__toggle
-      er-toggle(
-        type="checkbox"
-        view="radio-check"
-        v-model="selected"
-        @input="onSelect"
-      )
-    h3.er-document__title-sm {{ document.type.id | typeName }}
-    h3.er-document__title {{ document.number }}
+er-document-viewer(
+  :listDocument="documentForViewer"
+  v-model="isOpenViewer"
+)
+  template(v-slot:activator="{ on }")
+    common-document.report-document-pointer(
+      v-on="on"
+      :ripple-active="selected"
+      :ripple="true"
+      :class="{'er-document--selected': selected}"
+    ).er-document--report.er-document--small-doc
+      div(slot="header").d--flex.flex-row.align-items-center
+        .er-document__toggle
+          er-toggle(
+            type="checkbox"
+            view="radio-check"
+            v-model="selected"
+            @input="onSelect"
+          )
+        h3.er-document__title-sm {{ document.type.id | typeName }}
+        h3.er-document__title {{ document.number }}
 
-  div(slot="body")
-    h3.er-document__content-sm {{ document.number }}
-    h3.er-document__content {{ document.type.id | typeName }}
+      div(slot="body")
+        h3.er-document__content-sm {{ document.number }}
+        h3.er-document__content {{ document.type.id | typeName }}
 
-    .document-date.caption2
-      | {{ document.attachmentName | attachName }}
+        .document-date.caption2
+          | {{ document.attachmentName | attachName }}
 
-  template(v-slot:footer)
-    er-document-viewer(
-      :listDocument="documentForViewer"
-      v-model="isOpenViewer"
-    )
-      template(v-slot:activator="{ on }")
-        er-button.not-show-sm(
-          v-on="on"
-          data-ga-category="documents"
-          data-ga-label="reportsbilldetailed"
-        ) Подробнее
-        er-button(:color="'gray'" v-on="on").no-shadow.show-only-sm Открыть
+      template(v-slot:footer)
+            er-button.not-show-sm(
+              data-ga-category="documents"
+              data-ga-label="reportsbilldetailed"
+            ) Подробнее
+            er-button(:color="'gray'").no-shadow.show-only-sm Открыть
