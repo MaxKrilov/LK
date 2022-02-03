@@ -131,6 +131,25 @@
             ErButton(:loading="isChangingAutoPay" @click="changeAutoPay") {{ isAutoPay ? 'Отключить' : 'Подключить' }}
 
     ErtDialog(
+      v-model="isShowErrorDialogOnAutoPay"
+      maxWidth="544"
+      persistent
+    )
+      .card-payment-page__confirm-dialog
+        .card-payment-page__confirm-dialog__icon.card-payment-page__red.mb-16
+          ErtIcon(name="cancel")
+        .card-payment-page__confirm-dialog__title.mb-16
+          | Вы пытаетесь совершить операцию на закрытом лицевом счёте, выберите активный
+        .card-payment-page__confirm-dialog__actions
+          .card-payment-page__confirm-dialog__action.ml-8
+            ErButton(
+              data-ga-category="payments"
+              data-ga-label="paybycardconfirmyes"
+              :loading="isPayment"
+              @click="() => { isShowErrorDialogOnAutoPay = false }"
+            ) Закрыть
+
+    ErtDialog(
       v-model="isShowDialogRemoveCard"
       maxWidth="544"
       persistent

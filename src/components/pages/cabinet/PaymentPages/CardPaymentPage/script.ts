@@ -14,7 +14,7 @@ import PaymentCardComponent from '../components/PaymentCardComponent/index.vue'
 import Swiper from 'swiper'
 import 'swiper/swiper-bundle.css'
 import { SCREEN_WIDTH } from '@/store/actions/variables'
-import { IPaymentCard, INewCardPayment, IBindCardPayment } from '@/tbapi/payments'
+import { IPaymentCard, INewCardPayment, IBindCardPayment, IBillingAccount } from '@/tbapi/payments'
 
 import { roundUp } from '@/functions/helper'
 import { BREAKPOINT_MD } from '@/constants/breakpoint'
@@ -32,7 +32,8 @@ import { dataLayerPush } from '@/functions/analytics'
       cvv: (state: any) => state.payments.cvv
     }),
     ...mapGetters({
-      activeBillingAccount: 'payments/getActiveBillingAccount'
+      activeBillingAccount: 'payments/getActiveBillingAccount',
+      activeBillingAccountStatus: 'payments/getActiveBillingAccountStatus'
     })
   },
   watch: {
@@ -92,6 +93,7 @@ export default class CardPaymentPage extends Vue {
 
   // Vuex getters
   readonly activeBillingAccount!: string
+  readonly activeBillingAccountStatus!: { id: string, name: string }
 
   // Vuex mutations
   readonly setCVV!: (cvv: string) => void
@@ -328,6 +330,8 @@ export default class CardPaymentPage extends Vue {
   }
 
   onPayment () {
+    this.errorText = this.activeBillingAccountStatus.name === 'Закрытый' ? 'Вы пытаетесь совершить операцию на закрытом лицевом счете' : ''
+
     if (this.activeCardIndex === 0 && this.$refs['amount-form'].validate()) {
       this.isShowConfirmDialogNewCard = true
     } else {
