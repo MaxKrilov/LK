@@ -8,3 +8,10 @@
       .instruction-page__content(v-html="instructionContent.short_description")
 </template>
 <script lang="ts" src="./InstructionPage.ts"></script>
+
+<style type="scss">
+.instruction-page__content ol {
+margin-left: 20px;
+}
+
+</style>
