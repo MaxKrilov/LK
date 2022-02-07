@@ -14,7 +14,7 @@ import PaymentCardComponent from '../components/PaymentCardComponent/index.vue'
 import Swiper from 'swiper'
 import 'swiper/swiper-bundle.css'
 import { SCREEN_WIDTH } from '@/store/actions/variables'
-import { IPaymentCard, INewCardPayment, IBindCardPayment, IBillingAccount } from '@/tbapi/payments'
+import { IPaymentCard, INewCardPayment, IBindCardPayment } from '@/tbapi/payments'
 
 import { roundUp } from '@/functions/helper'
 import { BREAKPOINT_MD } from '@/constants/breakpoint'

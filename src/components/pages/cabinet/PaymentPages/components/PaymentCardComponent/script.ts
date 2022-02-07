@@ -3,7 +3,7 @@ import Component from 'vue-class-component'
 
 import { mapActions, mapGetters } from 'vuex'
 import { ErtTextField, ErtCheckbox } from '@/components/UI2'
-import { IBillingAccount, IPaymentCard } from '@/tbapi/payments'
+import { IPaymentCard } from '@/tbapi/payments'
 
 import Inputmask from 'inputmask'
 
