@@ -152,7 +152,7 @@ const MenuItemList = (listProduct: IProductItem[], oatsPortalLink: string): Menu
       isOpen: false,
       url: '/lk/videocontrol/forpost/',
       analyticLabel: 'cctv',
-      subitem: isConnectProduct(listProduct, 'Форпост') || isConnectProduct(listProduct, 'iVideon')
+      subitem: isConnectProduct(listProduct, 'Видеонаблюдение Дом.ru Бизнес') || isConnectProduct(listProduct, 'iVideon')
         ? [
           {
             name: 'Видеоаналитика',

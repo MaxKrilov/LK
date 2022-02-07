@@ -6,7 +6,7 @@ export function getServicePageLink (productName: string) {
     'Интернет': '/lk/internet',
     'Wi-Fi': '/lk/wifi',
     'Телефони': '/lk/telephony',
-    'Форпост': '/lk/videocontrol/forpost/',
+    'Видеонаблюдение Дом.ru Бизнес': '/lk/videocontrol/forpost/',
     'ТВ': '/lk/tv',
     'ОАТС': '/lk/oats'
   }

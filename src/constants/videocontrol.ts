@@ -17,7 +17,7 @@ const VIDEOARCHIVE_DAY_COUNT = 'Количество дней архива'
 const ADDITION_USERS = 'Дополнительные пользователи'
 
 const PRODUCT_TYPES: Record<string, string> = {
-  forpost: 'Форпост',
+  forpost: 'Видеонаблюдение Дом.ru Бизнес',
   enforta: 'iVideon'
 }
 
