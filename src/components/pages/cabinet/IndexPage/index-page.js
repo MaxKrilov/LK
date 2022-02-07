@@ -45,7 +45,14 @@ export default {
     isOpenViewer: false,
     trackerIntervalPromisePay: 1,
     idIntervalPromisePay: 0,
-    isNotAccessInvPayment: false
+    isNotAccessInvPayment: false,
+    emptyDocument: {
+      id: '',
+      bucket: '',
+      fileName: '',
+      filePath: '',
+      type: { id: '', name: '' }
+    }
   }),
   computed: {
     currentFilterLabel () {
@@ -113,7 +120,8 @@ export default {
       loadingInvoiceForPayment: 'loading/loadingInvoiceForPayment',
       getCountRequestInWork: 'request/getCountRequestInWork',
       getCountUnsignedDocument: 'fileinfo/getCountUnsignedDocument',
-      activeBundleGroupList: 'bundles/activeBundleGroupList'
+      activeBundleGroupList: 'bundles/activeBundleGroupList',
+      activeBillingAccount: 'payments/getActiveBillingAccount'
     }),
 
     isEmptyListProduct () {
@@ -150,6 +158,11 @@ export default {
       return this.billingInfo.hasOwnProperty('balance')
         ? 0 - Number(this.billingInfo.balance)
         : 0
+    },
+    computedListInvoiceDocument () {
+      return [
+        this.invPaymentsForViewer[this.activeBillingAccount] || this.emptyDocument
+      ]
     }
   },
   methods: {
@@ -206,7 +219,11 @@ export default {
     isOpenViewer (val) {
       if (Number(this.billingInfo.balance) <= 0) {
         this.isNotAccessInvPayment = true
-      } else if (val && this.invPaymentsForViewer[0].filePath === '') {
+      } else if (
+        val &&
+        this.activeBillingAccount &&
+        !(this.activeBillingAccount in this.invPaymentsForViewer)
+      ) {
         this.$store.dispatch(`payments/getInvoicePayment`)
       }
     },
@@ -238,6 +255,12 @@ export default {
             ? 'sortbyoffice'
             : 'sortbybundle'
       })
+    },
+    activeBillingAccount () {
+      // Очищаем просмотрщик
+      // this.$refs.viewer.currentDocumentFile = ''
+      // this.$refs.viewer.currentDocument = this.emptyDocument
+      // this.$refs.viewer.currentType = { documentId: '', id: '', name: '' }
     }
   }
 }
