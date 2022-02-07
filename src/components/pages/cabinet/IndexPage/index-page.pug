@@ -73,7 +73,7 @@ div(:class="`${pre}`")
                         er-icon(name="trast_pay")
           er-flex.mb-16(xs6 xl3)
             er-document-viewer(
-              :list-document="invPaymentsForViewer"
+              :list-document="computedListInvoiceDocument"
               :is-digital-signing="false"
               :is-manual-signing="false"
               v-model="isOpenViewer"

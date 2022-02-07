@@ -1,3 +1,4 @@
+import Vue from 'vue'
 import { API } from '@/functions/api'
 import {
   IBillingAccount,
@@ -118,13 +119,14 @@ const state = {
   promisePayStart: null as null | moment.Moment,
   promisePayEnd: null as null | moment.Moment,
   promisePaymentOrderId: '',
-  listInvoicePayment: [{
-    id: '',
-    bucket: '',
-    fileName: '',
-    filePath: '',
-    type: { id: '', name: '' }
-  }] as IDocumentViewerDocument[],
+  listInvoicePayment: {} as Record<string, Partial<IDocumentViewerDocument>>,
+  // listInvoicePayment: [{
+  //   id: '',
+  //   bucket: '',
+  //   fileName: '',
+  //   filePath: '',
+  //   type: { id: '', name: '' }
+  // }] as IDocumentViewerDocument[],
   // Вынесено во Vuex для избежания вложенности
   cvv: '',
   isValidCVV: true
@@ -482,7 +484,7 @@ const actions = {
         .setData({ clientId, id })
         .query('/billing/info-bill/index')
         .then(response => {
-          context.commit('setInvoicePayment', response)
+          context.commit('setInvoicePayment', { ...response, activeBillingAccount: id })
         })
         .catch(error => reject(error))
     })
@@ -619,14 +621,18 @@ const mutations = {
   setPromisePaymentOrderId (state: IState, id: string) {
     state.promisePaymentOrderId = id
   },
-  setInvoicePayment (state: IState, payload: IInfoBillAccount) {
-    state.listInvoicePayment = [{
-      id: payload.id,
-      bucket: payload.bucket,
-      fileName: `${payload.fileName}.pdf`,
-      filePath: payload.filePath,
-      type: { id: '0', name: 'Счёт на оплату' }
-    }]
+  setInvoicePayment (state: IState, payload: IInfoBillAccount & { activeBillingAccount: string }) {
+    Vue.set(
+      state.listInvoicePayment,
+      payload.activeBillingAccount,
+      {
+        id: payload.id,
+        bucket: payload.bucket,
+        fileName: `${payload.fileName}.pdf`,
+        filePath: payload.filePath,
+        type: { id: '0', name: 'Счёт на оплату' }
+      }
+    )
   },
   setCVV (state: IState, payload: string) {
     state.cvv = payload

@@ -11,8 +11,6 @@ import { upperFirst } from '@/functions/helper2'
 import PaymentHistoryItem from '../components/PaymentHistoryItem/index.vue'
 import ErDocumentViewer from '@/components/blocks/ErDocumentViewer/index.vue'
 
-import { head } from 'lodash'
-
 import { dataLayerPush } from '@/functions/analytics'
 
 interface IInvoicePayment {
@@ -46,7 +44,8 @@ interface IInvoicePayment {
     ...mapGetters({
       isLoadingBalance: 'loading/menuComponentBalance',
       isEnabledAutoPay: 'payments/isEnabledAutoPay',
-      loadingPaymentHistoryBill: 'loading/loadingPaymentHistoryBill'
+      loadingPaymentHistoryBill: 'loading/loadingPaymentHistoryBill',
+      activeBillingAccount: 'payments/getActiveBillingAccount'
     })
   },
   watch: {
@@ -64,9 +63,10 @@ interface IInvoicePayment {
         })
     },
     isShowInvoicePayment (val) {
-      if (val && head(this.listInvoicePayment)!.id === '') {
-        this.getInvoicePayment()
-      }
+      val &&
+      this.activeBillingAccount &&
+      !(this.activeBillingAccount in this.listInvoicePayment) &&
+      this.getInvoicePayment()
     }
   },
   methods: {
@@ -82,12 +82,13 @@ export default class PaymentIndexPage extends Vue {
   readonly isHasPromisePayment!: boolean
   readonly promisePayStart!: null | moment.Moment
   readonly promisePayEnd!: null | moment.Moment
-  readonly listInvoicePayment!: IDocumentViewerDocument[]
+  readonly listInvoicePayment!: Record<string, Partial<IDocumentViewerDocument>>
 
   // Vuex getters
   readonly isLoadingBalance!: boolean
   readonly isEnabledAutoPay!: boolean
   readonly loadingPaymentHistoryBill!: boolean
+  readonly activeBillingAccount!: string
 
   // Vuex actions
   getPaymentHistory!: ({ dateFrom, dateTo }: { dateFrom: moment.Moment, dateTo: moment.Moment }) => Promise<IPaymentHistoryBill[][]>
@@ -100,6 +101,14 @@ export default class PaymentIndexPage extends Vue {
 
   isNotAccessInvoicePayment: boolean = false
   isShowInvoicePayment: boolean = false
+
+  emptyDocument: Partial<IDocumentViewerDocument> = {
+    id: '',
+    bucket: '',
+    fileName: '',
+    filePath: '',
+    type: { id: '', name: '' }
+  }
 
   // Computed
   get balance () {

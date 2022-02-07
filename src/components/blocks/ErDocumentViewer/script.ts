@@ -21,7 +21,7 @@ interface IDocumentForDownload {
  * Подписываем именно договор!
  */
 
-@Component({
+@Component<InstanceType<typeof ErDocumentViewer>>({
   props: {
     value: Boolean,
     listDocument: {
@@ -43,7 +43,7 @@ export default class ErDocumentViewer extends Vue {
   readonly isManualSigning!: boolean
   readonly isDigitalSigning!: boolean
   // Data
-  listFile: Map<string, string> = new Map<string, string>()
+  listFile: Record<string, string> = {}
   currentDocument: IDocumentForDownload = this.listDocument[0]
   currentDocumentFile: string = ''
   currentType: { id: string | number, name: string, documentId: string | number } = this.computedListType[0]
@@ -70,41 +70,42 @@ export default class ErDocumentViewer extends Vue {
   // Watchers
   @Watch('internalValue')
   onInternalValueChanged (val: boolean) {
-    if (val && this.listFile.size === 0) this.downloadFile(this.listDocument[0])
+    if (val && !Object.keys(this.listFile).length) {
+      this.downloadFile(this.listDocument[0])
+    }
   }
   @Watch('currentType')
   async onCurrentTypeChanged (val: any) {
-    // if (!this.value || this.listFile.size === 0) return
     if (!this.value) return
     const _document = this.listDocument.find(item => String(item.id) === String(val.documentId))!
     const changeEmbed = () => {
       const oldEmbed: HTMLEmbedElement | null = this.$refs.modal.querySelector('embed')
-      if (oldEmbed) {
-        const parentNode = oldEmbed.parentNode!
-        const newEmbed = document.createElement('embed')
-        newEmbed.setAttribute('src', this.currentDocumentFile as string)
-        parentNode.replaceChild(newEmbed, oldEmbed)
-      }
+      if (!oldEmbed) return
+
+      const parentNode = oldEmbed.parentNode!
+      const newEmbed = document.createElement('embed')
+      newEmbed.setAttribute('src', this.currentDocumentFile as string)
+      parentNode.replaceChild(newEmbed, oldEmbed)
     }
     // Проверяем - загружали ли ранее документ
-    if (this.listFile.has(val.documentId)) {
-      this.currentDocumentFile = this.listFile.get(val.documentId)!
+    if (val.documentId in this.listFile) {
+      this.currentDocumentFile = this.listFile[val.documentId]
       this.currentDocument = _document
       changeEmbed()
     } else {
-      this.downloadFile(_document)
-        .then((result: string) => {
-          this.currentDocument = _document
-          if (result !== '') {
-            changeEmbed()
-          }
-        })
+      const result = await this.downloadFile(_document)
+      this.currentDocument = _document
+      if (result !== '') {
+        changeEmbed()
+      }
     }
   }
   @Watch('listDocument')
   onListDocumentChange (val: IDocumentForDownload[]) {
+    this.listFile = {}
     this.currentDocument = val[0]
     this.currentType = this.computedListType[0]
+    this.currentDocumentFile = ''
   }
   // Methods
   downloadFile (downloadDocument: IDocumentForDownload) {
@@ -137,13 +138,13 @@ export default class ErDocumentViewer extends Vue {
           this.currentDocumentFile = ''
           resolve('')
         } else if (downloadFileResult instanceof Blob) {
-          if (this.listFile.has(id)) {
-            resolve(this.listFile.get(id))
+          if (id in this.listFile) {
+            resolve(this.listFile[id])
             return
           }
 
           const base64File = await this.__toBase64(downloadFileResult)
-          this.listFile.set(id, base64File)
+          Vue.set(this.listFile, id, base64File)
           this.currentDocumentFile = base64File
           resolve(base64File)
         }
@@ -184,7 +185,8 @@ export default class ErDocumentViewer extends Vue {
   __signing (eventName: string) {
     let documentForSignature = this.listDocument.find(item => String(item.type.id) === Document.CONTRACT_ID)
     documentForSignature = documentForSignature || this.listDocument[0]
-    if (!this.listFile.has(String(documentForSignature.id))) {
+    // if (!this.listFile.has(String(documentForSignature.id))) {
+    if (!(String(documentForSignature.id) in this.listFile)) {
       this.downloadFile(documentForSignature)
         .then(data => {
           this.$emit(eventName, {
@@ -195,7 +197,8 @@ export default class ErDocumentViewer extends Vue {
     } else {
       this.$emit(eventName, {
         id: documentForSignature!.id,
-        data: this.listFile.get(String(documentForSignature!.id))
+        // data: this.listFile.get(String(documentForSignature!.id))
+        data: this.listFile[documentForSignature!.id]
       })
     }
   }

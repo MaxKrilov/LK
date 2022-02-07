@@ -59,7 +59,7 @@
               ErtIcon(name="pay_card")
       ErFlex(xs6 lg3)
         ErDocumentViewer(
-          :list-document="listInvoicePayment"
+          :list-document="[listInvoicePayment[activeBillingAccount] || emptyDocument]"
           :is-digital-signing="false"
           :is-manual-signing="false"
           v-model="isShowInvoicePayment"
