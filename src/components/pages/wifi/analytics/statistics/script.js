@@ -69,7 +69,8 @@ export default {
         bpi: this.activePoint?.bpi,
         productCode: SLO_CODE,
         offer: 'wifi',
-        title: 'Вы уверены, что хотите подключить услугу «Аналитика по пользователям»?'
+        title: 'Вы уверены, что хотите подключить услугу «Аналитика по пользователям»?',
+        marketId: this.activePoint?.marketId
       }
     },
     getDisconnectData () {
@@ -80,7 +81,8 @@ export default {
         bpi: this.activePoint?.bpi,
         locationId: this.activePoint?.id,
         productId,
-        title: 'Вы уверены, что хотите отключить услугу «Аналитика по пользователям»?'
+        title: 'Вы уверены, что хотите отключить услугу «Аналитика по пользователям»?',
+        marketId: this.activePoint?.marketId
       }
     }
   },
