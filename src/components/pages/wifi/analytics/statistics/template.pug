@@ -15,7 +15,7 @@ div.main-content.main-content--top-menu-fix(:class="{'main-content--padding': !i
   template(v-if="isLoadingCustomerProduct")
     .d--flex.align-items-center.justify-content-center.my-16
       ErtProgressCircular.mr-16(indeterminate width="2")
-      .title Загружаем клиентские продукты
+      .title Загружаем данные по аналитике
 
   template(v-else-if="isActiveProduct")
     router-view(:vlan="vlan" :cityId="cityId" :disconnectData="getDisconnectData")
