@@ -64,12 +64,12 @@ const props = {
 const INTERNAL_STATUS_CONNECTING = 'Connecting'
 const INTERNAL_STATUS_DISCONNECTING = 'Disconnecting'
 
-class InternalServiceStatuses extends ServiceStatus {
+export class InternalServiceStatuses extends ServiceStatus {
   static INTERNAL_STATUS_CONNECTING = INTERNAL_STATUS_CONNECTING
   static INTERNAL_STATUS_DISCONNECTING = INTERNAL_STATUS_DISCONNECTING
 }
 
-const requiredRule = (v: string) => !!v || 'Поле обязательно к заполению'
+const requiredRule = (v: string) => !!v || 'Поле обязательно к заполнению'
 const minLengthRule = (l: number) => (v: string) => v.length >= l || `Длина должна быть не меньше ${l} символов`
 const maxLengthRule = (l: number) => (v: string) => v.length <= l || `Длина должна быть не больше ${l} символов`
 const ssidNameRule = (v: string) => !!v.match(/^[a-zA-Z\d\w@[\].\s?,\\/!#$&%^*()\-="':;_]+$/g) ||
@@ -592,7 +592,7 @@ export default class ErtWifiServiceAuthItem extends Vue {
         this.vModelList.wifiHSClosNetName = this.chars[CHAR_WIFIHSCLONET_NAME] || ''
         this.vModelList.wifiHSCloseNetPassword = this.chars[CHAR_WIFIHSCLONET_PASSWORD] || ''
       } else if (this.code === 'WIFIAVTVOUCH') {
-        this.vModelList.wifiVoucherPrefix = this.chars[CHAR_WIFIAVTVOUCH_PREFIX] || ''
+        // this.vModelList.wifiVoucherPrefix = this.chars[CHAR_WIFIAVTVOUCH_PREFIX] || ''
       }
     }
 

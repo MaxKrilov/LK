@@ -59,10 +59,12 @@
                 .title
                   | {{ guestAuth.title }}
       template(v-else-if="isServiceAuthWithParameters")
-        er-slide-up-down(:active="lazyStatus === getStatuses.STATUS_DISCONNECTED || lazyStatus === getStatuses.STATUS_ACTIVATION_IN_PROGRESS")
+        //- er-slide-up-down(:active="lazyStatus === getStatuses.STATUS_DISCONNECTED || lazyStatus === getStatuses.STATUS_ACTIVATION_IN_PROGRESS")
+        er-slide-up-down(:active="lazyStatus !== getStatuses.STATUS_ACTIVE && lazyStatus !== getStatuses.INTERNAL_STATUS_CONNECTING")
           .ert-wifi-service-auth-item__description
             | {{ description }}
-        er-slide-up-down(:active="lazyStatus !== getStatuses.STATUS_DISCONNECTED && lazyStatus !== getStatuses.STATUS_ACTIVATION_IN_PROGRESS")
+        //- er-slide-up-down(:active="lazyStatus !== getStatuses.STATUS_DISCONNECTED && lazyStatus !== getStatuses.STATUS_ACTIVATION_IN_PROGRESS")
+        er-slide-up-down(:active="lazyStatus === getStatuses.STATUS_ACTIVE || lazyStatus === getStatuses.INTERNAL_STATUS_CONNECTING")
           .ert-wifi-service-auth-item__settings
             .ert-wifi-service-auth-item__required-fields.mb-16
               span
@@ -123,33 +125,12 @@
                 )
 
               template(v-if="code === 'WIFIAVTVOUCH'")
-                er-row(align-items-center)
-                  er-flex(xs12 md6)
-                    ErtTextField(
-                      label="Префикс логина"
-                      v-model="vModelList.wifiVoucherPrefix"
-                      :rules="vModelRuleList.wifiVoucherPrefix"
-                      isShowRequiredLabel
-                    )
-                      template(v-slot:prepend)
-                        ErHint
-                          | Логин ваучера состоит из префикса (одинаковый для всех гостей) и номера комнаты гостя (пример: hilton101). Префикс может содержать латинские буквы в нижнем регистре и/или цифры.
-                  ErFlex(
-                    v-if="code === 'WIFIAVTVOUCH' && [getStatuses.STATUS_ACTIVE, getStatuses.STATUS_DISCONNECTION_IN_PROGRESS].includes(lazyStatus)"
-                    xs12
-                    md6
-                  )
-                    ErButton(
-                      color="blue"
-                      :disabled="isInProgress"
-                      :loading="loadingServiceWithParams"
-                      @click="onClick"
-                    )
-                      | Изменить
                 ErtAuthVoucherComponent(
-                  v-if="[getStatuses.STATUS_ACTIVE, getStatuses.STATUS_DISCONNECTION_IN_PROGRESS].includes(lazyStatus)"
                   :bpi="bpi"
+                  :status="lazyStatus"
                   :loginPrefix="vModelList.wifiVoucherPrefix"
+                  @change="onClick"
+                  @change:login-prefix="(e) => { vModelList.wifiVoucherPrefix = e }"
                 )
           .wifi-auth-service__card__actions
             .wifi-auth-service__card__action(

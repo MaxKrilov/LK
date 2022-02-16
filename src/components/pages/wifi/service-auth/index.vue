@@ -44,6 +44,7 @@
       :orderData="getOrderData"
       isSendOrder
       :isUpdate="isActiveCurrentSLO"
+      :plugButtonName="isActiveCurrentSLO ? 'Изменить' : 'Подключить'"
       @cancelOrder="onCancelOrder"
       @errorOrder="onErrorOrder"
       @successOrder="onSuccessOrder"

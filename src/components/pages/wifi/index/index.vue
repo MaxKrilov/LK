@@ -60,6 +60,7 @@
                 template(v-else)
                   button.mr-24(
                     :class="{ 'on': isOnContent(getBPIByAddressUnit(addressUnit.id)) }"
+                    @click="$router.push({ name: 'wifi-content-filter', params: { bpi: getBPIByAddressUnit(addressUnit.id) } })"
                   )
                     er-icon(name="filter")
 
