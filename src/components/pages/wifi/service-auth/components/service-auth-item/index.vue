@@ -111,6 +111,8 @@
                   :rules="vModelRuleList.wifiHSClosNetName"
                   isShowRequiredLabel
                 )
+                  template(v-slot:append-outer)
+                    er-hint Название сети должно состоять из латинских букв, цифр, символов «-» «_» и не должно быть длинее 20 символов
                 ErtTextField(
                   label="Пароль"
                   :type="vModelTypeList.wifiHSCloseNetPassword"
