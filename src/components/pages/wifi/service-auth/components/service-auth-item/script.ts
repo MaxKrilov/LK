@@ -74,8 +74,10 @@ const minLengthRule = (l: number) => (v: string) => v.length >= l || `Длина
 const maxLengthRule = (l: number) => (v: string) => v.length <= l || `Длина должна быть не больше ${l} символов`
 const ssidNameRule = (v: string) => !!v.match(/^[a-zA-Z\d\w@[\].\s?,\\/!#$&%^*()\-="':;_]+$/g) ||
   'Название может содержать только латинские буквы, цифры и орфографические знаки'
-const closedNetworkRule = (f: 'Пароль' | 'Название' | 'Пин-код') => (v: string) => !!v.match(/^[A-Za-z0-9]+$/g) ||
-  `${f} вводится только латинскими буквами и цифрами`
+const closedNetworkRule = (f: 'Пароль' | 'Название' | 'Пин-код') => (v: string) => f === 'Название'
+  // eslint-disable-next-line no-useless-escape
+  ? !!v.match(/^[A-Za-z0-9_\-]+$/g) || `${f} вводится только латинскими буквами, цифрами и символами «-» «_»`
+  : !!v.match(/^[A-Za-z0-9]+$/g) || `${f} вводится только латинскими буквами и цифрами`
 const isNumberRule = (v: string) => !isNaN(parseInt(v)) || 'Поле должно быть числом'
 const intervalRule = (v: string) => (parseInt(v) >= 1 && parseInt(v) <= 720) ||
   'Значение должно быть от 1 до 720'
@@ -178,7 +180,7 @@ export default class ErtWifiServiceAuthItem extends Vue {
     wifiName: [requiredRule, maxLengthRule(17), ssidNameRule],
     wifiAccChangePIN: [closedNetworkRule('Пин-код')],
     wifiAccChangeInterval: [requiredRule, isNumberRule, intervalRule],
-    wifiHSClosNetName: [requiredRule, closedNetworkRule('Название')],
+    wifiHSClosNetName: [requiredRule, closedNetworkRule('Название'), maxLengthRule(20)],
     wifiHSCloseNetPassword: [requiredRule, minLengthRule(8), closedNetworkRule('Пароль')],
     wifiVoucherPrefix: [requiredRule, (v: string) => /^[a-z0-9]+$/g.test(v) || 'Префикс может содержать только латинские буквы нижнего регистра и/или цифры'],
     wifiVoucherManagerName: [requiredRule],

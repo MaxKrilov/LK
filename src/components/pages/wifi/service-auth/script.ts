@@ -201,7 +201,9 @@ export default class ErtWifiServiceAuth extends mixins(Page) implements iPageCom
     const openPlugin = () => {
       this.chars = typeof e !== 'undefined' ? e : null
 
-      if (code === 'WIFIHSCLONET') {
+      /* Услуга "Закрытая сеть" подключается и отключается через менеджера */
+      /* изменение параметров подключённой услуги происходит через Заказы */
+      if (code === 'WIFIHSCLONET' && !this.isActiveCurrentSLO) {
         this.isShowPlugProductPluginManager = true
       } else {
         this.isShowPlugProductPlugin = true
