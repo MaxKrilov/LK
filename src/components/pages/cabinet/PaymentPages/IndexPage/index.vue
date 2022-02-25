@@ -10,7 +10,7 @@
     .payment-index-page__info.mb-24.mb-md-48
       .payment-index-page__info-item
         .payment-index-page__info-item__caption
-          | На Вашем счету:
+          | На Вашем счете:
         .payment-index-page__info-item__value
           .icon
             ErtIcon(name="wallet")
