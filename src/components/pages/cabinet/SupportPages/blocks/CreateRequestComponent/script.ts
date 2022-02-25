@@ -76,13 +76,13 @@ interface iCheckboxSelectionHardwarePowerSupply {
   computed: {
     ...mapState({
       clientInfo: (state: any) => state.user.clientInfo,
-      listRequestTheme: (state: any) => state.dictionary[LIST_REQUEST_THEME],
       listTechnicalRequestTheme: (state: any) => state.dictionary[LIST_TECHNICAL_REQUEST_THEME],
       listComplaintRequestTheme: (state: any) => state.dictionary[LIST_COMPLAINT_THEME],
       listClaimTheme: (state: any) => state.dictionary[LIST_CLAIM_THEME],
       screenWidth: (state: any) => state.variables[SCREEN_WIDTH],
       listBillingAccount: (state: any) => state.payments.listBillingAccount.map((item: any) => item.accountNumber)
     }),
+    ...mapGetters({ listRequestTheme: LIST_REQUEST_THEME }),
     ...mapGetters('user', ['getAddressList', 'getListContact']),
     ...mapGetters('payments', ['getActiveBillingAccountNumber', 'getActiveBillingAccountContractNumber', 'getListBillingAccount'])
   },
@@ -106,7 +106,7 @@ export default class CreateRequestComponent extends Vue {
   // ===== DATA =====
   // ===== MODELS =====
   // Global
-  requestTheme: iRequestTheme | undefined = { id: '9154749993013188903', value: 'Общие вопросы', form: 'general_issues', requestName: 'request' }
+  requestTheme: iRequestTheme | undefined = { id: '', value: '', form: 'default', requestName: '' }
   phoneNumber = ''
   address: iListAddressItem | any = {}
   name = ''
@@ -219,6 +219,10 @@ export default class CreateRequestComponent extends Vue {
     return this.requestTheme?.form === 'technical_issues' &&
       (['9154786970013205620', '9154741760013186141'].includes(this.technicalRequestTheme?.id as string)) &&
       (['VIRTNUMB', 'UNLIMCOMPL', 'TRUNK', 'UNLIMFLE1'].includes(this.service?.offerCode || ''))
+  }
+
+  get isThemeChosen () {
+    return !!this.requestTheme?.id
   }
 
   defineListBillingAccount (val: string[]) {
@@ -346,6 +350,11 @@ export default class CreateRequestComponent extends Vue {
 
   toggleSlideUpDown () {
     this.isOpenFormDesktop = !this.isOpenFormDesktop
+  }
+
+  closeRequestCreation () {
+    this.isOpenFormDesktop = false
+    this.requestTheme = { id: '', value: '', form: 'default', requestName: '' }
   }
 
   createRequest () {

@@ -5,8 +5,11 @@ import {
   LIST_TECHNICAL_REQUEST_THEME
 } from '../actions/dictionary'
 import { LIST_CONTACT_TYPE } from '@/constants/profile'
+import { sortArrayOfObjects } from '@/functions/helper2'
 
 const state = {
+  sort_by: 'value',
+  sort_ascending: true,
   [LIST_REQUEST_THEME]: [
     { id: '9154749993013188883', value: 'Перенос точки/услуги', form: 'transfer_point_or_service', requestName: 'request' },
     { id: '9154749993013188882', value: 'Переоформление договора', form: 'renewal_of_the_contract', requestName: 'request' },
@@ -48,7 +51,7 @@ const state = {
 }
 
 const getters = {
-  [LIST_REQUEST_THEME]: state => state[LIST_REQUEST_THEME],
+  [LIST_REQUEST_THEME]: (state) => sortArrayOfObjects(state[LIST_REQUEST_THEME], state.sort_by, state.sort_ascending),
   [LIST_TECHNICAL_REQUEST_THEME]: state => state[LIST_TECHNICAL_REQUEST_THEME]
 }
 

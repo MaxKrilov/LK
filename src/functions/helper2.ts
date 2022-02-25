@@ -286,3 +286,13 @@ export function findGetParameter (parameterName: string) {
 export const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
 
 export const isEcommerce = () => isFramed() && !!location.href.match(/ecommerce/g)
+
+export function sortArrayOfObjects (array: [], sortBy: string, sortAscending: boolean = true) {
+  if (!array.length) return []
+  if (!sortBy.length) return array
+  const sortedArray = [...array].sort((a, b) => (a[sortBy] > b[sortBy]) ? 1 : ((b[sortBy] > a[sortBy]) ? -1 : 0))
+  if (!sortAscending) {
+    sortedArray.reverse()
+  }
+  return sortedArray
+}
