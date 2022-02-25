@@ -27,3 +27,5 @@ mixin listForm
     include ./forms/technical_issues
   div(v-if="requestTheme.form === 'complaint'" key="complaint")
     include ./forms/complaint
+  div(v-if="requestTheme.form === 'default'" key="default")
+    include ./forms/default

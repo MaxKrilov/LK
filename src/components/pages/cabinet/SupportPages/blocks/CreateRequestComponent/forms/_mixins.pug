@@ -52,7 +52,9 @@ mixin appeal(label)
     | Размер не должен превышать 2 МБ. Количество файлов - не более 10 штук
 
 mixin footer
-  er-flex.create-request-component__personal-data.mb-24.mt-16(xs12)
+  er-flex.create-request-component__personal-data.mb-24.mt-16(xs12)(
+    v-if="isThemeChosen"
+  )
     | Нажимая на кнопку вы соглашаетесь &nbsp;
     a(
       href="https://domru.ru/policy.pdf"
@@ -67,12 +69,13 @@ mixin footer
       :loading="loadingCreating"
       data-ga-category="support"
       data-ga-label="appsend"
+      :disabled="!isThemeChosen"
     )
       | Отправить заявку
   er-flex(xs12 md4)
     er-button(
       flat
-      @click="() => { isOpenFormDesktop = false }"
+      @click="closeRequestCreation"
       data-ga-category="support"
       data-ga-label="appdecline"
     )
