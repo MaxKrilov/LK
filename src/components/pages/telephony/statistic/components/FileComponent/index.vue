@@ -2,22 +2,15 @@
   .file-component
     span.dl-file(@click="downloadFile")
       er-icon(name="download")
-      .dl-file__label(v-if="!isLoadingDocument") {{ file.fileName | fileNameFormatted }}
+      .dl-file__label(v-if="!isLoadingDocument") {{ file.fileName }}
       .dl-file__label(v-else) Загружаем документ
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
 
-const REGEXP_FILENAME = /([А-Яа-я]+)_([A-Za-zА-Яа-я0-9_#]+)_(BPI[\d]+)_([\d-]+)_([\d-]+)_([A-Za-z0-9]+)/g
-
 export default Vue.extend({
   name: 'file-component',
-  filters: {
-    fileNameFormatted: (val: string) => {
-      return val.replace(REGEXP_FILENAME, '$1_$4_$5')
-    }
-  },
   props: {
     file: {
       type: Object,
