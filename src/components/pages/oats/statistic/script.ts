@@ -13,6 +13,8 @@ import { ICloudPhone, ICloudPhoneService, IOATSDomain } from '@/interfaces/oats'
 import { TOMS_IDS } from '@/constants/oats'
 import moment from 'moment'
 
+import sortBy from 'lodash/sortBy'
+
 export interface iOATSPointItem {
   id: string | number,
   fulladdress: string,
@@ -140,10 +142,29 @@ export default class OATSStatisticPage extends Vue {
   }
 
   get computedListFile () {
-    return this.listFile.filter(file => {
-      return this.listPhone.find(phone => file.fileName.indexOf(phone.product) > 0) &&
-        file.fileName.indexOf('BPI') > 0
-    })
+    const result = this.listFile
+      .filter(file => this.listPhone
+        .find(phone => file.fileName.includes(phone.product) && file.fileName.includes('BPI'))
+      )
+      .map(file => {
+        const regExp = /([А-Яа-я]+)_([A-Za-zА-Яа-я0-9_#()]+)_(BPI[\d]+)_([\d-]+)_([\d-]+)_([A-Za-z0-9]+)/
+        const parsed = file.fileName.match(regExp)
+        if (parsed == null) return file
+
+        const dateFrom = parsed[4]
+        const dateTo = parsed[5]
+        const phone = this.listPhone.find(phone => file.fileName.includes(phone.product))?.value?.replace(/[\D]+/g, '')
+        const createdDate = moment(file.creationDate).format('DD-MM-YY')
+
+        const fileName = `Статистика_по_ОАТС_за_период_${dateFrom}_-_${dateTo}_по_${!phone ? 'всем_номерам' : `телефону_${phone}`}_от_${createdDate}.csv`
+
+        return {
+          ...file,
+          fileName
+        }
+      })
+
+    return sortBy(result, ['creationDate'])
   }
 
   generateFileStatistic () {
