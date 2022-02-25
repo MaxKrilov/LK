@@ -2,7 +2,7 @@ import { ClickOutside } from '@/directives/index'
 import OrderCard from './components/OrderCard'
 import { mapGetters, mapMutations } from 'vuex'
 import { GET_ORDERS } from '@/store/actions/orders'
-import { ALL_CITIES, IN_PROGRESS, ALL_STATUSES, CANCELLED, ACCEPTED, WAIT, COMPLITED } from '@/constants/orders'
+import { ALL_CITIES, IN_PROGRESS, ALL_STATUSES, ACCEPTED, WAIT, COMPLITED } from '@/constants/orders'
 
 import { dataLayerPush } from '@/functions/analytics'
 
@@ -61,7 +61,7 @@ export default {
       }, {})
     },
     statuses: function () {
-      return [ ALL_STATUSES, IN_PROGRESS, ACCEPTED, WAIT, COMPLITED, CANCELLED ]
+      return [ ALL_STATUSES, IN_PROGRESS, ACCEPTED, WAIT, COMPLITED ]
     },
     getCities: function () {
       return [...new Set(this.orders.map(order => order.cities).flat())]
@@ -122,10 +122,9 @@ export default {
           return ['Договор подписан', 'Согласование с Клиентом', 'Согласовано с Клиентом']
         case COMPLITED:
           return ['Завершен', 'Выполнено']
-        case CANCELLED:
-          return ['Отменено', 'Заменено']
         default:
-          return []
+          return ['Точка невозврата пройдена', 'В исполнении', 'В процессе согласования', 'Ввод данных', 'Договор подписан', 'Согласование с Клиентом',
+            'Согласовано с Клиентом', 'Завершен', 'Выполнено']
       }
     },
     loadMore () {
