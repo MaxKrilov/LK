@@ -1,8 +1,4 @@
-// TODO: перенести куда-то рядом с компонентом ErtSelect
-interface ISelectItem {
-  value: any
-  text: string
-}
+import { ISelectItem } from '@/components/UI2/ErtSelect'
 
 export const PLACEMENT: ISelectItem[] = [
   {

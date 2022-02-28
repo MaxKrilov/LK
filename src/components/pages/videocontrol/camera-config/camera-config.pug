@@ -17,10 +17,34 @@
           .value {{ locationName }}
         template(v-else)
           pu-skeleton(width="200px")
+      .camera-ownership.mt-16
+        .col-model
+            .caption2 Модель устройства
+            .model-name.mt-4 {{ device.model }}
+        .camera-price(v-if="cameraGuaranteePeriod")
+            .caption2.end  Гарантия до
+            .model-name.mt-4.end {{ cameraGuaranteePeriod }}
+
+      .camera-ownership.mt-16
+        .camera-price
+            .caption2 Форма собственности
+            .model-name.mt-4 {{ cameraOwnershipType}}
+        
+        .camera-price(v-if="cameraOwnershipType !== 'Продажа'")
+            .caption2.end Платёж
+            er-price.model-name.mt-4.end  {{ cameraOwnershipPrice}}
       
-      .col-model.mt-32
-          .caption2 Модель устройства
-          .model-name.mt-4 {{ device.model }}
+      .col-camera-name.mt-24
+        template(v-if="isAnalyticsLoaded")
+          rename-field(
+            label="Имя"
+            :value="deviceName"
+            @save="onSaveDeviceName"
+            :isLoading="isDeviceRenameMode"
+          )
+        template(v-else)
+          pu-skeleton(width="300px")
+        
 
       .col.col--watch(v-if="isForpostPortalWorking")
         .watch(@click="onPlay" title="Настроить")
@@ -33,17 +57,6 @@
           .name-field.mt-md-32
             .name-field__description.caption2 Название
             .name-field__label {{ cameraName }}
-
-        .col-camera-name
-          template(v-if="isAnalyticsLoaded")
-            rename-field(
-              label="Имя"
-              :value="deviceName"
-              @save="onSaveDeviceName"
-              :isLoading="isDeviceRenameMode"
-            )
-          template(v-else)
-            pu-skeleton(width="300px")
 
         .col-price
           .warranty-wrap
