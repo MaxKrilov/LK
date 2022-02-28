@@ -33,6 +33,7 @@ import { ErtFetchAvailableFundsMixin } from '@/mixins2/ErtFetchAvailableFundsMix
 import { isMonthlyFeePrice } from '@/functions/offers'
 import { isVisibleAnalytic } from '@/functions/videocontroll'
 import PriceServicesComponent from '@/components/pages/internet/blocks/PriceServicesComponent/index.vue'
+import moment from 'moment'
 
 /* FUNCTIONS */
 const isFullHD = (el: IOffer) => el.code === CODES.FULLHD
@@ -247,6 +248,19 @@ export default class VCCameraConfigPage extends Mixins(
 
   get cameraName (): string {
     return this.camera?.name || ''
+  }
+
+  get cameraOwnershipType (): string {
+    return this.camera.chars['Способ предоставления оборудования']
+  }
+
+  get cameraOwnershipPrice (): string {
+    return this.camera?.purchasedPrices?.recurrentTotal?.value
+  }
+
+  get cameraGuaranteePeriod (): string {
+    const guaranteePeriod = this.camera.chars?.['Гарантийный срок (до)']
+    return guaranteePeriod ? moment(guaranteePeriod).format('L') : ''
   }
 
   get bf (): IBaseFunctionality {
