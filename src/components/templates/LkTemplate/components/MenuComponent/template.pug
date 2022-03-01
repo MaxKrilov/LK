@@ -52,13 +52,13 @@ div(:class="`${pre}`")
     div(:class="`${pre}__top__personal-account ${pre}__top__link--desktop`")
       div.icon.mr-8
       div.info.d--flex.flex-column
-        span.caption.ml-4(
-          )
+        span.caption.ml-4
           | Лицевой счёт
-        er-corner-button(
-          :value="isOpenedCornerButton"
-          :is-link-dashed-yellow="true"
-          @input="openCornerButton"
+        .d--flex
+          er-corner-button(
+            :value="isOpenedCornerButton"
+            :is-link-dashed-yellow="true"
+            @input="openCornerButton"
           )
           er-menu(
             v-model="isOpenedCornerButton"
@@ -68,7 +68,6 @@ div(:class="`${pre}`")
             :close-on-content-click="false",
             transition="slide-y-transition",
             nudge-left="26"
-            @input="isOpenedCornerButton = !isOpenedCornerButton"
           )
             template(v-slot:activator="{ on }")
               er-preloader(:active="menuComponentBillingAccount")
@@ -105,11 +104,11 @@ div(:class="`${pre}`")
                       @click="onChangeBillingAccount(account); dataLayerPush({ category: 'paymentaccount', label: 'accountnumber' })"
                     )
                       er-toggle.personal-account__radio(
-                          type="radio"
-                          view="radio"
-                          v-model="activeStatus"
-                          :value="activeBillingAccountId === account.billingAccountId"
-                          )
+                        type="radio"
+                        view="radio"
+                        v-model="activeStatus"
+                        :value="activeBillingAccountId === account.billingAccountId"
+                      )
                       div.personal-account
                         div.caption.mt-8.ml-24(:class="{green_description : account.accountStatus.name === 'Активный'}")
                           | {{ account.accountStatus.name === 'Активный' ? 'Счёт активен' : 'Счёт закрыт'}}
