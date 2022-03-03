@@ -880,6 +880,7 @@ export default class VCCameraConfigPage extends Mixins(
       locationId: this.location.id,
       bpi: this.bf.id,
       marketId: this.camera.market.id,
+      tomsId: this.isFHDEnabled ? TOMS_IDS.FULLHD_ARCHIVE : TOMS_IDS.HD_ARCHIVE,
       productCode: this.currentVideoArchiveCode,
       offer: isDisabling ? '' : 'cctv',
       title: isDisabling
