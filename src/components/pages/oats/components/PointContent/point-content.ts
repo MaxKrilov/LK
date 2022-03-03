@@ -63,12 +63,23 @@ export default class OATSPointContent extends Vue {
      get listOfServices () {
        let services = cloneDeep(this.$props.services)
 
-       // в задаче WEB-28591 попросили приходящую с бекенда строку 'Подключение офиса' переименовывать в 'Плата за IP-телефон'
-       services.forEach((service: { chars: { [x: string]: string } }) => {
-         if (service.chars['Имя в счете'] === 'Подключение офиса') service.chars['Имя в счете'] = 'Плата за IP-телефон'
+       let listOfServices: { chars: { [x: string]: string } | { [x: string]: any }; description?: any; purchasedPrices?: { recurrentTotal: { value: any } } }[] = []
+
+       /* попросили не выводить сервис, если не приходит следующая информация с бекенда
+       1)chars?.['Имя в счете']
+       2)description
+       3)purchasedPrices.recurrentTotal.value
+       */
+       services.forEach((service: { chars: { [x: string]: any }; description: any; purchasedPrices: { recurrentTotal: { value: any } } }) => {
+         if (service.chars?.['Имя в счете'] && service.description && service.purchasedPrices.recurrentTotal.value) listOfServices.push(service)
        })
 
-       return services
+       // в задаче WEB-28591 попросили приходящую с бекенда строку 'Подключение офиса' переименовывать в 'Плата за IP-телефон'
+       listOfServices.forEach((service: { chars: { [x: string]: string } }) => {
+         if (service.chars?.['Имя в счете'] === 'Подключение офиса') service.chars['Имя в счете'] = 'Плата за IP-телефон'
+       })
+
+       return listOfServices
      }
 
      onClickConfig () {

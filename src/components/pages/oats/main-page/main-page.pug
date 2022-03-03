@@ -17,7 +17,7 @@
         :bpi="item.id"
         :cityId="item.cityId"
         :key="item.bpi"
-        :inTheProcessOfActivation="item.status === 'Activation in progress' || item.status === 'Activation passed PONR'"
+        :inTheProcessOfActivation="item.status === 'Activation in Progress' || item.status === 'Activation passed PONR'"
         :tariff="getTariffName(item)"
       )
         point-content(
@@ -27,7 +27,7 @@
           :phones="getPhoneList(item)"
           :bpi="item.id"
           :cityId="item.cityId"
-          :inTheProcessOfActivation="item.status === 'Activation in progress' || item.status === 'Activation passed PONR'"
+          :inTheProcessOfActivation="item.status === 'Activation in Progress' || item.status === 'Activation passed PONR'"
           @suspend="onSuspendProduct"
         )
 

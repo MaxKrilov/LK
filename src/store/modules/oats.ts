@@ -69,7 +69,7 @@ const actions = {
   pullDomains ({ rootGetters, commit }: ActionContext<IState, any>) {
     const payload = {
       clientId: rootGetters['auth/getTOMS'],
-      status: ['Active', 'Activation in progress', 'Activation passed PONR', 'Suspended'],
+      status: ['Active', 'Activation in Progress', 'Activation passed PONR', 'Suspended'],
       productType: 'ОАТС'
     }
     return APIShortcut(URLS.DOMAINS, payload)
