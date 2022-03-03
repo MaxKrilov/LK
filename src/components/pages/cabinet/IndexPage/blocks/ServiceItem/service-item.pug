@@ -14,14 +14,14 @@
               .caption2.mb-4 Тариф
               a.service-address__tariff-name(:href="getServiceLink(name)") {{ service.offer.name }}
 
-            .service-item__in_activation(v-if="service.status === 'Activation in progress' && name === 'ОАТС'")
+            .service-item__in_activation(v-if="service.status === 'Activation in Progress' && name === 'ОАТС'")
               div(:class="`service-item__activation-content`")
                 er-icon(name="circle_ok" :class="`service-item__circle_ok service-item__green`" )
                 div
                   .caption.service-item__green В процессе
                   .caption.service-item__green активации
 
-            .service-address__price(v-if="!(service.status === 'Activation in progress' && name === 'ОАТС')")
+            .service-address__price(v-if="!(service.status === 'Activation in Progress' && name === 'ОАТС')")
               .caption2 Абонентская плата
               .discount
                 er-price(:sum="service.amount.value")

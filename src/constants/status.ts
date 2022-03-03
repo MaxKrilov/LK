@@ -10,7 +10,7 @@ export const STATUS_PLANNED = 'Planned'
  * Услуга проходит процесс активации
  * @type {string}
  */
-export const STATUS_ACTIVATION_IN_PROGRESS = 'Activation in progress'
+export const STATUS_ACTIVATION_IN_PROGRESS = 'Activation in Progress'
 /**
  * Отмена активации
  * Система отменяет процесс активации
