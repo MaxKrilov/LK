@@ -308,6 +308,7 @@ export interface ICustomerProductSLO {
   requiresContract: boolean
   status: string
   suspendable: boolean
+  tomsId: string
   visibleInSSP: boolean
   startDate: string
   endDate: string
