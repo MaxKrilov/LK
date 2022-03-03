@@ -106,7 +106,7 @@ const CONFIG = WORK_IN_PROGRESS_BEFORE_AUTH
 if (!isLocalhost()) {
   Sentry.init({
     Vue,
-    dsn: 'https://77a765dcd28c40e196c504a62525e4bd@sentry.ertelecom.ru/69'
+    dsn: 'https://d166b464d46041a2bc1ccd386370e885@sentry.ertelecom.ru/125'
   })
 }
 
