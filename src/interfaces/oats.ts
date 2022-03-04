@@ -55,5 +55,6 @@ export interface IOATSService {
   id: string
   chars: IChars
   status: string
+  description: string
   actualStartDate: Date
 }
