@@ -5,6 +5,7 @@ import { CHARS } from '@/constants/videocontrol'
 import { price as priceFormatted } from '@/functions/filters'
 import PackageMinuteCard from '@/components/pages/telephony/blocks/packageMinute/index.vue'
 import { cloneDeep } from 'lodash'
+import { IOATSService } from '@/interfaces/oats'
 
 const DATE_FORMAT = 'DD.MM.YYYY'
 const props = {
@@ -61,21 +62,21 @@ export default class OATSPointContent extends Vue {
      }
 
      get listOfServices () {
-       let services = cloneDeep(this.$props.services)
+       const services: IOATSService[] = cloneDeep(this.$props.services)
 
-       let listOfServices: { chars: { [x: string]: string } | { [x: string]: any }; description?: any; purchasedPrices?: { recurrentTotal: { value: any } } }[] = []
+       let listOfServices: IOATSService[] = []
 
        /* попросили не выводить сервис, если не приходит следующая информация с бекенда
        1)chars?.['Имя в счете']
        2)description
        3)purchasedPrices.recurrentTotal.value
        */
-       services.forEach((service: { chars: { [x: string]: any }; description: any; purchasedPrices: { recurrentTotal: { value: any } } }) => {
-         if (service.chars?.['Имя в счете'] && service.description && service.purchasedPrices.recurrentTotal.value) listOfServices.push(service)
+       services.forEach(service => {
+         if (service.chars?.['Имя в счете'] && service.description && service.purchasedPrices?.recurrentTotal?.value) listOfServices.push(service)
        })
 
        // в задаче WEB-28591 попросили приходящую с бекенда строку 'Подключение офиса' переименовывать в 'Плата за IP-телефон'
-       listOfServices.forEach((service: { chars: { [x: string]: string } }) => {
+       listOfServices.forEach(service => {
          if (service.chars?.['Имя в счете'] === 'Подключение офиса') service.chars['Имя в счете'] = 'Плата за IP-телефон'
        })
 
