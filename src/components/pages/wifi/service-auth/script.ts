@@ -11,7 +11,7 @@ import ErDisconnectProduct from '@/components/blocks/ErDisconnectProduct/index.v
 import ErActivationModal from '@/components/blocks/ErActivationModal/index.vue'
 
 // Utils
-import { SERVICES_AUTH } from '@/components/pages/wifi/index/constants'
+import { SERVICE_AUTH_TOMS_ID, TOMS_ID_BY_PRODUCT_CODE } from '@/components/pages/wifi/index/constants'
 import { head } from 'lodash'
 import { ServiceStatus, STATUS_DISCONNECTED } from '@/constants/status'
 import { price as priceFormatted } from '@/functions/filters'
@@ -95,7 +95,7 @@ export default class ErtWifiServiceAuth extends mixins(Page) implements iPageCom
   // Computed
   get getListServiceAuth () {
     if (this.customerProduct === null) return []
-    return this.customerProduct.slo.filter(sloItem => SERVICES_AUTH.includes(sloItem.code))
+    return this.customerProduct.slo.filter(sloItem => SERVICE_AUTH_TOMS_ID.includes(sloItem.tomsId))
   }
 
   get getSLOPrice () {
@@ -121,6 +121,7 @@ export default class ErtWifiServiceAuth extends mixins(Page) implements iPageCom
         ? this.currentSLOByCode?.productId
         : this.activePoint?.bpi,
       productCode: this.productCode,
+      tomsId: TOMS_ID_BY_PRODUCT_CODE[this.productCode],
       chars: this.chars,
       offer: this.isActiveCurrentSLO
         ? null

@@ -84,7 +84,10 @@ const actions = {
       .query(url)
       .then(async data => {
         let newData = []
-        if (data.message !== NO_ITEMS_FOUND_MESSAGE) {
+        if (!(
+          ('message' in data && data.message === NO_ITEMS_FOUND_MESSAGE) ||
+          (Array.isArray(data) && data.length === 0)
+        )) {
           newData = await data.map(async el => {
             el = await campaignShitToNotification(el)
 
