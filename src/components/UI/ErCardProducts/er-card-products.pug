@@ -1,7 +1,7 @@
 div(:class="`${pre}`")
   div(
     :class="[{ stopped: stopped, active: isOpen }, `${pre}__point-item`]",
-    @click="!inTheProcessOfActivation && (isOpen = !isOpen && !loading)"
+    @click="isNeedOpen && !inTheProcessOfActivation && (isOpen = !isOpen && !loading)"
   )
     div(:class="`${pre}__point-content`")
       slot(name="content")
@@ -12,7 +12,7 @@ div(:class="`${pre}`")
             div(:class="`${pre}__title-block`")
               div(:class="`${pre}__point-name`")
                 slot
-              div(:class="`${pre}__switcher`")
+              div(:class="`${pre}__switcher`" v-if="isNeedSwitcher")
                 er-icon(name="corner_down" :class="['icon', {'arrow-up': isOpen}]")
                 div(:class="[`${pre}__service-count`, {[`${pre}__service-count_active`]: isOpen }]")
                   span(

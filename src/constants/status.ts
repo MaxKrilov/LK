@@ -108,7 +108,11 @@ export const STATUS_DISCONNECTION_PASSED_PONR = 'Disconnection passed PONR'
  */
 export const STATUS_DISCONNECTED = 'Disconnected'
 
-export const ARRAY_STATUS_SHOWN = [STATUS_ACTIVE, STATUS_SUSPENDED, STATUS_MODIFICATION]
+export const PASSED_PONR = 'passed PONR'
+
+export const MODIFICATION = 'modification'
+
+export const ARRAY_STATUS_SHOWN = [STATUS_ACTIVE, STATUS_SUSPENDED, STATUS_MODIFICATION, STATUS_RESUMING_PASSED_PONR, PASSED_PONR, MODIFICATION]
 
 export const STATUS_TEXT: Record<string, string> = {
   [STATUS_PLANNED]: 'Запланирована',

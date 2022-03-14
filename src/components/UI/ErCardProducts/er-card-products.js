@@ -22,6 +22,14 @@ export default {
       type: Boolean,
       default: false
     },
+    isNeedOpen: {
+      type: Boolean,
+      default: true
+    },
+    isNeedSwitcher: {
+      type: Boolean,
+      default: true
+    },
     date: {
       type: String,
       default: ''
