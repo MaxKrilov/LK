@@ -11,7 +11,7 @@ div
     )
       .director-feedback__head
         .head-text
-          .title Написать директору Дом.ru Бизнес
+          .title {{ title }}
           .required
             | &nbsp;— Поля обязательные к заполнению
         .head-control
@@ -97,7 +97,7 @@ div
               @click="writeToDirector"
               :loading="loadingCreating"
             )
-              | Отправить заявку
+              | {{sendOrder}}
 
             er-button(flat @click="closeToDirector")
               | Отменить

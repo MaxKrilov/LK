@@ -1,6 +1,35 @@
 .index-page {
   @extend %main-content;
 
+  &__sections-mb {
+    margin-bottom: $padding-x8;
+
+    @include min-breakpoint('md') {
+      margin-bottom: $padding-x10;
+    }
+
+    @include min-breakpoint('xl') {
+      margin-bottom: $padding-x12;
+    }
+  }
+
+  &__opinion-mb {
+    margin-bottom: $padding-x4;
+    
+    @include min-breakpoint('xl') {
+      margin-bottom: $padding-x6;
+    }
+  }
+
+  &__impression-button {
+    max-width: 227px;
+    margin-bottom: $padding-x12;
+    
+    @include min-breakpoint('md') {
+      margin-bottom: $padding-x14;
+    }
+  }
+  
   &__welcome-title {
     @extend %h1;
 

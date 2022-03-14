@@ -20,7 +20,7 @@ div(:class="`${pre}`")
         router-link(to="/lk/payments").link--solid--yellow.fonts--demi.rub {{ balance || '0.0' }}
         span(v-if="isAutopay") Автоплатёж
 
-  er-container.mb-48(full).container--no-padding
+  er-container.index-page__sections-mb(full).container--no-padding
     er-row(no-gutters)
       er-flex(xs12 :class="`${pre}__fast-links`")
         er-row()
@@ -88,6 +88,13 @@ div(:class="`${pre}`")
                     .footer.d--flex.align-items-end.mt-auto
                       .icon.ml-auto
                         er-icon(name="rouble")
+  .index-page__opinion-mb
+    h4 Ваше мнение очень важно для нас.
+    div Вы можете добавить претензию о работе, выразить благодарность или оставить предложение
+
+  er-button.index-page__impression-button(@click="openImpressionForm") Поделись впечатлением
+
+
   h2(:class="`${pre}__service__title`")
     | Подключенные услуги
   div.mb-24(:class="`${pre}__filters`")
@@ -193,4 +200,11 @@ div(:class="`${pre}`")
   )
     template(slot="description")
       | У вас положительный баланс, поэтому запрос информационного счёта недоступен! Приятного пользования услугами Дом.ru
+
+  ErtDialog(
+    v-model="isOpenImpressionForm"
+    maxWidth="1044"
+    persistent
+  )
+    director-feedback(v-model="isOpenImpressionForm" isImpressionForm="true")
 
