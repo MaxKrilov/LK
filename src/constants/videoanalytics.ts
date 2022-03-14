@@ -90,56 +90,56 @@ const ITEMS: Record<string, IAnalyticItem> = {
     title: 'Контроль температуры',
     iconName: 'temperature',
     cover: '',
-    thumb: '',
+    thumb: 'temperature.png',
     helpText: 'Автоматически измеряйте температуру тела сотрудников и посетителей, позаботьтесь об их здоровье'
   },
   VIDCFGA: {
     title: 'Распознавание лиц, пола и возраста',
     iconName: 'face_detect',
     cover: 'face_age_detect.jpg',
-    thumb: '',
+    thumb: 'face_age_detect.png',
     helpText: 'Автоматически идентифицируйте человека и его принадлежность к группе из вашей базы'
   },
   VIDCTEMPFACE: {
     title: 'Контроль температуры с распознаванием лиц',
     iconName: 'face_detect2',
     cover: '',
-    thumb: '',
+    thumb: 'face_detect2.png',
     helpText: 'Автоматически измеряйте температуру тела сотрудников и посетителей, позаботьтесь об их здоровье'
   },
   VIDCMASKL: {
     title: 'Детектор масок LIGHT',
     iconName: 'mask',
     cover: 'mask_detect_cover.jpg',
-    thumb: '',
+    thumb: 'mask_detect_cover.png',
     helpText: 'Контролируйте соблюдение масочного режима и определяйте его нарушителей'
   },
   VIDCMASKP: {
     title: 'Детектор масок PRO',
     iconName: 'mask_plus',
     cover: '',
-    thumb: '',
+    thumb: 'mask_plus.png',
     helpText: 'Контролируйте соблюдение масочного режима и определяйте его нарушителей'
   },
   VIDCQUE: {
     title: 'Детектор очереди',
     iconName: 'queue',
     cover: '',
-    thumb: '',
+    thumb: 'queue.png',
     helpText: 'Оперативно реагируйте на скопление очереди и повышайте лояльность покупателей'
   },
   VIDCSHELF: {
     title: 'Контроль наполненности полок',
     iconName: 'fullness',
     cover: '',
-    thumb: '',
+    thumb: 'fullness.png',
     helpText: 'Пополняйте пустые прилавки вовремя, чтобы покупатель не ушел без нужного товара'
   },
   VIDCPARK: {
     title: 'Умная парковка',
     iconName: '',
     cover: '',
-    thumb: ''
+    thumb: 'smart_parking.png'
   }
 }
 

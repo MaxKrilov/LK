@@ -334,7 +334,10 @@ export default class VCCameraConfigPage extends Mixins(
   }
 
   get availableAnalyticsList () {
-    return this.availableAnalyticListByBFOId(this.bf?.offer?.id)?.filter(isVisibleAnalytic) || []
+    /* В задаче WEB-31415 попросили удалить из настройки камер следующие сервисы: Контроль температуры и Пакет детекторов "Security+" */
+    let availableAnalyticsList = this.availableAnalyticListByBFOId(this.bf?.offer?.id)?.filter(isVisibleAnalytic) || []
+    const forbiddenList = ['Контроль температуры', 'Пакет детекторов "Security+"']
+    return availableAnalyticsList.filter(item => !forbiddenList.includes(item.name || ''))
   }
 
   // Поворотный модуль
@@ -1010,7 +1013,7 @@ export default class VCCameraConfigPage extends Mixins(
   }
 
   get customerProduct () {
-    return {
+    let customerProduct = {
       tlo: {
         offer: {
           originalName: 'Базовая стоимость'
@@ -1035,20 +1038,23 @@ export default class VCCameraConfigPage extends Mixins(
             }
           }
         }
-      },
-      {
-        activated: true,
-        originalName: 'Дополнительные сервисы',
-        purchasedPrices: {
-          recurrentTotal: {
-            value: this.allServicesTotalPrice,
-            currency: {
-              currencyCode: this.camera?.purchasedPrices?.recurrentTotal?.currency?.currencyCode
-            }
-          }
-        }
       }]
     }
+
+    Object.values(this.bf.services || {}).forEach(service => customerProduct.slo.push({
+      activated: true,
+      originalName: service.chars?.['Имя в счете'],
+      purchasedPrices: {
+        recurrentTotal: {
+          value: service.purchasedPrices?.recurrentTotal?.value,
+          currency: {
+            currencyCode: this.camera?.purchasedPrices?.recurrentTotal?.currency?.currencyCode
+          }
+        }
+      }
+    }))
+
+    return customerProduct
   }
 
   isLoadingCustomerProduct = true

@@ -159,10 +159,6 @@ const MenuItemList = (listProduct: IProductItem[], oatsPortalLink: string): Menu
             url: '/lk/videocontrol/forpost/products'
           },
           {
-            name: 'Портал видеонаблюдения',
-            url: '/lk/videocontrol/forpost/go-to-forpost'
-          },
-          {
             name: 'Видеонаблюдение',
             subname: 'Энфорта',
             url: '/lk/videocontrol/enforta/'
