@@ -12,6 +12,9 @@ const components = {
 const isActiveOffering = (item: IOffer) =>
   ['Активный', 'Active', 'Выпущено'].includes(item.status)
 
+const isNotSecurityPlus = (item: IOffer) =>
+  item.name ? !['Пакет детекторов "Security+"'].includes(item.name) : true
+
 @Component({ components, name: 'VCAddonListPage' })
 export default class VCAddonListPage extends Vue {
   availableAnalyticsList = []
@@ -66,9 +69,11 @@ export default class VCAddonListPage extends Vue {
               const availOfferingList = offeringRel
                 .find((el: any) => el.name === ANALYTIC_NAME)?.offerings
 
+              /* В задаче WEB-31415 попросили не отображать сервис видеоаналитики Security +. Для этого добавлен filter(isNotSecurityPlus) */
               const filteredList = availOfferingList
                 ?.filter(isVisibleAnalytic)
                 ?.filter(isActiveOffering)
+                ?.filter(isNotSecurityPlus)
 
               this.availableAnalyticsList = filteredList || []
               this.isLoaded = true

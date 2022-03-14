@@ -24,6 +24,7 @@ export const PSI3_SSO_CHANGE_CUSTOMER_IFRAME = buildIframeUrl(CHANGE_CUSTOMER_IF
 export const PROD_SSO_CHANGE_CUSTOMER_IFRAME = buildIframeUrl(CHANGE_CUSTOMER_IFRAME.PROD)
 
 export const VS_LOGIN = 'https://vs.domru.ru/login.html'
+export const VS_LOGIN_DEMO = 'https://vs.domru.ru/account/view.html'
 
 export const OFFER_LINKS: Record<string, string> = {
   'cctv': 'https://beta-lkb2b.domru.ru/files/oferta-cctv.pdf',

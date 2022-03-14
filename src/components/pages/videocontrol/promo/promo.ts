@@ -2,7 +2,7 @@ import { Vue, Component } from 'vue-property-decorator'
 import featureList from './featureList'
 import ErPromo from '@/components/blocks/ErPromo/index.vue'
 import { PLUG_URL } from '@/constants/videocontrol'
-import { VS_LOGIN } from '@/constants/url'
+import { VS_LOGIN_DEMO } from '@/constants/url'
 import IPromoFeatureItem from '@/interfaces/promo-feature-item'
 
 const components = { ErPromo }
@@ -13,6 +13,6 @@ export default class VCPromoPage extends Vue {
   link = PLUG_URL
 
   onClickDemo () {
-    window.open(VS_LOGIN)
+    window.open(VS_LOGIN_DEMO)
   }
 }
