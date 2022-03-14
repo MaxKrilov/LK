@@ -54,7 +54,7 @@ export default class TvSlider extends Vue {
             }[] = line?.stb ? Object.values(line?.stb).map((stbItem:ITVSTB) => {
               return {
                 id: stbItem.id,
-                type: stbItem.chars['Способ передачи оборудования'],
+                type: stbItem.chars?.['Способ передачи оборудования'],
                 price: Number(stbItem.purchasedPrices.recurrentTotal.value),
                 stbName: stbItem.name,
                 // @ts-ignore
@@ -70,7 +70,6 @@ export default class TvSlider extends Vue {
               model: '',
               name: ''
             }]
-            console.log(stb)
 
             const packets: {id: string, name: string, price: number, code: string}[] = line?.packets ? Object.values(line.packets)
               ?.filter((packet:ITVPacket) => packet.status === 'Active')

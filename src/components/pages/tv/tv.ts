@@ -18,6 +18,7 @@ export default class TVMainPage extends Vue {
   billingAccountId!: string | number
   addressList: IPointItem[] = []
   isLoading: boolean = true
+  suspendedStatusesList: string[] = ['Suspension passed PONR', 'Suspended']
   @Watch('billingAccountId')
   onBillingAccountIdChange (val: boolean) {
     if (val) {

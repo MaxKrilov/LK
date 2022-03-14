@@ -7,7 +7,8 @@ div.main-content.main-content--padding.main-content--top-menu-fix
         er-card-products(:loading="true")
         er-card-products(:loading="true")
     template(v-else)
-      er-card-products(v-for="(item, index) in addressList" :key="index" :price="item.amount")
+      er-card-products(v-for="(item, index) in addressList" :key="index" :price="item.amount" 
+        :stopped="suspendedStatusesList.includes(item.status)" :isNeedSwitcher="!suspendedStatusesList.includes(item.status)" :isNeedOpen="!suspendedStatusesList.includes(item.status)")
         | {{ item.fulladdress}}
         template(#date-title) &nbsp;
         template(#slider-content)
