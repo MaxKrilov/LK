@@ -13,6 +13,7 @@ import PackageItem from './blocks/PackageItem/index.vue'
 import ServiceFolder from './blocks/ServiceFolder/index.vue'
 import ServiceList from './blocks/ServiceList/index.vue'
 import OfficeList from './blocks/OfficeList/index.vue'
+import DirectorFeedback from '../SupportPages/blocks/DirectorFeedback/index'
 
 const IS_ENABLED_AUTOPAY = '9149184122213604836'
 
@@ -26,12 +27,14 @@ export default {
     ServiceFolder,
     ErDocumentViewer,
     ErToastStack,
-    ErActivationModal
+    ErActivationModal,
+    DirectorFeedback
   },
   data: () => ({
     MESSAGES,
     pre: 'index-page',
     isOpenFilter: false,
+    isOpenImpressionForm: false,
     isLoadedPackList: false,
     isPointFiltrationRalized: false, // готова ли фильтрация по точкам?
     modelSortService: 'service',
@@ -196,6 +199,9 @@ export default {
     },
     clearModelFilterService () {
       this.modelFilterService = ''
+    },
+    openImpressionForm () {
+      this.isOpenImpressionForm = true
     },
     onClickToast (id) {
       // ещё не реализовано

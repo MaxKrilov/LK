@@ -37,7 +37,8 @@ interface IFeedbackTheme {
   // @ts-ignore
   components,
   props: {
-    value: Boolean
+    value: Boolean,
+    isImpressionForm: Boolean
   },
   computed: {
     ...mapGetters('user', [
@@ -89,6 +90,14 @@ export default class DirectorFeedback extends Vue {
 
   get isDesktopForm () {
     return this.screenWidth >= BREAKPOINT_XL
+  }
+
+  get title () {
+    return this.$props.isImpressionForm ? 'Обратная связь' : 'Написать директору Дом.ru Бизнес'
+  }
+
+  get sendOrder () {
+    return this.$props.isImpressionForm ? ' Отправить' : ' Отправить заявку'
   }
 
   get currentComponent () {
