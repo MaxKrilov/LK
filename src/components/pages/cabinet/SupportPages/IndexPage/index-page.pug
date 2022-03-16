@@ -40,6 +40,18 @@ div.support-page.main-content.main-content--padding.main-content--top-menu-fix
 
       .b-request__create
         create-request-component
+          //- временно вернул кнопку 'Написать директору' https://ticket.ertelecom.ru/browse/WEB-31582
+          template(v-slot:after_create_button)
+            er-button(
+              flat
+              @click="onShowDirectorFeedback"
+              v-class-mod="['inline-button']"
+              data-ga-category="support"
+              data-ga-label="sendtoboss"
+            ) Написать директору
+
+      .director-feedback-block
+        director-feedback(v-model="isVisibleDirectorFeedback")
 
       .b-request__body
         .b-request__thead
