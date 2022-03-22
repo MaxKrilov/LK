@@ -20,6 +20,7 @@ export default {
       SOCIAL_LINK_VK: 'https://vk.com/domru_b2b',
       SOCIAL_LINK_FB: 'https://www.facebook.com/domru.b2b/',
       SOCIAL_LINK_INSTAGRAM: 'https://www.instagram.com/dom.ru_b2b/',
+      SOCIAL_LINK_DZEN: 'https://zen.yandex.ru/id/606594f2aa613d31b446be36/',
       ACTUAL_ADDRESS: {
         text: LEGAL_ADDRESS,
         url: LEGAL_ADDRESS_MAP_LINK

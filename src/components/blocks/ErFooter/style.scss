@@ -271,7 +271,7 @@ $er-footer-bg-color: map_get($named_colors, 'footer-bg');
 
   &__item {
     cursor: pointer;
-    color: map_get($shades, 'white');
+    //color: map_get($shades, 'white');
 
     $soc-icon-width: 32px;
     $soc-icon-height: 32px;
@@ -285,59 +285,14 @@ $er-footer-bg-color: map_get($named_colors, 'footer-bg');
     transition: all .1s ease;
     border-radius: 4px;
     -webkit-tap-highlight-color: transparent;
+    color: #989898;
 
     & + .er-social__item {
       margin-left: $padding-x4;
     }
 
     &:hover {
-      box-shadow:
-        inset 0 0 12px 0 map_get($soc-icon-color, 'instagram'),
-        0 0 24px 0 map_get($soc-icon-color, 'instagram');
-
-      g {
-        filter: none;
-      }
-    }
-
-    &:hover {
-      box-shadow: inset 0 0 12px 0 #e86dfd, 0 0 24px 0 #e86dfd;
-
-      g {
-        filter: none;
-      }
-    }
-
-    &:not(:hover) {
-      opacity: .5;
-
-      g {
-        filter: none;
-      }
-    }
-
-    &--vk {
-      &:hover {
-        box-shadow:
-          inset 0 0 12px 0 map_get($soc-icon-color, 'vk'),
-          0 0 24px 0 map_get($soc-icon-color, 'vk');
-      }
-    }
-
-    &--fb {
-      &:hover {
-        box-shadow:
-          0 0 24px 0 map_get($soc-icon-color, 'fb'),
-          inset 0 0 16px 0 map_get($soc-icon-color, 'fb');
-      }
-    }
-
-    &--instagram {
-      &:hover {
-        box-shadow:
-          inset 0 0 12px 0 map_get($soc-icon-color, 'instagram'),
-          0 0 24px 0 map_get($soc-icon-color, 'instagram');
-      }
+      color: rgba(#FFF, 0.8);
     }
 
     .er-glow-icon,

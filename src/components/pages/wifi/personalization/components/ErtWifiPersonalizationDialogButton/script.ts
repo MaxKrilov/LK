@@ -11,8 +11,8 @@ const MAX_WIDTH = 674
 const GUEST_AUTH = [
   { title: 'Вконтакте', name: 'vk', iconType: 'icon', iconName: 'vk', field: 'field_social_auth_vk' },
   { title: 'Одноклассники', name: 'ok', iconType: 'icon', iconName: 'odnoklassniki', field: 'field_social_auth_ok' },
-  { title: 'Facebook', name: 'fb', iconType: 'icon', iconName: 'facebook', field: 'field_social_auth_fb' },
-  { title: 'Instagram', name: 'instagram', iconType: 'icon', iconName: 'instagram', field: 'field_social_auth_in' },
+  // { title: 'Facebook', name: 'fb', iconType: 'icon', iconName: 'facebook', field: 'field_social_auth_fb' },
+  // { title: 'Instagram', name: 'instagram', iconType: 'icon', iconName: 'instagram', field: 'field_social_auth_in' },
   { title: 'Twitter', name: 'twitter', iconType: 'icon', iconName: 'twitter', field: 'field_social_auth_tw' }
 ]
 
