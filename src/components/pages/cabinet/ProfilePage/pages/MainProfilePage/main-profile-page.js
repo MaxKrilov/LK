@@ -75,7 +75,7 @@ export default {
   },
   mounted () {
     this.pullAvailableProducts()
-      .then(data => {
+      .then(() => {
         if (this.hasForpost) {
           this.pullCurrentUserForpostAccounts()
             .then(() => {
@@ -83,35 +83,7 @@ export default {
             })
         }
 
-        if (this.isLPR) {
-          // Promise.allSettled(this.oatsProductList.map(({ id }) => {
-          //   return new Promise((resolve, reject) => {
-          //     this.pullOATSDomains(id)
-          //       .then(domain => {
-          //         this.pullOATSUsers(domain)
-          //           .then(() => resolve())
-          //           .catch((e) => reject(e))
-          //       })
-          //       .catch((e) => reject(e))
-          //   })
-          // }))
-          //   .then(() => {
-          //     if (!this.user.postAccess.includes('oats')) {
-          //       this.createUserRoles({ api: this.$api, userPostId: this.user.postId, systemRoleId: 8 })
-          //     }
-          //
-          //     this.notLinkedDomains(this.user.sub)
-          //       .forEach((domain) => {
-          //         this.linkOATSDirector(domain)
-          //           .then(() => {
-          //             this.pullOATSUsers(domain)
-          //           })
-          //       })
-          //   })
-          //   .catch(e => {
-          //     console.error(e)
-          //   })
-        }
+        if (this.isLPR) {}
       })
   },
   watch: {

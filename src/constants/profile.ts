@@ -3,7 +3,8 @@ export const SYSTEM_NAMES = {
   DMP: 'dmp-kc-sit',
   ITGLOBAL: 'itglobal',
   FORPOST: 'forpost',
-  OATS: 'oats'
+  OATS: 'oats',
+  WIFI: 'wifi'
 }
 
 export const SSO_FORPOST_AUTH_PROVIDER = 2

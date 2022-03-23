@@ -48,6 +48,10 @@ function isForpostDomain (product: any) {
   return isForpost && isRootOffer
 }
 
+function isWifiDomain (product: any) {
+  return product.offer.originalName.match(/Wi-Fi/ig)
+}
+
 // const hasEmptySSOId = (el: IOatsUser): boolean => !el.sso_id.length cityId: "238"
 
 const TYPES = {
@@ -98,7 +102,8 @@ const getters = {
       [SYSTEM_NAMES.DMP]: true,
       [SYSTEM_NAMES.ITGLOBAL]: false,
       [SYSTEM_NAMES.FORPOST]: getters.hasForpost,
-      [SYSTEM_NAMES.OATS]: getters.hasOATS
+      [SYSTEM_NAMES.OATS]: getters.hasOATS,
+      [SYSTEM_NAMES.WIFI]: getters.hasWiFiRadar
     }
 
     return Object.keys(systems).filter(
@@ -109,8 +114,10 @@ const getters = {
     return !!getters.oatsProductList.length
   },
   hasForpost (state: IState): boolean {
-    // return !!state.forpostAccounts.length
     return !!state.products.find(isForpostDomain)
+  },
+  hasWiFiRadar (state: IState): boolean {
+    return !!state.products.find(isWifiDomain)
   },
   oatsProductList (state: IState) {
     return state.products.filter(isOATSProduct)
