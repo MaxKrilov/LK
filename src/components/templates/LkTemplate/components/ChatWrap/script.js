@@ -52,6 +52,7 @@ export default {
         subject: 'Обращение из ЛК',
         city: 'perm',
         isProd: isCombat(),
+        channelButtons: true,
         userData: {
           token: this.getChatToken,
           agreementNumber: this.getActiveBillingAccountNumber,
