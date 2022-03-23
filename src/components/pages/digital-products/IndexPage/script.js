@@ -4,7 +4,7 @@ import { mapState } from 'vuex'
 
 const getLink = () => isCombat()
   ? 'https://self-service.dom.ru/'
-  : 'https://service-portal-dmp-ec-uat.nonprod.cloud-bss.loc/ '
+  : 'https://service-portal-dmp-stg.nonprod.cloud-bss.loc/'
 
 export default {
   name: 'digital-products-index-page',
