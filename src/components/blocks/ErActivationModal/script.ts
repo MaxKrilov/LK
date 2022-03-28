@@ -20,6 +20,7 @@ export default class ErActivationModal extends Vue {
   @Prop(String) readonly actionButtonText!: string | undefined
   @Prop({ type: Boolean }) readonly value!: boolean
   @Prop(Boolean) readonly isLoadingConfirm!: boolean
+  @Prop({ type: Boolean, default: true }) readonly isNotThreeDays!: boolean
   @Prop(Boolean) readonly persistent!: boolean
   @Prop(Boolean) readonly disabledActionButton!: boolean
   @Prop({ type: String, default: '' }) readonly isOffer!: string
@@ -105,6 +106,7 @@ export default class ErActivationModal extends Vue {
   closeDialog () {
     this.isAcceptOffer = false
     this.$emit('close')
+    this.$emit('doNotShowCalendar', true)
     this.internalValue = false
   }
 

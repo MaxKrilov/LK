@@ -28,6 +28,7 @@ export interface IChildProductOffering {
     canBeActivatedInSSP: boolean
     code: string
     prices: any
+    product: any
 
     customerCategories: [{
       code: string
@@ -41,8 +42,8 @@ export interface IChildProductOffering {
 export interface IOfferingRelationship {
   id: string // number "2721"
   name: string
-  // childMax: string // number "999"
-  // childMin: string // number "1"
+  childMax: string // number "999"
+  childMin: string // number "1"
   orderNumber: NumberAsString
   originalId: string
   categoryId?: number

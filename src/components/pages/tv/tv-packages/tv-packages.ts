@@ -8,6 +8,7 @@ import ErPlugProduct from '@/components/blocks/ErPlugProduct/index.vue'
 import ErActivationModal from '@/components/blocks/ErActivationModal/index.vue'
 import { getNoun } from '@/functions/helper'
 import { IDeleteOrderData } from '@/constants/er-plug'
+import moment from 'moment'
 
 @Component({
   components: {
@@ -22,17 +23,20 @@ import { IDeleteOrderData } from '@/constants/er-plug'
 export default class TVPackagesPage extends Vue {
   @Prop() readonly line: IModuleInfo | undefined
 
-  packages:ITVPacketPage[] = []
-  connectedPackages:ITVPacketPage[] = []
-  allowedPackages:ITVPacketPage[] = []
-  standartPackage:ITVPacketPage | null = null
+  modelPeriodPicker: Date[] = []
+  packages: ITVPacketPage[] = []
+  connectedPackages: ITVPacketPage[] = []
+  allowedPackages: ITVPacketPage[] = []
+  searchFieldDateActivation: ITVPacketPage[] | any = []
+  standartPackage: ITVPacketPage | null = null
   tvPackets: ITVPacket[] = []
   getAddressList!: IAddress[]
-
   allowedPackagesCodes: string[] = []
   allowedPackagesPrices: Record<string, string> = {}
-
+  isResetPeriod: boolean = false
   isConnection: boolean = false
+  isShowNotificationPicker: boolean = false
+  isThereActivationDate: boolean = false
   deleteData: IDeleteOrderData = {
     bpi: '',
     marketId: '',
@@ -40,6 +44,8 @@ export default class TVPackagesPage extends Vue {
     productId: '',
     title: ''
   }
+  currentCodeOrderData: any
+  orderDataFromMethodPST: any = {}
   orderData: any = {}
   isDisconnection: boolean = false
   loading: boolean = true
@@ -50,9 +56,9 @@ export default class TVPackagesPage extends Vue {
   isCheckingMoney: boolean = false
   availableFunds: number = 0
   selectedPrice: number = 0
-
   isEditMode: boolean = false
   isEditingName: boolean = false
+  isNotShowPicker: boolean = false
   stbName: string = ''
 
   @Watch('isDisconnection')
@@ -61,12 +67,14 @@ export default class TVPackagesPage extends Vue {
       this.disconnectedItem = false
     }
   }
+
   @Watch('isEditingName')
   onIsEditingName (val: boolean) {
     if (!val) {
       this.isEditMode = false
     }
   }
+
   @Watch('isConnection')
   onIsConnection (val: boolean) {
     if (!val) {
@@ -74,6 +82,22 @@ export default class TVPackagesPage extends Vue {
     }
   }
 
+  @Watch('isNotShowPicker')
+  onIsNotShowPicker (isChecked: boolean) {
+    if (isChecked) this.appointModelPeriodPicker()
+    else this.isResetPeriod = true
+  }
+
+  @Watch('isResetPeriod')
+  onIsResetPeriod (isChecked: boolean) {
+    if (!isChecked) {
+      this.isNotShowPicker = true
+    }
+  }
+
+  get internalPeriod () {
+    return this.modelPeriodPicker
+  }
   get address () : string {
     if (this.line?.locationId) {
       return this.getAddressList.find((el: IAddress) => el.locationId === this.line?.locationId)?.value || ''
@@ -137,7 +161,44 @@ export default class TVPackagesPage extends Vue {
   get standartPackageId () {
     return this.standartPackage?.id
   }
+  get computingDiff () {
+    return (start: Date, end: Date) => Math.abs(this.$moment(end).diff(start, 'days'))
+  }
+  get generateDaysThree () {
+    const daysAddThree = new Date()
+    this.modelPeriodPicker = [
+      new Date(),
+      new Date(
+        daysAddThree
+          .setDate(daysAddThree
+            .getDate() + 1)
+      )
+    ]
+    return this.modelPeriodPicker
+  }
+  get separateModelPeriodPicker () {
+    const [start, end] = this.modelPeriodPicker
+    const diff = this.computingDiff(start, end) + 1
+    const numberBeginCurrentMonth = moment(start, 'YYYY-MM').daysInMonth()
+    const numberEndCurrentMonth = moment(end, 'YYYY-MM').daysInMonth()
+    const checkBeginCurrentDays = moment(start, 'YYYY/MM/DD')
+    const checkEndCurrentDays = moment(end, 'YYYY/MM/DD')
+    const getBeginCurrentDays = checkBeginCurrentDays.format('D')
+    const getEndCurrentDays = checkEndCurrentDays.format('D')
+    const sepBeginPrice = (this.selectedPrice / numberBeginCurrentMonth)
+    const sepEndPrice = (this.selectedPrice / numberEndCurrentMonth)
+    const delDaysInMonth = numberBeginCurrentMonth === numberEndCurrentMonth ? (sepBeginPrice * diff)
+      : ((sepBeginPrice * ((numberBeginCurrentMonth + 1) - +getBeginCurrentDays)) + (sepEndPrice * (+getEndCurrentDays)))
+    return Math.round(delDaysInMonth)
+  }
+  get getTotalDaysPrice () {
+    return this.separateModelPeriodPicker
+  }
+  changePeriodPicker (v:boolean) {
+    this.isShowNotificationPicker = v
+  }
   plug (code: string, price: string) {
+    this.currentCodeOrderData = code
     this.selectedPrice = Number(price)
     this.isCheckingMoney = true
     this.disconnectedItem = code
@@ -149,6 +210,7 @@ export default class TVPackagesPage extends Vue {
       offer: 'tv',
       title: 'Вы уверены, что хотите подключить дополнительный пакет?'
     }
+    this.isThereActivationDate = this.searchFieldDateActivation.find((searchDateActivation: any) => searchDateActivation['code'].includes(code))?.['activationDate']
     this.$store.dispatch('salesOrder/getAvailableFunds')
       .then((response) => {
         this.availableFunds = Number(response.availableFundsAmt)
@@ -187,13 +249,55 @@ export default class TVPackagesPage extends Vue {
       this.isEditMode = false
     }
   }
+  appointModelPeriodPicker () {
+    const today = new Date()
+    const afterMonth = new Date()
+    afterMonth.setMonth(afterMonth.getMonth() + 1)
+    this.modelPeriodPicker = [
+      today,
+      afterMonth
+    ]
+  }
+  handleShowPicker (event: Event): void {
+    if (event) {
+      this.isResetPeriod = false
+      this.isShowNotificationPicker = false
+    }
+  }
+  resetPeriodAction (isChecked: boolean): void {
+    this.isResetPeriod = isChecked
+    this.isNotShowPicker = !isChecked
+    this.appointModelPeriodPicker()
+  }
+
   mounted () {
+    this.appointModelPeriodPicker()
     if (this.line) {
       this.$store.dispatch('tv/packs', { api: this.$api })
         .then((answer: ITVPacketPage[]) => {
           this.packages = answer
           this.$store.dispatch('productnservices/allowedOffers', { api: this.$api, id: this.line?.offerId, marketId: this.line?.marketId })
             .then((answer: IProductOffering[]) => {
+              // ищем поле name === дата активации
+              this.searchFieldDateActivation = answer[0].offeringRelationships
+                .map((relationships: IOfferingRelationship) => {
+                  const childMax = [(+true)].indexOf(+relationships.childMax) !== -1
+                  const childProductOffering = relationships?.['childProductOffering']
+                  const activationDate = childProductOffering?.product?.chars.find((offer: any) => offer.name === 'Дата активации')?.['name'] && !!'Активация ПСТ'
+                  const packagesPacketCode = (packet:ITVPacketPage) =>
+                    packet.productCode
+                      .split(' ')
+                      .join('')
+                      .split(',')
+                      .find((oPacketCode: string) => childProductOffering?.code.includes(oPacketCode))
+                  const code = this.packages
+                    .filter(packagesPacketCode)[0]?.['productCode']
+                  return childMax && activationDate && {
+                    code,
+                    activationDate
+                  }
+                }).filter(activationDate => activationDate)
+
               // формируем список доступных кодов для подключения
               this.allowedPackagesCodes = answer[0].offeringRelationships
                 .map((el: IOfferingRelationship) => el.childProductOffering?.code)

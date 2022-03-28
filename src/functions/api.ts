@@ -28,6 +28,7 @@ export class API {
   private static _getUrl (query: string, branch: string): string {
     query = query || '/'
     branch = branch || BASE_BRANCH
+
     if (isCombat()) {
       return wrapHttps(`${BACKEND_COMBAT}${query}`)
     } else if (isStaging()) {

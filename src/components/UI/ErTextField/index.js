@@ -13,6 +13,7 @@ export default {
   }),
   props: {
     label: String,
+    isShowNotificationPicker: Boolean,
     type: {
       type: String,
       default: 'text'
@@ -58,6 +59,13 @@ export default {
     }
   },
   watch: {
+    isShowNotificationPicker (newsVal) {
+      if (newsVal) this.validate()
+      else {
+        this.reset()
+        this.messages.length === 0 && this.validate()
+      }
+    },
     mask (value) {
       this.defineMask(value)
     }

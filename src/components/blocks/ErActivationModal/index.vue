@@ -24,8 +24,9 @@
             | {{ title }}
           .er-activation-modal__description
             slot(name="description")
-
-          .er-activation-modal__offer.d--flex.align-items-center.mb-8(v-if="offerLink")
+          .er-activation-modal__activation-form-services
+            slot(name="activation")
+          .er-activation-modal__offer.d--flex.align-items-center.mb-8(v-if="offerLink && !isNotThreeDays")
             er-toggle(
               view="radio-check"
               v-model="isAcceptOffer"

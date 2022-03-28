@@ -98,12 +98,16 @@ export default class ErPlugProduct extends ErPlugMixin {
     return !(this.phoneNumber && this.name)
   }
 
-  startConnection () {
+  async startConnection () {
     if (this.isSendManagerRequest) {
       this.isShowRequestModal = true
     }
     if (this.isSendOrder) {
-      this.createOrder()
+      if (!this.isThereActivationDate) {
+        await this.createOrder()
+      } else {
+        await this.divisionCreateOrder()
+      }
     }
   }
   sendRequest () {
