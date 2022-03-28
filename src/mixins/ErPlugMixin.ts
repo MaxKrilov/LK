@@ -1,6 +1,24 @@
 import { Vue, Component, Prop } from 'vue-property-decorator'
 import { IRequestData, IOrderData, IDeleteOrderData } from '@/constants/er-plug'
 import { mapGetters } from 'vuex'
+import moment from 'moment'
+const methodGenerateParamsOfPST = (
+  { bpi: productId }
+    :{ bpi: string }) => {
+  const initObjProductId = {
+    productId
+  }
+  return (beginDays: any, endDays: any) => {
+    return Object.assign({ chars: {
+      'Дата активации': beginDays,
+      'Дата отключения': endDays
+    } }, initObjProductId)
+  }
+}
+
+interface IResponseActionParams {
+  answer: any
+}
 
 @Component({
   computed: {
@@ -11,13 +29,16 @@ import { mapGetters } from 'vuex'
 export default class ErPlugMixin extends Vue {
   @Prop({ type: Boolean, default: false }) readonly isSendManagerRequest!: boolean
   @Prop({ type: Boolean, default: false }) readonly isSendOrder!: boolean
+  @Prop({ type: Boolean, default: false }) readonly isResetPeriod!: boolean
+  @Prop({ type: Boolean, default: false }) readonly isThereActivationDate!: boolean
+  @Prop({ type: Boolean, default: false }) readonly isAtLeastThreeDays!: boolean
   @Prop({ type: Object, default: () => { return {} } }) readonly requestData!: IRequestData
   @Prop({ type: Object, default: () => { return {} } }) readonly orderData!: IOrderData
   @Prop({ type: Object, default: () => { return {} } }) readonly deleteOrderData!: IDeleteOrderData
   @Prop({ type: Boolean, default: false }) readonly isConnection!: boolean // v-modal внешний
   @Prop({ type: Boolean, default: false }) readonly isUpdate!: boolean
   @Prop({ type: String, default: 'Подключить' }) readonly plugButtonName!: string
-
+  @Prop({ type: Array }) readonly internalPeriod!: Date[]
   @Prop({ type: String })
   readonly analyticConfirmCategory!: string
 
@@ -71,7 +92,6 @@ export default class ErPlugMixin extends Vue {
 
   @Prop({ type: String })
   readonly analyticErrorCloseLabel!: string
-
   isShowRequestModal: boolean = false
   isShowSuccessRequestModal: boolean = false
   isShowErrorRequestModal: boolean = false
@@ -88,31 +108,98 @@ export default class ErPlugMixin extends Vue {
   isShowDeleteOrderModal: boolean = false
 
   sendingOrder: boolean = false
-  createOrder () {
+  get computingDiff () {
+    return (start: Date, end: Date) => Math.abs(this.$moment(end).diff(start, 'days'))
+  }
+  get calculationInternalPeriod () {
+    const [start, end] = this.internalPeriod
+    const diff = this.computingDiff(start, end)
+
+    if (diff === 2) {
+      const daysAdd = end
+      return [
+        start,
+        new Date(
+          daysAdd
+            .setDate(daysAdd
+              .getDate() + 1)
+        )
+      ]
+    }
+    return [start, end]
+  }
+  generateOrderData (orderData: IOrderData) {
+    const {
+      locationId,
+      bpi,
+      marketId,
+      productCode,
+      chars
+    } : IOrderData = orderData
+    return {
+      locationId,
+      bpi,
+      marketId,
+      productCode,
+      chars
+    }
+  }
+  async divisionCreateOrder () {
+    const productCode: unknown = this.orderData?.productCode
+      .split(' ')
+      .join('')
+      .split(',')
+      .find((code: string) => code)
+    const {
+      marketId,
+      bpi: productId,
+      locationId
+    } : { marketId: string, bpi: string, locationId: string } = this.generateOrderData(this.orderData)
+    const offer = 'tv'
+    this.isCreatingOrder = true
+    try {
+      await this.$store.dispatch('salesOrder/create',
+        {
+          locationId,
+          marketId
+        })
+      await this.$store.dispatch('salesOrder/addElement',
+        {
+          productCode,
+          productId,
+          offer
+        })
+
+      this.isShowOrderModal = true
+    } catch (e) {
+      console.error(e)
+      this.isShowErrorOrderModal = true
+      this.errorEmit()
+    } finally {
+      this.isCreatingOrder = false
+    }
+  }
+
+  async createOrder () {
     this.isCreatingOrder = true
     const url = this.isUpdate
       ? 'salesOrder/createModifyOrder'
       : 'salesOrder/createSaleOrder'
-
+    const errCatch = () => {
+      this.isShowErrorOrderModal = true
+      this.errorEmit()
+    }
+    const modalShowOrder = () => {
+      this.isShowOrderModal = true
+    }
+    const orderCreating = () => {
+      this.isCreatingOrder = false
+    }
     this.$store.dispatch(url,
-      {
-        locationId: this.orderData?.locationId,
-        bpi: this.orderData?.bpi,
-        marketId: this.orderData.marketId,
-        productCode: this.orderData?.productCode,
-        chars: this.orderData?.chars,
-        tomsId: this.orderData?.tomsId
-      })
-      .then(() => {
-        this.isShowOrderModal = true
-      })
-      .catch(() => {
-        this.isShowErrorOrderModal = true
-        this.errorEmit()
-      })
-      .finally(() => {
-        this.isCreatingOrder = false
-      })
+      this.generateOrderData(this.orderData))
+      .then(modalShowOrder)
+      .catch(errCatch)
+      .finally(orderCreating)
   }
   createDeleteOrder () { // создание заказа на удаление услуги
     this.$store.dispatch('salesOrder/createDisconnectOrder',
@@ -131,15 +218,38 @@ export default class ErPlugMixin extends Vue {
         this.errorEmit()
       })
   }
-  sendOrder () { // отправка заказа в раоту
+  async appointModelPeriodPicker (calculationInternalPeriod: Date[]) {
+    const [start, end] = calculationInternalPeriod
+    const beginPeriodPicker = moment(start).format('YYYY-MM-DDT00:00+03:00')
+    const endPeriodPicker = `${moment(end).format('YYYY-MM-DDT')}00:00+03:00`
+    const setActionParams = (beginPeriodPicker: any, endPeriodPicker: any, internalPeriod: Date[]) => {
+      const xPeriod: any = methodGenerateParamsOfPST(this.orderData)
+      return internalPeriod ? xPeriod(beginPeriodPicker, endPeriodPicker) : xPeriod
+    }
+    const responseAction = (answer: any) => answer
+    const responseErrorAction = (error: any) => {
+      if (error['status'] === 500 || error['status'] === 402) {
+        this.isShowErrorOrderModal = true
+        this.errorEmit()
+      }
+    }
+    await this.$store.dispatch('salesOrder/updateNewElement',
+      setActionParams(beginPeriodPicker, endPeriodPicker, this.internalPeriod))
+      .then(responseAction)
+      .catch(responseErrorAction)
+  }
+  async sendOrder () { // отправка заказа в работу
     this.sendingOrder = true
     const data: {offerAcceptedOn?: string} = {}
     if (this.orderData?.offer) data.offerAcceptedOn = this.$moment().toISOString()
-
-    this.$store.dispatch('salesOrder/send', data)
+    if (this.isResetPeriod) {
+      await this.appointModelPeriodPicker(this.calculationInternalPeriod)
+    }
+    await this.$store.dispatch('salesOrder/save',
+      {})
+    await this.$store.dispatch('salesOrder/send', data)
       .then((answer: any) => {
         this.sendingOrder = false
-
         if (answer?.submit_statuses?.[0]?.submitStatus === 'FAILED') {
           this.isShowErrorOrderModal = true
           this.errorEmit()
@@ -171,11 +281,13 @@ export default class ErPlugMixin extends Vue {
       })
       .finally(() => {
         this.sendingOrder = false
+        this.resetPeriod()
       })
   }
   cancelOrder () {
     this.$store.dispatch('salesOrder/cancel')
     this.$emit('cancelOrder')
+    this.resetPeriod()
   }
 
   closeSuccessOrderModal () {
@@ -194,6 +306,9 @@ export default class ErPlugMixin extends Vue {
     this.cancelOrder()
     this.endConnection()
   }
+  changeShowPicker (v: boolean) {
+    this.$emit('putDownCheckBoxShowPicker', v)
+  }
   endConnection () {
     this.$emit('changeStatusConnection', false)
   }
@@ -204,5 +319,8 @@ export default class ErPlugMixin extends Vue {
 
   successEmit () {
     this.$emit('successOrder')
+  }
+  resetPeriod () {
+    this.$emit('resetPeriodAction', false)
   }
 }

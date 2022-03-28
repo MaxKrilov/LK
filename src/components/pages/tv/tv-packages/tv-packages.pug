@@ -5,8 +5,8 @@ div.main-content.main-content--padding.main-content--top-menu-fix
   template(v-else)
     div.mb-40.mb-md-48
       div.caption2 Адрес
-      div {{ address }}     
-      
+      div {{ address }}
+
 
       div(class="tv-packages__wrap-stb").mt-16.mt-md-24.mt-xl-32
         div(class="tv-packages__wrap-stb__name")
@@ -26,37 +26,37 @@ div.main-content.main-content--padding.main-content--top-menu-fix
                 er-icon(name="edit")
         div(class="tv-packages__wrap-stb__model").mr-40
           div.caption2 Модель
-          div {{ stbModel }} 
+          div {{ stbModel }}
         //- оставить до лучших времен
         //- div(class="tv-packages__wrap-stb__mac")
         //-   div.caption2 МАС
-        //-   div 
+        //-   div
         //-     | a1:45:d4:d2:f8:62
         div(class="tv-packages__wrap-stb__garant" v-if="guarantee").mr-40
           div.caption2 Гарантия до
-          div {{ guarantee }} 
+          div {{ guarantee }}
         div(class="tv-packages__wrap-stb__garant" v-if="safeStorage").mr-40
           div.caption2 Форма собственности
           div Ответственное хранение
         div(class="tv-packages__wrap-stb__price" v-if="stbPrice")
           div.caption2 Аренда
-          div 
-            span.h4 {{ stbPrice }} 
+          div
+            span.h4 {{ stbPrice }}
             span(class="caption") ₽/мес
       div.caption2.mt-32 Тариф
-      div {{ tariffname }} 
+      div {{ tariffname }}
       div.caption2.mt-16 Итого за приставку
-      .h4 
-        | {{ line.price }} 
+      .h4
+        | {{ line.price }}
         span(class="caption") ₽/мес
 
       div(class="tv-packages__button").mt-24
         er-button(color="gray" @click="isChangeTariff = true"  :disabled="isChangeTariff") Сменить тариф
-    
+
     h2 Пакеты каналов
     div.caption2.mt-8.mt-lg-16.mt-md-8.mb-16.mb-lg-32.mb-md-24
-      | Абонентская плата за дополнительные пакеты 
-      span(class="h4") &nbsp; {{ pasketsPrise }} 
+      | Абонентская плата за дополнительные пакеты
+      span(class="h4") &nbsp; {{ pasketsPrise }}
       span(class="unit") ₽/мес
 
     div(class="tv-packages__packages").mt-16.mt-md-24.mt-lg-32
@@ -84,7 +84,7 @@ div.main-content.main-content--padding.main-content--top-menu-fix
               div(class="tv-packages__packages__count" @click="$router.push(`/lk/tv/channel-list/${item.id}`)") {{ item.count }}
 
           div(class="tv-packages__packages__content")
-          
+
             div(class="tv-packages__packages__price-active__title") Стоимость:
             div(class="tv-packages__packages__price-active")
               | {{ item.price }}
@@ -107,8 +107,8 @@ div.main-content.main-content--padding.main-content--top-menu-fix
 
           div(class="tv-packages__packages__content not-connected")
             .caption2 Стоимость:
-            div(class="tv-packages__packages__price").h3 
-              | {{ item.price }} 
+            div(class="tv-packages__packages__price").h3
+              | {{ item.price }}
               span(class="caption1") ₽/мес
             er-button(
               color="blue"
@@ -116,12 +116,48 @@ div.main-content.main-content--padding.main-content--top-menu-fix
               :loading="(item.productCode === disconnectedItem) && (isConnection || isCheckingMoney)"
               :disabled="isConnection || isCheckingMoney || isDisconnection"
               ).mt-24 Подключить
-      
-    ErPlugProduct(
-      v-model="isConnection"
-      :orderData="orderData"
-      isSendOrder
+
+
+      ErPlugProduct(
+        v-model="isConnection"
+        :orderData="orderData"
+        :isThereActivationDate="isThereActivationDate"
+        :isAtLeastThreeDays="isShowNotificationPicker"
+        :isResetPeriod="isResetPeriod"
+        :internalPeriod="internalPeriod"
+        @putDownCheckBoxShowPicker="putDownCheckBoxShowPicker"
+        @resetPeriodAction="resetPeriodAction"
+        isSendOrder
       )
+        template(
+          slot="offerDescription"
+          v-if="isThereActivationDate"
+          )
+          .er-activation-modal__activation-notification.d--flex.align-items-center.mb-16(
+            v-if="!isNotShowPicker"
+            )
+            .caption.text-color-black05
+              | Минимальный период активациии пакета - 3 дня.
+          .er-activation-modal__activation-form-service.d--flex.justify-content-between.align-items-center.mb-16
+            .er-activation-modal__action-toggle
+              er-toggle(
+                label="Бессрочно"
+                v-model="isNotShowPicker"
+                checked="checked"
+                @input="handleShowPicker($event)"
+              ).mt-16
+            .er-activation-modal__filter-picker
+              er-filter-group(title="Период")
+                er-date-picker(
+                  v-if="!isNotShowPicker"
+                  placeholder="Период"
+                  v-model="modelPeriodPicker"
+                  disabled-date="past"
+                  @showNotification="changePeriodPicker"
+                  :rules="isShowNotificationPicker ? [ ()=> 'Вы выбрали менее 3-х дней'] : [v => !!v]"
+                ).mr-auto.mt-16
+          .caption.text-color-black05.mb-8
+            | Стоимость: <b>{{ !isResetPeriod || isNotShowPicker ? `${selectedPrice} ₽/мес` : `${getTotalDaysPrice} ₽/за выбранный период` }}</b>
     ErPlugProduct(
       v-model="isEditingName"
       :orderData="editingOrderData"
@@ -147,13 +183,13 @@ div.main-content.main-content--padding.main-content--top-menu-fix
     cancel-button-text="Закрыть"
   )
     template(slot="description")
-      div.mb-12  Уважаемый клиент, для завершения заказа на лицевом счете не достаточно денежных средств. Пополните лицевой счет и повторите покупку. 
+      div.mb-12  Уважаемый клиент, для завершения заказа на лицевом счете не достаточно денежных средств. Пополните лицевой счет и повторите покупку.
       div
-        | Стоимость подключения: 
-        b {{ selectedPrice }} 
+        | Стоимость подключения:
+        b {{ selectedPrice }}
         | руб.
       div
-        | Ваши доступные средства: 
-        b {{ availableFunds }} 
-        | руб. 
+        | Ваши доступные средства:
+        b {{ availableFunds }}
+        | руб.
 

@@ -2,7 +2,6 @@ import './_style.scss'
 import Calendar from './calendar'
 import Report from './report'
 import { getScreenWidth } from '../../../functions/helper'
-
 export default {
   name: 'er-date-picker',
   components: {
@@ -18,7 +17,8 @@ export default {
     /**
      * @param {Date}
      */
-    internalValue: null
+    internalValue: null,
+    isShowNotificationPicker: null
   }),
   props: {
     value: null,
@@ -34,6 +34,10 @@ export default {
     format: {
       type: String,
       default: 'DD.MM.YYYY'
+    },
+    rules: {
+      type: Array,
+      default: () => []
     },
     isShowRequiredLabel: Boolean,
     isHidePeriodBlock: Boolean,
@@ -59,6 +63,10 @@ export default {
       } else {
         this.internalValue = val
       }
+
+      const diff = Math.abs(this.$moment(this.internalValue[0]).diff(this.internalValue[1], 'days')) + 1
+      this.isShowNotificationPicker = (diff <= 2)
+      this.$emit('showNotification', this.isShowNotificationPicker)
     },
     isOpenDialog (val) {
       if (val) {
@@ -79,7 +87,10 @@ export default {
           autocomplete: 'off',
           readonly: true,
           value: this.valueForTextInput,
-          isShowRequiredLabel: this.isShowRequiredLabel
+          isShowRequiredLabel: this.isShowRequiredLabel,
+          isShowNotificationPicker: this.isShowNotificationPicker,
+          rules: this.rules
+
         },
         on: props.on,
         ref: 'input'
