@@ -290,7 +290,7 @@ export default class TVPackagesPage extends ComponentManageViewMixin {
     this.appointModelPeriodPicker()
   }
 
-  mounted () {
+  async mounted () {
     this.appointModelPeriodPicker()
     if (this.line) {
       const firstSampleOffering = ([ first ]: IProductOffering | any) => first.offeringRelationships
@@ -298,7 +298,7 @@ export default class TVPackagesPage extends ComponentManageViewMixin {
       this.$store.dispatch('tv/packs', { api: this.$api })
         .then((answer: ITVPacketPage[]) => {
           this.packages = answer
-          
+
           // для активации ПСТ
           this.searchFieldDateActivation = this.productAllowedOffers
             .map((relationships: IOfferingRelationship) => {
