@@ -78,6 +78,12 @@ export default {
   computed: {
     branchAddress () {
       return this.$store.state.branch.address
+    },
+    branchId () {
+      return this.$store.state.branch.id
+    },
+    isVisibleAddress () {
+      return !['47', '181'].includes(this.branchId)
     }
   },
   methods: {
