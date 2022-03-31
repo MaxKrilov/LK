@@ -64,9 +64,10 @@ footer.er-footer.columns
                 v-html="ACTUAL_ADDRESS.text"
               ).er-contacts-address__address
 
-              .er-contacts-address__title.mt-16
-                | Фактический адрес:
-              span.er-contacts-address__address(v-html="branchAddress")
+              template(v-if="isVisibleAddress")
+                .er-contacts-address__title.mt-16
+                  | Фактический адрес:
+                span.er-contacts-address__address(v-html="branchAddress")
 
           .er-copyright
             | © АО «ЭР-Телеком Холдинг»
