@@ -49,24 +49,34 @@ export default class TvSlider extends Vue {
               name: string,
               price: number,
               type: string,
+              offerCode: string,
+              offerName: string,
               guarantee: string,
-              model: string
+              status: string,
+              model: string,
             }[] = line?.stb ? Object.values(line?.stb).map((stbItem:ITVSTB) => {
               return {
                 id: stbItem.id,
-                type: stbItem.chars?.['Способ передачи оборудования'],
+                type: stbItem?.chars?.['Способ передачи оборудования'],
                 price: Number(stbItem.purchasedPrices.recurrentTotal.value),
                 stbName: stbItem.name,
                 // @ts-ignore
                 guarantee: Object.values(stbItem?.services || {})?.[0]?.chars?.['Гарантийный срок (до)'] || '',
+                status: stbItem?.status,
+                offerCode: stbItem.offer?.code || '',
+                offerName: stbItem.offer?.name || '',
                 model: stbItem.chars?.['Модель'],
-                name: stbItem.chars?.['Имя оборудования']
+                name: stbItem.chars?.['Имя оборудования'],
+                tomsId: stbItem.offer?.tomsId
               }
             }) : [{
               id: '',
               price: 0,
               type: '',
+              status: '',
               guarantee: '',
+              offerCode: '',
+              offerName: '',
               model: '',
               name: ''
             }]
@@ -81,28 +91,45 @@ export default class TvSlider extends Vue {
                   price: Number(packet.purchasedPrices.recurrentTotal.value)
                 }
               }) : []
-
             return {
               id: line.id,
               status: line.status,
               marketId: line.market.id,
               tvType: line?.chars?.['Тип TV'],
-              stb: stb?.[0],
+              stb: stb,
               price: line.purchasedPrices.recurrentTotal.value,
               name: line.chars['Имя в счете'],
               locationId: line.locationId,
               offerId: line.offer.id,
               addressId: this.addressId || '',
               fulladdress: this.fulladdress || '',
+              // code: line?.code,
               packets
             }
           })
-        this.moduleList = data
+        this.moduleList = this.manageView(data)
         this.loading = false
       })
       .catch((error) => {
         console.error(error)
       })
+  }
+  manageView (data:IModuleInfo[]) {
+    return data.map((line: any) => {
+      let stbManage = (el:any) => el.stbName.includes('Управляй просмотром') && el
+      const stb = line.stb.reduce((cur:number, val:{}) => {
+        if (!stbManage(val) && cur === -1) {
+          return [val]
+        }
+        return cur
+      }, -1)
+      const viewStb = (el:any) => stbManage(el)
+      return {
+        ...line,
+        stb,
+        viewStb: line.stb.filter(viewStb)
+      }
+    })
   }
   openPackages (data: any) {
     this.$router.push({

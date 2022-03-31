@@ -21,7 +21,7 @@ div.main-content.main-content--padding.main-content--top-menu-fix
                     button(@click="saveName")
                       ErtIcon(name="circle_ok")
             template(v-else)
-              div {{ line.stb.name }}
+              div {{ line.stb[0].name }}
               div(@click="editName")
                 er-icon(name="edit")
         div(class="tv-packages__wrap-stb__model").mr-40
@@ -52,6 +52,19 @@ div.main-content.main-content--padding.main-content--top-menu-fix
 
       div(class="tv-packages__button").mt-24
         er-button(color="gray" @click="isChangeTariff = true"  :disabled="isChangeTariff") Сменить тариф
+    ErServiceCatchUp(
+      v-if="availableServiceManageView['code']"
+      :status="disconnectOfferingManageView['status']"
+      :price="availableServiceManageView['price']"
+      :isStatusSwitcherAfterSendingOrder="isStatusSwitcherAfterSendingOrder"
+      :isSuccessStatusSwitcherAfterSendingOrder="isSuccessStatusSwitcherAfterSendingOrder"
+      :isConnection="isConnection"
+      :isDisconnection="isDisconnection"
+      @connect="plug(availableServiceManageView['code'], availableServiceManageView['price'], true )"
+      @disconnect="unPlug(disconnectOfferingManageView['id'], disconnectOfferingManageView['offerCode'], true )"
+      @cancelLoaderSwitcher="cancelLoaderSwitcher"
+      @cancelLoaderAfterSendingOrder="cancelLoaderAfterSendingOrder"
+    )
 
     h2 Пакеты каналов
     div.caption2.mt-8.mt-lg-16.mt-md-8.mb-16.mb-lg-32.mb-md-24
@@ -95,7 +108,7 @@ div.main-content.main-content--padding.main-content--top-menu-fix
               :loading="item.productId === disconnectedItem"
               @click="unPlug(item.productId, item.title)"
               :disabled="isConnection || isCheckingMoney || isDisconnection"
-              ).mt-24 Отключить
+            ).mt-24 Отключить
       er-card(v-for="(item, index) in allowedPackages" :key="item.id")
         div(:style="`background: ${item.background}`" class="tv-packages__packages-active")
 
@@ -115,18 +128,20 @@ div.main-content.main-content--padding.main-content--top-menu-fix
               @click="plug(item.productCode, item.price)"
               :loading="(item.productCode === disconnectedItem) && (isConnection || isCheckingMoney)"
               :disabled="isConnection || isCheckingMoney || isDisconnection"
-              ).mt-24 Подключить
-
+            ).mt-24 Подключить
 
       ErPlugProduct(
         v-model="isConnection"
         :orderData="orderData"
-        :isThereActivationDate="isThereActivationDate"
-        :isAtLeastThreeDays="isShowNotificationPicker"
-        :isResetPeriod="isResetPeriod"
         :internalPeriod="internalPeriod"
-        @putDownCheckBoxShowPicker="putDownCheckBoxShowPicker"
+        :isResetPeriod="isResetPeriod"
+        :isAtLeastThreeDays="isShowNotificationPicker"
+        :isThereActivationDate="isThereActivationDate"
+        @closeSuccess="renderSuccessSwitcher"
+        @closeError="changeStatusConnection"
+        @cancelOrder="renderCancelOrderSwitcher"
         @resetPeriodAction="resetPeriodAction"
+        @putDownCheckBoxShowPicker="putDownCheckBoxShowPicker"
         isSendOrder
       )
         template(
@@ -164,17 +179,20 @@ div.main-content.main-content--padding.main-content--top-menu-fix
       plugButtonName="Изменить"
       isSendOrder
       isUpdate
-      )
+    )
     ErPlugProduct(
       v-model="isChangeTariff"
       :requestData="requestData"
       isSendManagerRequest
-      )
+    )
     ErDisconnectProduct(
       v-model="isDisconnection"
       :deleteOrderData="deleteData"
+      @changeStatusConnectionModal="changeStatusConnection"
+      @closeSuccess="renderSuccessSwitcher"
+      @closeError="changeStatusConnection"
       isSendOrder
-      )
+    )
   er-activation-modal(
     type="question"
     v-model="isShowMoneyModal"
@@ -192,4 +210,3 @@ div.main-content.main-content--padding.main-content--top-menu-fix
         | Ваши доступные средства:
         b {{ availableFunds }}
         | руб.
-

@@ -28,8 +28,9 @@ export interface IChildProductOffering {
     canBeActivatedInSSP: boolean
     code: string
     prices: any
+    name: string
+    tomsId: string
     product: any
-
     customerCategories: [{
       code: string
       href: string

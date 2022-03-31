@@ -9,8 +9,8 @@ div(class="iptv-slider")
           div {{ $moment(date || '' ).format('DD.MM.YYYY') }}
         div(class="iptv-slider__info__abon" v-if="isTVC")
           div
-            ert-icon(name="tv")  
-          div  
+            ert-icon(name="tv")
+          div
             .caption2 Абоненских линий:
             div {{ moduleList.length }}
         div(class="iptv-slider__info__service")
@@ -18,7 +18,7 @@ div(class="iptv-slider")
             ert-icon(name="service")
             span Заявка на обслуживание
 
-      template(v-if="!isTVC")  
+      template(v-if="!isTVC")
         h2 Подключенные модули
         div(class="iptv-slider__modules")
           div(class="iptv-slider__modules__header").mt-8
@@ -26,12 +26,12 @@ div(class="iptv-slider")
             div(class="iptv-slider__modules__header-item").caption2 Имя оборудования
             div(class="iptv-slider__modules__header-item").caption2 ТВ Пакеты
           div(class="iptv-slider__modules__item" v-for="item in moduleList" :key="item.id" @click="openPackages(item)").pt-8
-            div(class="iptv-slider__modules__item__type") {{ item.stb.stbName }}
-            div(class="iptv-slider__modules__item__mac") {{ item.stb.name }}
+            div(class="iptv-slider__modules__item__type") {{ item.stb[0].stbName }}
+            div(class="iptv-slider__modules__item__mac") {{ item.stb[0].name }}
             div(class="iptv-slider__modules__item__package" )
               er-icon(name="tv-pack")
               div.count.ml-4 {{ item.packets.length }}
-            div(class="iptv-slider__modules__item__price") 
+            div(class="iptv-slider__modules__item__price")
               div(class="") {{ item.price }}
               div(class="iptv-slider__unit") &nbsp;₽/мес
 

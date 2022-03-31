@@ -60,6 +60,7 @@ export interface ITVLine {
   packets: {
     [key: string]: ITVPacket
   }
+  viewStb: IViewControl[]
 }
 export interface ITVLineInfo{
   name: string
@@ -79,8 +80,27 @@ export interface IModuleInfo {
   tvType: string
   name: string
   id: string
-  stb: { id: string; name: string; type: string; model: string, price: number; guarantee: string; }
+  stb: ITVSTBInModule[]
+  viewStb?: IViewControl[]
   packets: ITVPacketsInModule[]
+}
+export interface ITVSTBInModule {
+  id: string
+  name: string
+  type: string
+  status: string
+  model: string
+  price: number
+  guarantee: string
+  offerCode: string
+  offerName: string
+}
+export interface IViewControl {
+  id: string
+  status: string
+  price: number
+  offerCode: string
+  offerName: string
 }
 export interface ITVPacketsInModule {
   id: string
@@ -110,6 +130,11 @@ export interface ITVSTB{
   locationId: string
   id: string
   status: string
+  offer: {
+    code: string
+    name: string
+    tomsId: string
+  }
   services: {
     [key: string] : ITVSTBServices
   }
