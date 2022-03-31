@@ -6,7 +6,6 @@ export const WIFIACCCHANGE = 'WIFIACCCHANGE' // Изменение параме�
 export const WIFIAVTVOUCH = 'WIFIAVTVOUCH' // Авторизация по ваучеру
 export const WIFINAME = 'WIFINAME' // Дополнительная услуга по изменению названия сети DOM.RU Wi-Fi
 export const WIFIREDIR = 'WIFIREDIR' // Переадресация пользователя
-
 export const WIFIKONTFIL = 'WIFIKONTFIL' // Контент фильтрация (Wi-Fi)
 export const WIFIANALYTICS = 'WIFIANALYTICS' // Аналитика по пользователям
 export const WIFIDESIGNOPT = 'WIFIDESIGNOPT' // Конструктор страницы авторизации

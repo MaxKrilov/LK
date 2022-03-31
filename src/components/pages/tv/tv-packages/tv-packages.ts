@@ -1,34 +1,41 @@
-import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
-import { mapGetters } from 'vuex'
+import { Component, Prop, Watch } from 'vue-property-decorator'
+import { mapGetters, mapActions } from 'vuex'
 import { ITVPacketPage, ITVPacket, IModuleInfo, ITVPacketsInModule } from '@/components/pages/tv/tv.d.ts'
 import { IOfferingRelationship, IProductOffering } from '@/interfaces/offering'
 import { IAddress } from '@/tbapi'
 import ErDisconnectProduct from '@/components/blocks/ErDisconnectProduct/index.vue'
 import ErPlugProduct from '@/components/blocks/ErPlugProduct/index.vue'
 import ErActivationModal from '@/components/blocks/ErActivationModal/index.vue'
+import ErServiceCatchUp from '@/components/blocks/ErServiceCatchUp/index.vue'
 import { getNoun } from '@/functions/helper'
 import { IDeleteOrderData } from '@/constants/er-plug'
+import ComponentManageViewMixin from '@/mixins/ComponentManageView/ComponentManageViewMixin'
 import moment from 'moment'
 
 @Component({
   components: {
     ErPlugProduct,
     ErActivationModal,
-    ErDisconnectProduct
+    ErDisconnectProduct,
+    ErServiceCatchUp
+  },
+  methods: {
+    ...mapActions({
+      getProductServicesAllowedOffers: 'productnservices/allowedOffers'
+    })
   },
   computed: {
     ...mapGetters('user', ['getAddressList'])
   }
 })
-export default class TVPackagesPage extends Vue {
+export default class TVPackagesPage extends ComponentManageViewMixin {
   @Prop() readonly line: IModuleInfo | undefined
-
+  packages:ITVPacketPage[] = []
+  connectedPackages:ITVPacketPage[] = []
+  allowedPackages:ITVPacketPage[] = []
+  standartPackage:ITVPacketPage | null = null
   modelPeriodPicker: Date[] = []
-  packages: ITVPacketPage[] = []
-  connectedPackages: ITVPacketPage[] = []
-  allowedPackages: ITVPacketPage[] = []
   searchFieldDateActivation: ITVPacketPage[] | any = []
-  standartPackage: ITVPacketPage | null = null
   tvPackets: ITVPacket[] = []
   getAddressList!: IAddress[]
   allowedPackagesCodes: string[] = []
@@ -116,7 +123,7 @@ export default class TVPackagesPage extends Vue {
   get editingOrderData () {
     return {
       locationId: this.line?.locationId,
-      bpi: this.line?.stb?.id,
+      bpi: this.line?.stb?.[0].id,
       marketId: this.line?.marketId || '',
       chars: { 'Имя оборудования': this.stbName },
       title: `Вы уверены, что хотите изменить имя оборудования?`
@@ -126,26 +133,26 @@ export default class TVPackagesPage extends Vue {
     return this.line?.packets.reduce((acc: number, el: {id: string, name: string, price: number}) => acc + el.price, 0) || 0
   }
   get stbType () {
-    return this.line?.stb.type || ''
+    return this.line?.stb?.[0].type || ''
   }
   get stbModel () {
-    return this.line?.stb.model || ''
+    return this.line?.stb?.[0].model || ''
   }
   get stbPrice () {
     if (this.stbType === 'Продажа') {
       return ''
     }
-    return this.line?.stb.price || ''
+    return this.line?.stb?.[0].price || ''
   }
   get tariffname () {
-    return this.line?.name?.replace('Абонентская линия', '')
+    return this.line?.name?.replace('Абонентская линия', '').trim()
   }
   get guarantee () {
     if (this.stbType === 'Аренда') {
       return '∞'
     }
     if (this.stbType === 'Продажа') {
-      return this.$moment(this.line?.stb.guarantee).format('DD.MM.YYYY')
+      return this.$moment(this.line?.stb?.[0].guarantee).format('DD.MM.YYYY')
     }
     return ''
   }
@@ -197,7 +204,8 @@ export default class TVPackagesPage extends Vue {
   changePeriodPicker (v:boolean) {
     this.isShowNotificationPicker = v
   }
-  plug (code: string, price: string) {
+  plug (code: string, price: string, isTitle?: boolean) {
+    const additionalPackage: string = 'дополнительный пакет'
     this.currentCodeOrderData = code
     this.selectedPrice = Number(price)
     this.isCheckingMoney = true
@@ -208,7 +216,7 @@ export default class TVPackagesPage extends Vue {
       marketId: this.line?.marketId,
       productCode: code.split(' ').join('').split(',').find((el: string) => this.allowedPackagesCodes.includes(el)),
       offer: 'tv',
-      title: 'Вы уверены, что хотите подключить дополнительный пакет?'
+      title: `Вы уверены, что хотите подключить ${isTitle ? this.serviceManageView : additionalPackage}?`
     }
     this.isThereActivationDate = this.searchFieldDateActivation.find((searchDateActivation: any) => searchDateActivation['code'].includes(code))?.['activationDate']
     this.$store.dispatch('salesOrder/getAvailableFunds')
@@ -216,6 +224,7 @@ export default class TVPackagesPage extends Vue {
         this.availableFunds = Number(response.availableFundsAmt)
         if (this.availableFunds - Number(this.selectedPrice) < 0) {
           this.isShowMoneyModal = true
+          this.isStatusSwitcherAfterSendingOrder = true
         } else {
           this.isConnection = true
         }
@@ -227,27 +236,38 @@ export default class TVPackagesPage extends Vue {
         this.isCheckingMoney = false
       })
   }
-  unPlug (productId: string, name: string = '') {
+  unPlug (productId: string, name: string = '', isTitle?: boolean) {
+    const additionalPackage: string = `пакет ${name}`
     this.deleteData = {
       bpi: this.line?.id || '',
       locationId: this.line?.locationId || '',
       marketId: this.line?.marketId || '',
       productId,
-      title: `Вы уверены, что хотите отключить пакет ${name}?`
+      title: `Вы уверены, что хотите  отключить ${isTitle ? this.serviceManageView : additionalPackage}?`
     }
     this.disconnectedItem = productId
     this.isDisconnection = true
+    this.isSuccessStatusSwitcherAfterSendingOrder = false
+  }
+  cancelLoaderSwitcher () {
+    this.isStatusSwitcherAfterSendingOrder = false
+  }
+  cancelLoaderAfterSendingOrder () {
+    this.isSuccessStatusSwitcherAfterSendingOrder = false
   }
   editName () {
-    this.stbName = this.line?.stb?.name || ''
+    this.stbName = this.line?.stb?.[0].name || ''
     this.isEditMode = true
   }
   saveName () {
-    if (this.stbName !== this.line?.stb?.name) {
+    if (this.stbName !== this.line?.stb?.[0].name) {
       this.isEditingName = true
     } else {
       this.isEditMode = false
     }
+  }
+  disassembleAllowedOffers () {
+    return this.getProductServicesAllowedOffers({ api: this.$api, id: this.line?.offerId, marketId: this.line?.marketId })
   }
   appointModelPeriodPicker () {
     const today = new Date()
@@ -273,112 +293,109 @@ export default class TVPackagesPage extends Vue {
   mounted () {
     this.appointModelPeriodPicker()
     if (this.line) {
+      const firstSampleOffering = ([ first ]: IProductOffering | any) => first.offeringRelationships
+      this.productAllowedOffers = await this.disassembleAllowedOffers().then(firstSampleOffering)
       this.$store.dispatch('tv/packs', { api: this.$api })
         .then((answer: ITVPacketPage[]) => {
           this.packages = answer
-          this.$store.dispatch('productnservices/allowedOffers', { api: this.$api, id: this.line?.offerId, marketId: this.line?.marketId })
-            .then((answer: IProductOffering[]) => {
-              // ищем поле name === дата активации
-              this.searchFieldDateActivation = answer[0].offeringRelationships
-                .map((relationships: IOfferingRelationship) => {
-                  const childMax = [(+true)].indexOf(+relationships.childMax) !== -1
-                  const childProductOffering = relationships?.['childProductOffering']
-                  const activationDate = childProductOffering?.product?.chars.find((offer: any) => offer.name === 'Дата активации')?.['name'] && !!'Активация ПСТ'
-                  const packagesPacketCode = (packet:ITVPacketPage) =>
-                    packet.productCode
-                      .split(' ')
-                      .join('')
-                      .split(',')
-                      .find((oPacketCode: string) => childProductOffering?.code.includes(oPacketCode))
-                  const code = this.packages
-                    .filter(packagesPacketCode)[0]?.['productCode']
-                  return childMax && activationDate && {
-                    code,
-                    activationDate
-                  }
-                }).filter(activationDate => activationDate)
+          
+          // для активации ПСТ
+          this.searchFieldDateActivation = this.productAllowedOffers
+            .map((relationships: IOfferingRelationship) => {
+              const childMax = [(+true)].indexOf(+relationships.childMax) !== -1
+              const childProductOffering = relationships?.['childProductOffering']
+              const activationDate = childProductOffering?.product?.chars.find((offer: any) => offer.name === 'Дата активации')?.['name'] && !!'Активация ПСТ'
+              const packagesPacketCode = (packet:ITVPacketPage) =>
+                packet.productCode
+                  .split(' ')
+                  .join('')
+                  .split(',')
+                  .find((oPacketCode: string) => childProductOffering?.code.includes(oPacketCode))
+              const code = this.packages
+                .filter(packagesPacketCode)[0]?.['productCode']
+              return childMax && activationDate && {
+                code,
+                activationDate
+              }
+            }).filter(activationDate => activationDate)
 
-              // формируем список доступных кодов для подключения
-              this.allowedPackagesCodes = answer[0].offeringRelationships
-                .map((el: IOfferingRelationship) => el.childProductOffering?.code)
-                .filter((el: string | undefined) => el)
+          // формируем список доступных кодов для подключения
+          this.allowedPackagesCodes = this.productAllowedOffers
+            .map((el: IOfferingRelationship) => el.childProductOffering?.code)
+            .filter((el: string | undefined) => el)
 
-              // цены для подключения
-              this.allowedPackagesPrices = answer[0].offeringRelationships
-                .reduce((acc: Record<string, string>, el: IOfferingRelationship) => {
-                  const price = el?.childProductOffering?.prices
-                    ?.find((_price: any) => _price?.amount && _price?.chars?.['Тип TV']?.id === this.line?.tvType)?.amount
-                  if (el?.childProductOffering?.prices && el?.childProductOffering?.code && price) {
-                    return {
-                      ...acc,
-                      [el.childProductOffering.code]: price
-                    }
-                  }
-                  return acc
-                }, {})
+          // цены для подключения
+          this.allowedPackagesPrices = this.productAllowedOffers
+            .reduce((acc: Record<string, string>, el: IOfferingRelationship) => {
+              const price = el?.childProductOffering?.prices
+                ?.find((_price: any) => _price?.amount && _price?.chars?.['Тип TV']?.id === this.line?.tvType)?.amount
+              if (el?.childProductOffering?.prices && el?.childProductOffering?.code && price) {
+                return {
+                  ...acc,
+                  [el.childProductOffering.code]: price
+                }
+              }
+              return acc
+            }, {})
+          const connectedpackagesCodes: string[] = this.line?.packets.map((el: ITVPacketsInModule) => el.code) || []
+          // формируем массив доступных пакетов
+          this.allowedPackages = this.packages
+            .filter(
+              (el:ITVPacketPage) =>
+                el.productCode
+                  .split(' ')
+                  .join('')
+                  .split(',')
+                  .find((el: string) => this.allowedPackagesCodes.includes(el)))
+            .filter(
+              (el:ITVPacketPage) =>
+                !el.productCode
+                  .split(' ')
+                  .join('')
+                  .split(',')
+                  .find((el: string) => connectedpackagesCodes.includes(el)))
+            .filter((el:ITVPacketPage) => el.productCode !== 'TVPSTAND')
+            .map((el: any) => {
+              const _el = el
 
-              // формируем список подключенных кодов
-              const connectedpackagesCodes: string[] = this.line?.packets.map((el: ITVPacketsInModule) => el.code) || []
+              const code = Object.keys(this.allowedPackagesPrices)
+                ?.find((price) => el.productCode.replace(' ', '').split(',').includes(price)) || ''
 
-              // формируем массив доступных пакетов
-              this.allowedPackages = this.packages
-                .filter(
-                  (el:ITVPacketPage) =>
-                    el.productCode
-                      .split(' ')
-                      .join('')
-                      .split(',')
-                      .find((el: string) => this.allowedPackagesCodes.includes(el)))
-                .filter(
-                  (el:ITVPacketPage) =>
-                    !el.productCode
-                      .split(' ')
-                      .join('')
-                      .split(',')
-                      .find((el: string) => connectedpackagesCodes.includes(el)))
-                .filter((el:ITVPacketPage) => el.productCode !== 'TVPSTAND')
-                .map((el: any) => {
-                  const _el = el
+              if (code && this.allowedPackagesPrices?.[code]) {
+                _el.price = this.allowedPackagesPrices?.[code]
+              }
+              _el.count = `${el.count} ${getNoun(el.count, 'канал', 'канала', 'каналов')}`
 
-                  const code = Object.keys(this.allowedPackagesPrices)
-                    ?.find((price) => el.productCode.replace(' ', '').split(',').includes(price)) || ''
-
-                  if (code && this.allowedPackagesPrices?.[code]) {
-                    _el.price = this.allowedPackagesPrices?.[code]
-                  }
-                  _el.count = `${el.count} ${getNoun(el.count, 'канал', 'канала', 'каналов')}`
-
-                  try {
-                    _el.img = _el.backgroundMobile ? require(`@/assets/images/tv/${_el.backgroundMobile}.png`) : ''
-                  } catch {
-                    _el.img = ''
-                  }
-                  return _el
-                })
-
-              const conpack: any = this.line?.packets
-                .map((connectedPacket: ITVPacketsInModule) => {
-                  const packet: any = this.packages.find((el:ITVPacketPage) => {
-                    return el.productCode.replace(' ', '').split(',').includes(connectedPacket.code)
-                  })
-                  if (packet) {
-                    packet.productId = connectedPacket.id
-                    packet.price = connectedPacket.price
-                    packet.count = `${packet.count} ${getNoun(packet.count, 'канал', 'канала', 'каналов')}`
-                    try {
-                      packet.img = packet.backgroundMobile ? require(`@/assets/images/tv/${packet.backgroundMobile}.png`) : ''
-                    } catch {
-                      packet.img = ''
-                    }
-                    return packet
-                  }
-                  return undefined
-                })
-                .filter((el: any) => el)
-                .filter((el:ITVPacketPage) => el.productCode !== 'TVPSTAND')
-              this.connectedPackages = conpack
-              this.standartPackage = this.packages.find((el:ITVPacketPage) => el.productCode === 'TVPSTAND') || null
+              try {
+                _el.img = _el.backgroundMobile ? require(`@/assets/images/tv/${_el.backgroundMobile}.png`) : ''
+              } catch {
+                _el.img = ''
+              }
+              return _el
             })
+
+          const conpack: any = this.line?.packets
+            .map((connectedPacket: ITVPacketsInModule) => {
+              const packet: any = this.packages.find((el:ITVPacketPage) => {
+                return el.productCode.replace(' ', '').split(',').includes(connectedPacket.code)
+              })
+              if (packet) {
+                packet.productId = connectedPacket.id
+                packet.price = connectedPacket.price
+                packet.count = `${packet.count} ${getNoun(packet.count, 'канал', 'канала', 'каналов')}`
+                try {
+                  packet.img = packet.backgroundMobile ? require(`@/assets/images/tv/${packet.backgroundMobile}.png`) : ''
+                } catch {
+                  packet.img = ''
+                }
+                return packet
+              }
+              return undefined
+            })
+            .filter((el: any) => el)
+            .filter((el:ITVPacketPage) => el.productCode !== 'TVPSTAND')
+          this.connectedPackages = conpack
+          this.standartPackage = this.packages.find((el:ITVPacketPage) => el.productCode === 'TVPSTAND') || null
         })
         .catch((error) => {
           console.log(error)

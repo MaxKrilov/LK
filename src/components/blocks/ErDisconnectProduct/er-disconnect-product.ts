@@ -59,9 +59,9 @@ export default class ErDisconnectProduct extends ErPlugMixin {
   }
   get descriptionRequestText () {
     return `Заявка сформирована из ЛК B2B:
-    Услуги: ${this.requestData.services}; 
-    Адрес: ${this.requestData.fulladdress}, 
-    Как обращаться к клиенту: ${this.name}, 
+    Услуги: ${this.requestData.services};
+    Адрес: ${this.requestData.fulladdress},
+    Как обращаться к клиенту: ${this.name},
     Контактный номер телефона: ${this.phoneNumber};`
   }
 
@@ -149,18 +149,22 @@ export default class ErDisconnectProduct extends ErPlugMixin {
   closeSuccessRequestModal () {
     this.isShowSuccessRequestModal = false
     this.endConnection()
+    this.$emit('changeStatusConnectionModal', true)
   }
   closeCreatingRequest () {
     this.isShowRequestModal = false
+    this.$emit('onCloseCreatingRequestModal')
     this.endConnection()
   }
   closeDisconnectingOrder () {
     this.cancelOrder()
     this.endConnection()
+    this.$emit('changeStatusConnectionModal', false)
   }
 
   onCloseErrorModal () {
     this.isShowErrorRequestModal = false
+    this.$emit('onCloseErrorModal')
     this.endConnection()
   }
   endConnection () {
