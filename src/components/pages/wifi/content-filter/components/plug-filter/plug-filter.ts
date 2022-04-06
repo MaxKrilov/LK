@@ -60,7 +60,8 @@ export default class WifiFilterPlug extends Vue {
       marketId: location.marketId,
       offer: 'wifi',
       productCode: PRODUCT_CODE,
-      title: `Вы уверены, что хотите подключить контент фильтрацию?`
+      title: `Вы уверены, что хотите подключить контент фильтрацию?`,
+      tomsId: '302000024'
     }
 
     this.isOrderMode = true

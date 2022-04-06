@@ -375,7 +375,8 @@ export default class WifiPersonalizationPage extends mixins(Page) implements iPa
       productCode: SLO_CODE,
       offer: 'wifi',
       title: 'Вы уверены, что хотите подключить услугу «Управление дизайном стартовой страницы»?',
-      marketId: this.activePoint?.marketId
+      marketId: this.activePoint?.marketId,
+      tomsId: '302000023'
     }
   }
 
