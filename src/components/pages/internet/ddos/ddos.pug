@@ -37,9 +37,18 @@ div(:class="`${pre} main-content main-content--top-menu-fix`")
               //-     div 10.95.217.183
 
             div(:class="`${pre}__slider-buttons`")
-              template(v-if="!item.link")
+              template(v-if="item.tomsId === TOMS_IDS.SERVICE_DDOS_PROTECT_SP")
                 er-button(
-                  color="yellow"
+                  href="https://antiddos.domru.ru/users/login"
+                  tag="a"
+                  target="_blank"
+                  data-ga-category="internet"
+                  data-ga-label="ddossactivating"
+                )
+                  div(class="content-text")
+                    | Настроить
+              template(v-else-if="!item.link")
+                er-button(
                   disabled
                   data-ga-category="internet"
                   data-ga-label="ddossactivating"
@@ -48,7 +57,6 @@ div(:class="`${pre} main-content main-content--top-menu-fix`")
                     | Защита в процессе активации
               template(v-else)
                 er-button(
-                  color="yellow"
                   :href="item.link"
                   tag="a"
                   target="_blank"
@@ -57,15 +65,15 @@ div(:class="`${pre} main-content main-content--top-menu-fix`")
                 )
                   div(class="content-text")
                     | Настроить защиту
-
-              er-button(
-                flat
-                @click="deleteDdos(item.deleteData)"
-                :loading="isDisconnection && item.deleteData.productId === deleteData.productId"
-                data-ga-category="internet"
-                data-ga-label="ddossstopprotection"
-              )
-                div(class="content-text") Отключить защиту
+              template(v-if="item.tomsId !== TOMS_IDS.SERVICE_DDOS_PROTECT_SP")
+                er-button(
+                  flat
+                  @click="deleteDdos(item.deleteData)"
+                  :loading="isDisconnection && item.deleteData.productId === deleteData.productId"
+                  data-ga-category="internet"
+                  data-ga-label="ddossstopprotection"
+                )
+                  div(class="content-text") Отключить защиту
 
         div(:class="`${pre}__total`")
           div(:class="`${pre}__h4`") Итого:

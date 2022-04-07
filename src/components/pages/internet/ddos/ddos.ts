@@ -4,7 +4,7 @@ import ErActivationModal from '@/components/blocks/ErActivationModal/index.vue'
 import { IDdosItem, IPointItem } from '@/components/pages/internet/ddos/ddos.d.ts'
 import PlugDdos from '@/components/pages/internet/ddos/plug/index.vue'
 import ErDisconnectProduct from '@/components/blocks/ErDisconnectProduct/index.vue'
-import { SERVICE_DDOS_PROTECT } from '@/constants/internet'
+import { TOMS_IDS } from '@/constants/internet'
 import { IDeleteOrderData } from '@/constants/er-plug'
 
 import { dataLayerPush } from '@/functions/analytics'
@@ -35,6 +35,9 @@ export default class DdosPage extends Vue {
     marketId: '',
     title: ''
   }
+
+  TOMS_IDS = TOMS_IDS
+
   get amountPrice () {
     return this.data.reduce((acc, el) => acc + +el.price, 0)
   }
@@ -61,14 +64,15 @@ export default class DdosPage extends Vue {
           fulladdress: el.fulladdress,
           bpi: el.bpi,
           marketId: el.marketId,
-          offerName: el.offer.name
+          offerName: el.offer.name,
+          addressId: el.address.id
         }
       })
       const bpis = answer.map((el:any) => el.bpi)
       this.$store.dispatch('productnservices/customerProducts', {
         api: this.$api,
         parentIds: bpis,
-        code: SERVICE_DDOS_PROTECT
+        tomsId: [TOMS_IDS.SERVICE_DDOS_PROTECT, TOMS_IDS.SERVICE_DDOS_PROTECT_SP]
       })
         .then(answer => {
           const data = Object.values(answer)
@@ -81,6 +85,7 @@ export default class DdosPage extends Vue {
                   date: this.$moment(ddosSlo.actualStartDate).format('DD.MM.YY'),
                   price: ddosSlo.purchasedPrices.recurrentTotal.value,
                   bpi: el.tlo.id,
+                  tomsId: ddosSlo.offer.tomsId,
                   productId: ddosSlo.id,
                   isDisconnected: false,
                   link: '',
@@ -97,7 +102,7 @@ export default class DdosPage extends Vue {
                 return acc
               }
             }, [])
-          if (this.data.length) {
+          if (this.data.length && this.data[0].tomsId !== TOMS_IDS.SERVICE_DDOS_PROTECT_SP) {
             this.$store.dispatch('internet/getDDoSLink', { productIds: this.data.map((el) => el.productId) })
               .then((links) => {
                 this.data = this.data.map((el) => {

@@ -1,12 +1,14 @@
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
 import ListPointComponent from '@/components/templates/InternetTemplate/blocks/ListPointComponent/index.vue'
 import { IPointItem, IDdosPrice } from '@/components/pages/internet/ddos/ddos.d.ts'
-import { SERVICE_DDOS_PROTECT, CURRENT_SPEED } from '@/constants/internet'
+import { CURRENT_SPEED, TOMS_IDS } from '@/constants/internet'
 import ErActivationModal from '@/components/blocks/ErActivationModal/index.vue'
+import ErPlugProduct from '@/components/blocks/ErPlugProduct/index.vue'
 
 const components = {
   ListPointComponent,
-  ErActivationModal
+  ErActivationModal,
+  ErPlugProduct
 }
 @Component({ components })
 export default class DddosPlug extends Vue {
@@ -25,6 +27,8 @@ export default class DddosPlug extends Vue {
   isShowSuccessModal: boolean = false
   isShowMoneyModal: boolean = false
   sendingOrder: boolean = false
+  isRequestModalVisible: boolean = false
+  requestData: Record<string, any> = {}
   ddosPrice: number = 0
   availableFunds: number = 0
 
@@ -41,49 +45,25 @@ export default class DddosPlug extends Vue {
     }
   }
 
-  @Watch('activePoint')
-  onActivePointChange (value: IPointItem) {
-    if (value) this.getConnectionInfo()
+  plugDdos () {
+    // заявка на менеджера
+    this.isRequestModalVisible = true
+
+    this.requestData = {
+      descriptionModal: 'Для подключения услуги Защита от DDoS атак необходимо сформировать заявку',
+      services: 'Защита от DDoS атак',
+      type: 'create',
+      addressId: this.activePoint?.addressId,
+      fulladdress: this.activePoint?.fulladdress
+    }
   }
 
-  plugDdos () {
-    this.creatingOrder = true
-    if (!this.activePoint?.id) return
-    this.$store.dispatch('salesOrder/createSaleOrder',
-      {
-        locationId: this.activePoint?.id,
-        bpi: this.activePoint?.bpi,
-        marketId: this.activePoint?.marketId,
-        isReturnPrice: true,
-        productCode: SERVICE_DDOS_PROTECT,
-        chars: { 'Объект защиты IPv6': 'Защита выключена' }
-      })
-      .then((answer) => {
-        this.ddosPrice = Number(answer)
-        this.$store.dispatch('salesOrder/getAvailableFunds')
-          .then((response) => {
-            this.availableFunds = response.availableFundsAmt
-            if (response.availableFundsAmt - this.ddosPrice < 0) {
-              this.creatingOrder = false
-              this.isShowMoneyModal = true
-            } else {
-              this.isShowModal = true
-            }
-          })
-          .catch(() => {
-            this.isShowModal = true
-          })
-      })
-      .catch(() => {
-        this.isShowErrorModal = true
-      })
-      .finally(() => {
-        this.creatingOrder = false
-      })
-  }
+  onCloseSuccess () {}
+
   cancelOrder () {
     this.$store.dispatch('salesOrder/cancel')
   }
+
   getConnectionInfo () {
     if (!this.activePoint?.id) return
 
@@ -92,7 +72,7 @@ export default class DddosPlug extends Vue {
       api: this.$api,
       marketId: this.activePoint?.marketId,
       parentId: this.activePoint.bpi,
-      code: 'ANTIDDOS'
+      tomsId: TOMS_IDS.SERVICE_DDOS_PROTECT_SP
     })
       .then((answer: any) => {
         if (!answer.slo?.[0]?.prices) return
@@ -125,5 +105,6 @@ export default class DddosPlug extends Vue {
   }
   mounted () {
     this.activePoint = this.points?.[0] || null
+    this.getConnectionInfo()
   }
 }
