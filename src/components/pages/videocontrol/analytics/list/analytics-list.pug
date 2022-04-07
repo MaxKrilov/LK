@@ -15,9 +15,9 @@
       template(v-else v-for="(addon,idx) in availableAnalyticsList")
         addon-card(
           :key="addon.id"
-          :code="addon.code"
+          :tomsId="addon.tomsId"
           :title="addon.name"
-          :price="addon.prices[0].amount"
+          :price="addon.prices.find(price => price.type === 'Monthly Fee').amount"
         )
     template(v-else)
       addon-card(

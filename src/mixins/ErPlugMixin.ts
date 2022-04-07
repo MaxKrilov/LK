@@ -134,14 +134,18 @@ export default class ErPlugMixin extends Vue {
       bpi,
       marketId,
       productCode,
-      chars
+      chars,
+      tomsId,
+      offer
     } : IOrderData = orderData
     return {
       locationId,
       bpi,
       marketId,
       productCode,
-      chars
+      chars,
+      tomsId,
+      offer
     }
   }
   async divisionCreateOrder () {

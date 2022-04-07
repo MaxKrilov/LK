@@ -24,7 +24,7 @@ const components = {
 }
 
 const props = {
-  code: String
+  tomsId: String
 }
 
 const computed = {
@@ -32,7 +32,7 @@ const computed = {
     allBaseFunctionality: 'videocontrol/allBaseFunctionality',
     allCameraList: 'videocontrol/allCameraList',
     bfById: 'videocontrol/bfById',
-    locationList: 'videocontrol/videocontrolPoints'
+    locationList: 'videocontrol/uniqPointList'
   })
 }
 
@@ -63,7 +63,7 @@ export default class VCAddonDetailPage extends Vue {
   analyticItem: Record<string, any> = { name: '' }
 
   get coverPath () {
-    const imageName = VIDEO_ANALYTICS[this.$props.code].cover || 'no_cover.jpg'
+    const imageName = VIDEO_ANALYTICS[this.$props.tomsId].cover || 'no_cover.jpg'
     return `/videocontrol/${imageName}`
   }
 
@@ -79,7 +79,7 @@ export default class VCAddonDetailPage extends Vue {
   }
 
   get advantages () {
-    return SERVICE_DESCRIPTION_DATA[this.$props.code]
+    return SERVICE_DESCRIPTION_DATA[this.$props.tomsId]
   }
 
   /*
@@ -114,7 +114,7 @@ export default class VCAddonDetailPage extends Vue {
                 .find((el: any) => el.name === ANALYTIC_NAME)?.offerings
 
               const filteredList = availOfferingList
-                ?.find((el:any) => el.code === this.$props.code)
+                ?.find((el:any) => el.tomsId === this.$props.tomsId)
 
               this.$set(this, 'analyticItem', filteredList)
               this.isLoaded = true
@@ -136,9 +136,9 @@ export default class VCAddonDetailPage extends Vue {
     locationId: string,
     locationName: string
   }) {
-    const code = this.$props.code
+    const tomsId = this.$props.tomsId
 
-    this.isManagerRequest = !SERVICE_ORDER_MAP[code]
+    this.isManagerRequest = !SERVICE_ORDER_MAP[tomsId]
 
     this.requestData = {
       descriptionModal: 'Для подключения необходимо сформировать заявку',
@@ -150,7 +150,7 @@ export default class VCAddonDetailPage extends Vue {
     this.orderData = {
       locationId: value.locationId,
       bpi: value.parentId,
-      productCode: this.$props.code,
+      tomsId: this.$props.tomsId,
       offer: 'cctv',
       marketId: value.marketId,
       title: `Вы уверены, что хотите подключить «${this.analyticItem.name}»?`
@@ -164,7 +164,7 @@ export default class VCAddonDetailPage extends Vue {
 
     return bf?.services ? !!Object.values(bf?.services)?.find(
       (el: any) => {
-        return el.offer.code === this.$props.code
+        return el.offer.tomsId === this.$props.tomsId
       }
     ) : false
   }

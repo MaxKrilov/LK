@@ -6,7 +6,7 @@ import ErPlugProduct from '@/components/blocks/ErPlugProduct/index.vue'
 import OfferDialog from '@/components/dialogs/OfferDialog/index.vue'
 
 import {
-  CODES,
+  TOMS_IDS,
   CHARS,
   ADDITION_USERS,
   MESSAGES,
@@ -193,7 +193,7 @@ export default class VCDomain extends Mixins(VueTransitionFSM, ErtFetchAvailable
   get userCountProduct () {
     const services = this.$props.domain?.services
 
-    const isUserType = (el: IDomainService) => el.offer.code === VC_TYPES.USERS
+    const isUserType = (el: IDomainService) => el.offer.tomsId === VC_TYPES.USERS
     const notDisconnectedStatus = ({ status }: IDomainService) => status !== STATUS_DISCONNECTED
 
     return services
@@ -282,7 +282,7 @@ export default class VCDomain extends Mixins(VueTransitionFSM, ErtFetchAvailable
       ...this.orderData,
       locationId: this.addressId,
       bpi: this.$props.domain.id,
-      productCode: CODES.CAMERA,
+      tomsId: TOMS_IDS.CAMERA,
       title: 'Вы уверены, что хотите подключить камеру?'
     }
   }
@@ -418,7 +418,7 @@ export default class VCDomain extends Mixins(VueTransitionFSM, ErtFetchAvailable
     this.orderData = {
       locationId: this.locationId || this.$props.domain.locationId,
       bpi: this.$props.domain.id,
-      productCode: CODES.USERS,
+      tomsId: TOMS_IDS.USERS,
       chars: {
         [CHARS.USER_COUNT]: this.domainUserCount,
         ...INVOICE_USERS

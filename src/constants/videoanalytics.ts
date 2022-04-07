@@ -1,3 +1,5 @@
+import { TOMS_IDS } from './videocontrol'
+
 type htmlString = string
 
 interface IAnalyticItem {
@@ -9,7 +11,7 @@ interface IAnalyticItem {
 }
 
 const ITEMS: Record<string, IAnalyticItem> = {
-  VIDCPSEC: {
+  [TOMS_IDS.VIDCPSEC]: {
     title: 'Пакет безопасности «Security»',
     iconName: 'security',
     cover: 'security.jpg',
@@ -22,13 +24,13 @@ const ITEMS: Record<string, IAnalyticItem> = {
 <li>Детектор движения. Покажет движение в кадре и в заданных участках, сохранит время начала и окончания движения, а также координаты.
 </ul>`
   },
-  VIDCPSECP: {
+  [TOMS_IDS.VIDCPSECP]: {
     title: 'Пакет безопасности «Security+»',
     iconName: 'security_plus',
     cover: 'security_plus.jpg',
     thumb: 'security_plus__thumb.jpg'
   },
-  VIDCSTAFF: {
+  [TOMS_IDS.VIDCSTAFF]: {
     title: 'Активность персонала',
     iconName: 'manager',
     cover: 'staff_activity.jpg',
@@ -43,7 +45,7 @@ const ITEMS: Record<string, IAnalyticItem> = {
 <li>Настройка на одной камере несколько рабочих зон и чувствительность детектора.
 </ul>`
   },
-  VIDCCOUNT: {
+  [TOMS_IDS.VIDCCOUNT]: {
     title: 'Подсчёт посетителей',
     iconName: 'mans',
     cover: 'visits_count.jpg',
@@ -51,7 +53,7 @@ const ITEMS: Record<string, IAnalyticItem> = {
     helpText: `<p>Возможности</p>
 <ul><li>Определение часов и дней с максимальной интенсивностью клиентопотока для выстраивания бизнес-процессов вашего бизнеса, повышения эффективности рекламных компаний, акций и многое другое;</li><li>Подсчет среднего времени обслуживания одного посетителя и загрузку работы касс;</li><li>Просмотр и выгрузка графиков и отчетов со статистикой за выбранный промежуток времени;</li><li>Отслеживание ситуации в режиме реального времени.</li></ul>`
   },
-  VIDCMAP: {
+  [TOMS_IDS.VIDCMAP]: {
     title: 'Тепловая карта',
     iconName: 'heat_map',
     cover: 'heat_map.jpg',
@@ -64,7 +66,7 @@ const ITEMS: Record<string, IAnalyticItem> = {
     <li>Настраивать чувствительность детектора и смотреть статистику поверх видеокадра.</li>
 </ul>`
   },
-  VIDCCAR: {
+  [TOMS_IDS.VIDCCAR]: {
     title: 'Распознавание номеров',
     iconName: 'car',
     cover: 'guess_car_number.jpg',
@@ -72,70 +74,70 @@ const ITEMS: Record<string, IAnalyticItem> = {
     helpText: `<p>Услуга позволяет выполнять контроль движения автотранспорта, номера которого попадают в специальную область захвата видеокамерой, фиксирует распознанные номера и сохраняет их в базу номеров.</p>
 <p>Возможность просматривать архив по данным типам событий. При активации сервиса "Система уведомлений" появляется возможность получать уведомления о событиях: распознанный номер, номер входит в определенную группу, незнакомый номер.</p>`
   },
-  VIDCBARR: {
+  [TOMS_IDS.VIDCBARR]: {
     title: 'Умный шлагбаум',
     iconName: 'barrier',
     cover: 'smart_barrier.jpg',
     thumb: 'smart_barrier__thumb.jpg',
     helpText: `<p>Техническое решение от Дом.ru Бизнес позволяет выполнять автоматический контроль въезда/выезда автомобилей на объект. Контроль пропускного режима осуществляется посредством сравнения номера автомобиля с базой номеров. В случае его наличия происходит автоматическое открытие шлагбаума/ворот/калитки и т.д. База номеров заполняется через портал видеонаблюдения. В случае необходимости "ручного" открытия, в интерфейсе есть кнопка "Открыть", которая позволит впустить незнакомый автомобиль. Также, сервис позволяет определять сторонний транспорт на объекте. Все события сохраняются в архив, распознанные номера отображаются на таймлайне.</p>`
   },
-  VIDCSEGM: {
+  [TOMS_IDS.VIDCSEGM]: {
     title: 'Сегментация клиента',
     iconName: 'pie_diagram',
     cover: 'face_detect.jpg',
     thumb: 'face_detect__thumb.jpg',
     helpText: `<p>Сервис видеоаналитики позволяет осуществлять подсчет уникальных посетителей. Период, за который посетителя необходимо считать уникальным может составлять день, неделя или месяц. Кроме того, услуга позволит анализировать свою базу клиентов по половому и возрастному признаку и отслеживать ее изменение в динамике.</p>`
   },
-  VIDCTEMP: {
+  [TOMS_IDS.TEMP_CONTROL]: {
     title: 'Контроль температуры',
     iconName: 'temperature',
     cover: '',
     thumb: 'temperature.png',
     helpText: 'Автоматически измеряйте температуру тела сотрудников и посетителей, позаботьтесь об их здоровье'
   },
-  VIDCFGA: {
+  [TOMS_IDS.FACE_AND_AGE_DETECT]: {
     title: 'Распознавание лиц, пола и возраста',
     iconName: 'face_detect',
     cover: 'face_age_detect.jpg',
     thumb: 'face_age_detect.png',
     helpText: 'Автоматически идентифицируйте человека и его принадлежность к группе из вашей базы'
   },
-  VIDCTEMPFACE: {
+  [TOMS_IDS.TEMP_CONTROL_FACE]: {
     title: 'Контроль температуры с распознаванием лиц',
     iconName: 'face_detect2',
     cover: '',
     thumb: 'face_detect2.png',
     helpText: 'Автоматически измеряйте температуру тела сотрудников и посетителей, позаботьтесь об их здоровье'
   },
-  VIDCMASKL: {
+  [TOMS_IDS.MASK_DETECT_LIGHT]: {
     title: 'Детектор масок LIGHT',
     iconName: 'mask',
     cover: 'mask_detect_cover.jpg',
     thumb: 'mask_detect_cover.png',
     helpText: 'Контролируйте соблюдение масочного режима и определяйте его нарушителей'
   },
-  VIDCMASKP: {
+  [TOMS_IDS.MASK_DETECT_PRO]: {
     title: 'Детектор масок PRO',
     iconName: 'mask_plus',
     cover: '',
     thumb: 'mask_plus.png',
     helpText: 'Контролируйте соблюдение масочного режима и определяйте его нарушителей'
   },
-  VIDCQUE: {
+  [TOMS_IDS.QUEUE_DETECT]: {
     title: 'Детектор очереди',
     iconName: 'queue',
     cover: '',
     thumb: 'queue.png',
     helpText: 'Оперативно реагируйте на скопление очереди и повышайте лояльность покупателей'
   },
-  VIDCSHELF: {
+  [TOMS_IDS.FULL_SHELF_DETECT]: {
     title: 'Контроль наполненности полок',
     iconName: 'fullness',
     cover: '',
     thumb: 'fullness.png',
     helpText: 'Пополняйте пустые прилавки вовремя, чтобы покупатель не ушел без нужного товара'
   },
-  VIDCPARK: {
+  [TOMS_IDS.SMART_PARKING]: {
     title: 'Умная парковка',
     iconName: '',
     cover: '',

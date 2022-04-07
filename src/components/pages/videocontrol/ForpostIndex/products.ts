@@ -73,7 +73,7 @@ export default class VideocontrolProductPage extends ErtPageWithDialogsMixin {
 
     const services = domain?.services
 
-    const isUserType = (el: IDomainService) => el.offer.code === VC_TYPES.USERS
+    const isUserType = (el: IDomainService) => el.offer.tomsId === VC_TYPES.USERS
     const notDisconnectedStatus = (el: IDomainService) => el.status !== STATUS_DISCONNECTED
 
     return services ? Object.values(services).filter(notDisconnectedStatus).find(isUserType) : null

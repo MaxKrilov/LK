@@ -13,7 +13,7 @@ const components = {
 }
 
 const props = {
-  code: String,
+  tomsId: String,
   location: {},
   list: Array
 }
@@ -52,7 +52,7 @@ export default class AddonConfig extends Vue {
 
     return bf?.services ? !!Object.values(bf?.services)?.find(
       (el: any) => {
-        return el.offer.code === this.$props.code
+        return el.offer.tomsId === this.$props.tomsId
       }
     ) : false
   }

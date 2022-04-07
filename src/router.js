@@ -427,7 +427,7 @@ const router = new Router({
               component: VCAddonListPage
             },
             {
-              path: 'products/:code',
+              path: 'products/:tomsId',
               name: 'vc-product-detail',
               component: VCAddonDetailPage,
               props: true
