@@ -89,13 +89,16 @@ const actions = {
    * @param context
    * @param payload
    */
-  customerProducts (context: ActionContext<IState, any>, payload: { api: API, parentIds?: Array<string | number>, code?: string, tomsId?: string }) {
+  customerProducts (context: ActionContext<IState, any>, payload: { api: API, parentIds?: Array<string | number>, code?: string[] | string, tomsId?: string }) {
     const { toms: clientId } = context.rootGetters['auth/user']
     const data: any = {
       clientId
     }
     payload.parentIds && (data.parentIds = payload.parentIds)
+
     payload.code && (data.code = payload.code)
+    if (typeof data.code === 'string') data.code = [data.code]
+
     payload.tomsId && (data.tomsId = payload.tomsId)
 
     return new Promise<ICustomerProduct>((resolve, reject) => {
@@ -175,8 +178,11 @@ const actions = {
         .catch((err: AxiosError) => reject(err))
     })
   },
-  getAllSlo (context: ActionContext<IState, any>, { api, parentIds, code }: { api: API, parentIds: string, code: string }) {
+  getAllSlo (context: ActionContext<IState, any>, { api, parentIds, code }: { api: API, parentIds: string, code: string[] | string }) {
     const { toms: clientId } = context.rootGetters['auth/user']
+
+    if (typeof code === 'string') code = [code]
+
     return new Promise((resolve, reject) => {
       api
         .setWithCredentials()
