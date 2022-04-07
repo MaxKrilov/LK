@@ -123,9 +123,9 @@ export default class AddCameraPage extends Vue {
   allProductSlo: IOfferingRelationships[]= []
   availableAnalyticsList: IOfferingsParams[] = []
   isAnalyticsLoaded: boolean = false;
-  /* string - code, boolean - status */
+  /* string - tomsId, boolean - status */
   analyticServiceStatuses: Record<string, boolean> = {}
-  /* string - code, string - price */
+  /* string - tomsId, string - price */
   analyticServicePrices: Record<string, string> = {}
   offeringRelationships: IOfferings[] = []
   selectedAnalyticsServices: string[] = []
@@ -270,14 +270,14 @@ ${this.selectedAnalyticsServicesList.length ? this.selectedAnalyticsServicesList
     return parseInt(Math.random() * 999, 10)
   }
 
-  getAnalyticItemIcon (code: string) {
-    return VIDEO_ANALYTICS[code]?.iconName
+  getAnalyticItemIcon (tomsId: string) {
+    return VIDEO_ANALYTICS[tomsId]?.iconName
   }
 
-  onInputAnalyticItem (code: string, value: boolean) {
-    Vue.set(this.analyticServiceStatuses, code, value)
+  onInputAnalyticItem (tomsId: string, value: boolean) {
+    Vue.set(this.analyticServiceStatuses, tomsId, value)
 
-    const analyticsService = this.availableAnalyticsList.find(item => item.code === code)
+    const analyticsService = this.availableAnalyticsList.find(item => item.tomsId === tomsId)
 
     if (analyticsService) {
       if (value) {
@@ -464,10 +464,10 @@ ${this.selectedAnalyticsServicesList.length ? this.selectedAnalyticsServicesList
           this.isAnalyticsLoaded = true
           this.availableAnalyticsList = analyticsOfferings
           this.availableAnalyticsList.forEach(item => {
-            Vue.set(this.analyticServiceStatuses, item.code, false)
+            Vue.set(this.analyticServiceStatuses, item.tomsId, false)
             const price = item.prices?.find(item => item.type === 'Monthly Fee')?.amount
             if (price) {
-              this.analyticServicePrices[item.code] = price
+              this.analyticServicePrices[item.tomsId] = price
             }
           })
 

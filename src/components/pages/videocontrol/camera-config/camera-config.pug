@@ -92,12 +92,12 @@
                 placeholder="Срок хранения видеоархива",
                 :items="videoArchiveValueList"
                 :value="videoArchiveValue"
-                :loading="currentServiceCode === currentVideoArchiveCode"
-                :disabled="currentServiceCode === currentVideoArchiveCode"
+                :loading="currentServiceTomsId === currentVideoArchiveTomsId"
+                :disabled="currentServiceTomsId === currentVideoArchiveTomsId"
                 @input="onVideoArchiveInput"
               )
               er-price
-                template(v-if="currentServiceCode && currentServiceCode === currentVideoArchiveCode")
+                template(v-if="currentServiceTomsId && currentServiceTomsId === currentVideoArchiveTomsId")
                   | {{ videoArchivePrice | price }}
                 template(v-else)
                   | {{ videoArchiveCurrentPrice | price }}
@@ -113,7 +113,7 @@
                 :disabled="isOrderMode"
                 @input="onArchiveRecordInput"
               )
-              template(v-if="archiveRecordValue.code === CODES.DETECTOR_RECORD")
+              template(v-if="archiveRecordValue.tomsId ===  TOMS_IDS.DETECTOR_RECORD")
                 .included-in-price.ml-16 Включено в стоимость
               template(v-else)
                 er-price
@@ -132,10 +132,10 @@
             .addon__config
               template(v-if="isAnalyticsLoaded")
                 ert-switch(
-                  :input-value="serviceStatuses[CODES.SOUND_RECORD]"
-                  :loading="currentServiceCode === CODES.SOUND_RECORD"
-                  :disabled="currentServiceCode === CODES.SOUND_RECORD || isOrderMode"
-                  :key="`${CODES.SOUND_RECORD}-${updateKeyPlease()}`"
+                  :input-value="serviceStatuses[TOMS_IDS.SOUND_RECORD]"
+                  :loading="currentServiceTomsId === TOMS_IDS.SOUND_RECORD"
+                  :disabled="currentServiceTomsId === TOMS_IDS.SOUND_RECORD || isOrderMode"
+                  :key="`${TOMS_IDS.SOUND_RECORD}-${updateKeyPlease()}`"
                   @change="onSoundRecordInput"
                 )
                 er-price {{ soundRecordPrice | price }}
@@ -148,10 +148,10 @@
               | Управление направлением видоискателя камеры
             .addon__config
               ert-switch(
-                :loading="currentServiceCode === CODES.PTZ"
+                :loading="currentServiceTomsId === TOMS_IDS.PTZ"
                 :disabled="!isPTZAvailable && isOrderMode"
-                :input-value="serviceStatuses[CODES.PTZ]"
-                :key="`${CODES.PTZ}-${updateKeyPlease()}`"
+                :input-value="serviceStatuses[TOMS_IDS.PTZ]"
+                :key="`${TOMS_IDS.PTZ}-${updateKeyPlease()}`"
                 @change="onPTZInput"
               )
               er-price {{ getPTZPrice() | price }}
@@ -169,17 +169,17 @@
       template(v-if="isAnalyticsLoaded")
         template(v-for="item in availableAnalyticsList")
           product-item(
-            :key="`${item.code}-${updateKeyPlease()}`",
+            :key="`${item.tomsId}-${updateKeyPlease()}`",
             :title="item.originalName",
-            :price="getAnalyticItemPrice(item.code)",
-            :isWaitOrder="currentServiceCode === item.code"
+            :price="getAnalyticItemPrice(item.tomsId)",
+            :isWaitOrder="currentServiceTomsId === item.tomsId"
             :isLoading="false",
-            :icon-name="getAnalyticItemIcon(item.code)"
-            :info-link="`/lk/videocontrol/forpost/products/${item.code}`"
+            :icon-name="getAnalyticItemIcon(item.tomsId)"
+            :info-link="`/lk/videocontrol/forpost/products/${item.tomsId}`"
             :disabled="isOrderMode"
-            :value="serviceStatuses[item.code]"
+            :value="serviceStatuses[item.tomsId]"
             :status="item.status"
-            @input="onInputAnalyticItem(item.code, $event, item.tomsId)",
+            @input="onInputAnalyticItem($event, item.tomsId)",
           )
       template(v-else)
         product-item(:isLoading="true")
@@ -193,7 +193,7 @@
     :isSendOrder="!isManagerRequest",
     :isSendManagerRequest="isManagerRequest"
     @cancelRequest="onCancelRequest"
-    @cancelOrder="onCancelOrder"
+    @cancelOrder="onCancelOrderWithoutCancel"
     @closeError="onCloseError"
     @closeSuccess="onCloseSuccess"
     @closeSuccessRequest="onCloseSuccess"

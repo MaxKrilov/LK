@@ -9,6 +9,7 @@ export interface IOrderChar extends Record<string, string> {}
 export interface IOffer {
   id: string // number "3295"
   code: string // "VIDCDOMAIN"
+  tomsId: string
   availableFrom: string // datetime "2001-01-01T00:00:00+03:00"
   status: string // "Активный"
   isEquipment: boolean

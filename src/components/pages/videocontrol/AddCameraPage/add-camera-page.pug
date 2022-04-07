@@ -84,15 +84,15 @@
       template(v-if="isAnalyticsLoaded")
         template(v-for="item in availableAnalyticsList")
           product-item(
-            :key="`${item.code}-${updateKeyPlease()}`",
+            :key="`${item.tomsId}-${updateKeyPlease()}`",
             :title="item.originalName",
             :price="item.prices.find(item => item.type === 'Monthly Fee').amount",
             :isLoading="false",
-            :icon-name="getAnalyticItemIcon(item.code)"
-            :info-link="`/lk/videocontrol/forpost/products/${item.code}`"
-            :value="analyticServiceStatuses[item.code]"
+            :icon-name="getAnalyticItemIcon(item.tomsId)"
+            :info-link="`/lk/videocontrol/forpost/products/${item.tomsId}`"
+            :value="analyticServiceStatuses[item.tomsId]"
             :status="item.status"
-            @input="onInputAnalyticItem(item.code, $event)",
+            @input="onInputAnalyticItem(item.tomsId, $event)",
           )
       template(v-else)
         ErtProgressCircular(indeterminate width="2")

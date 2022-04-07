@@ -28,14 +28,14 @@
       :advantages="advantages"
     )
 
-  .vc-addon-detail-page__config
+  .vc-addon-detail-page__config(v-if="isLoaded")
     .addon-config-head
       h2.title Выбрать камеры
 
     .addon-config-body
       template(v-for="location in locationList")
         addon-config(
-          :code="code"
+          :tomsId="tomsId"
           :location="location"
           :list="getPointCameraList(location.id)"
           @plug-camera="onPlugAddonToCamera"

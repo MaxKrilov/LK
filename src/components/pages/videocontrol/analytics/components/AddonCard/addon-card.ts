@@ -6,7 +6,7 @@ const components = {
 
 const props = {
   title: String,
-  code: String,
+  tomsId: String,
   price: String,
   isLoaded: {
     type: Boolean,
@@ -17,19 +17,19 @@ const props = {
 @Component({ components, props })
 export default class VCAddonCard extends Vue {
   get coverPath () {
-    const thumbName = VIDEO_ANALYTICS[this.$props.code].thumb || ''
+    const thumbName = VIDEO_ANALYTICS[this.$props.tomsId].thumb || ''
     return `/videocontrol/${thumbName}`
   }
 
   get helpText (): string {
-    return VIDEO_ANALYTICS[this.$props.code].helpText || ''
+    return VIDEO_ANALYTICS[this.$props.tomsId].helpText || ''
   }
 
   onClick () {
     this.$router.push({
       name: 'vc-product-detail',
       params: {
-        code: this.$props.code,
+        tomsId: this.$props.tomsId,
         type: 'forpost'
       }
     })

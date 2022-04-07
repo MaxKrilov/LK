@@ -1,3 +1,5 @@
+import { TOMS_IDS } from '@/constants/videocontrol'
+
 interface IServiceAnnotation {
   iconName: string
   title: string
@@ -21,7 +23,7 @@ const Statistic: IServiceAnnotation = {
 }
 
 const ANNOTATION_REGISTRY: IServiceAnnotationRegistry = {
-  VIDCBARR: [
+  [TOMS_IDS.VIDCBARR]: [
     Notification,
     {
       iconName: 'barrier',
@@ -35,7 +37,7 @@ const ANNOTATION_REGISTRY: IServiceAnnotationRegistry = {
     },
     Statistic
   ],
-  VIDCCAR: [
+  [TOMS_IDS.VIDCCAR]: [
     Notification,
     {
       iconName: 'car',
@@ -44,7 +46,7 @@ const ANNOTATION_REGISTRY: IServiceAnnotationRegistry = {
     },
     Statistic
   ],
-  VIDCSEGM: [
+  [TOMS_IDS.VIDCSEGM]: [
     {
       iconName: 'face_detect',
       title: 'Сегментация',
@@ -52,7 +54,7 @@ const ANNOTATION_REGISTRY: IServiceAnnotationRegistry = {
     },
     Statistic
   ],
-  VIDCMAP: [
+  [TOMS_IDS.VIDCMAP]: [
     {
       iconName: 'heat_map',
       title: 'Тепловая карта',
@@ -60,7 +62,7 @@ const ANNOTATION_REGISTRY: IServiceAnnotationRegistry = {
     },
     Statistic
   ],
-  VIDCCOUNT: [
+  [TOMS_IDS.VIDCCOUNT]: [
     {
       iconName: 'mans',
       title: 'Счетчик посетителей',
@@ -68,7 +70,7 @@ const ANNOTATION_REGISTRY: IServiceAnnotationRegistry = {
     },
     Statistic
   ],
-  VIDCSTAFF: [
+  [TOMS_IDS.VIDCSTAFF]: [
     {
       iconName: 'eye_open',
       title: 'Контроль сотрудников',
@@ -76,7 +78,7 @@ const ANNOTATION_REGISTRY: IServiceAnnotationRegistry = {
     },
     Statistic
   ],
-  VIDCPSEC: [
+  [TOMS_IDS.VIDCPSEC]: [
     Notification,
     {
       iconName: 'noise_sound',
@@ -99,7 +101,7 @@ const ANNOTATION_REGISTRY: IServiceAnnotationRegistry = {
       text: 'Показывает движение в кадре и в заданных участках, сохраняет время начала и окончания движения, а также координаты.'
     }
   ],
-  VIDCTEMP: [
+  [TOMS_IDS.TEMP_CONTROL]: [
     {
       iconName: 'heat_map',
       title: 'Температура',
@@ -115,7 +117,7 @@ const ANNOTATION_REGISTRY: IServiceAnnotationRegistry = {
       text: 'Модуль «Контроль температуры» доступен для тепловизионных камер и панелей доступа. Поддержка программы чтения с экрана включена.'
     }
   ],
-  VIDCTEMPFACE: [
+  [TOMS_IDS.TEMP_CONTROL_FACE]: [
     {
       iconName: 'heat_map',
       title: 'Температура',
@@ -131,7 +133,7 @@ const ANNOTATION_REGISTRY: IServiceAnnotationRegistry = {
       text: 'При интеграции со СКУД можно настроить доступ по базе лиц и ограничивать его при повышенной температуре. Поддержка программы чтения с экрана включена.'
     }
   ],
-  VIDCMASKL: [
+  [TOMS_IDS.MASK_DETECT_LIGHT]: [
     {
       iconName: 'mask',
       title: 'Масочный режим',
@@ -148,7 +150,7 @@ const ANNOTATION_REGISTRY: IServiceAnnotationRegistry = {
         'Поддержка программы чтения с экрана включена.'
     }
   ],
-  VIDCMASKP: [
+  [TOMS_IDS.MASK_DETECT_PRO]: [
     {
       iconName: 'mask',
       title: 'Масочный режим',
@@ -166,7 +168,7 @@ const ANNOTATION_REGISTRY: IServiceAnnotationRegistry = {
         'Поддержка программы чтения с экрана включена.'
     }
   ],
-  VIDCQUE: [ // детектор очереди
+  [TOMS_IDS.QUEUE_DETECT]: [ // детектор очереди
     {
       iconName: 'queue',
       title: 'Очередь',
@@ -182,7 +184,7 @@ const ANNOTATION_REGISTRY: IServiceAnnotationRegistry = {
       text: 'Сохраняет все данные о превышениях очереди в гибко настраиваемых отчетах с инфографикой, они доступны к просмотру и скачиванию.'
     }
   ],
-  VIDCSHELF: [ // наполненность полок
+  [TOMS_IDS.FULL_SHELF_DETECT]: [ // наполненность полок
     {
       iconName: 'fullness',
       title: 'Пустые полки',
@@ -199,7 +201,7 @@ const ANNOTATION_REGISTRY: IServiceAnnotationRegistry = {
       text: 'Сохраняет все данные о превышениях очереди в гибко настраиваемых отчетах с инфографикой, они доступны к просмотру и скачиванию.'
     }
   ],
-  VIDCFGA: [ // распознавание лиц, пола и возраста
+  [TOMS_IDS.FACE_AND_AGE_DETECT]: [ // распознавание лиц, пола и возраста
     {
       iconName: 'face_detect2',
       title: 'Лицо, пол и возраст',

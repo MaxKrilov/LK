@@ -49,18 +49,38 @@ const CODES = {
 }
 
 const TOMS_IDS = {
+  USERS: '310000002',
+  BASE: '310000006',
+  CAMERA: '303000140',
   SOUND_RECORD: '310000008',
+  VIDNCAM: '310200009',
   PTZ: '310000009',
   FULLHD: '310000007',
   HD_ARCHIVE: '310100003',
   FULLHD_ARCHIVE: '310100004',
   CONST_RECORD: '310000013',
-  DETECTOR_RECORD: '310000050'
+  DETECTOR_RECORD: '310000050',
+  VIDCSTAFF: '310000010',
+  VIDCPSEC: '310100002',
+  VIDCPSECP: '310100001', // Пакет детекторов "Security+"
+  VIDCCOUNT: '310000012',
+  VIDCMAP: '310000011',
+  MASK_DETECT_LIGHT: '310000032',
+  MASK_DETECT_PRO: '310000033',
+  QUEUE_DETECT: '310000034',
+  FULL_SHELF_DETECT: '310000035',
+  SMART_PARKING: '310000037',
+  VIDCSEGM: '310000020',
+  VIDCCAR: '310000021',
+  VIDCBARR: '310000022',
+  TEMP_CONTROL: '310000030',
+  TEMP_CONTROL_FACE: '310000031',
+  FACE_AND_AGE_DETECT: '310000036'
 }
 
 const VC_TYPES = {
-  BASE: CODES.BASE,
-  USERS: CODES.USERS,
+  BASE: TOMS_IDS.BASE,
+  USERS: TOMS_IDS.USERS,
   BRAND_ID: '9154394142013178781'
 }
 
@@ -111,29 +131,29 @@ const MESSAGES = {
   false == через заявку
 */
 const SERVICE_ORDER_MAP: Record<string, boolean> = {
-  'VIDCARHD': true, // видеоархив
-  'VIDCARFHD': true, // видеоархив FullHD
-  'VIDCSOUND': true, // запись звука
-  'VIDCSTAFF': true, // контроль активности
-  'VIDCPSEC': true, // пакет "Security"
-  'VIDCPTZ': true, // Поворотный модуль
-  'VIDCCOUNT': true, // подсчёт посетителей
-  'VIDCFHD': true, // разрешение FullHD
-  'VIDCMAP': true, // тепловая карта
-  [CODES.MASK_DETECT_LIGHT]: true,
-  [CODES.MASK_DETECT_PRO]: true,
-  [CODES.QUEUE_DETECT]: true,
-  [CODES.FULL_SHELF_DETECT]: true,
-  [CODES.SMART_PARKING]: true,
+  [TOMS_IDS.HD_ARCHIVE]: true, // видеоархив
+  [TOMS_IDS.FULLHD_ARCHIVE]: true, // видеоархив FullHD
+  [TOMS_IDS.SOUND_RECORD]: true, // запись звука
+  [TOMS_IDS.VIDCSTAFF]: true, // контроль активности
+  [TOMS_IDS.VIDCPSEC]: true, // пакет "Security"
+  [TOMS_IDS.PTZ]: true, // Поворотный модуль
+  [TOMS_IDS.VIDCCOUNT]: true, // подсчёт посетителей
+  [TOMS_IDS.FULLHD]: true, // разрешение FullHD
+  [TOMS_IDS.VIDCMAP]: true, // тепловая карта
+  [TOMS_IDS.MASK_DETECT_LIGHT]: true,
+  [TOMS_IDS.MASK_DETECT_PRO]: true,
+  [TOMS_IDS.QUEUE_DETECT]: true,
+  [TOMS_IDS.FULL_SHELF_DETECT]: true,
+  [TOMS_IDS.SMART_PARKING]: true,
 
-  'VIDCSEGM': false, // сегментация клиента
-  'VIDCCAR': false, // распознавание номеров
-  'VIDCBARR': false, // умный шлагбаум
-  [CODES.DETECTOR_RECORD]: false,
-  [CODES.CONST_RECORD]: false,
-  [CODES.TEMP_CONTROL]: false,
-  [CODES.TEMP_CONTROL_FACE]: false,
-  [CODES.FACE_AND_AGE_DETECT]: false
+  [TOMS_IDS.VIDCSEGM]: false, // сегментация клиента
+  [TOMS_IDS.VIDCCAR]: false, // распознавание номеров
+  [TOMS_IDS.VIDCBARR]: false, // умный шлагбаум
+  [TOMS_IDS.DETECTOR_RECORD]: false,
+  [TOMS_IDS.CONST_RECORD]: false,
+  [TOMS_IDS.TEMP_CONTROL]: false,
+  [TOMS_IDS.TEMP_CONTROL_FACE]: false,
+  [TOMS_IDS.FACE_AND_AGE_DETECT]: false
 }
 
 /*

@@ -17,7 +17,6 @@ import {
   CAMERA_SALE_TYPES,
   CHAR_VALUES,
   CHARS,
-  CODES,
   TOMS_IDS,
   MESSAGES,
   SERVICE_ORDER_MAP,
@@ -36,10 +35,10 @@ import PriceServicesComponent from '@/components/pages/internet/blocks/PriceServ
 import moment from 'moment'
 
 /* FUNCTIONS */
-const isFullHD = (el: IOffer) => el.code === CODES.FULLHD
-const isFullHDArchive = (el: IOffer) => el.code === CODES.FULLHD_ARCHIVE
-const isHDArchive = (el: IOffer) => el.code === CODES.HD_ARCHIVE
-const isArchiveRecordConst = (el: IOffer) => el.code === CODES.CONST_RECORD
+const isFullHD = (el: IOffer) => el.tomsId === TOMS_IDS.FULLHD
+const isFullHDArchive = (el: IOffer) => el.tomsId === TOMS_IDS.FULLHD_ARCHIVE
+const isHDArchive = (el: IOffer) => el.tomsId === TOMS_IDS.HD_ARCHIVE
+const isArchiveRecordConst = (el: IOffer) => el.tomsId === TOMS_IDS.CONST_RECORD
 
 const components = {
   ProductItem,
@@ -61,7 +60,6 @@ interface iVideoQualityValueItem {
 
 interface iArchiveRecordValue {
   value: string
-  code: string
   tomsId: string
 }
 
@@ -119,7 +117,7 @@ export default class VCCameraConfigPage extends Mixins(
 
   VIDEO_QUALITY_VALUE_LIST: any[] = VIDEO_QUALITY_VALUE_LIST
 
-  CODES = CODES
+  TOMS_IDS = TOMS_IDS
   CHARS = CHARS
 
   ORDER_STATE = 'order'
@@ -195,12 +193,10 @@ export default class VCCameraConfigPage extends Mixins(
   archiveRecordValueList: iArchiveRecordValue[] = [
     {
       value: 'Детектор движения',
-      code: CODES.DETECTOR_RECORD,
       tomsId: TOMS_IDS.DETECTOR_RECORD
     },
     {
       value: 'Непрерывная запись',
-      code: CODES.CONST_RECORD,
       tomsId: TOMS_IDS.CONST_RECORD
     }
   ]
@@ -210,7 +206,7 @@ export default class VCCameraConfigPage extends Mixins(
   PTZValue: boolean = false
 
   currentValue: any = null
-  currentServiceCode: string = ''
+  currentServiceTomsId: string = ''
   isChanged: boolean = false
   isManagerRequest: boolean = false
   isOrderModalVisible: boolean = false
@@ -219,7 +215,7 @@ export default class VCCameraConfigPage extends Mixins(
   requestData = {}
   orderData: any = {
     offer: 'cctv',
-    productCode: ''
+    tomsId: ''
   }
 
   get isModificationInProgress () {
@@ -316,12 +312,12 @@ export default class VCCameraConfigPage extends Mixins(
       : []
   }
 
-  get enabledServiceCode () {
-    return this.enabledServiceList?.map(el => el?.offer?.code)
+  get enabledServiceTomsId () {
+    return this.enabledServiceList?.map(el => el?.offer?.tomsId)
   }
 
   get enabledAnalyticCount (): number {
-    const isServiceEnabled = (el: any) => this.enabledServiceCode.includes(el?.code)
+    const isServiceEnabled = (el: any) => this.enabledServiceTomsId.includes(el?.tomsId)
 
     return this.availableAnalyticsList
       .filter(
@@ -346,19 +342,19 @@ export default class VCCameraConfigPage extends Mixins(
   }
 
   get isPTZEnabled (): boolean {
-    return this.enabledServiceCode.includes(CODES.PTZ)
+    return this.enabledServiceTomsId.includes(TOMS_IDS.PTZ)
   }
 
   // Sound Record
   get soundRecordService () {
     if (this.enabledServiceList.length) {
       return this.enabledServiceList
-        .find((el: IProductOffering) => el?.offer?.code === CODES.SOUND_RECORD)
+        .find((el: IProductOffering) => el?.offer?.tomsId === TOMS_IDS.SOUND_RECORD)
     }
   }
 
   get isSoundRecordEnabled () {
-    return this.enabledServiceCode.includes(CODES.SOUND_RECORD)
+    return this.enabledServiceTomsId.includes(TOMS_IDS.SOUND_RECORD)
   }
 
   get soundRecordPrice () {
@@ -372,7 +368,7 @@ export default class VCCameraConfigPage extends Mixins(
   }
 
   get isFHDEnabled () {
-    return this.enabledServiceCode.includes(CODES.FULLHD)
+    return this.enabledServiceTomsId.includes(TOMS_IDS.FULLHD)
   }
 
   get fullHdPrice (): string {
@@ -380,12 +376,6 @@ export default class VCCameraConfigPage extends Mixins(
       ?.find(isFullHD)
       ?.prices?.[0]
       ?.amount || '0'
-  }
-
-  get videoQualityCurrentCode () {
-    return this.isFHDEnabled
-      ? CODES.FULLHD
-      : 'HD'
   }
 
   get videoQualityCurrentPrice () {
@@ -442,9 +432,9 @@ export default class VCCameraConfigPage extends Mixins(
   }
 
   get videoArchiveValue (): string {
-    const currentCode = this.isFHDEnabled ? CODES.FULLHD_ARCHIVE : CODES.HD_ARCHIVE
+    const currentTomsId = this.isFHDEnabled ? TOMS_IDS.FULLHD_ARCHIVE : TOMS_IDS.HD_ARCHIVE
     return this.enabledServiceList.find(
-      (el: IProductOffering) => el?.offer?.code === currentCode
+      (el: IProductOffering) => el?.offer?.tomsId === currentTomsId
     )?.chars?.[CHARS.ARCHIVE_DAY_COUNT] || '-'
   }
 
@@ -452,14 +442,14 @@ export default class VCCameraConfigPage extends Mixins(
     return this.videoArchiveValueList?.indexOf(this.videoArchiveValue) || 0
   }
 
-  get currentVideoArchiveCode () {
+  get currentVideoArchiveTomsId () {
     return this.isFHDEnabled
-      ? CODES.FULLHD_ARCHIVE
-      : CODES.HD_ARCHIVE
+      ? TOMS_IDS.FULLHD_ARCHIVE
+      : TOMS_IDS.HD_ARCHIVE
   }
 
   get videoArchiveCurrentPrice () {
-    const isArchiveProductOffering = (el: IProductOffering): boolean => el?.offer?.code === this.currentVideoArchiveCode
+    const isArchiveProductOffering = (el: IProductOffering): boolean => el?.offer?.tomsId === this.currentVideoArchiveTomsId
     const service = this.enabledServiceList.find(isArchiveProductOffering)
     return service?.purchasedPrices?.recurrentTotal?.value || '0'
   }
@@ -478,7 +468,7 @@ export default class VCCameraConfigPage extends Mixins(
   }
 
   get archiveRecordIsDetector (): boolean {
-    return this.archiveRecordValue.code === CODES.DETECTOR_RECORD
+    return this.archiveRecordValue.tomsId === TOMS_IDS.DETECTOR_RECORD
   }
 
   get isPTZExists () {
@@ -497,13 +487,12 @@ export default class VCCameraConfigPage extends Mixins(
   }
 
   get currentServicePrice () {
-    const code = this.orderData.productCode
-    const service = this?.getServiceByCode(code)
+    const tomsId = this.orderData.tomsId
+    const service = this?.getServiceByTomsId(tomsId)
 
-    let serviceChar = 0
-    let price = service?.prices?.[serviceChar]?.amount || '0.0'
+    let price = service?.prices?.find(service => service.type === 'Monthly Fee')?.amount || '0.0'
 
-    if ([CODES.FULLHD_ARCHIVE, CODES.HD_ARCHIVE].includes(code)) {
+    if ([TOMS_IDS.FULLHD_ARCHIVE, TOMS_IDS.HD_ARCHIVE].includes(tomsId)) {
       price = service?.prices?.find(
         (el: any) => {
           return el.chars?.[VIDEOARCHIVE_DAY_COUNT] === this.currentValue
@@ -552,17 +541,17 @@ export default class VCCameraConfigPage extends Mixins(
     this.videoQualityValue = VIDEO_QUALITY_VALUE_LIST[+this.isFHDEnabled]
 
     this.serviceStatuses = this.availableAnalyticsList.map(
-      el => ({ [el.code]: false })
+      el => ({ [el.tomsId]: false })
     ).reduce((accumulator, el) => ({ ...accumulator, ...el }), {})
 
-    this.enabledServiceCode.forEach(
+    this.enabledServiceTomsId.forEach(
       (el: any) => {
         this.serviceStatuses[el] = true
       }
     )
 
-    this.serviceStatuses[CODES.PTZ] = this.PTZValue
-    this.serviceStatuses[CODES.SOUND_RECORD] = this.soundRecordValue
+    this.serviceStatuses[TOMS_IDS.PTZ] = this.PTZValue
+    this.serviceStatuses[TOMS_IDS.SOUND_RECORD] = this.soundRecordValue
     this.setState(this.READY_STATE)
   }
 
@@ -580,13 +569,13 @@ export default class VCCameraConfigPage extends Mixins(
     this.fetchCameraData()
   }
 
-  checkIsServiceEnabled (code: string) {
-    return this.enabledServiceCode.includes(code)
+  checkIsServiceEnabled (tomsId: string) {
+    return this.enabledServiceTomsId.includes(tomsId)
   }
 
   getPTZPrice () {
-    if (this.checkIsServiceEnabled(CODES.PTZ)) {
-      const service = this.enabledServiceList.find((el: any) => el.offer.code === CODES.PTZ)
+    if (this.checkIsServiceEnabled(TOMS_IDS.PTZ)) {
+      const service = this.enabledServiceList.find((el: any) => el.offer.tomsId === TOMS_IDS.PTZ)
       return service?.purchasedPrices?.recurrentTotal?.value || '0'
     }
 
@@ -651,58 +640,58 @@ export default class VCCameraConfigPage extends Mixins(
     }
   }
 
-  getAnalyticItemPrice (code: string) {
-    if (this.checkIsServiceEnabled(code)) {
-      const service = this.enabledServiceList.find((el: any) => el.offer.code === code)
+  getAnalyticItemPrice (tomsId: string) {
+    if (this.checkIsServiceEnabled(tomsId)) {
+      const service = this.enabledServiceList.find((el: any) => el.offer.tomsId === tomsId)
       return service?.purchasedPrices?.recurrentTotal?.value || '0'
     }
 
-    const service = this.availableAnalyticsList.find((el: any) => el.code === code)
+    const service = this.availableAnalyticsList.find((el: any) => el.tomsId === tomsId)
     return service?.prices?.length ? service.prices.find(isMonthlyFeePrice)?.amount : '0.1'
   }
 
-  getServiceByCode (code: string): IOffer | undefined {
+  getServiceByTomsId (tomsId: string): IOffer | undefined {
     const serviceName = this.availableServiceList.find(
-      (el: any) => el.code === code
+      (el: any) => el.tomsId === tomsId
     )
 
     const analyticName = this.availableAnalyticsList.find(
-      (el: any) => el.code === code
+      (el: any) => el.tomsId === tomsId
     )
 
     return serviceName || analyticName
   }
 
-  getServiceNameByCode (code: string) {
-    return this.getServiceByCode(code)?.name
+  getServiceNameByTomsId (tomsId: string) {
+    return this.getServiceByTomsId(tomsId)?.name
   }
 
-  getProductId (code: string) {
+  getProductId (tomsId: string) {
     const service = this.enabledServiceList.find(
-      (el: any) => el.offer.code === code
+      (el: any) => el.offer.tomsId === tomsId
     )
     return service?.id || this.bf.id
   }
 
-  switchFunctionality (code: string, value: any, tomsId: string) {
-    if (code === CODES.FULLHD && !this.isFullHDExists) {
+  switchFunctionality (value: any, tomsId: string) {
+    if (tomsId === TOMS_IDS.FULLHD && !this.isFullHDExists) {
       this.onInfo({ message: MESSAGES.FUNC_NOT_EXISTS })
-    } else if (code === CODES.SOUND_RECORD && !this.isSoundRecordExists) {
+    } else if (tomsId === TOMS_IDS.SOUND_RECORD && !this.isSoundRecordExists) {
       this.onInfo({ message: MESSAGES.FUNC_NOT_EXISTS })
-    } else if (code === CODES.PTZ && !this.isPTZExists) {
+    } else if (tomsId === TOMS_IDS.PTZ && !this.isPTZExists) {
       this.onInfo({ message: MESSAGES.FUNC_NOT_EXISTS })
-    } else if (this.isModificationInProgress && SERVICE_ORDER_MAP[code]) {
+    } else if (this.isModificationInProgress && SERVICE_ORDER_MAP[tomsId]) {
       this.onInfo({ message: MESSAGES.MIP_MESSAGE })
     } else {
-      this.currentServiceCode = code
-      this.serviceStatuses[code] = value
+      this.currentServiceTomsId = tomsId
+      this.serviceStatuses[tomsId] = value
       this.currentValue = value
-      this.isManagerRequest = !SERVICE_ORDER_MAP[code]
+      this.isManagerRequest = !SERVICE_ORDER_MAP[tomsId]
 
       this.requestData = {
         descriptionModal: 'Для подключения необходимо сформировать заявку',
         addressId: this.location.address.id,
-        services: this.getServiceNameByCode(code),
+        services: this.getServiceNameByTomsId(tomsId),
         fulladdress: this.locationName
       }
 
@@ -711,55 +700,53 @@ export default class VCCameraConfigPage extends Mixins(
         locationId: this.location.id,
         marketId: this.marketId,
         bpi: this.bf.id,
-        productCode: code,
+        tomsId,
         offer: 'cctv',
-        title: `Вы уверены, что хотите подключить «${this.getServiceNameByCode(code)}»?`
+        title: `Вы уверены, что хотите подключить «${this.getServiceNameByTomsId(tomsId)}»?`
       }
 
-      if (tomsId) this.orderData.tomsId = tomsId
-
-      if (SERVICE_ORDER_MAP[code]) {
-        logInfo('Order', code, value, this.orderData, this.requestData)
+      if (SERVICE_ORDER_MAP[tomsId]) {
+        logInfo('Order', tomsId, value, this.orderData, this.requestData)
       } else {
-        logInfo('Request', code, value, this.orderData, this.requestData)
+        logInfo('Request', tomsId, value, this.orderData, this.requestData)
       }
 
-      if (this.checkIsServiceEnabled(code)) {
+      if (this.checkIsServiceEnabled(tomsId)) {
         if (this.isManagerRequest) {
           this.requestData = {
             descriptionModal: 'Для отключения необходимо сформировать заявку',
             addressId: this.location.address.id,
-            services: this.getServiceNameByCode(code),
+            services: this.getServiceNameByTomsId(tomsId),
             fulladdress: this.locationName,
             type: 'disconnect'
           }
           this.isOrderModalVisible = true
         } else {
-          this.disableService(code, value)
+          this.disableService(tomsId, value)
         }
       } else {
-        if (SERVICE_ORDER_MAP[code]) {
+        if (SERVICE_ORDER_MAP[tomsId]) {
           this.checkFunds(+this.currentServicePrice)
             .then(() => {
-              this.enableService(code, value)
+              this.enableService(tomsId, value)
             })
         } else {
-          this.enableService(code, value)
+          this.enableService(tomsId, value)
         }
       }
     }
   }
 
-  disableService (code: string, value: any) {
-    logInfo('disableService', code, value)
+  disableService (tomsId: string, value: any) {
+    logInfo('disableService', tomsId, value)
 
     this.isOrderMode = true
-    this.disconnectTitle = `Вы уверены, что хотите отключить «${this.getServiceNameByCode(code)}»?`
+    this.disconnectTitle = `Вы уверены, что хотите отключить «${this.getServiceNameByTomsId(tomsId)}»?`
 
     const payload = {
       marketId: this.marketId,
       locationId: this.location.id,
-      productId: this.getProductId(code),
+      productId: this.getProductId(tomsId),
       disconnectDate: this.$moment().format()
     }
 
@@ -772,8 +759,8 @@ export default class VCCameraConfigPage extends Mixins(
       })
   }
 
-  enableService (code: string, value: any) {
-    logInfo('enable Service', code, value)
+  enableService (tomsId: string, value: any) {
+    logInfo('enable Service', tomsId, value)
     this.isOrderModalVisible = true
   }
 
@@ -839,15 +826,14 @@ export default class VCCameraConfigPage extends Mixins(
       : VIDEO_QUALITY_VALUE_LIST[0]
 
     if (
-      (!isFullHDEnabled && this.enabledServiceCode.includes(CODES.FULLHD_ARCHIVE)) ||
-      (isFullHDEnabled && this.enabledServiceCode.includes(CODES.HD_ARCHIVE))
+      (!isFullHDEnabled && this.enabledServiceTomsId.includes(TOMS_IDS.FULLHD_ARCHIVE)) ||
+      (isFullHDEnabled && this.enabledServiceTomsId.includes(TOMS_IDS.HD_ARCHIVE))
     ) {
       this.onInfo({ message: MESSAGES.WARNING_FULLHD_AND_HD_ARCHIVE })
       this.$set(this, 'videoQualityValue', prevValue)
     } else {
       if (!this.isModificationInProgress) {
         this.switchFunctionality(
-          CODES.FULLHD,
           isFullHDEnabled,
           TOMS_IDS.FULLHD
         )
@@ -859,11 +845,11 @@ export default class VCCameraConfigPage extends Mixins(
   }
 
   onPTZInput (value: boolean) {
-    this.switchFunctionality(CODES.PTZ, value, TOMS_IDS.PTZ)
+    this.switchFunctionality(value, TOMS_IDS.PTZ)
   }
 
   onSoundRecordInput (value: boolean) {
-    this.switchFunctionality(CODES.SOUND_RECORD, value, TOMS_IDS.SOUND_RECORD)
+    this.switchFunctionality(value, TOMS_IDS.SOUND_RECORD)
   }
 
   onVideoArchiveInput (value: any) {
@@ -874,9 +860,9 @@ export default class VCCameraConfigPage extends Mixins(
 
     const valueIndex = this.videoArchiveValueList?.indexOf(value) || 0
 
-    this.currentServiceCode = this.currentVideoArchiveCode
+    this.currentServiceTomsId = this.currentVideoArchiveTomsId
     this.currentValue = value
-    const serviceName = this.getServiceNameByCode(this.currentVideoArchiveCode)
+    const serviceName = this.getServiceNameByTomsId(this.currentVideoArchiveTomsId)
 
     const isDisabling = value === MESSAGES.DISABLE
     this.orderData = {
@@ -884,7 +870,6 @@ export default class VCCameraConfigPage extends Mixins(
       bpi: this.bf.id,
       marketId: this.camera.market.id,
       tomsId: this.isFHDEnabled ? TOMS_IDS.FULLHD_ARCHIVE : TOMS_IDS.HD_ARCHIVE,
-      productCode: this.currentVideoArchiveCode,
       offer: isDisabling ? '' : 'cctv',
       title: isDisabling
         ? `Вы уверены, что хотите отключить «${serviceName}»?`
@@ -896,17 +881,17 @@ export default class VCCameraConfigPage extends Mixins(
     }
 
     if (isDisabling) {
-      this.disableService(this.currentVideoArchiveCode, false)
+      this.disableService(this.currentVideoArchiveTomsId, false)
     } else {
       this.checkFunds(+this.currentServicePrice)
         .then(() => {
-          this.enableService(this.currentVideoArchiveCode, value)
+          this.enableService(this.currentVideoArchiveTomsId, value)
         })
     }
   }
 
   onArchiveRecordInput (archiveRecord: iArchiveRecordValue) {
-    this.switchFunctionality(archiveRecord.code, true, archiveRecord.tomsId)
+    this.switchFunctionality(true, archiveRecord.tomsId)
   }
 
   onPlay () {
@@ -915,23 +900,32 @@ export default class VCCameraConfigPage extends Mixins(
   }
 
   onInputAnalyticItem (...data: any) {
-    this.switchFunctionality(data[0], data[1], data[2])
+    this.switchFunctionality(data[0], data[1])
   }
 
   onCancelOrder () {
     this.isOrderMode = false
-    this.serviceStatuses[this.currentServiceCode] = !this.serviceStatuses[this.currentServiceCode]
+    this.serviceStatuses[this.currentServiceTomsId] = !this.serviceStatuses[this.currentServiceTomsId]
     this.isDeviceRenameMode = false
-    this.currentServiceCode = ''
+    this.currentServiceTomsId = ''
     this.setState('loading')
     this.$store.dispatch('salesOrder/cancel').then(() => {
       this.reloadCameraData()
     })
   }
 
+  onCancelOrderWithoutCancel () {
+    this.isOrderMode = false
+    this.serviceStatuses[this.currentServiceTomsId] = !this.serviceStatuses[this.currentServiceTomsId]
+    this.isDeviceRenameMode = false
+    this.currentServiceTomsId = ''
+    this.setState('loading')
+    this.reloadCameraData()
+  }
+
   onCancelRequest () {
-    this.serviceStatuses[this.currentServiceCode] = !this.serviceStatuses[this.currentServiceCode]
-    this.currentServiceCode = ''
+    this.serviceStatuses[this.currentServiceTomsId] = !this.serviceStatuses[this.currentServiceTomsId]
+    this.currentServiceTomsId = ''
     this.reloadCameraData()
   }
 
@@ -961,15 +955,15 @@ export default class VCCameraConfigPage extends Mixins(
       .finally(() => {
         this.isSendingOrder = false
         this.isOrderMode = false
-        this.currentServiceCode = ''
+        this.currentServiceTomsId = ''
       })
   }
 
   onCloseError () {
     this.errorMessage = ''
     this.setState('ready')
-    this.serviceStatuses[this.currentServiceCode] = !this.serviceStatuses[this.currentServiceCode]
-    this.currentServiceCode = ''
+    this.serviceStatuses[this.currentServiceTomsId] = !this.serviceStatuses[this.currentServiceTomsId]
+    this.currentServiceTomsId = ''
   }
 
   showError (message: string) {
@@ -979,7 +973,7 @@ export default class VCCameraConfigPage extends Mixins(
 
   onCloseSuccess () {
     this.reloadCameraData()
-    this.currentServiceCode = ''
+    this.currentServiceTomsId = ''
   }
 
   pullDomainRegistry (): void {
@@ -994,8 +988,8 @@ export default class VCCameraConfigPage extends Mixins(
       })
   }
 
-  getAnalyticItemIcon (code: string) {
-    return VIDEO_ANALYTICS[code]?.iconName
+  getAnalyticItemIcon (tomsId: string) {
+    return VIDEO_ANALYTICS[tomsId]?.iconName
   }
 
   updateKeyPlease () {
@@ -1008,8 +1002,8 @@ export default class VCCameraConfigPage extends Mixins(
 
   onCloseAvailableFundsModal () {
     this.setState('ready')
-    this.serviceStatuses[this.currentServiceCode] = !this.serviceStatuses[this.currentServiceCode]
-    this.currentServiceCode = ''
+    this.serviceStatuses[this.currentServiceTomsId] = !this.serviceStatuses[this.currentServiceTomsId]
+    this.currentServiceTomsId = ''
   }
 
   get customerProduct () {
