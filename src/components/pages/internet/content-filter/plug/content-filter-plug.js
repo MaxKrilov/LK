@@ -308,7 +308,8 @@ export default {
           bpi: this.activePoint.bpi,
           marketId: this.activePoint.marketId,
           productCode: CODE_CONTENT_FILTER,
-          chars
+          chars,
+          tomsId: '301000014'
         })
         .then((e) => {
           this.isShowModal = true
