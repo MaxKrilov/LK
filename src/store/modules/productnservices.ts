@@ -46,7 +46,8 @@ const actions = {
     parentIds?: string[]
     locationId?: string | number,
     marketId?: string | number,
-    code?: string
+    code?: string,
+    tomsId?: string
   }) {
     const clientId = context.rootGetters['auth/getTOMS']
 
@@ -64,6 +65,8 @@ const actions = {
     }
 
     if (payload.code) data.code = payload.code
+    if (payload.tomsId) data.tomsId = payload.tomsId
+
     if (payload.parentId) {
       data.parentId = payload.parentId
     } else {
@@ -86,13 +89,15 @@ const actions = {
    * @param context
    * @param payload
    */
-  customerProducts (context: ActionContext<IState, any>, payload: { api: API, parentIds?: Array<string | number>, code?: string }) {
+  customerProducts (context: ActionContext<IState, any>, payload: { api: API, parentIds?: Array<string | number>, code?: string, tomsId?: string }) {
     const { toms: clientId } = context.rootGetters['auth/user']
     const data: any = {
       clientId
     }
     payload.parentIds && (data.parentIds = payload.parentIds)
     payload.code && (data.code = payload.code)
+    payload.tomsId && (data.tomsId = payload.tomsId)
+
     return new Promise<ICustomerProduct>((resolve, reject) => {
       payload.api
         .setWithCredentials()

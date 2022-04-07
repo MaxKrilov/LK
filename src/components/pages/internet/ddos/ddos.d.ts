@@ -9,6 +9,7 @@ export interface IDdosItem {
     link: string
     deleteData: IDeleteOrderData,
     isDisconnected: boolean
+    tomsId: string
 }
 export interface IPointItem {
     id: string
@@ -16,6 +17,7 @@ export interface IPointItem {
     bpi: string
     marketId: string
     offerName: string
+    addressId: string
   }
 
 export interface IDdosPrice {
