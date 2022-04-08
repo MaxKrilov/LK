@@ -114,7 +114,7 @@ export default class ErtTokens extends Vue {
         this.isShowWarningMessage = true
       } else if (!this.isInactive && this.getNow() - this.timestampCreatingAccessToken > this.lifetimeAccessToken / 2) {
         // Пользователь активен, но access-токен скоро протухнет - обновим
-        // this.forwardStatusResult = await this.getForwardStatus({ api: this.$api })
+        this.forwardStatusResult = await this.getForwardStatus({ api: this.$api })
         this.forwardStatusResult = { status: false }
         if (!this.forwardStatusResult.status) {
           const fetchRefreshTokenResult = await this.fetchRefreshToken({ api: new API() })
@@ -169,7 +169,7 @@ export default class ErtTokens extends Vue {
 
   async handleVisibilityChange () {
     if (!document.hidden && !isLocalhost()) {
-      // this.forwardStatusResult = await this.getForwardStatus({ api: this.$api })
+      this.forwardStatusResult = await this.getForwardStatus({ api: this.$api })
       this.forwardStatusResult = { status: false }
       if (!this.forwardStatusResult.status) {
         const fetchRefreshTokenResult = await this.fetchRefreshToken({ api: new API() })
