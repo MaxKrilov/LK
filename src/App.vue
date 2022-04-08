@@ -100,8 +100,7 @@ export default {
   },
   async created () {
     this.isCheckingForwardStatus = true
-    // const forwardResult = await this.getForwardStatus({ api: this.$api })
-    const forwardResult = { status: false }
+    const forwardResult = await this.getForwardStatus({ api: this.$api })
     this.isCheckingForwardStatus = false
 
     const isEnableForward = forwardResult.status === true
