@@ -14,11 +14,21 @@ import ServiceFolder from './blocks/ServiceFolder/index.vue'
 import ServiceList from './blocks/ServiceList/index.vue'
 import OfficeList from './blocks/OfficeList/index.vue'
 import DirectorFeedback from '../SupportPages/blocks/DirectorFeedback/index'
+import ErPlugProduct from '../../../blocks/ErPlugProduct'
+import ErChangeBillingAccount from '../../../blocks/ErChangeBillingAccount'
+
+import ChangeOrganizationPopup
+  from '../../../templates/LkTemplate/components/ErtNavigationComponent/components/ChangeOrganizationPopup'
+
+import { price as priceFormatted } from '../../../../functions/filters'
 
 const IS_ENABLED_AUTOPAY = '9149184122213604836'
 
 export default {
   name: 'index-page',
+  filters: {
+    priceFormatted
+  },
   mixins: [ BillingAccountMixin ],
   components: {
     PackageItem,
@@ -28,7 +38,10 @@ export default {
     ErDocumentViewer,
     ErToastStack,
     ErActivationModal,
-    DirectorFeedback
+    DirectorFeedback,
+    ChangeOrganizationPopup,
+    ErPlugProduct,
+    ErChangeBillingAccount
   },
   data: () => ({
     MESSAGES,
@@ -55,7 +68,11 @@ export default {
       fileName: '',
       filePath: '',
       type: { id: '', name: '' }
-    }
+    },
+    isOpenDialogChangeBillingAccount: false,
+    activeStatus: true,
+    isOpenDialogChangeOrganisation: false,
+    isOpenManagerRequestDialog: false
   }),
   computed: {
     currentFilterLabel () {
@@ -116,6 +133,7 @@ export default {
       listProductByService: 'user/getListProductByService',
       indexPageProductByAddress: 'loading/indexPageProductByAddress',
       loadingClientInfo: 'loading/clientInfo',
+      loadingListBillingAccount: 'loading/menuComponentBillingAccount',
       menuComponentBalance: 'loading/menuComponentBalance',
       loadingDocuments: 'loading/loadingDocuments',
       loadingRequest: 'loading/loadingRequest',
@@ -124,7 +142,9 @@ export default {
       getCountRequestInWork: 'request/getCountRequestInWork',
       getCountUnsignedDocument: 'fileinfo/getCountUnsignedDocument',
       activeBundleGroupList: 'bundles/activeBundleGroupList',
-      activeBillingAccount: 'payments/getActiveBillingAccount'
+      activeBillingAccount: 'payments/getActiveBillingAccount',
+      activeBillingAccountNumber: 'payments/getActiveBillingAccountNumber',
+      getBillingAccountsGroupByContract: 'payments/getBillingAccountsGroupByContract'
     }),
 
     isEmptyListProduct () {
@@ -166,6 +186,16 @@ export default {
       return [
         this.invPaymentsForViewer[this.activeBillingAccount] || this.emptyDocument
       ]
+    },
+    getRequestDataForDDoSConnect () {
+      const address = this.listProductByAddress[0]
+      return {
+        descriptionModal: 'Для подключения услуги «DDoS» необходимо сформировать заявку на менеджера',
+        services: 'Подключение услуги «DDoS»',
+        addressId: address?.addressId || '',
+        fulladdress: address?.address || '',
+        type: 'create'
+      }
     }
   },
   methods: {
@@ -219,6 +249,17 @@ export default {
     },
     dataLayerPush (label) {
       dataLayerPush({ 'category': 'mainpage', 'action': 'click', label })
+    },
+    onChangeBillingAccount (billingAccount) {
+      // Устанавливаем загрузку для отслеживания
+      this.$store.commit('loading/rebootBillingAccount', true)
+      this.$store.commit('payments/setActiveBillingAccount', billingAccount)
+      this.$nextTick(() => {
+        this.$store.commit('loading/rebootBillingAccount', false)
+        localStorage.setItem('billingAccountId', billingAccount.billingAccountId)
+
+        this.isOpenDialogChangeBillingAccount = false
+      })
     }
   },
   watch: {

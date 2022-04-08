@@ -14,6 +14,7 @@ import { TouchStoredHandlers } from '@/directives/touch'
 
 import { API } from '@/functions/api'
 import * as moment from 'moment'
+import { Breakpoint } from '@/types/breakpoint'
 
 declare global {
   interface Window {
@@ -31,10 +32,10 @@ declare global {
 
   interface HTMLElement {
     _clickOutside?: EventListenerOrEventListenerObject
-    _onResize?: {
+    _onResize?: Record<number, {
       callback: () => void
       options?: boolean | AddEventListenerOptions
-    }
+    }>
     _ripple?: {
       enabled?: boolean
       centered?: boolean
@@ -92,6 +93,7 @@ declare module 'vue/types/vue' {
 
     $api: API
     $moment: (inp?: moment.MomentInput, format?: moment.MomentFormatSpecification, strict?: boolean) => moment.Moment
+    $ert: { breakpoint: Breakpoint }
 
     _b (
       data: VNodeData,

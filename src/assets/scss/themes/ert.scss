@@ -60,21 +60,21 @@ $ert: (
   ),
   'textfield': (
     'rest': rgba(map-get($shades, 'black'), 0.2),
-    'hover': map-get($shades, 'black'),
-    'focus': map-get($yellow, 'base'),
-    'error': map-get($red, 'base'),
+    'hover': rgba(map-get($shades, 'black'), 0.8),
+    'focus': map-get($red, 'darken-1'),
+    'error': map-get($red, 'lighten-2'),
     'success': map-get($green, 'base'),
     'label': rgba(map-get($shades, 'black'), 0.5),
     'label-active-font': $fedra-demi,
     'prepend-append-color': rgba(map-get($shades, 'black'), 0.2),
-    'prepend-append-color--hover': map-get($yellow, 'base'),
+    'prepend-append-color--hover': map-get($red, 'lighten-2'),
     'prepend-append-color--focus': rgba(map-get($shades, 'black'), 0.5),
-    'required-label-color': map-get($yellow, 'base')
+    'required-label-color': map-get($red, 'other-5')
   ),
   'list': (
     'background-color': map-get($shades, 'white'),
     'active-color': map-get($green, 'base'),
-    'hover-border-color': map-get($yellow, 'base'),
+    'hover-border-color': map-get($red, 'base'),
     'hover-background': map-get($gray, '2')
   ),
   'chip': (
@@ -87,7 +87,6 @@ $ert: (
   'slider': (
     'base': map-get($blue, 'base')
   ),
-  'cards': map-get($shades, 'white'),
   'dividers': rgba(map-get($shades, 'black'), 0.15),
   'picker': (
     'title': map-get($gray, '2'),
@@ -102,5 +101,7 @@ $ert: (
     'header-button-color': rgba(map-get($shades, 'black'), 0.8),
     'active-date-background': map-get($yellow, 'base'),
     'disabled-date-color': rgba(map-get($shades, 'black'), 0.2)
-  )
+  ),
+  'skeleton': linear-gradient(90deg, rgba(map-get($shades, 'white'), 0), rgba(map-get($shades, 'white'), .3), rgba(map-get($shades, 'white'), 0)),
+  'cards': map-get($shades, 'white'),
 );

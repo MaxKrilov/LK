@@ -197,7 +197,7 @@
   }
 
   &:active {
-    color: map_get($yellow, 'base');
+    color: map_get($red, 'base');
   }
 }
 
@@ -242,7 +242,7 @@
   transition: all $primary-transition;
 
   &:active {
-    color: map_get($yellow, 'base');
+    color: map_get($red, 'base');
   }
 }
 

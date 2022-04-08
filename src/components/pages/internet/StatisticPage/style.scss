@@ -63,7 +63,7 @@
         }
         &:focus {
           background-color: map-get($shades, 'white');
-          border-color: map-get($yellow, 'base');
+          border-color: map-get($red, 'base');
         }
       }
     }

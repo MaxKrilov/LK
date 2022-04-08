@@ -37,7 +37,7 @@
   }
   &.sort {
     .icon {
-      background-color: map-get($yellow, 'base');
+      background-color: map-get($red, 'other-2');
       svg {
         @include color-black(1);
       }

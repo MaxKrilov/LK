@@ -92,7 +92,7 @@
     height: 8px;
 
     &_used {
-      background-color: map-get($yellow, "base");
+      background-color: map-get($red, "base");
       height: 100%;
     }
   }

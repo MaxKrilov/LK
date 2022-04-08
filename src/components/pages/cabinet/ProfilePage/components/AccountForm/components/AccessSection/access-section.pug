@@ -1,36 +1,30 @@
-div(:class="[{ active: isShowAddAccessRights }, `${pre}`]")
-  er-row.px-16.mb-12
+div.access-section(:class="{ active: isShowAddAccessRights }")
+  ErRow.px-16.mb-12
     h3 Права доступа
 
-    .ml-8(v-if="isLPR && isChanged", :class="`${pre}__changed`")
-      er-icon(:class="`${pre}__changed-icon`" name="ok")
-      span(:class="`${pre}__changed-text`") Изменен
-
-  er-row(:class="`${pre}__container`")
-    div(:class="`${pre}__separator`")
-    er-flex(md5 sm12 lg4, :class="`${pre}__header`")
-      span(:class="`${pre}__header__title`")
+  ErRow.access-section__container
+    div.access-section__separator
+    ErFlex.access-section__header(md5 sm12 lg4)
+      span.access-section__header__title
         template(v-if="isLG")
           | Портал
         template(v-else)
           | Портал ({{ portalsCount }})
 
-      er-flex.text--blured(sm12 xs12, :class="`${pre}__side-menu__list`")
-        er-row(
+      ErFlex.access-section__side-menu__list.text--blured(sm12 xs12)
+        ErRow.access-section__side-menu__list__item(
           v-for="item in value",
           :id="`${item.code}-${_uid}`",
           :data-id="item.code",
           :key="item.id",
-          :class="{ [`${pre}__side-menu__list__item`]: true, [`${pre}__side-menu__list__item--active`]: item.menu.selected, [`${pre}__side-menu__list__item--not-active`]: !item.menu.selected }"
+          :class="{ 'access-section__side-menu__list__item--active': item.menu.selected, 'access-section__side-menu__list__item--not-active': !item.menu.selected }"
           @click="handleMenuItemClick(item)"
         )
-          div(
-            :class="{ [`${pre}__side-menu__list__item__active-line`]: item.menu.selected }"
-          )
-          er-icon.my-auto.mr-8(:name="item.menu.icon")
+          div(:class="{ 'access-section__side-menu__list__item__active-line': item.menu.selected }")
+          ErIcon.my-auto.mr-8(:name="item.menu.icon")
           span.text--small.my-auto {{ item.menu.label }}
-          er-icon.my-auto.ml-8(
-            :class="{ [`${pre}__side-menu__list__item__arrow`]: true, [`${pre}__side-menu__list__item__arrow--active`]: item.menu.selected }"
+          ErIcon.access-section__side-menu__list__item__arrow.my-auto.ml-8(
+            :class="{ 'access-section__side-menu__list__item__arrow--active': item.menu.selected }"
             name="corner_up"
           )
 
@@ -49,13 +43,13 @@ div(:class="[{ active: isShowAddAccessRights }, `${pre}`]")
       )
 
     template(v-else)
-      er-flex(xs12 sm12 md12, :class="`${pre}__content`")
-        span(:class="`${pre}__header__title__small`")
+      ErFlex.access-section__content(xs12 sm12 md12)
+        span.access-section__header__title__small
           | Состояние
-        div(:class="`${pre}__header__title__separator`")
+        div.access-section__header__title__separator
 
-        er-flex(xs12, :class="`${pre}__content__list`")
-          access-item(
+        ErFlex.access-section__content__list(xs12)
+          AccessItem(
             v-for="item in contents",
             :show-close-button="isLPR",
             :key="item.id"
@@ -64,54 +58,62 @@ div(:class="[{ active: isShowAddAccessRights }, `${pre}`]")
             | {{ item.label }}
 
   template(v-if="isShowAddAccessRights")
-    er-row.py-32(:class="`${pre}__add-rights`")
-      er-flex(sm12 md6 lg4)
-        er-select(
-          placeholder="Портал"
-          trackId="code"
+    ErRow.access-section__add-rights.py-32
+      ErFlex(sm12 md6 lg4)
+        ErtSelect(
           v-model="currentPortal"
-          @input="handlePortalChange",
           :items="portalLabels"
+          label="Портал"
+          returnObject
+          itemText="value"
+          itemValue="code"
+          @input="handlePortalChange"
         )
 
-      er-flex(v-if="currentPortal" sm12 md6 lg8)
+      ErFlex(v-if="currentPortal" sm12 md6 lg8)
         template(v-if="isForpostSelected")
-          forpost-access-form(@input="onForpostUserSelected")
+          ForpostAccessForm(@input="onForpostUserSelected")
 
         template(v-else-if="isOatsSelected")
-          oats-access-form(@input="onOatsUserSelected")
+          OatsAccessForm(@input="onOatsUserSelected")
 
         template(v-else-if="currentPortal.code === SYSTEM_NAMES.OATS")
-          er-row
-            er-flex(lg6)
-              er-select(
-                placeholder="Домен"
-                trackId="code"
-                v-model="currentAccessRight",
+          ErRow
+            ErFlex(lg6)
+              ErtSelect(
+                v-model="currentAccessRight"
                 :items="accessRightsLabels"
+                label="Домен"
+                returnObject
+                itemText="value"
+                itemValue="code"
               )
-            er-flex(lg6)
-              er-select(
-                placeholder="Учётная запись"
-                trackId="code"
-                v-model="currentAccessRight",
+            ErFlex(lg6)
+              ErtSelect(
+                v-model="currentAccessRight"
                 :items="accessRightsLabels"
+                label="Учётная запись"
+                returnObject
+                itemText="value"
+                itemValue="code"
               )
 
         template(v-else)
-          er-row
-            er-flex(md6)
-              er-select(
-                placeholder="Доступ"
-                trackId="code"
-                v-model="currentAccessRight",
+          ErRow
+            ErFlex(md6)
+              ErtSelect(
+                v-model="currentAccessRight"
                 :items="accessRightsLabels"
+                label="Доступ"
+                returnObject
+                itemText="value"
+                itemValue="code"
               )
 
   template(v-if="isLPR")
-    er-row(:class="`${pre}__add-btn`")
-      er-flex.pb-8(sm6 md6 lg4)
-        er-button(flat @click="handleAddClick")
+    ErRow.access-section__add-btn
+      ErFlex.pb-8(sm6 md6 lg4)
+        ErButton(flat @click="handleAddClick")
           | Добавить права
-      er-flex(v-if="isShowAddAccessRights" sm6 md6 lg4)
-        er-button(flat @click="reset") Отменить
+      ErFlex(v-if="isShowAddAccessRights" sm6 md6 lg4)
+        ErButton(flat @click="reset") Отменить

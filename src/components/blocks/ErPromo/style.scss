@@ -53,9 +53,9 @@
       }
     }
     &:active {
-      color: map_get($yellow, "base");
+      color: map_get($red, "base");
       .icon {
-        color: map_get($yellow, "base");
+        color: map_get($red, "base");
       }
     }
     .icon {
@@ -145,7 +145,7 @@
     .icon {
       svg {
         width: 40px;
-        color: map_get($yellow, "base");
+        color: map_get($red, "base");
       }
     }
   }

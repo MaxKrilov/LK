@@ -11,7 +11,7 @@ export default class PPRText extends Vue {
   get addressList (): any[] {
     let result: any[] = []
 
-    this.data.affected_customer_products.forEach((el: any) => {
+    this.data.affected_customer_products?.forEach((el: any) => {
       el.affected_account_product.forEach((el: any) => {
         result.push(el.affectedLocation.formattedAddress)
       })

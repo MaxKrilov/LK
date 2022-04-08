@@ -18,11 +18,7 @@ $pre: '.er-document';
     opacity: 0;
 
     transition: opacity $primary-transition;
-    background-image: radial-gradient(
-      50% 50% at 50% 22.25%,
-      map_get($yellow, 'base') 0%,
-      map_get($yellow, 'other-4') 100%
-    );
+    background-color: map-get($red, 'lighten-2');
   }
 
   &:hover {
@@ -65,7 +61,7 @@ $pre: '.er-document';
 
   #{$pre}__footer {
     padding-bottom: $padding-x6;
-    color: map_get($yellow, 'base');
+    color: map_get($red, 'base');
     background-color: map_get($shades, 'transparent');
 
     .er-icon {
@@ -75,6 +71,6 @@ $pre: '.er-document';
   }
 
   .er-ripple__animation {
-    background: map_get($yellow, 'base');
+    background: map_get($red, 'base');
   }
 }

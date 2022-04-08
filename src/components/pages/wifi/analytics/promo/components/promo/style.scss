@@ -128,14 +128,8 @@
   &__buttons .er-button {
     margin-bottom: 0;
     width: 100%;
-    height: 40px;
     @include media-query((
-      width: (sm: 264px, md: 288px, lg: 283px, xl: 275px),
-      height: (xl: 48px)
+      width: (sm: 264px, md: 288px, lg: 283px, xl: 275px)
     ));
-
-    &.er-button--blue {
-      color: map_get($shades, 'white');
-    }
   }
 }

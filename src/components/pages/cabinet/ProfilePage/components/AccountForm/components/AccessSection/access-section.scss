@@ -324,7 +324,7 @@
           &::before {
             content: "";
             position: absolute;
-            background: map_get($yellow, "base");
+            background: map_get($red, "base");
             border-radius: 2px;
             @include media-query(
               (
@@ -376,12 +376,12 @@
         &:active {
           background: map_get($shades, "transparent");
           span {
-            color: map_get($yellow, "base") !important;
+            color: map_get($red, "base") !important;
           }
         }
         &--active {
           .er-icon {
-            color: map_get($yellow, "base");
+            color: map_get($red, "base");
           }
           span {
             color: map_get($shades, "black") !important;

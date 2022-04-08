@@ -59,7 +59,7 @@
       align-items: center;
 
       .ert-progress-circular {
-        color: #FFDD00;
+        color: map-get($red, 'base');
         margin-right: 8px;
       }
 

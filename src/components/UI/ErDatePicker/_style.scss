@@ -161,7 +161,7 @@
       text-transform: uppercase;
       color: map_get($shades, '22');
       &.weekend {
-        color: map_get($yellow, 'other-2');
+        color: map_get($red, 'darken-1');
       }
     }
     &__days {
@@ -183,10 +183,10 @@
         border: 2px solid map_get($shades, 'transparent');
         &:hover:not(.disabled) {
           background-color: map_get($shades, 'white');
-          border-color: map_get($yellow, 'base');
+          border-color: map_get($red, 'base');
         }
         &.selected {
-          background-color: map_get($yellow, 'base');
+          background-color: map_get($red, 'lighten-2');
         }
         &.disabled {
           color: rgba(map_get($shades, 'black'), 0.2);
@@ -194,7 +194,7 @@
         }
       }
       &.range {
-        background-color: map_get($yellow, 'other-3');
+        background-color: rgba(map_get($red, 'lighten-2'), 0.1);
         &:first-child {
           border-radius: 50% 0 0 50%;
         }
@@ -249,7 +249,7 @@
       }
       &:hover:not([disabled]) {
         background-color: map_get($shades, 'white');
-        border-color: map_get($yellow, 'base');
+        border-color: map_get($red, 'base');
         color: map_get($shades, 'black');
       }
       &[disabled] {

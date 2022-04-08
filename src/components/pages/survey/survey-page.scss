@@ -25,20 +25,6 @@ $max-textarea-width: 512px;
     min-height: 380px;
   }
 
-  .er-button {
-    .flex-grow-10 {
-      flex-grow: 10;
-    }
-
-    &__icon {
-      flex-grow: 1;
-      margin-left: 0;
-      text-align: left;
-      @extend %small-icon;
-      @include color-black(.5)
-    }
-  }
-
   &__subtitle {
     @extend %caption1;
     margin-top: $padding-x10;

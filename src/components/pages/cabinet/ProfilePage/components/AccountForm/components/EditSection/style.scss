@@ -162,8 +162,8 @@
         border-bottom-color: map_get($shades, 'black');
       }
       &:active {
-        color: map_get($yellow, 'base');
-        border-bottom-color: map_get($yellow, 'base');
+        color: map_get($red, 'base');
+        border-bottom-color: map_get($red, 'base');
       }
     }
   }

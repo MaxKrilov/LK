@@ -1,5 +1,6 @@
 import { VueConstructor } from 'vue'
 import { ErtUseOptions } from '@/types'
+import { config } from '@/config'
 
 export function install (
   Vue: VueConstructor,
@@ -10,11 +11,19 @@ export function install (
 
   const components = args.components || {}
   const directives = args.directives || {}
+  const services = args.services || {}
 
   for (const name in directives) {
     if (directives.hasOwnProperty(name)) {
       Vue.directive(name, directives[name])
     }
+  }
+
+  Vue.prototype.$ert = {}
+
+  for (const name in services) {
+    Vue.set(Vue.prototype.$ert, name.toLowerCase(), new services[name](config))
+    Vue.prototype.$ert[name.toLowerCase()].init()
   }
 
   (function registerComponents (components: any) {

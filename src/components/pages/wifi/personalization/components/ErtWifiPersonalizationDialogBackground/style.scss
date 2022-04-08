@@ -279,7 +279,7 @@
       width: 100%;
       height: 32px;
       border-radius: 4px;
-      background-color: map-get($yellow, 'base');
+      background-color: map-get($red, 'lighten-2');
       margin-bottom: $padding-x2;
 
       &:last-child {

@@ -53,7 +53,7 @@ export default {
 
   &:active,
   &--active {
-    background: map_get($yellow, "base");
+    background: map_get($red, "base");
   }
 
   &__content {

@@ -16,12 +16,4 @@ $header-transition: .1s ease-in-out;
       display: inherit;
     }
   }
-
-  @include min-breakpoint('md') {
-    &:hover {
-      #{$pre}__header {
-        background-color: map_get($yellow, 'base');
-      }
-    }
-  }
 }

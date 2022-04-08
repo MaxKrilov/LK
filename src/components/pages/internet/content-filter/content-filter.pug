@@ -31,7 +31,7 @@ div(:class="`${pre} main-content main-content--top-menu-fix`")
                 div() {{ item.login }}
             div(:class="`${pre}__slider-buttons`")
               a(:href="item.link"  target="_blank" v-if="item.link")
-                er-button(color="yellow") Настроить фильтрацию
+                er-button Настроить фильтрацию
               er-button(
                 :disabled="isCreatingOrder"
                 :loading="isCreatingOrder"

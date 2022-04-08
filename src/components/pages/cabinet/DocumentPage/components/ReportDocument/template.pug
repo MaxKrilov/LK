@@ -10,12 +10,12 @@ er-document-viewer(
       :class="{'er-document--selected': selected}"
     ).er-document--report.er-document--small-doc
       div(slot="header").d--flex.flex-row.align-items-center
-        .er-document__toggle
+        .er-document__toggle(@click.stop="() => {}")
           er-toggle(
             type="checkbox"
             view="radio-check"
             v-model="selected"
-            @input="onSelect"
+            @input.prevent="onSelect"
           )
         h3.er-document__title-sm {{ document.type.id | typeName }}
         h3.er-document__title {{ document.number }}

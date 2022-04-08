@@ -3,7 +3,7 @@
     .oats-point__portal-link {
       .er-icon {
         transition: color $primary-transition;
-        color: map-get($yellow, base);
+        color: map-get($red, base);
       }
     }
   }
@@ -11,19 +11,19 @@
   &:active {
     &.er-card-products {
       .er-card-products__point-content {
-        background-color: map-get($yellow, base);
+        background-color: map-get($red, base);
       }
     }
   }
 
   .er-card-products__point-item:active {
     .er-card-products__point-content:active {
-      background-color: map-get($yellow, base);
+      background-color: map-get($red, base);
     }
   }
 
   .er-card-products__point-content:active {
-    background-color: map-get($yellow, base);
+    background-color: map-get($red, base);
   }
 
   &__title {

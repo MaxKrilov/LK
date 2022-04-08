@@ -33,11 +33,11 @@ const personalizationFutureList = require('./promo.json')
 const typesButtons = ['abonent', 'guest', 'voucher', 'premium']
 
 const defaultStyles: Record<string, string> = {
-  color: 'rgb(0, 0, 0)',
-  borderRadius: '3px',
-  boxShadow: '0 2px 0 #CCB100',
-  borderColor: '#F8DD17',
-  backgroundColor: '#F8DD17'
+  color: 'rgb(255, 255, 255)',
+  borderRadius: '24px',
+  boxShadow: '0px 2px 2px rgba(0, 0, 0, 0.05), 0px 2px 12px rgba(0, 0, 0, 0.1)',
+  borderColor: '#FF130E',
+  backgroundColor: '#FF312C'
 }
 
 function parseStyles (field: string | null) {

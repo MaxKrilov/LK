@@ -11,7 +11,7 @@ div(:class="`${pre}`")
         :class="`${pre}__field__input`"
       )
     er-flex(:class="`${pre}__field`" v-if='isInnChanging').xs6.sm6
-      er-button(:color="'yellow'" @click="onResetInn") Изменить ИНН
+      er-button(@click="onResetInn") Изменить ИНН
   div(:class="`${pre}__error`" v-if='isInnIncorrect')
     error( error-message="Проверьте правильность введенных данных ИНН" )
   div(:class="`${pre}__field`")

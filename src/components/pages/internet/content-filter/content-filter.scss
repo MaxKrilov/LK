@@ -162,10 +162,8 @@
     );
     }
     .er-button {
-      @include color-black(0.8);
       i {
         padding-left: 4px;
-        @include color-black(0.2);
         svg {
           width: $padding-x8;
         }

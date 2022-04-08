@@ -104,7 +104,7 @@
         }
         &.active {
           background-color: map_get($shades, 'white');
-          border-left-color: map_get($yellow, 'base');
+          border-left-color: map_get($red, 'base');
           i {
             opacity: 1;
           }

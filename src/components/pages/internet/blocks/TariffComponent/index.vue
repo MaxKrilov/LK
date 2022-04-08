@@ -93,7 +93,7 @@
           .price
             span {{ recurrentTotal | price }}
             | &nbsp;{{ currencyCode }}/месяц
-          .fb-text.caption2.color--yellow-other-13(v-if="freeBonusValue !== 0")
+          .fb-text.caption2(v-if="freeBonusValue !== 0")
             | У вас активирован Бесплатный бонус скорости
       .tariff-component__turbo-price
         template(v-if="isLoadingCustomerProduct")

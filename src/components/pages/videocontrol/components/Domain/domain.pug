@@ -26,7 +26,6 @@
 
           er-button.user-count__add-btn(
             v-show="isUserCountChanged && !isUserCountOrdered"
-            color="yellow",
             :loading="isUserOrderMode"
             @click="onSaveUserCount"
           ) Изменить
@@ -65,7 +64,6 @@
 
   .product__footer
     er-button(
-      color="yellow",
       :loading="isOrderCameraMode"
       :to="{name: 'vc-add-camera'}"
     ) Добавить камеру

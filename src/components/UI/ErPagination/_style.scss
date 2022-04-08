@@ -59,8 +59,8 @@
       }
     }
     &--active {
-      background-color: map_get($yellow, 'base');
-      color: map_get($shades, 'black');
+      background-color: map_get($red, 'lighten-2');
+      color: map_get($shades, 'white');
       span {
         border-bottom-color: map_get($shades, 'transparent');
       }

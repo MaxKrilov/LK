@@ -13,8 +13,8 @@
       width: 16px;
       height: 16px;
       border-radius: 50%;
-      background-color: map_get($yellow, 'base');
-      box-shadow: -16px 0 0 -4px map_get($yellow, 'base'), -28px 0 0 -6px map_get($yellow, 'base');
+      background-color: map_get($red, 'base');
+      box-shadow: -16px 0 0 -4px map_get($red, 'base'), -28px 0 0 -6px map_get($red, 'base');
       position: absolute;
       top: 8px;
       left: 56px;
@@ -24,7 +24,7 @@
       &::before {
         opacity: 1;
       }
-      i { color: map_get($yellow, 'base') }
+      i { color: map_get($red, 'base') }
     }
   }
   &__message {

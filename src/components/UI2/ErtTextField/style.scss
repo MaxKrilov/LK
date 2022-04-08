@@ -238,7 +238,7 @@ $text-field-legend-line-height: 11px !default;
     width: 8px;
     height: 8px;
     border-radius: 50%;
-    background: map-get($yellow, 'base');
+    background: map-get($red, 'other-5');
   }
 
   @include min-breakpoint('md') {

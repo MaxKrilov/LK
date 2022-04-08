@@ -38,12 +38,12 @@ $pre: ".address-folder";
   &--search-result {
     #{$pre}__title {
       border-bottom: 1px solid;
-      border-color: map-get($yellow, 'base');
+      border-color: map-get($red, 'base');
     }
   }
 
   &--active {
-    border-right-color: map_get($yellow, "base");
+    border-right-color: map_get($red, "base");
 
     #{$pre}__head {
       background-color: $active-head-color;

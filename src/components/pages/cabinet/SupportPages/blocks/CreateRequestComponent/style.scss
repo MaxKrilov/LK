@@ -29,7 +29,7 @@
             width: 8px;
             height: 8px;
             border-radius: 4px;
-            background-color: map_get($yellow, 'base');
+            background-color: map_get($red, 'other-5');
             margin-right: 4px;
           }
         }
@@ -50,7 +50,6 @@
       &__content {
         span {
           display: block;
-          margin-left: -32px;
         }
       }
       &__icon--prev {
@@ -81,7 +80,7 @@
             width: 8px;
             height: 8px;
             border-radius: 4px;
-            background-color: map_get($yellow, 'base');
+            background-color: map_get($red, 'other-5');
             margin-right: 4px;
           }
         }

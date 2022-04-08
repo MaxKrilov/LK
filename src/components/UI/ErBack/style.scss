@@ -12,7 +12,7 @@
 
     &.corner {
       transform: rotate(90deg);
-      color: map_get($yellow, 'base');
+      color: map_get($red, 'base');
       margin-right: $padding-x2;
       margin-top: $padding-x1;
 
@@ -34,17 +34,17 @@
       }
 
       .arrow {
-        color: map_get($yellow, 'base');
+        color: map_get($red, 'base');
       }
     }
 
     &:active {
       .er-back__title {
-        color: map_get($yellow, 'base');
+        color: map_get($red, 'base');
       }
 
       .arrow {
-        color: map_get($yellow, 'base');
+        color: map_get($red, 'base');
       }
     }
 

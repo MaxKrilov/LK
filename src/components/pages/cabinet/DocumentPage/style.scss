@@ -63,7 +63,7 @@ $document-padding: 16px;
 
       &--active {
         @include color-black(.8);
-        border-bottom: $padding-x1 solid map-get($yellow, 'base');
+        border-bottom: $padding-x1 solid map-get($red, 'base');
       }
     }
   }

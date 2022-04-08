@@ -29,11 +29,11 @@
         .camera-price
             .caption2 Форма собственности
             .model-name.mt-4 {{ cameraOwnershipType}}
-        
+
         .camera-price(v-if="cameraOwnershipType !== 'Продажа'")
             .caption2.end Платёж
             er-price.model-name.mt-4.end  {{ cameraOwnershipPrice}}
-      
+
       .col-camera-name.mt-24
         template(v-if="isAnalyticsLoaded")
           rename-field(
@@ -44,7 +44,7 @@
           )
         template(v-else)
           pu-skeleton(width="300px")
-        
+
 
       .col.col--watch(v-if="isForpostPortalWorking")
         .watch(@click="onPlay" title="Настроить")
@@ -65,7 +65,7 @@
 
           .price-wrap
             .caption2(v-if="cameraSaleInfo.secondColumn.name") {{ cameraSaleInfo.secondColumn.name }}
-            .mt-4(v-if="cameraSaleInfo.secondColumn.content") 
+            .mt-4(v-if="cameraSaleInfo.secondColumn.content")
               er-price(period="мес") {{ cameraSaleInfo.secondColumn.content|price }}
 
     .h2.vc-config-page__header.vc-config-page__header_mb  Базовые характеристики
@@ -118,7 +118,7 @@
               template(v-else)
                 er-price
                   | {{ archiveRecordPrice | price }}
-        
+
         .h2.vc-config-page__header.mb-24 Дополнительные сервисы
 
         .addon__list
@@ -270,6 +270,6 @@
         er-icon(name="ok")
 
     .action-buttons(v-if="isActionButtonsVisible")
-      er-button(color="yellow") Сохранить
+      er-button Сохранить
       er-button(color="gray") Отмена
 

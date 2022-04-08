@@ -100,7 +100,7 @@
       height: 40px;
     }
     &--active {
-      background-color: map_get($yellow, 'base');
+      background-color: map_get($red, 'lighten-2');
       cursor: default;
       z-index: 2;
     }

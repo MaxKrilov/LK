@@ -1,0 +1,85 @@
+.ert-balance-component {
+  display: flex;
+  align-items: center;
+
+  &__loading {
+    &--mobile {
+      @include min-breakpoint('md') {
+        display: none;
+      }
+    }
+
+    &--desktop {
+      display: none;
+
+      @include min-breakpoint('md') {
+        display: block;
+      }
+    }
+
+    .ert-skeleton-loader {
+      width: 88px;
+
+      @include min-breakpoint('md') {
+        width: 128px;
+      }
+    }
+  }
+
+  &__icon {
+    display: none;
+    color: map-get($red, 'base');
+    margin-right: 8px;
+
+    @include min-breakpoint('md') {
+      display: block;
+    }
+
+    &.is-auto-pay {
+      color: map-get($green, 'base');
+    }
+  }
+
+  &__info button {
+    @include color-black(0.5);
+  }
+
+  &__menu {
+    background: map-get($shades, 'white');
+    border-radius: 12px;
+  }
+
+  &__menu-top {
+    border-bottom: 1px solid rgba(map-get($shades, 'black'), 0.2);
+  }
+
+  &__menu-bottom a {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    transition: $primary-transition;
+
+    i {
+      @include color-black(0.2)
+    }
+
+    span {
+      @extend %button-font;
+      @include color-black(0.5);
+    }
+
+    &:hover {
+      i,
+      span {
+        color: map-get($red, 'lighten-2');
+      }
+    }
+
+    &:active {
+      i,
+      span {
+        color: map-get($red, 'base');
+      }
+    }
+  }
+}

@@ -1,8 +1,8 @@
 .notification-icon {
   $color-warning: map_get($red, 'base');
-  $color-reload: map_get($yellow, 'base');
+  $color-reload: map_get($red, 'base');
   $color-gift: map_get($green, 'base');
-  $color-question: map_get($yellow, 'base');
+  $color-question: map_get($red, 'base');
 
   display: flex;
   flex-direction: row;

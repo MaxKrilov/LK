@@ -1,3 +1,11 @@
+:root {
+  --scrollbarBg: rgb(227 227 227);
+  --scrollbarThumb: rgba(197, 31, 31, 1);
+  --scrollbarWidth: 6px;
+  --scrollbarBorder: 1px solid var(--scrollbarBg);
+  --scrollbarBorderRadius: calc(var(--scrollbarWidth)/2);
+}
+
 .index-page {
   @extend %main-content;
 
@@ -15,7 +23,7 @@
 
   &__opinion-mb {
     margin-bottom: $padding-x4;
-    
+
     @include min-breakpoint('xl') {
       margin-bottom: $padding-x6;
     }
@@ -24,12 +32,12 @@
   &__impression-button {
     max-width: 227px;
     margin-bottom: $padding-x12;
-    
+
     @include min-breakpoint('md') {
       margin-bottom: $padding-x14;
     }
   }
-  
+
   &__welcome-title {
     @extend %h1;
 
@@ -156,8 +164,8 @@
       }
 
       .icon {
-        color: map_get($yellow, 'base');
-        transition: color 0.15s ease-in-out;
+        color: map_get($red, 'base');
+        //transition: color 0.15s ease-in-out;
 
         svg {
           transition: all 0.15s ease-in-out;
@@ -237,15 +245,16 @@
 
     &:hover {
       .content {
-        background: radial-gradient(50% 50% at 50% 50%, map_get($yellow, 'base') 55.5%, map_get($yellow, 'other-4') 100%);
+        //background: radial-gradient(50% 50% at 50% 50%, map_get($yellow, 'base') 55.5%, map_get($yellow, 'other-4') 100%);
+        background: map-get($red, 'lighten-2');
       }
 
       .title {
-        @include color-black(1);
+        @include color-white(1);
       }
 
       .caption {
-        @include color-black(0.5);
+        @include color-white(0.5);
       }
 
       .footer {
@@ -306,9 +315,9 @@
         text-align: left;
         margin-bottom: $padding-x2;
 
-        @include min-breakpoint(sm) {
-          text-align: right;
-        }
+        //@include min-breakpoint(sm) {
+        //  text-align: right;
+        //}
       }
 
       &__content {
@@ -466,6 +475,217 @@
           margin-right: 8px;
         }
       }
+    }
+  }
+
+  &__info {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+
+    &__value {
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      @include color-black(1);
+      text-decoration: none;
+
+      &.balance span::after {
+        content: ' ₽';
+        font-weight: normal;
+        @include color-black(0.2);
+      }
+
+      .ert-icon {
+        @include color-black(0.2);
+      }
+    }
+  }
+
+  &__info-loading {
+    width: 200px;
+  }
+
+  &__info-dialog {
+    padding: 32px;
+    background: map-get($shades, 'white');
+
+    &__body {
+      // todo Убрать ненужное
+      display: flex;
+      flex-direction: column;
+      background: map_get($shades, 'white');
+      border-radius: inherit;
+      padding: 32px 0 16px;
+      overflow: auto;
+      max-height: 437px;
+      margin: 15px 5px;
+      .caption,
+      .organization,
+      .caption-choise,
+      .agreement {
+        margin: {
+          left: 26px;
+        };
+      }
+      .organization {
+        width: 100%;
+        max-width: 230px;
+        font: 16px/22px $fedra-book;
+        letter-spacing: -0.5px;
+        color: rgba(map_get($shades, 'black'), 0.8);
+      }
+      .caption-init {
+        color: rgba(map_get($shades, 'black'), 0.8);
+      }
+      .caption-choise {
+        @extend .caption-init;
+        font: 18px/23px $fact-bold;
+        margin-left: 24px;
+        width: calc(100% - 48px);
+      }
+      .border {
+        border: {
+          bottom: 1px solid map_get($gray, '20');
+        }
+        margin-bottom: 8px;
+      }
+      .caption-balance {
+        @extend .caption-init;
+        margin: {
+          left: 26px;
+        };
+        font: 24px $fact-bold;
+      }
+      .caption-autopay {
+        @extend %caption2;
+        margin: {
+          left: 8px;
+        };
+      }
+      .value-manager {
+        @extend .caption-init;
+        font: 18px/23px $fact-bold;
+        margin: 0 22px;
+      }
+      .fill-foundation {
+        position: absolute;
+        bottom: 95px;
+        left: 30px;
+        right: 0;
+        height: 45px;
+        width: 345px;
+      }
+      .foundation-pouring {
+        background-image: linear-gradient(#ffffff63, #ffffff, #ffffff);
+      }
+      .agreement {
+        font: 18px/22px $fedra-book;
+        letter-spacing: -1px;
+        color: rgba(map_get($shades, 'black'), 0.8);
+      }
+      .wrapper-line {
+        margin-left: 24px;
+        width: calc(100% - 48px);
+        border: {
+          top: 1px solid map_get($gray, '20');
+          bottom: 1px solid map_get($gray, '20');
+        }
+      }
+      .personal-account {
+        display: flex;
+        height: 38px;
+        flex-direction: column;
+        justify-content: center;
+        border-left: 6px solid map_get($shades, 'transparent');
+        transition: $primary-transition;
+        cursor: pointer;
+        position: relative;
+        left: -24px;
+        > * {
+          margin: { left: 0 };
+        }
+        .caption {
+          height: 16px;
+          margin: { left: -.1px };
+        }
+        .value {
+          font: 20px/25px $fedra-book;
+          height: 22px;
+          letter-spacing: -1px;
+          position: relative;
+          i {
+            display: none;
+            position: absolute;
+            left: -18px;
+            margin: { top: 3px };
+            color: map_get($green, 'base');
+            svg {
+              width: 16px;
+            }
+          }
+        }
+        &.active {
+          .value i {
+            display: block;
+          }
+        }
+
+        &__flex {
+          display: flex;
+        }
+
+        &__radio {
+          display: flex;
+          max-width: 24px;
+          align-items: center;
+
+        }
+      }
+      .rub {
+        &::after {
+          content: '₽';
+          font: 13px/16px $fact-light;
+          margin-left: 4px;
+        }
+      }
+      .balance,
+      .support {
+        border-top: 1px solid map_get($gray, '20');
+        display: flex;
+        align-items: center;
+        position: relative;
+        top: 8px;
+        padding: {
+          left: 18px;
+        };
+        i {
+          color: rgba(map_get($shades, 'black'), 0.2);
+        }
+        a {
+          font: 14px/17px $fedra-demi;
+          color: rgba(map_get($shades, 'black'), 0.5);
+          text-decoration: none;
+        }
+      }
+    }
+
+    &__body {
+      scrollbar-width: var(--scrollbarWidth);
+      scrollbar-color: var(--scrollbarThumb) var(--scrollbarBg);
+    }
+    &__body::-webkit-scrollbar {
+      width: var(--scrollbarWidth);
+    }
+    &__body::-webkit-scrollbar-track {
+      background: var(--scrollbarBg);
+      border-radius: var(--scrollbarBorderRadius);
+    }
+    &__body::-webkit-scrollbar-thumb {
+      background-color: var(--scrollbarThumb);
+      border-radius: var(--scrollbarBorderRadius);
+      border: var(--scrollbarBorder);
     }
   }
 }

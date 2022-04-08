@@ -10,6 +10,7 @@ export type ComponentOrPack = Component & {
 export interface ErtUseOptions {
   directives?: Record<string, DirectiveOptions>
   components?: Record<string, ComponentOrPack>
+  services?: Record<string, any>
 }
 
 export interface TouchHandlers {

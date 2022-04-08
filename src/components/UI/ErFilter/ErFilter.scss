@@ -70,7 +70,7 @@ $pre: ".er-filter";
     background-color: map_get($shades, "white");
 
     .er-icon {
-      color: map_get($yellow, "base");
+      color: map_get($red, "base");
       transform: rotate(-90deg);
 
       svg {
@@ -102,7 +102,7 @@ $pre: ".er-filter";
     opacity: 0.5;
     display: flex;
     &:hover {
-      color: map-get($yellow, "base");
+      color: map-get($red, "base");
     }
   }
 

@@ -259,6 +259,12 @@ export default {
         if (val) {
           let clone = cloneDeep(val)
           this.formData = clone.content
+
+          /* Фикс. При создании контакта поле 'contactType' отсутствует */
+          if (!('contactType' in this.formData)) {
+            this.formData.contactType = null
+          }
+
           this.canSign = this.formData?.canSign || false
           delete clone.content
           this.formState = clone

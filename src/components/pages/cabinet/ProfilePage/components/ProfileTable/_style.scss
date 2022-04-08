@@ -159,7 +159,7 @@
                 > .accounts-section__table__cell
                 > .d--flex
                 > .er-icon.accounts-section__table__cell__icon {
-                color: map_get($yellow, "base") !important;
+                color: map_get($red, "base") !important;
               }
             }
           }
@@ -235,7 +235,7 @@
       color: map_get($gray, "6");
     }
     &--active {
-      background: map_get($yellow, "base");
+      background: map_get($red, "base");
       & svg {
         color: map_get($shades, "black");
       }

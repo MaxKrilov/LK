@@ -1,7 +1,7 @@
 div(:class="`${pre}`")
   er-preloader(:active="loadingClientInfo")
-    h4(:class="`${pre}__organisation-name`")
-      | {{ clientName || 'Неизвестная организация' }}
+    //h4(:class="`${pre}__organisation-name`")
+    //  | {{ clientName || 'Неизвестная организация' }}
   h1(:class="`${pre}__welcome-title`")
     | Добро пожаловать в личный кабинет
   div.mt-24.mb-24.mt-md-32.mb-md-32.mt-xl-48.mb-xl-48
@@ -10,21 +10,47 @@ div(:class="`${pre}`")
     div Чтобы обеспечить безопасность вашего бизнеса в интернете, мы подготовили для вас&nbsp;
       a(href="https://b2b.dom.ru/news/na-svyazi" target="_blank" rel="noopener") рекомендации по защите сети и оборудования.
 
-  div(:class="`${pre}__balance--mobile`")
-    div.caption.mb-8
-      | Ваш баланс
-    er-preloader(:active="menuComponentBalance")
-      div.d--flex.align-items-center(:class="`${pre}__balance--mobile__wrapper`")
-        div.icon
-          er-icon(name="wallet_auto")
-        router-link(to="/lk/payments").link--solid--yellow.fonts--demi.rub {{ balance || '0.0' }}
-        span(v-if="isAutopay") Автоплатёж
+  .index-page__info.mb-32
+    .index-page__info-billing-account.mr-64
+      template(v-if="loadingListBillingAccount")
+        .index-page__info-loading
+          ErtSkeletonLoader(type="text")
+      template(v-else)
+        ErChangeBillingAccount(
+          v-model="isOpenDialogChangeBillingAccount"
+          type="dialog"
+          maxWidth="407"
+        )
+          template(v-slot:activator="{ on }")
+            div(v-on="on")
+              .caption2.mb-4 Лицевой счёт:
+              .index-page__info__value
+                span {{ activeBillingAccountNumber }}
+                ErtIcon.ml-16(name="link_out" small)
+    .index-page__info-balance.mr-64
+      template(v-if="menuComponentBalance")
+        .index-page__info-loading
+          ErtSkeletonLoader(type="text")
+      template(v-else)
+        .caption2.mb-4 Баланс:
+        router-link.index-page__info__value.balance(to="/lk/payments")
+          span {{ balance | priceFormatted }}
+          ErtIcon.ml-16(name="link_out" small)
+    .index-page__info-organisation.mr-64
+      template(v-if="loadingClientInfo")
+        .index-page__info-loading
+          ErtSkeletonLoader(type="text")
+      template(v-else)
+        .caption2.mb-4 Организация:
+        .index-page__info__value(@click="() => { isOpenDialogChangeOrganisation = true }")
+          span {{ clientName || 'Неизвестная организация' }}
+          ErtIcon.ml-16(name="link_out" small)
 
   er-container.index-page__sections-mb(full).container--no-padding
-    er-row(no-gutters)
-      er-flex(xs12 :class="`${pre}__fast-links`")
+    er-row()
+      er-flex(xs12 lg6 xl5 :class="`${pre}__fast-links`")
         er-row()
-          er-flex.mb-16(xs6 xl3)
+          er-flex.mb-16(xs6)
             er-preloader(:active="loadingDocuments" icon)
               router-link.index-page__fast-link(to="/lk/documents")
                 .content(@click="dataLayerPush('mydocuments')")
@@ -38,7 +64,7 @@ div(:class="`${pre}`")
                         | {{ getCountUnsignedDocument }}
                     .icon.ml-auto
                       er-icon(name="doc")
-          er-flex.mb-16(xs6 xl3)
+          er-flex.mb-16(xs6)
             er-preloader(:active="loadingRequest" icon)
               router-link.index-page__fast-link(to="/lk/support")
                 .content(@click="dataLayerPush('servicerequest')")
@@ -52,7 +78,7 @@ div(:class="`${pre}`")
                         | {{ getCountRequestInWork }}
                     .icon.ml-auto
                       er-icon(name="service")
-          er-flex.mb-16(xs6 xl3)
+          er-flex.mb-16(xs6)
             er-preloader(:active="loadingPromisedPayment" icon)
               router-link.index-page__fast-link(to="/lk/payments/promise-payments")
                 .content(@click="dataLayerPush('futurepayment')")
@@ -72,7 +98,7 @@ div(:class="`${pre}`")
                     template(v-else)
                       .icon.ml-auto
                         er-icon(name="trast_pay")
-          er-flex.mb-16(xs6 xl3)
+          er-flex.mb-16(xs6)
             er-document-viewer(
               :list-document="computedListInvoiceDocument"
               :is-digital-signing="false"
@@ -88,6 +114,15 @@ div(:class="`${pre}`")
                     .footer.d--flex.align-items-end.mt-auto
                       .icon.ml-auto
                         er-icon(name="rouble")
+      er-flex(xs12 lg6 xl7)
+        button(@click="() => { isOpenManagerRequestDialog = true }")
+          picture
+            source(:srcset="require('@/assets/images/banner/254х254_Баннер ЛК_Ddos.jpg')" media="(max-width: 480px)")
+            source(:srcset="require('@/assets/images/banner/430х254_Баннер ЛК_Ddos.jpg')" media="(max-width: 640px)")
+            source(:srcset="require('@/assets/images/banner/589х277_Баннер ЛК_Ddos.jpg')" media="(max-width: 960px)")
+            source(:srcset="require('@/assets/images/banner/434х358_Баннер ЛК_Ddos.jpg')" media="(max-width: 1200px)")
+            source(:srcset="require('@/assets/images/banner/469х333_Баннер ЛК_Ddos.jpg')" media="(min-width: 1200px)")
+            img(:src="require('@/assets/images/banner/469х333_Баннер ЛК_Ddos.jpg')")
   //- временно убрал кнопку кнопку 'Поделись впечатлением' https://ticket.ertelecom.ru/browse/WEB-31582
   //- .index-page__opinion-mb
   //-   h4 Ваше мнение очень важно для нас.
@@ -135,14 +170,6 @@ div(:class="`${pre}`")
                     :label="item.label"
                   )
     div.justify-content-between.align-items-end.mb-24(:class="`${pre}__filters--desktop`")
-      div(:class="`${pre}__filters--desktop__input`")
-        er-text-field(
-          v-if="isPointFiltrationRalized"
-          label="Фильтрация по точкам",
-          v-model="modelFilterService",
-          appendInnerIcon="close",
-          @click:append-inner="clearModelFilterService"
-        )
       .filter-list(:class="`${pre}__filters--desktop__toggle`")
         .filter-list__label Сортировать по:
         .filter-list__content
@@ -154,6 +181,14 @@ div(:class="`${pre}`")
               :value="item.value"
               :label="item.label"
             )
+      div(:class="`${pre}__filters--desktop__input`")
+        er-text-field(
+          v-if="isPointFiltrationRalized"
+          label="Фильтрация по точкам",
+          v-model="modelFilterService",
+          appendInnerIcon="close",
+          @click:append-inner="clearModelFilterService"
+        )
 
   template(v-if="!isLoadedPackList")
     pu-skeleton(width="300px")
@@ -208,4 +243,15 @@ div(:class="`${pre}`")
     persistent
   )
     director-feedback(v-model="isOpenImpressionForm" isImpressionForm="true")
+
+  ChangeOrganizationPopup(
+    :active="isOpenDialogChangeOrganisation"
+    @close="() => { isOpenDialogChangeOrganisation = false }"
+  )
+
+  ErPlugProduct(
+    v-model="isOpenManagerRequestDialog"
+    isSendManagerRequest
+    :requestData="getRequestDataForDDoSConnect"
+  )
 

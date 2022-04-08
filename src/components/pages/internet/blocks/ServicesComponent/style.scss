@@ -47,7 +47,7 @@
       }
     }
     .icon {
-      color: map_get($yellow, 'base');
+      color: map_get($red, 'base');
       margin-bottom: 12px;
       transition: $primary-transition;
       svg {
@@ -79,9 +79,9 @@
     &:hover {
       box-shadow: 0 2px 12px rgba(map_get($shades, 'black'), 0.1),
                   0 2px 2px rgba(map_get($shades, 'black'), 0.05),
-                  inset 0 0 8px map_get($yellow, 'other-5');
+                  inset 0 0 8px map_get($red, 'other-5');
       .content {
-        background: radial-gradient(50% 50% at 50% 50%, map_get($yellow, 'base') 55.5%, map_get($yellow, 'other-4') 100%);
+        background: map-get($red, 'lighten-2');
       }
       .icon {
         @include color-white();

@@ -85,9 +85,6 @@
         ));
       }
       &-field {
-        @include media-query((
-          margin-bottom: (xs: 32px, md: 30px, lg: 32px, xl: 32px !important)
-        ));
         & > .er-input__control > .er-input__slot,
         & > .er-text-field > .er-input__control > .er-input__slot {
           @include media-query((
@@ -231,8 +228,8 @@
           border-bottom-color: rgba(map_get($shades, 'black'), 0.8);
         }
         &:active {
-          color: map_get($yellow, 'base');
-          border-bottom-color: map_get($yellow, 'base');
+          color: map_get($red, 'base');
+          border-bottom-color: map_get($red, 'base');
         }
       }
     }

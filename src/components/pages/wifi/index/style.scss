@@ -34,7 +34,7 @@
         border-radius: 8px;
         @include color-black(0.8);
         outline: none;
-        background-color: map-get($yellow, 'base');
+        background-color: map-get($red, 'lighten-2');
 
         svg {
           width: 16px;
@@ -83,7 +83,7 @@
       align-items: center;
 
       button {
-        color: map-get($yellow, 'base');
+        color: map-get($red, 'base');
 
         &.on {
           color: map-get($green, 'base');

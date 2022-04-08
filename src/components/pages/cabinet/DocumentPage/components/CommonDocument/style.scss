@@ -415,7 +415,7 @@ $pre: '.er-document';
 
   &__verifying-text {
     @extend %h4;
-    color: map_get($yellow, 'base');
+    color: map_get($red, 'base');
     text-align: right;
     user-select: none;
     .question--desktop {
@@ -444,7 +444,7 @@ $pre: '.er-document';
     }
     @include min-breakpoint('md') {
       text-align: left;
-      @include color(map_get($yellow, 'base'), 1);
+      @include color(map_get($red, 'base'), 1);
     }
   }
 

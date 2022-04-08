@@ -11,7 +11,7 @@
       height: 8px;
       content: '';
       border-radius: 50%;
-      background-color: map-get($yellow, 'base');
+      background-color: map-get($red, 'other-5');
     }
   }
 
@@ -27,13 +27,13 @@
 
     .inn-submit button {
       @extend %erth--navigation;
-      color: #222222;
+      color: map-get($shades, 'white');
       box-shadow: 0 2px 2px rgba(10, 43, 103, 0.1), 0 2px 12px rgba(10, 43, 103, 0.15);
 
-      &:hover {
-        background: #FFEA01;
-        box-shadow: 0 4px 8px rgba(43, 83, 155, 0.12), 0 16px 40px rgba(43, 83, 155, 0.16);
-      }
+      //&:hover {
+      //  background: #FFEA01;
+      //  box-shadow: 0 4px 8px rgba(43, 83, 155, 0.12), 0 16px 40px rgba(43, 83, 155, 0.16);
+      //}
     }
 
     .inn-submit .er-button__icon--append {

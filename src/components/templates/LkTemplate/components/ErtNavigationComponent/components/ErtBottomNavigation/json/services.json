@@ -1,0 +1,71 @@
+[
+  {
+    "service": "Интернет",
+    "path": "/lk/internet",
+    "children": [
+      { "service": "Статистика", "path": "/lk/internet/statistic" },
+      { "service": "Контент-фильтрация", "path": "/lk/internet/content-filter" },
+      { "service": "Обратные зоны", "path": "/lk/internet/reverce-zones" },
+      { "service": "Дополнительные IP-адреса", "path": "/lk/internet/ip" },
+      { "service": "IP Транзит", "path": "/lk/internet/ip-transit" },
+      { "service": "Защита от DDoS атак", "path": "/lk/internet/ddos/" }
+    ]
+  },
+  {
+    "service": "Облачная телефония",
+    "path": "/lk/oats/",
+    "children": [
+      { "service": "Портал ОАТС", "path": "/lk/oats/go-to-portal", "id": "portal-oats" },
+      { "service": "Статистика", "path": "/lk/oats/statistic" }
+    ]
+  },
+  {
+    "service": "Видеонаблюдение",
+    "path": "/lk/videocontrol/forpost/",
+    "children": [
+      { "service": "Видеоаналитика", "path": "/lk/videocontrol/forpost/products" }
+    ]
+  },
+  {
+    "service": "Видеонаблюдение (Энфорта)",
+    "path": "/lk/videocontrol/enforta/"
+  },
+  {
+    "service": "WiFi зона",
+    "path": "/lk/wifi",
+    "children": [
+      { "service": "Сервисы авторизации", "path": "/lk/wifi/services-auth" },
+      { "service": "Конструктор страницы авторизации", "path": "/lk/wifi/personalization" },
+      { "service": "Контент-фильтрация", "path": "/lk/wifi/content-filter" },
+      { "service": "Аналитика", "path": "/lk/wifi/analytics/statistics" }
+    ]
+  },
+  {
+    "service": "Wi-Fi маркетинг (Радар + Wi-Fi Hot Spot)",
+    "path": "/lk/wifi/radar"
+  },
+  {
+    "service": "Телефония",
+    "path": "/lk/telephony",
+    "children": [
+      { "service": "Статистика", "path": "/lk/telephony/statistic" },
+      { "service": "Переадресация", "path": "/lk/telephony/redirections" },
+      { "service": "Чёрный список", "path": "/lk/telephony/blacklist" }
+    ]
+  },
+  {
+    "service": "Бизнес ТВ",
+    "path": "/lk/tv",
+    "children": [
+      { "service": "Пакеты каналов", "path": "/lk/tv/packages-list" }
+    ]
+  },
+  {
+    "service": "Сетевая инфраструктура",
+    "path": "/lk/vpn"
+  },
+  {
+    "service": "Цифровые продукты",
+    "path": "/lk/digital-products"
+  }
+]

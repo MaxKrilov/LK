@@ -59,7 +59,7 @@
           padding: 0 16px;
         }
         .icon {
-          color: map_get($yellow, 'base');
+          color: map_get($red, 'lighten-2');
           margin-right: 4px;
         }
         .address {
@@ -184,7 +184,7 @@
           color: map_get($red, 'base');
         }
         &:active {
-          background-color: map_get($yellow, 'base');
+          background-color: map_get($red, 'base');
           .icon {
             @include color-white(1);
           }
@@ -200,9 +200,9 @@
         }
         &.active {
           background-color: map_get($shades, 'white');
-          border-right-color: map_get($yellow, 'base');
+          border-right-color: map_get($red, 'darken-1');
           .icon {
-            color: map_get($yellow, 'base');
+            color: map_get($red, 'lighten-2');
           }
         }
       }
@@ -318,7 +318,7 @@
             background-color: map_get($gray, '9');
           }
           .icon {
-            color: map_get($yellow, 'base');
+            color: map_get($red, 'lighten-2');
           }
           .address {
             @include color-black(0.8);
@@ -347,7 +347,7 @@
           line-height: 16px;
           border: none;
           outline: none;
-          background: radial-gradient(50% 50% at 50% 50%, map_get($yellow, 'base') 55.5%, map_get($yellow, 'other-4') 100%);
+          background: map-get($red, 'base');
           margin: 0 auto 0;
           border-radius: 0 0 4px 4px;
           @include color-white();

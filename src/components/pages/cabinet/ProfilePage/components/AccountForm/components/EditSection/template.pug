@@ -1,98 +1,62 @@
-div(:class="`${pre}`")
-  er-row
-    er-flex(xs12 sm6 md6 lg4 :class="`${pre}__signature`")
+div.edit-section
+  ErRow
+    ErFlex.edit-section__signature(xs12 sm6 md6 lg4)
       div
-        h3(:class="`${pre}-title ${pre}-title--large`") Мой&nbsp;профиль
-        div(:class="`${pre}__input-block`")
-          div(v-if="isLastNameChanged" :class="`${pre}__changed`")
-              er-icon(:class="`${pre}__changed-icon`" name="ok")
-              span(:class="`${pre}__changed-text`") Изменен
-          er-text-field(
-            :class="`${pre}-field`"
+        h3.edit-section-title.edit-section-title--large Мой&nbsp;профиль
+        div.edit-section__input-block
+          ErtTextField.edit-section-field(
+            v-model="value.lastName"
             name="inputLastName"
             label="Фамилия"
-            v-model="value.lastName"
-            isShowSuccess
-            :rules="fullNameRule")
-      div(:class="`${pre}__input-block`")
-        div(v-if="isFirstNameChanged" :class="`${pre}__changed`")
-          er-icon(:class="`${pre}__changed-icon`" name="ok")
-          span(:class="`${pre}__changed-text`") Изменен
-        er-text-field(
-          :class="`${pre}-field`"
+            :rules="fullNameRule"
+          )
+      div.edit-section__input-block
+        ErtTextField.edit-section-field(
+          v-model="value.firstName"
           name="inputFirstName"
           label="Имя"
-          v-model="value.firstName"
-          isShowSuccess
-          :rules="fullNameRule")
-      div(:class="`${pre}__input-block`")
-        div(v-if="isMiddleNameChanged" :class="`${pre}__changed`")
-          er-icon(:class="`${pre}__changed-icon`" name="ok")
-          span(:class="`${pre}__changed-text`") Изменен
-        er-text-field(
-          :class="`${pre}-field`"
+          :rules="fullNameRule"
+        )
+      div.edit-section__input-block
+        ErtTextField.edit-section-field(
+          v-model="value.middleName"
           name="inputMiddleName"
           label="Отчество"
-          v-model="value.middleName"
-          isShowSuccess
-          :rules="fullNameRule")
-    er-flex(xs12 sm6 md6 lg4 :class="`${pre}__my-profile`")
+          :rules="fullNameRule"
+        )
+    ErFlex.edit-section__my-profile(xs12 sm6 md6 lg4)
       div
-        h3(:class="`${pre}-title`") Право подписи
-        er-text-field(
-          :class="`${pre}-field`"
-          label="Фамилия в род. падеже")
+        h3.edit-section-title Право подписи
+        ErtTextField.edit-section-field(label="Фамилия в род. падеже")
       div
-        er-text-field(
-          :class="`${pre}-field`"
-          label="Имя в род. падеже")
+        ErtTextField.edit-section-field(label="Имя в род. падеже")
       div
-        er-text-field(
-          :class="`${pre}-field`"
-          label="Отчество в род. падеже")
+        ErtTextField.edit-section-field(label="Отчество в род. падеже")
       div
-        er-text-field(
-          :class="`${pre}-field`"
-          label="Должность  в род. падеже")
-    er-flex(sm6 md6 lg4 :class="`${pre}__account`")
-      er-row
-        er-flex(xs12 md12 lg12)
+        ErtTextField.edit-section-field(label="Должность  в род. падеже")
+    ErFlex.edit-section__account(sm6 md6 lg4)
+      ErRow
+        ErFlex(xs12 md12 lg12)
           div
-            h3(:class="`${pre}-title`") Учетная запись (логин)
-            div(:class="`${pre}__input-block`")
-              div(v-if="isPhoneChanged" :class="`${pre}__changed`")
-                er-icon(:class="`${pre}__changed-icon`" name="ok")
-                span(:class="`${pre}__changed-text`") Изменен
-              er-text-field(
-                :class="`${pre}-field`"
+            h3.edit-section-title Учетная запись (логин)
+            div.edit-section__input-block
+              ErtTextField.edit-section-field(
+                v-model="value.phoneNumber"
                 name="inputPhoneNumber"
                 label="Введите номер телефона"
                 mask="phone"
-                v-model="value.phoneNumber"
-                isShowSuccess
-                ref="phone"
                 :rules="phoneRule"
               )
-          div(:class="`${pre}__input-block`")
-            div(v-if="isEmailChanged" :class="`${pre}__changed`")
-              er-icon(:class="`${pre}__changed-icon`" name="ok")
-              span(:class="`${pre}__changed-text`") Изменен
-            er-text-field(
-              :class="`${pre}-field`"
+          div.edit-section__input-block
+            ErtTextField.edit-section-field(
+              v-model="value.email"
               name="inputEmail"
               label="Введите электронную почту"
               type="email"
-              v-model="value.email"
-              isShowSuccess
-              ref="email"
               :rules="emailRule"
             )
-        er-flex(
-          xs12
-          md12
-          lg12
-          v-if="isMD || isLG")
+        ErFlex(v-if="isMD || isLG" xs12 md12 lg12)
           div
-            p(:class="`${pre}__text-info`") В качестве логина для доступа в
+            p.edit-section__text-info В качестве логина для доступа в
               b &nbsp;личный кабинет
               | &nbsp;вы можете использовать номер телефона либо почту

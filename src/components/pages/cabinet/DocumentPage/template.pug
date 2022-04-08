@@ -11,20 +11,20 @@ div(:class="`${pre}`")
 
   .document-page__select-type.document-tabs
     .document-tabs__title(
-      @click="onSelectContractTab()"
-      v-class-mod="{active: currentDocumentType === CONTRACT_DOCUMENTS}"
-      data-ga-category="documents"
-      data-ga-label="contracts"
-    )
-      | Контрактные
-
-    .document-tabs__title(
       @click="onSelectReportTab()"
       v-class-mod="{active: currentDocumentType === REPORT_DOCUMENTS}"
       data-ga-category="documents"
       data-ga-label="reports"
     )
       | Отчётные
+
+    .document-tabs__title(
+      @click="onSelectContractTab()"
+      v-class-mod="{active: currentDocumentType === CONTRACT_DOCUMENTS}"
+      data-ga-category="documents"
+      data-ga-label="contracts"
+    )
+      | Контрактные
 
   .document-page__contract-documents(v-show="currentDocumentType === CONTRACT_DOCUMENTS")
     .wide-content

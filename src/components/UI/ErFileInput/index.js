@@ -48,7 +48,7 @@ export default {
         {
           this.file?.name
             ? (
-              <div class={`${this.pre}__filename`}>
+              <div class={`${this.pre}__filename link--dashed`}>
                 { this.file.name }
                 <div class={`${this.pre}__cancel`} onClick={this.cancelDocument}>
                   <er-icon name="cancel" />
@@ -56,7 +56,7 @@ export default {
               </div>
             )
             : (
-              <label for={this.id}>
+              <label for={this.id} class={'link--dashed'}>
                 { this.label }
               </label>
             )

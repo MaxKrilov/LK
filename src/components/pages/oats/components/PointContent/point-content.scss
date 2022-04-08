@@ -92,7 +92,7 @@
         svg {
           transition: $primary-transition;
           width: 48px;
-          color: map-get($yellow, "base");
+          color: map-get($red, "base");
         }
       }
     }
@@ -115,7 +115,7 @@
       }
     }
   }
-  
+
   &__go-to-portal {
     display: flex;
     align-items: center;
@@ -264,11 +264,11 @@
       display: inline-flex;
       flex-direction: column;
       align-items: flex-end;
-      
+
       @include min-breakpoint("md") {
         display: initial;
       }
-      
+
     }
   }
 

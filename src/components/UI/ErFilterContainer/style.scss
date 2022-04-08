@@ -56,7 +56,7 @@ $active-filter-transition: .1s ease-in-out;
     background-color: map_get($shades, 'white');
 
     .er-icon {
-      color: map_get($yellow, 'base');
+      color: map_get($red, 'base');
       transform: rotate(-90deg);
 
       svg {

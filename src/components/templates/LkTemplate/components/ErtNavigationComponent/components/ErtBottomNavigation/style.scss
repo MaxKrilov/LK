@@ -1,0 +1,306 @@
+.ert-bottom-navigation {
+  position: relative;
+
+  .ert-bottom-navigation-tabs {
+    display: flex;
+    height: 24px;
+    transition: $primary-transition;
+    position: relative;
+    overflow: hidden;
+
+    &__item {
+      width: 100%;
+      cursor: pointer;
+      @extend %menu-item-font;
+      color: map-get($gray, '8');
+
+      > span {
+        display: inline-flex;
+        align-items: center;
+        margin-bottom: 4px;
+        transition: $primary-transition;
+
+        i {
+          @include color-black(0.2);
+        }
+      }
+
+      &:hover > span {
+        color: map-get($red, 'base');
+
+        i { color: inherit }
+      }
+    }
+
+    &__item--active > span {
+      color: map-get($red, 'base');
+
+      i { color: inherit }
+    }
+
+    &__prev,
+    &__next {
+      width: 48px;
+      position: absolute;
+      top: 0;
+      transition: $primary-transition;
+      z-index: 1;
+
+      > i > svg {
+        width: 24px !important;
+        position: relative;
+        z-index: 2;
+        @include color-black(0.2);
+      }
+
+      &::before {
+        content: '';
+        display: block;
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+      }
+
+      &--disabled {
+        opacity: 0;
+        pointer-events: none;
+      }
+    }
+
+    &__prev {
+      left: 0;
+      text-align: left;
+
+      > i > svg {
+        transform: rotate(180deg);
+      }
+
+      &::before {
+        background: linear-gradient(270deg, map-get($shades, 'white') 20.83%, rgba(map-get($shades, 'white'), 0.858669) 62.78%, rgba(map-get($shades, 'white'), 0) 87.5%);
+        transform: rotate(180deg);
+      }
+    }
+
+    &__next {
+      right: 0;
+      text-align: right;
+
+      &::before {
+        background: linear-gradient(270deg, map-get($shades, 'white') 20.83%, rgba(map-get($shades, 'white'), 0.858669) 62.78%, rgba(map-get($shades, 'white'), 0) 87.5%);
+      }
+    }
+  }
+
+  &__tabs {
+    position: relative;
+    &:not(.ert-bottom-navigation__tabs--showArrows) {
+      .ert-bottom-navigation-tabs__prev,
+      .ert-bottom-navigation-tabs__next {
+        display: none;
+      }
+    }
+  }
+
+  &__menu {
+    box-shadow: none !important;
+    left: 0 !important;
+
+    &__menu-item {
+      margin-bottom: 24px;
+
+      &:not(.service) {
+        width: 100%;
+      }
+
+      ul {
+        list-style: none;
+      }
+
+      li {
+        display: flex;
+        align-items: center;
+
+        &::before {
+          content: '';
+          display: block;
+          width: 8px;
+          height: 8px;
+          background-color: map-get($red, 'lighten-2');
+          border-radius: 1px;
+          margin-right: 8px;
+        }
+
+        a {
+          @extend %menu-item-font;
+          color: map-get($gray, '8');
+          text-decoration: none;
+          transition: $primary-transition;
+
+          &:hover {
+            color: map-get($red, 'lighten-2');
+          }
+
+          &:active {
+            color: map-get($red, 'base');
+          }
+        }
+      }
+    }
+
+    &__menu-title {
+      @extend %menu-head-font;
+      margin-bottom: 16px;
+      color: map-get($gray, '8');
+      text-decoration: none;
+      transition: $primary-transition;
+      display: block;
+
+      &:hover {
+        color: map-get($red, 'lighten-2');
+      }
+
+      &:active {
+        color: map-get($red, 'base');
+      }
+    }
+
+    &__payment {
+      width: 100%;
+      max-width: 407px;
+      display: flex;
+      align-items: flex-end;
+
+      .er-button {
+        max-width: 129px;
+        margin-left: 16px;
+      }
+
+      .ert-input {
+        width: 262px;
+      }
+    }
+
+    &__manager-name {
+      font-weight: bold;
+    }
+  }
+
+  &__menu-container {
+    background: map-get($shades, 'white');
+    padding: 32px 16px;
+    height: 100%;
+
+    @include min-breakpoint('md') {
+      padding: 32px 24px;
+    }
+
+    @include min-breakpoint('lg') {
+      padding: 32px 48px;
+      height: auto;
+    }
+
+    @include min-breakpoint('xl') {
+      padding: 32px 0;
+    }
+  }
+
+  &__menu-content {
+    max-width: 1040px;
+    margin: 0 auto;
+    display: flex;
+
+    &.services {
+      flex-direction: column !important;
+    }
+
+    &:not(.services) {
+      justify-content: space-between;
+    }
+
+    @include min-breakpoint('lg') {
+      max-height: 499px;
+      overflow: initial;
+
+      &.services {
+        flex-wrap: wrap;
+      }
+    }
+  }
+
+  &__menu-head {
+    display: flex;
+    align-items: center;
+    padding-bottom: 16px;
+    border-bottom: 1px solid rgba(map-get($gray, '33'), 0.4);
+    margin-bottom: 32px;
+
+    @include min-breakpoint('lg') {
+      display: none;
+    }
+
+    &__tabs {
+      display: flex;
+      position: relative;
+      align-items: center;
+      overflow: hidden;
+      height: 24px;
+      //transition: $primary-transition;
+    }
+
+    &__tabs-item {
+      @extend %menu-item-font;
+      @include color-black(0.8);
+
+      &--active {
+        color: map-get($red, 'base');
+      }
+
+      &:not(:last-child) {
+        margin-right: 24px;
+      }
+    }
+
+    &__prev,
+    &__next {
+      position: absolute;
+      top: 0;
+      width: 54px;
+      transition: $primary-transition;
+      z-index: 1;
+
+      &--disabled {
+        opacity: 0;
+        pointer-events: none;
+      }
+    }
+
+    &__prev {
+      left: 0;
+      text-align: right;
+      background: linear-gradient(270deg, map-get($shades, 'white') 20.83%, rgba(map-get($shades, 'white'), 0.858669) 62.78%, rgba(map-get($shades, 'white'), 0) 87.5%);
+      transform: rotate(180deg);
+
+      > i > svg {
+        //transform: rotate(180deg);
+      }
+    }
+
+    &__next {
+      right: 0;
+      text-align: right;
+      background: linear-gradient(270deg, #FFFFFF 46.88%, rgba(255, 255, 255, 0.858669) 80.3%, rgba(255, 255, 255, 0) 100%);
+    }
+
+    &__close {
+      @include color-black(0.2);
+    }
+  }
+
+  &__menu-head-tabs {
+    display: flex;
+    transition: $primary-transition;
+    //overflow: hidden;
+  }
+}

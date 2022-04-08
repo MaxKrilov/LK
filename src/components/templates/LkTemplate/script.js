@@ -1,4 +1,5 @@
-import MenuComponent from './components/MenuComponent/index'
+import ErtNavigationComponent from './components/ErtNavigationComponent'
+
 import ErFooter from '@/components/blocks/ErFooter'
 import { mapGetters, mapState, mapMutations } from 'vuex'
 import ErErrorModal from '@/components/blocks/ErErrorModal'
@@ -14,7 +15,7 @@ export default {
     ChatButton,
     ErErrorModal,
     ErFooter,
-    MenuComponent,
+    ErtNavigationComponent,
     NotificationPanel
   },
   data: () => ({

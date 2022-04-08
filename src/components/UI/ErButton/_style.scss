@@ -8,28 +8,25 @@
   background: map_get($shades, 'transparent');
   font: 14px $fedra-demi;
   cursor: pointer;
-  border-radius: 8px;
+  border-radius: 24px;
   transition: $primary-transition, color 1ms;
   position: relative;
-  box-shadow: 0 2px 12px rgba(map_get($shades, 'black'), 0.1),
-              0 2px 2px rgba(map_get($shades, 'black'), 0.05);
+  box-shadow: 0 2px 2px rgba(map_get($shades, 'black'), 0.05),
+              0 2px 12px rgba(map_get($shades, 'black'), 0.1);
+
   &:hover {
-    box-shadow: 0 16px 40px rgba(map_get($shades, 'black'), 0.08),
-                0 4px 8px rgba(map_get($shades, 'black'), 0.06);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06),
+                -8px 8px 16px rgba(0, 0, 0, 0.04);
   }
-  @include media-query((
-    height: (md: 46px)
-  ));
-  &--yellow {
-    background: map_get($yellow, 'base');
-    &:hover {
-      background: map_get($yellow, 'other-1');
-    }
-    &:active {
-      background: map_get($yellow, 'base');
-      box-shadow: inset 0 4px 4px rgba(map_get($yellow, 'darken-1'), 0.6);
-    }
+
+  &:active {
+    box-shadow: none;
   }
+
+  @include min-breakpoint('md') {
+    height: 46px;
+  }
+
   &--blue {
     background: map_get($blue, 'base');
     color: map_get($shades, 'white') !important;
@@ -55,14 +52,14 @@
   }
   &--red {
     background: map_get($red, 'base');
-    color: map_get($shades, 'white') !important;
+    color: map_get($shades, 'white');
 
     &:hover {
-      background: map_get($red, 'other-1');
+      background: map_get($red, 'lighten-2');
     }
     &:active {
       background: map_get($red, 'base');
-      box-shadow: inset 0 4px 4px map_get($red, 'other-2');
+      box-shadow: none;
     }
   }
   &--gray {

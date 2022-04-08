@@ -102,11 +102,12 @@
             &.active {
               span {
                 @include color-black(1);
-                text-decoration-color: map_get($yellow, 'base');
+                text-decoration-color: map_get($red, 'base');
               }
 
               &::before {
-                background-color: map_get($yellow, 'base');
+                background-color: map_get($red, 'base');
+                @include color-white(1);
               }
             }
           }
@@ -167,8 +168,7 @@
           transition: $primary-transition;
         }
       }
-      a:hover,
-      &.sort {
+      a:hover {
         .title,
         .icon {
           @include color-black(0.8)
@@ -176,7 +176,8 @@
       }
       &.sort {
         .icon {
-          background-color: map_get($yellow, 'base');
+          background-color: map_get($red, 'base');
+          color: rgba(map-get($shades, 'white'), 0.8) !important;
         }
         &.desc {
           svg {
