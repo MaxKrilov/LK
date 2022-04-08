@@ -170,7 +170,6 @@ export default class ErtTokens extends Vue {
   async handleVisibilityChange () {
     if (!document.hidden && !isLocalhost()) {
       this.forwardStatusResult = await this.getForwardStatus({ api: this.$api })
-      this.forwardStatusResult = { status: false }
       if (!this.forwardStatusResult.status) {
         const fetchRefreshTokenResult = await this.fetchRefreshToken({ api: new API() })
         fetchRefreshTokenResult && this.onProccessingAccessToken()
