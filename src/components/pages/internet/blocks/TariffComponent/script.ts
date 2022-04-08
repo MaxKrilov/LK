@@ -425,7 +425,7 @@ export default class TariffComponent extends Vue {
       .datum({ endAngle: speedPercentage * 2 * Math.PI })
       .attr('fill', 'none')
       .attr('stroke-width', STROKE_WIDTH)
-      .attr('stroke', '#FFDD00')
+      .attr('stroke', '#A92424')
       // @ts-ignore
       .attr('d', arc)
     foreground
@@ -453,7 +453,7 @@ export default class TariffComponent extends Vue {
         .datum({ endAngle: fbPercentage * 2 * Math.PI })
         .attr('fill', 'none')
         .attr('stroke-width', STROKE_WIDTH)
-        .attr('stroke', '#F29801')
+        .attr('stroke', '#C51F1F')
         // @ts-ignore
         .attr('d', fbArc)
 
@@ -561,7 +561,7 @@ export default class TariffComponent extends Vue {
       .datum({ endAngle: wastedPercentage * 2 * Math.PI })
       .attr('fill', 'none')
       .attr('stroke-width', STROKE_WIDTH)
-      .attr('stroke', '#FFDD00')
+      .attr('stroke', '#A92424')
       // @ts-ignore
       .attr('d', arc)
     foreground

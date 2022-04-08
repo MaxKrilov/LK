@@ -19,97 +19,137 @@ h4,
 }
 
 
-a.link {
+//a.link {
+//  text-decoration: none;
+//  font-family: $fedra-demi;
+//  color: map_get($blue, 'base');
+//  transition: $primary-transition;
+//  border-bottom: 1px solid map_get($blue, 'base');
+//  &:hover {
+//    border-bottom-color: map_get($shades, 'transparent');
+//  }
+//  &:active {
+//    color: map_get($yellow, 'base');
+//    border-bottom-color: map_get($yellow, 'base');
+//  }
+//  &--solid {
+//    &--black-yellow {
+//      text-decoration: none;
+//      font-family: $fedra-book;
+//      color: rgba(map_get($shades, 'black'), 0.8);
+//      transition: $primary-transition;
+//      border-bottom: 1px solid rgba(map_get($shades, 'black'), 0.8);
+//      &:hover {
+//        color: map_get($shades, 'black');
+//        border-bottom-color: map_get($yellow, 'base');
+//      }
+//      &:active {
+//        color: map_get($yellow, 'base');
+//        border-bottom-color: map_get($yellow, 'base');
+//      }
+//    }
+//    &--black {
+//      text-decoration: none;
+//      font-family: $fedra-book;
+//      color: rgba(map_get($shades, 'black'), 0.5);
+//      transition: $primary-transition;
+//      border-bottom: 1px solid rgba(map_get($shades, 'black'), 0.5);
+//      &:hover {
+//        color: map_get($shades, 'black');
+//        border-bottom-color: map_get($shades, 'black');
+//      }
+//      &:active {
+//        color: map_get($yellow, 'base');
+//        border-bottom-color: map_get($yellow, 'base');
+//      }
+//    }
+//    &--yellow {
+//      text-decoration: none;
+//      font-family: $fedra-book;
+//      color: rgba(map_get($shades, 'black'), 0.5);
+//      transition: $primary-transition;
+//      border-bottom: 1px solid rgba(map_get($yellow, 'base'), 0.5);
+//      &:hover {
+//        color: map_get($shades, 'black');
+//        border-bottom-color: map_get($yellow, 'base');
+//      }
+//      &:active {
+//        color: map_get($yellow, 'base');
+//        border-bottom-color: map_get($yellow, 'base');
+//      }
+//    }
+//  }
+//  &--dashed {
+//    &--yellow {
+//      text-decoration: none;
+//      font-family: $fedra-book;
+//      color: rgba(map_get($shades, 'black'), 0.5);
+//      transition: $primary-transition;
+//      border-bottom: 1px dashed rgba(map_get($yellow, 'base'), 0.5);
+//      &:hover {
+//        color: map_get($shades, 'black');
+//        border-bottom-color: map_get($yellow, 'base');
+//      }
+//      &:active {
+//        color: map_get($yellow, 'base');
+//        border-bottom-color: map_get($yellow, 'base');
+//      }
+//    }
+//    &--black {
+//      text-decoration: none;
+//      font-family: $fedra-book;
+//      color: rgba(map_get($shades, 'black'), 0.5);
+//      transition: $primary-transition;
+//      border-bottom: 1px dashed rgba(map_get($shades, 'black'), 0.5);
+//      &:hover {
+//        color: map_get($shades, 'black');
+//        border-bottom-color: map_get($shades, 'black');
+//      }
+//      &:active {
+//        color: map_get($yellow, 'base');
+//        border-bottom-color: map_get($yellow, 'base');
+//      }
+//    }
+//  }
+//}
+.link {
+  @extend %caption1-font;
+  color: map-get($blue, 'base');
   text-decoration: none;
-  font-family: $fedra-demi;
-  color: map_get($blue, 'base');
+  border-bottom: 1px solid map-get($blue, 'base');
   transition: $primary-transition;
-  border-bottom: 1px solid map_get($blue, 'base');
-  &:hover {
-    border-bottom-color: map_get($shades, 'transparent');
-  }
+
+  &:hover,
   &:active {
-    color: map_get($yellow, 'base');
-    border-bottom-color: map_get($yellow, 'base');
+    border-bottom-color: map-get($shades, 'transparent');
   }
-  &--solid {
-    &--black-yellow {
-      text-decoration: none;
-      font-family: $fedra-book;
-      color: rgba(map_get($shades, 'black'), 0.8);
-      transition: $primary-transition;
-      border-bottom: 1px solid rgba(map_get($shades, 'black'), 0.8);
-      &:hover {
-        color: map_get($shades, 'black');
-        border-bottom-color: map_get($yellow, 'base');
-      }
-      &:active {
-        color: map_get($yellow, 'base');
-        border-bottom-color: map_get($yellow, 'base');
-      }
-    }
-    &--black {
-      text-decoration: none;
-      font-family: $fedra-book;
-      color: rgba(map_get($shades, 'black'), 0.5);
-      transition: $primary-transition;
-      border-bottom: 1px solid rgba(map_get($shades, 'black'), 0.5);
-      &:hover {
-        color: map_get($shades, 'black');
-        border-bottom-color: map_get($shades, 'black');
-      }
-      &:active {
-        color: map_get($yellow, 'base');
-        border-bottom-color: map_get($yellow, 'base');
-      }
-    }
-    &--yellow {
-      text-decoration: none;
-      font-family: $fedra-book;
-      color: rgba(map_get($shades, 'black'), 0.5);
-      transition: $primary-transition;
-      border-bottom: 1px solid rgba(map_get($yellow, 'base'), 0.5);
-      &:hover {
-        color: map_get($shades, 'black');
-        border-bottom-color: map_get($yellow, 'base');
-      }
-      &:active {
-        color: map_get($yellow, 'base');
-        border-bottom-color: map_get($yellow, 'base');
-      }
-    }
+
+  &:active {
+    color: map-get($red, 'base');
   }
+
+  &--solid,
   &--dashed {
-    &--yellow {
-      text-decoration: none;
-      font-family: $fedra-book;
-      color: rgba(map_get($shades, 'black'), 0.5);
-      transition: $primary-transition;
-      border-bottom: 1px dashed rgba(map_get($yellow, 'base'), 0.5);
-      &:hover {
-        color: map_get($shades, 'black');
-        border-bottom-color: map_get($yellow, 'base');
-      }
-      &:active {
-        color: map_get($yellow, 'base');
-        border-bottom-color: map_get($yellow, 'base');
-      }
+    transition: $primary-transition;
+    color: map-get($gray, '8');
+    border-bottom-width: 1px;
+    border-bottom-color: currentColor;
+
+    &:hover {
+      color: map-get($red, 'lighten-2');
     }
-    &--black {
-      text-decoration: none;
-      font-family: $fedra-book;
-      color: rgba(map_get($shades, 'black'), 0.5);
-      transition: $primary-transition;
-      border-bottom: 1px dashed rgba(map_get($shades, 'black'), 0.5);
-      &:hover {
-        color: map_get($shades, 'black');
-        border-bottom-color: map_get($shades, 'black');
-      }
-      &:active {
-        color: map_get($yellow, 'base');
-        border-bottom-color: map_get($yellow, 'base');
-      }
+
+    &:active {
+      color: map-get($red, 'base');
     }
+  }
+
+  &--solid {
+    border-bottom-style: solid;
+  }
+
+  &--dashed {
+    border-bottom-style: dashed;
   }
 }
 

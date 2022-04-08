@@ -23,7 +23,6 @@
       .ert-wifi-personalization-page__suspended.mb-24
         | Услуга приостановлена! Восстановите услугу для дальнейшего использования
       er-button.ert-wifi-personalization-page__restore-button(
-        color="yellow"
         @click="$router.push('/lk/support?form=restoring_a_contract_or_service')"
       ) Восстановить
     template(v-else-if="!isActiveProduct")

@@ -34,7 +34,7 @@
       margin-right: (xs: 0, sm: 22px)
     ));
     &--info {
-      color: map_get($yellow, 'base');
+      color: map_get($red, 'base');
     }
     &--error {
       color: map_get($red, 'base')

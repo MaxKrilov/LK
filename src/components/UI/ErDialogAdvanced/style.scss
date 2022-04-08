@@ -2,7 +2,7 @@ $pre: '.er-dialog-advanced';
 
 $color-success: map_get($green, 'base');
 $color-warning: map_get($red, 'base');
-$color-yellow: map_get($yellow, 'base');
+$color-yellow: map_get($red, 'base');
 $color-dialog-bg: map_get($shades, 'white');
 $color-close-button: rgba(map_get($shades, 'black'), .2);
 $color-action: rgba(map_get($shades, 'black'), .5);
@@ -65,7 +65,7 @@ $color-action: rgba(map_get($shades, 'black'), .5);
       }
 
       &--question {
-        color: map_get($yellow, 'base');
+        color: map_get($red, 'base');
       }
     }
   }

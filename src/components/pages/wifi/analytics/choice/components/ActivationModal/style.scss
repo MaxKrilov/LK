@@ -87,13 +87,5 @@
         margin-right: (sm: 0)
       ));
     }
-
-    .er-button {
-      @extend %button-font;
-      height: 40px;
-      @include media-query((
-        height: (xl: 48px)
-      ));
-    }
   }
 }

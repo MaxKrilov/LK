@@ -22,6 +22,7 @@ import Skeleton from 'vue-loading-skeleton'
 import Portal from 'portal-vue'
 
 import * as ErtComponents from './components/UI2'
+import * as ErtServices from './services'
 import { install } from '@/install'
 
 import * as Sentry from '@sentry/vue'
@@ -45,7 +46,7 @@ eachArray(requireComponent.keys(), (fileName: string) => {
 })
 
 // Регистрация UI2 компонентов
-install(Vue, { components: ErtComponents })
+install(Vue, { components: ErtComponents, services: ErtServices })
 
 // Регистрация директив
 eachObject(Directives, (config: DirectiveOptions | DirectiveFunction, directiveName: string) => {

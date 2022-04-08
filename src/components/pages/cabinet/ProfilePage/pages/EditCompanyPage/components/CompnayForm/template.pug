@@ -1,71 +1,119 @@
 div(:class="`${pre}`")
   er-row(:class="`${pre}__row`")
     er-flex(:class="[`${pre}__field .xs12`, { 'sm6' : isInnChanging}]")
-      er-text-field(
+      ErtTextField.company-form__field__input(
+        v-model.trim="editableInn"
         isShowLabelRequired
         :rules="notEmptyRule"
-        ref="companyFormInnRef"
-        v-model.trim="editableInn"
         label="ИНН"
-        :class="`${pre}__field__input`"
       )
+      //er-text-field(
+      //  isShowLabelRequired
+      //  :rules="notEmptyRule"
+      //  ref="companyFormInnRef"
+      //  v-model.trim="editableInn"
+      //  label="ИНН"
+      //  :class="`${pre}__field__input`"
+      //)
     er-flex(:class="`${pre}__field`" v-if='isInnChanging').xs12.sm6
-      er-button(:color="'yellow'" @click="handleResetInn") Изменить ИНН
+      er-button(@click="handleResetInn") Изменить ИНН
   div(:class="`${pre}__error`" v-if='isInnIncorrect')
-    error( error-message="Проверьте правильность введенных данных ИНН" )
+    error(error-message="Проверьте правильность введенных данных ИНН" )
   div(:class="`${pre}__field`")
-    er-text-field(
+    ErtTextField.company-form__field__input(
+      v-model.trim="editableLegalName"
       isShowLabelRequired
       :rules="notEmptyRule"
-      v-model.trim="editableLegalName"
       :disabled="isFetched"
       label="Юридическое название"
-      :class="`${pre}__field__input`"
     )
+    //er-text-field(
+    //  isShowLabelRequired
+    //  :rules="notEmptyRule"
+    //  v-model.trim="editableLegalName"
+    //  :disabled="isFetched"
+    //  label="Юридическое название"
+    //  :class="`${pre}__field__input`"
+    //)
   div(:class="`${pre}__field`")
-    er-text-field(
+    ErtTextField.company-form__field__input(
+      v-model.trim="editableLegalAddress"
       isShowLabelRequired
       :rules="notEmptyRule"
-      v-model.trim="editableLegalAddress"
       :disabled="isFetched"
       label="Юридический адрес"
-      :class="`${pre}__field__input`"
     )
+    //er-text-field(
+    //  isShowLabelRequired
+    //  :rules="notEmptyRule"
+    //  v-model.trim="editableLegalAddress"
+    //  :disabled="isFetched"
+    //  label="Юридический адрес"
+    //  :class="`${pre}__field__input`"
+    //)
   template(v-if='company.type === COMPANY_TYPE_CORP')
     div(:class="`${pre}__field`")
-      er-text-field(
+      ErtTextField.company-form__field__input(
+        v-model.trim="editableKpp"
         isShowLabelRequired
         :rules="notEmptyRule"
-        v-model.trim="editableKpp"
         :disabled="isFetched"
         label="КПП"
-        :class="`${pre}__field__input`"
       )
+      //er-text-field(
+      //  isShowLabelRequired
+      //  :rules="notEmptyRule"
+      //  v-model.trim="editableKpp"
+      //  :disabled="isFetched"
+      //  label="КПП"
+      //  :class="`${pre}__field__input`"
+      //)
   template(v-else)
     er-row(:class="`${pre}__row`")
       er-flex(:class="`${pre}__field`").xs12.sm6
-        er-text-field(
+        ErtTextField.company-form__field__input(
+          v-model.trim="editablePassport"
           isShowLabelRequired
           :rules="notEmptyRule"
-          v-model.trim="editablePassport"
           :disabled="isFetched"
           label="Паспорт"
-          :class="`${pre}__field__input`"
         )
-        er-text-field(
+        ErtTextField.company-form__field__input(
+          v-model.trim="editableIssueDate"
           isShowLabelRequired
           :rules="notEmptyRule"
-          v-model.trim="editableIssueDate"
           :disabled="isFetched"
           label="Дата выдачи"
-          :class="`${pre}__field__input`"
         )
+        //er-text-field(
+        //  isShowLabelRequired
+        //  :rules="notEmptyRule"
+        //  v-model.trim="editablePassport"
+        //  :disabled="isFetched"
+        //  label="Паспорт"
+        //  :class="`${pre}__field__input`"
+        //)
+        //er-text-field(
+        //  isShowLabelRequired
+        //  :rules="notEmptyRule"
+        //  v-model.trim="editableIssueDate"
+        //  :disabled="isFetched"
+        //  label="Дата выдачи"
+        //  :class="`${pre}__field__input`"
+        //)
     div(:class="`${pre}__field`")
-      er-text-field(
+      ErtTextField.company-form__field__input(
+        v-model.trim="editableIssuedBy"
         isShowLabelRequired
         :rules="notEmptyRule"
-        v-model.trim="editableIssuedBy"
         :disabled="isFetched"
         label="Кем выдан"
-        :class="`${pre}__field__input`"
       )
+      //er-text-field(
+      //  isShowLabelRequired
+      //  :rules="notEmptyRule"
+      //  v-model.trim="editableIssuedBy"
+      //  :disabled="isFetched"
+      //  label="Кем выдан"
+      //  :class="`${pre}__field__input`"
+      //)

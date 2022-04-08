@@ -9,7 +9,7 @@
           template(v-if="isNew")
             .active
               .logo
-                img(:src="require('@/assets/images/logo.png')")
+                img(:src="require('@/assets/images/logos/logo_mobile.svg')")
               .title
                 | Оплата новой картой
               .remember-card

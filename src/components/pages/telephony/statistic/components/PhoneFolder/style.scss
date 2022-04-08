@@ -12,14 +12,14 @@ $pre: '.phone-folder';
 
   &--active {
     #{$pre}__head {
-      border-right-color: map_get($yellow, 'base');
+      border-right-color: map_get($red, 'base');
     }
 
     #{$pre}__head_wrap {
       background-color: map_get($shades, 'white');
 
       .er-icon--telephone {
-        color: map_get($yellow, 'base');
+        color: map_get($red, 'base');
       }
     }
   }
@@ -34,7 +34,7 @@ $pre: '.phone-folder';
   &:not(#{$pre}--disabled) {
     #{$pre}__head:hover {
       .er-icon {
-        color: map_get($yellow, 'base');;
+        color: map_get($red, 'base');;
       }
     }
   }

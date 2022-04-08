@@ -110,7 +110,7 @@
     }
 
     &__icon {
-      color: map-get($yellow, 'base');
+      color: map-get($red, 'base');
       margin-bottom: $padding-x4;
 
       @include min-breakpoint('sm') {
@@ -170,7 +170,7 @@
       margin-bottom: $padding-x6;
 
       i > svg {
-        color: map-get($yellow, 'base');
+        color: map-get($red, 'base');
       }
     }
 

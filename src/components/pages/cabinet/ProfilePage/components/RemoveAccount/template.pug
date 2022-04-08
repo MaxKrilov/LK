@@ -17,7 +17,6 @@ er-dialog(:class="`${pre}`" maxWidth="544px" :value="value.visible" @update:retu
           er-button(
             :class="`${pre}__button`",
             @click="onRemove",
-            color="yellow"
             :disabled="value.fetching"
             :loading="value.fetching"
           ) Удалить

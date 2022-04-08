@@ -39,7 +39,7 @@
   &__active-line {
     width: 20px;
     opacity: 0;
-    background-color: map_get($yellow, "base");
+    background-color: map_get($red, "base");
     margin-right: -4px;
     @include min-breakpoint("md") {
       width: 8px;
@@ -67,7 +67,7 @@
     .er-card-products__point-icon {
       &::v-deep .icon {
         svg {
-          color: map-get($yellow, "base");
+          color: map-get($red, "base");
         }
       }
     }
@@ -84,7 +84,7 @@
     .er-card-products__point-icon {
       &::v-deep .icon {
         svg {
-          color: map_get($yellow, "base");
+          color: map_get($red, "base");
         }
       }
     }
@@ -376,7 +376,7 @@
         ),
         padding-right: (
           sm: $padding-x6,
-          xl: $padding-x8, 
+          xl: $padding-x8,
         ),
         padding-top: (
           md: $padding-x10

@@ -3,14 +3,20 @@ div(:class="`${pre}`")
     span - Поля обязательные к заполнению
   div(:class="`${pre}__inn`")
     div(:class="`${pre}__inn-input`")
-      er-text-field(
-        ref="innRef"
+      ErtTextField.edit-company-inn__inn-input__input(
         v-model.trim="innValue"
-        @keydown.enter="checkInn"
         :label="innLabel"
-        :class="`${pre}__inn-input__input`"
         isShowLabelRequired
+        @keydown.enter="checkInn"
       )
+      //er-text-field(
+      //  ref="innRef"
+      //  v-model.trim="innValue"
+      //  @keydown.enter="checkInn"
+      //  :label="innLabel"
+      //  :class="`${pre}__inn-input__input`"
+      //  isShowLabelRequired
+      //)
     er-hint(:class="`${pre}__inn-hint`" right)
       div(:class="`${pre}__inn-hint-content`")
         h2(:class="`${pre}__inn-hint-content__title`").title--medium Ваш ИНН
@@ -23,4 +29,4 @@ div(:class="`${pre}`")
     span  или&nbsp
     a(:href='selfEmployed') другом&nbsp;ресурсе
     span  для самозанятых
-  er-button(:class="`${pre}__button`" color="yellow" appendIcon="arrow_r" :disabled="!innValue || isInnIncorrect" @click="checkInn") Заполнить
+  er-button(:class="`${pre}__button`" appendIcon="arrow_r" :disabled="!innValue || isInnIncorrect" @click="checkInn") Заполнить

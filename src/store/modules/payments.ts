@@ -31,6 +31,20 @@ export interface IPaymentHistoryBill {
   accountPaymentStatus?: string
 }
 
+export interface IBillingAccountGroupByContract {
+  accountNumber: string,
+  contractNumber: string,
+  billingAccountId: string,
+  accountStatus: { id: string, name: string }
+}
+
+// export type BillingAccountGroupByContractType = Record<string, {
+//   accountNumber: string,
+//   contractNumber:string,
+//   billingAccountId: string,
+//   accountStatus: { id: string, name: string }
+// }[]>
+
 type IState = typeof state
 
 const api = () => new API()
@@ -151,7 +165,7 @@ const getters = {
     }
     result[contractNumber].push({ accountNumber, contractNumber, billingAccountId, accountStatus })
     return result
-  }, {} as Record<string, { accountNumber: string, contractNumber:string, billingAccountId: string, accountStatus: { id: string, name: string } }[]>),
+  }, {} as Record<string, IBillingAccountGroupByContract[]>),
   isEnabledAutoPay: (state: IState) => state.billingInfo.hasOwnProperty('paymentMethod')
     ? (state.billingInfo as IBillingInfo).paymentMethod.id === IS_ENABLED_AUTOPAY
     : false

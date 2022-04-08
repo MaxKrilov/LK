@@ -1,0 +1,61 @@
+.ert-manager-component {
+  .ert-skeleton-loader {
+    width: 215px;
+
+    @include min-breakpoint('xl') {
+      width: 230px;
+    }
+  }
+
+  &__manager-name {
+    color: rgba(map-get($shades, 'black'), 0.5) !important;
+    transition: $primary-transition;
+
+    &:hover {
+      color: map-get($red, 'lighten-2') !important;
+    }
+
+    &:active {
+      color: map-get($red, 'base') !important;
+    }
+  }
+
+  &__menu {
+    background: map-get($shades, 'white');
+    border-radius: 12px;
+  }
+
+  &__menu-top {
+    border-bottom: 1px solid rgba(map-get($shades, 'black'), 0.2);
+  }
+
+  &__menu-bottom a {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    transition: $primary-transition;
+
+    i {
+      @include color-black(0.2)
+    }
+
+    span {
+      @extend %button-font;
+      @include color-black(0.5);
+    }
+
+    &:hover {
+      i,
+      span {
+        color: map-get($red, 'lighten-2');
+      }
+    }
+
+    &:active {
+      i,
+      span {
+        color: map-get($red, 'base');
+      }
+    }
+  }
+}

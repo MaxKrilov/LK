@@ -43,7 +43,7 @@ $toast-width: 278px;
   &--question {
     #{$pre}__title,
     #{$pre}__icon {
-      color: map_get($yellow, 'base');
+      color: map_get($red, 'base');
     }
   }
 

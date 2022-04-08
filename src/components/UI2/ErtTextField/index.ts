@@ -16,6 +16,7 @@ import Resize from '@/directives/resize'
 
 import { convertToUnit } from '@/functions/helper2'
 import { keyCode as keyCodes } from '@/functions/keyCode'
+import Inputmask from 'inputmask'
 
 const dirtyTypes = ['color', 'file', 'time', 'date', 'datetime-local', 'week', 'month']
 
@@ -46,6 +47,7 @@ const props = {
   counterValue: Function,
   fullWidth: Boolean,
   label: String,
+  mask: String,
   placeholder: String,
   prefix: String,
   prependInnerIcon: String,
@@ -70,6 +72,9 @@ const props = {
     isFocused: 'updateValue',
     value (val) {
       this.lazyValue = val
+    },
+    mask (val) {
+      this.defineMask(val)
     }
   }
 })
@@ -92,6 +97,7 @@ class ErtTextField extends baseMixins {
   readonly counterValue!: (value: any) => number
   readonly fullWidth!: boolean
   readonly label!: string
+  readonly mask!: string
   readonly placeholder!: string
   readonly prefix!: string
   readonly prependInnerIcon!: string
@@ -456,10 +462,40 @@ class ErtTextField extends baseMixins {
     this.setPrependWidth()
   }
 
+  defineMask (mask: string) {
+    if (!mask) return
+
+    let data: Record<string, string | number | boolean> = {
+      jitMasking: true
+    }
+
+    if (mask === 'money') {
+      mask = 'currency'
+
+      data = {
+        ...data,
+        groupSeparator: ' ',
+        radixPoint: ',',
+        autoGroup: true,
+        digits: 2,
+        prefix: '',
+        suffix: '',
+        rightAlign: false,
+        jitMasking: false
+      }
+    }
+
+    (new Inputmask(mask, data)).mask(this.$refs.input)
+  }
+
   mounted () {
     this.$watch(() => this.labelValue, this.setLabelWidth)
     this.autofocus && this.tryAutofocus()
     requestAnimationFrame(() => (this.isBooted = true))
+
+    this.$nextTick(() => {
+      this.defineMask(this.mask)
+    })
   }
 }
 

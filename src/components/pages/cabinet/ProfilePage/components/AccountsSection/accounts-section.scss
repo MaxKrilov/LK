@@ -53,7 +53,7 @@
       &__icon {
         color: map_get($gray, '24');
         &:hover {
-          color: map_get($yellow, 'base');
+          color: map_get($red, 'base');
           transition: color 0.2s ease-in;
         }
       }
@@ -277,7 +277,7 @@
           &__filter--active {
             background-color: map_get($shades, 'transparent');
             & > .er-button__content {
-              background-color: map_get($yellow, 'base');
+              background-color: map_get($red, 'base');
             }
             color: map_get($gray, '7');
           }
@@ -291,7 +291,7 @@
 
           &:active {
             & svg {
-              color: map_get($yellow, 'base');
+              color: map_get($red, 'base');
             }
           }
         }
@@ -307,7 +307,7 @@
         background: map_get($shades, 'transparent');
 
         &--active {
-          background: map_get($yellow, 'base');
+          background: map_get($red, 'base');
 
           & svg {
             color: map_get($shades, 'black');

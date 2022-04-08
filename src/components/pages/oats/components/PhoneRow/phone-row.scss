@@ -21,7 +21,7 @@
   }
 
   &:active {
-    background-color: map-get($yellow, "base");
+    background-color: map-get($red, "base");
   }
 
   @include min-breakpoint(sm) {
@@ -55,7 +55,7 @@
     display: inline-flex;
     flex-direction: column;
     align-items: flex-end;
-    
+
     @include min-breakpoint("md") {
       display: initial;
     }

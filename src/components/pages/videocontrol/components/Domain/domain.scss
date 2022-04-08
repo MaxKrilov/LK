@@ -124,7 +124,7 @@
 
       &:hover {
         .er-icon {
-          color: map_get($yellow, "base");
+          color: map_get($red, "base");
         }
       }
 
@@ -207,12 +207,6 @@
 
     @include min-breakpoint("lg") {
       grid-template-columns: 1fr 1fr 1fr;
-    }
-
-    .er-button {
-      &:focus {
-        outline: none;
-      }
     }
   }
 

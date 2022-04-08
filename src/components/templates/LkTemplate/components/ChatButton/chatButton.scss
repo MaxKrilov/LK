@@ -24,7 +24,7 @@
   .er-icon {
 
     svg {
-      @include color-black(.5);
+      @include color-white(.5);
     }
   }
   &:hover {
@@ -62,7 +62,7 @@
     width: 56px;
     height: 56px;
     border-radius: 50%;
-    background-color: map-get($yellow, 'chat');
+    background-color: map-get($red, 'base');
     display: flex;
     justify-content: center;
     align-items: center;
@@ -76,7 +76,7 @@
       content: "";
       width: 56px;
       height: 56px;
-      background-color: map-get($yellow, 'base');;
+      background-color: map-get($red, 'base');;
       border-radius: 50%;
       z-index: -1;
     }

@@ -105,7 +105,7 @@
     &--popup{
       #{$root}__title-hint__ico{
         margin-bottom: $padding-x2;
-        color: map_get($yellow, 'base');
+        color: map_get($red, 'base');
         width: 52px;
         height: 52px;
 
@@ -133,7 +133,7 @@
 
     &__ico{
       margin-bottom: $padding-x2;
-      color: map_get($yellow, 'base');
+      color: map_get($red, 'base');
       width: 52px;
       height: 52px;
 

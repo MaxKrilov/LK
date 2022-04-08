@@ -48,7 +48,7 @@
 
           svg {
             transform: rotate(-90deg);
-            color: map_get($yellow, 'base');
+            color: map_get($red, 'base');
             width: 18px;
           }
         }
@@ -67,12 +67,12 @@
         color: rgba(map_get($shades, 'black'), 0.8);
 
         * > svg {
-          color: map_get($yellow, 'base');
+          color: map_get($red, 'base');
         }
       }
 
       &:active {
-        color: map_get($yellow, 'base');
+        color: map_get($red, 'base');
       }
     }
   }
@@ -94,7 +94,7 @@
       text-align: center;
       display: inline-flex;
       content: '\2022';
-      color: map_get($yellow, 'base');
+      color: map_get($red, 'other-5');
     }
   }
 }

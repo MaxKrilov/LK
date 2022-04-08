@@ -59,7 +59,7 @@
       }
       &__head {
         .icon {
-          color: map_get($yellow, 'base');
+          color: map_get($red, 'base');
         }
         .toggle {
           @include color-black(0.5);

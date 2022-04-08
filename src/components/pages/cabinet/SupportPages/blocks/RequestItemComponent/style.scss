@@ -262,7 +262,7 @@
       padding: 24px;
     }
     .icon {
-      color: map_get($yellow, 'base');
+      color: map_get($red, 'base');
       margin-bottom: 16px;
       svg {
         width: 64px;
@@ -385,7 +385,7 @@
           align-items: center;
           margin-bottom: 16px;
           i {
-            color: map_get($yellow, 'base');
+            color: map_get($red, 'base');
             margin-right: 8px;
           }
           span {
@@ -545,7 +545,7 @@
           align-items: center;
           margin-bottom: 16px;
           i {
-            color: map_get($yellow, 'base');
+            color: map_get($red, 'base');
             margin-right: 8px;
           }
           span {

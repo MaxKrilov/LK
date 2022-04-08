@@ -1,0 +1,168 @@
+.ert-navigation {
+  position: fixed;
+  z-index: map_get($z-index, 'top-menu');
+  top: 0;
+  right: 0;
+
+  left: 0;
+
+  height: 81px;
+
+  background: map-get($shades, 'white');
+
+  @include min-breakpoint('md') {
+    height: 88px;
+  }
+
+  &__container {
+    margin: 16px 16px 0;
+
+    @include min-breakpoint('md') {
+      margin: 16px 24px 0;
+    }
+
+    @include min-breakpoint('lg') {
+      margin: 16px 48px 0;
+    }
+
+    @include min-breakpoint('xl') {
+      max-width: 1040px;
+      margin: 16px auto 0;
+    }
+  }
+
+  &-top {
+    display: flex;
+    align-items: center;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(map-get($gray, '33'), 0.4);
+
+    &__logo {
+      margin-right: 40px;
+    }
+
+    &__logo picture,
+    &__logo img {
+      width: 100%;
+
+      max-width: 99px;
+
+      @include min-breakpoint('lg') {
+        max-width: 154px;
+      }
+    }
+
+    &__personal-manager {
+      display: none;
+      margin: 0 auto;
+
+      @include min-breakpoint('lg') {
+        display: block;
+      }
+    }
+
+    &__profile {
+      margin-left: auto;
+    }
+
+    &__balance {
+      display: none;
+
+      @include min-breakpoint('sm') {
+        display: block;
+      }
+    }
+
+    &__notification {
+      position: relative;
+      @include color-black(0.2);
+      transition: $primary-transition;
+
+      &:hover {
+        color: map-get($red, 'lighten-2');
+      }
+
+      &:active {
+        color: map-get($red, 'base');
+      }
+
+      &:not(.ert-navigation-top__notification--is-empty) {
+        &::after {
+          line-height: 20px;
+          position: absolute;
+          bottom: 7.25px;
+          left: 8.75px;
+          width: 20px;
+          height: 20px;
+          content: attr(data-count);
+          text-align: center;
+          pointer-events: none;
+          color: map-get($red, 'darken-1');
+          @extend %caption2-font;
+          border-radius: 50%;
+          background: map-get($red, 'other-2');
+
+          @include min-breakpoint('md') {
+            line-height: 24px;
+            bottom: 11px;
+            left: 16px;
+            width: 24px;
+            height: 24px;
+          }
+        }
+      }
+    }
+
+    &__billing-account {
+      display: none;
+
+      @include min-breakpoint('md') {
+        display: block;
+      }
+    }
+
+    &__billing-account-loading {
+      width: 104px;
+    }
+
+    &__billing-account-activator {
+      i {
+        @include color-black(0.2);
+        transition: $primary-transition;
+
+        > svg {
+          transition: inherit;
+        }
+      }
+
+      span {
+        @include color-black(0.5);
+      }
+
+      &:hover i {
+        color: map-get($red, 'lighten-2');
+      }
+
+      &:active i {
+        color: map-get($red, 'base');
+      }
+    }
+
+    &__billing-account.is-open {
+      .ert-navigation-top__billing-account-activator {
+        i,
+        span {
+          @include color-black(0.8);
+        }
+
+        i > svg {
+          transform: rotate(180deg);
+        }
+      }
+    }
+  }
+
+  &-bottom {
+    padding-top: 8px;
+  }
+}

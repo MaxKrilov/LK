@@ -42,7 +42,7 @@
       margin-right: 2px;
       display: inline-block;
       vertical-align: middle;
-      background-color: map_get($yellow, 'base');
+      background-color: map_get($red, 'other-5');
       border-radius: 50%;
     }
   }
@@ -221,9 +221,9 @@
 
 .contact-form-input{
   $root: #{&};
-  &:not(:last-child) {
-    margin-bottom: $padding-x7;
-  }
+  //&:not(:last-child) {
+  //  margin-bottom: $padding-x7;
+  //}
   position: relative;
 
   &__header{

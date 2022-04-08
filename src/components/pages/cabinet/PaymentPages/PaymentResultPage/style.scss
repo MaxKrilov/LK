@@ -30,7 +30,7 @@
     }
 
     &.check {
-      color: map-get($yellow, 'base');
+      color: map-get($red, 'base');
     }
   }
 
@@ -84,7 +84,7 @@
     align-items: center;
 
     .ert-icon {
-      color: map-get($yellow, 'base');
+      color: map-get($red, 'base');
     }
 
     span {

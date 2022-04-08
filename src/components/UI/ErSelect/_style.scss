@@ -168,11 +168,11 @@
     }
     &:hover {
       background-color: map_get($gray, '2');
-      border-left-color: map_get($yellow, 'base');
+      border-left-color: map_get($red, 'lighten-2');
       @include color-black()
     }
     &:active {
-      background-color: map_get($yellow, 'base');
+      background-color: map_get($red, 'lighten-2');
     }
     &.active {
       color: map_get($green, 'base');

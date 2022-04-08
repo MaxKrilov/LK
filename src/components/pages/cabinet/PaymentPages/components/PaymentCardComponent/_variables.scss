@@ -43,9 +43,9 @@ $new-card-back-line-background: map-get($gray, '34');
 
 $card-front-background: map-get($shades, 'white');
 
-$card-back-background: radial-gradient(50% 50% at 50% 50%, map-get($yellow, 'base') 55.5%, map-get($yellow, 'other-4') 100%);
+$card-back-background: map-get($red, 'other-1');
 
-$card-back-line-background: map-get($yellow, 'other-12');
+$card-back-line-background: map-get($red, 'other-5');
 
 $card-number-color: linear-gradient(
     180deg,

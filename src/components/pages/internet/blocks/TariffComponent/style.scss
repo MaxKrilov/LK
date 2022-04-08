@@ -311,7 +311,7 @@
       transition: $primary-transition;
     }
     &:hover {
-      i { color: map-get($yellow, 'base') }
+      i { color: map-get($red, 'base') }
       button { @include color-black(0.8) }
     }
   }

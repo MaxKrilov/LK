@@ -49,7 +49,7 @@ div(:class="`${pre}`" )
           connected-phone(v-for="(phone, index) in phones" :key="index" :phone="phone" @disconnect="disconnectNumber(phone.number)")
 
         div(:class="`${pre}__slider-buttons`" v-if="!isStopped").add-button
-          er-button(pre-icon="add_round" color="yellow" @click="connectNewNumber" :loading="isConnection") Добавить телефон
+          er-button(pre-icon="add_round" @click="connectNewNumber" :loading="isConnection") Добавить телефон
 
         h3(:class="`${pre}__packages-title`" v-if="localConnected|| globalConnected || !isStopped") Пакеты минут
         div(:class="`${pre}__packages`")
@@ -79,7 +79,7 @@ div(:class="`${pre}`" )
                   span(:class="`${pre}__h4`") от 500
                   span(:class="`${pre}__units`") &nbsp; ₽
                 er-icon(name="minute_pack")
-          
+
         div(:class="`${pre}__devices`")
           span(:class="`${pre}__devices__header`")
             span(class="h3" @click="toggleDevices") Оборудование
@@ -92,41 +92,41 @@ div(:class="`${pre}`" )
                 div Нет устройств
               div(:class="`${pre}__devices__item`" v-for="(device, index) in devices" :key="index")
                 template(v-if="device.storageType === 'Рассрочка'")
-                  div(class="device-name h4") 
+                  div(class="device-name h4")
                     .caption.mb-4 Устройство
                     div {{ device.name }}
-                  div(class="slot1") 
+                  div(class="slot1")
                     .caption.mb-4 Гарантия до
                     div {{ device.garantee }}
-                  div(class="slot2") 
+                  div(class="slot2")
                     .caption.mb-4 Рассрочка {{ device.installment }} мес
-                    div 
-                      span(class="h4") {{ device.price }} 
+                    div
+                      span(class="h4") {{ device.price }}
                       span(class="caption") ₽/мес
                 template(v-else-if="device.storageType === 'Продажа'")
-                  div(class="device-name h4") 
+                  div(class="device-name h4")
                     .caption.mb-4 Устройство
                     div {{ device.name }}
-                  div(class="slot1") 
+                  div(class="slot1")
                     .caption.mb-4 Гарантия до
                     div {{ device.garantee }}
-                  div(class="slot2") 
+                  div(class="slot2")
                     .caption.mb-4 Способ передачи
                     div Продажа
                 template(v-else)
-                  div(class="device-name h4") 
+                  div(class="device-name h4")
                     .caption.mb-4 Устройство
-                    div {{ device.name }}                
-                  div(class="slot3") 
+                    div {{ device.name }}
+                  div(class="slot3")
                     .caption.mb-4 Способ передачи
                     div {{ device.storageType }}
 
         div(:class="`${pre}__slider-buttons`")
           template(v-if="isStopped")
-            er-button(color="yellow"  @click="recover" :loading="isRecovering") Восстановить
-            //- er-button(color="yellow"  @click="$router.push('/lk/support?form=restoring_a_contract_or_service')") Восстановить
+            er-button(@click="recover" :loading="isRecovering") Восстановить
+            //- er-button(@click="$router.push('/lk/support?form=restoring_a_contract_or_service')") Восстановить
           template(v-else)
-            er-button(color="yellow"  @click="$router.push('/lk/support?form=suspension_of_a_contract_or_service')") Приостановить Телефонию
+            er-button(@click="$router.push('/lk/support?form=suspension_of_a_contract_or_service')") Приостановить Телефонию
 
   ErPlugProduct(
     v-model="isConnection"

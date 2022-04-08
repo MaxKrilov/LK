@@ -7,11 +7,11 @@
 }
 
 *::selection {
-  background: map_get($yellow, 'base');
+  background: map_get($red, 'lighten-2');
 }
 
 *::-moz-selection {
-  background: map_get($yellow, 'base');
+  background: map_get($red, 'lighten-2');
 }
 
 html:not(.auto),
@@ -49,7 +49,7 @@ input:-webkit-autofill {
   -webkit-animation-fill-mode: both;
 }
 
-$color-of-dragger: map_get($yellow, 'base');
+$color-of-dragger: map_get($red, 'base');
 
 .vb > .vb-dragger {
   z-index: 5;

@@ -117,7 +117,8 @@
       position: absolute;
       bottom: 16px;
       right: 16px;
-      color: map-get($yellow, 'base');
+      color: map-get($red, 'base');
+      transition: transform $primary-transition;
 
       @include min-breakpoint('md') {
         bottom: 24px;
@@ -126,10 +127,10 @@
     }
 
     &:hover {
-      box-shadow: -4px 4px 32px map-get($yellow, 'other-8');
+      //box-shadow: -4px 4px 32px map-get($yellow, 'other-8');
 
       .wrapper {
-        background: radial-gradient(50% 50% at 50% 50%, map-get($yellow, 'base') 55.5%, map-get($yellow, 'other-4') 100%);
+        background: map-get($red, 'lighten-2');
       }
 
       .description {

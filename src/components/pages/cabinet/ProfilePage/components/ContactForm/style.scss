@@ -47,7 +47,7 @@
         margin-right: (sm: 2px, md: 4px, lg: 4px, xl: 4px),
         line-height: (md: 16px, lg: 16px, xl: 16px)
       ));
-      background-color: map_get($yellow, 'base');
+      background-color: map_get($red, 'other-5');
       border-radius: 50%;
     }
     &__text {

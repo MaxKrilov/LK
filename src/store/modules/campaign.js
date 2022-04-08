@@ -231,15 +231,15 @@ const actions = {
 const mutations = {
   [SET_NOTIFICATIONS]: (state, payload) => {
     state.list = [
-      ...payload,
-      {
-        communication_type: 'wifi',
-        hidden: false,
-        communication_end_dttm: '2021-12-31 23:59:59',
-        iconName: 'warning',
-        id: '999999',
-        text: 'Об изменении стандартного способа авторизации при подключении к сети DOM.RU Wi-Fi'
-      }
+      ...payload
+      // {
+      //   communication_type: 'wifi',
+      //   hidden: false,
+      //   communication_end_dttm: '2021-12-31 23:59:59',
+      //   iconName: 'warning',
+      //   id: '999999',
+      //   text: 'Об изменении стандартного способа авторизации при подключении к сети DOM.RU Wi-Fi'
+      // }
     ]
   },
   [SET_PPR]: (state, payload) => {

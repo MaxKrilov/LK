@@ -295,30 +295,30 @@ export default class SpeedComponent extends Vue {
       .attr('gradientUnits', 'userSpaceOnUse')
       .attr('xlink:href', '#positionGradient')
       .attr('id', 'gradientGreen')
-    gradientGreen.append('stop').attr('stop-color', '#58A21F')
+    gradientGreen.append('stop').attr('stop-color', '#15A250')
     gradientGreen
       .append('stop')
       .attr('offset', '0.16')
-      .attr('stop-color', '#58A21F')
+      .attr('stop-color', '#15A250')
     gradientGreen
       .append('stop')
       .attr('offset', '1')
-      .attr('stop-color', '#69BE28')
+      .attr('stop-color', '#15A250')
     // Градиент для желтой дуги
     const gradientYellow = defs
       .append('radialGradient')
       .attr('gradientUnits', 'userSpaceOnUse')
       .attr('xlink:href', '#positionGradient')
       .attr('id', 'gradientYellow')
-    gradientYellow.append('stop').attr('stop-color', '#F4BE01')
+    gradientYellow.append('stop').attr('stop-color', '#A92424')
     gradientYellow
       .append('stop')
       .attr('offset', '0.16')
-      .attr('stop-color', '#F4BE01')
+      .attr('stop-color', '#A92424')
     gradientYellow
       .append('stop')
       .attr('offset', '1')
-      .attr('stop-color', '#FFDD00')
+      .attr('stop-color', '#A92424')
     defs.append('radialGradient')
       .attr('id', 'positionGradient')
       .attr('cx', 0)

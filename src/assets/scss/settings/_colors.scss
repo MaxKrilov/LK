@@ -17,19 +17,20 @@ $yellow: (
         'other-11':   #FEE405,
         'other-12':   #EFC900,
         'other-13':   #FC8500,
-        'chat':   #FFE017
+        'chat':       #FFE017
 );
 
 $red: (
-        'base':       #E31E24,
-        'darken-1':   #B3002B,
-        'lighten-1':  #F5272D,
-        'lighten-2':  #FF4E53,
-        'lighten-3':  #FF8A8A,
-        'other-1':    #FA2A30,
-        'other-2':    #FFEFF0,
+        'base':       #C51F1F,
+        'darken-1':   #A92424,
+        'lighten-1':  #DF1B16,
+        'lighten-2':  #FF312C,
+        'lighten-3':  #FF9494,
+        'other-1':    #FFB0B0,
+        'other-2':    #FFD5D4,
         'other-3':    #820906,
-        'other-4':    #EE1D25
+        'other-4':    #EE1D25,
+        'other-5':    #FF7B7B
 );
 
 $blue: (
@@ -43,19 +44,20 @@ $blue: (
         'other-2':    #4568AA,
         'other-3':    #7EA2EA,
         'other-4':    #0D6FB6,
-        'other-5':    #0F9EDB
+        'other-5':    #0F9EDB,
+        'other-6':    #7094D9
 );
 
 $green: (
-        'base':       #69BE28,
-        'darken-1':   #31812E,
+        'base':       #15A250,
+        'darken-1':   #15A250,
         'lighten-1':  #6CC628,
-        'lighten-2':  #73D02C,
+        'lighten-2':  #2ABC67,
         'lighten-3':  #8DE549,
         'other-1':    #6FC42E,
         'other-2':    #55A815,
         'other-3':    #56A718,
-        'other-4':    #DEF6CC,
+        'other-4':    #CBF3DC,
         'other-5':    #98E959
 );
 
@@ -148,7 +150,7 @@ $document-colors: (
   'green-gradient': radial-gradient(69.47% 69.47% at 42.16% 56.49%, #69BE28 0%, #56AB14 100%),
   'gray-header': map_get($gray, '4'),
   'gray-gradient': '',
-  'yellow-header': map_get($yellow, 'base'),
+  'yellow-header': map_get($red, 'base'),
   'yellow-gradient': '',
   'blue-header': map_get($blue, 'base'),
   'blue-gradient': radial-gradient(121.46% 198.36% at 48.38% 67.19%, #7DA2E9 0%, #6789CA 100%),

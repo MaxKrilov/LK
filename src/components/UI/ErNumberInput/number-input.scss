@@ -17,7 +17,7 @@
   }
 
   &--focus {
-    border-color: map_get($yellow, 'base');
+    border-color: map_get($red, 'base');
   }
 
   @include min-breakpoint('md') {
@@ -58,12 +58,12 @@
       outline: 0;
 
       .er-icon {
-        color: map_get($yellow, 'base');
+        color: map_get($red, 'base');
       }
     }
 
     &:active {
-      color: map_get($yellow, 'base');
+      color: map_get($red, 'base');
     }
 
     &:disabled {

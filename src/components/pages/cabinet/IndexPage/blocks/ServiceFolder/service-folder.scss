@@ -11,12 +11,12 @@
   &--is-open {
     #{$self}__icon {
       .er-icon {
-        color: map-get($yellow, 'base');
+        color: map-get($red, 'lighten-3');
       }
     }
 
     #{$self}__head {
-      border-right-color: map-get($yellow, 'base');
+      border-right-color: map-get($red, 'base');
     }
 
     .er-corner-button {

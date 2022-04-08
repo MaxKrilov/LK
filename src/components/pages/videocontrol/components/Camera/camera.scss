@@ -16,7 +16,7 @@ $pre: ".camera";
 
   &--search-result {
     #{$pre}__device-name {
-      border-color: map-get($yellow, 'base');
+      border-color: map-get($red, 'base');
     }
   }
 
@@ -52,7 +52,7 @@ $pre: ".camera";
 
     &:hover {
       @include color-black(1);
-      border-bottom-color: map_get($yellow, "base");
+      border-bottom-color: map_get($red, "base");
     }
   }
 
@@ -102,7 +102,7 @@ $pre: ".camera";
       }
 
       .er-icon {
-        color: map_get($yellow, "base");
+        color: map_get($red, "base");
       }
     }
 

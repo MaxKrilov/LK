@@ -18,11 +18,11 @@
               height: (md: 48px)
       ));
       &:hover {
-        border-color: map_get($shades, 'black');
+        border-color: rgba(map_get($shades, 'black'), 0.8);
         background: map_get($shades, 'white');
         > .er-input__prepend-inner,
         > .er-input__append-inner {
-          color: map_get($yellow, 'base');
+          color: map_get($red, 'lighten-2');
         }
       }
     }
@@ -107,12 +107,12 @@
       > .er-input__slot {
         &,
         &:hover {
-          border-color: map_get($yellow, 'base');
+          border-color: map_get($red, 'darken-1');
           background: map_get($shades, 'white');
         }
         > .er-input__prepend-inner,
         > .er-input__append-inner {
-          color: map_get($yellow, 'base');
+          @include color-black(0.2);
         }
       }
     }
@@ -151,11 +151,11 @@
       > .er-input__slot {
         &,
         &:hover {
-          border-color: map_get($red, 'base');
+          border-color: map_get($red, 'lighten-2');
         }
         > .er-text-field__slot {
           > label {
-            color: map_get($red, 'base');
+            color: map_get($red, 'lighten-2');
             animation: shake 600ms map_get($transition, swing);
           }
         }
@@ -185,14 +185,14 @@
   &--required {
     position: relative;
     &:before {
-      background-color: map_get($yellow, 'base');
+      background-color: map_get($red, 'other-5');
       border-radius: 50%;
       content: '';
       height: 8px;
       width: 8px;
       position: absolute;
       top: -16px;
-      left: 0px;
+      left: 0;
     }
   }
 }

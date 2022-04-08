@@ -31,7 +31,7 @@
       color: map-get($gray, '5');
 
       .infolist-link__label {
-        margin-left: 8px; 
+        margin-left: 8px;
         text-decoration: underline 1px dashed;
       }
     }
@@ -132,9 +132,7 @@
     }
 
     .add-button {
-      &::v-deep svg {
-        @include color-black(.2)
-      }
+      &::v-deep svg {}
     }
 
     &-buttons {
@@ -159,10 +157,6 @@
       @include min-breakpoint("xl") {
         grid-template-columns: repeat(2, 287px);
         grid-gap: 32px;
-      }
-
-      &::v-deep .er-button {
-        @include color-black(0.8);
       }
     }
   }
@@ -202,8 +196,6 @@
       margin-bottom: 24px;
     }
   }
-
-
 
   &__plug-package {
     height: 100%;
@@ -248,7 +240,7 @@
         svg {
           transition: $primary-transition;
           width: 48px;
-          color: map-get($yellow, "base");
+          color: map-get($red, "base");
         }
       }
     }
@@ -256,8 +248,20 @@
     &:hover {
       cursor: pointer;
 
+      .slider-content__plug-package {
+        &__title {
+          @include color-white();
+        }
+
+        &__footer {
+          > div > * {
+            @include color-white();
+          }
+        }
+      }
+
       &::v-deep .er-card__content {
-        background: radial-gradient(50% 50% at 50% 50%, #ffdd00 55.5%, #fcd300 100%);
+        background: map-get($red, 'lighten-2');
       }
 
       &::v-deep .er-icon {

@@ -107,7 +107,7 @@
   &__active-line {
     width: 20px;
     opacity: 0;
-    background-color: map_get($yellow, "base");
+    background-color: map_get($red, "base");
     margin-right: -4px;
 
     @include min-breakpoint("md") {
@@ -281,18 +281,6 @@
           }
 
         }
-
-        @include max-breakpoint("sm") {
-          &::v-deep  .er-button__icon--prev {
-            margin-right: 0;
-          }
-        }
-
-        &::v-deep  svg {
-          @include color-black(0.2);
-        }
-
-
       }
     }
   }

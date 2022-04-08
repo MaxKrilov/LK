@@ -15,7 +15,8 @@
       }
       &__head {
         .icon {
-          color: map_get($yellow, 'base');
+          color: map_get($red, 'base');
+
           &.success {
             color: map_get($green, 'base');
           }

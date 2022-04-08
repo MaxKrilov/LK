@@ -45,7 +45,7 @@
               )
                 er-icon(name="corner_down")
             template(v-if="isStopped(getBPIByAddressUnit(addressUnit.id))")
-              er-button.wifi-index-page__restore-button(color="yellow"  @click="$router.push('/lk/support?form=restoring_a_contract_or_service')") Восстановить
+              er-button.wifi-index-page__restore-button(@click="$router.push('/lk/support?form=restoring_a_contract_or_service')") Восстановить
             template(v-else)
               .wifi-index-page__map-popup__title
                 template(v-if="!issetCustomerProduct(getBPIByAddressUnit(addressUnit.id))")
@@ -106,7 +106,7 @@
           | {{ point.fulladdress }}
         template(slot="slider-content")
           template(v-if="point.status === getStatusSuspended")
-            er-button.wifi-index-page__restore-button(color="yellow"  @click="$router.push('/lk/support?form=restoring_a_contract_or_service')") Восстановить
+            er-button.wifi-index-page__restore-button(@click="$router.push('/lk/support?form=restoring_a_contract_or_service')") Восстановить
           template(v-else)
             template(v-if="point.bundle")
               er-bundle-info(

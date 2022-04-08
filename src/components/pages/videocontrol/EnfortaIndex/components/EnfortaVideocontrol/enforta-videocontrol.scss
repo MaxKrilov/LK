@@ -16,7 +16,7 @@
 
     &:hover {
       .er-icon {
-        color: map_get($yellow, "base");
+        color: map_get($red, "base");
       }
     }
 
@@ -148,7 +148,7 @@
 
         &:hover {
           @include color-black(1);
-          border-bottom-color: map_get($yellow, "base");
+          border-bottom-color: map_get($red, "base");
         }
       }
     }

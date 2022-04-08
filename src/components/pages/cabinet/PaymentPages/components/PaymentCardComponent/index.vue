@@ -10,7 +10,7 @@
           template(v-if="isNew")
             .active
               .logo
-                img(:src="require('@/assets/images/logo.png')")
+                img(:src="require('@/assets/images/logos/logo_mobile.svg')")
               .title
                 | Оплата новой картой
               .remember-card
@@ -145,7 +145,6 @@
             ErButton(
               data-ga-category="payments"
               data-ga-label="paybycardconfirmyes"
-              :loading="isPayment"
               @click="() => { isShowErrorDialogOnAutoPay = false }"
             ) Закрыть
 

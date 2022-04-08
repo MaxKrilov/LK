@@ -6,7 +6,7 @@ $pre: '.er-document';
       background: map_get($shades, 'transparent');
 
       @include min-breakpoint('md') {
-        background-color: map_get($yellow, 'base');
+        background-color: map_get($gray, '4');
       }
     }
   }

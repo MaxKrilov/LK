@@ -68,10 +68,10 @@
     &:hover {
       background-color: map-get($shades, "white");
       .content-filter-plug-page__head {
-        background-color: map-get($yellow, "base");
+        background-color: map-get($red, "lighten-2");
       }
       .er-button {
-        background-color: map-get($yellow, "base");
+        background-color: map-get($red, "lighten-2");
       }
     }
   }
@@ -284,7 +284,7 @@
   }
   &__modal {
     &__caption {
-      @extend %caption1;      
+      @extend %caption1;
     }
     &__text {
       padding-top: 8px;

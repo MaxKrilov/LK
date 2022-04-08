@@ -296,3 +296,24 @@ export function sortArrayOfObjects (array: [], sortBy: string, sortAscending: bo
   }
   return sortedArray
 }
+
+export const composedPath = (e: Event): EventTarget[] => {
+  if (e.composedPath) return e.composedPath()
+
+  const path = []
+  let el = e.target as Element
+
+  while (el) {
+    path.push(el)
+
+    if (el.tagName === 'HTML') {
+      path.push(document)
+      path.push(window)
+
+      return path
+    }
+
+    el = el.parentElement!
+  }
+  return path
+}

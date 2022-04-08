@@ -59,7 +59,7 @@ export default {
       DOCUMENT,
       REPORT_DOCUMENTS,
       CONTRACT_DOCUMENTS,
-      currentDocumentType: CONTRACT_DOCUMENTS,
+      currentDocumentType: REPORT_DOCUMENTS,
       emails: [
         'test@example.com',
         'test2@example.com'
@@ -225,7 +225,12 @@ export default {
     }
   },
   async mounted () {
-    // this.$store.dispatch('fileinfo/downloadDocuments', { api: this.$api })
+    const documentType = this.$route.query.open || this.$route.params.open
+
+    if (documentType && [REPORT_DOCUMENTS, CONTRACT_DOCUMENTS].includes(documentType)) {
+      this.currentDocumentType = documentType
+    }
+
     const script = document.createElement('script')
     script.setAttribute('src', CADESPLUGIN_PATH)
     script.setAttribute('id', 'cadesplugin-script')

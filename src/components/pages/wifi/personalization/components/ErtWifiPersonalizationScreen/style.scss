@@ -166,9 +166,8 @@
 
     &.premium {
       color: map-get($shades, 'white');
-      box-shadow: 0 2px 0 map-get($red, 'other-3');
-      background-color: map-get($red, 'other-4');
-      border-radius: 3px;
+      background-color: map-get($red, 'base');
+      border-radius: 24px;
     }
   }
 
