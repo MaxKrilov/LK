@@ -2,7 +2,7 @@
 .wip
   .header
     .header__logo
-      img(src="../../../assets/images/logo.png" alt="Логотип Дом.ru Бизнес")
+      img(src="../../../assets/images/logos/logo_desktop.svg" alt="Логотип Дом.ru Бизнес")
 
   .work-in-progress
     .content
