@@ -83,7 +83,7 @@ export default {
       return this.$store.state.branch.id
     },
     isVisibleAddress () {
-      return !['47', '181'].includes(this.branchId)
+      return !['47', '181', '36'].includes(this.branchId)
     }
   },
   methods: {
