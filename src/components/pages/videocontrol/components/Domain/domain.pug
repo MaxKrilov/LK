@@ -7,23 +7,6 @@
           router-link.link(:to="{ name: 'go-to-forpost' }") Перейти на портал
 
         .user-count
-          .user-count__input
-            label.user-count__label(for="input-user-count") Пользователей портала
-
-            template(v-if="isDisableChangeUserCount")
-              .user-count__value {{ domainUserCount }}
-
-            template(v-else)
-              er-number-input#input-user-count(
-                :min="0"
-                v-model="domainUserCount"
-                @input="onChangeUserCount",
-                :disabled="isUserCountOrdered"
-              )
-
-          .user-count__price
-            er-price {{ computedUserPrice | price }}
-
           er-button.user-count__add-btn(
             v-show="isUserCountChanged && !isUserCountOrdered"
             :loading="isUserOrderMode"
