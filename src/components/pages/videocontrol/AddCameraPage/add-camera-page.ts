@@ -13,13 +13,16 @@ import {
 import { mapGetters } from 'vuex'
 import { IOffer, IBaseFunctionality, ICamera } from '@/interfaces/videocontrol'
 import VIDEO_ANALYTICS from '@/constants/videoanalytics'
+import { DaDataAddress, DaDataSuggestion } from '@/dadata_interfaces/dadata_interfaces'
+import ErtDadataSelect from '@/components/blocks2/ErtDadataSelect/index.vue'
 
 const props = {
   id: String
 }
 const components = {
   ProductItem,
-  ErPlugProduct
+  ErPlugProduct,
+  ErtDadataSelect
 }
 
 const computed = {
@@ -112,6 +115,7 @@ export default class AddCameraPage extends Vue {
   rentPayment: number = 233.9
   placement: number = 1
   location: string = ''
+  dadataLocation = '' as string | DaDataSuggestion<DaDataAddress>
   countOfCameras: number = 1
   ownershipType: number = 1
   isPTZEnabled: boolean = false
@@ -199,7 +203,7 @@ export default class AddCameraPage extends Vue {
   }
 
   get currentPoint () {
-    return this.pointList.find(el => el.id === this.location)
+    return this.pointList[0]
   }
 
   get currentAddressId () {
@@ -242,6 +246,8 @@ ${this.selectedAnalyticsServicesList.length ? this.selectedAnalyticsServicesList
 Итого: ${this.totalPrice} ₽/месяц,
 
 Размещение: ${this.currentPlacementLabel}
+
+Адрес: ${typeof this.dadataLocation === 'object' ? this.dadataLocation.value : ''}
 `
 
     return {
@@ -254,7 +260,7 @@ ${this.selectedAnalyticsServicesList.length ? this.selectedAnalyticsServicesList
   }
 
   validateFormData () {
-    return !!this.location.length
+    return typeof this.dadataLocation === 'object'
   }
 
   onAddCamera () {

@@ -38,11 +38,17 @@ div(:class="[`${pre}`, { open: value }]")
             :class="{ 'active': activeBillingAccountId === account.billingAccountId }"
             @click="() => { selectPersonalAccount(account) }"
           )
-            div.caption.cursor-default
-              | Лицевой счёт
-            div.value.cursor-pointer.mt-0
-              er-icon.mr-8(name="ok")
-              | {{ account.accountNumber }}
+            er-toggle.personal-account__radio.pl-28(
+              type="radio"
+              view="radio"
+              v-model="activeStatus"
+              :value="activeBillingAccountId === account.billingAccountId"
+              )
+            div.personal-account.ml-24
+              div.caption.cursor-default(:class="{green_description : account.accountStatus.name === 'Активный'}")
+                | {{ account.accountStatus.name === 'Активный' ? 'Счёт активен' : 'Счёт закрыт'}}
+              div.value.cursor-pointer.mt-0(:class="{activeAccountOpacity : account.accountStatus.name === 'Активный', closeAccountOpacity : account.accountStatus.name === 'Закрытый'}")
+                | {{ account.accountNumber }}
         div.profile.mt-8.mx-4.pl-28.d--flex.align-items-center
           er-icon.mr-8(name="profile")
           router-link(to="/lk/profile") Профиль

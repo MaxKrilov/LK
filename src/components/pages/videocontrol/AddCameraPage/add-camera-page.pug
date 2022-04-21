@@ -103,13 +103,11 @@
     .h2.vc-add-camera-page__description Подключение
 
     .vc-add-camera-page__row.vc-add-camera-page__description
-      ert-select(
+      ErtDadataSelect(
         label="Адрес подключения"
-        hide-details
-        :items="addressList"
-        v-model="location"
-        is-show-required-label
-        :rules="requiredRule"
+
+        v-model="dadataLocation"
+
       )
 
     .vc-add-camera-page__row.mt-16.mt-md-24.vc-add-camera-page__header

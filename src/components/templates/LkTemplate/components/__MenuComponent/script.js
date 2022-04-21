@@ -58,6 +58,9 @@ export default {
           this.openSubMenu(firstMenuItem, 0, null)
         }
       }
+    },
+    activeBillingAccountNumber (val, oldVal) {
+      if (oldVal && this.isDesktop) this.isOpenedCornerButton = !this.isOpenedCornerButton
     }
   },
   computed: {
