@@ -473,7 +473,7 @@ export default class WifiPersonalizationPage extends mixins(Page) implements iPa
     if (this.internalButtons) {
       Object.keys(this.internalButtons).forEach(key => {
         if (this.internalButtons!.hasOwnProperty(key)) {
-          data.append(`params[field_${key}_auth]`, (this.internalButtons as any)[key].auth)
+          data.append(`params[field_${key}_auth]`, Number((this.internalButtons as any)[key].auth).toString())
           data.append(`params[field_index_${key}_title]`, (this.internalButtons as any)[key].title)
         }
       })
