@@ -35,10 +35,14 @@ import PriceServicesComponent from '@/components/pages/internet/blocks/PriceServ
 import moment from 'moment'
 
 /* FUNCTIONS */
-const isFullHD = (el: IOffer) => el.tomsId === TOMS_IDS.FULLHD
+const isFullHD = (el: IOffer) => fullHdTomsIds.includes(el.tomsId)
 const isFullHDArchive = (el: IOffer) => el.tomsId === TOMS_IDS.FULLHD_ARCHIVE
 const isHDArchive = (el: IOffer) => el.tomsId === TOMS_IDS.HD_ARCHIVE
 const isArchiveRecordConst = (el: IOffer) => el.tomsId === TOMS_IDS.CONST_RECORD
+
+const fullHdTomsIds = [TOMS_IDS.FULLHD, TOMS_IDS.FULLHD_VIDEOREGISTRATOR]
+const soundRecordTomsIds = [TOMS_IDS.SOUND_RECORD, TOMS_IDS.SOUND_RECORD_VIDEOREGISTRATOR]
+const PTZTomsIds = [ TOMS_IDS.PTZ, TOMS_IDS.PTZ_VIDEOREGISTRATOR ]
 
 const components = {
   ProductItem,
@@ -349,7 +353,7 @@ export default class VCCameraConfigPage extends Mixins(
   get soundRecordService () {
     if (this.enabledServiceList.length) {
       return this.enabledServiceList
-        .find((el: IProductOffering) => el?.offer?.tomsId === TOMS_IDS.SOUND_RECORD)
+        .find((el: IProductOffering) => soundRecordTomsIds.includes(el?.offer?.tomsId || ''))
     }
   }
 
@@ -358,7 +362,18 @@ export default class VCCameraConfigPage extends Mixins(
   }
 
   get soundRecordPrice () {
-    return this.soundRecordService?.purchasedPrices?.recurrentTotal?.value || '0'
+    if (this.checkIsServiceEnabled(TOMS_IDS.SOUND_RECORD) || this.checkIsServiceEnabled(TOMS_IDS.SOUND_RECORD_VIDEOREGISTRATOR)) {
+      const service = this.enabledServiceList.find((el: any) => soundRecordTomsIds.includes(el.offer.tomsId))
+      return service?.purchasedPrices?.recurrentTotal?.value || '0'
+    }
+
+    const soundRecord = this.availableServiceList.find(item => soundRecordTomsIds.includes(item.tomsId))
+
+    if (soundRecord) {
+      return soundRecord.prices?.find(item => item.type === 'Monthly Fee')?.amount || '0'
+    }
+
+    return '0'
   }
 
   // FullHD
@@ -368,13 +383,13 @@ export default class VCCameraConfigPage extends Mixins(
   }
 
   get isFHDEnabled () {
-    return this.enabledServiceTomsId.includes(TOMS_IDS.FULLHD)
+    return this.enabledServiceTomsId.includes(TOMS_IDS.FULLHD) || this.enabledServiceTomsId.includes(TOMS_IDS.FULLHD_VIDEOREGISTRATOR)
   }
 
   get fullHdPrice (): string {
     return this.availableServiceList
       ?.find(isFullHD)
-      ?.prices?.[0]
+      ?.prices?.find(item => item.type === 'Monthly Fee')
       ?.amount || '0'
   }
 
@@ -397,7 +412,7 @@ export default class VCCameraConfigPage extends Mixins(
       return '0'
     } else {
       if (this.isFHDEnabled) {
-        return this.fullHd?.offer?.prices?.[0]?.amount || '0'
+        return this.fullHd?.offer?.prices?.find(item => item.type === 'Monthly Fee')?.amount || '0'
       } else {
         return this.fullHdPrice
       }
@@ -574,9 +589,15 @@ export default class VCCameraConfigPage extends Mixins(
   }
 
   getPTZPrice () {
-    if (this.checkIsServiceEnabled(TOMS_IDS.PTZ)) {
-      const service = this.enabledServiceList.find((el: any) => el.offer.tomsId === TOMS_IDS.PTZ)
+    if (this.checkIsServiceEnabled(TOMS_IDS.PTZ) || this.checkIsServiceEnabled(TOMS_IDS.PTZ_VIDEOREGISTRATOR)) {
+      const service = this.enabledServiceList.find((el: any) => PTZTomsIds.includes(el.offer.tomsId))
       return service?.purchasedPrices?.recurrentTotal?.value || '0'
+    }
+
+    const PTZ = this.availableServiceList.find(item => PTZTomsIds.includes(item.tomsId))
+
+    if (PTZ) {
+      return PTZ.prices?.find(item => item.type === 'Monthly Fee')?.amount || '0'
     }
 
     return '0'

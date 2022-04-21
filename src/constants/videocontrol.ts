@@ -9,8 +9,10 @@ const VIDEOCONTROL_OFFER_NAME = 'Видеоконтроль'
 // для поиска в данных в /catalog/management/allowed-offers
 const ANALYTIC_CATEGORY_ID = 230
 const ANALYTIC_NAME = 'Базовая функциональность видеоконтроля к Сервисы видеоаналитики'
+const VIDEOREGISTRATOR_ANALYTIC_NAME = 'Базовая функциональность видеоконтроля для Видеорегистратора к Сервисы видеоаналитики - Видеорегистратор'
 const BF_CATEGORY_ID = 187
 const BF_CATEGORY_NAME = 'Базовая функциональность видеоконтроля к Дополнительные услуги Видеоконтроль'
+const VIDEOREGISTRATOR_BF_CATEGORY_NAME = 'Базовая функциональность видеоконтроля для Видеорегистратора к Дополнительные услуги - Видеорегистратор'
 const BF_CATEGORY_NAME_2 = 'Базовая функциональность видеоконтроля к Тип записи'
 
 const VIDEOARCHIVE_DAY_COUNT = 'Количество дней архива'
@@ -53,9 +55,12 @@ const TOMS_IDS = {
   BASE: '310000006',
   CAMERA: '303000140',
   SOUND_RECORD: '310000008',
+  SOUND_RECORD_VIDEOREGISTRATOR: '310000042',
   VIDNCAM: '310200009',
   PTZ: '310000009',
+  PTZ_VIDEOREGISTRATOR: '9162663801413753876',
   FULLHD: '310000007',
+  FULLHD_VIDEOREGISTRATOR: '310000041',
   HD_ARCHIVE: '310100003',
   FULLHD_ARCHIVE: '310100004',
   CONST_RECORD: '310000013',
@@ -188,8 +193,10 @@ export {
   PLUG_URL,
   ANALYTIC_CATEGORY_ID,
   ANALYTIC_NAME,
+  VIDEOREGISTRATOR_ANALYTIC_NAME,
   BF_CATEGORY_ID,
   BF_CATEGORY_NAME,
+  VIDEOREGISTRATOR_BF_CATEGORY_NAME,
   BF_CATEGORY_NAME_2,
   CAMERA_SALE_TYPES,
   CHARS,

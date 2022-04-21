@@ -5,8 +5,10 @@ import {
   ANALYTIC_NAME,
   BF_CATEGORY_ID,
   BF_CATEGORY_NAME,
+  VIDEOREGISTRATOR_BF_CATEGORY_NAME,
   BF_CATEGORY_NAME_2,
-  VIDEOCONTROL_OFFER_NAME
+  VIDEOCONTROL_OFFER_NAME,
+  VIDEOREGISTRATOR_ANALYTIC_NAME
 } from '@/constants/videocontrol'
 import { IOfferingRelationship } from '@/interfaces/offering'
 import { isActiveOffering } from '@/functions/offers'
@@ -19,12 +21,15 @@ const isVCPoint = (item: ILocationOfferInfo) =>
 //   item.categoryId === ANALYTIC_CATEGORY_ID
 
 const isBFAnalyticByName = (item: IOfferingRelationship) =>
-  item.name === ANALYTIC_NAME
+  item.name === ANALYTIC_NAME ||
+  item.name === VIDEOREGISTRATOR_ANALYTIC_NAME
 
 const isBFAnalytic = isBFAnalyticByName
 
-const isBFAddon = (item: IOfferingRelationship) =>
-  item.categoryId === BF_CATEGORY_ID || item.name === BF_CATEGORY_NAME || item.name === BF_CATEGORY_NAME_2
+const isBFAddon = (item: IOfferingRelationship) => {
+  let CATEGORY_NAME = [ BF_CATEGORY_NAME, VIDEOREGISTRATOR_BF_CATEGORY_NAME ]
+  return item.categoryId === BF_CATEGORY_ID || CATEGORY_NAME.includes(item.name) || item.name === BF_CATEGORY_NAME_2
+}
 
 export const getters = {
   BPIList (state: IState) {
