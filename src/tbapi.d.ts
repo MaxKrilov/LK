@@ -348,8 +348,8 @@ export interface IBillingStatisticResponse {
     id: string
     instanceId: number
   }
-  createdDate: number,
-  createdTime: number,
+  createdDate: string,
+  createdTime: string,
   priceEventSpecification: {
     eventTypeId: number
     name: string
@@ -361,6 +361,13 @@ export interface IBillingStatisticResponse {
     id: string
     customerReference: string
   }
+}
+
+export interface IInternetStatistic {
+  ip: string,
+  start: string,
+  bytes: number,
+  type: string
 }
 
 export interface ISLOPricesItem {

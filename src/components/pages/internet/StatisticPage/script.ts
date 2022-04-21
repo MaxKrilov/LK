@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Component from 'vue-class-component'
 import ErTableFilter from '@/components/blocks/ErTableFilter'
 import InternetStatisticComponent from './blocks/InternetStatisticComponent'
-import { DocumentInterface, IBillingStatisticResponse, ICustomerProduct } from '@/tbapi'
+import { DocumentInterface, IBillingStatisticResponse, ICustomerProduct, IInternetStatistic } from '@/tbapi'
 import moment from 'moment'
 import ErActivationModal from '@/components/blocks/ErActivationModal/index.vue'
 import FileComponent from './blocks/FileComponent/index.vue'
@@ -41,8 +41,8 @@ const getHtmlVolume = (volume: number) => {
     })
   },
   watch: {
-    pagCurrentPage () {
-      this.getStatistic()
+    pagCurrentPage (val) {
+      this.listStatistic = this.allStatistic[val - 1]
     },
     customerProduct (val) {
       if (val !== null) {
@@ -81,7 +81,9 @@ export default class StatisticPage extends Vue {
    */
   period: Date[] = []
 
+  allStatistic: IInternetStatistic[][] = []
   listStatistic: any[] = []
+  statisticLength = 25
 
   isLoading = true
   isLoadingFile = false
@@ -139,22 +141,50 @@ export default class StatisticPage extends Vue {
     const fromDate = moment(this.period[0]!).format()
     const toDate = moment(this.period[1]!).format()
     this.isLoading = true
-    this.$store.dispatch('internet/getStatistic', {
-      fromDate,
-      toDate,
-      page: this.pagCurrentPage,
+    this.pagCurrentPage = 1
+
+    const getStatisticData: Record<string, string | number> = {
+      fromDate: fromDate,
+      toDate: toDate,
       productInstance: this.customerProduct!.tlo.id,
       eventSource: this.customerProduct!.tlo.chars?.['Идентификатор сервиса'] || ''
-    })
-      .then((response: {requests: IBillingStatisticResponse[], range: string}) => {
-        this.listStatistic = response.requests.map(item => ({
+    }
+
+    this.$store.dispatch('internet/getStatistic', getStatisticData)
+      .then((response: Record<string, IBillingStatisticResponse[]>) => {
+        let result = Object.values(response)
+
+        let allStatistic = result.reduce((a, c) => a.concat(c), [])
+
+        allStatistic.sort((a, b) => Number(moment(a.createdDate, 'DD.MM.YYYY').format('x')) - Number(moment(b.createdDate, 'DD.MM.YYYY').format('x')))
+
+        let computedAllStatistic:IInternetStatistic[] = allStatistic.map(item => ({
           ip: item.service,
-          start: item.createdDate,
+          start: moment(item.createdDate + ' ' + item.createdTime, 'DD.MM.YYYY h:mm:ss').format(),
           bytes: Number(item.duration),
           type: item.priceEventSpecification.name
         }))
-        const m = response.range?.match(/^(?:items )?(\d+)-(\d+)\/(\d+|\*)$/)
-        this.pagLength = Math.trunc(+m![3] / 25) + 1
+
+        this.pagLength = Math.ceil(computedAllStatistic.length / this.statisticLength)
+
+        let currentIndex = 0
+        let allStatisticLength = computedAllStatistic.length
+        this.allStatistic = []
+
+        for (let currentPage = 0; currentPage < this.pagLength; currentPage++) {
+          let statisticsLength = allStatisticLength > this.statisticLength ? this.statisticLength : allStatisticLength
+          let currentStatistic = []
+
+          for (let index = 0; index < statisticsLength; index++) {
+            currentStatistic.push(computedAllStatistic[currentIndex])
+            currentIndex++
+          }
+
+          this.allStatistic.push(currentStatistic)
+          allStatisticLength -= this.statisticLength
+        }
+
+        this.listStatistic = this.allStatistic.length === 0 ? [] : this.allStatistic[0]
       })
       .finally(() => {
         this.isLoading = false
