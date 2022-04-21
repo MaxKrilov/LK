@@ -26,19 +26,22 @@ const URLS = {
 const MUTATIONS = {
   SET_DOMAINS: 'SET_DOMAINS',
   SET_DOMAINS_LOADED: 'SET_DOMAINS_LOADED',
-  SET_POINTS: 'SET_POINTS'
+  SET_POINTS: 'SET_POINTS',
+  SET_ERROR_MESSAGE: 'SET_ERROR_MESSAGE'
 }
 
 interface IState {
   domains: Record<string, any>
   isDomainsLoaded: boolean
-  pointList: any[]
+  pointList: any[],
+  errorMessage: string
 }
 
 const state: IState = {
   domains: {},
   isDomainsLoaded: false,
-  pointList: []
+  pointList: [],
+  errorMessage: ''
 }
 
 const getters = {
@@ -47,6 +50,9 @@ const getters = {
   },
   pointBpiList (state: IState) {
     return state.pointList.map(({ bpi }: ILocationOfferInfo) => bpi)
+  },
+  errorMessage (state: IState) {
+    return state.errorMessage
   }
 }
 
@@ -77,6 +83,7 @@ const actions = {
         commit(MUTATIONS.SET_DOMAINS, data)
         commit(MUTATIONS.SET_DOMAINS_LOADED, true)
       })
+      .catch(error => commit(MUTATIONS.SET_ERROR_MESSAGE, error.response.data.message))
   },
   fetchPortalLink (context: ActionContext<IState, any>, { cityId, account }: { cityId: string, account: string }) {
     const isManager = context.rootState.auth.isManager
@@ -104,6 +111,9 @@ const mutations = {
   },
   [MUTATIONS.SET_POINTS] (state: IState, payload: any[]) {
     state.pointList = payload
+  },
+  [MUTATIONS.SET_ERROR_MESSAGE] (state: IState, payload: string) {
+    state.errorMessage = payload
   }
 }
 

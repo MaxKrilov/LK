@@ -3,6 +3,7 @@
   er-promo(
     banner="oats-promo.png"
     :featureList="featureList"
+    linkToConnect="https://b2b.dom.ru"
   )
 </template>
 

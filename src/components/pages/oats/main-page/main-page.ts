@@ -65,6 +65,9 @@ export default class OATSMainPage extends Vue {
   @StoreGetter('oats/pointBpiList')
   pointBpiList!: string[]
 
+  @StoreGetter('oats/errorMessage')
+  errorMessage!: string
+
   get totalValue () {
     return this.domainList.reduce((acc, item) => {
       return acc + this.getDomainPrice(item)

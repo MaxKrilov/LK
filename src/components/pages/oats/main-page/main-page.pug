@@ -39,7 +39,7 @@
         :to="{name: 'go-to-oats-portal'}"
       ) Подключить ОАТС
 
-  template(v-else-if="isDomainsLoaded && domainList.length === 0")
+  template(v-else-if="(isDomainsLoaded && domainList.length === 0) || errorMessage === 'Продукты ОАТС не найдены'")
     .oats-main-page__content-wide
       OATSPromo
 
