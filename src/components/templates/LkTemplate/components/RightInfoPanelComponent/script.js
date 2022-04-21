@@ -7,7 +7,8 @@ export default {
   name: 'right-info-panel-component',
   data: () => ({
     pre: 'right-info-panel-component',
-    isOpenPersonalAccountDetail: false
+    isOpenPersonalAccountDetail: false,
+    activeStatus: true
   }),
   props: {
     value: null

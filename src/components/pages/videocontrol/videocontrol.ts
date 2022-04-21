@@ -1,6 +1,6 @@
 import { Component, Vue, Watch } from 'vue-property-decorator'
 import { ILocationOfferInfo } from '@/tbapi'
-import { PRODUCT_TYPES, TOMS_IDS } from '@/constants/videocontrol'
+import { PRODUCT_TYPES } from '@/constants/videocontrol'
 import { mapGetters } from 'vuex'
 
 @Component({
@@ -73,15 +73,7 @@ export default class VCTemplate extends Vue {
               { api: this.$api, parentIds }
             )
           }
-
-          this.$store.dispatch('productnservices/customerProducts', {
-            api: this.$api,
-            parentIds,
-            tomsId: TOMS_IDS.VIDNCAM
-          })
-            .then(() => {
-              this.$store.dispatch('videocontrol/setEnfortaDataIsLoaded')
-            })
+          this.$store.dispatch('videocontrol/setEnfortaDataIsLoaded')
         } else {
           this.$store.dispatch('videocontrol/setVCDataIsLoaded', true)
         }

@@ -354,7 +354,7 @@ const actions = {
 
     // привожу номера телефонов к формату который принимает бекенд
     // toDefaultPhoneNumber
-    if (data?.phones.length) {
+    if (data?.phones?.length) {
       for (let i = 0; i < data.phones.length; i++) {
         data.phones[i].value = toDefaultPhoneNumber(data.phones[i].value)
       }

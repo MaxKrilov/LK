@@ -35,7 +35,7 @@ div.ml-lg-64
         | {{ isTurboActivation ? 'Плата за период' : 'Абонентская плата' }}
       .value
         span {{ ( isTurboActivation ? turboPriceAfterIncrease : priceAfterIncrease) | price }}
-        | &nbsp;{{ currencyCode }}/месяц
+        | &nbsp;{{ currencyCode }}
     .current-price(v-if="!isTurboActivation")
       .caption.mb-4
         | Текущая абонентская плата
