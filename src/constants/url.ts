@@ -5,7 +5,7 @@ export const BACKEND_COMBAT = window && window.location && window.location.origi
 export const FRONTEND_LOCALHOST = 'localhost:8080'
 export const FRONTEND_TESTING = 'frontend2.b2bweb.t2.ertelecom.ru'
 export const FRONTEND_COMBAT = 'newlkb2b.domru.ru'
-export const FRONTEND_STAGING = 'newlkb2b.t4.ertelecom.ru'
+export const FRONTEND_STAGING = 'newlkb2b2.t4.ertelecom.ru'
 export const BACKEND_STAGING = 'api-lkb2b.t4.ertelecom.ru'
 
 const CHANGE_CUSTOMER_IFRAME: Record<string, string> = {
