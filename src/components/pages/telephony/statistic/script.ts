@@ -10,7 +10,8 @@ import { mapState } from 'vuex'
 import FileComponent from './components/FileComponent/index.vue'
 import { Cookie } from '@/functions/storage'
 import moment from 'moment'
-import sortBy from 'lodash/sortBy'
+// import order from 'lodash/sortBy'
+import { orderBy } from 'lodash'
 
 const components = {
   PhoneFolder,
@@ -123,7 +124,7 @@ export default class TelephonyStatisticPage extends Vue {
         }
       })
 
-    return sortBy(result, ['creationDate'])
+    return orderBy(result, ['creationDate'], ['desc'])
   }
 
   generateFileStatistic () {
