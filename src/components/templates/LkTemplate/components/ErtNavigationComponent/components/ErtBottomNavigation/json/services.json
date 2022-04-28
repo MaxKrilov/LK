@@ -37,7 +37,7 @@
       { "service": "Сервисы авторизации", "path": "/lk/wifi/services-auth" },
       { "service": "Конструктор страницы авторизации", "path": "/lk/wifi/personalization" },
       { "service": "Контент-фильтрация", "path": "/lk/wifi/content-filter" },
-      { "service": "Аналитика", "path": "/lk/wifi/analytics/statistics" }
+      { "service": "Аналитика", "path": "/lk/wifi/analytics" }
     ]
   },
   {

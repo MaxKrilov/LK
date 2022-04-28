@@ -1,0 +1,53 @@
+.ert-analytics-page {
+  &__list-point-dialog {
+    padding: $padding-x6;
+    background: map-get($shades, 'white');
+
+    &__item {
+      padding: 8px 0;
+    }
+  }
+
+  &__list-point-dialog-head .close {
+    @include color-black(0.2);
+    transition: $primary-transition;
+
+    &:hover {
+      color: map-get($red, 'lighten-2');
+    }
+
+    &:active {
+      color: map-get($red, 'base');
+    }
+  }
+
+  &__list-point-dialog-footer {
+    display: flex;
+    flex-direction: column;
+
+    @include min-breakpoint('sm') {
+      flex-direction: row;
+    }
+
+    > * {
+      width: 100%;
+    }
+  }
+
+  &__slider-content {
+    display: flex;
+    flex-direction: column;
+
+    > * {
+      width: 100%;
+    }
+
+    @include min-breakpoint('sm') {
+      flex-direction: row;
+
+      > * {
+        max-width: 208px;
+      }
+    }
+  }
+}

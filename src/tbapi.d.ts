@@ -116,6 +116,7 @@ export interface ICustomerOffer {
 
 export interface ICustomerProductSLO {
   activated: boolean
+  actualStartDate: string
   availableFrom: string
   availableTo: string
   canBeActivatedInSSP: boolean

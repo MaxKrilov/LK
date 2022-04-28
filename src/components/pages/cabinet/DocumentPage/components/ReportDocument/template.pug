@@ -15,7 +15,7 @@ er-document-viewer(
             type="checkbox"
             view="radio-check"
             v-model="selected"
-            @input.prevent="onSelect"
+            @input="onSelect"
           )
         h3.er-document__title-sm {{ document.type.id | typeName }}
         h3.er-document__title {{ document.number }}

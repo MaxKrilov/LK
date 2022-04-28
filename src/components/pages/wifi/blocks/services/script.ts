@@ -35,7 +35,7 @@ export default class ServicesComponent extends Vue {
         isOn: this.isOnAnalitic,
         onClick: () => {
           this.$router.push({
-            name: 'analytics-visitors',
+            name: 'wifi-analytics',
             params: { bpi: this.bpi }
           })
         }

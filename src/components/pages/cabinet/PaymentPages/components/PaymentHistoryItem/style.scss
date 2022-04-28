@@ -99,7 +99,7 @@
 
     .red_description {
       color: map-get($red, 'base');
-    }    
+    }
 
     .info .title {
       @extend %h4-font;

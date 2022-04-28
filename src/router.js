@@ -118,12 +118,7 @@ import WifiPromo from './components/pages/wifi/promo/index'
 import WifiServiceAuth from './components/pages/wifi/service-auth/index'
 import WifiPersonalizationPage from '@/components/pages/wifi/personalization/index'
 // WiFi аналитика
-import WifiAnalyticsPromo from './components/pages/wifi/analytics/promo'
-import WifiAnalyticsChoice from './components/pages/wifi/analytics/choice'
-import WifiAnalyticsStatistics from './components/pages/wifi/analytics/statistics'
-import WifiAnalyticsVisitors from '@/components/pages/wifi/analytics/statistics/VisitorsPage'
-import WifiAnalyticsDevices from '@/components/pages/wifi/analytics/statistics/DevicesPage'
-import WifiUsersRegistry from '@/components/pages/wifi/analytics/statistics/RegistryPage'
+import ErtAnalyticsPage from '@/components/pages/wifi/AnalyticsPage'
 import WifiRadarPage from '@/components/pages/wifi/radar/index.vue'
 
 // WiFi PRO
@@ -479,6 +474,11 @@ const router = new Router({
           component: WifiRadarPage
         },
         {
+          path: 'wifi/analytics',
+          name: 'wifi-analytics',
+          component: ErtAnalyticsPage
+        },
+        {
           path: 'wifi/services-auth',
           name: 'wifi-services-auth',
           component: WifiServiceAuth
@@ -501,39 +501,6 @@ const router = new Router({
           path: 'wifi/content-filter/create',
           component: WifiFilterEdit,
           props: { create: true }
-        },
-        {
-          name: 'wifi-analytics-promo',
-          path: 'wifi/analytics/promo',
-          component: WifiAnalyticsPromo
-        },
-        {
-          name: 'wifi-analytics-choice',
-          path: 'wifi/analytics/choice',
-          component: WifiAnalyticsChoice
-        },
-        {
-          name: 'wifi-analytics-statistics',
-          path: 'wifi/analytics/statistics',
-          component: WifiAnalyticsStatistics,
-          redirect: 'wifi/analytics/statistics/visitors',
-          children: [
-            {
-              path: 'visitors',
-              name: 'analytics-visitors',
-              component: WifiAnalyticsVisitors
-            },
-            {
-              path: 'devices',
-              name: 'analytics-devices',
-              component: WifiAnalyticsDevices
-            },
-            {
-              path: 'registry',
-              name: 'analytics-users-registry',
-              component: WifiUsersRegistry
-            }
-          ]
         },
         {
           path: 'wifi/pro',
