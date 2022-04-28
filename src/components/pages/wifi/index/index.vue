@@ -69,7 +69,7 @@
                 template(v-else)
                   button.mr-24(
                     :class="{ 'on': isOnAnalytic(getBPIByAddressUnit(addressUnit.id)) }"
-                    @click="$router.push({ name: 'analytics-visitors', params: { bpi: getBPIByAddressUnit(addressUnit.id) } })"
+                    @click="$router.push({ name: 'wifi-analytics', params: { bpi: getBPIByAddressUnit(addressUnit.id) } })"
                   )
                     er-icon(name="stat")
 

@@ -4,6 +4,7 @@ import { mapGetters, mapState } from 'vuex'
 import { IBillingInfo } from '@/tbapi/payments'
 
 import ErtResponsiveMixin from '@/mixins2/ErtResponsiveMixin'
+import { roundUp } from '@/functions/helper'
 
 const services = require('./json/services.json')
 
@@ -21,7 +22,9 @@ const SCROLL_STEP = 400
   watch: {
     sumToPay (val) {
       if (val) {
-        this.amountToPayment = Number(String(val).replace('.', ','))
+        this.amountToPayment = String(
+          Number(roundUp(val, 2)).toFixed(2).replace('.', ',')
+        )
       }
     },
     listFlag (val) {
@@ -51,7 +54,7 @@ export default class ErtNavigationComponent extends ErtResponsiveMixin {
 
   serviceList = services
 
-  amountToPayment: number = 0
+  amountToPayment: string = ''
 
   menuOffset: number = 0
 
@@ -187,6 +190,10 @@ export default class ErtNavigationComponent extends ErtResponsiveMixin {
     })
 
     window.addEventListener('resize', this.onResizeHandler)
+
+    this.amountToPayment = String(
+      Number(roundUp(this.sumToPay, 2)).toFixed(2).replace('.', ',')
+    )
   }
 
   beforeDestroy () {

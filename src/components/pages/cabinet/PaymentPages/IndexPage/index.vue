@@ -2,7 +2,7 @@
   .payment-index-page.main-content.main-content--top-menu-fix.main-content--h-padding.main-content--top-padding
     er-page-header(
       linkText="Назад на главную"
-      title="Платежи"
+      title="Баланс"
       backlink="/lk"
     )
 

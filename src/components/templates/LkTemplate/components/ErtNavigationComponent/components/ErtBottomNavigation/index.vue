@@ -94,7 +94,7 @@
                     label="Рекомендуемая сумма"
                   )
                   ErButton(
-                    @click="() => { $router.push(`/lk/payments/card-payment?total_amount=${amountToPayment}`) }"
+                    @click="() => { $router.push(`/lk/payments/card-payment?total_amount=${amountToPayment.toString().replace(',', '.')}`) }"
                   ) Пополнить
             template(v-if="menuItemModel === 2")
               .ert-bottom-navigation__menu__menu-item

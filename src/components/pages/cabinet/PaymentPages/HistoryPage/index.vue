@@ -24,35 +24,6 @@
                   v-model="datePickerModel"
                   :disabledDate="disabledDateCallback"
                 )
-                //-ErtMenu(
-                //-  ref="picker-menu"
-                //-  v-model="modelDatePicker"
-                //-  :close-on-content-click="false"
-                //-  :return-value.sync="datePickerModel"
-                //-  transition="scale-transition"
-                //-  offset-y
-                //-  min-width="auto"
-                //-  contentClass="payment-history-page__date-picker"
-                //-)
-                //-  template(v-slot:activator="{ on, attrs }")
-                //-    ErtTextField(
-                //-      :value="formatFilterPeriod"
-                //-      label="Период"
-                //-      readonly
-                //-      v-bind="attrs"
-                //-      v-on="on"
-                //-    )
-                //-  ErtDatePicker(
-                //-    v-model="datePickerModel"
-                //-    no-title
-                //-    scrollable
-                //-    range
-                //-    :max="maxDatePicker"
-                //-    :min="minDatePicker"
-                //-  )
-                //-  .payment-history-page__date-picker__footer
-                //-    er-button.mr-8(@click="onSaveDatePicker") OK
-                //-    er-button.ml-8(flat @click="modelDatePicker = false") Отмена
               ErFlex.xs12.sm8.md5.lg3.r-offset-sm6.r-offset-md0
                 ErtSelect(
                   label="Тип"
@@ -88,7 +59,7 @@
               :data="historyItem"
               :type="historyItem.type"
               :hasErrorAutoPayment="historyItem.type === 'replenishment' && historyItem.description === 'Автоплатеж' && historyItem.accountPaymentStatus === 'Завершенный с ошибкой' "
-          )
+            )
 </template>
 
 <script lang="ts" src="./script.ts"></script>
