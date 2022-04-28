@@ -41,6 +41,7 @@ const actions = {
     data.description = description
     data.requestName = 'request'
     data.phoneNumber = listContact.find((contact: any) => 'phone' in contact)?.phone?.id || ''
+    data.status = '9130661336113007426'
 
     return new Promise<string | boolean>(async (resolve) => {
       try {
