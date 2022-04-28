@@ -14,6 +14,8 @@ import ErActivationModal from '@/components/blocks/ErActivationModal/index.vue'
 import ErtSwitch from '@/components/UI2/ErtSwitch'
 import { typeClosedNotification } from '@/constants/closed_notification'
 
+import { roundUp } from '@/functions/helper'
+
 @Component<InstanceType<typeof ErtCardPaymentPage>>({
   components: {
     ErActivationModal
@@ -457,9 +459,23 @@ export default class ErtCardPaymentPage extends Vue {
     }
   }
 
+  defineAmountPay () {
+    // const amountPay = this.$route.query.total_amount || this.$route.params.total_amount || Cookie.get('ff_total_amount')
+    const amountPay = this.$route.query.total_amount || this.$route.params.total_amount || localStorage.getItem('ff_total_amount')
+
+    if (amountPay) {
+      this.amountToPay = String(
+        Number(roundUp(amountPay, 2)).toFixed(2).replace('.', ',')
+      )
+      // Cookie.remove('ff_total_amount')
+      localStorage.removeItem('ff_total_amount')
+    }
+  }
+
   /// Hooks
   async mounted () {
     window.addEventListener('resize', this.onResizeHandler)
+    this.defineAmountPay()
 
     this.$nextTick(() => {
       this.onResizeHandler()
