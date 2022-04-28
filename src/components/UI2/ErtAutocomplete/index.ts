@@ -158,7 +158,7 @@ class ErtAutocomplete extends mixins(ErtSelect) {
   // eslint-disable-next-line camelcase
   get $_menuProps (): object {
     const props = ErtSelect.options.computed.$_menuProps.get.call(this);
-    (props as any).contentClass = `v-autocomplete__content ${(props as any).contentClass || ''}`.trim()
+    (props as any).contentClass = `ert-autocomplete__content ${(props as any).contentClass || ''}`.trim()
     return {
       ...defaultMenuProps,
       ...props

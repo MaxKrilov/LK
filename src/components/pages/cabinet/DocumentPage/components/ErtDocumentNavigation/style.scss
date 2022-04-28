@@ -1,0 +1,90 @@
+.ert-document-navigation {
+  overflow: hidden;
+  position: relative;
+
+  &__list-item {
+    display: flex;
+    flex-wrap: nowrap;
+    position: relative;
+    padding-bottom: 6px;
+  }
+
+  &__item {
+    @extend %h4-font;
+    @include color-black(0.5);
+    white-space: nowrap;
+
+    &:not(:last-child) {
+      margin-right: 24px;
+
+      @include min-breakpoint('lg') {
+        margin-right: 48px;
+      }
+    }
+
+    &.is-active {
+      @include color-black(0.8);
+    }
+  }
+
+  &__slider {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 2px;
+    background-color: map-get($red, 'base');
+    transition: $primary-transition;
+  }
+
+  &.is-scroll {
+    position: relative;
+
+    &::before,
+    &::after {
+      content: '';
+      display: block;
+      width: 64px;
+      height: 166px;
+      top: -14px;
+      position: absolute;
+      z-index: 1;
+      pointer-events: none;
+      transition: opacity $primary-transition;
+
+      @include min-breakpoint('md') {
+        height: 214px;
+        top: -17px;
+      }
+    }
+
+    &::before {
+      left: -16px;
+      background: linear-gradient(90deg, map-get($gray, '3') 19.8%, rgba(map-get($gray, '3'), 0) 96.53%);
+
+      @include min-breakpoint('md') {
+        left: -24px;
+      }
+    }
+
+    &::after {
+      right: -16px;
+      background: linear-gradient(270deg, map-get($gray, '3') 19.8%, rgba(map-get($gray, '3'), 0) 96.53%);
+
+      @include min-breakpoint('md') {
+        right: -24px;
+      }
+    }
+
+    &.is-start {
+      &::before {
+        opacity: 0;
+      }
+    }
+
+    &.is-end {
+      &::after {
+        opacity: 0;
+      }
+    }
+  }
+}

@@ -108,7 +108,7 @@
 
   &--loading {
     .er-button__content {
-      display: none;
+      opacity: 0;
     }
 
     .er-button__loading {

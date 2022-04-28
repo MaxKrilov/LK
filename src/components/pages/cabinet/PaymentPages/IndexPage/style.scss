@@ -1,11 +1,25 @@
 .payment-index-page {
   &__info {
     display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+    flex-wrap: wrap;
 
-    @include min-breakpoint('sm') {
-      flex-direction: row;
+    > * {
+      width: 100%;
+      max-width: 50%;
+      margin-bottom: 8px;
+
+      @include min-breakpoint('sm') {
+        max-width: 33%;
+      }
+
+      @include min-breakpoint('md') {
+        max-width: none;
+        width: auto;
+
+        &:not(:last-child) {
+          margin-right: 64px;
+        }
+      }
     }
   }
 
@@ -14,8 +28,8 @@
 
     &__caption {
       @extend %caption2-font;
-      @include color-black(0.5);
-      margin: $padding-x2;
+      @include color-black(0.3);
+      margin-bottom: 4px;
     }
 
     &__value {
@@ -31,13 +45,17 @@
     }
 
     &__value .value {
-      @extend %h2-font;
+      @extend %body-font;
       @include color-black(0.8);
       margin-top: 0;
 
+      &.is-debt {
+        color: map-get($red, 'lighten-2');
+      }
+
       span {
         @extend %body-font;
-        @include color-black(0.5);
+        @include color-black(0.2);
       }
     }
 
@@ -47,158 +65,262 @@
     }
   }
 
-  &__buttons {
-    display: flex;
-    flex-wrap: wrap;
-  }
-
-  &__button {
-    width: 100%;
-    height: 149px;
-    background: $border-gradient;
-    padding: 1px;
-    border-radius: 12px;
-    cursor: pointer;
-    transition: $primary-transition;
-
-    @include min-breakpoint('md') {
-      height: 168px;
-    }
-
-    @include min-breakpoint('lg') {
-      height: 192px;
-    }
-
-    * {
-      user-select: none;
-      transition: inherit;
-    }
-
-    .wrapper {
-      width: 100%;
-      height: 100%;
-      padding: $padding-x4;
-      background-color: map-get($gray, '9');
-      border-radius: inherit;
+  &-buttons {
+    &.is-scroll {
       position: relative;
-      overflow: hidden;
 
-      @include min-breakpoint('md') {
-        padding: $padding-x6;
-      }
-    }
+      &::before,
+      &::after {
+        content: '';
+        display: block;
+        width: 64px;
+        height: 166px;
+        top: -14px;
+        position: absolute;
+        z-index: 1;
+        pointer-events: none;
+        transition: opacity $primary-transition;
 
-    .title,
-    .description {
-      position: relative;
-      z-index: 1;
-    }
-
-    .title {
-      @extend %h4-font;
-      @include color-black(0.8);
-      margin-bottom: $padding-x2;
-
-      @include min-breakpoint('md') {
-        margin-bottom: $padding-x4;
-      }
-    }
-
-    .description {
-      @extend %caption1-font;
-      @include color-black(0.5);
-
-      &.enabled {
-        color: map-get($green, 'base');
-      }
-    }
-
-    .icon {
-      position: absolute;
-      bottom: 16px;
-      right: 16px;
-      color: map-get($red, 'base');
-      transition: transform $primary-transition;
-
-      @include min-breakpoint('md') {
-        bottom: 24px;
-        right: 24px;
-      }
-    }
-
-    &:hover {
-      //box-shadow: -4px 4px 32px map-get($yellow, 'other-8');
-
-      .wrapper {
-        background: map-get($red, 'lighten-2');
+        @include min-breakpoint('md') {
+          height: 214px;
+          top: -17px;
+        }
       }
 
-      .description {
-        @include color-white(1);
+      &::before {
+        left: -16px;
+        background: linear-gradient(90deg, map-get($gray, '3') 19.8%, rgba(map-get($gray, '3'), 0) 96.53%);
+
+        @include min-breakpoint('md') {
+          left: -24px;
+        }
       }
 
-      .icon {
-        @include color-white(0.3);
-        transform: scale((256 / 32));
-        z-index: 0;
+      &::after {
+        right: -16px;
+        background: linear-gradient(270deg, map-get($gray, '3') 19.8%, rgba(map-get($gray, '3'), 0) 96.53%);
 
-        svg {
-          filter: drop-shadow(-4px 4px 4px rgba(map-get($shades, 'black'), 0.08));
+        @include min-breakpoint('md') {
+          right: -24px;
+        }
+      }
+
+      &.is-start {
+        &::before {
+          opacity: 0;
+        }
+      }
+
+      &.is-end {
+        &::after {
+          opacity: 0;
         }
       }
     }
 
-    &.promised-payment .wrapper {
+    &__slider {
       display: flex;
-      flex-direction: column;
+      flex-wrap: nowrap;
+      transition: transform $primary-transition;
     }
 
-    .promised-payment__caption {
-      margin-top: auto;
-      @extend %caption2-font;
-      @include color-black(0.3)
-    }
+    &__item {
+      min-width: 155px;
+      height: 135px;
+      border-radius: 12px;
+      box-shadow: 0 2px 2px rgba(map-get($shades, 'black'), 0.05),
+                  0 2px 12px rgba(map-get($shades, 'black'), 0.1);
+      background: $border-gradient;
+      padding: 1px;
+      width: 100%;
+      transition: $primary-transition;
 
-    .promised-payment__value {
-      @extend %h2-font;
+      &:not(:last-child) {
+        margin-right: 16px;
+      }
 
-      span:nth-child(1) {
+      @include min-breakpoint('md') {
+        min-width: 198px;
+        height: 156px;
+
+        &:not(:last-child) {
+          margin-right: 24px;
+        }
+      }
+
+      @include min-breakpoint('xl') {
+        min-width: 242px;
+        height: 176px;
+      }
+
+      * {
+        transition: inherit;
+      }
+
+      .content {
+        width: 100%;
+        height: 100%;
+        background: map-get($gray, '9');
+        border-radius: inherit;
+        padding: 16px;
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        text-align: left;
+        transition: none;
+        overflow: hidden;
+
+        @include min-breakpoint('md') {
+          padding: 24px;
+        }
+
+        @include min-breakpoint('xl') {
+          padding: 32px;
+        }
+      }
+
+      .title {
+        @extend %h4-font;
         @include color-black(0.8);
+        transition: $primary-transition;
       }
 
-      span:nth-child(2),
-      span:nth-child(3) {
-        @include color-black(0.5);
+      .additional-info {
+        margin-top: auto;
+        width: 100%;
+        max-width: 91px;
+        transition: $primary-transition;
+
+        @include min-breakpoint('md') {
+          max-width: 110px;
+        }
+
+        @include min-breakpoint('xl') {
+          max-width: 138px;
+        }
+
+        &.is-autopay .caption2 {
+          color: map-get($green, 'base');
+        }
+
+        > * {
+          transition: inherit;
+        }
       }
 
-      span:nth-child(4),
-      span:nth-child(5) {
-        @include color-black(0.2)
+      .additional-info .value {
+        @extend %caption1-font;
+        color: map-get($green, 'base');
+        margin-top: 0;
       }
 
-      span:nth-child(2),
-      span:nth-child(4) {
-        animation-name: promised-payment-animation;
-        animation-duration: 1s;
-        animation-iteration-count: infinite;
+      .icon {
+        position: absolute;
+        right: 16px;
+        bottom: 16px;
+        color: map-get($red, 'base');
+        transition: transform $primary-transition;
+
+        @include min-breakpoint('md') {
+          right: 24px;
+          bottom: 24px;
+        }
+
+        @include min-breakpoint('xl') {
+          right: 32px;
+          bottom: 32px;
+        }
+      }
+
+      &:hover {
+        .content {
+          background: map-get($red, 'lighten-2');
+        }
+
+        .title {
+          @include color-white();
+        }
+
+        .additional-info .caption2 {
+          @include color-white(0.5);
+        }
+
+        .additional-info .value {
+          @include color-white();
+        }
+
+        .icon {
+          transform: scale((96 / 32));
+          z-index: 0;
+          @include color-white(0.5);
+
+          svg {
+            filter: drop-shadow(-4px 4px 4px rgba(map-get($shades, 'black'), 0.08));
+          }
+        }
+      }
+
+      &:active {
+        background: linear-gradient(to bottom, map_get($gray, "26") 0, map_get($shades, "white") 100%);
+
+        .content {
+          background: map-get($gray, '9')
+        }
+
+        .title {
+          @include color-black(0.8);
+        }
+
+        .additional-info .caption2 {
+          @include color-black(0.3);
+        }
+
+        .additional-info .value {
+          color: map-get($green, 'base');
+        }
+
+        .icon {
+          transform: none;
+          color: map-get($red, 'base');
+        }
+
+        .icon svg {
+          filter: none;
+        }
       }
     }
+  }
 
-    .promised-payment__line {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      height: 4px;
-      background: linear-gradient(to right, map-get($red, 'base'), map-get($yellow, 'base'), map-get($green, 'base'));
+  &__filter-wrap__list {
+    //margin: 0 !important;
+    //
+    //@include min-breakpoint('md') {
+    //  margin-right: 16px !important;
+    //  margin-left: 16px !important;
+    //}
+
+    .er-date-picker .er-messages {
+      display: none;
     }
 
-    .promised-payment__before-line {
-      height: 4px;
-      position: absolute;
-      bottom: 0;
-      right: 0;
-      background-color: map-get($gray, '4');
+    .er-date-picker .er-input__slot {
+      margin-bottom: 0;
+    }
+  }
+
+  &__history__loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .ert-progress-circular {
+      @include color-black(0.3);
+      margin-right: $padding-x4;
+    }
+
+    .title {
+      @include color-black(0.8);
+      @extend %h4-font;
     }
   }
 
@@ -270,6 +392,62 @@
 
     &__description {
       @include color-black(0.5);
+    }
+  }
+
+  &__history__list--not-found {
+    @extend %h4;
+    text-align: center;
+  }
+
+  &__month-year {
+    padding: 16px 0;
+    @extend %body-font;
+    color: map-get($gray, '8');
+    font-weight: bold;
+
+    @include min-breakpoint('lg') {
+      padding: 24px 0;
+    }
+
+    .year {
+      @include color-black(0.3);
+      font-weight: normal;
+    }
+  }
+
+  &__history-group-by-month {
+    > *:first-child {
+      border-top: 1px solid rgba(map-get($shades, 'black'), 0.2);
+    }
+  }
+
+  .main-content--h-padding {
+    margin-right: 16px;
+    margin-left: 16px;
+    max-width: 1040px;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+
+    @include min-breakpoint('md') {
+      margin-right: 24px;
+      margin-left: 24px;
+    }
+
+    @include min-breakpoint('lg') {
+      margin-right: 48px;
+      margin-left: 48px;
+    }
+
+    @include min-breakpoint('xl') {
+      margin-right: auto;
+      margin-left: auto;
+    }
+  }
+
+  .er-filter-container {
+    > * {
+      width: 100%;
     }
   }
 }

@@ -1011,10 +1011,24 @@
   dependencies:
     "regenerator-runtime" "^0.13.2"
 
+"@babel/runtime@^7.6.2":
+  "integrity" "sha512-99catp6bHCaxr4sJ/DbTGgHS4+Rs2RVd2g7iOap6SLGPDknRK9ztKNsE/Fg6QhSeh1FGE5f6gHGQmvvn3I3xhw=="
+  "resolved" "https://npmrg.t4.ertelecom.ru/@babel%2fruntime/-/runtime-7.15.4.tgz"
+  "version" "7.15.4"
+  dependencies:
+    "regenerator-runtime" "^0.13.4"
+
 "@babel/runtime@^7.6.3":
   "integrity" "sha512-6sF3uQw2ivImfVIl62RZ7MXhO2tap69WeWK57vAaimT6AZbE4FbqjdEJIN1UqoD6wI6B+1n9UiagafH1sxjOtg=="
   "resolved" "https://npmrg.t4.ertelecom.ru/@babel%2fruntime/-/runtime-7.10.2.tgz"
   "version" "7.10.2"
+  dependencies:
+    "regenerator-runtime" "^0.13.4"
+
+"@babel/runtime@^7.7.2":
+  "integrity" "sha512-99catp6bHCaxr4sJ/DbTGgHS4+Rs2RVd2g7iOap6SLGPDknRK9ztKNsE/Fg6QhSeh1FGE5f6gHGQmvvn3I3xhw=="
+  "resolved" "https://npmrg.t4.ertelecom.ru/@babel%2fruntime/-/runtime-7.15.4.tgz"
+  "version" "7.15.4"
   dependencies:
     "regenerator-runtime" "^0.13.4"
 
@@ -1547,9 +1561,9 @@
   "version" "1.1.1"
 
 "@types/cometd@^4.0.0":
-  "integrity" "sha512-FP1izojjD5kjIoGKfyCyIYMON6p3WQ2H+zrdCdQtYzahO+5IggmwCYZ0hruCv8m/sOJqFpBOJLTt1iGa3oy/kQ=="
-  "resolved" "https://npmrg.t4.ertelecom.ru/@types%2fcometd/-/cometd-4.0.8.tgz"
-  "version" "4.0.8"
+  "integrity" "sha512-bn27WenWkEyCH1ynpZZdSA6gnYW30bLWVUIu+EluxEaFNDPor6EnVJtTCVDX/wzUdriaXRcIYjOTnIP1fEuGeQ=="
+  "resolved" "https://npmrg.t4.ertelecom.ru/@types%2fcometd/-/cometd-4.0.11.tgz"
+  "version" "4.0.11"
 
 "@types/d3-array@*", "@types/d3-array@^1":
   "integrity" "sha512-51vHWuUyDOi+8XuwPrTw3cFqyh2Slg9y8COYkRfjCPG9TfYqY0hoNPzv/8BrcAy0FeQBzqEo/D/8Nk2caOQJnA=="
@@ -2659,7 +2673,7 @@
 
 "acorn@^6.0.2":
   "integrity" "sha512-8oe72N3WPMjA+2zVG71Ia0nXZ8DpQH+QyyHO+p06jT8eg8FGG3FbcUIi8KziHlAfheJQZeoqbvq1mQSQHXKYLw=="
-  "resolved" "https://registry.npmjs.org/acorn/-/acorn-6.2.0.tgz"
+  "resolved" "https://npmrg.t4.ertelecom.ru/acorn/-/acorn-6.2.0.tgz"
   "version" "6.2.0"
 
 "acorn@^6.1.1":
@@ -3388,6 +3402,11 @@
     "hoopy" "^0.1.4"
     "tryer" "^1.0.1"
 
+"big-integer@^1.6.16":
+  "integrity" "sha512-+O2uoQWFRo8ysZNo/rjtri2jIwjr3XfeAgRjAUADRqGG+ZITvyn8J1kvXLTaKVr3hhGXk+f23tKfdzmklVM9vQ=="
+  "resolved" "https://npmrg.t4.ertelecom.ru/big-integer/-/big-integer-1.6.50.tgz"
+  "version" "1.6.50"
+
 "big.js@^3.1.3":
   "integrity" "sha512-+hN/Zh2D08Mx65pZ/4g5bsmNiZUuChDiQfTUQ7qJr4/kuopCr88xZsAXv6mBoZEsUI4OuGHlX59qE94K2mMW8Q=="
   "resolved" "https://registry.npmjs.org/big.js/-/big.js-3.2.0.tgz"
@@ -3525,6 +3544,20 @@
     "resolve" "^1.1.5"
     "static-module" "^3.0.2"
     "through2" "^2.0.0"
+
+"broadcast-channel@^4.2.0":
+  "integrity" "sha512-XX9yNnIy/v2T+HR5EKIH7ziM2mYTefsrzZ2lkCmFZxwCDG7Ns7HLIooUXA114sCeFRJ4MEXEgdMapxfPDh9Xkg=="
+  "resolved" "https://npmrg.t4.ertelecom.ru/broadcast-channel/-/broadcast-channel-4.2.0.tgz"
+  "version" "4.2.0"
+  dependencies:
+    "@babel/runtime" "^7.7.2"
+    "detect-node" "^2.1.0"
+    "js-sha3" "0.8.0"
+    "microseconds" "0.2.0"
+    "nano-time" "1.0.0"
+    "oblivious-set" "1.0.0"
+    "rimraf" "3.0.2"
+    "unload" "2.2.0"
 
 "brorand@^1.0.1":
   "integrity" "sha1-EsJe/kCkXjwyPrhnWgoM5XsiNx8="
@@ -4815,6 +4848,11 @@
   dependencies:
     "array-find-index" "^1.0.1"
 
+"currentscript@^1.1.1":
+  "integrity" "sha1-lgykpHyFK9QY4aRm3gS63vXpLKw="
+  "resolved" "https://npmrg.t4.ertelecom.ru/currentscript/-/currentscript-1.1.1.tgz"
+  "version" "1.1.1"
+
 "cyclist@~0.2.2":
   "integrity" "sha1-GzN5LhHpFKL9bW7WRHRkRE5fpkA="
   "resolved" "https://registry.npmjs.org/cyclist/-/cyclist-0.2.2.tgz"
@@ -5358,6 +5396,11 @@
   "resolved" "https://registry.npmjs.org/detect-node/-/detect-node-2.0.4.tgz"
   "version" "2.0.4"
 
+"detect-node@^2.1.0":
+  "integrity" "sha512-T0NIuQpnTvFDATNuHN5roPwSBG83rFsuO+MXXH9/3N1eFbn4wcPjttvjMLEPWJ0RGUYgQE7cGgS3tNxbqCGM7g=="
+  "resolved" "https://npmrg.t4.ertelecom.ru/detect-node/-/detect-node-2.1.0.tgz"
+  "version" "2.1.0"
+
 "dfa@^1.2.0":
   "integrity" "sha512-ED3jP8saaweFTjeGX8HQPjeC1YYyZs98jGNZx6IiBvxW7JG5v492kamAQB3m2wop07CvU/RQmzcKr6bgcC5D/Q=="
   "resolved" "https://npmrg.t4.ertelecom.ru/dfa/-/dfa-1.2.0.tgz"
@@ -5646,13 +5689,14 @@
   "resolved" "https://registry.npmjs.org/entities/-/entities-1.1.2.tgz"
   "version" "1.1.2"
 
-"er-chat@^1.0.70":
-  "integrity" "sha512-rMbPlg+dcOKdn2rPlOZkuo8TDuEdCnH84+fO73nCisc0j437JrVzwlyL36HYBL/2C8iYfQ3tauVaKqiyL4t8yw=="
-  "resolved" "https://npmrg.t4.ertelecom.ru/er-chat/-/er-chat-1.0.70.tgz"
-  "version" "1.0.70"
+"er-chat@^1.0.87":
+  "integrity" "sha512-s6NAepelyR9BEX+gcMAm17TAyCIREku51Z46R1GCbRtdpwfboIS7lOkORsTjSBFnlMDA3F7EYXUrrEtSlvXqJQ=="
+  "resolved" "https://npmrg.t4.ertelecom.ru/er-chat/-/er-chat-1.0.88.tgz"
+  "version" "1.0.88"
   dependencies:
     "@types/cometd" "^4.0.0"
     "cometd" "^4.0.0"
+    "currentscript" "^1.1.1"
 
 "errno@^0.1.3", "errno@~0.1.7":
   "integrity" "sha512-MfrRBDWzIWifgq6tJj60gkAwtLNb6sQPlcFrSOflcP1aFmmruKQ2wRnze/8V6kgyz7H3FF8Npzv78mZ7XLLflg=="
@@ -8453,6 +8497,11 @@
   dependencies:
     "easy-stack" "^1.0.0"
 
+"js-sha3@0.8.0":
+  "integrity" "sha512-gF1cRrHhIzNfToc802P800N8PpXS+evLLXfsVpowqmAFR9uwbi89WvXg2QspOmXL8QL86J4T1EpFu+yUkwJY3Q=="
+  "resolved" "https://npmrg.t4.ertelecom.ru/js-sha3/-/js-sha3-0.8.0.tgz"
+  "version" "0.8.0"
+
 "js-stringify@^1.0.1":
   "integrity" "sha1-Fzb939lyTyijaCrcYjCufk6Weds="
   "resolved" "https://registry.npmjs.org/js-stringify/-/js-stringify-1.0.2.tgz"
@@ -9231,6 +9280,11 @@
     "braces" "^3.0.1"
     "picomatch" "^2.0.5"
 
+"microseconds@0.2.0":
+  "integrity" "sha512-n7DHHMjR1avBbSpsTBj6fmMGh2AGrifVV4e+WYc3Q9lO+xnSZ3NyhcBND3vzzatt05LFhoKFRxrIyklmLlUtyA=="
+  "resolved" "https://npmrg.t4.ertelecom.ru/microseconds/-/microseconds-0.2.0.tgz"
+  "version" "0.2.0"
+
 "miller-rabin@^4.0.0":
   "integrity" "sha512-115fLhvZVqWwHPbClyntxEVfVDfl9DLLTuJvq3g2O/Oxi8AiNouAHvDSzHS0viUJc+V5vm3eq91Xwqn9dp4jRA=="
   "resolved" "https://registry.npmjs.org/miller-rabin/-/miller-rabin-4.0.1.tgz"
@@ -9436,6 +9490,13 @@
   "integrity" "sha512-INOFj37C7k3AfaNTtX8RhsTw7qRy7eLET14cROi9+5HAVbbHuIWUHEauBv5qT4Av2tWasiTY1Jw6puUNqRJXQg=="
   "resolved" "https://registry.npmjs.org/nan/-/nan-2.14.0.tgz"
   "version" "2.14.0"
+
+"nano-time@1.0.0":
+  "integrity" "sha1-sFVPaa2J4i0JB/ehKwmTpdlhN+8="
+  "resolved" "https://npmrg.t4.ertelecom.ru/nano-time/-/nano-time-1.0.0.tgz"
+  "version" "1.0.0"
+  dependencies:
+    "big-integer" "^1.6.16"
 
 "nanomatch@^1.2.1", "nanomatch@^1.2.9":
   "integrity" "sha512-fpoe2T0RbHwBTBUOftAfBPaDEi06ufaUai0mE6Yn1kacc3SnTErfb/h+X94VXzI64rKFHYImXSvdwGGCmwOqCA=="
@@ -9796,6 +9857,11 @@
     "es-abstract" "^1.12.0"
     "function-bind" "^1.1.1"
     "has" "^1.0.3"
+
+"oblivious-set@1.0.0":
+  "integrity" "sha512-z+pI07qxo4c2CulUHCDf9lcqDlMSo72N/4rLUpRXf6fu+q8vjt8y0xS+Tlf8NTJDdTXHbdeO1n3MlbctwEoXZw=="
+  "resolved" "https://npmrg.t4.ertelecom.ru/oblivious-set/-/oblivious-set-1.0.0.tgz"
+  "version" "1.0.0"
 
 "obuf@^1.0.0", "obuf@^1.1.2":
   "integrity" "sha512-PX1wu0AmAdPqOL1mWhqmlOd8kOIZQwGZw6rh7uby9fTc5lhaOWFLX3I6R1hrF9k3zUY40e6igsLGkDXK92LJNg=="
@@ -11706,6 +11772,13 @@
   dependencies:
     "glob" "^7.1.3"
 
+"rimraf@3.0.2":
+  "integrity" "sha512-JZkJMZkAGFFPP2YqXZXPbMlMBgsxzE8ILs4lMIX/2o0L9UBw9O/Y3o6wFw/i9YLapcUJWwqbi3kdxIPdC62TIA=="
+  "resolved" "https://npmrg.t4.ertelecom.ru/rimraf/-/rimraf-3.0.2.tgz"
+  "version" "3.0.2"
+  dependencies:
+    "glob" "^7.1.3"
+
 "ripemd160@^2.0.0", "ripemd160@^2.0.1":
   "integrity" "sha512-ii4iagi25WusVoiC4B4lq7pbXfAp3D9v5CwfkY33vffw2+pkDjY1D8GaN7spsxvCSx8dkPqOZCEZyfxcmJG2IA=="
   "resolved" "https://registry.npmjs.org/ripemd160/-/ripemd160-2.0.2.tgz"
@@ -13443,6 +13516,14 @@
   "integrity" "sha512-rBJeI5CXAlmy1pV+617WB9J63U6XcazHHF2f2dbJix4XzpUF0RS3Zbj0FGIOCAva5P/d/GBOYaACQ1w+0azUkg=="
   "resolved" "https://registry.npmjs.org/universalify/-/universalify-0.1.2.tgz"
   "version" "0.1.2"
+
+"unload@2.2.0":
+  "integrity" "sha512-B60uB5TNBLtN6/LsgAf3udH9saB5p7gqJwcFfbOEZ8BcBHnGwCf6G/TGiEqkRAxX7zAFIUtzdrXQSdL3Q/wqNA=="
+  "resolved" "https://npmrg.t4.ertelecom.ru/unload/-/unload-2.2.0.tgz"
+  "version" "2.2.0"
+  dependencies:
+    "@babel/runtime" "^7.6.2"
+    "detect-node" "^2.0.4"
 
 "unpipe@~1.0.0", "unpipe@1.0.0":
   "integrity" "sha1-sr9O6FFKrmFltIF4KdIbLvSZBOw="

@@ -1,0 +1,103 @@
+.ert-activation-modal {
+  &__content {
+    background-color: map-get($shades, 'white');
+    padding: 24px;
+  }
+
+  &__head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 16px;
+  }
+
+  &__title {
+    @extend %h3-font;
+    color: map-get($gray, '8');
+  }
+
+  &__close {
+    @include color-black(0.2);
+    transition: $primary-transition;
+
+    &:hover {
+      color: map-get($red, 'lighten-2');
+    }
+
+    &:active {
+      color: map-get($red, 'base');
+    }
+  }
+
+  &__body {
+    min-height: 124px;
+    margin-bottom: 32px;
+
+    @include min-breakpoint('md') {
+      min-height: 132px;
+      margin-bottom: 40px;
+    }
+  }
+
+  &__message-block {
+    display: flex;
+    align-items: center;
+
+    .icon {
+      margin-right: 8px;
+    }
+
+    .message {
+      @extend %body-font;
+      color: map-get($gray, '8');
+    }
+
+    &.success .icon {
+      color: map-get($green, 'base');
+    }
+
+    &.error .icon {
+      color: map-get($red, 'base');
+    }
+  }
+
+  &__footer {
+    display: flex;
+    flex-direction: column;
+
+    > * {
+      width: 100%;
+      max-width: 100%;
+    }
+
+    > *:first-child {
+      margin-bottom: 8px;
+    }
+
+    @include min-breakpoint('sm') {
+      flex-direction: row;
+
+      > * {
+        width: auto;
+        max-width: none;
+
+        .er-button {
+          width: auto;
+        }
+
+        .er-button__slot-content {
+          margin: 0 24px; // Иконок не будет
+        }
+      }
+
+      > *:first-child {
+        margin-bottom: 0;
+        margin-right: 12px;
+      }
+
+      > *:nth-child(2) {
+        margin-left: 12px;
+      }
+    }
+  }
+}

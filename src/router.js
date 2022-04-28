@@ -24,8 +24,9 @@ import Orders from './components/pages/cabinet/Orders'
 
 // Страница документы
 import DocumentPage from './components/pages/cabinet/DocumentPage/index'
-import OrderDocumentPage from './components/pages/cabinet/OrderDocumentPage'
-import DocumentDuplicatePage from './components/pages/cabinet/DocumentDuplicatePage/index'
+
+// import OrderDocumentPage from './components/pages/cabinet/OrderDocumentPage'
+// import DocumentDuplicatePage from './components/pages/cabinet/DocumentDuplicatePage/index'
 
 // Поддержка
 // Шаблон поддержки
@@ -243,16 +244,6 @@ const router = new Router({
           name: 'documents',
           path: 'documents/',
           component: DocumentPage
-        },
-        {
-          name: 'documents.order',
-          path: 'documents/order',
-          component: OrderDocumentPage
-        },
-        {
-          name: 'documents.duplicates',
-          path: 'documents/duplicates',
-          component: DocumentDuplicatePage
         },
         {
           name: 'orders',

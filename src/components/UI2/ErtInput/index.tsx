@@ -308,8 +308,8 @@ class ErtInput extends baseMixins {
     this.$emit('mouseup', e)
   }
 
-  render (): VNode {
-    return this.h('div', {
+  render (h: CreateElement): VNode {
+    return h('div', {
       staticClass: 'ert-input',
       class: this.classes
     }, this.genContent())

@@ -135,6 +135,7 @@ export default class PaymentHistoryPage extends Vue {
   }
 
   mounted () {
+    this.$router.push('/lk/payments')
     Object.keys(this.billingInfo).length !== 0 &&
     this.getPaymentHistory({ dateFrom: head(this.period)!, dateTo: last(this.period)! })
       .then(response => {

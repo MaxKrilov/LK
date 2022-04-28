@@ -185,12 +185,40 @@
     &__manager-name {
       font-weight: bold;
     }
+
+    &__document-item {
+      display: flex;
+      align-items: center;
+      @extend %button-font;
+      margin-bottom: 16px;
+
+      > * {
+        transition: $primary-transition;
+      }
+
+      i {
+        @include color-black(0.2);
+      }
+
+      span {
+        @include color-black(0.5);
+      }
+
+      &:hover > * {
+        color: map-get($red, 'lighten-2');
+      }
+
+      &:active > * {
+        color: map-get($red, 'base');
+      }
+    }
   }
 
   &__menu-container {
     background: map-get($shades, 'white');
     padding: 32px 16px;
     height: 100%;
+    overflow-y: auto;
 
     @include min-breakpoint('md') {
       padding: 32px 24px;
@@ -213,6 +241,7 @@
 
     &.services {
       flex-direction: column !important;
+      //overflow-y: auto;
     }
 
     &:not(.services) {

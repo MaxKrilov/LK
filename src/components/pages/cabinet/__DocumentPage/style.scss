@@ -1,0 +1,172 @@
+$document-padding: 16px;
+
+.document-page {
+  max-width: 100vw;
+
+  &__head {
+    @extend %main-content-width;
+    @extend %margin-left--menu-width;
+    @extend %main-content-padding-top;
+    @extend %main-content-padding-h;
+  }
+
+  &__select-type {
+    @extend %main-content-width;
+    @extend %main-content-padding-h;
+
+    margin-top: $padding-x6;
+
+    @include min-breakpoint(md) {
+      margin-top: $padding-x8;
+    }
+
+    @include min-breakpoint(xl) {
+      margin-top: $padding-x10;
+    }
+  }
+
+  &__contract-documents,
+  &__report-documents {
+    margin-top: $padding-x4;
+
+    @include min-breakpoint(md) {
+      margin-top: $padding-x6;
+    }
+
+    @include min-breakpoint(xl) {
+      margin-top: $padding-x8;
+    }
+  }
+
+  .document-tabs {
+    display: flex;
+    flex-direction: row;
+    gap: $padding-x10;
+
+    @include min-breakpoint(sm) {
+      gap: $padding-x12;
+    }
+
+    @include min-breakpoint(xl) {
+      gap: $padding-x14;
+    }
+
+    &__title {
+      @extend %h4;
+      cursor: pointer;
+      padding-bottom: $padding-x1;
+
+      transition: all $primary-transition;
+
+      @include color-black(.5);
+      border-bottom: $padding-x1 solid map-get($shades, 'transparent');
+
+      &--active {
+        @include color-black(.8);
+        border-bottom: $padding-x1 solid map-get($red, 'base');
+      }
+    }
+  }
+
+  .link--dashed {
+    border: {
+      color: initial;
+      width: 0;
+      bottom-width: 1px;
+      style: dashed;
+    }
+  }
+
+  .er-page-title {
+    margin-bottom: 0;
+  }
+
+  &__list {
+    margin-top: $padding-x4;
+
+    .page-title + &__list {
+      margin-top: 64px;
+      margin-bottom: $padding-x8;
+
+      @include min-breakpoint('lg') {
+        margin-bottom: $padding-x4;
+      }
+    }
+
+    .container {
+      @extend %container-8;
+    }
+  }
+
+  .page-title {
+    margin-top: $padding-x6;
+
+    @include min-breakpoint('md') {
+      margin-top: $padding-x8;
+    }
+
+    @include min-breakpoint('lg') {
+      margin-top: $padding-x4;
+    }
+
+    @include min-breakpoint('xl') {
+      margin-top: $padding-x2;
+    }
+  }
+
+  &__empty-list {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: $padding-x6;
+    margin-top: $padding-x2;
+
+    .empty-list-message {
+      @extend %h4;
+    }
+
+    .er-icon {
+      @include color-black(.1);
+      margin-right: $padding-x4;
+
+      $svg-inc: 1.23px;
+
+      svg {
+        width: 65 * $svg-inc;
+
+        @include min-breakpoint('lg') {
+          width: 78 * $svg-inc;
+        }
+
+        @include min-breakpoint('lg') {
+          width: 104 * $svg-inc;
+        }
+      }
+
+    }
+
+  }
+
+  &__success-signed {
+    a {
+      display: block;
+    }
+  }
+
+  &__loading {
+    .er-progress-circular {
+      @include color-black(0.5);
+    }
+  }
+}
+
+.page-title {
+  display: flex;
+  flex-direction: row;
+
+  align-items: center;
+
+  @include min-breakpoint('xl') {
+    display: block;
+  }
+}

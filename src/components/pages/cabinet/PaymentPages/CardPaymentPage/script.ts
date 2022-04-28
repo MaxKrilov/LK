@@ -1,35 +1,29 @@
 import Vue from 'vue'
 import Component from 'vue-class-component'
-import { ErtForm, ErtTextField } from '@/components/UI2'
-import { mapState, mapGetters, mapActions, mapMutations } from 'vuex'
-import { IClientInfo } from '@/tbapi/user'
+import { TouchWrapper } from '@/types'
 
-import { uniq, flattenDeep } from 'lodash'
-import Inputmask from 'inputmask'
+import Touch from '@/directives/touch'
 import { OFFER_LINKS } from '@/constants/url'
+import { mapActions, mapGetters, mapState } from 'vuex'
+import { IClientInfo } from '@/tbapi/user'
+import { ErtForm, ErtTextField } from '@/components/UI2'
+import { flattenDeep, uniq } from 'lodash'
 import { PATTERN_EMAIL } from '@/constants/regexp'
+import { IBindCardPayment, INewCardPayment, IPaymentCard } from '@/tbapi/payments'
+import ErActivationModal from '@/components/blocks/ErActivationModal/index.vue'
+import ErtSwitch from '@/components/UI2/ErtSwitch'
+import { typeClosedNotification } from '@/constants/closed_notification'
 
-import PaymentCardComponent from '../components/PaymentCardComponent/index.vue'
-
-import Swiper from 'swiper'
-import 'swiper/swiper-bundle.css'
-import { SCREEN_WIDTH } from '@/store/actions/variables'
-import { IPaymentCard, INewCardPayment, IBindCardPayment } from '@/tbapi/payments'
-
-import { roundUp } from '@/functions/helper'
-import { BREAKPOINT_MD } from '@/constants/breakpoint'
-
-import { dataLayerPush } from '@/functions/analytics'
-
-@Component<InstanceType<typeof CardPaymentPage>>({
+@Component<InstanceType<typeof ErtCardPaymentPage>>({
   components: {
-    PaymentCardComponent
+    ErActivationModal
+  },
+  directives: {
+    Touch
   },
   computed: {
     ...mapState({
-      clientInfo: (state: any) => state.user.clientInfo,
-      screenWidth: (state: any) => state.variables[SCREEN_WIDTH],
-      cvv: (state: any) => state.payments.cvv
+      clientInfo: (state: any) => state.user.clientInfo
     }),
     ...mapGetters({
       activeBillingAccount: 'payments/getActiveBillingAccount',
@@ -59,11 +53,8 @@ import { dataLayerPush } from '@/functions/analytics'
         })
     },
     cardList () {
-      if (this.swiperSlider != null) {
-        this.swiperSlider.destroy()
-      }
       this.$nextTick(() => {
-        this.defineCardSlider()
+        this.onResizeHandler()
       })
     }
   },
@@ -71,98 +62,83 @@ import { dataLayerPush } from '@/functions/analytics'
     ...mapActions({
       getListPaymentCard: 'payments/getListPaymentCard',
       newCardPayment: 'payments/newCardPayment',
-      bindCardPayment: 'payments/bindCardPayment'
-    }),
-    ...mapMutations({
-      setCVV: 'payments/setCVV',
-      setValidCVV: 'payments/setValidCVV'
+      bindCardPayment: 'payments/bindCardPayment',
+      unbindCard: 'payments/unbindCard',
+      activationDeactivationAutoPay: 'payments/activationDeactivationAutoPay',
+      createClosedPayment: 'request2/createClosedRequest',
+      createOpenedRequest: 'request2/createOpenedRequest'
     })
   }
 })
-export default class CardPaymentPage extends Vue {
-  // Options
-  $refs!: Vue & {
-    'amount-form': InstanceType<typeof ErtForm>,
+export default class ErtCardPaymentPage extends Vue {
+  /// Options
+  $refs!: {
+    'button-content': HTMLDivElement
+    'button-slider': HTMLDivElement
+    'amount-form': InstanceType<typeof ErtForm>
     'amount-to-pay': InstanceType<typeof ErtTextField>
+    'autopay-switch': InstanceType<typeof ErtSwitch> | InstanceType<typeof ErtSwitch>[]
   }
 
   /// Vuex states
   readonly clientInfo!: IClientInfo
-  readonly screenWidth!: number
-  readonly cvv!: string
 
-  // Vuex getters
+  /// Data
+  isRememberNewCard: boolean = false
+  isSliderLongerContent: boolean = false
+  isEndScrollbar: boolean = false
+  isStartScrollbar: boolean = true
+  isShowDialogOfClosedBillingAccount: boolean = false
+
+  isShowDialogConfirmNewCard: boolean = false
+  isPaymentNewCardRequest: boolean = false
+
+  isShowDialogConfirmBindCard: boolean = false
+  isPaymentBindCardRequest: boolean = false
+
+  isErrorOfPayment: boolean = false
+
+  isShowDialogUnbindCard: boolean = false
+  isDialogUnbindCardSuccess: boolean = false
+  isDialogUnbindCardError: boolean = false
+  isUnbindCardRequest: boolean = false
+
+  isShowDialogSwitchAutoPay: boolean = false
+  isShowDialogSwitchAutoPaySuccess: boolean = false
+  isShowDialogSwitchAutoPayError: boolean = false
+  isAutoPayRequest: boolean = false
+
+  isCloseBillingAccount: boolean = false
+
+  transformValue: number = 0
+
+  amountToPay: string = ''
+  amountPlaceholder: string = ''
+
+  email: string | null = null
+  searchEmail: string | null = null
+  lazyListEmail: string[] = []
+
+  offerLink: string = OFFER_LINKS.payment
+
+  cardList: IPaymentCard[] = []
+  activeCardNumber: number = 0
+  unbindingCardNumber: number = 0
+  autoPayCardNumber: number = 0
+
+  cvc: string = ''
+
+  /// Vuex getters
   readonly activeBillingAccount!: string
   readonly activeBillingAccountStatus!: { id: string, name: string }
 
-  // Vuex mutations
-  readonly setCVV!: (cvv: string) => void
-  readonly setValidCVV!: (isValid: boolean) => void
-
-  // Vuex actions
-  readonly getListPaymentCard!: () => Promise<IPaymentCard[]>
-  readonly newCardPayment!: ({
-    value,
-    save,
-    email,
-    returnUrl
-  }: {
-    value: number
-    save: 0 | 1
-    email: string
-    returnUrl: string
-  }) => Promise<INewCardPayment>
-  readonly bindCardPayment!: ({
-    bindingId,
-    value,
-    email,
-    cvv,
-    returnUrl
-  }: {
-    bindingId: string,
-    value: number,
-    email: string,
-    cvv: string,
-    returnUrl: string
-  }) => Promise<IBindCardPayment>
-
-  // Data
-  amountToPay: string = ''
-  lazyListEmail: string[] = []
-  email: string | null = null
-  searchEmail: string | null = null
-  amountPlaceholder: string = ''
-  offerLink: string = OFFER_LINKS.payment
-  swiperSlider: Swiper | null = null
-
-  cardList: IPaymentCard[] = []
-
-  activeCardIndex: number = 0
-  isRememberCard: boolean = false
-
-  isShowConfirmDialogNewCard: boolean = false
-  isShowConfirmDialogBindCard: boolean = false
-
-  isPayment: boolean = false
-
-  errorText: string = ''
-
-  // Computed
-  /**
-   * Список адресов эл. почты (для отправки чека)
-   * @return {Array<string>}
-   */
-  get computedListEmail (): string[] {
-    return uniq(flattenDeep(this.clientInfo?.contacts.map(contact => {
-      return contact.contactMethods
-        .filter(contactMethod => contactMethod['@type'].toLowerCase() === 'email')
-        .map(contactMethod => contactMethod.value)
-    }) || []))
+  /// Computed
+  get sliderStyle () {
+    return {
+      'transform': `translateX(${this.transformValue}px)`
+    }
   }
 
-  /**
-   * Правила валидации для суммы оплаты
-   */
   get validateRulesAmount () {
     return [
       (v: string) => !!v || 'Поле обязательно к заполнению',
@@ -175,9 +151,6 @@ export default class CardPaymentPage extends Vue {
     ]
   }
 
-  /**
-   * Правила валидации для адреса эл. почты
-   */
   get validateRulesEmail () {
     return [
       (v: string) => !!v || 'Поле обязательно к заполнению',
@@ -185,115 +158,158 @@ export default class CardPaymentPage extends Vue {
     ]
   }
 
-  get amountHTML () {
-    const [rouble, penny] = this.amountToPay.split(',')
-    return `
-      <span class="rouble">${rouble.trim()}</span>
-      <span class="penny">,${penny}₽</span>`
+  get computedListEmail (): string[] {
+    return uniq(flattenDeep(this.clientInfo?.contacts.map(contact => {
+      return contact.contactMethods
+        .filter(contactMethod => contactMethod['@type'].toLowerCase() === 'email')
+        .map(contactMethod => contactMethod.value)
+    }) || []))
   }
 
-  get cardNumber () {
-    return this.activeCardIndex === 0
-      ? ''
-      : this.cardList[this.activeCardIndex - 1].maskedPan
+  get isDisablePaymentButton () {
+    return this.validateRulesAmount.some(rule => typeof rule(this.amountToPay) === 'string') ||
+      this.validateRulesEmail.some(rule => typeof rule(this.email || '') === 'string')
   }
 
-  // Methods
-  /**
-   * Задаёт маску для поля ввода суммы оплаты
-   */
-  defineAmountMask () {
-    if (!this.$refs['amount-to-pay']) return
-
-    const im = new Inputmask(
-      'currency',
-      {
-        groupSeparator: ' ',
-        radixPoint: ',',
-        digits: 2,
-        prefix: '',
-        suffix: '',
-        rightAlign: false,
-        jitMasking: false
-      }
-    )
-
-    im.mask(this.$refs['amount-to-pay'].$refs.input)
+  get getPaymentCardSystemOfActiveCard () {
+    return this.definePaymentCardSystem(this.getCardNumberOfActiveCard)?.toUpperCase() || ''
   }
 
-  defineCardSlider () {
-    this.swiperSlider = new Swiper('.swiper-container', {
-      direction: this.screenWidth >= BREAKPOINT_MD ? 'vertical' : 'horizontal',
-      slidesPerView: 'auto',
-      centeredSlides: true,
-      autoHeight: true,
-      spaceBetween: 24,
-      on: {
-        activeIndexChange: (_swiper) => {
-          this.activeCardIndex = _swiper.activeIndex
-        }
-      }
-    })
+  get getCardNumberOfActiveCard () {
+    return this.cardList[this.activeCardNumber - 1]?.maskedPan || ''
   }
 
-  defineAmountPay () {
-    // const amountPay = this.$route.query.total_amount || this.$route.params.total_amount || Cookie.get('ff_total_amount')
-    const amountPay = this.$route.query.total_amount || this.$route.params.total_amount || localStorage.getItem('ff_total_amount')
+  get unbindingCard () {
+    return this.cardList[this.unbindingCardNumber] || {}
+  }
 
-    if (amountPay) {
-      this.amountToPay = String(
-        Number(roundUp(amountPay, 2)).toFixed(2).replace('.', ',')
-      )
-      // Cookie.remove('ff_total_amount')
-      localStorage.removeItem('ff_total_amount')
+  get titleAutoPayDialog () {
+    const card = this.cardList[this.autoPayCardNumber] || {}
+    return `Вы уверены, что хотите ${card.autopay ? 'отключить' : 'подключить'} автоплатеж на карте
+    ${this.definePaymentCardSystem(card.maskedPan).toUpperCase()} ${card.maskedPan}?
+    `
+  }
+
+  /// Vuex actions
+  readonly getListPaymentCard!: () => Promise<IPaymentCard[]>
+  readonly newCardPayment!: (payload: { value: number, save: 0 | 1, email: string, returnUrl: string }) => Promise<INewCardPayment>
+  readonly bindCardPayment!: (payload: {
+    bindingId: string,
+    value: number,
+    email: string,
+    cvv: string,
+    returnUrl: string
+  }) => Promise<IBindCardPayment>
+  readonly unbindCard!: (payload: { bindingId: string }) => Promise<{ result: boolean }>
+  readonly activationDeactivationAutoPay!: (payload: { bindingId: string, activate: 0 | 1 }) => Promise<{ result: number }>
+  readonly createClosedPayment!: (type: typeClosedNotification) => Promise<string | false>
+  readonly createOpenedRequest!: (type: typeClosedNotification) => Promise<string | false>
+
+  /// Methods
+  onResizeHandler () {
+    this.isSliderLongerContent = this.$refs['button-content'].offsetWidth < this.$refs['button-slider'].scrollWidth
+    this.transformValue = 0
+  }
+
+  onLeftHandler (e: TouchWrapper | number) {
+    if (this.isEndScrollbar || !this.isSliderLongerContent) return
+
+    const offsetX = typeof e === 'number'
+      ? e
+      : e.offsetX
+
+    this.transformValue = this.$refs['button-slider'].scrollWidth > this.$refs['button-slider'].offsetWidth + Math.abs(this.transformValue) + Math.abs(offsetX)
+      ? this.transformValue - Math.abs(offsetX)
+      : -(this.$refs['button-slider'].scrollWidth - this.$refs['button-slider'].offsetWidth)
+    this.isStartScrollbar = false
+    this.isEndScrollbar = this.$refs['button-slider'].scrollWidth <=
+      this.$refs['button-slider'].offsetWidth +
+      Math.abs(this.transformValue)
+  }
+
+  onRightHandler (e: TouchWrapper | number) {
+    if (this.isStartScrollbar || !this.isSliderLongerContent) return
+
+    const offsetX = typeof e === 'number'
+      ? e
+      : e.offsetX
+
+    this.transformValue = Math.abs(this.transformValue) < Math.abs(offsetX)
+      ? 0
+      : this.transformValue + Math.abs(offsetX)
+    this.isEndScrollbar = false
+    this.isStartScrollbar = this.transformValue === 0
+  }
+
+  onScrollEvent (e: WheelEvent) {
+    e.preventDefault()
+
+    if (e.deltaY < 0) {
+      // Прокрутка вверх - листаем вправо
+      this.onRightHandler(50)
+    } else if (e.deltaY > 0) {
+      this.onLeftHandler(50)
     }
   }
 
-  onPaymentNewCard () {
-    const value = Number(this.amountToPay.replace(',', '.').replace(' ', ''))
-    const save = Number(this.isRememberCard) as 0 | 1
-    const email = this.email!
-    const returnUrl = `${location.origin}/lk/payments/result`
+  onClickPaymentHandler () {
+    if (this.activeBillingAccountStatus.name === 'Закрытый') {
+      this.isCloseBillingAccount = true
+      return
+    }
 
-    localStorage.setItem('email', this.email!)
-
-    this.isPayment = true
-
-    this.newCardPayment({ value, save, email, returnUrl })
-      .then(response => {
-        location.href = response.pay_url
-      })
-      .catch((error) => {
-        console.error(error)
-        this.errorText = 'Произошла ошибка! Повторите попытку позже'
-        localStorage.removeItem('email')
-      })
-      .finally(() => {
-        this.isPayment = false
-      })
+    if (this.activeCardNumber === 0) {
+      this.isShowDialogConfirmNewCard = true
+    } else {
+      this.isShowDialogConfirmBindCard = true
+    }
   }
 
-  onPaymentBindCard () {
-    const activeCard = this.cardList[this.activeCardIndex - 1]!
-    const bindingId = String(activeCard.bindingId)
-    const value = Number(this.amountToPay.replace(',', '.').replace(' ', ''))
-    const email = this.email!
-    const cvv = this.cvv
-    const returnUrl = `${location.origin}/lk/payments/result`
+  async onPaymentNewCardHandler () {
+    this.isPaymentNewCardRequest = true
 
-    this.isPayment = true
+    try {
+      const value = Number(this.amountToPay.replace(',', '.').replace(' ', ''))
+      const save = Number(this.isRememberNewCard) as 0 | 1
+      const email = this.email!
+      const returnUrl = `${location.origin}/lk/payments/result`
 
-    this.bindCardPayment({ bindingId, value, email, cvv, returnUrl })
-      .then(response => {
-        this.setPostRequest(response)
-      })
-      .catch((error) => {
-        console.error(error)
-        this.errorText = 'Произошла ошибка! Повторите попытку позже'
-      })
-      .finally(() => {
-        this.isPayment = false
-      })
+      localStorage.setItem('email', this.email!)
+
+      const newCardPaymentResponse = await this.newCardPayment({ value, save, email, returnUrl })
+
+      if ('pay_url' in newCardPaymentResponse) {
+        location.href = newCardPaymentResponse.pay_url
+      } else {
+        // Выводим ошибку
+      }
+    } catch (ex) {
+      console.error(ex)
+      // Выводим ошибку
+    } finally {
+      this.isPaymentNewCardRequest = false
+    }
+  }
+
+  async onPaymentBindCardHandler () {
+    this.isPaymentBindCardRequest = true
+
+    try {
+      const activeCard = this.cardList[this.activeCardNumber - 1]!
+      const bindingId = activeCard.bindingId
+      const value = Number(this.amountToPay.replace(',', '.').replace(' ', ''))
+      const email = this.email!
+      const cvv = this.cvc
+      const returnUrl = `${location.origin}/lk/payments/result`
+
+      const bindCardPaymentResponse = await this.bindCardPayment({ bindingId, value, email, cvv, returnUrl })
+      this.setPostRequest(bindCardPaymentResponse)
+    } catch (ex) {
+      console.error(ex)
+      // Выводим ошибку
+    } finally {
+      this.isPaymentBindCardRequest = false
+    }
   }
 
   setPostRequest (payload: IBindCardPayment) {
@@ -329,93 +345,143 @@ export default class CardPaymentPage extends Vue {
     form.submit()
   }
 
-  onPayment () {
-    this.errorText = this.activeBillingAccountStatus.name === 'Закрытый' ? 'Вы пытаетесь совершить операцию на закрытом лицевом счете' : ''
-
-    if (this.activeCardIndex === 0 && this.$refs['amount-form'].validate()) {
-      this.isShowConfirmDialogNewCard = true
-    } else {
-      if (
-        !this.$refs['amount-form'].validate() ||
-        !this.cvv ||
-        this.cvv.length !== 3
-      ) {
-        (!this.cvv || this.cvv.length !== 3) && this.setValidCVV(false)
-        return
-      }
-      this.isShowConfirmDialogBindCard = true
+  definePaymentCardSystem (maskedPan: string) {
+    if (!maskedPan) return ''
+    const firstSymbol = maskedPan.slice(0, 1)
+    const secondSymbol = maskedPan.slice(1, 2) || ''
+    switch (firstSymbol) {
+      case '2':
+        return /^220[0-4]\s?\d\d/.test(maskedPan) ? 'mir' : ''
+      case '3':
+        return secondSymbol === '7'
+          ? 'americanexpress'
+          : secondSymbol === '5'
+            ? 'jcb'
+            : 'dinnersclub'
+      case '4':
+        return 'visa'
+      case '5':
+        return secondSymbol === '0' || Number(secondSymbol) > 5
+          ? 'maestro'
+          : 'mastercard'
+      case '6':
+        return 'maestro'
+      default:
+        return ''
     }
   }
 
-  onChangeAutoPay (bindingId: string) {
-    this.cardList.forEach(card => {
-      card.autopay = card.bindingId === bindingId ? 1 : 0
-    })
+  removeCardHandler (unbindingCardNumber: number) {
+    this.unbindingCardNumber = unbindingCardNumber
+    this.isShowDialogUnbindCard = true
   }
 
-  onRemoveCard (index: number) {
-    setTimeout(() => {
-      if (this.swiperSlider) {
-        this.swiperSlider.slidePrev()
-        this.swiperSlider.removeSlide(index)
-      }
-      this.$nextTick(() => {
-        this.cardList = this.cardList.filter((_, _index) => index !== _index)
-      })
-    }, 5000)
+  autoPayCardHandler (autoPayCardNumber: number) {
+    if (this.activeBillingAccountStatus.name === 'Закрытый') {
+      this.isCloseBillingAccount = true
+      this.onCloseAutoPayDialogHandler()
+      return
+    }
+
+    this.autoPayCardNumber = autoPayCardNumber
+    this.isShowDialogSwitchAutoPay = true
   }
 
-  onCardClick (index: number) {
-    if (this.swiperSlider == null || index === this.activeCardIndex) return
-
-    if (index < this.activeCardIndex) {
-      this.swiperSlider.slidePrev()
+  onCloseAutoPayDialogHandler () {
+    if (Array.isArray(this.$refs['autopay-switch'])) {
+      this.$refs['autopay-switch'][this.autoPayCardNumber].lazyValue = !!this.cardList[this.autoPayCardNumber].autopay
     } else {
-      this.swiperSlider?.slideNext()
+      this.$refs['autopay-switch'].lazyValue = !!this.cardList[this.autoPayCardNumber].autopay
     }
   }
 
-  dataLayerPush = dataLayerPush
+  async onAutoPayHandler () {
+    this.isAutoPayRequest = true
 
-  // Hooks
-  mounted () {
-    this.$nextTick(() => {
-      this.defineAmountMask()
-      this.defineCardSlider()
-      this.defineAmountPay()
+    try {
+      const card = this.cardList[this.autoPayCardNumber]!
+      const bindingId = card.bindingId
+      const activate = card.autopay === 0 ? 1 : 0
 
-      this.lazyListEmail = this.computedListEmail
+      const activationDeactivationAutoPayResponse =
+        await this.activationDeactivationAutoPay({ bindingId, activate })
 
-      this.activeBillingAccount && this.getListPaymentCard()
-        .then(response => {
-          this.cardList = response
-        })
-
-      this.$nextTick(() => {
-        // "Костыль" по причине того, что из "коробки" не работает
-        const swiperContainer = this.$el.querySelector('.swiper-container')
-        let progress = false
-        if (swiperContainer != null && this.screenWidth >= BREAKPOINT_MD) {
-          swiperContainer.addEventListener('wheel', (e: Event) => {
-            e.preventDefault()
-            if (progress) return
-            progress = true
-            setTimeout(() => {
-              if ((e as WheelEvent).deltaY > 0) {
-                this.swiperSlider?.slideNext()
-              } else if ((e as WheelEvent).deltaY <= 0) {
-                this.swiperSlider?.slidePrev()
-              }
-              progress = false
-            }, 200)
+      if ('result' in activationDeactivationAutoPayResponse) {
+        if (activate) {
+          this.cardList[this.autoPayCardNumber]!.autopay = 1
+          this.cardList.forEach((cardItem, idx) => {
+            if (idx !== this.autoPayCardNumber) {
+              cardItem.autopay = 0
+            }
           })
+        } else {
+          this.cardList[this.autoPayCardNumber]!.autopay = 0
         }
-      })
+
+        this.$nextTick(() => {
+          this.isShowDialogSwitchAutoPaySuccess = true
+          this.createClosedPayment('CN_AUTO_PAY')
+        })
+      } else {
+        this.isShowDialogSwitchAutoPayError = true
+        this.onCloseAutoPayDialogHandler()
+      }
+    } catch (ex) {
+      console.error(ex)
+      this.isShowDialogSwitchAutoPayError = true
+      this.onCloseAutoPayDialogHandler()
+    } finally {
+      this.isShowDialogSwitchAutoPay = false
+      this.isAutoPayRequest = true
+    }
+  }
+
+  async removeCardRequestHandler () {
+    this.isUnbindCardRequest = true
+
+    try {
+      const unbindCardResponse = await this.unbindCard({ bindingId: this.unbindingCard.bindingId! })
+
+      if (unbindCardResponse.result) {
+        this.isDialogUnbindCardSuccess = true
+        this.cardList = this.cardList.filter((_, idx) => idx !== this.unbindingCardNumber)
+      } else {
+        this.isDialogUnbindCardError = true
+      }
+    } catch (ex) {
+      console.error(ex)
+      this.isDialogUnbindCardError = true
+    } finally {
+      this.isUnbindCardRequest = false
+      this.isShowDialogUnbindCard = false
+    }
+  }
+
+  /// Hooks
+  async mounted () {
+    window.addEventListener('resize', this.onResizeHandler)
+
+    this.$nextTick(() => {
+      this.onResizeHandler()
     })
+
     setTimeout(() => {
       // Костыль, для корректной установки <label> и ширины <legend>
       // Убрать после разбора некорректной работы ErtTextField
       this.amountPlaceholder = ' '
     }, 200)
+
+    try {
+      if (this.activeBillingAccount) {
+        this.cardList = await this.getListPaymentCard()
+      }
+    } catch (ex) {
+      console.error(ex)
+      this.cardList = []
+    }
+  }
+
+  beforeDestroy () {
+    window.removeEventListener('resize', this.onResizeHandler)
   }
 }

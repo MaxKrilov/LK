@@ -499,6 +499,7 @@ const actions = {
         .query('/billing/info-bill/index')
         .then(response => {
           context.commit('setInvoicePayment', { ...response, activeBillingAccount: id })
+          resolve(response)
         })
         .catch(error => reject(error))
     })

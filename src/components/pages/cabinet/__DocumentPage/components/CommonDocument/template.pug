@@ -1,0 +1,18 @@
+.er-document(
+  :class="getColorClass"
+  v-on="$listeners"
+)
+  .er-document__ripple(v-if="ripple")
+    er-ripple(:active="rippleActive")
+
+  .er-document__header
+    er-document-corner
+    .er-document__title-wrap
+      slot(name="header")
+
+  .er-document__body
+    slot(name="body")
+      .caption1  {{ document }}
+
+  .er-document__footer
+    slot(name="footer")
