@@ -47,6 +47,7 @@ div.contact-form(v-if="isOpen" :class="[{ 'contact-form--is-mobile': isMobile }]
               :items="fetchedContactRoles"
               label="Роль контакта"
               itemValue="id"
+              ref="contactRoles"
               itemText="name"
               :isShowRequiredLabel="isNewContact"
               multiple
@@ -83,7 +84,6 @@ div.contact-form(v-if="isOpen" :class="[{ 'contact-form--is-mobile': isMobile }]
               name="inputPhoneNumber"
               :label="isMobile ? 'Добавить номер' : 'Добавьте номер телефона'"
               mask="+7 (999) 999-99-99"
-              :rules="phoneRule"
               prependInnerIcon="circle_add"
               ref="phones"
               @change="addContactMethod($event, 'phones')"
@@ -105,7 +105,6 @@ div.contact-form(v-if="isOpen" :class="[{ 'contact-form--is-mobile': isMobile }]
               v-model="currentValue.emails"
               name="inputEmail"
               label="Добавьте эл. почту"
-              :rules="emailRule"
               prependInnerIcon="circle_add"
               type="email"
               ref="emails"

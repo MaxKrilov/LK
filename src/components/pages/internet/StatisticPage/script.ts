@@ -139,7 +139,7 @@ export default class StatisticPage extends Vue {
 
   getStatistic () {
     const fromDate = moment(this.period[0]!).format()
-    const toDate = moment(this.period[1]!).format()
+    const toDate = moment(this.period[1]!).add('days', 1).format()
     this.isLoading = true
     this.pagCurrentPage = 1
 
@@ -158,12 +158,16 @@ export default class StatisticPage extends Vue {
 
         allStatistic.sort((a, b) => Number(moment(a.createdDate, 'DD.MM.YYYY').format('x')) - Number(moment(b.createdDate, 'DD.MM.YYYY').format('x')))
 
-        let computedAllStatistic:IInternetStatistic[] = allStatistic.map(item => ({
-          ip: item.service,
-          start: moment(item.createdDate + ' ' + item.createdTime, 'DD.MM.YYYY h:mm:ss').format(),
-          bytes: Number(item.duration),
-          type: item.priceEventSpecification.name
-        }))
+        let computedAllStatistic:IInternetStatistic[] = allStatistic.map(item => {
+          const costedEventNameArr = item.costedEventName.split(' ')
+          return {
+            ip: item.service,
+            start: moment(item.createdDate + ' ' + item.createdTime, 'DD.MM.YYYY h:mm:ss').format(),
+            end: moment(costedEventNameArr[2] + ' ' + costedEventNameArr[3], 'DD.MM.YYYY h:mm:ss').format(),
+            bytes: Number(item.duration),
+            type: item.priceEventSpecification.name
+          }
+        })
 
         this.pagLength = Math.ceil(computedAllStatistic.length / this.statisticLength)
 
