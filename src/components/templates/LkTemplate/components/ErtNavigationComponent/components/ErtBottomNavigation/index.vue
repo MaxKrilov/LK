@@ -101,11 +101,25 @@
                 router-link.ert-bottom-navigation__menu__menu-title(to="/lk/documents") Документы
                 ul
                   li.mb-16.mb-lg-8
-                    router-link(to="/lk/documents?open=report-documents") Отчётные документы
+                    router-link(to="/lk/documents?type=last") Последние
                   li.mb-16.mb-lg-8
-                    router-link(to="/lk/documents?open=contract-documents") Контрактные документы
+                    router-link(to="/lk/documents?type=report") Отчётные документы
+                  li.mb-16.mb-lg-8
+                    router-link(to="/lk/documents?type=contract") Контрактные документы
+                  li.mb-16.mb-lg-8
+                    router-link(to="/lk/documents?type=act") Акты сверки
                   li.mb-16.mb-lg-8
                     router-link(to="/lk/support?form=order_a_document") Заказать документ
+              .ert-bottom-navigation__menu__menu-item
+                router-link.ert-bottom-navigation__menu__menu-title(to="/lk/documents") Скачать документы
+                .ert-bottom-navigation__menu__list-document
+                  button.ert-bottom-navigation__menu__document-item(
+                    v-for="document in lastReportDocument"
+                    :key="document.id"
+                    @click="() => { onClickDownloadHandler(document) }"
+                  )
+                    ErtIcon.mr-8(name="download" small)
+                    span {{ document.attachmentName && document.attachmentName.replace(/по ЛС \w+/ig, '').trim() }}
             template(v-if="menuItemModel === 3")
               .ert-bottom-navigation__menu__menu-item
                 router-link.ert-bottom-navigation__menu__menu-title(to="/lk/support") Поддержка

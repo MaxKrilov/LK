@@ -1,0 +1,19 @@
+$pre: '.er-document';
+
+$header-transition: .1s ease-in-out;
+
+#{$pre}--blank {
+  background: map_get($shades, 'white');
+
+  #{$pre}__header {
+    transition: background-color $header-transition;
+  }
+
+  #{$pre}__footer {
+    display: none;
+
+    @include min-breakpoint('md') {
+      display: inherit;
+    }
+  }
+}

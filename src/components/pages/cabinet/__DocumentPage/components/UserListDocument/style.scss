@@ -1,0 +1,261 @@
+$pre: '.er-document';
+
+$er-hint-width: 24px;
+.er-document__text a {
+  margin-left: 0;
+}
+.er-document-width-mobile {
+  @include max-breakpoint('md') {
+    width: 100%;
+  }
+}
+#{$pre}--userlist {
+  background: map_get($document-colors, 'blue-gradient');
+
+  #{$pre}__header {
+    background-color: map_get($document-colors, 'blue-header');
+  }
+
+  #{$pre}__text {
+    a.link {
+      &:hover,
+      &:active {
+        color: map_get($blue, 'link-hover');
+        text-decoration: none;
+      }
+    }
+  }
+
+  &:not(#{$pre}--signed) {
+    #{$pre}__title {
+      @extend %h3;
+
+      @include min-breakpoint('md') {
+
+        @include color-white(1);
+      }
+    }
+
+    #{$pre}__title--upload {
+      @extend %h3;
+      @include color-white(1);
+
+    }
+
+    #{$pre}__body {
+      @include min-breakpoint('md') {
+        background-color: map_get($shades, 'white');
+      }
+    }
+
+    #{$pre}__footer {
+      @include min-breakpoint('md') {
+        background-color: map_get($shades, 'white');
+      }
+
+      .er-button {
+
+        @include min-breakpoint('md') {
+          margin-top: $padding-x6;
+        }
+      }
+    }
+
+    #{$pre}__text {
+      display: none;
+
+      @include min-breakpoint('md') {
+        display: initial;
+      }
+    }
+  }
+
+
+  &#{$pre}--expired {
+    background-image: none;
+    background-color: map_get($red, 'base');
+
+    #{$pre}__header {
+      background-color: map_get($shades, 'transparent');
+
+      @include min-breakpoint('md') {
+        background-color: map_get($document-colors, 'red-header');
+      }
+    }
+  }
+
+  &#{$pre}--signed {
+    background-image: none;
+    background-color: map_get($shades, 'white');
+
+    #{$pre}__header {
+      background-color: map_get($document-colors, 'blue-gradient');
+    }
+
+    #{$pre}__title {
+      margin-right: $er-hint-width;
+      line-height: 17px;
+      @include color-black(.8);
+
+      @include min-breakpoint('md') {
+        @include color-white(1);
+        margin-right: 0;
+      }
+    }
+
+    #{$pre}__subtitle {
+      display: block;
+      margin-top: $padding-x2;
+    }
+
+    #{$pre}__update-label {
+      margin-bottom: $padding-x1;
+    }
+
+    #{$pre}__update-period {
+      @include color-white(.8);
+
+      .date {
+        @include color-black(.8);
+
+        &__year {
+          @include color-black(.3);
+
+          @include min-breakpoint('md') {
+            @include color-white(.8);
+          }
+        }
+
+        @include min-breakpoint('md') {
+          @include color-white(.8);
+        }
+      }
+    }
+
+    #{$pre}__body {
+      display: none;
+
+      @include min-breakpoint('md') {
+        display: block;
+      }
+    }
+
+    #{$pre}__footer {
+      background-color: map_get($shades, 'transparent');
+
+      .er-button {
+
+        @include min-breakpoint('md') {
+          display: block;
+          margin-top: $padding-x6;
+        }
+
+      }
+
+      .signed {
+        text-align: left;
+
+        @include min-breakpoint('md') {
+          text-align: center;
+        }
+      }
+    }
+
+    .question-button .er-icon--question,
+    .er-hint .er-icon {
+      @include color-black(.5);
+    }
+  }
+
+  #{$pre}__download-template {
+    text-align: left;
+
+    .link {
+      @extend %button-font;
+      @include color-white(.5);
+
+      &--dashed--black {
+        border-color: rgba(map_get($shades, 'white'), .5);
+
+        @include min-breakpoint('md') {
+          border-color: rgba(map_get($shades, 'black'), .5);
+        }
+      }
+
+      @include min-breakpoint('md') {
+        @include color-black(.5);
+        text-align: center;
+        transition: color $primary-transition;
+
+        font: 16px $fedra-book;
+
+        &:hover {
+          @include color-black(.8);
+          border-color: rgba(map_get($shades, 'black'), .8);
+        }
+
+        &:active {
+          border-color: rgba(map_get($shades, 'black'), .5);
+        }
+      }
+    }
+
+    @include min-breakpoint('md') {
+      text-align: center;
+    }
+  }
+
+  #{$pre}__update-label {
+    @extend %caption1-font;
+    @include color-black(.5);
+
+    margin-bottom: $padding-x2;
+
+    @include min-breakpoint('md') {
+      display: inline-block;
+
+      @include color-white(.8);
+    }
+  }
+
+  #{$pre}__update-period {
+    @include color-black(.8);
+    @extend %h4;
+    letter-spacing: -0.5px;
+
+    @include min-breakpoint('md') {
+      @include color-white(.8);
+      display: inline;
+
+      &::before { // вставляем пробел, что-бы не сливаться с предыдущим текстом
+        content: ' ';
+      }
+
+      .date {
+        display: inline-block;
+      }
+    }
+  }
+
+  .er-hint,
+  .question-button {
+    position: absolute;
+    right: 0;
+    top: 0;
+
+    .er-icon {
+      @include color-white(.5);
+    }
+
+    @include min-breakpoint('md') {
+      display: none;
+    }
+  }
+}
+
+.er-dialog-advanced__modal {
+  .hint-text {
+    @extend %caption1-font;
+    margin-top: $padding-x2;
+  }
+}

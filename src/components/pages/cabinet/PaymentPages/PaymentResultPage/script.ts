@@ -3,6 +3,7 @@ import Component from 'vue-class-component'
 import { mapActions, mapGetters, mapMutations } from 'vuex'
 import { IPaymentStatus } from '@/tbapi/payments'
 import { dataLayerPush } from '@/functions/analytics'
+import { typeClosedNotification } from '@/constants/closed_notification'
 
 @Component<InstanceType<typeof PaymentResultPage>>({
   computed: {
@@ -13,7 +14,8 @@ import { dataLayerPush } from '@/functions/analytics'
   methods: {
     ...mapActions({
       checkPaymentStatus: 'payments/checkPaymentStatus',
-      getBillingInfo: 'payments/getBillingInfo'
+      getBillingInfo: 'payments/getBillingInfo',
+      createClosedPayment: 'request2/createClosedRequest'
     }),
     ...mapMutations('chat', [
       'openChat'
@@ -32,6 +34,7 @@ export default class PaymentResultPage extends Vue {
   // Vuex actions
   readonly checkPaymentStatus!: ({ transaction }: { transaction: string }) => Promise<IPaymentStatus>
   readonly getBillingInfo!: () => Promise<void>
+  readonly createClosedPayment!: (type: typeClosedNotification) => Promise<string | false>
 
   // Vuex mutations
   readonly openChat!: () => void
@@ -79,6 +82,7 @@ export default class PaymentResultPage extends Vue {
         } else {
           this.status = Number(response.pay_status) as 0 | 1 | 2
           if (this.status === 1) {
+            this.createClosedPayment('CN_CARD_PAYMENT')
             setTimeout(() => {
               this.getBillingInfo()
             }, 1000)

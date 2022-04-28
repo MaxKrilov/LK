@@ -297,9 +297,9 @@
     width: 100%;
   }
 
-  @include min-breakpoint('xl') {
-    margin-left: $left-menu-width;
-  }
+  //@include min-breakpoint('xl') {
+  //  margin-left: $left-menu-width;
+  //}
 
   @include media-min-width( ($left-menu-width * 2) + $content-max-width ) {
     margin: {
@@ -352,9 +352,9 @@
     right: auto;
   }
 
-  @include min-breakpoint('xl') {
-    margin-left: $left-menu-width;
-  }
+  //@include min-breakpoint('xl') {
+  //  margin-left: $left-menu-width;
+  //}
 
   @include media-min-width( ($left-menu-width * 2) + $content-max-width ) {
     margin: {

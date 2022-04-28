@@ -38,6 +38,7 @@ export default Vue.extend({
         return this.modelLanguage
       },
       set (val) {
+        // @ts-ignore
         this.$emit('change:language', val)
       }
     },

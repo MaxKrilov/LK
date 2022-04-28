@@ -1,5 +1,6 @@
 /* eslint camelcase: 0 */
 export interface DocumentInterface {
+  actStatus?: string
   attachmentName: string
   fileName: string
   relatedTo: {

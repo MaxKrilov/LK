@@ -1,0 +1,29 @@
+.ert-user-list-item {
+  &__dialog-link {
+    text-decoration: none;
+  }
+
+  &__file-load {
+    display: flex;
+    align-items: center;
+
+    .icon {
+      @include color-black(0.2);
+      transition: $primary-transition;
+    }
+
+    .title {
+      @extend %caption1-font;
+      @include color-black(0.5);
+      transition: $primary-transition;
+    }
+
+    button:hover {
+      color: map-get($red, 'lighten-2');
+    }
+
+    button:active {
+      color: map-get($red, 'base');
+    }
+  }
+}

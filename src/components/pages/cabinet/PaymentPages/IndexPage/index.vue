@@ -1,19 +1,17 @@
 <template lang="pug">
-  .payment-index-page.main-content.main-content--top-menu-fix.main-content--h-padding.main-content--top-padding
-    er-page-header(
+  .payment-index-page.main-content--top-menu-fix.main-content--top-padding
+    er-page-header.main-content--content(
       linkText="Назад на главную"
       title="Баланс"
       backlink="/lk"
     )
 
     //- Общая информация
-    .payment-index-page__info.mb-24.mb-md-48
+    .payment-index-page__info.mb-24.mb-md-32.main-content--content
       .payment-index-page__info-item
         .payment-index-page__info-item__caption
           | На Вашем счете:
         .payment-index-page__info-item__value
-          .icon
-            ErtIcon(name="wallet")
           template(v-if="isLoadingBalance")
             PuSkeleton.loading
           template(v-else)
@@ -25,12 +23,10 @@
         .payment-index-page__info-item__caption
           | Сумма к оплате:
         .payment-index-page__info-item__value
-          .icon
-            ErtIcon(name="rouble")
           template(v-if="isLoadingBalance")
             PuSkeleton.loading
           template(v-else)
-            .value
+            .value(:class="{ 'is-debt': sumToPay > 0 }")
               | {{ sumToPay | priceFormatted }}
               span &nbsp;₽
 
@@ -38,8 +34,6 @@
         .payment-index-page__info-item__caption
           | Следующее списание:
         .payment-index-page__info-item__value
-          .icon
-            ErtIcon(name="calendar")
           template(v-if="isLoadingBalance")
             PuSkeleton.loading
           template(v-else)
@@ -47,83 +41,116 @@
               | {{ nextDate }}
 
     //- Кнопки "быстрого перехода"
-    ErRow.payment-index-page__buttons.mb-48.mb-md-56
-      ErFlex(xs6 lg3)
-        .payment-index-page__button(
-          @click="() => { $router.push('/lk/payments/card-payment'); dataLayerPush({ category: 'payments', label: 'paybycard' }) }"
+    .payment-index-page__buttons.mb-40.mb-xl-48.main-content--content
+      .payment-index-page-buttons(
+        :class="{ 'is-scroll': isSliderLongerContent, 'is-end': isEndScrollbar, 'is-start': isStartScrollbar }"
+        ref="button-content"
+      )
+        .payment-index-page-buttons__slider(
+          :style="sliderStyle"
+          ref="button-slider"
+          v-touch="{ left: onLeftHandler, right: onRightHandler }"
+          @wheel="onScrollEvent"
         )
-          .wrapper
-            .title Оплата картой
-            .description(:class="{ 'enabled': isEnabledAutoPay }") Автоплатёж {{ isEnabledAutoPay ? '' : 'не' }} подключен
-            .icon
-              ErtIcon(name="pay_card")
-      ErFlex(xs6 lg3)
-        ErDocumentViewer(
-          :list-document="[listInvoicePayment[activeBillingAccount] || emptyDocument]"
-          :is-digital-signing="false"
-          :is-manual-signing="false"
-          v-model="isShowInvoicePayment"
-        )
-          template(v-slot:activator="{ on }")
-            .payment-index-page__button(v-on="getInvoicePaymentsEvents(on)")
-              .wrapper(@click="dataLayerPush({ category: 'payments', label: 'bill' })")
-                .title Счёт на оплату
-                .icon
-                  ErtIcon(name="score")
-      ErFlex(xs6 lg3)
-        .payment-index-page__button(
-          :class="{ 'promised-payment': isHasPromisePayment }"
-          @click="() => { $router.push('/lk/payments/promise-payments'); dataLayerPush({ category: 'payments', label: 'futurepayment' }) }"
-        )
-          .wrapper
-            .title Обещанный платёж
-            template(v-if="!isHasPromisePayment")
+          button.payment-index-page-buttons__item(
+            @click="onGetInvoicePaymentHandler"
+            :disabled="isLoadingInvoicePayment"
+          )
+            .content
+              .title {{ isLoadingInvoicePayment ? 'Подождите' : 'Счёт на оплату' }}
+              .additional-info
+              .icon
+                ErtIcon(name="score")
+          button.payment-index-page-buttons__item(
+            @click="() => { $router.push('/lk/payments/card-payment') }"
+          )
+            .content
+              .title Оплатить картой
+              .additional-info(:class="{ 'is-autopay': isEnabledAutoPay }")
+                template(v-if="isEnabledAutoPay")
+                  .caption2 Подключен автоплатёж
+                template(v-else)
+                  .caption2 Подключить автоплатёж
+              .icon
+                ErtIcon(name="pay_card")
+          button.payment-index-page-buttons__item(
+            @click="() => { $router.push('/lk/payments/promise-payments') }"
+          )
+            .content
+              .title Обещанный платёж
+              .additional-info
+                template(v-if="isHasPromisePayment")
+                  .caption2 Осталось:
+                  .value {{ beforePromisedPayEnd.d | leadingZero(2) }}д:{{ beforePromisedPayEnd.h | leadingZero(2) }}ч:{{ beforePromisedPayEnd.m | leadingZero(2) }}м
               .icon
                 ErtIcon(name="trast_pay")
-            template(v-else)
-              .promised-payment__caption Осталось (дд:чч:мм)
-              .promised-payment__value
-                span {{ beforePromisedPayEnd.d | leadingZero(2) }}
-                span :
-                span {{ beforePromisedPayEnd.h | leadingZero(2) }}
-                span :
-                span {{ beforePromisedPayEnd.m | leadingZero(2) }}
-              .promised-payment__line
-                .promised-payment__before-line(:style="{ width: `${beforePromisedPayEndLine}%` }")
-      ErFlex(xs6 lg3)
-        .payment-index-page__button(
-          @click="() => {$router.push('/lk/support?form=erroneous_payment'); dataLayerPush({ category: 'payments', label: 'falsepayment' }) }"
-        )
-          .wrapper
-            .title Заявление об ошибочном платеже
-            .icon
-              ErtIcon(name="doc_edit")
+          button.payment-index-page-buttons__item(
+            @click="() => { $router.push('/lk/support?form=erroneous_payment') }"
+          )
+            .content
+              .title Заявление об ошибочном платеже
+              .additional-info
+              .icon
+                ErtIcon(name="doc_edit")
     .payment-index-page__history
-      h2.mb-16 Последние платежи и начисления
-      .payment-index-page__history__current-month-year.mb-16
-        span.month {{ currentMonthYear.m }}&nbsp;
-        span.year '{{ currentMonthYear.y }}
-      .payment-index-page__history__list
+      h2.mb-16.main-content--content История операций
+      .payment-index-page__history__filter
+        ErFilterContainer(
+          :active="isVisibleFilter"
+          :icon-click="() => { isVisibleFilter = true }"
+          @click-outside="() => { isVisibleFilter = false }"
+        )
+          // Выбранные для фильтрации данные
+          div(slot="selected-filters" @click="() => { isVisibleFilter = true }")
+            span.er-filter-container__active-filter.mr-16 {{ formatFilterPeriod }}
+            span.er-filter-container__active-filter {{ payType.text }}
+          .payment-index-page__filter-wrap
+            .payment-index-page__filter-wrap__list.main-content.main-content--content
+              ErContainer.full.container--no-padding
+                ErRow(align-items-center)
+                  ErFlex.xs12.sm8.md5.lg4.r-offset-sm4.r-offset-md0
+                    ErDatePicker(
+                      v-model="datePickerModel"
+                      :disabledDate="disabledDateCallback"
+                    )
+                  ErFlex.xs12.sm8.md5.lg3.r-offset-sm6.r-offset-md0
+                    ErtSelect(
+                      label="Тип"
+                      v-model="payType"
+                      :items="listPayType"
+                      returnObject
+                      item-value="id"
+                      item-text="text"
+                    )
+                  ErFlex.md1.lg3.d--flex.align-items-center
+                    ErFilterClose(@click="isVisibleFilter = false")
+      .payment-index-page__history__list.main-content--content
         template(v-if="loadingPaymentHistoryBill")
-          PaymentHistoryItem(loading :data="{}" type="replenishment").mb-4
-          PaymentHistoryItem(loading :data="{}" type="write_off")
+          .payment-index-page__history__loading
+            ErtProgressCircular(indeterminate width="2")
+            .title Загружаем историю операций
         template(v-else-if="paymentHistory.length === 0")
           .payment-index-page__history__list--not-found
             | За выбранный промежуток не найдены платежи или начисления
         template(v-else)
-          PaymentHistoryItem.mb-4(
-            v-for="(paymentItem, index) in paymentHistory[0]"
-            :key="index"
-            :data="paymentItem"
-            :type="paymentItem.type"
-          )
-
-    .payment-index-page__navigation.mt-32.mt-md-40
-      ErButton(
-        flat
-        to="/lk/payments/history"
-        @click="dataLayerPush({ category: 'payments', label: 'history' })"
-      ) История
+          template(v-for="(historyBillGroupByMonth) in paymentHistory")
+            .payment-index-page__month-year
+              span.month {{ getMonthByTimestamp(historyBillGroupByMonth[0].timestamp) }}&nbsp;
+              span.year '{{ getYearByTimestamp(historyBillGroupByMonth[0].timestamp) }}
+            template(
+              v-if="historyBillGroupByMonth.filter(historyItem => payType.id === 'all' ? true : (payType.id === historyItem.type)).length === 0"
+            )
+              .payment-history-page__list--not-found За данный месяц не найдено {{ payType.id === 'replenishment' ? 'пополнений' : 'списаний' }}
+            template(v-else)
+              .payment-index-page__history-group-by-month
+                PaymentHistoryItem.mb-4(
+                  v-for="(historyItem, index) in historyBillGroupByMonth"
+                  v-if="payType.id === 'all' ? true : (payType.id === historyItem.type)"
+                  :key="`${index}_${historyItem.timestamp}`"
+                  :data="historyItem"
+                  :type="historyItem.type"
+                  :hasErrorAutoPayment="historyItem.type === 'replenishment' && historyItem.description === 'Автоплатеж' && historyItem.accountPaymentStatus === 'Завершенный с ошибкой' "
+                )
 
     ErtDialog(
       v-model="isNotAccessInvoicePayment"

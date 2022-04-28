@@ -38,6 +38,12 @@ export default class PaymentHistoryItem extends Vue {
       : ''
   }
 
+  get date () {
+    return ('timestamp' in this.data)
+      ? moment(Number(this.data.timestamp)).format('DD.MM.YY')
+      : ''
+  }
+
   get title () {
     return this.data.hasOwnProperty('title')
       ? this.data.title
@@ -45,8 +51,8 @@ export default class PaymentHistoryItem extends Vue {
   }
 
   get description () {
-    return this.data.hasOwnProperty('description')
-      ? (this.data.description === 'Автоплатеж' ? this.data.description + ' - ' + this.data.accountPaymentStatus : this.data.description)
+    return ('description' in this.data)
+      ? `${this.date} ${this.data.description === 'Автоплатеж' ? this.data.description + ' - ' + this.data.accountPaymentStatus : this.data.description}`
       : ''
   }
 

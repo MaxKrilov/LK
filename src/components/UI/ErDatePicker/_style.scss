@@ -138,6 +138,7 @@
     &__month,
     &__year {
       @extend %switch-year-month;
+      user-select: none;
     }
     &__month {
       .value {

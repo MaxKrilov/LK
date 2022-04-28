@@ -1,10 +1,15 @@
 import Vue from 'vue'
 import Component from 'vue-class-component'
-import { mapGetters, mapState } from 'vuex'
+import { mapActions, mapGetters, mapState } from 'vuex'
 import { IBillingInfo } from '@/tbapi/payments'
 
 import ErtResponsiveMixin from '@/mixins2/ErtResponsiveMixin'
 import { roundUp } from '@/functions/helper'
+import { DocumentInterface } from '@/tbapi'
+import moment from 'moment'
+import { API } from '@/functions/api'
+import { last } from 'lodash'
+import { typeClosedNotification } from '@/constants/closed_notification'
 
 const services = require('./json/services.json')
 
@@ -16,8 +21,12 @@ const SCROLL_STEP = 400
       balanceInfo: (state: any) => state.payments.billingInfo
     }),
     ...mapGetters({
-      managerInfo: 'user/getManagerInfo'
+      managerInfo: 'user/getManagerInfo',
+      listReportDocument: 'fileinfo/getListReportDocument'
     })
+  },
+  filters: {
+    creationDateFormat: (val: number) => moment(val).format('DD.MM.YYYY')
   },
   watch: {
     sumToPay (val) {
@@ -35,6 +44,12 @@ const SCROLL_STEP = 400
         this.listFlag = [false, false, false, false, false]
       }
     }
+  },
+  methods: {
+    ...mapActions({
+      downloadFile: 'fileinfo/downloadFile',
+      createClosedRequest: 'request2/createClosedRequest'
+    })
   }
 })
 export default class ErtNavigationComponent extends ErtResponsiveMixin {
@@ -68,11 +83,14 @@ export default class ErtNavigationComponent extends ErtResponsiveMixin {
 
   offsetTabsHead: number = 0
 
+  isErrorLoadFile: boolean = false
+
   /// Vuex state
   readonly balanceInfo!: IBillingInfo
 
   /// Vuex getters
   readonly managerInfo!: { name: string, phone: string, email: string }
+  readonly listReportDocument!: (DocumentInterface | DocumentInterface[])[]
 
   /// Computed
   get menuAttrs () {
@@ -100,7 +118,8 @@ export default class ErtNavigationComponent extends ErtResponsiveMixin {
   get dialogAttrs () {
     return {
       'fullscreen': true,
-      transition: 'none'
+      transition: 'none',
+      scrollable: true
     }
   }
 
@@ -121,6 +140,31 @@ export default class ErtNavigationComponent extends ErtResponsiveMixin {
   get isMobile () {
     return this.isXS || this.isSM || this.isMD
   }
+
+  get lastReportDocument () {
+    const monthBegin = Number(moment().startOf('month').format('x'))
+
+    return this.listReportDocument.reduce((acc: DocumentInterface[], item) => {
+      if (Array.isArray(item)) {
+        acc.push(...item.filter(_item => _item.creationDate >= monthBegin))
+      } else if (item.creationDate >= monthBegin) {
+        acc.push(item)
+      }
+
+      return acc
+    }, [] as DocumentInterface[])
+  }
+
+  /// Vuex actions
+  readonly downloadFile!: (payload: {
+    api: API
+    bucket: string
+    key: string
+    ext: string
+    asPdf?: number
+  }) => Promise<boolean | Blob>
+
+  createClosedRequest!: (type: typeClosedNotification) => Promise<string | false>
 
   /// Methods
   removeActiveClass () {
@@ -179,6 +223,41 @@ export default class ErtNavigationComponent extends ErtResponsiveMixin {
       : 0
     this.isEndScrollMobileHead = false
     this.isStartScrollMobileHead = this.offsetTabsHead === 0
+  }
+
+  async onClickDownloadHandler (documentItem: DocumentInterface) {
+    const __downloadOnDevice = (file: Blob) => {
+      const blobURL = URL.createObjectURL(file)
+      const link = document.createElement('a')
+      link.href = blobURL
+      link.download = documentItem.fileName
+      link.style.display = 'none'
+      link.click()
+    }
+
+    try {
+      const downloadFileResponse = await this.downloadFile({
+        api: this.$api,
+        bucket: documentItem.bucket,
+        key: documentItem.filePath,
+        ext: last(documentItem.fileName.split('.'))!
+      })
+
+      if (typeof downloadFileResponse !== 'boolean') {
+        __downloadOnDevice(downloadFileResponse)
+
+        // Отправляем закрытое обращение
+        if (documentItem.type.id === '9155673999213227559') {
+          this.createClosedRequest('CN_REPORT_CLOSED_DOCUMENT_FOR_CURRENT')
+        } else if (['9155673997213227559', '9155673998213227559'].includes(String(documentItem.type.id))) {
+          this.createClosedRequest('CN_REPORT_DOCUMENT')
+        }
+      } else {
+        this.isErrorLoadFile = true
+      }
+    } catch (ex) {
+      this.isErrorLoadFile = true
+    }
   }
 
   mounted () {

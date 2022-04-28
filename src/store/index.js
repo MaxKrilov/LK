@@ -15,6 +15,7 @@ import variables from './modules/variables'
 import dictionary from './modules/dictionary'
 import user from './modules/user'
 import request from './modules/request'
+import request2 from './modules/request2'
 import loading from './modules/loading'
 import orders from './modules/orders'
 import campaign from './modules/campaign'
@@ -85,7 +86,8 @@ export default new Vuex.Store({
     ipTransit,
     branch,
     bundles,
-    wifiFilter
+    wifiFilter,
+    request2
   },
   strict: debug,
   plugins: [createPersistedState({

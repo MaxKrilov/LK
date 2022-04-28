@@ -7,6 +7,7 @@ import { getNoun } from '@/functions/helper'
 
 import ErPromo from '@/components/blocks/ErPromo/index.vue'
 import { IBillingInfo } from '@/tbapi/payments'
+import { typeClosedNotification } from '@/constants/closed_notification'
 
 const promo = require('./promo.json')
 
@@ -42,7 +43,9 @@ const promo = require('./promo.json')
     ...mapActions({
       createOrderPromisePayment: 'payments/createOrderPromisePayment',
       cancelOrderPromisePayment: 'payments/cancelOrderPromisePayment',
-      sendOrderPromisePayment: 'payments/sendOrderPromisePayment'
+      sendOrderPromisePayment: 'payments/sendOrderPromisePayment',
+      createClosedPayment: 'request2/createClosedRequest',
+      createOpenedRequest: 'request2/createOpenedRequest'
     })
   }
 })
@@ -63,6 +66,8 @@ export default class PromisePaymentPage extends Vue {
   readonly createOrderPromisePayment!: ({ marketId }: { marketId: string }) => Promise<void>
   readonly cancelOrderPromisePayment!: () => Promise<void>
   readonly sendOrderPromisePayment!: () => Promise<void>
+  readonly createClosedPayment!: (type: typeClosedNotification) => Promise<string | false>
+  readonly createOpenedRequest!: (type: typeClosedNotification) => Promise<string | false>
 
   // Data
   infoText = 'Вы можете активировать сервис <b>«обещанный платеж»</b>, который позволит вам <b>получить доступ к услугам на 3 дня</b>. Дополнительная плата за пользование не взимается.'
@@ -119,6 +124,7 @@ export default class PromisePaymentPage extends Vue {
     this.sendOrderPromisePayment()
       .then(() => {
         this.isShowSuccessDialog = true
+        this.createClosedPayment('CN_PROMISED_PAYMENT')
       })
       .catch(() => {
         this.isShowErrorDialog = true

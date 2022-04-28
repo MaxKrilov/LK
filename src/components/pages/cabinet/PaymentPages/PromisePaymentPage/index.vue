@@ -70,9 +70,12 @@
           .promise-payment-page__error-dialog__title.mb-16
             | При активации Обещанного платежа произошла ошибка
           .promise-payment-page__error-dialog__description
-            | Повторите попытку позже или обратитесь к Вашему персональному менеджеру
+            | Повторите попытку позже или отправьте обращение. Статус обращения вы сможете отслеживать в разделе «Поддержка».
+            .caption2 В случае отправки обращения оно будет отправлено в фоновом режиме и данное окно будет закрыто
           .promise-payment-page__error-dialog__actions
             .promise-payment-page__error-dialog__action.mr-8
+              ErButton(@click="() => { createOpenedRequest('CN_PROMISED_PAYMENT'); isShowErrorDialog = false }")
+                | Отправить
             .promise-payment-page__error-dialog__action.ml-8
               ErButton(flat @click="() => { isShowErrorDialog = false }") Закрыть
 

@@ -1,0 +1,32 @@
+$otp-gutter: 4px !default;
+$otp-width: 24px !default;
+
+.ert-otp-input {
+  display: flex;
+  flex-wrap: wrap;
+  flex: 1 1 auto;
+  margin-right: -$otp-gutter;
+  margin-left: -$otp-gutter;
+
+  input {
+    text-align: center;
+  }
+
+  .ert-input {
+    margin: 0;
+    flex: 1 0 $otp-width + $otp-gutter * 2;
+    max-width: 100%;
+    width: 100%;
+    padding: $otp-gutter;
+
+    input[type="number"]::-webkit-outer-spin-button,
+    input[type="number"]::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    input[type="number"] {
+      -moz-appearance: textfield;
+    }
+  }
+}

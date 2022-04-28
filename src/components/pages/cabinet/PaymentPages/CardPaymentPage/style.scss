@@ -1,145 +1,309 @@
-@import "./variables";
+.ert-card-payment-page {
+  width: calc(100% - 32px);
 
-.card-payment-page {
-  &__block {
-    @extend %block-background;
+  @include min-breakpoint('md') {
+    width: calc(100% - 48px);
   }
 
-  &__red {
-    color:  map_get($red, 'base') !important;
+  @include min-breakpoint('lg') {
+    width: calc(100% - 96px);
   }
 
-  &__card-slider-block,
-  &__actions-block {
+  @include min-breakpoint('xl') {
     width: 100%;
-    flex-basis: 100%;
   }
 
-  &__card-slider-block {
-    .swiper-container {
-      height: 272px;
+  &__description {
+    @extend %body-font;
+    width: 100%;
+    max-width: 593px;
+  }
 
-      @include min-breakpoint('sm') {
-        height: 252px;
+  &-list-card {
+    overflow: hidden;
+    width: 100%;
+
+    &.is-scroll {
+      position: relative;
+
+      &::before,
+      &::after {
+        content: '';
+        display: block;
+        width: 64px;
+        height: 166px;
+        top: -14px;
+        position: absolute;
+        z-index: 1;
+        pointer-events: none;
+        transition: opacity $primary-transition;
+
+        @include min-breakpoint('md') {
+          height: 214px;
+          top: -17px;
+        }
       }
 
-      @include min-breakpoint('md') {
-        height: 404px;
+      &::before {
+        left: -16px;
+        background: linear-gradient(90deg, map-get($gray, '3') 19.8%, rgba(map-get($gray, '3'), 0) 96.53%);
+
+        @include min-breakpoint('md') {
+          left: -24px;
+        }
       }
-    }
 
-    @include min-breakpoint('lg') {
-      order: 2;
+      &::after {
+        right: -16px;
+        background: linear-gradient(270deg, map-get($gray, '3') 19.8%, rgba(map-get($gray, '3'), 0) 96.53%);
 
-      flex-basis: 60%;
-      max-width: 60%;
-    }
-  }
-
-  &__actions-block {
-    @include min-breakpoint('lg') {
-      order: 1;
-
-      flex-basis: 40%;
-      max-width: 40%;
-    }
-  }
-
-  &__amount-input .ert-text-field {
-    > .ert-input__control > .ert-input__slot > .ert-text-field__slot {
-      > .ert-text-field__suffix {
-        @include color-black(0.2);
+        @include min-breakpoint('md') {
+          right: -24px;
+        }
       }
-    }
 
-    > .ert-input__control > .ert-text-field__details > .ert-messages a {
-      color: inherit;
-    }
-  }
+      &.is-start {
+        &::before {
+          opacity: 0;
+        }
+      }
 
-  &__offer-terms {
-    @extend %caption1-font;
-    @include color-black(0.5);
-
-    a {
-      color: inherit;
-    }
-  }
-
-  &__confirm-dialog,
-  &__success-dialog,
-  &__error-dialog {
-    background-color: map-get($shades, 'white');
-    padding: $padding-x6;
-
-    @include min-breakpoint('xl') {
-      padding: $padding-x8;
-    }
-
-    &__icon > i > svg {
-      width: 64px !important;
-    }
-
-    &__title {
-      @extend %h4-font;
-      @include color-black(0.8);
-
-      .amount .penny {
-        @include color-black(0.3);
+      &.is-end {
+        &::after {
+          opacity: 0;
+        }
       }
     }
 
-    &__actions {
+    &__slider {
       display: flex;
-      margin-top: 220px;
+      flex-wrap: nowrap;
+      transition: transform $primary-transition;
+    }
 
-      @include min-breakpoint('sm') {
-        margin-top: 129px;
+    &__item {
+      width: 191px;
+      min-width: 191px;
+      height: 146px;
+      background: $border-gradient;
+      border-radius: 12px;
+      padding: 1px;
+      cursor: pointer;
+
+      &:not(:last-child) {
+        margin-right: 16px;
+
+        @include min-breakpoint('md') {
+          margin-right: 24px;
+        }
       }
 
       @include min-breakpoint('md') {
-        margin-top: 99px;
+        width: 222px;
+        min-width: 222px;
+        height: 175px;
       }
 
       @include min-breakpoint('xl') {
-        margin-top: 114px;
+        width: 244px;
+        min-width: 244px;
+        height: 199px;
+      }
+
+      .content {
+        width: 100%;
+        height: 100%;
+        background: map-get($gray, '9');
+        border-radius: inherit;
+        display: flex;
+        flex-direction: column;
+        padding: 16px;
+
+        @include min-breakpoint('md') {
+          padding: 24px;
+        }
+
+        @include min-breakpoint('xl') {
+          padding: 32px;
+        }
+      }
+
+      .new-card-title {
+        @extend %h4-font;
+        @include color-black(0.8);
+      }
+
+      .new-card-is-remember {
+        margin-top: auto;
+
+        &__label {
+          @extend %button-font;
+          @include color-black(0.5);
+          transition: $primary-transition;
+        }
+      }
+
+      .top-info {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .logo img {
+        width: 100%;
+        max-width: 57px;
+      }
+
+      .card-number {
+        @extend %h4-font;
+        color: map-get($gray, '8');
+      }
+
+      .autopay {
+        margin-top: auto;
+        margin-bottom: auto;
+
+        &__label {
+          @extend %button-font;
+          @include color-black(0.5);
+
+          &.is-enabled {
+            color: map-get($green, 'base');
+          }
+        }
+      }
+
+      .remove {
+        transition: $primary-transition;
+        display: inline-flex;
+        align-items: center;
+
+        i {
+          @include color-black(0.2);
+          transition: inherit;
+          margin-right: 8px;
+        }
+
+        span {
+          @extend %button-font;
+          @include color-black(0.5);
+          transition: inherit;
+        }
+
+        &:hover > * {
+          color: map-get($red, 'lighten-2');
+        }
+
+        &:active > * {
+          color: map-get($red, 'base');
+        }
+      }
+
+      &.is-active {
+        background: map-get($green, 'base');
+
+        .content {
+          background: map-get($shades, 'white');
+        }
       }
     }
+  }
 
-    &__action {
-      width: 100%;
+  &__amount-to-pay,
+  &__list-email {
+    width: 100%;
+    max-width: 469px;
+  }
+
+  &__actions {
+    display: flex;
+    flex-direction: column;
+
+    @include min-breakpoint('sm') {
+      flex-direction: row;
+      align-items: center;
     }
+  }
 
-    &__warning,
-    &__description,
-    &__error-text {
-      @extend %caption1-font;
+  &__action {
+    @include min-breakpoint('sm') {
+      .er-button {
+        width: auto;
+      }
     }
+  }
 
-    &__description {
+  &__terms {
+    &,
+    a {
+      @extend %caption2-font;
       @include color-black(0.5);
     }
-  }
 
-  &__confirm-dialog {
-    &__icon {
-      color: map-get($red, 'base');
-    }
+    a {
+      transition: $primary-transition;
+      display: block;
 
-    &__warning {
-      color: map-get($red, 'base');
-    }
-  }
+      &:hover {
+        color: map-get($red, 'lighten-2');
+      }
 
-  &__success-dialog {
-    &__icon {
-      color: map-get($green, 'base');
+      &:active {
+        color: map-get($red, 'base');
+      }
     }
   }
 
-  &__error-dialog {
-    &__icon {
-      color: map-get($red, 'base');
+  &__dialog-content {
+    background-color: map-get($shades, 'white');
+    padding: 16px;
+
+    @include min-breakpoint('md') {
+      padding: 24px;
     }
+
+    @include min-breakpoint('xl') {
+      padding: 32px;
+    }
+  }
+
+  &__dialog-footer {
+    display: flex;
+    flex-direction: column;
+
+    @include min-breakpoint('sm') {
+      flex-direction: row;
+      align-items: center;
+
+      .er-button {
+        width: auto;
+        max-width: 114px;
+      }
+    }
+  }
+
+  &__dialog-terms {
+    &,
+    a {
+      @extend %caption2-font;
+      @include color-black(0.5);
+    }
+
+    a {
+      transition: $primary-transition;
+      display: block;
+
+      &:hover {
+        color: map-get($red, 'lighten-2');
+      }
+
+      &:active {
+        color: map-get($red, 'base');
+      }
+    }
+  }
+
+  &__dialog-cvv {
+    max-width: 192px;
   }
 }

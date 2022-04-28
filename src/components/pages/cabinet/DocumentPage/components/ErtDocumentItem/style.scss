@@ -1,0 +1,170 @@
+.ert-document-item {
+  display: flex;
+  align-items: center;
+  padding: 8px 0;
+  //margin: 0 8px; // Сделано для корректного отбражения Ripple эффекта
+  border-bottom: 1px solid rgba(map-get($shades, 'black'), 0.2);
+
+  @include min-breakpoint('md') {
+    padding: 16px 0;
+    //margin: 0 16px;
+  }
+
+  &__checkbox .ert-input {
+    margin-top: 0;
+    padding-top: 0;
+  }
+
+  &__info {
+    width: 100%;
+    max-width: 50%;
+  }
+
+  &__number {
+    @extend %body-font;
+    font-weight: bold;
+    color: map-get($gray, '8');
+    display: flex;
+    align-items: center;
+
+    > span:not(.status) {
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
+
+    .status {
+      @extend %caption2-font;
+      display: flex;
+      align-items: center;
+      @include color-black(0.5);
+
+      &.success {
+        color: map-get($green, 'base');
+      }
+
+      &.error {
+        color: map-get($red, 'base');
+      }
+
+      @include max-breakpoint('md') {
+        span { display: none }
+      }
+    }
+  }
+
+  &__description {
+    @extend %caption2-font;
+    @include color-black(0.5);
+  }
+
+  &__actions {
+    display: flex;
+    align-items: center;
+
+    > *:not(:last-child) {
+      margin-right: 16px;
+
+      @include min-breakpoint('xl') {
+        margin-right: 24px;
+      }
+    }
+  }
+
+  &__action {
+    display: flex;
+    align-items: center;
+    transition: $primary-transition;
+    text-decoration: none;
+
+    i {
+      @include color-black(0.2);
+      transition: inherit;
+    }
+
+    span {
+      @extend %button-font;
+      @include color-black(0.5);
+      border-bottom: 1px dashed;
+      margin-left: 8px;
+      transition: inherit;
+
+      @include max-breakpoint('md') {
+        display: none;
+      }
+    }
+
+    &:hover > * {
+      color: map-get($red, 'lighten-2');
+    }
+
+    &:active > * {
+      color: map-get($red, 'base');
+    }
+  }
+
+  &-dialog {
+    &__certificate-list {
+      width: 100%;
+      max-height: 400px;
+      overflow-y: auto;
+      margin-top: 24px;
+    }
+
+    &__certificate-item {
+      @extend %button-font;
+      text-align: left;
+      width: 100%;
+      margin-bottom: 8px;
+      display: flex;
+      @include color-black(0.8);
+      transition: $primary-transition;
+
+      > * {
+        transition: inherit;
+      }
+
+      i {
+        opacity: 0;
+      }
+
+      &:hover:not(.active) {
+        color: map-get($red, 'lighten-2');
+      }
+
+      &:active:not(.active) {
+        color: map-get($red, 'base');
+      }
+
+      &.active {
+        color: map-get($green, 'base');
+
+        i {
+          opacity: 1;
+        }
+      }
+    }
+
+    &__manual-file {
+      display: flex;
+      align-items: center;
+      @extend %caption1-font;
+      @include color-black(0.5);
+      margin-bottom: 8px;
+
+      i {
+        @include color-black(0.2);
+        transition: $primary-transition;
+        margin-right: 8px;
+
+        &:hover {
+          color: map-get($red, 'lighten-2');
+        }
+
+        &:active {
+          color: map-get($red, 'base');
+        }
+      }
+    }
+  }
+}

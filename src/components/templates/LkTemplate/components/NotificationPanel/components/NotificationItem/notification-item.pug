@@ -1,7 +1,5 @@
 .notification-item(v-if="!hidden")
-  .notification-item__head(
-    :title="infoTooltip"
-  )
+  .notification-item__head
     .notification-item__icon
       notification-icon(
         :label="getLabel"

@@ -31,67 +31,67 @@ er-document-viewer(
 
       template(v-slot:footer)
         .buttons(v-if="documentIsActNotSigned")
-          er-button.er-button--accept(
-            color="blue"
-            pre-icon="doc_edit"
-            data-ga-category="documents"
-            data-ga-label="actppaccept"
-            @click.prevent.stop="() => { actSigningConfirm(1) }"
-          )
-            | Акцептовать
-          er-button(
-            :color="'gray'"
-            data-ga-category="documents"
-            data-ga-label="actppdecline"
-            @click.prevent.stop="() => { actSigningConfirm(0) }"
-          ).er-button--decline
-            | Отказаться
+          //er-button.er-button--accept(
+          //  color="blue"
+          //  pre-icon="doc_edit"
+          //  data-ga-category="documents"
+          //  data-ga-label="actppaccept"
+          //  @click.prevent.stop="() => { actSigningConfirm(1) }"
+          //)
+          //  | Акцептовать
+          //er-button(
+          //  :color="'gray'"
+          //  data-ga-category="documents"
+          //  data-ga-label="actppdecline"
+          //  @click.prevent.stop="() => { actSigningConfirm(0) }"
+          //).er-button--decline
+          //  | Отказаться
         // Акт акцептован
-        div(v-else-if="documentIsActSigned")
-          .er-document__signed-text
-            er-icon(name="circle_ok").circle-ok-icon
-            er-icon(name="ok").ok-icon
-            | Акцептован
+        //div(v-else-if="documentIsActSigned")
+        //  .er-document__signed-text
+        //    er-icon(name="circle_ok").circle-ok-icon
+        //    er-icon(name="ok").ok-icon
+        //    | Акцептован
         // Акт не акцептован
-        div(v-else-if="documentIsActCancel")
-          .er-document__cancelled-text
-            er-icon(name="cancel").cancelled--desktop
-            er-icon(name="cancel").cancelled--mobile
-            | Не акцептован
-          er-button.er-button--accept(
-            color="blue"
-            pre-icon="doc_edit"
-            @click.prevent.stop="() => { actSigningConfirm(1) }"
-          )
-            | Акцептовать
-          er-button(
-            :color="'gray'"
-            @click.prevent.stop="() => { actSigningConfirm(0) }"
-          ).er-button--decline
-            | Отказаться
+        //div(v-else-if="documentIsActCancel")
+        //  .er-document__cancelled-text
+        //    er-icon(name="cancel").cancelled--desktop
+        //    er-icon(name="cancel").cancelled--mobile
+        //    | Не акцептован
+        //  er-button.er-button--accept(
+        //    color="blue"
+        //    pre-icon="doc_edit"
+        //    @click.prevent.stop="() => { actSigningConfirm(1) }"
+        //  )
+        //    | Акцептовать
+        //  er-button(
+        //    :color="'gray'"
+        //    @click.prevent.stop="() => { actSigningConfirm(0) }"
+        //  ).er-button--decline
+        //    | Отказаться
         //- Документ подписан
-        div(v-else-if="contractIsSigned")
-          .er-document__signed-text
-            er-icon(name="circle_ok").circle-ok-icon
-            er-icon(name="ok").ok-icon
-            | Подписан
+        //div(v-else-if="contractIsSigned")
+        //  .er-document__signed-text
+        //    er-icon(name="circle_ok").circle-ok-icon
+        //    er-icon(name="ok").ok-icon
+        //    | Подписан
         //- Документ Активен
-        div(v-else-if="documentIsActive")
-          .er-document__signed-text
-            er-icon(name="circle_ok").circle-ok-icon
-            er-icon(name="ok").ok-icon
-            | Активный
+        //div(v-else-if="documentIsActive")
+        //  .er-document__signed-text
+        //    er-icon(name="circle_ok").circle-ok-icon
+        //    er-icon(name="ok").ok-icon
+        //    | Активный
         //- Документ на проверке у менеджера
         div(v-else-if="documentIsVerifying")
-          .er-document__verifying-text
-            er-icon(name="question").question--desktop
-            er-icon(name="question").question--mobile
-            | На проверке
-        div(v-else-if="documentIsCancel")
-          .er-document__cancelled-text
-            er-icon(name="cancel").cancelled--desktop
-            er-icon(name="cancel").cancelled--mobile
-            | Отменён
+          //.er-document__verifying-text
+          //  er-icon(name="question").question--desktop
+          //  er-icon(name="question").question--mobile
+          //  | На проверке
+        //div(v-else-if="documentIsCancel")
+        //  .er-document__cancelled-text
+        //    er-icon(name="cancel").cancelled--desktop
+        //    er-icon(name="cancel").cancelled--mobile
+        //    | Отменён
         //- Документ может быть подписан ЭЦП (signedWithDigitalSignature === 'Yes' && status === 'Готов для клиента')
         .buttons(v-else-if="contractIsReady && documentIsSigned")
           er-button(
