@@ -152,7 +152,7 @@ export default class ErtDocumentItem extends Vue {
       ? isReportDocument(this.document)
         ? this.document.attachmentName.replace(/по ЛС \w+/ig, '').trim()
         : this.documentTypeID === ACT_OF_RECONCILIATION
-          ? this.document.attachmentName
+          ? this.document.attachmentName.replace(/\.[^/.]+$/, '')
           : this.document.relatedTo.name
       : ''
   }
