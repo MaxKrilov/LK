@@ -48,6 +48,16 @@
                 :value="sortField === 'start'"
                 :order="sortField === 'start' ? sortDirection : 'asc'"
                 )
+          .filter--end
+            template(v-if="isLoading")
+              PuSkeleton
+            template(v-else)
+              er-table-filter(
+                title="Конец сессии"
+                @change-filter="e => { sortBy('end', e) }"
+                :value="sortField === 'end'"
+                :order="sortField === 'end' ? sortDirection : 'asc'"
+                )
           .filter--volume
             template(v-if="isLoading")
               PuSkeleton

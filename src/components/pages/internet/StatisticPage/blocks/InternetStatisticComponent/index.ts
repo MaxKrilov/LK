@@ -11,6 +11,7 @@ const FORMAT_TIME = 'HH:mm'
   props: {
     ip: String,
     start: [Number, Date],
+    end: [Number, Date],
     bytes: Number,
     type: String
   }
@@ -19,6 +20,7 @@ export default class InternetStatisticComponent extends Vue {
   // Props
   readonly ip!: string
   readonly start!: number
+  readonly end!: number
   readonly bytes!: number
   readonly type!: string
   // Computed
@@ -27,6 +29,12 @@ export default class InternetStatisticComponent extends Vue {
   }
   get computedStartTime () {
     return moment(this.start).format(FORMAT_TIME)
+  }
+  get computedEndDate () {
+    return moment(this.end).format(FORMAT_DATE)
+  }
+  get computedEndTime () {
+    return moment(this.end).format(FORMAT_TIME)
   }
   get computedStartDateNTime () {
     return moment(this.start).format(`${FORMAT_DATE} ${FORMAT_TIME}`)
@@ -75,6 +83,7 @@ export default class InternetStatisticComponent extends Vue {
       }, [
         rc('ip', this.htmlIP),
         rc('start', `<div><span class="date">${this.computedStartDate}</span>&nbsp;${this.computedStartTime}</div>`),
+        rc('start', `<div><span class="date">${this.computedEndDate}</span>&nbsp;${this.computedEndTime}</div>`),
         rc('volume', this.htmlVolume),
         rc('type', this.type)
       ])
