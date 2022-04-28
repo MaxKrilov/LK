@@ -103,7 +103,7 @@ export const CN_CONTRACT_ACCEPTANCE_CERTIFICATE = {
 export const CN_CONTRACT_ACY_OF_RECONCILIATION = {
   'channel': CN_CHANNEL,
   'category': CN_CATEGORY_AGREEMENT,
-  'type': '9154749993013188885',
+  'type': '9162249862713628472',
   'classification_level_one': '9154750483513189073',
   'classification_level_two': '9154802862213212538',
   'classification_level_three': '9154802962813213365',
