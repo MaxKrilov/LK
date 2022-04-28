@@ -13,7 +13,7 @@ import { ICloudPhone, ICloudPhoneService, IOATSDomain } from '@/interfaces/oats'
 import { TOMS_IDS } from '@/constants/oats'
 import moment from 'moment'
 
-import sortBy from 'lodash/sortBy'
+import { orderBy } from 'lodash'
 
 export interface iOATSPointItem {
   id: string | number,
@@ -164,7 +164,7 @@ export default class OATSStatisticPage extends Vue {
         }
       })
 
-    return sortBy(result, ['creationDate'])
+    return orderBy(result, ['creationDate'], ['desc'])
   }
 
   generateFileStatistic () {
