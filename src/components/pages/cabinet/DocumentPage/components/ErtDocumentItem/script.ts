@@ -29,7 +29,7 @@ import {
   isStatusContractCanceled,
   isStatusContractActive
 } from './helpers'
-import { CONTRACT_ID, SUPPLEMENTARY_AGREEMENT_ID } from '@/constants/document'
+import { ACT_OF_RECONCILIATION, CONTRACT_ID, SUPPLEMENTARY_AGREEMENT_ID } from '@/constants/document'
 import DigitalSignature, { iCertificate } from '@/functions/digital_signature'
 import { dataURLtoFile } from '@/functions/helper'
 import { ATTACH_SIGNED_DOCUMENT } from '@/store/actions/documents'
@@ -151,7 +151,9 @@ export default class ErtDocumentItem extends Vue {
     return ('relatedTo' in this.document) && ('name' in this.document.relatedTo)
       ? isReportDocument(this.document)
         ? this.document.attachmentName.replace(/по ЛС \w+/ig, '').trim()
-        : this.document.relatedTo.name
+        : this.documentTypeID === ACT_OF_RECONCILIATION
+          ? this.document.attachmentName
+          : this.document.relatedTo.name
       : ''
   }
 
