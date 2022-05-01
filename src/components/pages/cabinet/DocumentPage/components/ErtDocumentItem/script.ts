@@ -182,7 +182,7 @@ export default class ErtDocumentItem extends Vue {
   }
 
   get documentDescription () {
-    return `${isReportDocument(this.document) ? '' : `${this.documentTypeName} от `}${this.documentCreationDate}`
+    return `${isReportDocument(this.document) || this.documentTypeID === ACT_OF_RECONCILIATION ? '' : `${this.documentTypeName} от `}${this.documentCreationDate}`
   }
 
   get documentFileName () {

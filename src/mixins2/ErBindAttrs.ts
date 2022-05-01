@@ -20,7 +20,9 @@ export default Vue.extend({
   }),
 
   created () {
+    // @ts-ignore
     this.$watch('$attrs', makeWatcher('attrs$'), { immediate: true })
+    // @ts-ignore
     this.$watch('$listeners', makeWatcher('listeners$'), { immediate: true })
   }
 })

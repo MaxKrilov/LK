@@ -17,6 +17,11 @@ import DirectorFeedback from '../SupportPages/blocks/DirectorFeedback/index'
 import ErPlugProduct from '../../../blocks/ErPlugProduct'
 import ErChangeBillingAccount from '../../../blocks/ErChangeBillingAccount'
 
+import Swiper from 'swiper'
+import 'swiper/swiper-bundle.css'
+
+import { VueAgile } from 'vue-agile'
+
 import ChangeOrganizationPopup
   from '../../../templates/LkTemplate/components/ErtNavigationComponent/components/ChangeOrganizationPopup'
 
@@ -41,7 +46,8 @@ export default {
     DirectorFeedback,
     ChangeOrganizationPopup,
     ErPlugProduct,
-    ErChangeBillingAccount
+    ErChangeBillingAccount,
+    agile: VueAgile
   },
   data: () => ({
     MESSAGES,
@@ -72,7 +78,8 @@ export default {
     isOpenDialogChangeBillingAccount: false,
     activeStatus: true,
     isOpenDialogChangeOrganisation: false,
-    isOpenManagerRequestDialog: false
+    isOpenManagerRequestDialog: false,
+    swiperSlider: null
   }),
   computed: {
     currentFilterLabel () {
@@ -260,6 +267,18 @@ export default {
 
         this.isOpenDialogChangeBillingAccount = false
       })
+    },
+    defineSlider () {
+      this.swiperSlider = new Swiper('.index-page__slider .swiper-container', {
+        slidesPerView: 'auto',
+        // autoplay: {
+        //   delay: 3000
+        // },
+        navigation: {
+          nextEl: '.swiper-button-next',
+          prevEl: '.swiper-button-prev'
+        }
+      })
     }
   },
   watch: {
@@ -309,5 +328,8 @@ export default {
       // this.$refs.viewer.currentDocument = this.emptyDocument
       // this.$refs.viewer.currentType = { documentId: '', id: '', name: '' }
     }
+  },
+  mounted () {
+    this.defineSlider()
   }
 }

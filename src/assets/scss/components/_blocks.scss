@@ -57,6 +57,15 @@
   }
 
   &--top-menu-fix {
+    padding-top: 105px !important;
+
+    @include min-breakpoint('md') {
+      padding-top: 112px !important;
+    }
+
+    @include min-breakpoint('lg') {
+      padding-top: 120px !important;
+    }
   }
 
   &--content {
