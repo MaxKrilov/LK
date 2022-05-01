@@ -115,14 +115,28 @@ div(:class="`${pre}`")
                       .icon.ml-auto
                         er-icon(name="rouble")
       er-flex(xs12 lg6 xl7)
-        button(@click="() => { isOpenManagerRequestDialog = true }")
-          picture
-            source(:srcset="require('@/assets/images/banner/254х254_Баннер ЛК_Ddos.jpg')" media="(max-width: 480px)")
-            source(:srcset="require('@/assets/images/banner/430х254_Баннер ЛК_Ddos.jpg')" media="(max-width: 640px)")
-            source(:srcset="require('@/assets/images/banner/589х277_Баннер ЛК_Ddos.jpg')" media="(max-width: 960px)")
-            source(:srcset="require('@/assets/images/banner/434х358_Баннер ЛК_Ddos.jpg')" media="(max-width: 1200px)")
-            source(:srcset="require('@/assets/images/banner/469х333_Баннер ЛК_Ddos.jpg')" media="(min-width: 1200px)")
-            img(:src="require('@/assets/images/banner/469х333_Баннер ЛК_Ddos.jpg')")
+        .index-page__slider
+          agile(centerMode autoplay infinite :autoplaySpeed="7000")
+            button.slide(@click="() => { isOpenManagerRequestDialog = true }")
+              picture
+                source(:srcset="require('@/assets/images/banner/254х254_Баннер ЛК_Ddos.jpg')" media="(max-width: 480px)")
+                source(:srcset="require('@/assets/images/banner/430х254_Баннер ЛК_Ddos.jpg')" media="(max-width: 640px)")
+                source(:srcset="require('@/assets/images/banner/589х277_Баннер ЛК_Ddos.jpg')" media="(max-width: 960px)")
+                source(:srcset="require('@/assets/images/banner/434х358_Баннер ЛК_Ddos.jpg')" media="(max-width: 1200px)")
+                source(:srcset="require('@/assets/images/banner/469х333_Баннер ЛК_Ddos.jpg')" media="(min-width: 1200px)")
+                img(:src="require('@/assets/images/banner/469х333_Баннер ЛК_Ddos.jpg')")
+            button.slide(@click="() => { $router.push('/lk/documents?type=act') }")
+              picture
+                source(:srcset="require('@/assets/images/banner/254х254_Баннер Акт.png')" media="(max-width: 480px)")
+                source(:srcset="require('@/assets/images/banner/430х254_Баннер Акт.png')" media="(max-width: 640px)")
+                source(:srcset="require('@/assets/images/banner/589х277_Баннер Акт.png')" media="(max-width: 960px)")
+                source(:srcset="require('@/assets/images/banner/434х358_Баннер Акт.png')" media="(max-width: 1200px)")
+                source(:srcset="require('@/assets/images/banner/469х333_Баннер Акт.png')" media="(min-width: 1200px)")
+                img(:src="require('@/assets/images/banner/469х333_Баннер Акт.png')")
+            template(slot="prevButton")
+              ErtIcon(name="arrow_l" small)
+            template(slot="nextButton")
+              ErtIcon(name="arrow_r" small)
   //- временно убрал кнопку кнопку 'Поделись впечатлением' https://ticket.ertelecom.ru/browse/WEB-31582
   //- .index-page__opinion-mb
   //-   h4 Ваше мнение очень важно для нас.
