@@ -99,7 +99,7 @@ export default class ErtDocumentPage extends Vue {
   contractType = head(this.contractListType)!
 
   actPeriod = [
-    moment().startOf('month'),
+    moment().startOf('month').subtract(2, 'month'),
     moment()
   ]
 
