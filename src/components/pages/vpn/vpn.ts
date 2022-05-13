@@ -26,7 +26,7 @@ export default class VPNMainPage extends Vue {
     this.isLoading = true
     this.$store.dispatch('productnservices/locationOfferInfo', {
       api: this.$api,
-      productType: ['L1', 'L3', 'L2 Передача данных', 'L2 Канал связи']
+      productType: ['L1', 'L3', 'L2 Передача данных', 'L2 Канал Связи']
     }).then(answer => {
       if (Object.keys(answer).length) {
         const points = []
