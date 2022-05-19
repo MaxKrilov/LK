@@ -10,6 +10,7 @@ import { ICustomerProduct } from '@/tbapi'
 import { SERVICE_URLS } from '@/constants/url'
 import ErBundleInfo from '@/components/blocks/ErBundleInfo/index.vue'
 import { DEVICES } from '@/constants/internet'
+import ErActivationModal from '@/components/blocks/ErActivationModal/index.vue'
 
 export interface iPointItem {
   id: string | number,
@@ -25,7 +26,8 @@ export interface iPointItem {
     ServicesComponent,
     ErBundleInfo,
     PriceServicesComponent,
-    InternetDeviceComponent
+    InternetDeviceComponent,
+    ErActivationModal
   },
   props: {
     customerProduct: {
@@ -52,8 +54,18 @@ export default class IndexPage extends Vue {
   readonly fullAddress!: string
   readonly marketId!: string
 
+  isRecovering: boolean = false
+  isShowResumeModal: boolean = false
+  isShowErrorModal: boolean = false
+  isSendingOrderResume: boolean = false
+  isShowSuccessModal: boolean = false
+
   get getProductId () {
     return this.customerProduct?.tlo.id || ''
+  }
+
+  get isStopped () {
+    return this.customerProduct?.tlo.status === 'Suspended'
   }
 
   // Methods
@@ -63,6 +75,47 @@ export default class IndexPage extends Vue {
 
   onClickPlug () {
     window.open(SERVICE_URLS.INTERNET)
+  }
+
+  recover () {
+    this.isRecovering = true
+
+    this.$store.dispatch('salesOrder/createResumeOrder',
+      {
+        locationId: this.customerProduct?.tlo.locationId,
+        disconnectDate: '1',
+        productId: this.customerProduct?.tlo.id,
+        marketId: this.marketId
+      })
+      .then(() => {
+        this.isShowResumeModal = true
+      })
+      .catch(() => {
+        this.isShowErrorModal = true
+      })
+      .finally(() => {
+        this.isRecovering = false
+      })
+  }
+
+  sendResumeOrder () {
+    this.isSendingOrderResume = true
+
+    this.$store.dispatch('salesOrder/send')
+      .then(() => {
+        this.isShowSuccessModal = true
+      })
+      .catch(() => {
+        this.isShowErrorModal = true
+      })
+      .finally(() => {
+        this.isShowResumeModal = false
+        this.isSendingOrderResume = false
+      })
+  }
+
+  cancelOrder () {
+    this.$store.dispatch('salesOrder/cancel')
   }
 
   get bundle () {
