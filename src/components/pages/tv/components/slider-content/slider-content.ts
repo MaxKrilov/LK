@@ -116,7 +116,7 @@ export default class TvSlider extends Vue {
   }
   manageView (data:IModuleInfo[]) {
     return data.map((line: any) => {
-      let stbManage = (el:any) => el.stbName.includes('Управляй просмотром') && el
+      let stbManage = (el:any) => el.stbName?.includes('Управляй просмотром') && el
       const stb = line.stb.reduce((cur:number, val:{}) => {
         if (!stbManage(val) && cur === -1) {
           return [val]
