@@ -39,7 +39,7 @@
     "moment": "^2.24.0",
     "password-generator": "^2.3.2",
     "portal-vue": "^2.1.7",
-    "swiper": "^6.4.8",
+    "swiper": "^8.1.6",
     "url-search-params-polyfill": "^7.0.0",
     "vue": "^2.6.11",
     "vue-agile": "^1.1.3",

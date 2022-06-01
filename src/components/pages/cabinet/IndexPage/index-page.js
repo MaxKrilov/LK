@@ -16,6 +16,7 @@ import OfficeList from './blocks/OfficeList/index.vue'
 import DirectorFeedback from '../SupportPages/blocks/DirectorFeedback/index'
 import ErPlugProduct from '../../../blocks/ErPlugProduct'
 import ErChangeBillingAccount from '../../../blocks/ErChangeBillingAccount'
+import ErStories from '../../../blocks/ErStories'
 
 import Swiper from 'swiper'
 import 'swiper/swiper-bundle.css'
@@ -47,7 +48,8 @@ export default {
     ChangeOrganizationPopup,
     ErPlugProduct,
     ErChangeBillingAccount,
-    agile: VueAgile
+    agile: VueAgile,
+    ErStories
   },
   data: () => ({
     MESSAGES,

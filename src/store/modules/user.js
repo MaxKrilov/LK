@@ -43,6 +43,12 @@ const INN_ID = '9148328342013670726'
 const KPP_ID = '9154340518713221693'
 const OGRN_ID = '9154340419713221073'
 
+const PRIORITY_ID = '9148498631613895451'
+const CLIENT_ARPU_SEGMENT_ID = '9154332408813174914'
+const LIFETIME_ID = '9154132653013171016'
+const INDUSTRIES_ID = '9132200668013878647'
+const CUSTOMER_CATEGORY_ID = '7030151465013152898'
+
 const ATTRIBUTE_NAMES = { // для поиска в extendedMap
   INN: 'INN',
   KPP: 'KPP',
@@ -251,6 +257,16 @@ const getters = {
   },
   getCustomerCategoryId (state) {
     return state.clientInfo.customerCategory.id
+  },
+  getBannerRequestData (state) {
+    return {
+      priority: state.clientInfo?.extendedMap?.[PRIORITY_ID]?.singleValue?.attributeValueName,
+      clientArpuSegment: state.clientInfo?.extendedMap?.[CLIENT_ARPU_SEGMENT_ID]?.singleValue?.attributeValueName,
+      lifetime: state.clientInfo?.extendedMap?.[LIFETIME_ID]?.singleValue.attributeValue,
+      industries: state.clientInfo?.extendedMap?.[INDUSTRIES_ID]?.singleValue?.attributeValue ||
+        state.clientInfo?.extendedMap?.[INDUSTRIES_ID]?.multipleValues?.[0]?.attributeValue,
+      segment: state.clientInfo?.extendedMap?.[CUSTOMER_CATEGORY_ID]?.singleValue?.attributeValueName
+    }
   }
 }
 
@@ -458,25 +474,28 @@ const actions = {
       // todo Логирование
     }
   },
-  [GET_LIST_PRODUCT_BY_SERVICE]: async ({ commit, rootGetters, getters }, { api }) => {
-    const toms = rootGetters['auth/getTOMS']
-    const activeBillingAccount = rootGetters['payments/getActiveBillingAccount']
-    try {
-      const result = await api
-        .setWithCredentials()
-        .setData({
-          clientId: toms,
-          billingAccountId: activeBillingAccount
-        })
-        .query('/order/management/products')
-      commit(GET_LIST_PRODUCT_BY_SERVICE_SUCCESS, result)
-    } catch (error) {
-      commit(ERROR_MODAL, true, { root: true })
-      // todo Логирование
-    } finally {
-      commit('loading/indexPageProductByAddress', false, { root: true })
-      commit('loading/indexPageProductByService', false, { root: true })
-    }
+  [GET_LIST_PRODUCT_BY_SERVICE]: ({ commit, rootGetters, getters }, { api }) => {
+    return new Promise(async (resolve, reject) => {
+      const toms = rootGetters['auth/getTOMS']
+      const activeBillingAccount = rootGetters['payments/getActiveBillingAccount']
+      try {
+        const result = await api
+          .setWithCredentials()
+          .setData({
+            clientId: toms,
+            billingAccountId: activeBillingAccount
+          })
+          .query('/order/management/products')
+        commit(GET_LIST_PRODUCT_BY_SERVICE_SUCCESS, result)
+        resolve()
+      } catch (error) {
+        commit(ERROR_MODAL, true, { root: true })
+        reject()
+      } finally {
+        commit('loading/indexPageProductByAddress', false, { root: true })
+        commit('loading/indexPageProductByService', false, { root: true })
+      }
+    })
   },
   [GET_LIST_ADDRESS_BY_SERVICES]: async ({ commit, rootGetters, getters }, { api, productType }) => {
     const toms = rootGetters['auth/getTOMS']
