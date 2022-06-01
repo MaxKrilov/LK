@@ -42,6 +42,7 @@ import bundles from './modules/bundles'
 import branch from './modules/branch'
 import instructions from './modules/instructions'
 import wifiFilter from './modules/wifi-filter'
+import banners from './modules/banners'
 
 const debug = process.env.NODE_ENV !== 'production'
 
@@ -87,7 +88,8 @@ export default new Vuex.Store({
     branch,
     bundles,
     wifiFilter,
-    request2
+    request2,
+    banners
   },
   strict: debug,
   plugins: [createPersistedState({

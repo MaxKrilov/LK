@@ -94,6 +94,9 @@ export default {
         this.$store.dispatch(`user/${GET_LIST_PRODUCT_BY_ADDRESS}`, context)
           .then(() => {
             this.$store.dispatch(`user/${GET_LIST_PRODUCT_BY_SERVICE}`, context)
+              .then(() => {
+                !this.isEcommerce && this.$store.dispatch('banners/getBannerList')
+              })
           })
       }
     }
@@ -232,6 +235,9 @@ export default {
                   !this.isEcommerce && this.$store.dispatch(`user/${GET_LIST_PRODUCT_BY_ADDRESS}`, context)
                     .then(() => {
                       !this.isEcommerce && this.$store.dispatch(`user/${GET_LIST_PRODUCT_BY_SERVICE}`, context)
+                        .then(() => {
+                          !this.isEcommerce && this.$store.dispatch('banners/getBannerList')
+                        })
                     })
                 } else {
                   this.$store.commit(`loading/menuComponentBalance`, false)

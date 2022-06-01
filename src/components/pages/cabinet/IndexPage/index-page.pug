@@ -48,9 +48,9 @@ div(:class="`${pre}`")
 
   er-container.index-page__sections-mb(full).container--no-padding
     er-row()
-      er-flex(xs12 lg6 xl5 :class="`${pre}__fast-links`")
+      er-flex(xs12 :class="`${pre}__fast-links`")
         er-row()
-          er-flex.mb-16(xs6)
+          er-flex.mb-16(xs6 xl3)
             er-preloader(:active="loadingDocuments" icon)
               router-link.index-page__fast-link(to="/lk/documents")
                 .content(@click="dataLayerPush('mydocuments')")
@@ -64,7 +64,7 @@ div(:class="`${pre}`")
                         | {{ getCountUnsignedDocument }}
                     .icon.ml-auto
                       er-icon(name="doc")
-          er-flex.mb-16(xs6)
+          er-flex.mb-16(xs6 xl3)
             er-preloader(:active="loadingRequest" icon)
               router-link.index-page__fast-link(to="/lk/support")
                 .content(@click="dataLayerPush('servicerequest')")
@@ -78,7 +78,7 @@ div(:class="`${pre}`")
                         | {{ getCountRequestInWork }}
                     .icon.ml-auto
                       er-icon(name="service")
-          er-flex.mb-16(xs6)
+          er-flex.mb-16(xs6 xl3)
             er-preloader(:active="loadingPromisedPayment" icon)
               router-link.index-page__fast-link(to="/lk/payments/promise-payments")
                 .content(@click="dataLayerPush('futurepayment')")
@@ -98,7 +98,7 @@ div(:class="`${pre}`")
                     template(v-else)
                       .icon.ml-auto
                         er-icon(name="trast_pay")
-          er-flex.mb-16(xs6)
+          er-flex.mb-16(xs6 xl3)
             er-document-viewer(
               :list-document="computedListInvoiceDocument"
               :is-digital-signing="false"
@@ -114,36 +114,36 @@ div(:class="`${pre}`")
                     .footer.d--flex.align-items-end.mt-auto
                       .icon.ml-auto
                         er-icon(name="rouble")
-      er-flex(xs12 lg6 xl7)
-        .index-page__slider
-          agile(centerMode autoplay infinite :autoplaySpeed="7000")
-            button.slide(@click="() => { isOpenManagerRequestDialog = true }")
-              picture
-                source(:srcset="require('@/assets/images/banner/469х333_Баннер_ЛК_Ddos.jpg')" media="(min-width: 1200px)")
-                source(:srcset="require('@/assets/images/banner/434х358_Баннер_ЛК_Ddos.jpg')" media="(min-width: 960px)")
-                source(:srcset="require('@/assets/images/banner/589х277_Баннер_ЛК_Ddos.jpg')" media="(min-width: 640px)")
-                source(:srcset="require('@/assets/images/banner/430х254_Баннер_ЛК_Ddos.jpg')" media="(min-width: 480px)")
-                source(:srcset="require('@/assets/images/banner/254х254_Баннер_ЛК_Ddos.jpg')" media="(min-width: 0)")
-                img(:src="require('@/assets/images/banner/254х254_Баннер_ЛК_Ddos.jpg')")
-            button.slide(@click="() => { $router.push('/lk/documents?type=act') }")
-              picture
-                source(:srcset="require('@/assets/images/banner/469х333_Баннер_Акт.png')" media="(min-width: 1200px)")
-                source(:srcset="require('@/assets/images/banner/254х254_Баннер_Акт.png')" media="(max-width: 480px) and (min-width: 0)")
-                source(:srcset="require('@/assets/images/banner/430х254_Баннер_Акт.png')" media="(max-width: 640px) and (min-width: 480px)")
-                source(:srcset="require('@/assets/images/banner/589х277_Баннер_Акт.png')" media="(max-width: 960px) and (min-width: 640px)")
-                source(:srcset="require('@/assets/images/banner/434х358_Баннер_Акт.png')" media="(max-width: 1200px) and (min-width: 960px)")
-                img(:src="require('@/assets/images/banner/254х254_Баннер_Акт.png')")
-            template(slot="prevButton")
-              ErtIcon(name="arrow_l" small)
-            template(slot="nextButton")
-              ErtIcon(name="arrow_r" small)
+      //er-flex(xs12 lg6 xl7)
+      //  .index-page__slider
+      //    agile(centerMode autoplay infinite :autoplaySpeed="7000")
+      //      button.slide(@click="() => { isOpenManagerRequestDialog = true }")
+      //        picture
+      //          source(:srcset="require('@/assets/images/banner/469х333_Баннер_ЛК_Ddos.jpg')" media="(min-width: 1200px)")
+      //          source(:srcset="require('@/assets/images/banner/434х358_Баннер_ЛК_Ddos.jpg')" media="(min-width: 960px)")
+      //          source(:srcset="require('@/assets/images/banner/589х277_Баннер_ЛК_Ddos.jpg')" media="(min-width: 640px)")
+      //          source(:srcset="require('@/assets/images/banner/430х254_Баннер_ЛК_Ddos.jpg')" media="(min-width: 480px)")
+      //          source(:srcset="require('@/assets/images/banner/254х254_Баннер_ЛК_Ddos.jpg')" media="(min-width: 0)")
+      //          img(:src="require('@/assets/images/banner/254х254_Баннер_ЛК_Ddos.jpg')")
+      //      button.slide(@click="() => { $router.push('/lk/documents?type=act') }")
+      //        picture
+      //          source(:srcset="require('@/assets/images/banner/469х333_Баннер_Акт.png')" media="(min-width: 1200px)")
+      //          source(:srcset="require('@/assets/images/banner/254х254_Баннер_Акт.png')" media="(max-width: 480px) and (min-width: 0)")
+      //          source(:srcset="require('@/assets/images/banner/430х254_Баннер_Акт.png')" media="(max-width: 640px) and (min-width: 480px)")
+      //          source(:srcset="require('@/assets/images/banner/589х277_Баннер_Акт.png')" media="(max-width: 960px) and (min-width: 640px)")
+      //          source(:srcset="require('@/assets/images/banner/434х358_Баннер_Акт.png')" media="(max-width: 1200px) and (min-width: 960px)")
+      //          img(:src="require('@/assets/images/banner/254х254_Баннер_Акт.png')")
+      //      template(slot="prevButton")
+      //        ErtIcon(name="arrow_l" small)
+      //      template(slot="nextButton")
+      //        ErtIcon(name="arrow_r" small)
   //- временно убрал кнопку кнопку 'Поделись впечатлением' https://ticket.ertelecom.ru/browse/WEB-31582
   //- .index-page__opinion-mb
   //-   h4 Ваше мнение очень важно для нас.
   //-   div Вы можете добавить претензию о работе, выразить благодарность или оставить предложение
 
   //- er-button.index-page__impression-button(@click="openImpressionForm") Поделись впечатлением
-
+  ErStories.mb-32.mb-xl-56
 
   h2(:class="`${pre}__service__title`")
     | Подключенные услуги
