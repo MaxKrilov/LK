@@ -131,7 +131,11 @@ export default class TariffComponent extends Vue {
   isShowErrorDialog = false
   isShowSuccessDialog = false
 
+  isConnectedTurboInternal = false
+
   isDisconnectionTurbo = false
+  /* Вызывается в том случае, если подключение происходило в этот же день */
+  isDisconnectTurboError = false
 
   isOffering = false
   isOffer = false
@@ -799,6 +803,7 @@ export default class TariffComponent extends Vue {
             this.$emit('update')
             this.isBlur = false
           }, 1000)
+          this.isConnectedTurboInternal = true
         } else if (result.submitStatus.toLowerCase() === 'failed') {
           this.errorText = result.submitError?.replace(/<\/?[^>]+>/g, '')
           this.isShowErrorDialog = true
@@ -876,6 +881,20 @@ export default class TariffComponent extends Vue {
       this.freeBonusValue = Number(freeBonusSLO.chars[FREE_BONUS_CHAR].replace(/[\D]+/ig, ''))
       resolve()
     })
+  }
+
+  onDisconnectTurboHandler () {
+    if (
+      this.isConnectedTurboInternal ||
+      (this.isOnTurbo &&
+      typeof this.isAvailableTurbo !== 'boolean' &&
+      moment(this.isAvailableTurbo.chars[CHAR_START_DATE_TURBO])
+        .diff(moment(), 'd') === 0)
+    ) {
+      this.isDisconnectTurboError = true
+    } else {
+      this.isDisconnectionTurbo = true
+    }
   }
 
   // Hooks

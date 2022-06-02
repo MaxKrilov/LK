@@ -53,7 +53,7 @@
               pre-icon="speedup"
               color="green"
               :loading="isDisconnectionTurbo"
-              @click="() => { isDisconnectionTurbo = true }"
+              @click="onDisconnectTurboHandler"
             )
               | Отключить турбо-режим
             .date-activate.mt-24.mb-16
@@ -198,11 +198,22 @@
         | Заказ создан успешно. Выполнение заказа может занять некоторое время.&nbsp;
         | Актуальный статус можно узнать в&nbsp;
         router-link(to="/lk/orders") разделе Заказы.
+
     er-disconnect-product(
       v-model="isDisconnectionTurbo"
       :delete-order-data="turboDetails"
       is-send-order
     )
+
+    er-activation-modal(
+      v-model="isDisconnectTurboError"
+      type="error"
+      title="Невозможно выполнить операцию"
+      :is-show-action-button="false"
+      cancel-button-text="Закрыть"
+    )
+      template(slot="description")
+        div Уважаемый Клиент, невозможно отключить услугу в день подключения! Повторите попытку позже
 
     ErActivationModal(
       type="info"
