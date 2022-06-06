@@ -16,14 +16,14 @@
           template(v-else)
             | {{ offerOriginalName }}
       .tariff-component__speed
-        .chart-loading(v-show="isLoadingCustomerProduct")
-        .chart(v-show="!isLoadingCustomerProduct")
-        template(v-if="isLoadingCustomerProduct")
+        .chart-loading(v-show="isLoadingCustomerProduct || internalIsLoadingCustomerProduct")
+        .chart(v-show="!isLoadingCustomerProduct && !internalIsLoadingCustomerProduct")
+        template(v-if="isLoadingCustomerProduct || internalIsLoadingCustomerProduct")
           PuSkeleton
         template(v-else)
           .title
             | Скорость соединения
-        template(v-if="isLoadingCustomerProduct")
+        template(v-if="isLoadingCustomerProduct || internalIsLoadingCustomerProduct")
           PuSkeleton
         template(v-else)
           .button(v-if="listAvailableSpeedIncrease.length > 0")
@@ -85,7 +85,7 @@
         template(v-else)
 
       .tariff-component__price
-        template(v-if="isLoadingCustomerProduct")
+        template(v-if="isLoadingCustomerProduct || internalIsLoadingCustomerProduct")
           PuSkeleton
         template(v-else)
           .caption

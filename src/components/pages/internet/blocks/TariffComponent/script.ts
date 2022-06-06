@@ -72,6 +72,7 @@ const arc = d3.arc()
     async customerProduct (val) {
       if (!val) return
       try {
+        this.internalIsLoadingCustomerProduct = true
         const customerProductsResult = await this.customerProducts({ api: this.$api, parentIds: [val.tlo.id] })
         await this.assignFreeBonus(customerProductsResult)
         this.generateSpeedChart()
@@ -79,6 +80,8 @@ const arc = d3.arc()
         this.getBillingPacket()
       } catch (e) {
         console.error(e)
+      } finally {
+        this.internalIsLoadingCustomerProduct = false
       }
     },
     isShowOfferDialog (val) {
@@ -150,6 +153,8 @@ export default class TariffComponent extends Vue {
   isLoadingBillingPacket: boolean = true
 
   freeBonusValue: number = 0
+
+  internalIsLoadingCustomerProduct: boolean = false
 
   // Computed
   /**
