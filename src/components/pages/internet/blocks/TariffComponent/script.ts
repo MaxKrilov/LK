@@ -869,6 +869,7 @@ export default class TariffComponent extends Vue {
         !freeBonusSLO.chars.hasOwnProperty(FREE_BONUS_CHAR) ||
         freeBonusSLO.status !== STATUS_ACTIVE
       ) {
+        this.freeBonusValue = 0
         resolve()
         return
       }
