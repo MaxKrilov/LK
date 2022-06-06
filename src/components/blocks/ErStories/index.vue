@@ -52,7 +52,7 @@
               :style="{ backgroundImage: `url(${banner.images.full})` }"
             )
               .pa-32.d--flex
-                h3.er-story-detail__title.mb-16.mt-auto(v-if="getStoryTitle(banner)")
+                h4.er-story-detail__title.mb-16.mt-auto(v-if="getStoryTitle(banner)")
                   | {{ getStoryTitle(banner) }}
                 .er-story-detail__description.body-font
                   | {{ getStoryDescription(banner) }}
