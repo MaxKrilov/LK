@@ -58,7 +58,11 @@ const props = {
     type: [Object, String],
     default: () => ({})
   },
-  bpi: String
+  bpi: String,
+  productChars: {
+    type: Array,
+    default: () => ([])
+  }
 }
 
 const INTERNAL_STATUS_CONNECTING = 'Connecting'
@@ -74,10 +78,16 @@ const minLengthRule = (l: number) => (v: string) => v.length >= l || `Длина
 const maxLengthRule = (l: number) => (v: string) => v.length <= l || `Длина должна быть не больше ${l} символов`
 const ssidNameRule = (v: string) => !!v.match(/^[a-zA-Z\d\w@[\].\s?,\\/!#$&%^*()\-="':;_]+$/g) ||
   'Название может содержать только латинские буквы, цифры и орфографические знаки'
-const closedNetworkRule = (f: 'Пароль' | 'Название' | 'Пин-код') => (v: string) => f === 'Название'
-  // eslint-disable-next-line no-useless-escape
-  ? !!v.match(/^[A-Za-z0-9_\-]+$/g) || `${f} вводится только латинскими буквами, цифрами и символами «-» «_»`
-  : !!v.match(/^[A-Za-z0-9]+$/g) || `${f} вводится только латинскими буквами и цифрами`
+const closedNetworkRule = (f: 'Пароль' | 'Название' | 'Пин-код') => (v: string) => {
+  if (f === 'Название') {
+    return !!v.match(/^[A-Za-z0-9_-]+$/g) || `${f} вводится только латинскими буквами, цифрами и символами «-» «_»`
+  }
+  if (f === 'Пароль') {
+    return !!v.match(/^[a-zA-Z\d\w@[\].\s?,\\/!#$&%^*()\-="':;_]+$/g) || `${f} может содержать только латинские буквы, цифры и орфографические знаки`
+  }
+
+  return !!v.match(/^[A-Za-z0-9]+$/g) || `${f} вводится только латинскими буквами и цифрами`
+}
 const isNumberRule = (v: string) => !isNaN(parseInt(v)) || 'Поле должно быть числом'
 const intervalRule = (v: string) => (parseInt(v) >= 1 && parseInt(v) <= 720) ||
   'Значение должно быть от 1 до 720'
@@ -88,6 +98,7 @@ const CHAR_WIFIACCCHANGE_PIN = 'Пин-код'
 const CHAR_WIFIACCCHANGE_INTERVAL = 'Длительность авторизации (час)'
 const CHAR_WIFIHSCLONET_NAME = 'Имя сети Wi-Fi (SSID)'
 const CHAR_WIFIHSCLONET_PASSWORD = 'Пароль закрытой сети'
+const CHAR_WIFIHSCLONET_SPEED = 'Максимальная Скорость Закрытой сети, (Мбит/с)'
 const CHAR_WIFIAVTVOUCH_PREFIX = 'Префикс логина'
 
 @Component<InstanceType<typeof ErtWifiServiceAuthItem>>({
@@ -153,6 +164,8 @@ export default class ErtWifiServiceAuthItem extends Vue {
 
   readonly bpi!: string
 
+  readonly productChars!: any[]
+
   // Data
   lazyStatus: string = this.status || InternalServiceStatuses.STATUS_DISCONNECTED
   loadingServiceWithParams: boolean = false
@@ -164,6 +177,7 @@ export default class ErtWifiServiceAuthItem extends Vue {
     wifiAccChangeInterval: '', // Интервал авторизации
     wifiHSClosNetName: '', // Название закрытой сети
     wifiHSCloseNetPassword: '', // Пароль закрытой сети
+    wifiHSCloseNetSpeed: 'Без ограничения', // Максимальная скорость закрытой сети
     wifiVoucherPrefix: '',
     wifiVoucherManagerName: '',
     wifiVoucherManagerPassword: ''
@@ -181,7 +195,7 @@ export default class ErtWifiServiceAuthItem extends Vue {
     wifiAccChangePIN: [closedNetworkRule('Пин-код')],
     wifiAccChangeInterval: [requiredRule, isNumberRule, intervalRule],
     wifiHSClosNetName: [requiredRule, closedNetworkRule('Название'), maxLengthRule(20)],
-    wifiHSCloseNetPassword: [requiredRule, minLengthRule(8), closedNetworkRule('Пароль')],
+    wifiHSCloseNetPassword: [requiredRule, minLengthRule(8), maxLengthRule(32), closedNetworkRule('Пароль')],
     wifiVoucherPrefix: [requiredRule, (v: string) => /^[a-z0-9]+$/g.test(v) || 'Префикс может содержать только латинские буквы нижнего регистра и/или цифры'],
     wifiVoucherManagerName: [requiredRule],
     wifiVoucherManagerPassword: [requiredRule]
@@ -214,6 +228,8 @@ export default class ErtWifiServiceAuthItem extends Vue {
     field_social_auth_in: { isConnect: 0, isLoading: false, errorMessage: '' },
     field_social_auth_tw: { isConnect: 0, isLoading: false, errorMessage: '' }
   }
+
+  listHSCloseNetSpeed: string[] = []
 
   // Computed
   /**
@@ -309,10 +325,17 @@ export default class ErtWifiServiceAuthItem extends Vue {
         [CHAR_WIFIACCCHANGE_INTERVAL]: this.vModelList.wifiAccChangeInterval
       }
     } else if (this.code === 'WIFIHSCLONET') {
-      return {
+      const emitData: Record<string, any> = {
         [CHAR_WIFIHSCLONET_NAME]: this.vModelList.wifiHSClosNetName,
         [CHAR_WIFIHSCLONET_PASSWORD]: this.vModelList.wifiHSCloseNetPassword
       }
+
+      if (this.vModelList.wifiHSCloseNetSpeed !== 'Без ограничения') {
+        emitData[CHAR_WIFIHSCLONET_SPEED] = this.vModelList.wifiHSCloseNetSpeed
+      } else {
+        emitData[CHAR_WIFIHSCLONET_SPEED] = ''
+      }
+      return emitData
     } else if (this.code === 'WIFIAVTVOUCH') {
       return {
         [CHAR_WIFIAVTVOUCH_PREFIX]: this.vModelList.wifiVoucherPrefix
@@ -593,9 +616,17 @@ export default class ErtWifiServiceAuthItem extends Vue {
       } else if (this.code === 'WIFIHSCLONET') {
         this.vModelList.wifiHSClosNetName = this.chars[CHAR_WIFIHSCLONET_NAME] || ''
         this.vModelList.wifiHSCloseNetPassword = this.chars[CHAR_WIFIHSCLONET_PASSWORD] || ''
+        this.vModelList.wifiHSCloseNetSpeed = this.chars[CHAR_WIFIHSCLONET_SPEED] || 'Без ограничения'
       } else if (this.code === 'WIFIAVTVOUCH') {
         // this.vModelList.wifiVoucherPrefix = this.chars[CHAR_WIFIAVTVOUCH_PREFIX] || ''
       }
+    }
+
+    if (this.code === 'WIFIHSCLONET') {
+      this.listHSCloseNetSpeed = this.productChars
+        .find(productCharsItem => productCharsItem.name === CHAR_WIFIHSCLONET_SPEED)
+        ?.values.map((value: any) => value.name) || []
+      this.listHSCloseNetSpeed.unshift('Без ограничения')
     }
 
     if (this.code === 'WIFIAUTCNHS' && this.lazyStatus === this.getStatuses.STATUS_ACTIVE) {
