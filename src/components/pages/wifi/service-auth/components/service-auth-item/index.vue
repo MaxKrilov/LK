@@ -118,13 +118,23 @@
                   :type="vModelTypeList.wifiHSCloseNetPassword"
                   v-model="vModelList.wifiHSCloseNetPassword"
                   :appendIcon="vModelTypeList.wifiHSCloseNetPassword === 'password' ? 'eye_close' : 'eye_open'"
-                  @click:append="() => { vModelTypeList.wifiHSCloseNetPassword = vModelTypeList.wifiHSCloseNetPassword === 'password' ? 'text' : 'password' }"
                   appendOuterIcon="reload"
-                  @click:append-outer="() => { onGeneratePassword('close-net') }"
                   :rules="vModelRuleList.wifiHSCloseNetPassword"
                   isShowRequiredLabel
+                  isRegExpMask
                   placeholder="Пароль не хранится в системе"
+                  :mask="`^[a-zA-Z0-9!#$&%^*()@?.-=\"':;_,]+$`"
+                  @click:append="() => { vModelTypeList.wifiHSCloseNetPassword = vModelTypeList.wifiHSCloseNetPassword === 'password' ? 'text' : 'password' }"
+                  @click:append-outer="() => { onGeneratePassword('close-net') }"
                 )
+                ErtSelect(
+                  v-model="vModelList.wifiHSCloseNetSpeed"
+                  :items="listHSCloseNetSpeed"
+                  isShowRequiredLabel
+                  label="Максимальная скорость закрытой сети (Мбит/с)"
+                )
+                  template(v-slot:append-outer)
+                    er-hint Скорость офисной линии Интернет, которую Вы готовы выделить для пользователей закрытой сети (например, общая скорость канала 30 Мбит/с, готовы выделить 5 Мбит/с).
 
               template(v-if="code === 'WIFIAVTVOUCH'")
                 ErtAuthVoucherComponent(

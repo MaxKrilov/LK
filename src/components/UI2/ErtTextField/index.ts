@@ -48,6 +48,7 @@ const props = {
   fullWidth: Boolean,
   label: String,
   mask: String,
+  isRegExpMask: Boolean,
   placeholder: String,
   prefix: String,
   prependInnerIcon: String,
@@ -98,6 +99,7 @@ class ErtTextField extends baseMixins {
   readonly fullWidth!: boolean
   readonly label!: string
   readonly mask!: string
+  readonly isRegExpMask!: boolean
   readonly placeholder!: string
   readonly prefix!: string
   readonly prependInnerIcon!: string
@@ -485,7 +487,14 @@ class ErtTextField extends baseMixins {
       }
     }
 
-    (new Inputmask(mask, data)).mask(this.$refs.input)
+    if (this.isRegExpMask) {
+      (new Inputmask({
+        ...data,
+        regex: mask
+      })).mask(this.$refs.input)
+    } else {
+      (new Inputmask(mask, data)).mask(this.$refs.input)
+    }
   }
 
   mounted () {

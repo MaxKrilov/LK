@@ -33,6 +33,7 @@
           :price="getSLOPrice(serviceAuth)"
           :chars="serviceAuth.chars"
           :bpi="activePoint.bpi"
+          :productChars="serviceAuth.product.chars"
           :ref="`service-auth__${serviceAuth.code.toLowerCase()}`"
           @connect="(e) => onConnect(serviceAuth.code, e)"
           @disconnect="onDisconnect(serviceAuth.code, serviceAuth.productId)"
