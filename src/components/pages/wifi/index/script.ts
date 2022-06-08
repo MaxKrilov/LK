@@ -11,6 +11,7 @@ import ErBundleInfo from '@/components/blocks/ErBundleInfo/index.vue'
 import { STATUS_SUSPENDED } from '@/constants/status'
 import WifiDeviceComponent from '../blocks/WifiDeviceComponent/index.vue'
 import { DEVICES } from '@/constants/wifi'
+import ErActivationModal from '@/components/blocks/ErActivationModal//index.vue'
 
 const MAP_URL = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
 
@@ -40,7 +41,8 @@ const deg2rad = (deg: number) => deg * Math.PI / 180
     LPopup,
     ErBundleInfo,
     ServicesComponent,
-    WifiDeviceComponent
+    WifiDeviceComponent,
+    ErActivationModal
   },
   watch: {
     listPoint (val: ILocationOfferInfo[]) {
@@ -74,6 +76,12 @@ export default class WifiIndexPage extends Vue {
   listCustomerProduct: Map<string, ICustomerProduct | null> = new Map()
   listAddressUnit: IAddressUnit[] = []
   tracker = 1
+  isRecovering: boolean = false
+  isShowResumeModal: boolean = false
+  isShowErrorModal: boolean = false
+  isSendingOrderResume: boolean = false
+  isShowSuccessModal: boolean = false
+  isLoadingList:Record<string, boolean> = {}
 
   // Computed
   get isErrorClient () {
@@ -263,14 +271,20 @@ export default class WifiIndexPage extends Vue {
 
   // Methods
   getCustomerProductById (id: string, marketId: string) {
+    Vue.set(this.isLoadingList, id, true)
     const customerProduct = this.listCustomerProduct.get(id)
-    if (customerProduct != null) return
+
+    if (customerProduct != null) {
+      Vue.set(this.isLoadingList, id, false)
+      return
+    }
     this.$store.dispatch('productnservices/customerProduct', {
       api: this.$api,
       parentId: id,
       marketId
     })
       .then(answer => {
+        Vue.set(this.isLoadingList, id, false)
         this.listCustomerProduct.set(id, answer)
         this.tracker++
       })
@@ -311,5 +325,49 @@ export default class WifiIndexPage extends Vue {
 
   onClickPlug () {
     window.open(SERVICE_URLS.WIFI_HOT_SPOT)
+  }
+
+  recover (point: ILocationOfferInfo) {
+    this.isRecovering = true
+    const customerProduct = this.listCustomerProduct.get(point.bpi as string)
+
+    this.$store.dispatch('salesOrder/createResumeOrder',
+      {
+        locationId: customerProduct?.tlo.locationId,
+        disconnectDate: '1',
+        productId: customerProduct?.tlo.id,
+        marketId: point.marketId
+      })
+      .then(() => {
+        this.isShowResumeModal = true
+      })
+      .catch(() => {
+        this.isShowErrorModal = true
+      })
+      .finally(() => {
+        this.isRecovering = false
+      })
+  }
+
+  sendResumeOrder () {
+    this.isSendingOrderResume = true
+
+    this.$store.dispatch('salesOrder/send')
+      .then(() => {
+        this.isShowResumeModal = false
+        this.isShowSuccessModal = true
+      })
+      .catch(() => {
+        this.isShowResumeModal = false
+        this.isShowErrorModal = true
+        this.cancelOrder()
+      })
+      .finally(() => {
+        this.isSendingOrderResume = false
+      })
+  }
+
+  cancelOrder () {
+    this.$store.dispatch('salesOrder/cancel')
   }
 }
