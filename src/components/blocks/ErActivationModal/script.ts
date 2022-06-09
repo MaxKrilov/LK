@@ -106,7 +106,6 @@ export default class ErActivationModal extends Vue {
   closeDialog () {
     this.isAcceptOffer = false
     this.$emit('close')
-    this.$emit('doNotShowCalendar', true)
     this.internalValue = false
   }
 

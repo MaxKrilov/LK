@@ -102,7 +102,8 @@ div.main-content.main-content--padding.main-content--top-menu-fix
             div(class="tv-packages__packages__price-active")
               | {{ item.price }}
               span(class="unit") &nbsp;₽/мес
-            div(class="tv-packages__packages__price-active__title") Подключен
+            div(class="tv-packages__packages__start-date" v-html="useActivationDate('Дата активации', item)" )
+            div(class="tv-packages__packages__end-date" v-html="useShutdownDate('Дата отключения', item)")
             er-button(
               color="gray"
               :loading="item.productId === disconnectedItem"
@@ -141,7 +142,6 @@ div.main-content.main-content--padding.main-content--top-menu-fix
         @closeError="changeStatusConnection"
         @cancelOrder="renderCancelOrderSwitcher"
         @resetPeriodAction="resetPeriodAction"
-        @putDownCheckBoxShowPicker="putDownCheckBoxShowPicker"
         isSendOrder
       )
         template(
