@@ -10,6 +10,7 @@ import ErServiceCatchUp from '@/components/blocks/ErServiceCatchUp/index.vue'
 import { getNoun } from '@/functions/helper'
 import { IDeleteOrderData } from '@/constants/er-plug'
 import ComponentManageViewMixin from '@/mixins/ComponentManageView/ComponentManageViewMixin'
+import { reassignActualStartDate } from '@/components/pages/tv/components/useHooks/reassignment/reassignmentActualStartDate'
 import moment from 'moment'
 
 @Component({
@@ -289,7 +290,12 @@ export default class TVPackagesPage extends ComponentManageViewMixin {
     this.isNotShowPicker = !isChecked
     this.appointModelPeriodPicker()
   }
-
+  useActivationDate (acDate: string, oActiveDate: any) {
+    return `Подключен:&nbsp ${oActiveDate[acDate] ? oActiveDate[acDate] : oActiveDate.actualStartDate}`
+  }
+  useShutdownDate (shDate: string, oShutDate: any) {
+    return (shDate in oShutDate ? `Отключение: ${oShutDate[shDate]}` : '&nbsp')
+  }
   async mounted () {
     this.appointModelPeriodPicker()
     if (this.line) {
@@ -379,10 +385,13 @@ export default class TVPackagesPage extends ComponentManageViewMixin {
               const packet: any = this.packages.find((el:ITVPacketPage) => {
                 return el.productCode.replace(' ', '').split(',').includes(connectedPacket.code)
               })
+              const charsDateActivation = (reassignActualStartDate)(connectedPacket.chars, packet)
+              const actualStartDate = moment(connectedPacket.actualStartDate).format('DD.MM.YY')
               if (packet) {
                 packet.productId = connectedPacket.id
                 packet.price = connectedPacket.price
                 packet.count = `${packet.count} ${getNoun(packet.count, 'канал', 'канала', 'каналов')}`
+                packet.actualStartDate = 'Без ПСТ' in connectedPacket.chars ? actualStartDate : charsDateActivation
                 try {
                   packet.img = packet.backgroundMobile ? require(`@/assets/images/tv/${packet.backgroundMobile}.png`) : ''
                 } catch {
