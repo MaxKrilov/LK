@@ -156,7 +156,7 @@ export default class ErtCardPaymentPage extends Vue {
   get validateRulesEmail () {
     return [
       (v: string) => !!v || 'Поле обязательно к заполнению',
-      (v: string) => PATTERN_EMAIL.test(v) || 'Некоректный адрес эл. почты'
+      (v: string) => PATTERN_EMAIL.test(v) || 'Некорректный адрес эл. почты'
     ]
   }
 
