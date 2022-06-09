@@ -85,7 +85,7 @@
         grid-column: 5;
       }
     }
-   
+
   }
 
   &__wrap-name {
@@ -217,7 +217,14 @@
       @extend %caption2;
       @include color-white(.6);
     }
-
+    &__start-date {
+      @extend %caption2;
+      @include color-white(.6);
+    }
+    &__end-date {
+      @extend %caption2;
+      @include color-white(.6);
+    }
     &__img {
       width: 150px;
       height: 150px;

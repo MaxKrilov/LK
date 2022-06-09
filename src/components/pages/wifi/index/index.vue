@@ -100,13 +100,15 @@
         :date="point.offer.name"
         :price="point.amount.value"
         :stopped="point.status === getStatusSuspended"
-        @open="() => getCustomerProductById(point.bpi, point.marketId)"
+        @open="(e) => e && getCustomerProductById(point.bpi, point.marketId)"
       )
         template
           | {{ point.fulladdress }}
         template(slot="slider-content")
-          template(v-if="point.status === getStatusSuspended")
-            er-button.wifi-index-page__restore-button(@click="$router.push('/lk/support?form=restoring_a_contract_or_service')") Восстановить
+          template(v-if='isLoadingList[point.bpi]')
+            ErtProgressCircular(indeterminate width="2")
+          template(v-else-if="point.status === getStatusSuspended")
+            er-button.wifi-index-page__restore-button(@click="recover(point)") Восстановить
           template(v-else)
             template(v-if="point.bundle")
               er-bundle-info(
@@ -164,6 +166,37 @@
         color="blue"
         @click="onClickPlug"
       ) Подключить
+
+    er-activation-modal(
+    type="question"
+    v-model="isShowResumeModal"
+    title="Вы уверены, что хотите восстановить услугу?"
+    @confirm="sendResumeOrder"
+    @close="cancelOrder"
+    :isLoadingConfirm="isSendingOrderResume"
+    actionButtonText="Восстановить"
+    )
+
+    er-activation-modal(
+    type="error"
+    v-model="isShowErrorModal"
+    title="Ошибка"
+    cancel-button-text="Закрыть"
+    :isShowActionButton="false"
+    )
+      template(slot="description")
+        div Уважаемый Клиент, в данный момент операция не доступна, обратитесь к персональному менеджеру
+
+    er-activation-modal(
+    type="success"
+    v-model="isShowSuccessModal"
+    title="Заказ создан успешно"
+    :isShowActionButton="false"
+    cancel-button-text="Спасибо"
+    )
+      template(slot="description")
+        | Заказ создан успешно. Выполнение заказа может занять некоторое время. Актуальный статус можно узнать в разделе Заказы.
+
 </template>
 
 <script lang="ts" src="./script.ts"></script>

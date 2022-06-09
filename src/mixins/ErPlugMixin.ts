@@ -310,9 +310,6 @@ export default class ErPlugMixin extends Vue {
     this.cancelOrder()
     this.endConnection()
   }
-  changeShowPicker (v: boolean) {
-    this.$emit('putDownCheckBoxShowPicker', v)
-  }
   endConnection () {
     this.$emit('changeStatusConnection', false)
   }

@@ -150,7 +150,8 @@ export default class ErtWifiServiceAuth extends mixins(Page) implements iPageCom
   get getRequestData () {
     const parameters = this.chars
       ? Object.keys(this.chars).map(key => {
-        return this.chars!.hasOwnProperty(key) && `${key}: ${this.chars![key]}`
+        /* Пренебрегаем, так как используется только в Закрытой сети и остальные параметры являются обязательными к заполнению */
+        return this.chars!.hasOwnProperty(key) && `${key}: ${this.chars![key] || 'Без ограничений'}`
       }).join('; ')
       : ''
     const descriptionModal = this.isActiveCurrentSLO
@@ -212,7 +213,8 @@ export default class ErtWifiServiceAuth extends mixins(Page) implements iPageCom
     }
 
     // Услуга не подключена - следует проверить доступные денежные средства
-    if (!this.isActiveCurrentSLO) {
+    // Для закрытой сети не проверяем, так как подключение происходит через менеджера
+    if (!this.isActiveCurrentSLO && code !== 'WIFIHSCLONET') {
       try {
         const getAvailableFundsResponse = await this.getAvailableFunds()
         const availableFunds = Number(getAvailableFundsResponse.availableFundsAmt)

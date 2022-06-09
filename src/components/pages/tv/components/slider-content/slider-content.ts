@@ -1,7 +1,8 @@
 import { Vue, Component, Prop } from 'vue-property-decorator'
-import { ITVProduct, ITVLine, ITVSTB, ITVPacket, IModuleInfo } from '@/components/pages/tv/tv.d.ts'
+import { ITVProduct, ITVLine, ITVSTB, ITVPacket, IModuleInfo, ITVDataActivation, tvDataActivation } from '@/components/pages/tv/tv.d.ts'
 import { ARRAY_STATUS_SHOWN } from '@/constants/status'
 import ErPlugProduct from '@/components/blocks/ErPlugProduct/index.vue'
+import { useChars } from '@/components/pages/tv/components/useHooks/charsField'
 
 const components = { ErPlugProduct }
 
@@ -16,7 +17,6 @@ export default class TvSlider extends Vue {
   tvCode: string = ''
   isError: boolean = false
   isConnection: boolean = false
-
   get requestData () {
     return {
       descriptionModal: 'Для добавления нового модуля нужно сформировать заявку на вашего персонального менеджера',
@@ -84,11 +84,21 @@ export default class TvSlider extends Vue {
             const packets: {id: string, name: string, price: number, code: string}[] = line?.packets ? Object.values(line.packets)
               ?.filter((packet:ITVPacket) => packet.status === 'Active')
               ?.map((packet:ITVPacket) => {
+                const { 'Дата активации': activeDate, 'Дата отключения': shutDate } : tvDataActivation = packet.chars
+                const required = (val: boolean) => !!val
+                const { chars } = useChars({
+                  chars: {
+                    'Дата активации': { required, value: activeDate },
+                    'Дата отключения': { required, value: shutDate }
+                  }
+                }) as ITVDataActivation
                 return {
                   id: packet.id,
                   name: packet.name,
                   code: packet.offer.code,
-                  price: Number(packet.purchasedPrices.recurrentTotal.value)
+                  price: Number(packet.purchasedPrices.recurrentTotal.value),
+                  actualStartDate: packet.actualStartDate,
+                  chars
                 }
               }) : []
             return {
@@ -107,6 +117,7 @@ export default class TvSlider extends Vue {
               packets
             }
           })
+        // @ts-ignore
         this.moduleList = this.manageView(data)
         this.loading = false
       })
@@ -116,7 +127,7 @@ export default class TvSlider extends Vue {
   }
   manageView (data:IModuleInfo[]) {
     return data.map((line: any) => {
-      let stbManage = (el:any) => el.stbName?.includes('Управляй просмотром') && el
+      let stbManage = (el:any) => el?.stbName?.includes('Управляй просмотром') && el
       const stb = line.stb.reduce((cur:number, val:{}) => {
         if (!stbManage(val) && cur === -1) {
           return [val]

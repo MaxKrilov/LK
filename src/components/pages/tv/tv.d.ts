@@ -1,6 +1,13 @@
 /* eslint-disable camelcase */
 import { IPriceItem } from '@/tbapi'
-
+type tvDataActivation = {
+  'Дата активации': string
+  'Дата отключения': string
+}
+export interface IactualDate {
+  actualStartDate: string
+  chars: tvDataActivation
+}
 export interface IPointItem {
   fulladdress: string
   bpi: string
@@ -102,13 +109,13 @@ export interface IViewControl {
   offerCode: string
   offerName: string
 }
-export interface ITVPacketsInModule {
+export interface ITVPacketsInModule extends IactualDate {
   id: string
   name: string
   price: number
   code: string
 }
-export interface ITVPacket{
+export interface ITVPacket extends IactualDate {
   parentId: string
   name: string
   id: string
@@ -208,4 +215,16 @@ export interface ITVPacketInfoError{
 }
 export interface ITVPacketsError{
   error: string
+}
+export interface ITVCharsFieldsValue {
+  required: () => boolean
+  value: string
+}
+export interface ITVCharsFields {
+  'Дата активации'?: ITVCharsFieldsValue,
+  'Дата отключения'?: ITVCharsFieldsValue,
+  'Без ПСТ'?: boolean
+}
+export interface ITVDataActivation {
+  chars: ITVCharsFields
 }
