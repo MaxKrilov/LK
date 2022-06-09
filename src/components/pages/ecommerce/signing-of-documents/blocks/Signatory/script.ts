@@ -17,7 +17,7 @@ import moment from 'moment'
 import { logError } from '@/functions/logging'
 import { DocumentInterface } from '@/tbapi'
 
-const FILE_DATA_TYPE = '9154452676313182650'
+const FILE_DATA_TYPE = '9161817399513043740'
 const FILE_DATA_BUCKET = 'customer-docs'
 
 @Component({
