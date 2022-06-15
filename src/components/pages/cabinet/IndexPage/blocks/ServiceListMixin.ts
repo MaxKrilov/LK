@@ -5,15 +5,13 @@ const props = {}
 const components = {
   ServiceFolder
 }
-
 @Component({ props, components })
 export default class ServiceListMixin extends Vue {
   /* Миксин загружает и сохраняет данные, если данные не загружены, отображает индикатор загрузки */
-
-  dataRecord: Record<string, any> = {}
+  dataRecord: any = {}
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  fetchData (key: string) {
+  fetchData (key: string): Promise<string> {
     throw new Error('Метод ServiceListMixin.fetchData должен быть реализован')
   }
 
@@ -21,7 +19,7 @@ export default class ServiceListMixin extends Vue {
     return this.dataRecord?.[key] || false
   }
 
-  onLoadService (key: string) {
+  onLoadService (key: any) {
     if (!this.isItemLoaded(key)) {
       this.fetchData(key)
         // @ts-ignore

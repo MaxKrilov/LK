@@ -222,7 +222,8 @@ const getters = {
         code: product.offeringCategory.code,
         name: product.offeringCategory.name,
         price: Number(product.amount.value),
-        offerName: product.offer.name
+        offerName: product.offer.name,
+        parent: product.offeringCategory?.parent?.code
       })
       return acc
     }, [])
@@ -460,6 +461,9 @@ const actions = {
     const toms = rootGetters['auth/getTOMS']
     const activeBillingAccount = rootGetters['payments/getActiveBillingAccount']
     try {
+      if (!address) {
+        throw new SyntaxError('Нет addressId')
+      }
       const result = await api
         .setWithCredentials()
         .setData({
@@ -470,8 +474,10 @@ const actions = {
         .query('/order/management/products')
       return result
     } catch (error) {
-      commit(ERROR_MODAL, true, { root: true })
-      // todo Логирование
+      if (error.name !== 'SyntaxError') {
+        commit(ERROR_MODAL, true, { root: true })
+        // todo Логирование
+      }
     }
   },
   [GET_LIST_PRODUCT_BY_SERVICE]: ({ commit, rootGetters, getters }, { api }) => {

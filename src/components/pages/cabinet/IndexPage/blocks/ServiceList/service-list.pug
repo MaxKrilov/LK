@@ -1,9 +1,9 @@
 .service-list
   service-folder.mb-4(
-    v-for="product in list"
+    v-for="product in renderedProductTVList"
     :key="product.code"
     :title="product.name"
-    :price="product.price.toString()"
+    :price="renderedSumOfAllPrices.toString()"
     :icon-name="getIcon(product.code)"
     @open="onLoadService(product.code)"
   )
