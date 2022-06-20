@@ -1,17 +1,17 @@
-div.main-content
+div.main-content.mt-32
   template(v-if="loading")
     er-preloader(:active="true" icon icon-type="2")
   template(v-else)
     template(v-if="pack")
-      div(class="channel-list__header" :style="`background: ${ background }`")
+      div(class="channel-list__header" :style="`background: ${ background }`").mt-32
         div(class="channel-list__header-content" :style="`background-image: url(${pack.img})`")
           div(class="channel-list__header-title").mb-8 {{ pack.title }}
           div(class="channel-list__header-info" v-if="pack.productCode==='TVPSTAND'") Включен в стоимость тарифа
           div(class="channel-list__description").mt-16 {{ pack.description }}
 
-      div(class="channel-list__content")  
+      div(class="channel-list__content")
         er-page-header(title="Список каналов" linkText="Назад к ТВ" backlink="/lk/tv")
-        
+
         div(class="channel-list__table")
 
           template(v-if="pack.productCode==='TVPSTAND'")
@@ -40,4 +40,4 @@ div.main-content
               div.name {{ item.title }}
               div.quality {{ item.quality }}
               div.button {{ item.button }}
-      
+

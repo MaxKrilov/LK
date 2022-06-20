@@ -1,8 +1,9 @@
 .channel-list {
   &__header {
     margin-bottom: 40px;
+    padding-top: 20px;
     background: $tv-standart-2;
-    @include min-breakpoint("sm") {  
+    @include min-breakpoint("sm") {
       background: $tv-standart-3;
     }
 
@@ -24,7 +25,7 @@
       padding-right: 16px;
       @include min-breakpoint("sm") {
         padding: 40px;
-        background-size: contain;  
+        background-size: contain;
       }
     }
   }
